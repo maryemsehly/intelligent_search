@@ -1,0 +1,2614 @@
+===== PAGE 1 =====
+
+ 
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de 
+Mahdia 
+ 
+MEMOIRE 
+ 
+N° d’ordre: MP-EXR-2-2025-
+004  
+Ministère de l’Enseignement Supérieur et 
+de la Recherche Scientifique  
+ 
+ 
+ 
+MEMOIRE  
+                                                 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+                                                 
+ Effectué à 
+ 
+SMOFT ERP 
+ 
+ 
+En vue de l’obtention du diplôme de 
+ 
+Mastère Professionnel : Computer Engineering - Expert Réseaux 
+ 
+Elaboré par : 
+ 
+Bel haj Salah iheb 
+ 
+     
+Conception et mise en œuvre d’un pipeline CI/CD sécurisé en utilisant les 
+pratique DevOps 
+ 
+ 
+ 
+Soutenu le :  13 décembre 2025  
+devant le  jury composé de : 
+ 
+ 
+Président 
+  : Zahra Raddaoui 
+Rapporteur 
+  : Hamdi Aloulou 
+Encadrant Académique 
+  : Walid Hassairi 
+Encadrant Professionnel 
+: Asma Abdallah 
+ 
+ 
+ 
+Année universitaire  2025-2026 
+
+
+===== PAGE 2 =====
+
+Dédicace
+Je dédie ce travail à :
+Mes chers parents, mes soeurs, mes frères , mes amis, à mes enseignants et à toute ma
+famille, sans leurs encouragements et sacrifices, rien de cela n’aurait été possible.
+Toute ma reconnaissance...
+2
+
+
+===== PAGE 3 =====
+
+Remerciements
+Il est particulièrement agréable, avant de présenter cette oeuvre, d’exprimer
+toute ma gratitude envers les personnes qui de près ou de loin m’ont apporté
+leur aide inestimable lors de la réalisation de ce projet.
+Je tiens tout particulièrement à remercier mes tuteurs de stage dans la société
+SMOFT ERP,
+Mme. Asma Abdullah et Mr. Mohamed Ben Khemis.
+J’adresse, mes sincères remerciements à mon encadrant académique,
+Mr. Walid Hassairi,
+Je tiens aussi à remercier tous les membres du jury pour avoir bien voulu
+examiner et juger ce travail.
+Merci.
+3
+
+
+===== PAGE 4 =====
+
+Table des matières
+Table des figures
+6
+Liste des tableaux
+9
+Introduction générale
+1
+1
+Contexte général
+3
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.1
+Organisme d’accueil
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.1.1
+Présentation de la société . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.1.2
+Activités de l’entreprise
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Contexte et objectifs du projet
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2.1
+Problématique du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2.2
+Critique de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2.3
+Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.2.4
+Objectifs du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.3
+Méthodologie de développement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+2
+Notions de bases sur le déploiement
+8
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1
+Environnement logiciel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1.1
+Outils de travail
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1.2
+Outils DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.2
+Processus DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.2.1
+Approche virtualisation/conteneurisation . . . . . . . . . . . . . . . . . . . . .
+13
+2.2.2
+Cloud Computing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.2.3
+L’approche DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.2.4
+Kubernetes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.2.5
+Prometheus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+4
+
+
+===== PAGE 5 =====
+
+2.2.6
+Grafana . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.2.7
+Utilisation combinée de Grafana et Prometheus . . . . . . . . . . . . . . . . .
+24
+2.3
+Amazon Web Services
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.3.1
+Flexibilité tarifaire et contrôle des coûts . . . . . . . . . . . . . . . . . . . . .
+25
+2.3.2
+Agilité et évolutivité des solutions
+. . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.3.3
+Innovation continue et adoption de nouvelles technologies
+. . . . . . . . . . .
+25
+2.3.4
+Sécurité et conformité de haut niveau
+. . . . . . . . . . . . . . . . . . . . . .
+26
+2.3.5
+Test et mise en œuvre des processus DevOps
+. . . . . . . . . . . . . . . . . .
+26
+2.4
+Implémentation d’une chaîne CI/CD . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.4.1
+Configuration du serveur Jenkins . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.4.2
+Configuration du Webhook dans Gitlab
+. . . . . . . . . . . . . . . . . . . . .
+32
+2.4.3
+Configuration de Jenkins pour Recevoir le Webhook
+. . . . . . . . . . . . . .
+34
+2.4.4
+Configuration du serveur SonarQube . . . . . . . . . . . . . . . . . . . . . . .
+36
+2.4.5
+Création du ECR . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+3
+Dockerisation et déploiement de l’application sur le Cloud
+43
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.1
+Processus du DevOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.1.1
+Implémentation d’une chaîne CI/CD . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.1.2
+Configuration d’Ansible . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.1.3
+Configuration de Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.1.4
+Déploiement de l’application avec Docker
+. . . . . . . . . . . . . . . . . . . .
+50
+3.1.5
+Configuration de Kubernetes
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+3.2
+Monitoring de l’application
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+Conclusion générale
+70
+Annexes
+71
+5
+
+
+===== PAGE 6 =====
+
+Table des figures
+1.1
+Schéma descriptif du modèle en V
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+2.1
+Slack . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.2
+E-mail . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.3
+Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.4
+Gitlab . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.5
+Jenkins
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.6
+Trivy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.7
+Amazon ECR . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.8
+cAdvisor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.9
+Node Exporter
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.10 Prometheus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.11 Grafana . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.12 Ansible
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.13 Kubernets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.14 Comparaison entre conteneur et machine virtuelle . . . . . . . . . . . . . . . . . . . .
+15
+2.15 Les types de services Cloud
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.16 DevOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.17 Architecture de cluster Kubernetes . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.18 Architecture Prometheus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.19 Implémentation chaîne CI/CD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.20 Accès SSH à l’instance EC2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.21 Unlock Jenkins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.22 Installation des plugins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+2.23 Création du premier utilisateur administratif
+. . . . . . . . . . . . . . . . . . . . . .
+30
+2.24 Interface Jenkins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+2.25 Création de Credential pour GitLab
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+2.26 GitLab Credential
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+2.27 Création d’un nouveau projet d’intégration
+. . . . . . . . . . . . . . . . . . . . . . .
+32
+6
+
+
+===== PAGE 7 =====
+
+Table des figures
+2.28 Paramètres du Gitlab
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+2.29 URL du Webhook
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+2.30 Token
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+2.31 Push events . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+2.32 Ajout du Webhook . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+2.33 Installation du plugin
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+2.34 Ajout de l’option Build . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+2.35 Génerer Token
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+2.36 Accès à l’interface SonarQube . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+2.37 Création du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+2.38 Génération du Token . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+2.39 SonarQube plugins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+2.40 Intégration de SonarQube avec Jenkins . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+2.41 sonar-project.properties
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+2.42 Validation du code . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+2.43 Analyse du code de l’application avec SonarQube . . . . . . . . . . . . . . . . . . . .
+40
+2.44 Création du Amazon ECR
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+2.45 Les images docker
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+2.46 ECR credential . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.1
+Fonctionnement d’Ansible . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.2
+Création d’un nouveau job . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+3.3
+Pipeline script from SCM
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+3.4
+Service Docker
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+3.5
+Liste des images Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+3.6
+Exécution du pipeline
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+3.7
+Installation des plugins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+3.8
+k8s credential . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+3.9
+Liste des services . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+3.10 Liste des pods . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+A.1 Lancement d’une instance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+71
+7
+
+
+===== PAGE 8 =====
+
+Table des figures
+A.2 Intituler l’instance
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+A.3 Choix AMI
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+A.4 Choix du type d’instance EC2
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+A.5 Création de pair de clés
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+A.6 Configuration des groupes de sécurité . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+A.7 Création de l’instance EC2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+A.8 Le plugin GitLab . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+A.9 Clé SSH . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+A.10 Paramètres GiLab
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+A.11 Interface Clés SSH . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+A.12 Ajout d’une clé SSH
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+A.13 Vérification d’état
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+85
+8
+
+
+===== PAGE 9 =====
+
+Liste des tableaux
+2.1
+Differences entre Machines Virtuelles et Conteneurs . . . . . . . . . . . . . . . . . . .
+14
+9
+
+
+===== PAGE 10 =====
+
+Introduction générale
+L’évolution rapide du cloud computing a profondément transformé la manière dont les entreprises
+conçoivent, déploient et maintiennent leurs infrastructures informatiques. Cette transition vers le
+numérique permet aujourd’hui aux organisations d’accéder à des ressources flexibles, évolutives et à
+la demande, tout en réduisant les coûts liés à l’acquisition et à la gestion de matériel physique.
+Dans ce contexte de modernisation, notre projet de fin d’études s’inscrit dans une logique
+d’automatisation et d’orchestration des services cloud, en adoptant une démarche DevOps.
+Ce projet, encadré par SMOFT, vise à mettre en œuvre une chaîne complète de déploiement
+continu pour une application Node.js Express.js, depuis le provisionnement d’une infrastructure sur
+AWS jusqu’au déploiement et au monitoring de l’application dans un cluster Kubernetes.
+Le projet se décline en plusieurs étapes clés. Le rapport est structuré en tois chapitres distincts
+qui couvrent les différents aspects du projet :
+— Chapitre 1 – Contexte général : Ce chapitre présente l’entreprise d’accueil SMOFT
+ERP, le projet de fin d’études, et la méthodologie adoptée pour la réalisation du projet. Il
+inclut également une analyse de l’existant et la spécification des besoins fonctionnels et non
+fonctionnels.
+— Chapitre 2 – Notions de bases sur le déploiement : Ce chapitre est consacré à la phase
+de conception et de réalisation de l’application, fournissant une vue détaillée du développement
+et des fonctionnalités de l’application. Il explore également les principes de DevOps, analyse
+ses avantages, et propose une étude comparative des fournisseurs Cloud. Il aborde également
+la mise en place d’une chaîne d’intégration continue et de déploiement continu (CI/CD), en
+détaillant la planification, l’installation et la configuration des outils essentiels tels que Jenkins,
+SonarQube, et Amazon ECR.
+— Chapitre 3 – Dockerisation et déploiement de l’application sur le Cloud : Ce chapitre
+traite de la dockerisation de l’application et de son déploiement dans le Cloud, en mettant en
+lumière les processus et les technologies utilisées pour assurer une intégration et un déploiement
+efficaces. Il couvre également la configuration de Kubernetes et l’implémentation d’un système
+de monitoring avec Prometheus et Grafana.
+Ce rapport se conclut par une synthèse des résultats obtenus, récapitulant les principales
+étapes du projet et proposant des perspectives d’évolution et d’amélioration pour les solutions
+1
+
+
+===== PAGE 11 =====
+
+Liste des tableaux
+développées. Dans un monde en constante évolution technologique, ce projet illustre l’importance des
+pratiques DevOps et des solutions Cloud pour transformer la gestion des infrastructures informatiques.
+2
+
+
+===== PAGE 12 =====
+
+Chapitre 1
+Contexte général
+
+
+===== PAGE 13 =====
+
+Chapitre 1. Contexte général
+Introduction
+Dans ce chapitre, nous présentons l’entreprise SMOFT ERP au sein de laquelle nous avons
+effectué notre projet de fin d’études. Ensuite, nous abordons l’étude préalable du projet, comprenant
+la problématique ainsi que la solution proposée. Enfin, nous clôturerons par une comparaison des
+différentes méthodologies utilisées et par la méthodologie adoptée pour notre projet.
+1.1
+Organisme d’accueil
+1.1.1
+Présentation de la société
+SMOFT ERP est une société spécialisée dans les solutions informatiques, installée en Tunisie.
+Elle propose une large gamme de services IT, visant à accompagner les entreprises dans leur transformation
+digitale. Son siège est situé à Sousse, à Novation City, Sousse 4000.
+L’entreprise se positionne comme un partenaire technologique capable de prendre en charge
+toutes les étapes d’un projet numérique : de la consultation et du conseil, à la formation, mise en
+œuvre, maintenance, et support. Elle insiste sur la satisfaction client, la réactivité, la qualité de
+service, et l’aide à tirer le meilleur parti des actifs numériques.
+1.1.2
+Activités de l’entreprise
+SMOFT ERP exerce plusieurs activités complémentaires dans le domaine des technologies
+de l’information et des services numériques. Ses principales missions peuvent être regroupées comme
+suit :
+— Solutions logicielles sur mesure : Développement de logiciels personnalisés selon les besoins
+des clients, pour améliorer les opérations, la gestion, l’analyse. . .
+— Administration réseau : Gestion des infrastructures informatiques et réseau, sécurité, maintenance
+pour garantir fiabilité et performance.
+— Cloud & stockage : Services cloud, stockage distant, solutions permettant un accès aux
+ressources “anywhere, anytime”, pour améliorer flexibilité et disponibilité.
+— Marketing digital / Web Development : Création de site web, gestion de la présence
+numérique (réseaux sociaux, réputation en ligne), optimisation de la visibilité.
+— Ingénierie électrique & électronique : Réparation, maintenance, personnalisation de
+4
+
+
+===== PAGE 14 =====
+
+Chapitre 1. Contexte général
+dispositifs électroniques, élaboration de solutions matérielles liées à l’électronique pour les
+entreprises.
+— Sécurité / Contrôle d’accès / Vidéosurveillance : Solutions comme les caméras de
+surveillance, systèmes biométriques pour le contrôle d’accès, sécurisation physique et logique
+des locaux.
+1.2
+Contexte et objectifs du projet
+1.2.1
+Problématique du projet
+De nombreuses organisations s’appuient encore sur des processus manuels de déploiement
+et de test, susceptibles d’entraîner des erreurs, des inefficacités et des retards. Cette approche
+traditionnelle limite la capacité à livrer des logiciels de manière rapide et fiable. De plus, la sécurité
+est souvent reléguée au second plan, ce qui conduit à une détection tardive des vulnérabilités et
+à une augmentation des risques. Ces défis mettent en évidence la nécessité d’une pipeline DevOps
+automatisée et intégrée, capable non seulement d’optimiser les processus d’intégration et de livraison
+continues (CI/CD), mais aussi d’intégrer les tests de sécurité à chaque étape du cycle de développement
+logiciel.
+1.2.2
+Critique de l’existant
+Le cadre de développement actuel des applications chez SMOFT ERP présente plusieurs
+contraintes majeures. L’utilisation d’Excel pour la sauvegarde et le suivi des tâches, bien que
+dépassée, n’a pas encore été complètement éliminée, ce qui complique la gestion et la traçabilité.
+Par ailleurs, les déploiements restent manuels, entraînant des retards significatifs et un risque élevé
+d’erreurs humaines. Les tests, réalisés de manière sporadique et non systématique, ne garantissent
+pas une qualité optimale du code. L’infrastructure, configurée manuellement et rigide, manque de
+souplesse et de reproductibilité, limitant notre capacité à gérer les pics de charge et à nous adapter à
+des exigences fluctuantes. Enfin, l’absence totale de surveillance en temps réel nous prive de visibilité
+sur les performances et les incidents, qui ne sont souvent détectés qu’une fois qu’ils impactent les
+utilisateurs finaux.
+5
+
+
+===== PAGE 15 =====
+
+Chapitre 1. Contexte général
+1.2.3
+Solution proposée
+La solution proposée vise à moderniser les processus de développement et d’exploitation en
+adoptant les principes de DevOps.
+Par la suite, l’application sera migrée vers une infrastructure cloud, suite à une étude comparative
+des principaux fournisseurs tels qu’AWS, Azure ou GCP. Cette analyse prendra en compte les services
+proposés, la compatibilité avec l’infrastructure actuelle, les coûts et les normes de sécurité, dans le
+but d’améliorer la scalabilité, la fiabilité et les performances de l’application.
+Pour faciliter le processus de déploiement continu sur le fournisseur cloud choisi, une chaîne
+CI/CD sera mise en place, utilisant GitLab et Jenkins pour gérer le code source. Cette chaîne
+analysera le code et sauvegardera les artefacts pour assurer la qualité et la sécurité du code.
+Enfin, l’application sera dockerisée et déployée avec Kubernetes.
+1.2.4
+Objectifs du projet
+Les objectifs de ce projet sont :
+— Mise en place d’une chaîne CI/CD automatisée.
+— Analyse du code avec SonarQube et sauvegarde des images avec Amazon ECR.
+— Dockerisation de l’application.
+— Implémentation d’un système de monitoring avec :
+— Prometheus pour la collecte et l’analyse des métriques en temps réel.
+— Grafana pour la visualisation des données et la création de tableaux de bord.
+1.3
+Méthodologie de développement
+Pour notre projet, nous avons opté pour la méthode en V qui est une amélioration du modèle
+en cascade qui était auparavant le modèle le plus utilisé lors de la réalisation des projets.
+Le cycle en V est composé de neuf étapes appartenant à trois grandes phases, à savoir :
+conception, réalisation et validation, comme le montre la figure 1.1.
+6
+
+
+===== PAGE 16 =====
+
+Chapitre 1. Contexte général
+Figure 1.1 : Schéma descriptif du modèle en V
+Conclusion
+Dans ce chapitre, nous avons présenté la société SMOFT ERP. Nous avons présenté le cadre
+général de notre projet et notre mission d’une manière globale, ainsi que le contexte du projet en
+examinant et en critiquant l’existant, et nous avons également présenté une brève idée de notre
+solution proposée.
+Enfin, nous avons détaillé la méthodologie que nous avons adoptée pour mettre en œuvre
+cette solution.
+7
+
+
+===== PAGE 17 =====
+
+Chapitre 2
+Notions de bases sur le déploiement
+
+
+===== PAGE 18 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Introduction
+Ce chapitre se concentre sur l’initiation au DevOps et propose une étude comparative détaillée
+des principaux fournisseurs de services cloud, en mettant en avant leurs caractéristiques et avantages
+distinctifs. Il aborde également l’analyse approfondie et la mise en œuvre de la chaîne CI/CD,
+essentielle pour optimiser les processus de développement et de déploiement.
+2.1
+Environnement logiciel
+Cette section présente les différents outils que nous avons utilisés pour la réalisation de notre
+projet.
+2.1.1
+Outils de travail
+Slack : Slack est une plateforme de communication collaborative propriétaire ainsi qu’un
+logiciel de gestion de projets officiellement lancée en février 2014.
+Figure 2.1 : Slack
+E-mail : L’e-mail est couramment utilisé dans le monde DevOps pour recevoir des notifications
+concernant les builds, les déploiements, les modifications de code, les alertes et les événements
+critiques.
+Figure 2.2 : E-mail
+9
+
+
+===== PAGE 19 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+2.1.2
+Outils DevOps
+Docker : Docker est une plate-forme de conteneurisation qui permet de créer, de déployer
+et d’exécuter des applications dans des conteneurs logiciels, lancée en 2013 [1].
+Figure 2.3 : Docker
+GitLab : GitLab est une plateforme DevOps, lancée en 2011, basée sur Git qui fournit un
+ensemble d’outils pour la gestion du code, l’intégration continue et la livraison continue (CI/CD) [2].
+Figure 2.4 : Gitlab
+Jenkins : Jenkins est un serveur d’intégration continue open source qui automatise le
+processus de création, de test et de déploiement de logiciels [3].
+Figure 2.5 : Jenkins
+Trivy : Trivy est un scanner de sécurité open source qui permet de détecter les vulnérabilités
+dans les conteneurs, les images Docker, et les dépendances de projets. Il analyse rapidement les
+composants pour identifier les failles connues et les problèmes de configuration.
+10
+
+
+===== PAGE 20 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.6 : Trivy
+Amazon ECR : Amazon ECR (Elastic Container Registry) est un service de registre de
+conteneurs entièrement géré par AWS, qui permet de stocker, gérer et déployer des images Docker
+de manière sécurisée et scalable [4].
+Figure 2.7 : Amazon ECR
+cAdvisor : cAdvisor (Container Advisor) est un outil open source qui collecte, analyse et
+affiche les métriques de performance des conteneurs, comme l’utilisation CPU, mémoire, disque et
+réseau, facilitant ainsi le monitoring en temps réel.
+Figure 2.8 : cAdvisor
+Node Exporter : Node Exporter est un outil open source qui collecte et expose les métriques
+système (CPU, mémoire, disque, réseau) des machines sur lesquelles il est installé, permettant à
+Prometheus de les surveiller efficacement.
+11
+
+
+===== PAGE 21 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.9 : Node Exporter
+Prometheus : Prometheus est un système open source de surveillance et d’alerte qui collecte,
+stocke et interroge des métriques temporelles, permettant d’analyser les performances et la santé des
+applications et des infrastructures [5].
+Figure 2.10 : Prometheus
+Grafana : Grafana est une plateforme open source de visualisation de données qui permet
+de créer des tableaux de bord interactifs à partir de métriques collectées par des systèmes comme
+Prometheus, facilitant l’analyse et le suivi des performances [6].
+Figure 2.11 : Grafana
+Ansible : Ansible est une plateforme logicielle libre pour la configuration et la gestion des
+ordinateurs. Elle combine le déploiement de logiciels multinœuds, l’exécution des tâches ad-hoc et
+la gestion de configuration [7].
+12
+
+
+===== PAGE 22 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.12 : Ansible
+Kubernetes : Kubernetes est un système d’orchestration de conteneurs open source, lancé en
+2014 pour automatiser le déploiement, la mise à l’échelle et la gestion des applications conteneurisées [8].
+Figure 2.13 : Kubernets
+2.2
+Processus DevOps
+Dans ce qui suit, nous allons présenter quelques prérequis du déploiement.
+2.2.1
+Approche virtualisation/conteneurisation
+Virtualisation :
+La virtualisation est une technologie qui permet de créer de multiples environnements de
+travail ou des ressources spécifiques à partir d’un seul ordinateur physique. Cette technologie utilise
+un logiciel spécialisé appelé hyperviseur, qui facilite l’exécution simultanée de plusieurs systèmes
+d’exploitation sur un unique ordinateur hôte.
+Ces systèmes d’exploitation invités utilisent le matériel de l’ordinateur hôte tout en opérant
+comme s’ils disposaient de leur propre CPU, mémoire, et autres ressources matérielles. Les espaces
+ainsi créés par la virtualisation sont nommés machines virtuelles (VMs). Chaque machine virtuelle
+agit comme un système informatique complet et indépendant, permettant l’exécution de divers
+systèmes d’exploitation sans besoin de hardware supplémentaire.
+Conteneurisation :
+La conteneurisation est une technique de virtualisation qui permet de packager une application
+13
+
+
+===== PAGE 23 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+et ses dépendances dans un conteneur virtuel. Ce conteneur peut ensuite être exécuté sur n’importe
+quel système d’exploitation supportant la technologie de conteneur. Contrairement aux machines
+virtuelles traditionnelles qui virtualisent l’ensemble du système d’exploitation, les conteneurs partagent
+le même système d’exploitation hôte mais fonctionnent comme des entités isolées.
+Différence entre les machines virtuelles et les conteneurs : Le tableau suivant résume
+les différences principales entre les machines virtuelles et les conteneurs.
+Fonctionnalité
+Machines Virtuelles
+Conteneurs
+Virtualisation
+Matériel et système d’exploitation
+Système d’exploitation uniquement
+Isolation
+Plus forte
+Plus légère
+Performances
+Plus gourmandes en ressources
+Plus légers et plus efficaces
+Déploiement
+Plus lent
+Plus rapide
+Utilisation courante
+— Exécuter
+des
+systèmes
+d’exploitation incompatibles
+— Tester des logiciels dans un
+environnement isolé
+— Fournir des environnements de
+bureau virtuels
+— Déployer
+et
+exécuter
+des
+microservices
+— Développer
+et
+tester
+des
+applications cloud-native
+— Gérer
+des
+applications
+dynamiques à grande échelle
+Tableau 2.1 : Differences entre Machines Virtuelles et Conteneurs
+Une comparaison entre un conteneur et une machine virtuelle est illustrée dans la figure 2.14
+14
+
+
+===== PAGE 24 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.14 : Comparaison entre conteneur et machine virtuelle
+2.2.2
+Cloud Computing
+Le Cloud Computing consiste à utiliser des ressources informatiques (serveurs, stockage,
+applications, etc.) hébergées à distance et accessibles via Internet. Cela permet de stocker des données
+et d’exécuter des applications sans avoir à investir dans une infrastructure physique, tout en profitant
+d’un accès flexible et à la demande [9].
+Les services principaux du Cloud Computing sont classés en trois catégories principales :
+— Infrastructure en tant que service (IaaS) : Permet la location de ressources physiques,
+telles que des serveurs et du stockage, sur une base à la demande.
+— Plateforme en tant que service (PaaS) : Fournit un environnement de développement et
+de déploiement complet pour les applications, simplifiant l’infrastructure technique nécessaire
+aux développeurs.
+— Logiciel en tant que service (SaaS) : Offre l’accès à des applications via Internet, éliminant
+le besoin d’installation et de maintenance locales.
+15
+
+
+===== PAGE 25 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.15 : Les types de services Cloud
+2.2.3
+L’approche DevOps
+DevOps est un ensemble de pratiques qui vise à unifier le développement logiciel (Dev) et
+les opérations informatiques (Ops). L’objectif est de fluidifier la collaboration, d’automatiser les
+processus et d’accélérer la livraison de valeur aux clients [10].
+Quelques concepts clés de DevOps :
+— Culture DevOps : Collaboration et communication étroites entre les équipes de développement
+et d’exploitation.
+— Intégration continue (CI) et livraison continue (CD) : Automatisation des processus
+de construction, de test et de déploiement de logiciels [11].
+— Infrastructure as Code (IaC) : Définition et gestion de l’infrastructure informatique comme
+du code, stocké dans un dépôt Git [12].
+— Pipeline DevOps : Ensemble d’outils et de processus automatisés qui permettent de passer
+du code source à la production.
+— Microservices : Architecture logicielle décomposée en petits services indépendants et autonomes.
+— Surveillance et observabilité : Collecte et analyse des données pour identifier les problèmes
+et améliorer les performances.
+Avantages de DevOps :
+Quelques avantages de DevOps :
+16
+
+
+===== PAGE 26 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+— Amélioration de la vitesse et de la qualité des livraisons : Déploiement plus fréquent
+et plus fiable de logiciels de meilleure qualité.
+— Meilleure collaboration et communication : Réduction des silos et des frictions entre les
+équipes.
+— Augmentation de la résilience et de la fiabilité : Infrastructure et applications plus
+robustes et tolérantes aux pannes.
+— Meilleure utilisation des ressources : Réduction des coûts et optimisation de l’utilisation
+des ressources informatiques.
+Cycle de vie DevOps :
+Le cycle de vie DevOps comprend les phases suivantes :
+— Plan : Il s’agit de la première étape de la pratique DevOps. Ici, l’équipe de développement
+définit les exigences et les objectifs du projet et établit un plan d’exécution.
+— Code : L’équipe de développement travaille sur le code à l’aide d’outils de contrôle de version
+tels que Git, Mercurial et Subversion pour la collaboration.
+— Build : Le code écrit est compilé et rendu exécutable pour le déploiement.
+— Test : Des tests automatisés sont effectués sur le code pour vérifier les bugs et les erreurs et
+également pour voir si le code fonctionne comme prévu.
+— Déployer : Le logiciel est déployé à l’aide du pipeline CD pour permettre la publication
+fréquente de fonctionnalités en production.
+— Exploiter : Dans cette phase, l’équipe des opérations teste le logiciel dans un environnement
+de production pour valider qu’il convient aux utilisateurs finaux.
+— Observer et surveiller : Les développeurs et les équipes opérationnelles reçoivent une
+surveillance et des commentaires continus, ce qui leur permet d’identifier et de résoudre
+rapidement les problèmes.
+17
+
+
+===== PAGE 27 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.16 : DevOps
+2.2.4
+Kubernetes
+Kubernetes est une plateforme open-source conçue pour automatiser le déploiement, la mise
+à l’échelle et la gestion des applications conteneurisées. En orchestrant des conteneurs à travers un
+cluster de machines, Kubernetes permet de gérer des applications de manière cohérente, robuste
+et flexible, offrant ainsi des capacités avancées de résilience, de mise à l’échelle automatique et de
+déploiement continu [8].
+Principes fondamentaux de Kubernetes
+Pour comprendre un cluster Kubernetes, il est essentiel de saisir les principes fondamentaux
+de la conteneurisation. Un conteneur est une unité logicielle autonome qui regroupe une application
+et ses dépendances, permettant une exécution cohérente et isolée de l’environnement sous-jacent.
+Les architectures modernes privilégient les microservices, où chaque application est décomposée
+en composants logiciels distincts, chacun exécutant une fonction spécifique de manière indépendante.
+Cette modularité permet de déployer des conteneurs de manière distribuée sur plusieurs machines,
+facilitant l’ajustement dynamique des ressources pour optimiser l’efficacité des applications.
+Kubernetes est une plateforme open source d’orchestration de conteneurs qui simplifie la
+gestion des conteneurs à grande échelle. Il permet de planifier, démarrer, arrêter et gérer les conteneurs,
+automatisant ainsi de nombreuses tâches administratives pour les développeurs [8].
+Concepts fondamentaux de Kubernetes
+Pod :
+— Un pod est l’unité de déploiement standard dans Kubernetes. Il contient un ou plusieurs
+18
+
+
+===== PAGE 28 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+conteneurs qui partagent les mêmes ressources système, telles que le stockage et le réseau.
+— Chaque pod reçoit une adresse IP (Internet Protocol) unique, et les conteneurs à l’intérieur
+d’un pod ne sont pas isolés les uns des autres.
+— kube-scheduler est responsable de l’affectation des pods aux nœuds.
+— Les pods peuvent être organisés en groupes et étiquetés avec des attributs comme « dev » ou
+« prod » pour indiquer le type d’environnement.
+Nœud (Node) :
+Un nœud est une machine, qu’elle soit virtuelle ou physique, chargée d’exécuter des pods
+dans un cluster Kubernetes. Chaque nœud contient plusieurs composants essentiels pour assurer son
+bon fonctionnement :
+— Kubelet : Un agent qui gère les pods et les conteneurs sur le nœud, garantissant que les
+conteneurs spécifiés dans les pods sont en cours d’exécution et en bonne santé.
+— Kube-proxy : Assure la gestion du réseau, maintenant les règles de réseau sur chaque nœud
+et facilitant la communication entre les services et les pods.
+— Runtime du conteneur : L’environnement d’exécution des conteneurs, tel que l’interface
+Kubernetes Container Runtime, qui fournit les capacités nécessaires pour exécuter les conteneurs
+de manière isolée et efficace.
+Ensemble, ces composants permettent aux nœuds de fonctionner comme des unités autonomes
+et intégrées dans l’infrastructure Kubernetes, assurant ainsi la disponibilité et la résilience des
+applications conteneurisées.
+Ensemble de répliques et déploiement :
+— Un pod est autonome et ne redémarre pas automatiquement si le nœud sur lequel il s’exécute
+tombe en panne.
+— Les ensembles de répliques (ReplicaSets) permettent de s’assurer qu’un nombre spécifié de
+répliques d’un pod sont toujours en cours d’exécution sur plusieurs nœuds, garantissant ainsi
+la continuité des applications.
+— Un déploiement est l’objet de gestion de Kubernetes qui permet de déployer, mettre à jour et
+annuler des applications sans interruption de service.
+19
+
+
+===== PAGE 29 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Architecture du cluster Kubernetes
+Figure 2.17 : Architecture de cluster Kubernetes
+L’architecture du cluster Kubernetes est divisée en deux parties principales :
+Control plane : Le plan de contrôle est responsable de la gestion globale du cluster. Il
+comprend les composants suivants :
+— etcd : Un magasin de données distribué qui stocke l’état du cluster.
+— kube-api-server : L’API (Application Programming Interface) principale du cluster. Il permet
+aux utilisateurs de gérer le cluster à l’aide d’outils en ligne de commande ou d’interfaces Web.
+— kube-scheduler : Responsable de l’affectation des pods aux nœuds.
+— kube-controller-manager : Un ensemble de contrôleurs qui gèrent diverses tâches, telles que
+la création et la suppression de pods, la mise à l’échelle des applications et la gestion de la
+santé des pods.
+Nodes : Les nœuds sont les machines qui exécutent les conteneurs. Chaque nœud exécute
+les composants suivants :
+— kubelet : L’agent qui gère les pods sur le nœud.
+— kube-proxy : Un proxy réseau qui assure le routage du trafic vers les pods.
+20
+
+
+===== PAGE 30 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+— CRI (Container Runtime Interface) : Une interface qui permet à Kubernetes d’interagir
+avec le runtime de conteneurs, tel que Docker ou containerd [8].
+La figure 2.17 montre également les interactions entre les différents composants du cluster.
+Par exemple, le kube-api-server communique avec etcd pour stocker et récupérer l’état du cluster. Le
+kube-scheduler communique avec kubelet pour affecter les pods aux nœuds. Le kube-controller-manager
+communique avec kubelet pour gérer les pods.
+2.2.5
+Prometheus
+Prometheus est un système open-source de surveillance et d’alerte conçu pour collecter, traiter
+et stocker des métriques en temps réel à partir de systèmes et d’applications.
+Il utilise un modèle de type "pull" où le serveur Prometheus récupère activement les métriques
+des cibles qu’il surveille via des requêtes HTTP (Hypertext Transfer Protocol). Cette plateforme est
+largement utilisée pour surveiller la santé des infrastructures informatiques, permettant aux équipes
+opérationnelles de détecter rapidement les problèmes potentiels et d’assurer la disponibilité et la
+performance des services [5].
+Caractéristiques
+Les principales caractéristiques de Prometheus sont :
+— Prometheus stocke toutes les données sous forme de séries temporelles, identifiées par un nom
+de métrique et une liste de paires clé-valeur appelées labels.
+— Utilise Prometheus Query Language (PromQL) pour sélectionner et agréger les données de
+séries temporelles.
+— Fonctionne de manière autonome et ne dépend pas d’un stockage distribué. Chaque serveur
+Prometheus est indépendant et peut surveiller des cibles sans dépendre d’un autre système.
+— Prometheus collecte les métriques en tirant (pull) des données à partir de points d’extrémité
+définis. Les cibles sont définies via des configurations statiques ou une découverte de service
+dynamique.
+— S’intègre bien avec d’autres outils de l’écosystème cloud-native, comme Kubernetes, Grafana
+(pour la visualisation des données), et Jaeger (pour le traçage distribué) [5].
+21
+
+
+===== PAGE 31 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Métriques
+Les métriques sont des mesures numériques essentielles pour surveiller divers aspects du
+comportement et de la performance d’un système, d’une application ou d’un processus au fil du
+temps.
+Elles varient selon les besoins spécifiques de chaque application : par exemple, pour un serveur
+web, on peut mesurer le temps de réponse, tandis que pour une base de données, on peut suivre le
+nombre de connexions actives ou de requêtes en cours.
+Ces données jouent un rôle important dans la compréhension du fonctionnement d’une
+application. Par exemple, si une application web devient lente, il est crucial d’analyser les métriques
+pertinentes telles que le nombre de requêtes. Cela permet d’identifier la cause sous-jacente, comme
+une charge élevée, et d’adapter la capacité du système en conséquence, par exemple en augmentant
+le nombre de serveurs pour gérer la charge [5].
+Composants
+Les principaux composants de Prometheus sont les suivants :
+— Serveur Prometheus : Responsable de la collecte des métriques via un processus de scraping
+pull à partir des endpoints exposés par les applications et les exporters.
+— Base de Données de Séries Temporelles (TSDB) : Stocke les données de métriques
+collectées de manière optimisée pour les requêtes temporelles.
+— PromQL : Langage de requête permettant d’interroger et d’agréger les données stockées dans
+la TSDB.
+— Alertmanager : Gère les alertes générées par Prometheus en effectuant la déduplication, le
+regroupement et le routage vers divers canaux de notification comme le courrier électronique
+et Slack.
+— Exporters : Collectent et exposent des métriques à partir de systèmes tiers (comme des bases
+de données et des serveurs web) dans un format compréhensible par Prometheus.
+— Pushgateway : Permet à des jobs à durée limitée ou à des tâches par lots de pousser
+activement leurs métriques vers Prometheus au lieu d’attendre que Prometheus les scrape.
+— Interface Web : Une interface utilisateur graphique intégrée permettant d’explorer les métriques
+collectées, d’exécuter des requêtes PromQL et de créer des tableaux de bord personnalisés [5].
+22
+
+
+===== PAGE 32 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Architecture Prometheus
+Prometheus est un outil de surveillance polyvalent essentiel pour surveiller la santé de vos
+systèmes et applications, et garantir une expérience de qualité à vos utilisateurs finaux.
+Examinons l’architecture de Prometheus, fondée sur un modèle de type « pull » (tirer), où le
+serveur Prometheus collecte les données de métriques directement auprès des cibles qu’il surveille.
+L’architecture de Prometheus repose sur un modèle de scraping pull où le serveur Prometheus
+interroge périodiquement des endpoints exposés par des applications instrumentées ou des exporters,
+collectant ainsi des métriques à des intervalles réguliers.
+Ces données sont stockées dans une base de données de séries temporelles optimisée pour les
+requêtes.
+Les utilisateurs peuvent interagir avec ces données via le langage de requête PromQL, qui
+permet une sélection et une agrégation puissantes des métriques.
+Prometheus inclut également l’Alertmanager, qui gère les alertes en les dédupliquant, regroupant
+et routant vers diverses destinations. Pour les tâches de courte durée, le Pushgateway permet aux
+applications de pousser les métriques directement vers Prometheus.
+Enfin, une interface web intégrée permet d’explorer les données et de créer des tableaux de
+bord temporaires, offrant une vue complète et flexible de l’état du système surveillé [13].
+La figure 2.18 montre l’architecture détaillée de Prometheus.
+Figure 2.18 : Architecture Prometheus
+23
+
+
+===== PAGE 33 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+2.2.6
+Grafana
+Grafana est un logiciel de visualisation et d’analyse de données, particulièrement utilisé pour
+créer des tableaux de bord dynamiques et interactifs.
+Il permet aux utilisateurs de se connecter à diverses sources de données telles que des bases
+de données, des systèmes de surveillance et des services cloud, puis de visualiser ces données sous
+forme de graphiques, de tableaux et d’autres formats visuels.
+Grafana prend en charge une grande variété de sources de données, y compris des bases de
+données relationnelles (comme MySQL, PostgreSQL), des bases de données de séries temporelles
+(comme Prometheus, InfluxDB), des systèmes de métriques (comme Graphite, Elasticsearch), ainsi
+que des API HTTP et d’autres types de données.
+Les caractéristiques clés de Grafana incluent sa flexibilité dans la création de tableaux de bord
+personnalisés à l’aide d’une interface utilisateur intuitive et de modèles prédéfinis. Il offre également
+des fonctionnalités avancées telles que l’agrégation de données, le filtrage, les alertes en temps réel,
+et la possibilité de partager facilement les tableaux de bord avec d’autres utilisateurs.
+Grafana est largement utilisé dans les domaines de la surveillance des systèmes, de l’analyse
+des performances, de la visualisation des données d’application, ainsi que dans d’autres applications
+nécessitant une représentation visuelle claire et concise des données [6].
+2.2.7
+Utilisation combinée de Grafana et Prometheus
+Grafana et Prometheus forment une alliance puissante dans le domaine de la surveillance des
+systèmes informatiques.
+Prometheus, en tant que système de surveillance des métriques de séries temporelles, collecte
+et stocke efficacement les données de performance et d’état des applications. Grafana, de son côté, se
+distingue par sa capacité à visualiser ces données de manière intuitive et hautement personnalisable.
+En combinant Prometheus comme source de données avec Grafana pour la création de
+tableaux de bord interactifs, les équipes peuvent non seulement surveiller en temps réel les métriques
+critiques, mais aussi analyser les tendances historiques, diagnostiquer les problèmes potentiels et
+prendre des décisions informées pour optimiser les performances des systèmes.
+Cette collaboration permet aux utilisateurs de bénéficier d’une visibilité approfondie sur
+leurs infrastructures, facilitant ainsi la détection proactive des incidents et l’amélioration continue
+des opérations IT (Information Technology).
+24
+
+
+===== PAGE 34 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+2.3
+Amazon Web Services
+Amazon Web Services se distingue comme la plateforme cloud prédominante et la plus
+polyvalente à l’échelle mondiale. Avec une gamme étendue de plus de 200 services, AWS repose
+sur des centres de données répartis aux quatre coins du monde [13].
+Des millions de clients, parmi lesquels figurent des startups à la pointe de l’innovation, de
+grandes entreprises établies et des organismes gouvernementaux de premier plan, font appel à AWS
+pour optimiser leurs opérations.
+2.3.1
+Flexibilité tarifaire et contrôle des coûts
+La popularité d’AWS repose sur plusieurs piliers fondamentaux. Tout d’abord, elle offre une
+flexibilité tarifaire sans pareille, permettant aux utilisateurs de maîtriser leurs coûts en ne payant
+que pour les ressources qu’ils consomment, sans engagement à long terme ni coûts initiaux élevés.
+Cette approche "pay-as-you-go" permet aux entreprises de mieux gérer leurs budgets et de
+s’adapter aux besoins changeants sans contrainte financière excessive [13].
+2.3.2
+Agilité et évolutivité des solutions
+Ensuite, AWS favorise l’agilité en offrant des solutions informatiques évolutives qui s’adaptent
+rapidement aux fluctuations des besoins des entreprises. Les services tels qu’Amazon EC2 (Elastic
+Compute Cloud) et Amazon S3 (Simple Storage Service) permettent aux entreprises de dimensionner
+facilement leurs infrastructures en fonction des exigences actuelles et futures, garantissant ainsi une
+performance optimale sans compromis [13].
+2.3.3
+Innovation continue et adoption de nouvelles technologies
+AWS stimule également l’innovation en proposant en permanence de nouveaux services et
+fonctionnalités. Cette capacité à introduire rapidement des technologies de pointe, comme l’intelligence
+artificielle, le machine learning, l’analyse de données et l’Internet des objets, donne aux entreprises les
+moyens d’explorer de nouvelles idées et de concrétiser rapidement leurs projets. Des services comme
+AWS Lambda pour le calcul serverless et Amazon SageMaker pour le machine learning illustrent
+cette dynamique d’innovation continue [13].
+25
+
+
+===== PAGE 35 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+2.3.4
+Sécurité et conformité de haut niveau
+La sécurité est une priorité absolue pour AWS, qui propose une infrastructure de sécurité
+robuste et de nombreux services de sécurité pour protéger les données et les applications. Avec des
+certifications de conformité internationales et des outils comme AWS Identity and Access Management
+(IAM), les organisations peuvent s’assurer que leurs environnements cloud répondent aux normes
+les plus strictes.
+AWS représente bien plus qu’une simple plateforme cloud : c’est un écosystème dynamique
+qui permet aux organisations de toutes tailles et de tous secteurs de réduire leurs coûts, d’accroître
+leur agilité opérationnelle et d’innover à un rythme soutenu. Grâce à ses capacités de tarification
+flexible, d’évolutivité, d’innovation continue et de sécurité avancée, AWS reste le choix privilégié
+pour les entreprises cherchant à maximiser leurs performances et à transformer leurs opérations
+numériques [13].
+2.3.5
+Test et mise en œuvre des processus DevOps
+Dans cette section, nous allons examiner de plus près le processus de test et de mise en œuvre
+des pratiques DevOps. Les pratiques DevOps mettent l’accent sur l’automatisation des tests pour
+garantir la qualité et la stabilité du logiciel.
+— Utilisation de GitLab pour héberger notre projet.
+— Déploiement d’un environnement d’infrastructure sur Amazon Web Services (AWS), notre
+solution proposée.
+— Lancement d’une instance EC2 Jenkins.
+— Configuration d’un job sur Jenkins pour automatiser le processus de build, de test et de
+déploiement de notre application :
+— Le job récupère le code depuis notre dépôt GitLab.
+— Il compile le code.
+— Il exécute et déploie le code dans le référentiel ECR.
+— Analyse du code par SonarQube pour évaluer sa qualité en termes de normes de codage, de
+vulnérabilités potentielles et de bonnes pratiques de développement [14].
+26
+
+
+===== PAGE 36 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+2.4
+Implémentation d’une chaîne CI/CD
+Nous avons opté pour l’implémentation CI/CD telle qu’illustrée dans la figure 2.19.
+Figure 2.19 : Implémentation chaîne CI/CD
+2.4.1
+Configuration du serveur Jenkins
+• Création de l’instance AWS EC2 de jenkins :
+Voici les étapes de la création d’une instance AWS EC2, pour plus de détails, voir l’Annexe :
+— Connexion à la Console de Gestion AWS afin d’accéder au tableau de bord EC2 et lancer une
+instance.
+— Sélection de l’AMI Ubuntu Server 22.04.
+— Choix du type d’instance EC2 « t2.medium ».
+— Création et téléchargement d’une paire de clés.
+— Création d’un groupe de sécurité, autorisation du trafic SSH et du port TCP 8080.
+— Configuration du stockage, augmentation de la capacité à 30 Go.
+— Validation de la création de l’instance EC2.
+Nous avons utilisé MobaXterm sur Windows comme l’indique la figure 3.21. Nous avons saisi
+l’adresse IP publique de notre instance EC2 et nous avons utilisé la clé (Fichier .pem) sauvegardée
+sur notre PC.
+27
+
+
+===== PAGE 37 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.20 : Accès SSH à l’instance EC2
+• Configuration de Jenkins via son interface Web :
+Après avoir installé java, maven et jenkins sur le serveur jenkins (voir Annexe), nous avons
+pu procéder à la configuration de jenkins en utilisant son interface web en clicquant sur l’URL
+suivante : http ://ip-server :8080. Nous avons été accueillis par l’écran "Unlock Jenkins", indiquant
+l’emplacement du mot de passe initial requis pour lancer le processus de configuration.
+Figure 2.21 : Unlock Jenkins
+Dans la fenêtre du terminal, nous avons utilisé la commande « cat » pour afficher le mot de
+28
+
+
+===== PAGE 38 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+passe initial. Cela nous a permis de visualiser rapidement le mot de passe requis pour déverrouiller
+Jenkins et démarrer le processus de configuration.
+$ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+Par la suite„ nous avons choisi l’option "Installer les plugins suggérés", afin de démarrer
+immédiatement le processus d’installation des plugins. Cela nous permettra de bénéficier des fonctionnalités
+recommandées par défaut pour notre instance Jenkins.
+Figure 2.22 : Installation des plugins
+Une fois l’installation des plugins terminée, nous avons été invités à configurer le premier
+utilisateur administratif. Malgré l’opportunité de passer outre cette étape et de continuer à utiliser
+le compte administrateur avec le mot de passe initial, nous avons mis quelques minutes à créer
+l’utilisateur administratif. Cela nous permettra d’avoir un accès sécurisé et personnalisé à notre
+instance Jenkins.
+29
+
+
+===== PAGE 39 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.23 : Création du premier utilisateur administratif
+Après le démarrage de Jenkins, nous avons pu accéder au tableau de bord principal de Jenkins.
+Figure 2.24 : Interface Jenkins
+Ci-dessous les étapes d’intégration de GitLab avec Jenkins. Pour plus de détails, consultez
+l’Annexe :
+— Installation du plugin GitLab Integration.
+— Génération et transfert de la clé SSH.
+— Ajout de la clé SSH dans GitLab.
+30
+
+
+===== PAGE 40 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+• Création de Credential pour GitLab dans Jenkins
+Après avoir terminé l’installation des plugins et la configuration initiale, nous avons accédé
+au tableau de bord de Jenkins. Nous avons cliqué sur "Credentials" pour accéder à la gestion des
+identifiants, puis sélectionné "System" pour gérer les identifiants au niveau du système. Ensuite, nous
+avons ajouté un nouveau credential en cliquant sur "Add Credentials" et choisi le type d’identifiant
+"SSH Username with private key" pour répondre à notre besoin. Nous avons saisi les informations
+requises telles que "ID", " Description", " Username " et " Private Key " de Jenkins, puis nous
+avons cliqué sur "OK" pour créer le credential.
+Figure 2.25 : Création de Credential pour GitLab
+31
+
+
+===== PAGE 41 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Le credential a été créé.
+Figure 2.26 : GitLab Credential
+• Création d’un Nouveau Projet d’Intégration Continue
+La première étape pour démarrer un nouveau projet d’intégration continue est de créer un
+nouveau job. Pour ce faire, nous avons utilisé l’icône "create new jobs".
+Figure 2.27 : Création d’un nouveau projet d’intégration
+2.4.2
+Configuration du Webhook dans Gitlab
+• Accès aux Paramètres du Projet
+Nous nous connectons à notre instance GitLab et accédons au projet pour lequel nous souhaitons
+configurer le webhook. Nous cliquons sur « Settings » dans le menu latéral, puis nous sélectionnons
+« Webhooks ».
+32
+
+
+===== PAGE 42 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.28 : Paramètres du Gitlab
+• Accès aux Paramètres du Projet
+* URL du Webhook :
+Nous ajoutons un nouveau webhook en entrant l’URL de notre serveur Jenkins suivie du chemin pour
+les webhooks. Nous copions l’URL fournie dans le pipeline Jenkins : «http ://51.21.153.35 :8080/project/PFE_APP
+Figure 2.29 : URL du Webhook
+* Jeton Secret
+Pour sécuriser les requêtes, nous générons un jeton secret dans Jenkins. Nous accédons à la configuration
+du pipeline Jenkins, cliquons sur « Avancé » et générons un nouveau jeton secret que nous copions.
+Assurons-nous que ce jeton est le même dans la configuration de GitLab.
+33
+
+
+===== PAGE 43 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.30 : Token
+1. Déclencheurs Nous sélectionnons les événements qui déclencheront le webhook, comme « Push
+events ».
+Figure 2.31 : Push events
+2. Enregistrement Enfin, nous cliquons sur « Add webhook » pour enregistrer la configuration.
+Figure 2.32 : Ajout du Webhook
+2.4.3
+Configuration de Jenkins pour Recevoir le Webhook
+• Installation du Plugin Nous nous connectons à notre serveur Jenkins et vérifions que le
+plugin « Generic Webhook Trigger » est installé. Nous allons dans « Manage Jenkins » -> « Manage
+Plugins » ->« Available » pour installer le plugin si nécessaire.
+34
+
+
+===== PAGE 44 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.33 : Installation du plugin
+• Configuration du Job Jenkins
+- Déclencheurs de Build
+Nous accédons à la configuration du job Jenkins et cochons l’option « Build when a change
+is pushed to GitLab ». Nous collons l’URL du webhook copiée précédemment dans le champ
+« GitLab webhook URL ».
+Figure 2.34 : Ajout de l’option Build
+- Jeton Secret
+Nous générons un jeton secret dans Jenkins en accédant à la configuration du pipeline, en
+cliquant sur « Avancé », et en générant un nouveau jeton secret que nous copions.
+35
+
+
+===== PAGE 45 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.35 : Génerer Token
+2.4.4
+Configuration du serveur SonarQube
+• Accès à l’interface SonarQube
+Nous avons installé SonarQube sur le serveur (voir l’annexe pour les détails d’installation).
+Une fois l’installation terminée, nous avons accédé à l’interface web de SonarQube pour vérifier son
+bon fonctionnement. Nous avons confirmé que le service SonarQube était opérationnel en accédant
+à l’interface web.
+Figure 2.36 : Accès à l’interface SonarQube
+36
+
+
+===== PAGE 46 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+• Création du Projet dans SonarQube
+Nous avons accédé à l’interface web de SonarQube pour créer un nouveau projet. Pour ce
+faire, nous avons utilisé la clé de projet. Nous avons rempli les informations requises, telles que le
+nom et la description du projet. Nous avons configuré les paramètres d’analyse et de qualité du code
+dans l’interface.
+Figure 2.37 : Création du projet
+• Génération du Token d’Authentification
+Nous avons généré un token d’authentification dans l’interface de SonarQube pour permettre à
+Jenkins d’accéder à l’API de SonarQube. Nous avons nommé ce token ‘Sonar_token2‘ et avons copié
+la valeur ‘sqa_11315fe7477208821620e111592757ccea5840ec‘. Ce token a été utilisé pour authentifier
+les requêtes d’analyse de code depuis Jenkins.
+Figure 2.38 : Génération du Token
+• Configuration de Jenkins pour SonarQube
+Nous avons configuré Jenkins pour intégrer SonarQube dans notre pipeline de CI/CD. Nous avons
+d’abord installé les plugins nécessaires via l’interface de gestion des plugins de Jenkins. Nous avons
+installé le plugin SonarQube Scanner pour permettre l’exécution des analyses SonarQube, et nous
+37
+
+
+===== PAGE 47 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+avons également installé le SonarQube QualityGate Plugin pour surveiller les résultats des analyses
+par rapport aux règles de qualité définies dans SonarQube.
+Figure 2.39 : SonarQube plugins
+Nous avons ajouté le chemin vers le scanner SonarQube installé sur le serveur (localisé à
+‘/opt/sonar-scanner/bin/sonar-scanner‘) dans la configuration de Jenkins. Nous avons configuré les
+plugins SonarQube dans Jenkins et avons lié le scanner à notre serveur SonarQube en utilisant le
+token d’authentification précédemment généré.
+Figure 2.40 : Intégration de SonarQube avec Jenkins
+Nous avons mis à jour le Jenkinsfile pour inclure une étape d’analyse SonarQube, suivie d’une
+étape de vérification de la qualité. L’étape d’analyse utilise le scanner SonarQube pour analyser le
+code et envoyer les résultats au serveur SonarQube.
+stage(’SonarQube Analysis’) {
+steps {
+script {
+38
+
+
+===== PAGE 48 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+withSonarQubeEnv(’Sonar’) {
+sh ’/opt/sonar-scanner/bin/sonar-scanner \
+-Dsonar.projectKey=this.iheb_app-pfee_\
+3ea7be6a-bb5b-41ea-a28b-4909d44d9a8f’
+}
+}
+}
+}
+• Création du Fichier de Configuration ‘sonar-project.properties‘
+Nous avons créé le fichier sonar-project.properties dans le répertoire racine de notre dépôt de
+code source. Ce fichier a été configuré avec les paramètres nécessaires pour l’analyse SonarQube. Les
+principales configurations incluaient :
+— sonar.projectKey : la clé du projet SonarQube
+— sonar.projectName : le nom du projet
+— sonar.projectVersion : la version du projet
+— sonar.sources : les chemins vers les répertoires contenant le code source
+— sonar.host.url : l’URL du serveur SonarQube
+— sonar.login : le token d’authentification pour accéder à SonarQube
+Figure 2.41 : sonar-project.properties
+39
+
+
+===== PAGE 49 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+• Validation et Tests
+Nous avons vérifié que la configuration était correcte en lançant une analyse depuis Jenkins. Nous
+avons observé les résultats de l’analyse sur l’interface web de SonarQube pour nous assurer que les
+données étaient correctement envoyées et que les métriques de qualité du code étaient bien reportées.
+Figure 2.42 : Validation du code
+La figure ci-dessous illustre un exemple important de cette analyse.
+Figure 2.43 : Analyse du code de l’application avec SonarQube
+2.4.5
+Création du ECR
+on commence par créer l’ECR
+40
+
+
+===== PAGE 50 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Figure 2.44 : Création du Amazon ECR
+Après qu’on a créé le dépôt ECR, on a procédé à l’ajout des images Docker dashboard-pfe et
+backend-pfe. Chacune de ces images représente un composant essentiel de l’application : dashboard-pfe
+pour les fonctionnalités d’administration et de supervision, et backend-pfe pour la logique métier
+et la gestion des données. Le fait de stocker ces images dans Amazon ECR permet d’assurer leur
+centralisation, leur sécurité et leur accessibilité lors du déploiement futur sur Amazon EKS, tout en
+facilitant la gestion des versions et l’intégration dans la chaîne CI/CD.
+Figure 2.45 : Les images docker
+Après avoir créé le dépôt ECR, nous avons ajouté un credential ECR dans Jenkins afin de
+permettre l’authentification automatique entre Jenkins et le registre. Ce credential stocke les clés
+d’accès AWS de manière sécurisée et permet à Jenkins de pousser et récupérer les images Docker
+sans avoir à saisir les identifiants manuellement, ce qui facilite l’automatisation du pipeline CI/CD.
+Figure 2.46 : ECR credential
+41
+
+
+===== PAGE 51 =====
+
+Chapitre 2. Notions de bases sur le déploiement
+Conclusion
+En conclusion, ce chapitre a établi les fondements de notre projet en expliquant les concepts
+clés de DevOps et en détaillant les principaux outils employés. De plus, nous avons identifié le
+fournisseur AWS comme un élément central de notre démarche.
+42
+
+
+===== PAGE 52 =====
+
+Chapitre 3
+Dockerisation et déploiement de
+l’application sur le Cloud
+
+
+===== PAGE 53 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+Introduction
+Durant ce troisième chapitre notre attention est portée sur la dockerisation et le déploiement
+de l’application dans le Cloud. Nous allons installer Docker avec Ansible pour conteneuriser l’application
+et la déployer avec Kubernetes.
+3.1
+Processus du DevOps
+Cette section met en évidence les diverses étapes de la réalisation de ce chapitre, qui se
+focalise sur la dockerisation et le déploiement de l’application dans le Cloud.
+3.1.1
+Implémentation d’une chaîne CI/CD
+Nous avons choisi de mettre en place l’implémentation CI/CD. Pour atteindre l’objectif, nous
+avons décomposé la chaîne CI/CD en plusieurs étapes :
+1. Installation d’Ansible sur le serveur de déploiement.
+2. Installation de Docker à l’aide d’un playbook Ansible.
+3. Installation et configuration de Kubernetes.
+4. Installation et Configuration de Grafana et Prometheus pour superviser l’application.
+3.1.2
+Configuration d’Ansible
+Ansible est un outil d’automatisation informatique. Il peut configurer des systèmes, déployer
+des logiciels et orchestrer des tâches informatiques plus avancées telles que des déploiements continus
+ou des mises à jour progressives sans temps d’arrêt.
+Les objectifs d’Ansible sont avant tout la simplicité et la facilité d’utilisation maximale.
+Ansible n’utilise pas d’agents et son code est écrit en YAML sous la forme d’Ansible Playbooks, les
+configurations sont donc très faciles à comprendre et à déployer [7].
+L’image ci-dessous montre le fonctionnement d’Ansible.
+44
+
+
+===== PAGE 54 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+Figure 3.1 : Fonctionnement d’Ansible
+Voici les étapes d’installation et configuration d’Ansible, les détails sont inclus dans l’annexe.
+— Installation d’Ansible
+— Création d’un nouvel utilisateur coté serveur et client
+— Configuration d’ansible coté client
+— Transfert de la clé SSH coté serveur
+— Ajout de l’adresse IP du serveur cible au fichier hosts et test de la connexion avec les hôtes
+3.1.3
+Configuration de Docker
+• Création du Playbook Ansible pour l’Installation de Docker
+Ensuite, nous allons créer un playbook nommé « install-docker.yml » dans un répertoire nommé «
+playbooks ». Ce playbook contiendra toutes les tâches nécessaires pour installer Docker sur jenkins.
+Nous commençons par mettre à jour les paquets, puis nous installons Docker. Enfin, nous ajoutons
+un groupe Docker et nous assurons que le service Docker est activé et en cours d’exécution.
+---
+- name: Install Docker
+hosts: all
+become: yes
+tasks:
+- name: Update apt cache
+45
+
+
+===== PAGE 55 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+apt:
+update_cache: yes
+- name: Install required packages
+apt:
+name:
+- apt-transport-https
+- ca-certificates
+- curl
+- software-properties-common
+state: present
+- name: Add Docker’s official GPG key
+apt_key:
+url: https://download.docker.com/linux/ubuntu/gpg
+state: present
+- name: Set up the Docker repository
+apt_repository:
+repo: deb [arch=amd64]
+https://download.docker.com/linux/ubuntu
+{{ ansible_lsb.codename }} stable
+state: present
+- name: Install Docker CE
+apt:
+name: docker-ce
+state: latest
+- name: Start and enable Docker service
+service:
+46
+
+
+===== PAGE 56 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+name: docker
+state: started
+enabled: yes
+• Jenkinsfile
+Après la création du playbook sur le dépôt GitLab, le Jenkinsfile que nous avons créé
+commencera par définir les étapes du pipeline Jenkins. Nous débutons par la définition d’un pipeline
+Jenkins en utilisant la syntaxe Declarative Pipeline. Dans ce pipeline, nous spécifions l’agent sur
+lequel chaque étape sera exécutée, dans ce cas "any" pour indiquer que l’agent peut être n’importe
+quel nœud disponible. Ensuite, nous définissons les étapes du pipeline. La première étape est "Clone",
+où nous récupérons le code source depuis le dépôt GitLab. Pour cela, nous utilisons une étape
+"git" qui spécifie la branche à utiliser, les informations d’identification nécessaires (credentialsId),
+et l’URL du dépôt GitLab. Ensuite, nous avons une étape pour installer Docker, où nous utilisons
+Ansible pour exécuter le playbook "install-docker.yaml". Dans cette étape, nous spécifions également
+les informations d’identification nécessaires pour se connecter à Ansible (credentialsId), ainsi que
+d’autres paramètres tels que le chemin du playbook et l’emplacement temporaire du coffre-fort
+(vaultTmpPath).
+• Création et configuration d’un nouveau job
+Nous avons accédé à l’interface web de Jenkins pour créer un nouveau job. Pour cela, nous
+avons rendu sur le tableau de bord de Jenkins, puis nous avons cliqué sur "Nouveau Item". Une
+nouvelle page s’ouvre où nous avons saisi le nom du job et sélectionné le type de projet, qui sera un
+pipeline.
+47
+
+
+===== PAGE 57 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+Figure 3.2 : Création d’un nouveau job
+Ensuite, nous avons choisi l’option "Pipeline script from SCM" pour indiquer à Jenkins
+d’utiliser un script de pipeline à partir d’un gestionnaire de contrôle de version (SCM). Nous avons
+sélectionné ‘Git’ comme SCM, puis nous avons saisi l’URL du dépôt Git où se trouve notre playbook
+et nous avons sélectionné également les informations d’identification appropriées (Credentials) pour
+accéder au dépôt Git. Ces informations d’identification permettent à Jenkins d’authentifier et d’accéder
+au dépôt Git de manière sécurisée. Nous avons saisi la branche de notre dépôt Git. Cela permet à
+Jenkins de récupérer le code source à partir de cette branche spécifique pour exécuter le pipeline.
+Puis nous avons spécifié le chemin vers le Jenkinsfile dans le dépôt Git.
+48
+
+
+===== PAGE 58 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+Figure 3.3 : Pipeline script from SCM
+Après la saisir de toutes ces informations et l’enregistrement des paramètres du job, Jenkins
+est prêt à exécuter notre pipeline en utilisant le Jenkinsfile du dépôt Git. À ce stade, nous avons
+déclenché manuellement un build en cliquant sur "Lancer un build" pour exécuter les étapes définies
+dans le Jenkinsfile. Pour vérifier si Docker est installé et activé, nous avons accédé à la console de
+Jenkins et exécuté la commande suivante :
+49
+
+
+===== PAGE 59 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+$ sudo systemctl status docker
+Cette commande affiche le statut actuel du service Docker, indiquant s’il est installé et s’il est
+en cours d’exécution. Si Docker est installé et activé correctement, nous devrions voir un message
+indiquant que le service est actif et en cours d’exécution.
+Figure 3.4 : Service Docker
+3.1.4
+Déploiement de l’application avec Docker
+Nous avons décidé de déployer l’application avec Docker en suivant plusieurs étapes essentielles.
+D’abord en utilisant les Dockerfiles, puis en orchestrant le déploiement avec Docker-compose, et enfin
+en intégrant Docker Swarm avec Healthcheck.
+• Dockerfiles
+Nous avons utilisé l’image officielle de Node.js version 20.13.1 pour le Dockerfile du backend.
+Nous avons défini les variables d’environnement pour le mode production ainsi que pour les versions
+spécifiques de Node.js et npm. Nous avons mis à jour npm à la version spécifiée. Nous avons créé
+le répertoire de l’application et copié les fichiers package.json et package-lock.json pour installer les
+dépendances. Nous avons également installé nodemon globalement si nécessaire. Nous avons copié le
+reste des fichiers de l’application et exposé le port 3000. Finalement, nous avons utilisé la commande
+npm start pour démarrer l’application.
+# Dockerfile pour le backend
+FROM node:20
+50
+
+
+===== PAGE 60 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+# Création d’un répertoire pour l’application
+WORKDIR /usr/src/app
+# Copie des fichiers package.json et package-lock.json
+COPY backend/package*.json ./
+# Installation des dépendances
+RUN npm install --verbose
+# Copie du reste de l’application
+COPY backend/ .
+# Exposition du port utilisé par le backend
+EXPOSE 3000
+# Commande pour démarrer l’application
+CMD ["npm", "start"]
+Après nous avons utilisé l’image officielle de Node.js version 20.13.1 pour le Dockerfile du
+dashboard. Nous avons créé et défini le répertoire de travail. Nous avons copié les fichiers package.json
+et package-lock.json pour installer les dépendances avec l’option –production. Nous avons ensuite
+copié le reste des fichiers de l’application. Nous avons exposé le port 3001 pour l’application et utilisé
+la commande npm start pour la démarrer. Une étape de construction (npm run build) aurait pu être
+ajoutée si nécessaire.
+# Utiliser l’image Node.js officielle comme image de base
+FROM node:20.13.1
+# Créer et définir le répertoire de travail
+WORKDIR /usr/src/app
+# Copier le package.json et package-lock.json (si présent) pour installer les dépendances
+COPY dashboard/package*.json ./
+51
+
+
+===== PAGE 61 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+# Installer les dépendances
+RUN npm install --production
+# Copier le reste des fichiers de l’application
+COPY dashboard/ .
+# Construire l’application (si vous avez une étape de build)
+# RUN npm run build
+# Exposer le port sur lequel l’application s’exécute
+EXPOSE 3001
+# Démarrer l’application
+CMD ["npm", "start"]
+Les étapes de déploiement
+1. Cloner :
+Nous avons cloné le repository GitLab contenant le code source en utilisant les informations
+d’identification GitLab.
+git branch: ’main’,
+credentialsId: ’Gitalb’,
+url: ’git@gitlab.com:this.iheb/app-pfee.git’
+2. Vérifier les permissions Docker :
+Nous avons vérifié et modifié les permissions du socket Docker pour permettre à Jenkins de
+contrôler Docker.
+sudo chown root:docker /var/run/docker.sock
+52
+
+
+===== PAGE 62 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+sudo chmod 660 /var/run/docker.sock
+3. Nettoyer Docker :
+Nous avons nettoyé Docker en arrêtant et en supprimant tous les conteneurs et en supprimant
+toutes les images Docker existantes.
+docker stop $(docker ps -aq) || true
+docker rm $(docker ps -aq) || true
+docker rmi -f $(docker image ls -q) || true
+4. Construire les images Docker :
+Nous avons construit les images Docker pour les services backend et dashboard à partir des
+fichiers Dockerfile.
+docker build -t backend-pfe:latest .
+docker build -t dashboard-pfe:latest .
+docker build -t 146663730212.dkr.ecr.eu-north-1.amazonaws.com/pfe-ecr:backend-pfe \
+-f backend/dockerfile .
+docker build -t 146663730212.dkr.ecr.eu-north-1.amazonaws.com/pfe-ecr:dashboard-pfe \
+-f dashboard/dockerfile .
+5. Pousser les images Docker vers Docker Hub :
+Nous nous sommes connectés à Docker Hub, avons tagué les images Docker construites et les
+avons poussées vers notre dépôt Docker Hub.
+docker push 146663730212.dkr.ecr.eu-north-1.amazonaws.com/\
+pfe-ecr:backend-pfe
+docker push 146663730212.dkr.ecr.eu-north-1.amazonaws.com/\
+pfe-ecr:dashboard-pfe
+6. Déployer les conteneurs :
+Nous avons déployé les nouveaux conteneurs Docker pour les services backend, dashboard et
+MongoDB.
+53
+
+
+===== PAGE 63 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+docker run -d \
+--name backend \
+-p 3000:80 \
+--env PORT=80 \
+--env DATABASE="mongodb://admin:dwXJmJVrSvXpVUML@mongodb/
+mapApp?retryWrites=true&w=majority&appName=map-app
+&authSource=admin" \
+--link mongodb \
+backend-pfe:latest
+docker run -d \
+--name dashboard \
+-p 3001:80 \
+--env PORT=80 \
+--link backend \
+dashboard-pfe:latest
+docker run -d \
+--name mongodb \
+-p 4000:27017 \
+-e MONGO_INITDB_ROOT_USERNAME=admin \
+-e MONGO_INITDB_ROOT_PASSWORD=dwXJmJVrSvXpVUML \
+-v mongodb_data:/data/db \
+mongo:latest
+La figure ci-dessous illustre l’affichage d’une liste de toutes les images Docker avec la commande
+"docker images".
+Figure 3.5 : Liste des images Docker
+54
+
+
+===== PAGE 64 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+• Docker compose
+Nous avons utilisé un fichier docker-compose.yml pour définir et orchestrer les services nécessaires
+à notre application. Le fichier a été configuré comme suit :
+— Définition des Services : Nous avons décrit les services backend, dashboard et mongodb,
+chacun avec son propre Dockerfile. Nous avons spécifié les ports sur lesquels chaque service
+écoute.
+— Volume persistant : Un volume nommé mongodb_data est utilisé pour stocker de
+manière persistante les données de la base MongoDB.
+Voici le contenu du fichier docker-compose.yml :
+services:
+backend:
+build:
+context: ./backend
+ports:
+- "3000:80"
+depends_on:
+- mongodb
+55
+
+
+===== PAGE 65 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+environment:
+- PORT=80
+- DATABASE=mongodb://admin:dwXJmJVrSvXpVUML@mongodb/
+mapApp?retryWrites=true&w=majority&appName=map-app
+&authSource=admin
+dashboard:
+build:
+context: ./dashboard
+ports:
+- "3001:80"
+depends_on:
+- backend
+environment:
+- PORT=80
+mongodb:
+image: mongo:latest
+ports:
+- "4000:27017"
+environment:
+MONGO_INITDB_ROOT_USERNAME: admin
+MONGO_INITDB_ROOT_PASSWORD: dwXJmJVrSvXpVUML
+volumes:
+- mongodb_data:/data/db
+volumes:
+mongodb_data:
+56
+
+
+===== PAGE 66 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+Stage : Déploiement avec Docker Compose
+Nous avons créé ce stage pour gérer le déploiement des conteneurs Docker à l’aide de Docker
+Compose. Les actions suivantes ont été réalisées :
+— Changement de Répertoire : Nous nous sommes déplacés dans le répertoire contenant
+le fichier docker-compose.yml pour préparer l’exécution des commandes Docker Compose.
+— Arrêt des Conteneurs : Nous avons arrêté et supprimé les conteneurs existants en
+exécutant docker-compose down. Cette étape a permis de libérer les ports et les ressources
+en arrêtant les conteneurs en cours.
+— Déploiement des Conteneurs : Nous avons déployé les nouveaux conteneurs en exécutant
+docker-compose up –build -d. Cette commande a construit les images des services
+définis et les a démarrés en mode détaché, en arrière-plan, permettant à l’application
+de fonctionner avec les dernières modifications.
+stage(’Remove Docker Compose Containers’) {
+steps {
+sh ’docker-compose down’
+}
+}
+stage(’Deploy with Docker Compose’) {
+steps {
+script {
+sh ’docker-compose up --build -d’
+}
+}
+}
+7. Notification Slack :
+Nous avons envoyé une notification à Slack pour informer de l’état de la pipeline (réussie ou
+échouée) avec des détails sur le build.
+57
+
+
+===== PAGE 67 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+def buildStatus = currentBuild.currentResult
+def message = "Pipeline Status: ${buildStatus}\n" +
+"Job Name: ${env.JOB_NAME}\n" +
+"Build Number: ${env.BUILD_NUMBER}\n" +
+"Build URL: ${env.BUILD_URL}"
+if (buildStatus == ’SUCCESS’) {
+slackSend(channel: ’#devops’,
+message: "Pipeline Succeeded\n${message}")
+} else {
+slackSend(channel: ’#devops’,
+message: "Pipeline Failed\n${message}")
+}
+Cette configuration a assuré le déploiement correct des services tout en garantissant que les
+erreurs potentielles ne stoppent pas le pipeline.
+Figure 3.6 : Exécution du pipeline
+3.1.5
+Configuration de Kubernetes
+Avant de débuter l’installation, il est important de s’assurer que l’environnement répond aux
+exigences suivantes :
+• Un système Ubuntu 22.04
+• Un accès privilégié au système (utilisateur root ou sudo)
+• Au moins 2 Go de RAM
+• Au moins 2 cœurs de CPU
+• Un espace disque libre d’au moins 20 Go sur /var).
+Suite à notre décision d’installer Kubernetes dans une nouvelle instance, nous avons suivi les
+étapes décrites en détail dans l’annexe, comme illustré ci-dessous
+58
+
+
+===== PAGE 68 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+— Installation de Docker et ajout de l’utilisateur actuel au groupe Docker
+— Installation du moteur d’exécution Containerd
+— Téléchargement de la clé de signature publique pour les dépôts de paquets Kubernetes et Ajout
+du référentiel Apt pour Kubernetes
+— Installation de Kubectl, Kubeadm et Kubelet
+— Initialisation du cluster Kubernetes avec Kubeadm
+— Ajout des nœuds de travail au cluster
+— Installation du Plugin Réseau Kubernetes
+— Vérification du Cluster et Test
+— Déploiement d’une Application de Test sur le Cluster
+• Intégration de Kubernetes avec Jenkins
+Nous avons intégré Kubernetes avec Jenkins en suivant les étapes suivantes :
+1. Installation des Plugins Jenkins :
+• Kubernetes Plugin
+Nous avons installé ce plugin depuis l’interface de gestion des plugins Jenkins. Ce plugin
+nous a permis de connecter Jenkins à notre cluster Kubernetes et de déployer des builds
+directement dans notre environnement Kubernetes.
+Figure 3.7 : Installation des plugins
+2. Configuration des Credentials Kubernetes :
+59
+
+
+===== PAGE 69 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+• Secrets File
+Nous avons utilisé un fichier de configuration Kubernetes, généralement situé à $HOME/.kube/config.
+Ce fichier contient les informations d’authentification et de connexion nécessaires pour
+accéder à notre cluster Kubernetes. Nous avons configuré ces credentials dans Jenkins
+en créant un secret "Kubeconfig", ce qui a permis à Jenkins de communiquer avec le
+cluster Kubernetes pour déployer des applications.
+Figure 3.8 : k8s credential
+• Fichiers de Déploiement Kubernetes :
+— backend-deployment.yml Nous avons créé un Deployment pour le service backend,
+nommé « backend-deployment ». Ce déploiement est configuré pour exécuter une seule
+réplique de l’application backend. Le conteneur utilise l’image Docker stockée sur Amazon
+ECR : 146663730212.dkr.ecr.eu-north-1.amazonaws.com/pfe-ecr :backend-pfe et expose le
+port 80.
+Le conteneur est également configuré avec une variable d’environnement définissant la
+chaîne de connexion MongoDB, permettant au backend d’accéder à la base de données.
+Pour permettre l’accès externe au backend, nous avons mis en place un Service de type
+NodePort, nommé backend, qui expose le port 80 via le NodePort 30080. Cela rend le
+backend accessible depuis l’extérieur du cluster à travers l’adresse IP publique du nœud
+Kubernetes.
+# backend deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: backend-deployment
+labels:
+app: backend
+spec:
+replicas: 1
+selector:
+60
+
+
+===== PAGE 70 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+matchLabels:
+app: backend
+template:
+metadata:
+labels:
+app: backend
+spec:
+imagePullSecrets:
+- name: ecr-secret
+containers:
+- name: backend
+image: 146663730212.dkr.ecr.eu-north-1.amazonaws.com/pfe-ecr:backend-pfe
+ports:
+- containerPort: 80
+env:
+- name: DATABASE
+value: "mongodb://admin:dwXJmJVrSvXpVUML@mongodb/
+mapApp?retryWrites=true&w=majority
+&appName=map-app&authSource=admin"
+---
+# backend service
+apiVersion: v1
+kind: Service
+metadata:
+name: backend
+spec:
+selector:
+app: backend
+type: NodePort
+ports:
+- port: 80
+61
+
+
+===== PAGE 71 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+targetPort: 80
+nodePort: 30080
+— dashboard-deployment.yml
+Nous avons ensuite déployé le service dashboard en utilisant un fichier YAML comprenant
+un Deployment et un Service. Le Deployment, nommé «dashboard-deployment», est
+configuré pour exécuter une seule réplique du conteneur dashboard, en utilisant l’image
+Docker hébergée sur Amazon ECR : 146663730212.dkr.ecr.eu-north-1.amazonaws.com/pfe-ecr :dashboa
+Le conteneur expose le port 80, correspondant au port applicatif du dashboard.
+Pour rendre ce service accessible depuis l’extérieur du cluster, nous avons mis en place
+un Service de type NodePort, nommé dashboard, qui expose le port 80 sur le NodePort
+30081. Ce mécanisme permet d’accéder au dashboard via l’adresse IP publique du nœud,
+assurant ainsi accessibilité et disponibilité du service.
+# dashboard deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: dashboard-deployment
+labels:
+app: dashboard
+spec:
+replicas: 1
+selector:
+matchLabels:
+app: dashboard
+template:
+metadata:
+labels:
+app: dashboard
+spec:
+imagePullSecrets:
+- name: ecr-secret
+62
+
+
+===== PAGE 72 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+containers:
+- name: dashboard
+image: 146663730212.dkr.ecr.eu-north-1.amazonaws.com/pfe-ecr:dashboard-pfe
+ports:
+- containerPort: 80
+---
+# dashboard service
+apiVersion: v1
+kind: Service
+metadata:
+name: dashboard
+spec:
+selector:
+app: dashboard
+type: NodePort
+ports:
+- port: 80
+targetPort: 80
+nodePort: 30081
+— mongo-deployment.yml
+Enfin, nous avons déployé la base de données MongoDB en créant un Deployment et
+un Service associés. Le Deployment , nommé « mongo-deployment », est configuré
+pour exécuter une réplique du conteneur MongoDB à partir de l’image Docker officielle.
+Le conteneur expose le port 27017, qui correspond au port standard de MongoDB.
+Nous avons également mis en place un Service de type ClusterIP, nommé mongodb,
+permettant d’exposer le port 27017 à l’intérieur du cluster. Ce service assure la
+communication interne entre les applications et la base de données MongoDB.
+# mongo-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+63
+
+
+===== PAGE 73 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+name: mongo-deployment
+labels:
+name: mongo-deployment
+spec:
+replicas: 1
+selector:
+matchLabels:
+name: mongo-pod
+template:
+metadata:
+labels:
+name: mongo-pod
+spec:
+containers:
+- name: mongo
+image: mongo:latest
+ports:
+- containerPort: 27017
+env:
+- name: MONGO_INITDB_ROOT_USERNAME
+value: admin
+- name: MONGO_INITDB_ROOT_PASSWORD
+value: dwXJmJVrSvXpVUML
+---
+# mongo-service
+apiVersion: v1
+kind: Service
+metadata:
+name: mongodb
+spec:
+selector:
+64
+
+
+===== PAGE 74 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+name: mongo-pod
+type: ClusterIP
+ports:
+- port: 27017
+targetPort: 27017
+• Stage ’Deploy to Kubernetes’ dans le Jenkinsfile
+Nous avons intégré le stage "Deploy to Kubernetes" dans le Jenkinsfile pour gérer le
+déploiement des services sur Kubernetes.
+Nous avons utilisé ‘withKubeConfig‘ avec les informations d’identification Kubernetes
+pour appliquer les fichiers de déploiement :
+— Nous avons appliqué « backend-deployment.yml » pour déployer le service backend.
+— Nous avons appliqué « dashboard-deployment.yml » pour déployer le service
+dashboard.
+— Nous avons appliqué « mongo-deployment.yml » pour déployer le service base de
+donnes MongoDB.
+Ce stage a permis de déployer les services dans le cluster Kubernetes en utilisant les
+configurations définies dans les fichiers YAML.
+Les deux figures suivantes illustrent les listes des services et pods dans le cluster
+Kubernetes.
+Figure 3.9 : Liste des services
+Figure 3.10 : Liste des pods
+65
+
+
+===== PAGE 75 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+Et en fin , voila des images de l’application en production.
+66
+
+
+===== PAGE 76 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+3.2
+Monitoring de l’application
+Afin de garantir la disponibilité et la performance de notre application déployée
+sur Kubernetes, nous avons mis en place un **système de monitoring** complet. Le
+monitoring permet de suivre en temps réel l’état des différents services, la consommation
+des ressources et de détecter rapidement tout incident. Cette approche est essentielle
+pour maintenir une haute qualité de service et anticiper les problèmes avant qu’ils
+n’affectent les utilisateurs.
+— Prometheus :
+Pour la collecte des métriques, nous avons utilisé **Prometheus**, un outil
+open-source spécialisé dans le monitoring des applications et infrastructures.
+Prometheus interroge régulièrement les endpoints exposant des métriques et les
+stocke dans sa base de données temporelle. Il permet de mesurer l’utilisation
+CPU, la mémoire consommée, le nombre de requêtes, et d’autres indicateurs clés
+de performance pour chaque microservice de notre application.
+— Node Exporter et cAdvisor :
+Pour compléter Prometheus, nous avons déployé **Node Exporter** sur chaque
+nœud du cluster afin de collecter les métriques système de bas niveau, telles
+que la charge CPU, l’utilisation de la mémoire, l’espace disque et les statistiques
+réseau. En parallèle, **cAdvisor** est utilisé pour surveiller les conteneurs Docker
+et fournit des métriques détaillées sur l’utilisation des ressources par conteneur,
+notamment CPU, mémoire, stockage et réseau.
+67
+
+
+===== PAGE 77 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+68
+
+
+===== PAGE 78 =====
+
+Chapitre 3. Dockerisation et déploiement de l’application sur le Cloud
+— Grafana :
+Pour visualiser les données collectées, nous avons intégré **Grafana**, une plateforme
+de visualisation et de tableau de bord. Grafana se connecte à Prometheus et
+affiche les métriques sous forme de graphiques, de jauges et de tableaux de bord
+personnalisables, permettant de suivre en temps réel la santé des microservices
+et détecter rapidement les anomalies.
+— Illustration des métriques :
+Les images des tableaux de bord Grafana, montrant les métriques collectées par
+Prometheus, Node Exporter et cAdvisor, seront insérées ici pour illustrer les
+performances et l’état des microservices.
+Cette combinaison **Prometheus + Node Exporter + cAdvisor + Grafana**
+constitue une solution complète de monitoring. Elle permet de suivre les performances
+et la disponibilité à la fois au niveau des nœuds et des conteneurs, d’anticiper les
+problèmes et de prendre des décisions éclairées pour l’optimisation des ressources.
+Conclusion
+Tout au long de ce chapitre, nous avons détaillé les différentes étapes de la conteneurisation
+et du déploiement de l’application dans le cloud. Nous avons présenté les processus
+clés impliqués, mettant en lumière les aspects essentiels de chaque étape pour assurer
+une mise en œuvre efficace et optimisée.
+69
+
+
+===== PAGE 79 =====
+
+Conclusion Générale
+Ce projet s’inscrit dans une démarche visant à moderniser les processus de développement
+et d’exploitation en intégrant les principes du cloud computing et de DevOps. L’objectif
+principal était d’améliorer l’efficacité, la fiabilité et la sécurité de l’application en
+migrant vers une infrastructure cloud moderne et en mettant en place une chaîne
+CI/CD automatisée. Nous avons adopté une approche itérative en suivant la méthodologie
+en V tout au long du processus.
+Ce rapport détaille chaque étape du projet, depuis la planification jusqu’à la mise en
+œuvre. Nous avons commencé par une introduction générale qui présente le contexte
+et les objectifs du projet. Nous avons ensuite décrit la conception, la réalisation, ainsi
+que les scénarios de l’application. Les aspects cruciaux tels que l’initiation à DevOps,
+la mise en place de la chaîne CI/CD, ainsi que la dockerisation et le déploiement de
+l’application ont été abordés.
+Pour améliorer davantage le projet, nous prévoyons d’intégrer des technologies telles
+que Grafana pour la surveillance, Prometheus pour la collecte et l’analyse des métriques.
+Ces évolutions visent à renforcer la base solide du projet DevOps CI/CD.
+Nous envisageons également d’explorer de nouveaux services cloud afin d’optimiser
+nos processus et infrastructures, en alignant nos pratiques sur les normes les plus
+élevées du secteur.
+Cette expérience a été enrichissante, nous permettant de découvrir de nouveaux outils
+et de nous familiariser avec le monde professionnel. Nous avons approfondi notre
+compréhension des bonnes pratiques DevOps et acquis une expérience précieuse dans
+la mise en œuvre de projets complexes.
+70
+
+
+===== PAGE 80 =====
+
+Annexes
+Création de l’instance AWS EC2 de jenkins
+La création d’une nouvelle instance EC2 nécessite une connexion à notre Console
+de Gestion AWS, puis un accès au tableau de bord EC2. Nous avons appuyé sur le
+bouton "Lancer une Instance" comme l’indique la figure suivante.
+Figure A.1 : Lancement d’une instance
+Après l’ouverture de la fenêtre de lancement d’une instance, nous nous avons fourni
+le nom de notre instance EC2.
+71
+
+
+===== PAGE 81 =====
+
+Annexes
+Figure A.2 : Intituler l’instance
+L’AMI (Image de Machine Amazon) est un modèle virtuel préconfiguré pour exécuter
+un serveur sur Amazon EC2. Nous avons sélectionné l’AMI Ubuntu Server 22.04
+puisqu’il s’agit d’une version stable et largement utilisée du système d’exploitation
+Ubuntu, offrant une prise en charge à long terme (LTS) et une grande compatibilité
+avec de nombreuses applications et services.
+72
+
+
+===== PAGE 82 =====
+
+Annexes
+Figure A.3 : Choix AMI
+Nous avons décidé de choisir le type d’instance EC2 « t2.medium ». Cette option
+nous permet de choisir la taille de la machine virtuelle, le nombre de vCPU et la
+mémoire. L’instance t2.medium dispose de 2 vCPU et de 4 Go de mémoire.
+Figure A.4 : Choix du type d’instance EC2
+Ensuite, nous avons créé une paire de clés et la télécharge sur notre ordinateur. Lors
+73
+
+
+===== PAGE 83 =====
+
+Annexes
+du démarrage de l’instance, nous avons sélectionné cette paire de clés.
+Figure A.5 : Création de pair de clés
+Nous avons créé un nouveau groupe de sécurité, en le donnant un nom et autorisant
+le trafic SSH et le port TCP personnalisé par défaut de 8080 utilisé par Jenkins.
+Figure A.6 : Configuration des groupes de sécurité
+74
+
+
+===== PAGE 84 =====
+
+Annexes
+À l’étape "Configurer le stockage", l’instance a été automatiquement provisionnée
+d’un volume SSD à usage général de 8 Go. Nous avons choisi d’augmenter la capacité
+de stockage de 22 Go pour atteindre 30 Go afin de satisfaire nos besoins en termes
+de capacité de stockage.
+Un message de réussite est visible après la création de l’instance EC2.
+Figure A.7 : Création de l’instance EC2
+Installation de Jenkins
+• Téléchargement de la clé de Jenkins et ajout au trousseau GPG
+$ sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+• Ajout du référentiel Jenkins à la liste des sources apt
+$ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+https://pkg.jenkins.io/debian-stable binary/ | \
+sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+• Installation de Jenkins
+$ sudo apt-get install jenkins
+• Téléchargement de la clé PG de Jenkins et confiance
+75
+
+
+===== PAGE 85 =====
+
+Annexes
+$ curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key \
+| sudo tee /etc/apt/trusted.gpg.d/jenkins.io-2023.gpg
+Intégration de GitLab avec Jenkins
+Afin de mettre en place le plugin GitLab, nous avons ouvert le tableau de bord Jenkins
+et avons sélectionné la fonction "Gérer Jenkins". Par la suite, nous avons navigué vers
+la rubrique "Gestion des plugins". Nous avons choisi d’installer un nouveau plugin en
+sélectionnant "Plugins disponibles", puis nous avons recherché "GitLab Integration".
+Une fois que nous avons choisi le plugin, nous avons appuyé sur le bouton "Installer
+sans redémarrage".
+Figure A.8 : Le plugin GitLab
+Pour la génération et le transfert de la clé SSH, nous avons tout d’abord connecté au
+serveur et nous avons généré une paire de clé SSH avec la commande suivante :
+ssh-keygen -t rsa
+Figure A.9 : Clé SSH
+Puis, nous avons récupéré le contenu de la clé publique en utilisant la commande
+76
+
+
+===== PAGE 86 =====
+
+Annexes
+suivante :
+$ cat .ssh/id_rsa.pub
+Ensuite, nous avons connecté à notre compte GitLab via le navigateur Web et nous
+avons accédé aux paramètres de notre profile. Puis, dans le menu déroulant, nous
+avons séléctionné "Préférences".
+Figure A.10 : Paramètres GiLab
+Dans la page des préférences, nous avons cliqué sur "Keys SSH" pour accéder à la
+page des clés SSH et nous avons cliqué sur "Ajouter une nouvelle clé" pour commencer
+le processus d’ajout d’une nouvelle clé SSH à notre compte GitLab.
+Figure A.11 : Interface Clés SSH
+Une fois que nous avons cliqué sur "Ajouter une nouvelle clé", nous avons collé la
+clé publique que nous avons déjà copié depuis la console Jenkins. Automatiquement,
+77
+
+
+===== PAGE 87 =====
+
+Annexes
+tous les champs sont remplis : le titre de la clé et la date d’expiration qui est définie
+pour une année de travail avec cette clé.
+Figure A.12 : Ajout d’une clé SSH
+Cela permettra à Jenkins d’interagir avec GitLab via cette clé pour l’authentification
+SSH.
+Installation de SonarQube
+• Configuration des paramètres système
+$ sudo sysctl -w vm.max-map-count=262144
+$ sudo sysctl -w fs.file-max=65536
+$ ulimit -n 65536
+$ ulimit -u 4096
+-> Ajuste les paramètres du noyau et les limites d’utilisateur pour prendre en charge
+SonarQube.
+• Édition du fichier de configuration des limites
+78
+
+
+===== PAGE 88 =====
+
+Annexes
+$ sudo nano /etc/security/limits.conf
+• Installation de SonarQube
+$ cd /tmp
+$ sudo wget https ://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.2-.77730.z
+$ sudo unzip sonarqube-9.9.2.77730.zip -d /opt
+$ sudo mv /opt/sonarqube-9.9.2.77730/ /opt/sonarqube
+• Création d’un groupe et d’un utilisateur SonarQube
+$ sudo groupadd sonar
+$ cd /tmp/
+$ sudo useradd -c sonar -d /opt/sonarqube -g sonar sonar
+$ sudo chown sonar :sonar /opt/sonarqube -R
+• Édition du fichier de configuration SonarQube
+$ sudo nano /opt/sonarqube/conf/sonar.properties
+• Création du service systemd pour SonarQube
+$ cd /opt/
+$ sudo nano /etc/systemd/system/sonar.service
+-> Créer un service systemd pour gérer le démarrage, l’arrêt et la supervision de
+SonarQube
+• Actualisation du daemon systemd
+$ sudo systemctl daemon-reload
+• Démarrage et activation du service SonarQube
+79
+
+
+===== PAGE 89 =====
+
+Annexes
+$ sudo systemctl start sonar
+$ sudo systemctl enable sonar
+$ sudo systemctl status sonar
+Installation d’Ansible
+• Installation d’Ansible côté serveur
+$ sudo apt install ansible
+• Création d’un nouvel utilisateur coté serveur et client
+Une fois ansible est installé sur le serveur Jenkins, nous avons créé un nouvel utilisateur
+pour administrer ansible nommé "ansadmin" avec la commande suivante :
+$ sudo adduser ansadmin
+Ensuite, nous avons accordé à cet utilisateur des privilèges administratifs en éditant le
+fichier sudoers et en ajoutant la ligne ‘ansadmin ALL=(ALL) NOPASSWD :ALL‘
+$ sudo nano /etc/sudoers
+• Configuration d’ansible coté client
+Nous avons modifié la configuration SSH du client pour autoriser l’authentification
+par mot de passe en éditant le fichier « /etc/ssh/sshd-config » par l’ajout et le
+modifie de la ligne ‘PasswordAuthentication no‘ par ‘PasswordAuthentication yes‘
+avec la commande :
+$ sudo nano /etc/ssh/sshd-config
+Après, nous avons rechargé le service SSH pour appliquer les modifications avec la
+commande suivante :
+$ sudo systemctl reload sshd
+• Transfert de la clé SSH coté serveur
+80
+
+
+===== PAGE 90 =====
+
+Annexes
+Nous avons envoyé la clé publique générée vers le compte "ansadmin" sur le client
+pour permettre une authentification sans mot de passe lors de la connexion du serveur
+au client en utilisant la commande :
+$ ssh-copy-id ansadmin@172.152.30.25
+• Ajout de l’adresse IP du serveur cible au fichier hosts
+L’ajout de l’adresse IP du serveur cible "client" au fichier ‘/etc/ansible/hosts’, nous
+permet de spécifier les machines sur lesquelles Ansible doit agir, facilitant ainsi la
+gestion de nos déploiements et de nos configurations.
+$ sudo nano /etc/ansible/hosts
+• Test de la connexion avec les hôtes
+Pour tester la connexion, nous avons utilisé la commande ’ansible all -m ping’.
+Cette commande envoie un ping à tous les hôtes répertoriés dans notre fichier hosts
+Ansible pour vérifier la connectivité. Cela nous permet d’assurer que Ansible peut
+communiquer avec les hôtes cibles avant de procéder à des opérations de déploiement
+ou de configuration.
+Installation de Kubernetes
+Étape 1 : Installation de Docker et ajout de l’utilisateur actuel au groupe
+Docker
+Nous avons installé Docker, puis nous avons l’activé en tant que service système,
+assurant qu’il démarre automatiquement au démarrage du système. Nous avons ajouté
+l’utilisateur au groupe Docker, ce qui lui permet d’exécuter des commandes Docker
+sans avoir besoin de privilèges root à chaque fois.
+$ sudo apt-get install docker.io
+$ sudo systemctl enable docker
+$ sudo usermod -aG docker $USER
+Étape 2 : Désactivation de l’échange (tous les nœuds)
+Afin d’améliorer les performances de Kubernetes, nous avons désactivé l’échange
+81
+
+
+===== PAGE 91 =====
+
+Annexes
+et défini des paramètres de kernel essentiels. Nous avons exécuté les commandes
+suivantes sur tous les nœuds pour désactiver l’échange :
+$ sudo swapoff -a
+$ sudo sed -i ’/ swap / s/\^\(.*\)\$/#\1/g’ /etc/fstab
+Étape 3 : Ajout des paramètres de kernel (tous les nœuds)
+Nous avons chargé les modules de kernel requis sur tous les nœuds :
+$ sudo tee /etc/modules-load.d/containerd.conf «EOF
+Overlay
+br_netfilter
+EOF
+$ sudo modprobe overlay
+$ sudo modprobe br_netfilter
+Nous avons configuré ensuite les paramètres de kernel critiques pour Kubernetes en
+utilisant les commandes suivantes :
+$ sudo tee /etc/sysctl.d/kubernetes.conf «EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+EOF
+Nous avons rechargé ensuite les modifications :
+$ sudo sysctl –system
+Étape 4 : Installation du moteur d’exécution Containerd (tous les nœuds)
+Nous avons opté pour l’utilisation du moteur d’exécution Containerd. Nous avons
+installé containerd et ses dépendances avec les commandes suivantes :
+$ sudo apt install -y curl gnupg2 software-properties-common apt-transport-https
+ca-certificates
+Nous avons activé ensuite le référentiel Docker :
+82
+
+
+===== PAGE 92 =====
+
+Annexes
+$ sudo curl -fsSL https ://download.docker.com/linux/ubuntu/gpg | sudo gpg
+–dearmour -o /etc/apt/trusted.gpg.d/docker.gpg
+$ sudo add-apt-repository "deb [arch=amd64] https ://download.docker.com/linux
+/ubuntu $(lsb_release -cs) stable"
+Nous avons mis à jour la liste des paquets et nous avons installé containerd :
+$ sudo apt update
+$ sudo apt install -y containerd.io
+Nous avons configuré containerd pour démarrer en utilisant systemd comme cgroup :
+$ containerd config default | sudo tee /etc/containerd/config.toml >/dev/null
+2>&1
+$ sudo sed -i ’s/SystemdCgroup¯false/SystemdCgroup ¯true/g’ /etc/containerd/config.-toml
+Nous avons redémarré et activé le service containerd.
+$ sudo systemctl restart containerd
+$ sudo systemctl enable containerd
+Étape 5 : Mise à jour de l’index des paquets apt et installation des paquets
+nécessaires
+Nous avons mis à jour l’index des paquets apt et installé les paquets nécessaires pour
+utiliser le référentiel apt Kubernetes :
+$ sudo apt-get update
+$ sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+Étape 6 : Téléchargement de la clé de signature publique pour les dépôts
+de paquets Kubernetes et Ajout du référentiel Apt pour Kubernetes (tous
+les nœuds)
+Cette commande pour télécharger la clé de signature publique et la sauvegarder dans
+le répertoire approprié :
+83
+
+
+===== PAGE 93 =====
+
+Annexes
+$ curl -fsSL https ://pkgs.k8s.io/core :/stable :/v1.30/deb/Release.key | sudo
+gpg –dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+Nous avons ajouté le référentiel apt Kubernetes à la liste des sources de paquets de
+notre système.
+$ echo ’deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg]
+https ://pkgs.k8s.io/core :/stable :/v1.30/deb/ /’ | sudo tee /etc/apt/sources.list.d/-kubernetes.l
+Étape 7 : Installation de Kubectl, Kubeadm et Kubelet (tous les nœuds)
+Après avoir ajouté les référentiels, nous avons installé les composants Kubernetes
+essentiels, y compris kubectl, kubelet et kubeadm, sur tous les nœuds avec les commandes
+suivantes :
+$ sudo apt update
+$ sudo apt install -y kubelet kubeadm kubectl
+$ sudo apt-mark hold kubelet kubeadm kubectl
+Étape 8 : Initialisation du cluster Kubernetes avec Kubeadm (nœud maître)
+Nous avons passé en mode superutilisateur en utilisant la commande suivante :
+$ sudo su -
+Avec tous les prérequis en place, nous avons initialisé le cluster Kubernetes sur le
+nœud maître en utilisant la commande Kubeadm suivante :
+$ sudo kubeadm init
+Après l’initialisation, nous avons exécuté les commandes suivantes sur le nœud maître :
+$ mkdir -p $HOME/.kube
+$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+$ sudo chown $(id -u) :$(id -g) $HOME/.kube/config
+Enfin, nous avons utilisé la commande kubectl pour vérifier l’état du cluster et du
+nœud.
+84
+
+
+===== PAGE 94 =====
+
+Annexes
+$ kubectl get nodes
+Figure A.13 : Vérification d’état
+Étape 9 : Ajout des nœuds de travail au cluster (nœuds de travail)
+Sur chaque nœud de travail, nous avons utilisé la commande de rejoindre Kubeadm
+que nous avons noté précédemment.
+$ kubeadm join 146.190.135.86 :6443 –token f1h95l.u4nkex9cw8d0g63w –discovery-token-ca-cert-h
+sha256 :6d15f2a79bdb38d1666af50c85f060b9fadc73f13c932e0e2a9-eeef08f51f91a
+Étape 10 : Installation du Plugin Réseau Kubernetes (nœud maître)
+Afin de permettre la communication entre les pods dans le cluster, un plugin réseau
+est nécessaire. Nous avons Installé le plugin réseau Calico en utilisant la commande
+suivante à partir du nœud maître :
+$ kubectl apply -f https ://raw.githubusercontent.com/projectcalico/calico/v3.25.0-/manifests/c
+Étape 11 : Vérification du Cluster et Test (nœud maître)
+Enfin, nous avons voulu vérifier si notre cluster a été créé avec succès. Nous avons
+éxécuté les commandes suivantes pour vérifier l’état du cluster et des pods :
+$ kubectl get pods -n kube-system
+$ kubectl get nodes
+Etape 12 : Application d’une Tolérance à la Taint Non Tolérée sur les
+Nœuds
+Dans cette étape, nous avons résolu le problème de planification des pods en appliquant
+une tolérance à la taint non tolérée sur les nœuds.
+Cette commande éliminera la taint "node-role.kubernetes.io/control-plane" de tous
+les nœuds, permettant ainsi aux pods de planifier sur ces nœuds sans rencontrer de
+contraintes.
+85
+
+
+===== PAGE 95 =====
+
+Annexes
+$ kubectl taint nodes –all node-role.kubernetes.io/control-plane-
+Étape 13 : Déploiement d’une Application de Test sur le Cluster (nœud
+maître)
+Pour tester le bon fonctionnement du cluster, nous avons déployé une application de
+test. Nous avons exécuté la commande suivante pour déployer un conteneur Nginx
+sur le cluster :
+$ kubectl run nginx –image=nginx
+86
+
+
+===== PAGE 96 =====
+
+Bibliographie
+[1]
+K. Matthias et S. P. Kane, Docker : Up and Running, 2nd. O’Reilly Media,
+2018, isbn : 978-1492036736.
+[2]
+GitLab Inc., GitLab Documentation, Consultado en 2024, 2024. adresse :
+https://docs.gitlab.com/.
+[3]
+Jenkins Project, Jenkins Documentation, Consultado en 2024, 2024. adresse :
+https://www.jenkins.io/doc/.
+[4]
+Amazon Web Services, Amazon ECR Documentation, Consultado en 2024,
+2024. adresse : https://docs.aws.amazon.com/ecr/.
+[5]
+Prometheus Authors, Prometheus Documentation, Consultado en 2024,
+2024. adresse : https://prometheus.io/docs/.
+[6]
+Grafana Labs, Grafana Documentation, Consultado en 2024, 2024. adresse :
+https://grafana.com/docs/.
+[7]
+Red Hat, Ansible Documentation, Consultado en 2024, 2024. adresse : https:
+//docs.ansible.com/.
+[8]
+B. Burns, J. Beda et K. Hightower, Kubernetes : Up and Running, 2nd.
+O’Reilly Media, 2019, isbn : 978-1492046537.
+[9]
+T. Erl, R. Puttini et Z. Mahmood, « Cloud Computing : Concepts, Technology
+and Architecture, » Prentice Hall, 2013.
+[10]
+G. Kim, J. Humble, P. Debois et J. Willis, The DevOps Handbook : How to
+Create World-Class Agility, Reliability, and Security in Technology Organizations.
+IT Revolution, 2016, isbn : 978-1942788003.
+[11]
+J. Humble et D. Farley, Continuous Delivery : Reliable Software Releases
+through Build, Test, and Deployment Automation. Addison-Wesley Professional,
+2010, isbn : 978-0321601919.
+[12]
+K. Morris, Infrastructure as Code : Managing Servers in the Cloud, 1st.
+O’Reilly Media, 2016, isbn : 978-1491924358.
+87
+
+
+===== PAGE 97 =====
+
+Bibliographie
+[13]
+Amazon Web Services, Amazon Web Services Documentation, Consultado
+en 2024, 2024. adresse : https://docs.aws.amazon.com/.
+[14]
+SonarSource, SonarQube Documentation, Consultado en 2024, 2024. adresse :
+https://docs.sonarqube.org/.
+88

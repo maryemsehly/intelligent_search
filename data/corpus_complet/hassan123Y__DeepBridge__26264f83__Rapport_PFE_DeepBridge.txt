@@ -1,0 +1,1419 @@
+===== PAGE 1 =====
+
+UNIVERSITÉ CÔTE D’AZUR
+Master MIAGE - Parcours MBDS
+Rapport de Projet de Fin d’Année
+Conception et Développement de
+DeepBridge
+Système d’Aide à la Décision Médicale par IA pour
+l’Analyse de la Sténose Carotidienne
+Présenté par :
+Hassan Mechkour
+Hamza Raji
+Aya Messaoudi
+Ilyass Rabii
+Sous la direction de :
+M. Gregory Galli
+M. Michel Syska
+Professeurs encadrant
+Année Universitaire 2025 - 2026
+
+
+===== PAGE 2 =====
+
+Remerciements
+Nous tenons tout d’abord à remercier sincèrement nos professeurs encadrants, Mes-
+sieurs Gregory Galli et Michel Syska, pour leur disponibilité, leurs conseils avisés et leur
+suivi pédagogique tout au long de la réalisation de ce projet de fin d’année. Leurs orien-
+tations ont été déterminantes pour mener à bien le développement de l’application Deep-
+Bridge. Nous souhaitons également exprimer notre gratitude envers l’ensemble de l’équipe
+pédagogique du master MBDS de l’Université Côte d’Azur pour la qualité des enseigne-
+ments dispensés, qui nous ont fourni le bagage technique et méthodologique nécessaire à
+l’élaboration de ce système complexe. Enfin, nous remercions nos familles et nos proches
+pour leur soutien indéfectible et leurs encouragements constants au cours de cette année
+universitaire.
+1
+
+
+===== PAGE 3 =====
+
+Résumé
+Ce rapport présente le projet de fin d’année DeepBridge, un Système d’Aide à la Déci-
+sion Médicale (SADM) dédié à l’analyse de la sténose carotidienne. L’application intègre
+un pipeline d’intelligence artificielle complexe au sein d’une architecture logicielle moderne
+reposant sur .NET 8 et Angular 18. L’objectif principal de ce projet académique est de
+concevoir une interface fluide permettant la visualisation de modèles anatomiques 3D à
+partir de fichiers DICOM, l’évaluation du score NASCET, et la génération automatique
+de rapports cliniques justifiés.
+Mots-clés : Ingénierie Logicielle, Intelligence Artificielle, Angular, .NET, Imagerie
+Médicale, Score NASCET.
+2
+
+
+===== PAGE 4 =====
+
+Abstract
+This report presents the DeepBridge end-of-year project, a Clinical Decision Support
+System (CDSS) dedicated to the analysis of carotid stenosis. The application integrates
+a complex artificial intelligence pipeline within a modern software architecture based on
+.NET 8 and Angular 18. The main objective of this academic project is to design a seam-
+less interface allowing the visualization of 3D anatomical models from DICOM files, the
+evaluation of the NASCET score, and the automatic generation of justified clinical reports.
+Keywords : Software Engineering, Artificial Intelligence, Angular, .NET, Medical
+Imaging, NASCET Score.
+3
+
+
+===== PAGE 5 =====
+
+Table des matières
+Remerciements
+1
+Résumé
+2
+Abstract
+3
+1
+Introduction Générale et Contexte
+1
+1.1
+Contexte Médical : Comprendre la Sténose Carotidienne
+. . . . . . . . . .
+1
+1.2
+Problématique : Les Limites du Diagnostic Manuel
+. . . . . . . . . . . . .
+2
+1.3
+La Solution DeepBridge : Objectifs du Projet
+. . . . . . . . . . . . . . . .
+2
+2
+Architecture Globale et Choix Technologiques
+3
+2.1
+Le paradigme de l’architecture : L’analogie du restaurant . . . . . . . . . .
+3
+2.2
+Couche de Présentation : Angular 18 (Frontend) . . . . . . . . . . . . . . .
+4
+2.3
+Couche Métier et Orchestration : .NET 8 (Backend C#)
+. . . . . . . . . .
+4
+2.4
+Couche Scientifique et Intelligence Artificielle : Python
+. . . . . . . . . . .
+5
+2.5
+Communication Inter-Processus : Le Cycle de Vie d’une Analyse . . . . . .
+5
+3
+Implémentation et Résolution des Défis Techniques
+8
+3.1
+Optimisation de l’Expérience Utilisateur (UX) : Le "Smart Loader" . . . .
+8
+3.2
+Robustesse de l’Extraction de Données (Scripting Python) . . . . . . . . .
+9
+3.3
+Maîtrise du Cycle de Vie Angular : L’erreur d’Hydration (NG0951)
+. . . .
+10
+3.4
+Génération de Rapports Cliniques Dynamiques . . . . . . . . . . . . . . . .
+10
+4
+Modélisation Système et Conception des Interfaces
+11
+4.1
+Modélisation UML
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+4.1.1
+Diagramme des Cas d’Utilisation
+. . . . . . . . . . . . . . . . . . .
+11
+4.1.2
+Diagramme de Classes . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+4.1.3
+Diagrammes de Séquence : Les Scénarios Clés . . . . . . . . . . . .
+14
+4.2
+Anatomie du Code : Plongée au cœur de DeepBridge . . . . . . . . . . . .
+16
+4.2.1
+Couche de Présentation : Ingénierie et Architecture Frontend (An-
+gular 18) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+4
+
+
+===== PAGE 6 =====
+
+4.2.2
+Couche Métier et Orchestration : Ingénierie Backend (.NET 8 C#)
+17
+4.2.3
+Couche Scientifique et Intelligence Artificielle : Ingénierie du Pipe-
+line Python . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+4.3
+Présentation des Interfaces Utilisateur (UI) . . . . . . . . . . . . . . . . . .
+31
+4.3.1
+Authentification Sécurisée . . . . . . . . . . . . . . . . . . . . . . .
+31
+4.3.2
+Le Tableau de Bord (Dashboard) de Suivi
+. . . . . . . . . . . . . .
+31
+4.3.3
+Interface d’Analyse 3D et Aide à la Décision . . . . . . . . . . . . .
+31
+5
+Conclusion Générale et Perspectives
+33
+5.1
+Bilan du Projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+5.2
+Apports Personnels et Professionnels
+. . . . . . . . . . . . . . . . . . . . .
+33
+5.3
+Perspectives d’Évolution . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+Bibliographie et Webographie
+35
+5
+
+
+===== PAGE 7 =====
+
+Liste des figures
+2.1
+Diagramme de séquence illustrant le flux de données asynchrone entre An-
+gular, .NET et Python . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+4.1
+Diagramme des cas d’utilisation de DeepBridge
+. . . . . . . . . . . . . . .
+12
+4.2
+Diagramme de classes des entités médicales et utilisateurs . . . . . . . . . .
+13
+4.3
+Diagramme de séquence du processus de connexion
+. . . . . . . . . . . . .
+14
+4.4
+Diagramme de séquence du chargement du Dashboard . . . . . . . . . . . .
+15
+4.5
+Diagramme de séquence d’une analyse d’imagerie médicale IA
+. . . . . . .
+15
+4.6
+Diagramme de séquence de la génération autonome du rapport PDF . . . .
+16
+4.7
+Temps d’exécution du pipeline IA selon la mémoire VRAM et la profondeur
+scanographique. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+4.8
+Le tableau de bord global de suivi NASCET . . . . . . . . . . . . . . . . .
+31
+4.9
+Interface de visualisation 3D et d’évaluation clinique NASCET . . . . . . .
+32
+6
+
+
+===== PAGE 8 =====
+
+Liste des tableaux
+4.1
+Matrice des bibliothèques scientifiques et composants du moteur Python. .
+20
+4.2
+Matrice des packages NuGet du backend .NET 8.
+. . . . . . . . . . . . . .
+26
+4.3
+Matrice des dépendances et bibliothèques logicielles du frontend Angular. .
+28
+7
+
+
+===== PAGE 9 =====
+
+Chapitre 1
+Introduction Générale et Contexte
+L’intégration de l’Intelligence Artificielle (IA) dans le domaine de la santé représente
+aujourd’hui l’un des défis les plus stimulants de l’ingénierie logicielle. Ce projet de fin
+d’année s’inscrit au cœur de cette transition numérique, en proposant une solution tech-
+nologique à un problème médical critique : l’évaluation de la sténose carotidienne.
+1.1
+Contexte Médical : Comprendre la Sténose Caroti-
+dienne
+Pour concevoir un outil informatique efficace, il est indispensable de comprendre la
+réalité biologique qu’il modélise.
+Imaginons le cerveau humain comme un moteur extrêmement puissant qui nécessite
+un apport constant en carburant (l’oxygène et les nutriments). Cet apport est assuré par
+deux grands "tuyaux" principaux situés de chaque côté du cou : les artères carotides.
+Avec l’âge, l’hypertension ou d’autres facteurs cliniques, du "calcaire" (appelé plaque
+d’athérome) commence à s’accumuler à l’intérieur de ces tuyaux. Ce phénomène de ré-
+trécissement est appelé la sténose. Le danger principal n’est pas seulement que le tuyau
+se bouche complètement, mais qu’un petit morceau de ce "calcaire" se détache, voyage
+jusqu’au cerveau, et bloque une artère plus petite. C’est ce qui provoque un Accident
+Ischémique Transitoire (AIT) ou un Accident Vasculaire Cérébral (AVC).
+Pour savoir si un patient risque de faire un AVC et s’il faut l’opérer (nettoyer le tuyau),
+les médecins du monde entier utilisent un calcul standardisé appelé le Score NASCET.
+Le principe est mathématiquement simple : on compare le diamètre de la partie la plus
+rétrécie de l’artère avec le diamètre d’une partie saine située juste au-dessus. Cela donne
+un pourcentage de gravité (de 0% à 100%).
+1
+
+
+===== PAGE 10 =====
+
+1.2
+Problématique : Les Limites du Diagnostic Manuel
+Bien que le calcul du score NASCET soit simple sur le papier, son application dans la
+réalité clinique est un véritable défi.
+Aujourd’hui, pour observer ces artères, le patient passe un scanner. La machine génère
+des centaines d’images en coupes (les fichiers DICOM). Le médecin doit :
+1. Parcourir manuellement ces centaines d’images en noir et blanc.
+2. Reconstruire mentalement l’artère en trois dimensions.
+3. Trouver manuellement l’endroit précis où le rétrécissement est le plus fort.
+4. Mesurer les pixels à la main pour faire son calcul.
+Ce processus est long (plusieurs dizaines de minutes), chronophage, et soumis à une
+marge d’erreur humaine (fatigue, subjectivité visuelle). De plus, extraire ces données
+brutes et rédiger un compte-rendu textuel alourdit considérablement la charge adminis-
+trative du personnel soignant.
+1.3
+La Solution DeepBridge : Objectifs du Projet
+Face à ces limites, l’objectif de ce projet de fin d’année est de concevoir DeepBridge,
+un Système d’Aide à la Décision Médicale (SADM) complet, intelligent et ergonomique.
+L’ambition n’est pas de remplacer le médecin, mais de lui fournir un "assistant virtuel"
+ultra-puissant capable de :
+— Automatiser la détection : Utiliser des modèles d’intelligence artificielle avan-
+cés pour lire les fichiers DICOM et segmenter (isoler) automatiquement le réseau
+vasculaire.
+— Calculer avec précision : Déterminer le score NASCET de manière algorith-
+mique et mathématique, éliminant ainsi l’imprécision humaine.
+— Visualiser en 3D : Offrir au médecin une interface web interactive permettant
+de manipuler le modèle 3D généré directement dans son navigateur.
+— Centraliser la décision : Proposer un tableau de bord global croisant les données
+cliniques du patient (âge, sexe, historique d’artérite) pour générer automatique-
+ment un rapport médical d’aide à la décision au format PDF.
+Pour relever ce défi, ce projet s’appuie sur une architecture logicielle moderne, combi-
+nant la robustesse d’une API en .NET 8 (C#), la réactivité d’une interface frontend en
+Angular 18, et la puissance de calcul scientifique de scripts Python.
+Les chapitres suivants détailleront l’architecture technique choisie, la conception de
+l’expérience utilisateur, ainsi que les défis d’ingénierie rencontrés lors de l’implémentation
+de cette solution.
+2
+
+
+===== PAGE 11 =====
+
+Chapitre 2
+Architecture Globale et Choix Techno-
+logiques
+La réalisation d’un Système d’Aide à la Décision Médicale (SADM) tel que DeepBridge
+impose des contraintes techniques majeures : la manipulation de fichiers médicaux lourds,
+l’exécution d’algorithmes d’Intelligence Artificielle complexes, et le besoin d’une interface
+utilisateur parfaitement fluide et sans blocage.
+Pour répondre à ces exigences, il est impensable de regrouper toutes les responsabi-
+lités au sein d’une seule et même technologie. C’est pourquoi nous avons opté pour une
+architecture distribuée et modulaire.
+2.1
+Le paradigme de l’architecture : L’analogie du res-
+taurant
+Pour comprendre l’architecture de DeepBridge, on peut la comparer au fonctionnement
+d’un restaurant gastronomique. Pour qu’un client (le médecin) reçoive son plat (le résultat
+de l’analyse) de manière optimale, trois acteurs distincts doivent collaborer sans se gêner :
+— La salle de réception (Le Frontend) : C’est l’espace où le client interagit.
+Le serveur prend la commande et apporte les plats. Il doit être rapide, élégant et
+réactif. Dans notre projet, ce rôle est tenu par Angular 18.
+— Le Maître d’Hôtel (Le Backend) : Il réceptionne la commande du serveur,
+vérifie sa validité, l’envoie à la bonne cuisine, et s’assure que le plat revienne cor-
+rectement formaté. C’est le chef d’orchestre, robuste et multitâche. Ce rôle est
+assuré par l’API .NET 8 (C#).
+— Le Chef Spécialisé (Le Moteur IA) : Isolé dans sa cuisine, il reçoit les in-
+grédients bruts (les fichiers DICOM), exécute une recette extrêmement complexe
+(TotalSegmentator, calculs NASCET) et rend un résultat brut au Maître d’Hôtel.
+Il est lent mais surpuissant. Ce rôle est incarné par Python.
+3
+
+
+===== PAGE 12 =====
+
+Cette séparation des préoccupations (Separation of Concerns) permet à chaque tech-
+nologie de faire exactement ce pour quoi elle a été conçue, garantissant ainsi la stabilité
+et l’évolutivité de l’application.
+2.2
+Couche de Présentation : Angular 18 (Frontend)
+L’interface utilisateur a été développée avec le framework Angular 18. Ce choix s’est
+imposé pour plusieurs raisons stratégiques :
+— L’expérience utilisateur (UX) médicale : Le médecin doit pouvoir consulter
+un tableau de bord (Dashboard) en mode sombre, réduisant la fatigue visuelle.
+Angular permet de créer des composants réutilisables (composants de diagnostic,
+listes de patients) avec une cohérence visuelle parfaite.
+— La réactivité avec les Signals : L’une des nouveautés d’Angular 18 est l’utilisa-
+tion des "Signals" pour la détection de changements. Cela permet à l’interface de
+se mettre à jour instantanément lorsque l’analyse IA, qui peut durer une dizaine
+de minutes, est enfin terminée, tout en animant intelligemment l’attente (Smart
+Loader).
+— L’intégration 3D : Le composant d’analyse intègre des bibliothèques spécialisées
+(comme Niivue) permettant un rendu volumique dans le navigateur Web sans
+nécessiter de rafraîchissement de la page.
+2.3
+Couche Métier et Orchestration : .NET 8 (Backend
+C#)
+Le backend joue le rôle d’API RESTful. Développé en C# avec le framework .NET 8,
+il est la clé de voûte de l’application DeepBridge.
+— Hautes performances et multithreading : .NET 8 est reconnu pour son opti-
+misation de la mémoire. Il est capable de recevoir une requête HTTP du frontend,
+de déclencher un processus lourd en arrière-plan (l’IA), et de continuer à répondre
+à d’autres utilisateurs sans bloquer le serveur web principal.
+— Sécurité et intégrité (DTO) : Le backend s’assure que les données transitant
+entre le script Python et le navigateur sont strictement typées grâce aux Data
+Transfer Objects (DTO). Cela évite les erreurs d’affichage si une donnée clinique
+(comme le statut de l’artérite ou l’âge) est mal formatée.
+4
+
+
+===== PAGE 13 =====
+
+2.4
+Couche Scientifique et Intelligence Artificielle : Py-
+thon
+Python est aujourd’hui le langage standard et incontesté dans le domaine de la data
+science et de l’imagerie médicale. Il intervient comme un processus externe appelé par le
+backend.
+Ses responsabilités au sein de DeepBridge sont critiques :
+1. Lecture et Normalisation : Extraction des données cliniques depuis des fichiers
+tabulaires (Excel/Pandas) et lecture des formats d’imagerie médicale (NIfTI).
+2. Segmentation Anatomique : Utilisation de l’outil TotalSegmentator pour isoler
+informatiquement le réseau vasculaire carotidien du reste des tissus du patient.
+3. Évaluation Algorithmique : Calcul du volume, du diamètre sain, du diamètre
+de la sténose, et application de la formule NASCET pour renvoyer un pourcentage
+de gravité précis.
+2.5
+Communication Inter-Processus : Le Cycle de Vie
+d’une Analyse
+Pour que ces trois mondes communiquent, nous avons mis en place un flux de données
+(pipeline) rigoureux :
+5
+
+
+===== PAGE 14 =====
+
+Figure 2.1 – Diagramme de séquence illustrant le flux de données asynchrone entre
+Angular, .NET et Python
+6
+
+
+===== PAGE 15 =====
+
+Le cycle de vie complet se déroule de la manière suivante :
+1. L’utilisateur initie une demande d’analyse depuis l’interface Angular (requête
+HTTP POST).
+2. L’API .NET réceptionne la requête, prépare un répertoire temporaire et lance un
+sous-processus système (ProcessStartInfo) appelant l’interpréteur Python.
+3. Le script Python s’exécute, traite l’imagerie et affiche ses résultats sous forme de
+chaîne de caractères JSON dans sa sortie standard (stdout).
+4. L’API .NET écoute cette sortie standard, capture le JSON, le désérialise, et le
+convertit en un objet C# fortement typé (DashboardPatientDto).
+5. .NET renvoie cet objet propre et validé au frontend via une réponse HTTP 200
+(OK).
+6. Angular met fin à son animation de chargement, affiche les statistiques dans le
+tableau de bord et génère le rapport médical PDF.
+Cette conception garantit que le code d’interface ne touche jamais directement aux
+algorithmes médicaux, assurant ainsi la robustesse et la maintenabilité du système Deep-
+Bridge.
+7
+
+
+===== PAGE 16 =====
+
+Chapitre 3
+Implémentation et Résolution des Défis
+Techniques
+La théorie architecturale détaillée dans le chapitre précédent pose des bases solides,
+mais la réalité du développement d’un système asynchrone complexe confronte l’ingénieur
+à des défis inattendus. Ce chapitre détaille les principaux obstacles techniques rencontrés
+lors du développement de DeepBridge et les solutions algorithmiques et ergonomiques
+apportées pour les surmonter.
+3.1
+Optimisation de l’Expérience Utilisateur (UX) : Le
+"Smart Loader"
+Le problème : L’angoisse de l’écran figé.
+L’analyse de la sténose carotidienne par le moteur IA (TotalSegmentator) est un processus
+extrêmement lourd en calculs. En moyenne, le traitement d’un patient dure près de dix
+minutes. D’un point de vue purement technique, le frontend Angular initie une requête
+HTTP et "attend" la réponse. Cependant, d’un point de vue humain, laisser un utilisateur
+face à un écran de chargement bloqué à 0% pendant dix minutes crée un sentiment de
+panne logicielle.
+La solution : L’illusion intelligente.
+Pour pallier ce problème sans surcharger le backend avec des requêtes de progression
+(polling), nous avons implémenté un "Smart Fake Loader" (Chargeur Simulé Intelligent)
+dans le composant d’analyse.
+Le concept repose sur la psychologie de l’attente :
+— Dès le clic du médecin, une barre de progression s’anime de manière autonome,
+gérée par RxJS et des intervalles temporels natifs.
+— La progression est rapide au début (donnant l’impression d’une prise en charge im-
+médiate), ralentit vers 70%, puis stagne asymptotiquement à 95%. Elle ne dépasse
+8
+
+
+===== PAGE 17 =====
+
+jamais ce seuil critique tant que la réponse du backend n’est pas reçue.
+— En parallèle, un carrousel de textes informatifs (ex : "Segmentation 3D du réseau
+vasculaire...", "Évaluation du score NASCET...") défile pour justifier le temps de
+calcul.
+— Dès la réception du code HTTP 200 (OK) en provenance du C#, la barre bondit
+à 100% et dévoile l’interface de résultats.
+Cette approche purement "Frontend" transforme une attente anxiogène en une expé-
+rience utilisateur fluide et rassurante.
+3.2
+Robustesse de l’Extraction de Données (Scripting
+Python)
+Le problème : La fragilité des fichiers tabulaires (Pandas).
+L’une des étapes du pipeline Python consiste à extraire les données cliniques du patient
+(Âge, Sexe, historique d’artérite) depuis un fichier Excel. Initialement, le script ciblait des
+noms de colonnes stricts (par exemple ’femme/homme’). Or, l’analyse des logs d’erreur
+a révélé des crashs systèmes causés par des erreurs humaines de saisie dans le fichier
+source (espaces invisibles à la fin d’un nom de colonne, ou abréviations inattendues comme
+’femme/hom’). Une seule cellule mal formatée provoquait l’échec de l’ensemble du pipeline
+IA.
+La solution : L’approche "Anti-Crash" et tolérante aux pannes.
+Pour garantir la résilience du système, le script Python a été réécrit pour adopter une
+approche défensive :
+1. Nettoyage proactif : Utilisation de la fonction str.strip() sur l’ensemble des
+en-têtes de colonnes pour éliminer les espaces invisibles parasites.
+2. Extraction sécurisée : Remplacement des appels stricts (qui génèrent une excep-
+tion KeyError en cas d’absence) par la méthode .get(’NomDeColonne’, ’Valeur
+par défaut’).
+3. Sanitisation : Validation et filtrage des valeurs non numériques ou des formules
+Excel brisées (#VALUE!, NaN), remplacées par des libellés sécurisés tels que "Non
+renseigné".
+Grâce à cette surcouche de sécurité, le moteur IA est devenu tolérant aux anomalies de
+saisie, garantissant que le C# reçoive toujours un objet JSON intègre.
+9
+
+
+===== PAGE 18 =====
+
+3.3
+Maîtrise du Cycle de Vie Angular : L’erreur d’Hy-
+dration (NG0951)
+Le problème : L’impatience du DOM.
+Avec l’adoption d’Angular 18 et de son nouveau modèle réactif basé sur les Signals, le
+typage et le cycle de vie des composants sont devenus beaucoup plus stricts. Lors du
+développement du Tableau de Bord (Dashboard) affichant l’historique des patients, une
+erreur fatale NG0951 s’est déclenchée : "Child query result is required but no value is
+available".
+Pour faire simple : le code TypeScript cherchait à attacher un module de tri (MatSort)
+à un tableau HTML au moment exact où la page s’ouvrait (lors de l’événement ngAfterViewInit).
+Cependant, ce tableau HTML était conditionné par l’arrivée asynchrone des données (@if
+(patients().length > 0)). L’outil de tri cherchait donc à se greffer sur un élément qui
+n’existait pas encore visuellement, provoquant l’effondrement de la vue.
+La solution : La flexibilité réactive.
+Plutôt que de forcer l’existence du composant avec le mot-clé .required, nous avons
+assoupli la déclaration du viewChild pour le rendre optionnel. Ensuite, l’attachement
+du tri et de la pagination a été déplacé après la résolution de l’appel API asynchrone,
+au sein d’un setTimeout(). Cette astuce microscopique permet de placer l’instruction
+d’attachement à la toute fin de la file d’attente de la boucle d’événements (Event Loop)
+du navigateur, garantissant que le DOM a eu le temps matériel de dessiner le tableau
+avant qu’on lui applique ses filtres.
+3.4
+Génération de Rapports Cliniques Dynamiques
+Le dernier défi technique a été l’exportation des résultats. Un système d’aide à la
+décision médicale n’a de valeur que s’il peut produire un document légal et archivage (le
+rapport clinique PDF).
+Au lieu de générer ce PDF lourdement côté serveur (ce qui consommerait des ressources
+CPU inutiles sur le backend .NET), nous avons déporté cette charge côté client (Fron-
+tend). Lorsqu’un médecin clique sur "Télécharger PDF", Angular injecte instantanément
+les données du patient (Score NASCET, recommandations, âge) dans un gabarit HTML
+caché en arrière-plan (off-screen). Les librairies html2canvas et jsPDF photographient
+ce rendu vectoriel et le convertissent en un document PDF professionnel téléchargeable
+instantanément, offrant ainsi une ergonomie parfaite sans aucun appel réseau supplémen-
+taire.
+10
+
+
+===== PAGE 19 =====
+
+Chapitre 4
+Modélisation Système et Conception des
+Interfaces
+Afin de garantir la maintenabilité, l’évolutivité et la clarté du code de DeepBridge,
+une phase de modélisation rigoureuse a précédé le développement. Ce chapitre détaille
+l’architecture logicielle via les diagrammes UML complets, dissèque la mécanique interne
+de notre architecture Front/Back, et dévoile les interfaces utilisateur finales.
+4.1
+Modélisation UML
+Le langage UML (Unified Modeling Language) nous a permis de cartographier les in-
+teractions, la chronologie des processus et la structure des données avant l’implémentation
+technique.
+4.1.1
+Diagramme des Cas d’Utilisation
+Le diagramme des cas d’utilisation définit le périmètre fonctionnel de l’application du
+point de vue de l’acteur principal : le médecin (ou spécialiste vasculaire).
+11
+
+
+===== PAGE 20 =====
+
+Figure 4.1 – Diagramme des cas d’utilisation de DeepBridge
+Le praticien peut s’authentifier de manière sécurisée, consulter l’historique de ses pa-
+tients via un tableau de bord, lancer une nouvelle analyse IA sur un dossier DICOM,
+visualiser le rendu 3D des artères segmentées, et générer un rapport clinique PDF.
+4.1.2
+Diagramme de Classes
+Le diagramme de classes illustre la structure interne de la base de données et les objets
+métiers manipulés par le backend C# (modélisés sous forme de Data Transfer Objects ou
+DTO).
+12
+
+
+===== PAGE 21 =====
+
+Figure 4.2 – Diagramme de classes des entités médicales et utilisateurs
+13
+
+
+===== PAGE 22 =====
+
+L’entité Utilisateur (gérant l’authentification) est dérivée en Medecin. Chaque mé-
+decin est lié à de multiples instances d’AnalyseNascet, elles-mêmes rattachées à un
+Patient unique. Les méthodes définissent les responsabilités de chaque classe, comme le
+lancement du script Python par l’entité d’analyse ou l’export PDF par l’entité RapportMedical.
+4.1.3
+Diagrammes de Séquence : Les Scénarios Clés
+Pour illustrer la dynamique du système, nous avons modélisé les scénarios critiques en
+diagrammes de séquence. Ces diagrammes mettent en évidence la nature asynchrone des
+échanges entre le client (Angular), le serveur (.NET) et la base de données.
+Scénario 1 : Authentification de l’utilisateur
+La sécurité est assurée par l’échange d’un token JWT (JSON Web Token). Le mot de
+passe saisi n’est jamais stocké en clair ; le backend utilise l’algorithme de hachage BCrypt
+pour vérifier l’empreinte cryptographique.
+Figure 4.3 – Diagramme de séquence du processus de connexion
+Scénario 2 : Consultation du Tableau de Bord (Dashboard)
+L’affichage de l’historique requiert une agrégation de données. La requête HTTP GET
+inclut le Token JWT en en-tête (Bearer). Le backend extrait les données, les mappe dans
+un DTO sécurisé (DashboardPatientDto), et les renvoie au frontend qui met à jour ses
+Signals pour rafraîchir l’interface (KPIs et graphiques) instantanément.
+14
+
+
+===== PAGE 23 =====
+
+Figure 4.4 – Diagramme de séquence du chargement du Dashboard
+Scénario 3 : Lancement d’une Analyse NASCET (Le cœur du SADM)
+Ce scénario est le plus critique de l’application. Il illustre la synergie entre les trois
+couches de notre architecture et la gestion de l’asynchronisme. Face au temps d’exécu-
+tion élevé du moteur IA (7 à 10 minutes), l’interface client (Angular) déploie un "Smart
+Loader" pour rassurer l’utilisateur pendant que le backend (.NET) orchestre de manière
+non-bloquante l’exécution du script Python.
+Figure 4.5 – Diagramme de séquence d’une analyse d’imagerie médicale IA
+15
+
+
+===== PAGE 24 =====
+
+Scénario 4 : Génération et Téléchargement du Rapport PDF
+Dans une logique d’optimisation des ressources serveur (Green IT et économie de cal-
+culs), la génération du rapport clinique a été entièrement déportée côté client (Frontend).
+L’action utilisateur déclenche le remplissage d’un gabarit HTML invisible, qui est ensuite
+transformé en image par html2canvas, puis encapsulé dans un document PDF interactif
+via jsPDF.
+Figure 4.6 – Diagramme de séquence de la génération autonome du rapport PDF
+4.2
+Anatomie du Code : Plongée au cœur de Deep-
+Bridge
+4.2.1
+Couche de Présentation : Ingénierie et Architecture Fron-
+tend (Angular 18)
+L’interface utilisateur de DeepBridge constitue le point d’interaction direct entre
+le praticien et le système d’aide à la décision. Loin de se limiter à un rôle passif d’af-
+fichage, elle assume des responsabilités critiques : l’exécution d’un moteur de rendu 3D
+volumique matériel (WebGL), l’orchestration réactive des temps d’attente asynchrones,
+et la génération autonome de documents médico-légaux.
+Pour satisfaire ces exigences de performance, le frontend a été développé avec le fra-
+mework Angular 18, en exploitant son nouveau paradigme de composants autonomes
+(Standalone Components) et son moteur de réactivité granulaire basé sur les Signals.
+Organisation Structurelle et Modularité (Feature-Based)
+Afin de garantir la maintenabilité du code et d’éliminer les couplages rigides, l’arbo-
+rescence du projet adopte une séparation stricte par domaines fonctionnels (features) :
+16
+
+
+===== PAGE 25 =====
+
+— Core Module (src/app/core/) : Regroupe les singletons transverses de l’ap-
+plication. On y retrouve l’intercepteur HTTP (jwt.interceptor.ts) qui greffe
+automatiquement le jeton d’authentification Bearer dans les en-têtes des requêtes
+sortantes, le garde de routage (auth.guard.ts) sécurisant l’accès aux vues sen-
+sibles, ainsi que le service centralisant les échanges avec l’API .NET 8.
+— Features Modules (src/app/features/) : Découpé en composants autonomes
+non rattachés à des NgModule :
+— Auth : Gestion de la mire de connexion en design Glassmorphism.
+— Dashboard : Tableau de bord de suivi épidémiologique agrégeant les KPIs et
+l’historique NASCET des patients.
+— Analysis : Cockpit d’exploration multi-planaire (MPR) et d’aide à la décision
+clinique.
+— Shared Module (src/app/shared/) : Héberge les interfaces et DTOs TypeScript
+(miroirs stricts des modèles C#) ainsi que les composants réutilisables comme le
+chargeur intelligent (Smart Loader).
+4.2.2
+Couche Métier et Orchestration : Ingénierie Backend (.NET
+8 C#)
+Au sein de l’architecture distribuée de DeepBridge, le backend ne se contente pas
+d’exposer des routes CRUD élémentaires : il constitue le chef d’orchestre asynchrone du
+système. Développé sur la plateforme .NET 8 (C#), il assure l’interopérabilité entre les
+requêtes HTTP légères émises par Angular 18 et le moteur de calcul scientifique lourd en
+Python, tout en garantissant une étanchéité mémoire absolue, une persistance relationnelle
+stricte et un contrôle d’accès conforme aux exigences des données de santé.
+Organisation Modulaire de la Solution (Clean Architecture)
+Afin de prévenir tout couplage spaghetti et d’isoler les règles métier des dépendances
+d’infrastructure, le backend est scindé en trois projets C# physiquement distincts (.csproj)
+au sein de la même solution :
+— DeepBridge.Domain (Le Noyau Métier Pur) : Ce projet ne possède aucune
+dépendance externe (aucun package NuGet vers des frameworks ou bases de don-
+nées). Il centralise les entités fondamentales (Utilisateur, Medecin, Patient,
+AnalyseNascet, RapportMedical), les règles de calcul clinique, les énumérations
+(GraviteStenose) ainsi que les interfaces de contrats (ex : IAnalysisOrchestratorService,
+IPatientRepository). Ce découplage garantit que la logique médicale demeure
+pérenne, indépendamment des choix technologiques d’infrastructure.
+— DeepBridge.Infrastructure (La Machinerie Technique) : Ce module im-
+plémente les contrats définis par le domaine. Il gère la persistance des données
+17
+
+
+===== PAGE 26 =====
+
+via Entity Framework Core 8 (DeepBridgeDbContext), les configurations de
+schéma SQL Server, les migrations de bases de données, ainsi que la concrétisation
+de l’orchestrateur de calcul exécutant les sous-processus Python sur le système
+d’exploitation hôte.
+— DeepBridge.Api (La Porte d’Entrée HTTP) : Projet exécutable hébergeant le
+serveur web Kestrel. Il dépend de Domain et Infrastructure. Il expose les contrô-
+leurs REST (AuthController, DashboardController, AnalysisController), confi-
+gure la chaîne des middlewares, injecte les dépendances dans le conteneur IoC
+(Inversion of Control) natif et orchestre la sérialisation des contrats d’échange
+(DTOs).
+Moteur d’Orchestration Inter-Processus (.NET vers Python)
+L’un des défis d’ingénierie majeurs réside dans l’exécution de TotalSegmentator et
+des algorithmes géométriques NASCET sans perturber la disponibilité du serveur web
+Kestrel. L’intégration de bibliothèques internes telles que Python.NET a été formellement
+écartée : charger le runtime CPython au sein du Common Language Runtime (CLR) .NET
+exposerait le serveur hôte à un crash global en cas d’erreur de segmentation native ou de
+saturation de mémoire vidéo GPU (CUDA Out-Of-Memory).
+L’architecture retient une stratégie d’isolation par sous-processus OS (Process
+Sandboxing) pilotée par la classe System.Diagnostics.Process :
+1. Configuration Sécurisée (ProcessStartInfo) : L’orchestrateur localise l’inter-
+préteur de l’environnement virtuel Python isolé (venv/Scripts/python.exe) et
+configure les arguments d’exécution en mode non-interactif :
+— UseShellExecute = false : Empêche le lancement via un shell intermédiaire
+(cmd ou bash), permettant l’attachement direct des tubes I/O.
+— CreateNoWindow = true : Évite toute instanciation intempestive d’une console
+graphique sur la machine serveur.
+— RedirectStandardOutput = true et RedirectStandardError = true : Dé-
+tourne les flux standards du système vers des tuyaux de mémoire managée.
+2. Éradication du Buffer Deadlock Asynchrone : Une analyse scanographique
+générant de multiples logs sur plusieurs minutes, le recours à un appel bloquant
+direct (process.WaitForExit()) saturerait le buffer de sortie du système d’exploi-
+tation, figeant indéfiniment le script Python. Pour pallier ce risque, l’orchestrateur
+déclenche la consommation asynchrone concurrente des flux :
+Listing 4.1 – Orchestration asynchrone non-bloquante du moteur IA
+// Lecture
+asynchrone en memoire
+pour
+eviter la saturation
+des
+tubes I/O
+var
+stdoutTask = process. StandardOutput .ReadToEndAsync ();
+18
+
+
+===== PAGE 27 =====
+
+var
+stderrTask = process.StandardError.ReadToEndAsync ();
+// Liberation du thread
+Kestrel
+pendant le calcul
+intensif
+await
+process. WaitForExitAsync ();
+string
+outputJson = await
+stdoutTask;
+string
+errorLogs = await
+stderrTask;
+3. Gestion des Codes de Sortie (ExitCode) : Si le processus se termine avec
+un code 0, le payload outputJson est transmis pour désérialisation. Dans le cas
+contraire (code̸ = 0), l’infrastructure intercepte immédiatement l’anomalie consi-
+gnée dans errorLogs, consigne la défaillance dans les logs système et renvoie une
+exception applicative contrôlée sans rupture de service pour les autres requêtes
+entrantes.
+4.2.3
+Couche Scientifique et Intelligence Artificielle : Ingénierie
+du Pipeline Python
+Au cœur du système DeepBridge, le moteur scientifique développé en Python 3.10
+n’est pas conçu comme un simple script exploratoire de recherche, mais comme un pi-
+peline de traitement déterministe, tolérant aux pannes et optimisé pour la production.
+Il assume la responsabilité mathématique et biomédicale du système : assainir l’image-
+rie volumique brute, piloter les modèles de segmentation neuronale, exécuter les mesures
+géométriques du protocole NASCET, et réconcilier les dossiers scanographiques avec les
+registres cliniques hospitaliers.
+Environnement d’Exécution et Accélération Matérielle (CUDA)
+Le traitement d’examens scanographiques tridimensionnels (512 × 512 × 350 voxels
+en moyenne) implique des milliards d’opérations matricielles. Pour garantir un temps de
+traitement cliniquement acceptable :
+— Isolation par Environnement Virtuel (venv) : Le moteur s’exécute dans un
+environnement virtuel hermétique au système hôte, garantissant l’intégrité des ex-
+tensions compilées en C/C++ (C-extensions) dépendantes de bibliothèques natives
+comme SimpleITK ou PyTorch.
+— Détection Dynamique du Matériel et Inférence GPU : Dès son initialisa-
+tion, le script interroge la couche matérielle via torch.cuda.is_available(). Si
+une carte graphique dédiée NVIDIA disposant d’au moins 6 Go de mémoire vi-
+déo (VRAM) est détectée, les tenseurs volumiques sont alloués directement sur les
+cœurs de calcul tensoriels (CUDA). Cette accélération permet de réduire la durée
+19
+
+
+===== PAGE 28 =====
+
+totale d’inférence de 40 minutes (sur CPU conventionnel) à un intervalle compris
+entre 4 et 7 minutes.
+— Optimisation de la VRAM (torch.inference_mode) : L’évaluation du réseau
+de neurones est encapsulée dans le gestionnaire de contexte inference_mode().
+Cette directive désactive l’allocation de la mémoire dédiée au graphe computation-
+nel de rétropropagation (autograd), réduisant l’empreinte mémoire vive de plus de
+50% et prévenant les défaillances de type CUDA Out-Of-Memory.
+Manifeste des Dépendances Scientifiques (requirements.txt)
+Le tableau 4.1 recense l’ensemble des bibliothèques scientifiques intégrées au pipeline,
+ainsi que leur rôle d’ingénierie spécifique.
+Bibliothèque
+Version
+Rôle et Justification d’Ingénierie
+totalsegmentator
+~2.2.0
+Réseau de neurones volumique (nnU-Net) pré-entraîné sur
+l’anatomie tête et cou.
+torch / torchvision
+~2.1.2
+Calcul tensoriel haute performance et orchestration des
+cœurs GPU via CUDA.
+pydicom
+~2.4.4
+Inspection et parsing des en-têtes DICOM sans chargement
+des pixels volumineux.
+dicom2nifti
+~2.4.11
+Empilement géométrique de séries 2D et réorientation ca-
+nonique (RAS+).
+nibabel
+~5.2.1
+Manipulation des matrices volumiques NIfTI et calcul sur
+les matrices affines 4 × 4.
+scipy
+~1.11.4
+Interpolation
+spatiale
+(ndimage.zoom)
+pour
+sous-
+échantillonnage WebGL.
+numpy
+~1.26.4
+Opérations vectorisées, seuillage binaire et analyse géomé-
+trique des coupes.
+pandas / openpyxl
+~2.2.1
+Nettoyage tabulaire défensif et réconciliation du registre
+clinique CHU.
+matplotlib
+~3.8.3
+Rendu graphique en mode non-interactif (Agg) pour la gé-
+nération de preuves 2D.
+Table 4.1 – Matrice des bibliothèques scientifiques et composants du moteur Python.
+Cycle de Vie et Traitement Algorithmique de l’Imagerie
+L’exécution de la fonction principale main() traverse six étapes chronologiques inter-
+connectées :
+1. ETL et Assainissement DICOM (pydicom, shutil) : Un dossier d’examen
+hospitalier regroupe fréquemment des séries d’acquisition multiples (radiographies
+de repérage scouts, coupes avec ou sans produit de contraste). Le script inspecte
+récursivement les fichiers et extrait le tag DICOM SeriesInstanceUID à l’aide du
+paramètre stop_before_pixels=True (lecture ultra-rapide). La série contenant le
+20
+
+
+===== PAGE 29 =====
+
+plus grand nombre de coupes axiales est isolée, puis copiée et normalisée séquen-
+tiellement (0001.dcm, 0002.dcm...) dans un dossier de travail temporaire étanche
+(run_id).
+2. Conversion et Réorientation Canonique (dicom2nifti) : La pile de fichiers
+DICOM est fusionnée en un conteneur volumique unique NIfTI (.nii.gz). Le
+paramètre reorient_nifti=True applique une réorientation spatiale automatique
+vers le repère anatomique standardisé RAS+ (Right, Anterior, Superior). Cette
+étape élimine tout risque d’inversion droite/gauche lors des phases ultérieures
+d’évaluation.
+3. Segmentation IA Robuste avec Tolérance aux Pannes (TotalSegmentator) :
+L’isolation de l’arbre vasculaire carotidien fait appel à une fonction résiliente à trois
+niveaux d’exécution séquentiels (fallback) pilotée par le module subprocess :
+— Niveau 1 : Exécution de la tâche complète des structures vasculaires de la tête
+et du cou (–task headneck_bones_vessels).
+— Niveau 2 (Fallback direct) : En cas d’échec mémoire, restriction ciblée sur les
+carotides internes (–roi_subset internal_carotid_artery_left/right).
+— Niveau 3 (Fallback ultime) : Restriction sur les carotides communes (–roi_subset
+common_carotid_artery_left/right).
+4. Optimisation Volumique pour le Rendu WebGL (scipy.ndimage, nibabel) :
+Un volume NIfTI scanographique natif présente une empreinte mémoire comprise
+entre 80 et 150 Mo, prohibant tout affichage web instantané. Le script génère un
+artefact allégé via un sous-échantillonnage d’un facteur 2 :
+Facteurderduction = (0.5, 0.5, 0.5)
+L’interpolation du scanner CT applique une méthode linéaire d’ordre 1, tandis que
+le masque de l’artère exploite une interpolation par plus proche voisin (order=0)
+pour conserver un masque strictement binaire (0 ou 1). Pour compenser la perte
+de résolution matricielle et préserver scrupuleusement la métrologie réelle lors du
+rendu 3D, la matrice de transformation spatiale affine 4 × 4 est multipliée par un
+facteur d’échelle exact de 2.0 :
+Listing 4.2 – Conservation de l’échelle métrique réelle lors du downsampling WebGL
+masque_web = zoom(mask_array_uint8 , (0.5, 0.5, 0.5) , order =0).
+astype(np.uint8)
+nouvel_affine = img_originale.affine.copy ()
+nouvel_affine [:3, :3] *= 2.0
+5. Calcul Géométrique Déterministe du Score NASCET (numpy) : L’algo-
+rithme parcourt les tranches axiales selon l’axe longitudinal Z. Pour chaque coupe
+21
+
+
+===== PAGE 30 =====
+
+valide (contenant un nombre de voxels d’artère supérieur au seuil de bruit ε > 3),
+la surface en pixels A est extraite et convertie en diamètre effectif équivalent :
+Dz = 2 ×
+√︄
+A
+π
+L’algorithme identifie deux repères anatomiques cardinaux :
+— Le diamètre le plus comprimé : Dstnose = min(Dz).
+— Le calibre sain de référence Dsain : calculé sur la section d’aval (distale) via le
+90e percentile de la distribution des diamètres sains, ce qui élimine les variations
+ponctuelles de mesure.
+Le score de gravité NASCET officiel est ensuite borné et calculé selon l’équation :
+ScoreNASCET(%) = max
+(︃
+0.0, min
+(︃(︃
+1 −Dstnose
+Dsain
+)︃
+× 100, 100.0
+)︃)︃
+6. Génération Silencieuse des Preuves Visuelles (matplotlib) : Pour justifier
+la décision algorithmique sans mobiliser de serveur graphique X11, le backend
+graphique de Matplotlib est forcé en mode Agg (matplotlib.use(’Agg’)). Le
+script sauvegarde directement sur disque trois artefacts médico-légaux :
+— Un profil de rétrécissement 1D traçant l’évolution du diamètre tout au long de
+l’artère avec les seuils horizontaux de référence (vert) et de sténose (rouge).
+— Deux captures tomodensitométriques 2D en haute résolution (au niveau sain
+et sténosé), sur lesquelles le masque de l’artère est surligné par transparence
+thermique (autumn) par-dessus les tissus mous fenêtrés entre −100 et +400
+unités Hounsfield (HU).
+Réconciliation et Assainissement des Données Cliniques (pandas)
+L’évaluation géométrique d’une sténose prend toute sa pertinence lorsqu’elle est croisée
+avec le terrain pathologique du patient. Le module d’extraction analyse la base hospita-
+lière (BaseCarotideAnonymisée.xlsx) sous une politique de programmation hautement
+défensive :
+— Recherche Partielle Bidirectionnelle : Les identifiants des dossiers PACS hos-
+pitaliers diffèrent fréquemment de la codification interne du registre clinique. Pan-
+das résout cette divergence en effectuant un croisement textuel élastique :
+Listing 4.3 – Réconciliation robuste entre code Excel et nom de dossier DICOM
+ligne_patient = df[
+df[’CODES ’].str.contains(patient_id_dossier , case=False , na=
+False) |
+df[’CODES ’]. apply(lambda x: x in
+patient_id_dossier if pd.
+notna(x) else
+False)
+22
+
+
+===== PAGE 31 =====
+
+]
+— Protection Anti-Crash (Sanitization) : Pour se prémunir des erreurs de saisie
+humaine ou des cellules corrompues, les noms de colonnes sont expurgés de leurs
+espaces parasites (str.strip()). L’accès aux attributs cliniques prioritaires (Âge,
+Sexe, Antécédents d’artérite, Durée KOP, Statut symptomatique AVC/AIT) utilise
+la méthode sécurisée .get() avec valeur de substitution par défaut, absorbant ainsi
+les marqueurs NaN ou les erreurs de calcul Excel (#VALUE!).
+Protocole IPC et Intégrité du Flux Console (Silence Radio)
+La fiabilité de la communication inter-processus (IPC) entre .NET 8 et Python repose
+sur une contrainte stricte : la sortie standard (stdout) ne doit véhiculer aucun log parasite
+verbeux généré par les bibliothèques tierces.
+Le script applique une stratégie d’atténuation acoustique :
+— Bâillonnement du flux standard (block_print) : Les flux d’écriture système
+sont immédiatement déroutés vers le périphérique nul du système d’exploitation
+(os.devnull).
+— Canal de journalisation dédié : Les messages de suivi de phase (log_step)
+et les avertissements d’exécution sont explicitement redirigés vers le flux d’erreur
+sys.stderr, ce qui permet à .NET de surveiller le déroulement sans altérer le
+buffer de sortie.
+— Payload JSON Unique : À l’achèvement de la chaîne, la sortie standard est réac-
+tivée pour n’émettre qu’une unique ligne textuelle sérialisée (json.dumps(resultat)).
+L’intégrité du contrat d’échange est préservée et l’API .NET 8 désérialise directe-
+ment l’objet sans étape de nettoyage textuel intermédiaire.
+Modélisation Relationnelle et Persistance (EF Core 8 & SQL Server)
+La persistance des données repose sur Entity Framework Core 8 selon l’approche
+Code-First. Les entités modélisées traduisent directement la réalité médicale tout en ga-
+rantissant l’intégrité référentielle :
+— Hiérarchie des Utilisateurs (Héritage TPH) : L’entité Medecin hérite de
+la classe abstraite Utilisateur. EF Core applique une stratégie de table unique
+(Table-Per-Hierarchy) optimisée par une colonne de discrimination (Discrimina-
+tor).
+— Clés Primaires Sécurisées : Toutes les entités exploitent des identifiants uniques
+universels (Guid) au lieu d’entiers auto-incrémentés, éliminant ainsi les failles de
+parcours prédictif d’URL (Insecure Direct Object References - IDOR).
+23
+
+
+===== PAGE 32 =====
+
+— Horodatage et Traçabilité : Chaque instance de AnalyseNascet intègre un
+horodatage UTC (DateTime.UtcNow), liant l’identifiant du patient, les mesures
+physiques en millimètres (Dstnose, Dsain), le score NASCET calculé et les chemins
+d’accès système vers les fichiers NIfTI générés.
+— Migrations et Déploiement : Le schéma de base de données est versionné et syn-
+chronisé via la CLI d’Entity Framework (dotnet ef migrations add et dotnet
+ef database update).
+Pipeline des Middlewares, Sécurité et Cycle de Vie (Program.cs)
+L’hôte Kestrel implémente une chaîne de traitement (middleware pipeline) rigoureuse
+pour garantir l’étanchéité de l’API face aux attaques externes :
+1. Authentification Sans État (JWT Bearer) : L’authentification s’appuie sur le
+protocole JSON Web Token (JWT). Lors de la validation des identifiants, le mot de
+passe reçu est comparé à son empreinte stockée via l’algorithme cryptographique
+BCrypt (BCrypt.Verify). Si le hash coïncide, le serveur signe un jeton JWT
+contenant les revendications du praticien (Claims : Identifiant, Nom, Rôle), chiffré
+par une clé symétrique (SymmetricSecurityKey) d’au moins 256 bits.
+2. Politique CORS (Cross-Origin Resource Sharing) : L’API applique une
+politique stricte limitant l’accès aux requêtes en provenance directe de l’applica-
+tion cliente Angular (http://localhost:4200), tout en restreignant les en-têtes
+autorisés aux stricts champs d’authentification (Authorization, Content-Type).
+3. Ordonnancement Strict des Filtres : Dans le point d’entrée Program.cs,
+l’ordre de déclaration des middlewares suit scrupuleusement la séquence opéra-
+tionnelle :
+UseRouting() −→UseCors("AngularClientPolicy") −→UseAuthentication()
+−→UseAuthorization() −→MapControllers()
+Contrats d’Échange, DTOs et Désérialisation Polyglotte
+L’architecture logicielle de DeepBridge fait cohabiter trois conventions de nommage :
+le snake_case de Python, le PascalCase du C# et le camelCase du TypeScript (Angular).
+Pour assurer une communication fluide sans fuite de structure interne :
+— Découplage par DTOs : L’API n’expose jamais les entités de sa base de données.
+Elle transmet et réceptionne des objets de transfert dédiés (ProcessPatientRequestDto,
+DashboardPatientDto).
+— Mapping Polyglotte Déterministe : L’utilisation de System.Text.Json et
+de l’attribut d’annotation [JsonPropertyName] permet de capturer le payload
+console de Python sans aucune altération de données :
+24
+
+
+===== PAGE 33 =====
+
+Listing 4.4 – DTO d’ingestion des résultats du script Python
+public
+class
+PythonNascetResultDto
+{
+[ JsonPropertyName (" score_nascet ")]
+public
+double
+ScoreNascet { get; set; }
+[ JsonPropertyName (" diametre_stenose_mm ")]
+public
+double
+DiametreStenoseMm { get; set; }
+[ JsonPropertyName (" diametre_sain_mm ")]
+public
+double
+DiametreSainMm { get; set; }
+[ JsonPropertyName (" masqueIAPath ")]
+public
+string
+MasqueIaChemin { get; set; } = string.Empty;
+}
+— Distribution en Streaming des Fichiers 3D : Pour alimenter le visualiseur
+WebGL (Niivue), l’API met à disposition des routes de téléchargement binaire
+renvoyant les volumes NIfTI optimisés sous le type MIME application/gzip via
+l’instruction native PhysicalFileResult.
+Manifeste des Dépendances Logicielles (Backend NuGet)
+Le tableau 4.2 recense l’ensemble des paquets NuGet intégrés aux fichiers de projet
+.csproj du backend.
+Pipeline de Compilation et Exécution CLI
+La conformité et l’empaquetage du backend reposent sur la chaîne d’outils native du
+SDK .NET 8 :
+— Restauration des Dépendances : dotnet restore vérifie la cohérence des
+arbres de dépendances de chaque sous-projet.
+— Compilation Optimisée : dotnet build –configuration Release –no-restore
+déclenche l’analyse statique et génère les bibliothèques compilées en code intermé-
+diaire (CIL).
+— Packaging de Production : dotnet publish -c Release -o ./publish ras-
+semble les binaires exécutables, compile les vues et génère le point d’entrée exécu-
+table prêt pour l’hébergement serveur sous reverse-proxy (IIS ou Kestrel derrière
+Nginx).
+25
+
+
+===== PAGE 34 =====
+
+Package NuGet
+Version
+Rôle et Justifica-
+tion Technique
+Microsoft.AspNetCore.Authentication.JwtBearer
+8.0.x
+Décodage,
+inspec-
+tion
+et
+validation
+cryptographique des
+jetons JWT.
+Microsoft.EntityFrameworkCore.SqlServer
+8.0.x
+Fournisseur d’accès
+natif et générateur
+de
+requêtes
+SQL
+pour SQL Server.
+Microsoft.EntityFrameworkCore.Tools
+8.0.x
+Commandes
+CLI
+pour l’ingénierie des
+migrations de base
+de données.
+BCrypt.Net-Next
+4.0.3
+Hachage cryptogra-
+phique et salage dé-
+terministe des mots
+de passe.
+System.Text.Json
+Natif .NET 8
+Désérialisation
+mé-
+moire haute perfor-
+mance du flux JSON
+stdout.
+Swashbuckle.AspNetCore
+6.5.x
+Génération automa-
+tique de la spécifi-
+cation OpenAPI /
+Swagger.
+Table 4.2 – Matrice des packages NuGet du backend .NET 8.
+26
+
+
+===== PAGE 35 =====
+
+Moteur Réactif Hybride : Signaux et RxJS
+L’architecture frontend combine la puissance événementielle de la bibliothèque RxJS
+pour les flux asynchrones réseau et la granularité des Signals d’Angular 18 pour l’état
+local :
+— Gestion d’état atomique via signal() : Les propriétés clés de l’interface
+(ex : selectedPatient, isProcessing) sont encapsulées dans des signaux réac-
+tifs. Contrairement à l’ancien moteur de détection de changement (Zone.js) qui
+parcourait l’ensemble de l’arbre des composants lors d’une mutation, les Signals
+notifient directement les nœuds cibles du DOM, éliminant les recalculs superflus
+lors des sessions d’imagerie intensives.
+— Dérivation déterministe via computed() : Les indicateurs statistiques (taux de
+sténoses critiques ≥70%, totaux d’analyses) sont calculés de manière mémoïsée :
+ils ne se réexécutent que lorsque le signal de la liste source est altéré.
+— Gestion des flux asynchrones : La communication avec le backend s’effectue
+via HttpClient sous forme d’observables RxJS, permettant d’appliquer des opé-
+rateurs d’annulation automatique (takeUntilDestroyed) afin d’éviter toute fuite
+de mémoire lors de la navigation entre onglets.
+Visualisation 3D Médicale et Rendu Matériel WebGL 2.0
+La manipulation interactive de volumes scanographiques CT représente un défi majeur
+dans un navigateur web. Pour éviter tout gel de l’interface et éliminer le besoin de plugins
+externes, l’application intègre la bibliothèque spécialisée @niivue/niivue adossée à l’API
+WebGL 2.0.
+1. Cycle d’attachement au DOM (ngAfterViewInit) : L’instanciation du visua-
+liseur nécessite la présence physique du canvas dans l’arbre de rendu. Le composant
+exploite la directive viewChild d’Angular 18 pour lier l’instance Niivue au contexte
+WebGL du canvas (<canvas #glCanvas>) dès la fin du rendu initial.
+2. Technique du Double Volume (Overlay Superposition) : Le visualiseur
+charge simultanément deux flux binaires NIfTI (.nii.gz) préalablement allégés
+par le backend :
+— Canal Anatomique (Background) : Le volume CT scanographique complet du
+cou, affiché en niveaux de gris (colormap: ’gray’).
+— Canal Sémantique IA (Overlay) : Le masque binaire carotide généré par Total-
+Segmentator, superposé avec une palette thermique (colormap: ’autumn’) et
+une opacité fixée à 60%.
+3. Reconstruction Multi-Planaire Synchronisée (MPR) : Via la méthode na-
+tive setSliceType(sliceTypeMultiplanar), l’écran est subdivisé en quatre qua-
+drants dynamiques : coupe axiale, coupe coronale, coupe sagittale et vue 3D vo-
+27
+
+
+===== PAGE 36 =====
+
+lumique par lancer de rayons (volume raycasting). Un réticule de visée (crosshair)
+synchronise les 4 vues : tout déplacement du curseur par le radiologue sur une
+tranche 2D recalcule la projection spatiale en temps réel à une fréquence stable de
+60 FPS sur le GPU client.
+Génération Déportée de Rapports Médico-Légaux (Client-Side)
+Conformément aux principes de sobriété numérique (Green IT), la conversion des
+résultats en document opposable (PDF) ne sollicite aucunement les ressources CPU du
+serveur .NET 8.
+Le processus est exécuté côté client :
+— Un gabarit HTML reprenant la charte graphique médicale officielle (coordonnées
+patient, histogrammes, score NASCET et zones d’émargement) est maintenu hors
+champ (off-screen).
+— Dès l’action de téléchargement, la bibliothèque html2canvas capture et rastérise
+l’arbre DOM vectoriel en mémoire vive sous forme de texture haute densité.
+— La librairie jspdf encapsule ce rendu dans une structure de document A4 normali-
+sée et déclenche un téléchargement immédiat par flux Blob (Binary Large Object),
+sans aucune latence réseau.
+Manifeste des Dépendances Logicielles (Frontend)
+Le tableau 4.3 récapitule l’ensemble des bibliothèques open-source intégrées au fichier
+package.json, ainsi que leur version et justification d’ingénierie.
+Package npm
+Version
+Rôle et Justification Technique
+@angular/core
+^18.2.0
+Cœur applicatif, injection de dépendances et moteur réactif
+des Signals.
+@angular/router
+^18.2.0
+Routage côté client avec gardes asynchrones (CanActivate).
+@angular/material
+^18.2.0
+Composants d’interface (tableaux dynamiques, paginations
+et tris).
+@niivue/niivue
+^0.40.0
+Moteur de rendu WebGL pour formats médicaux (NIfTI,
+DICOM, MPR).
+html2canvas
+^1.4.1
+Rastérisation vectorielle de l’arbre DOM caché pour extrac-
+tion graphique.
+jspdf
+^2.5.1
+Assemblage et compression du document PDF clinique côté
+client.
+rxjs
+~7.8.1
+Gestion des flux d’événements asynchrones et temporisation
+du Smart Loader.
+Table 4.3 – Matrice des dépendances et bibliothèques logicielles du frontend Angular.
+28
+
+
+===== PAGE 37 =====
+
+Pipeline de Compilation et Optimisation de Build
+La chaîne d’outillage (build pipeline) s’appuie sur le compilateur moderne basé sur
+esbuild introduit nativement dans Angular 18 :
+— Ahead-of-Time (AOT) : Les templates HTML et feuilles de styles sont précom-
+pilés en JavaScript ultra-optimisé dès la phase de packaging, réduisant le temps de
+chargement initial (Time to Interactive).
+— Élimination de Code Mort (Tree-Shaking) : Les sous-modules non utilisés
+d’Angular Material et de Niivue sont purgés du bundle final.
+— Budgets de Performance : Le fichier de configuration angular.json applique
+des contraintes de poids strictes, limitant le bundle applicatif initial à 1.5 Mo (hors
+maillages 3D NIfTI servis dynamiquement en streaming).
+Étude Expérimentale des Performances : Capacité VRAM et Volumétrie DI-
+COM
+Afin de dimensionner l’infrastructure matérielle requise pour le déploiement clinique
+de DeepBridge, une campagne de mesures empiriques a été conduite sur l’ensemble du
+pipeline (conversion DICOM/NIfTI, segmentation TotalSegmentator, rééchantillonnage et
+calcul NASCET). Deux volumétries d’examens tomodensitométriques ont été évaluées :
+— Série standard (< 1 000 coupes axiales) : examen ciblé sur l’étage cervi-
+cal/carotidien.
+— Série étendue (≥1 000 coupes axiales) : acquisition complète intégrant la
+crosse aortique et le polygone de Willis intracrânien.
+La figure 4.7 synthétise les durées d’exécution observées selon les profils d’accélération
+matérielle.
+29
+
+
+===== PAGE 38 =====
+
+CPU Seul (0 Go) GPU 4 Go VRAMGPU 8 Go VRAMGPU 12 Go VRAM
+0
+20
+40
+60
+80
+100
+120
+140
+65 m
+40 m
+22 m
+12 m
+130 m
+80 m
+44 m
+24 m
+Configuration d’accélération matérielle
+Durée d’exécution totale (minutes)
+Examen standard (< 1 000 coupes)
+Examen étendu (≥1 000 coupes)
+Figure 4.7 – Temps d’exécution du pipeline IA selon la mémoire VRAM et la profondeur
+scanographique.
+Les résultats obtenus mettent en lumière trois dynamiques d’ingénierie majeures :
+1. Prohibitivité de l’exécution sur processeur (CPU) : En l’absence de proces-
+seur graphique dédié, le calcul purement séquentiel des convolutions 3D sur CPU
+hôte monopolise la machine pendant plus d’une heure (65 minutes pour < 1 000
+coupes, et plus de 2 heures pour les séries étendues). Cette configuration bloque les
+capacités de diagnostic immédiat et justifie l’obligation d’un GPU en production.
+2. Le phénomène de saturation VRAM à 4 Go (Memory Thrashing) : Avec
+une carte de 4 Go, le temps reste élevé (40 minutes). L’architecture neuronale 3D
+(nnU-Net) et les cartes d’activation volumiques excédant la mémoire vidéo dispo-
+nible, le pilote CUDA est contraint d’effectuer du va-et-vient mémoire (paging)
+vers la RAM système via le bus PCIe, bridant fortement le débit de calcul.
+3. Linéarité de la complexité temporelle vis-à-vis du nombre de coupes :
+Le passage de moins de 1 000 à plus de 1 000 coupes axiales induit un doublement
+quasi-parfait du temps d’exécution sur l’ensemble des configurations. Cela valide
+la complexité algorithmique O(Z) de notre étape d’extraction géométrique tranche
+par tranche et de la fenêtre glissante d’inférence 3D.
+4. Recommandation pour le milieu hospitalier (8 à 12 Go) : Une dotation
+minimale de 8 Go de VRAM permet de contenir l’analyse standard à environ 22
+minutes. Pour les blocs opératoires et les services d’urgence vasculaire traitant des
+examens étendus, une carte de 12 Go constitue la cible optimale en garantissant
+un résultat complet en 12 à 24 minutes.
+30
+
+
+===== PAGE 39 =====
+
+4.3
+Présentation des Interfaces Utilisateur (UI)
+L’ergonomie de DeepBridge a été pensée pour répondre aux contraintes cliniques.
+L’adoption d’un thème sombre (Dark Mode) agrémenté d’une teinte vert canard (Teal)
+vise à réduire la fatigue oculaire des radiologues travaillant dans des environnements
+assombris.
+4.3.1
+Authentification Sécurisée
+L’interface de connexion s’appuie sur le "Glassmorphism" (effets de flou et de profon-
+deur) pour offrir un accueil moderne. Des retours visuels dynamiques (spinners, désacti-
+vation des boutons) informent l’utilisateur lors du traitement réseau.
+4.3.2
+Le Tableau de Bord (Dashboard) de Suivi
+Le tableau de bord permet un suivi instantané de l’historique NASCET. Il se compose :
+— De KPIs médicaux dynamiques (Total analyses, taux de sténoses sévères).
+— D’un graphique en anneau illustrant la répartition des risques (Léger, Modéré,
+Sévère).
+— D’un tableau de bord récapitulant les patients traités, permettant le télécharge-
+ment direct des rapports PDF sans avoir à relancer l’analyse 3D.
+Figure 4.8 – Le tableau de bord global de suivi NASCET
+4.3.3
+Interface d’Analyse 3D et Aide à la Décision
+Une fois le traitement Python terminé, l’interface d’évaluation s’ouvre. Elle est divisée
+en deux volets : l’intégration WebGL de la librairie Niivue à gauche (pour la manipulation
+31
+
+
+===== PAGE 40 =====
+
+3D interactive du masque carotidien), et le récapitulatif algorithmique à droite. Un bou-
+ton d’action permet de déclencher le script html2canvas pour générer le rapport clinique
+formaté de l’intervention.
+Figure 4.9 – Interface de visualisation 3D et d’évaluation clinique NASCET
+32
+
+
+===== PAGE 41 =====
+
+Chapitre 5
+Conclusion Générale et Perspectives
+5.1
+Bilan du Projet
+Le projet DeepBridge est né d’une ambition claire : mettre les avancées de l’ingénierie
+logicielle et de l’intelligence artificielle au service du diagnostic médical, en particulier
+dans l’évaluation de la sténose carotidienne.
+À l’issue de cette année universitaire, l’objectif est atteint. Nous avons réussi à conce-
+voir et développer un Système d’Aide à la Décision Médicale (SADM) complet et fonction-
+nel. L’application permet de transformer des données brutes issues d’imagerie médicale
+(DICOM/NIfTI) en une évaluation clinique concrète, en automatisant le calcul du score
+NASCET et en offrant une modélisation 3D interactive du réseau vasculaire.
+Sur le plan de l’architecture, le triptyque technologique choisi s’est révélé extrêmement
+pertinent. L’interface développée en Angular 18 offre une expérience utilisateur fluide
+et adaptée aux exigences ergonomiques du monde clinique (thème sombre, gestion asyn-
+chrone des attentes). L’API robuste en .NET 8 (C#) a prouvé son efficacité en tant
+qu’orchestrateur sécurisé, assurant le pont entre le client web et la puissance de calcul
+scientifique des scripts Python.
+5.2
+Apports Personnels et Professionnels
+La réalisation de ce projet de fin d’année a été extrêmement formatrice. D’un point de
+vue technique, elle nous a permis de consolider nos compétences en développement full-
+stack et en conception d’architectures distribuées. La gestion des processus asynchrones
+longs et l’intégration de bibliothèques spécialisées comme Niivue ou TotalSegmentator
+nous ont confrontés à des problématiques d’ingénierie avancées. D’un point de vue mé-
+thodologique, l’immersion dans un contexte médical nous a appris à traduire des besoins
+cliniques stricts (formule NASCET, données de santé) en spécifications techniques rigou-
+reuses. Ce projet confirme notre intérêt pour la conception de logiciels critiques où la
+33
+
+
+===== PAGE 42 =====
+
+fiabilité du code a un impact direct sur la prise de décision.
+5.3
+Perspectives d’Évolution
+Bien que DeepBridge soit opérationnel dans sa version actuelle, ce projet constitue un
+socle solide ouvrant la voie à de nombreuses évolutions :
+— Déploiement Cloud et Scalabilité : Afin de gérer l’exécution concurrente de
+multiples analyses lourdes par plusieurs médecins, l’application mériterait d’être
+conteneurisée (Docker) et déployée sur une infrastructure Cloud (Microsoft Azure
+ou AWS) tirant parti de services d’orchestration (Kubernetes).
+— Élargissement du spectre diagnostique : Le pipeline IA pourrait être entraîné
+ou adapté pour repérer d’autres anomalies vasculaires, telles que les anévrismes
+intracrâniens ou les malformations artérioveineuses.
+— Étude clinique et validation médicale : Avant d’envisager une utilisation en
+milieu hospitalier réel, le système nécessitera une phase de test approfondie par
+un panel de spécialistes vasculaires pour valider la précision des scores NASCET
+générés par l’algorithme face aux diagnostics humains (Double aveugle).
+L’IA ne remplacera pas l’expertise du médecin, mais des outils comme DeepBridge
+ont pour vocation de devenir des assistants indispensables, absorbant la charge de calcul
+pour laisser au praticien le temps de se concentrer sur l’essentiel : le patient.
+34
+
+
+===== PAGE 43 =====
+
+Bibliographie
+[1] Google (2024). Angular Documentation - Angular 18 Signals and Hydration. [En
+ligne] Disponible sur : https://angular.dev (Consulté au cours du projet).
+[2] Microsoft (2024). .NET 8 Documentation - Building RESTful APIs with ASP.NET
+Core. [En ligne] Disponible sur : https://learn.microsoft.com/en-us/dotnet/
+(Consulté au cours du projet).
+[3] Wasserthal, J., et al. (2023). TotalSegmentator : Robust 3D medical image segmen-
+tation. Machine Learning in Clinical Neuroimaging.
+[4] North American Symptomatic Carotid Endarterectomy Trial Collaborators. (1991).
+Beneficial effect of carotid endarterectomy in symptomatic patients with high-grade
+carotid stenosis. New England Journal of Medicine.
+[5] Rorden, C. et al. (2024). Niivue : WebGL-based medical image viewer. [En ligne] Dis-
+ponible sur : https://github.com/niivue/niivue (Consulté au cours du projet).
+35

@@ -1,0 +1,2305 @@
+===== PAGE 1 =====
+
+République Tunisienne
+Ministère de l’Enseignement
+Supérieur
+et de la Recherche Scientifique
+Université de Monastir
+Institut Supérieur
+d’Informatique de Mahdia
+MEMOIRE
+N° d’ordre :
+LBC-BI-3-2025-027
+MEMOIRE
+Présenté à
+Institut Supérieur d’Informatique de Mahdia
+Effectué à
+Amen Bank
+En vue de l’obtention du diplôme de
+Licence Business Computing : Business Intelligence
+Elaboré par :
+BOUBAKRI CHAIMA
+&
+BAKLOUTI MANEL
+Mise en place d’une solution BI pour l’analyse des données
+financières et la détection d’anomalies dans les transactions
+bancaires
+Soutenu le : 16 - 06 - 2025
+Devant le jury composé de :
+Président :
+Takwa Ben Aicha
+Rapporteur :
+Fedia Barboura
+Encadreur Académique :
+Hazem Rakkez
+Encadreur Professionnel :
+Zine Harbaoui
+Année universitaire 2024 - 2025
+
+
+===== PAGE 2 =====
+
+Remerciement
+Au terme de ce travail de fin d’études, il nous tient particulièrement à cœur de marquer une
+pause, le temps d’exprimer nos sincères remerciements à toutes les personnes qui, de près ou
+de loin, ont accompagné notre parcours et nourri cette aventure.
+Nous souhaitons adresser nos remerciements les plus respectueux à notre encadrant
+académique, Monsieur Hazem Rakkez, pour la qualité de son accompagnement, sa rigueur
+intellectuelle et ses conseils éclairés.
+Nos remerciements les plus sincères s’adressent également à Monsieur Zine Harbaoui, notre
+encadrant en entreprise, pour sa disponibilité et la pertinence de ses conseils.
+Nous n’oublions pas non plus l’ensemble de nos enseignants, qui ont su, au fil des années,
+transmettre bien plus qu’un savoir : une passion, une exigence et des valeurs qui nous
+accompagneront tout au long de notre parcours.
+Nous remercions également les membres du jury pour l’intérêt porté à ce travail, le temps
+consacré à son évaluation, et la qualité de leurs observations. Leurs remarques constituent pour
+nous une source précieuse d’enrichissement et de réflexion.
+Enfin, notre plus profonde gratitude va à nos familles et à nos proches, qui ont su croire en
+nous, nous soutenir sans relâche, et nous donner la force d’aller jusqu’au bout.
+Ce travail, au fond, est aussi le leur.
+i
+
+
+===== PAGE 3 =====
+
+Dédicace
+À mes parents bien-aimés,
+Guides silencieux de ma vie, vous êtes l’origine de chaque pas, la source de chaque force,
+l’écho apaisant de chaque doute surmonté.
+A travers vos sacrifices murmurés, vos gestes empreints d’une tendresse infinie, et cette foi
+indéfectible que vous avez portée en moi lorsque je peinais à y croire moi-même, vous m’avez
+offert bien plus qu’un avenir : vous m’avez offert des fondations.
+Ce travail vous revient, comme une modeste réponse à tant d’amour silencieusement donné.
+À mon frère et ma sœur,
+Merci pour votre présence discrète mais précieuse. Vous avez su me soutenir dans les moments
+de doute, parfois même sans un mot.
+Vous avez été un pilier tout au long de ce parcours. Merci d’avoir toujours été là, sans rien
+attendre en retour.
+À mes amis fidèles,
+À vous qui avez deviné mes absences derrière mes sourires et apaisé mes doutes d’un mot,
+d’un regard ou d’un silence.
+Vos présences ont été de précieux refuges tout au long de ce parcours.
+Je vous dédie chaque ligne d’espoir et chaque victoire sur le découragement.
+À toutes les âmes croisées, connues ou furtives,
+À ceux et celles qui ont su toucher mon cœur par un mot, un geste, un sourire,
+Ce travail vous est dédié, avec une profonde reconnaissance et un respect immense.
+Chaima Boubakri
+ii
+
+
+===== PAGE 4 =====
+
+Dédicace
+À mon père,
+Ta présence rassurante, ton amour inconditionnel et ton appui sans faille
+m’ont guidée tout au long de ce parcours.
+Tu es et resteras mon pilier.
+À Myriam,
+Merci d’être à mes côtés chaque jour, de me soutenir sans jamais faiblir
+et de partager avec moi tous les hauts et les bas.
+À mes amis chers,
+Merci pour vos encouragements, vos messages, vos fous rires...
+Grâce à vous, ce chemin a été bien plus léger.
+À ma binome Chaima,
+Tu as été bien plus qu’une binome,
+Ta patience, ta bonne humeur, ton aide constante et ta présence
+ont fait toute la différence. Merci du fond du coeur.
+Manel Baklouti
+iii
+
+
+===== PAGE 5 =====
+
+LISTE DES ABRÉVIATIONS
+⋆BI : Business Intelligence
+⋆DW : Data Warehouse
+⋆ETL : Extract-Transform-Load
+⋆KPI : Key performance Indicator
+⋆SGBD : Système de Gestion de Base de Données
+⋆SQL : Structured Query Language
+⋆IA : Intelligence Artificielle
+⋆UML : Unified Modeling Language
+iv
+
+
+===== PAGE 6 =====
+
+TABLE DES MATIÈRES
+Remerciement
+i
+Dédicace
+ii
+Dédicace
+iii
+Liste Des Abréviations
+iv
+Introduction Générale
+1
+1
+Présentation du cadre du projet
+2
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.2
+Présentation de l’organisme d’accueil
+. . . . . . . . . . . . . . . . . . . . . .
+2
+1.3
+Organigramme de la société
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.4
+Analyse de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.4.1
+Étude de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.4.2
+Critique de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.4.3
+Solution proposée
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.4.4
+Objectif du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+v
+
+
+===== PAGE 7 =====
+
+TABLE DES MATIÈRES
+1.5
+Choix de la méthodologie . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.5.1
+La méthode de GIMSI . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.5.2
+La méthode agile/SCRUM BI
+. . . . . . . . . . . . . . . . . . . . . .
+6
+1.5.2.1
+Scrum appliqué à un projet informatique . . . . . . . . . . .
+7
+1.5.2.2
+Scrum et l’approche TOP DOWN (Inmon) . . . . . . . . . .
+7
+1.5.2.3
+Scrum et l’approche BOTTOM UP (Kimball)
+. . . . . . . .
+7
+1.5.3
+Méthodologie adoptée . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2
+Sprint0 : Analyse et spécification des besoins
+9
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.2
+Spécification des exigences . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.2.1
+Exigences fonctionnelles . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.2.2
+Exigences non fonctionnelles
+. . . . . . . . . . . . . . . . . . . . . .
+10
+2.3
+Étude approximative des indicateurs de performance(KPIs) . . . . . . . . . . .
+10
+2.3.1
+Définition des KPIs : . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.3.2
+Les KPIs à utiliser : . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.4
+Étude comparative des outils Business Intelligence
+. . . . . . . . . . . . . . .
+11
+2.4.1
+Comparaison des outils d’intégration des données - ETL . . . . . . . .
+12
+2.4.2
+Comparaison des outils de reporting . . . . . . . . . . . . . . . . . . .
+12
+2.4.3
+Comparaison des systèmes de gestion de base de données (SGBD) . . .
+13
+2.5
+Diagramme de cas d’utilisation global . . . . . . . . . . . . . . . . . . . . . .
+14
+2.6
+Backlog product . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.7
+Pilotage de projet avec Scrum
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.8
+Environnement matériel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.9
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+vi
+
+
+===== PAGE 8 =====
+
+TABLE DES MATIÈRES
+3
+Sprint 1 : Préparation des données et élaboration du Data Warehouse
+17
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.2
+Backlog Product . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.3
+Diagramme de Flux global . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.4
+Architecture décisionnelle
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.4.1
+L’ETL
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.4.2
+Entrepôt de données : . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4.3
+Data Mart : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4.4
+Les caractéristiques du DW : . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4.5
+La réstitution des données : . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.5
+Préparation des données
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.6
+Modèle de conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+3.6.1
+Comparaison entre les modèles : . . . . . . . . . . . . . . . . . . . . .
+24
+3.6.2
+Choix du modèle :
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.7
+Conception détaillée de Data Warehouse . . . . . . . . . . . . . . . . . . . . .
+25
+3.7.1
+Choix des dimensions : . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.7.2
+Choix des mesures :
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.7.3
+Table de faits :
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.8
+Modèlisation de Data Warehouse . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.9
+Intégration des données du Data Warehouse (ETL)
+. . . . . . . . . . . . . . .
+27
+3.9.1
+Extraction des données : . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.9.2
+Transformation : . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.9.3
+Chargement : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.10 Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+4
+Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+35
+vii
+
+
+===== PAGE 9 =====
+
+TABLE DES MATIÈRES
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+4.2
+Backlog Product . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+4.3
+Préparation des données pour Power BI
+. . . . . . . . . . . . . . . . . . . . .
+36
+4.3.1
+Connexion à l’entrepôt des données :
+. . . . . . . . . . . . . . . . . .
+36
+4.3.2
+Chargement des données : . . . . . . . . . . . . . . . . . . . . . . . .
+37
+4.4
+Conception des tableaux de bord . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+4.4.1
+Dashboard Home : . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+4.4.2
+Dashboard Transactions : . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.4.3
+Dashboard CPT/CLT : . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.4.4
+Dashboard Anomalie : . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.5
+Publication des tableaux de bord dans Power BI Service . . . . . . . . . . . . .
+41
+4.5.1
+Power BI Service : . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.5.2
+Publication :
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.6
+Actualisation des données . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.6.1
+Configuration de la passerelle Power BI . . . . . . . . . . . . . . . . .
+44
+4.6.2
+Flux de données automatisé : . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.7
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+5
+Sprint 3 : Création du site web
+48
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+5.2
+Backlog Product du Sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+5.3
+Diagramme de cas d’utilisation . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+5.4
+Technologies utilisées . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+5.5
+Présentation du site web
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+5.5.1
+Page Login/ Sign Up :
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+5.5.2
+Intégration des tableaux de bord : Page Dashboards . . . . . . . . . . .
+53
+viii
+
+
+===== PAGE 10 =====
+
+TABLE DES MATIÈRES
+5.5.3
+Intégration de l’IA : Page BankBot Q-A . . . . . . . . . . . . . . . . .
+54
+5.5.3.1
+Création de chatbot : . . . . . . . . . . . . . . . . . . . . . .
+54
+5.5.3.2
+Intégration dans le site : . . . . . . . . . . . . . . . . . . . .
+54
+5.5.4
+Page Contact . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+5.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+Conclusion générale
+58
+Références
+59
+ix
+
+
+===== PAGE 11 =====
+
+TABLE DES FIGURES
+1.1
+Logo d’Amen Bank . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.2
+Organigramme de la banque
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.3
+Cycle de vie d’une méthode SCRUM . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.4
+Les approches Top-Down et Bottom-Up . . . . . . . . . . . . . . . . . . . . .
+8
+2.1
+Logo de l’outil ETL Talend . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2
+Logo de l’outil Power BI . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.3
+Logo de l’outil PostgreSQL . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.4
+Diagramme de cas d’utilisation global . . . . . . . . . . . . . . . . . . . . . .
+14
+3.1
+Diagramme de Flux global . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.2
+Architecture du système décisionnel . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.3
+Modèle en étoile
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.4
+Création de connexion avec la base-étape1 . . . . . . . . . . . . . . . . . . . .
+28
+3.5
+Création de connexion avec la base-étape2 . . . . . . . . . . . . . . . . . . . .
+28
+3.6
+Importation des fichiers sources
+. . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.7
+Job cleaning all_tables
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.8
+Le composant tFileInputDelimited . . . . . . . . . . . . . . . . . . . . . . . .
+30
+x
+
+
+===== PAGE 12 =====
+
+Table des figures
+3.9
+Vue globale Job cleaning all_tables . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.10 Job dimensions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.11 Exemple de configuration du tMap . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.12 Script SQL de dimension date
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.13 Dimension date . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.14 Chargement des dimensions
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.15 Chargement de table de faits . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.16 Tables de Data Warehouse final . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+4.1
+Connexion Power BI_PostgreSQL . . . . . . . . . . . . . . . . . . . . . . . .
+37
+4.2
+Chargement des données . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+4.3
+Tableau de bord d’accueil . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+4.4
+Tableau de bord d’analyse transactionnelle globale
+. . . . . . . . . . . . . . .
+39
+4.5
+Tableau de bord d’analyse des comptes et clients
+. . . . . . . . . . . . . . . .
+40
+4.6
+Tableau de bord d’analyse des anomalies
+. . . . . . . . . . . . . . . . . . . .
+41
+4.7
+Logo Power BI Service . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.8
+Composant de publication
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.9
+Sélection de destination dans Power BI Service . . . . . . . . . . . . . . . . .
+42
+4.10 Publication sur Power BI Service . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.11 Espace de travail Power BI Service . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.12 Rôle de Gateway
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.13 Connexion à la passerelle de données (Gateway) . . . . . . . . . . . . . . . . .
+44
+4.14 Connexion à la source de données
+. . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.15 Association de la passerelle à la source de données
+. . . . . . . . . . . . . . .
+46
+4.16 Planification de l’actualisation . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.17 Flux de données automatisé dans Power BI Service . . . . . . . . . . . . . . .
+47
+xi
+
+
+===== PAGE 13 =====
+
+Table des figures
+5.1
+Diagramme de cas d’utilisation . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+5.2
+Logo-Python
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+5.3
+Logo-Streamlit
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+5.4
+Logo-Dialogflow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+5.5
+Logo-Flask
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+5.6
+Page Login
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+5.7
+Page Sign Up . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+5.8
+Accès refusé aux dashboards . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+5.9
+Accès refusé au chatbot . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+5.10 Script SQL de table users . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+5.11 Hachage sécurisé des mots de passe dans la base de données . . . . . . . . . .
+53
+5.12 Page Dashboards
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+5.13 Page BankBot Q-A . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+5.14 Bulle de dialogue du chatbot affichant le guide d’utilisation . . . . . . . . . . .
+55
+5.15 Exemple des questions avec chatbot
+. . . . . . . . . . . . . . . . . . . . . . .
+56
+5.16 Page Contact
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+xii
+
+
+===== PAGE 14 =====
+
+LISTE DES TABLEAUX
+1.1
+Comparaison entre SCRUM BI et GIMSI
+. . . . . . . . . . . . . . . . . . . .
+5
+2.1
+Les KPIs utilisés dans le projet . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.2
+Comparaison des outils ETL . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.3
+Comparaison des outils de reporting . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.4
+Comparaison des SGBD
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.5
+Backlog de produit . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.6
+Présentation de l’équipe de projet . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+3.1
+Backlog de produit de Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.2
+Comparaison des modèles de conception . . . . . . . . . . . . . . . . . . . . .
+24
+3.3
+Les dimensions du Data Warehouse
+. . . . . . . . . . . . . . . . . . . . . . .
+25
+3.4
+Les mesures de table de fait . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.5
+La table de faits de transactions . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+4.1
+Backlog de produit de sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+5.1
+Backlog de produit de sprint3 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+xiii
+
+
+===== PAGE 15 =====
+
+INTRODUCTION GÉNÉRALE
+L’exploitation stratégique des données occupe aujourd’hui une place centrale dans le pilo-
+tage des institutions financières. Dans un environnement où les transactions sont nombreuses,
+complexes et potentiellement risquées, disposer d’outils performants pour analyser les flux, dé-
+tecter les irrégularités et appuyer la prise de décision devient une nécessité.
+Dans le cadre de notre formation en Business Intelligence, nous avons été amenés à mener
+un projet de fin d’études visant à développer une solution décisionnelle adaptée aux besoins
+d’une institution bancaire. Ce projet, réalisé au sein de l’Amen Bank, a eu pour objectif de
+concevoir un système permettant de structurer, exploiter et visualiser les données bancaires afin
+d’identifier rapidement les comportements suspects.
+La solution développée repose sur la création d’un entrepôt de données cohérent, l’automati-
+sation du traitement des flux d’information, ainsi que la mise en place des tableaux de bord
+interactifs facilitant l’analyse et l’interprétation. À cela s’ajoute une interface web sécurisée,
+pensée pour offrir aux utilisateurs une expérience fluide à l’aide d’un modèle d’assistance intel-
+ligent.
+Ce projet nous a donné l’opportunité de renforcer nos compétences dans les domaines de
+la modélisation, de l’intégration des données, de visualisation et du développement d’interfaces
+décisionnelles. Cela nous a aussi permis de traiter des enjeux réels dans le contexte profession-
+nel, tout en contribuant à une démarche d’amélioration continue des processus d’analyse au sein
+d’un établissement bancaire.
+La suite de ce rapport détaille les différentes étapes de la réalisation du projet, depuis l’ex-
+pression des besoins jusqu’au déploiement final de la solution.
+1
+
+
+===== PAGE 16 =====
+
+CHAPITRE 1
+PRÉSENTATION DU CADRE DU PROJET
+1.1
+Introduction
+Ce chapitre introductif vise à situer le projet dans son contexte tout en présentant l’orga-
+nisme d’accueil, Amen Bank. Il examinera par la suite la problématique soulevée, ainsi que
+la solution proposée et la méthodologie de travail adoptée. Enfin, il fournira des détails sur la
+planification prévisionnelle.
+1.2
+Présentation de l’organisme d’accueil
+Amen Bank se distingue comme la première banque entièrement privée et tunisienne, en-
+gagée à servir ses clients et à contribuer au développement de l’économie du pays. Grâce à un
+large réseau de 152 agences distribuées sur 8 directions régionales, cette organisation déploie
+ses opérations sur tout le territoire tunisien. Amen Bank fait partie d’un groupe varié et hau-
+tement synergique, profitant d’une expansion continue, un facteur primordial pour sa stabilité
+et sa durabilité. De plus, son capital social, qui atteint actuellement 174 600 000 dinars, est
+possédé à hauteur de 66,5% par Amen Group.
+FIGURE 1.1 – Logo d’Amen Bank
+2
+
+
+===== PAGE 17 =====
+
+Chapitre 1. Présentation du cadre du projet
+Voici quelques informations qui peuvent servir de fiche d’identité pour Amen Bank :
+— Dénomination : AMEN BANK
+— Date de création : 1967
+— Objet social : Activités bancaires
+— Structure juridique : Société anonyme de droit commun
+— L’accroche : « Le partenaire de votre succès »
+— Siège social : Avenue Mohamed V - 1002 Tunis
+— Directeur général : Monsieur Néji Ghandri
+— Site Internet : https://www.amenbank.com.tn
+— Téléphone/Fax : 71 148 000
+1.3
+Organigramme de la société
+La structure organisationnelle d’Amen Bank représente une distribution claire et simplifiée
+des activités et des relations hiérarchiques :
+FIGURE 1.2 – Organigramme de la banque
+1.4
+Analyse de l’existant
+L’analyse de l’existant est une phase essentielle dans le processus de recherche. Son objectif
+est d’identifier les problèmes existants, ce qui souligne l’importance de notre solution.
+3
+
+
+===== PAGE 18 =====
+
+Chapitre 1. Présentation du cadre du projet
+1.4.1
+Étude de l’existant
+Dans le contexte actuel, les banques possèdent de volumes importants de données épar-
+pillées sur divers systèmes : opérations, comptes, clients, et ainsi de suite. Ces données sont
+souvent exploitées avec des outils classiques (tableurs Excel, rapports manuels) qui n’offrent
+ni une vision globale ni une analyse approfondie. De plus, le suivi des transactions suspectes
+s’appuie essentiellement sur des règles fixes, sans recours à l’intelligence artificielle ou à des
+tableaux de bord dynamiques.
+1.4.2
+Critique de l’existant
+Ce fonctionnement présente plusieurs limites majeures :
+→Manque de réactivité dans la prise de décision : Le manque de visualisation dynamique
+des indicateurs qui ralentit la prise de décision face aux événements critiques.
+→Absence d’automatisation dans les rapports : Les rapports sont générés manuellement à
+l’aide de fichiers Excel ou outils simples ce qui peut provoquer plusieurs erreurs.
+→Manque de centralisation des données : Pas d’entrepôt de données pour stocker les infor-
+mations de manière historisée, nettoyée et exploitable.
+→Difficulté de détecter les anomalies : Les comportements suspects sont détectés via des
+règles fixes ou manuelles sans mécanisme intelligent.
+→Pas de plateforme d’analyse intégrée qui permet aux analystes de consulter des visualisa-
+tions et poser des questions.
+1.4.3
+Solution proposée
+Pour répondre aux limites identifiées dans le système actuel, une solution décisionnelle
+complète est proposée. Celle-ci s’appuie sur :
+— La mise en place d’un entrepôt de données (Data Warehouse) qui centralisent les don-
+nées bancaires (clients, comptes, transactions, cartes...). Cette base permet de structurer
+les informations de manière fiable et exploitable.
+— Un processus ETL (Extract-Transform-Load) est utilisé pour nettoyer, enrechir et inté-
+grer les données dans le DW.
+— Les données sont ensuite visualisées à travers des tableaux de bord dynamiques ce qui
+va faciliter l’analyse.
+— Développement d’une plateforme avec une authentification sécurisée, accès interactif
+aux visualisations analytiques et un chatbot intelligent connecté à la base de données
+pour répondre aux questions des analystes.
+4
+
+
+===== PAGE 19 =====
+
+Chapitre 1. Présentation du cadre du projet
+1.4.4
+Objectif du projet
+Le but du projet vise à concevoir une solution décisionnelle complète avec les objectifs
+suivants :
+• Assurer la qualité des données en mettant en place un processus de traitement, de net-
+toyage et d’intégration des sources.
+• Améliorer la prise de décision en offrant aux analystes des outils visuels et interactifs.
+• Facilite l’accès aux données à travers une interface web.
+• Renforcer l’indépendance des utilisateurs grâce à un assistant virtuel capable de fournir
+des réponses en direct.
+1.5
+Choix de la méthodologie
+La méthodologie fait référence à la totalité des méthodes et procédures mises en œuvre pour
+réaliser les buts fixés. Avant de se lancer dans un projet, le choix d’une méthode de gestion est
+crucial pour garantir sa réussite.
+Dans ce cadre, nous allons analyser les deux approches les plus modernes : SCRUM BI et
+GIMSI, qui feront l’objet d’une comparaison dans le tableau suivant :
+Méthode
+Flexibilité
+Phases
+Adaptabilité
+Documentation
+Risques
+SCRUM
+BI
+Très
+flexible, il
+permet de
+réaliser
+des ajuste-
+ments
+fréquents
+Des sprints
+courts
+variant de
+(2 à 4
+semaines)
+permettent
+de
+produire
+des
+livrables à
+chaque
+itération
+Particulièrement
+flexible face aux
+évolutions des
+besoins
+Documentation
+concise, axée sur
+les user stories et
+les sprints
+Risques
+atténués
+grâce à des
+itérations
+courtes
+GIMSI
+Flexibilité
+modérée
+4 phases
+bien
+définies
+Moins approprié
+aux
+changements
+fréquents
+Documentation
+exhaustive
+Risques si-
+gnificatifs
+TABLE 1.1 – Comparaison entre SCRUM BI et GIMSI
+5
+
+
+===== PAGE 20 =====
+
+Chapitre 1. Présentation du cadre du projet
+1.5.1
+La méthode de GIMSI
+La méthode GIMSI (Gestion Informatisée et Modulaire des Systèmes d’Information) est
+un processus structuré pour concevoir des systèmes d’aide à la prise de décision. Elle se com-
+pose de 4 étapes principales : analyse, conception, développement et déploiement, qui sont
+elles-mêmes subdivisées en dix phases. Toutefois, cette méthode n’est pas très flexible aux mo-
+difications ou évolutions qui pourraient survenir durant le développement.
+1.5.2
+La méthode agile/SCRUM BI
+La méthode SCRUM BI constitue une adaptation de la méthodologie agile Scrum, conçue
+spécifiquement pour les projets de Business Intelligence. Elle se fonde sur des itérations courtes
+appelées sprints, qui se déroulent généralement sur une durée de 2 à 4 semaines. Cette approche
+favorise la réalisation de livrables incrémentaux et encourage le travail en équipe. Contrairement
+aux méthodes traditionnelles, SCRUM BI offre une flexibilité d’amélioration continue.
+• Les acteurs dans SCRUM :
+1. Propriétaire du produit(Product Owner) : La personne qui définit, prioriser et
+gérer le Backlog Produit en tenant compte des besoins métier ainsi que des attentes
+des parties prenantes.
+2. Scrum Master : La personne qui facilite le processus Scrum, aide à surmonter les
+obstacles et s’assure que l’équipe respecte les principes agiles.
+3. L’équipe Scrum : Le groupe qui va développer et produir des livrables à chaque
+sprint.
+• Les évènements SCRUM :
+1. Sprint : C’est une itération de durée fixe, qui s’étend de 2 à 4 semaines, pendant
+laquelle l’équipe s’efforce de développer un produit livrable.
+2. Sprint Planning : réunion en début de sprint au cours de laquelle l’équipe procède
+à la sélection et à la planification des tâches à effectuer, en se basant sur le Backlog
+Produit.
+3. Daily Scrum : c’est une rencontre quotidienne pour coordonner les taches, faire le
+point sur l’évolution du travail et repérer les difficultés rencontrées.
+4. Sprint Review : Il s’agit d’une réunion de fin de sprint pendant laquelle l’équipe
+présente l’incrément développé aux parties prenantes afin de recueillir leurs com-
+mentaires et observations.
+5. Sprint Retrospective : c’est une rencontre durant laquelle l’équipe passe en revue
+le déroulement du sprint et identifie les points à àméliorer.
+6
+
+
+===== PAGE 21 =====
+
+Chapitre 1. Présentation du cadre du projet
+FIGURE 1.3 – Cycle de vie d’une méthode SCRUM
+1.5.2.1
+Scrum appliqué à un projet informatique
+Le cadre Scrum est utilisé pour le développement de projets informatiques ainsi que pour
+le suivi de leurs performances. Il s’agit de l’une des méthodes agiles les plus répandues dans
+le cadre des projets décisionnels. L’application de cette méthode est adaptée en fonction des
+différentes approches pertinentes au projet. Parmi les approches les plus fréquemment utilisées,
+on peut distinguer :
+➢L’approche TOP DOWN
+➢L’approche BOTTOM UP
+1.5.2.2
+Scrum et l’approche TOP DOWN (Inmon)
+L’approche Top-Down, élaborée par Bill Inmon, constitue une méthode formelle et struc-
+turée pour la conception de systèmes de Business Intelligence (BI). Cette démarche repose
+sur l’établissement d’un entrepôt de données centralisé (Data Warehouse), qui représente la
+source unique de vérité pour l’ensemble de l’organisation. Cette approche débute par une modé-
+lisation des données en amont, s’appuyant sur un schéma normalisé tel que le schéma en étoile
+ou en flocon.
+1.5.2.3
+Scrum et l’approche BOTTOM UP (Kimball)
+L’approche Bottom-Up, conçue par Ralph Kimball, est une méthode de conception de sys-
+tèmes de Business Intelligence qui commence la mise en place de data marts, c’est-à-dire des
+entrepôts de données thématiques dédiés à des domaines spécifiques. Ces data marts sont par la
+suite intégrés progressivement afin de construire un Data Warehouse complet. Contrairement à
+7
+
+
+===== PAGE 22 =====
+
+Chapitre 1. Présentation du cadre du projet
+l’approche TOP-DOWN, cette méthode privilégie une implémentation accélérée et progressive,
+en mettant l’accent d’abord sur les exigences immédiates des utilisateurs. En outre, elle utilise
+souvent un modèle en étoile pour la modélisation des données, contribuant ainsi à simplifier le
+design et à améliorer les performances des requêtes.
+FIGURE 1.4 – Les approches Top-Down et Bottom-Up
+1.5.3
+Méthodologie adoptée
+Dans le contexte de notre projet nous avons choisi d’adopter la méthodologie Scrum, en
+collaboration avec une approche de type Bottom-Up. Cette combinaison nous donne la possi-
+bilité de bénéficier de la flexibilité et des livraisons progressives proposées par Scrum, tout en
+développant progressivement des data marts ciblés sur les besoins métiers actuels. Cette straté-
+gie favorise une mise en place rapide, un travail collaboratif avec les utilisateurs finaux et une
+adaptation continue aux changements de besoins, tout en garantissant une intégration future des
+données au sein d’un entrepôt de données plus large.
+1.6
+Conclusion
+Ce premier chapitre a permis d’établir le cadre général du projet en introduisant, dans un
+premier temps, l’entreprise d’accueil, en exposant le contexte du projet, ainsi qu’en précisant la
+méthodologie adoptée. Dans le chapitre suivant, nous allons voir une présentation détaillée des
+exigences relatives à notre projet.
+8
+
+
+===== PAGE 23 =====
+
+CHAPITRE 2
+SPRINT0 : ANALYSE ET SPÉCIFICATION DES BESOINS
+2.1
+Introduction
+Ce chapitre correspond à la phase de Sprint 0 et marque le début du projet. Son objectif
+principal est de définir les exigences fonctionnelles et non fonctionnelles relatives au système
+de surveillance des transactions bancaires et à la détection des anomalies financières. Nous y
+abordons également l’architecture décisionnelle, les outils technologiques sélectionnés, les
+indicateurs clés de performance (KPI), ainsi qu’une étude comparative des solutions de
+business intelligence (BI) qui seront mises en œuvre dans le cadre de ce projet. Cette phase
+préparatoire est fondamentale pour assurer la cohérence, la qualité et l’efficacité de la solution
+finale.
+2.2
+Spécification des exigences
+Dans cette section, nous allons établir les besoins fondamentaux du système, qui se classi-
+fient en deux catégories : les exigences fonctionnelles et les exigences non fonctionnelles.
+2.2.1
+Exigences fonctionnelles
+Les exigences fonctionnelles décrivent les principales fonctionnalités ce que le système
+doit accomplir pour répondre aux besoins des utilisateurs. Le système doit permettre :
+— La Collecte, le nettoyage et l’intégration de données bancaires via un processus ETL.
+9
+
+
+===== PAGE 24 =====
+
+Chapitre 2. Sprint0 : Analyse et spécification des besoins
+— Le stockage structuré de données dans un Data Warehouse.
+— La mise à disposition des tableaux de bord interactifs actualisés pour visualiser les indi-
+cateurs clés (KPIs).
+— La consultation des analyses via une plateforme sécurisée
+— Intégrer un chatbot capable de répondre automatiquement aux requêtes liées aux transac-
+tions et anomalies financières.
+2.2.2
+Exigences non fonctionnelles
+Les exigences non fonctionnelles définissent Les qualités attendues du système au-delà de
+ses fonctionnalités :
+— Ergonomie : Assurer des interfaces simples, réactives et agréables.
+— Performance : Assurer un traitement rapide des flux de données
+— Intégrité : Garantir que les données sont cohérantes et fiables.
+— Scalabilité : Disposer de la capacité nécessaire pour traiter un volume croissant de tran-
+sactions.
+— La sécurité : Garantir la sécurité des accès via une authentification fiable.
+2.3
+Étude approximative des indicateurs de performance(KPIs)
+2.3.1
+Définition des KPIs :
+Les Indicateurs Clés de Performance (KPIs) sont des mesures quantitatives utilisées pour
+évaluer l’atteinte des objectifs stratégiques d’une organisation. Ils permettent de suivre, sur une
+base régulière, la performance d’un processus, d’une activité ou d’un service, en offrant une
+vision synthétique et exploitable de la situation. Dans le cadre d’un système décisionnel, les
+KPIs sont extraits à partir des données présentes dans le Data Warehouse, puis affichés à l’aide
+de tableaux de bord interactifs. Ils permettent aux décideurs de détecter rapidement les écarts,
+d’identifier les tendances et d’ajuster les actions en conséquence.
+10
+
+
+===== PAGE 25 =====
+
+Chapitre 2. Sprint0 : Analyse et spécification des besoins
+2.3.2
+Les KPIs à utiliser :
+Catégorie
+Indicateur
+Description
+Vue globale des
+transactions
+Somme de Montant
+Total global des montants de toutes
+les transactions
+Nb_Transactions
+Nombre total de transactions enre-
+gistrées
+Top-Agence
+Agence ayant généré le plus de vo-
+lume de transactions
+Comptes et Clients
+NB_Total_Clients
+Nombre total de clients enregistrés
+Nombre de Packs
+Nombre de types de packs ban-
+caires proposés
+Anomalies
+Transactionnelles
+Somme de Montant
+(anomalies)
+Montant cumulé des transactions
+détectées comme anormales
+Montant_Moyen
+(anomalies)
+Moyenne des montants parmi les
+transactions anormales
+Nombre_Anomalies
+Nombre total d’anomalies transac-
+tionnelles identifiées
+TABLE 2.1 – Les KPIs utilisés dans le projet
+2.4
+Étude comparative des outils Business Intelligence
+Les outils de BI sont indispensables pour transformer l’information brute en connaissances
+exploitables. Ils permettent de collecter, analyser, visualiser et partager les données de manière
+efficace afin d’appuyer la prise de décision. Donc, nous allons présenter une étude comparative
+des principaux outils de BI, en mettant en évidence leurs points forts, leurs limites, ainsi que
+leur pertinence selon les besoins de notre projet.
+11
+
+
+===== PAGE 26 =====
+
+Chapitre 2. Sprint0 : Analyse et spécification des besoins
+2.4.1
+Comparaison des outils d’intégration des données - ETL
+Outil ETL
+Forces
+Limites
+Talend
+Interface intuitive, intégration de
+nombreux
+formats
+de
+données,
+grande communauté
+Nécessite Java, compilation parfois
+lente
+Informatica
+Solution très stable, support profes-
+sionnel, automatisation efficace
+Coût élevè, interface vieillissante,
+moins accessible pour les petits pro-
+jets
+Pentaho (PDI)
+Gratuit, facile à prendre en main,
+inerface claire
+Connecteurs limités, support limité
+TABLE 2.2 – Comparaison des outils ETL
+Choix retenu : Nous avons choisi Talend car il représente une solution idéale grâce à sa
+version open source, sa simplicité d’utilisation et sa richesse fonctionnelle. il offre un excellent
+compromis entre accessibilité, connectivité et puissance.
+FIGURE 2.1 – Logo de l’outil ETL Talend
+2.4.2
+Comparaison des outils de reporting
+Outil
+Forces
+Limites
+Power BI
+Intégration aisée avec Excel/SQL, visualisations modernes
+Fonctionnalités
+limitées dans la
+version gratuite
+Tableau
+Interactions dynamiques avancées, grande flexibilité
+Coût plus élevé
+Qlik Sense
+Analyse associative performante
+Courbe
+d’ap-
+prentissage plus
+longue
+TABLE 2.3 – Comparaison des outils de reporting
+Choix retenu : Nous avons sélectionné Power BI pour sa prise en main rapide, ses visua-
+lisations interactives. Il constitue une solution efficace pour créer des tableaux de bord clairs et
+accessibles, même pour les non-techniciens.
+12
+
+
+===== PAGE 27 =====
+
+Chapitre 2. Sprint0 : Analyse et spécification des besoins
+FIGURE 2.2 – Logo de l’outil Power BI
+2.4.3
+Comparaison des systèmes de gestion de base de données (SGBD)
+SGBD
+Avantages
+Inconvénients
+PostgreSQL
+Support des fonctions analy-
+tiques, robuste, performant
+Courbe d’apprentissage mo-
+dérée
+MySQL
+Facilité
+d’installation
+et
+d’utilisation
+Moins
+performant
+pour
+l’analyse décisionnelle
+Oracle
+Très puissant, support pro-
+fessionnel
+Licence coûteuse
+TABLE 2.4 – Comparaison des SGBD
+Choix retenu : Nous avons retenu PostgreSQL pour sa robustesse, sa compatibilité avec
+Talend, ainsi que pour sa capacité à gérer efficacement les requêtes analytiques.
+FIGURE 2.3 – Logo de l’outil PostgreSQL
+13
+
+
+===== PAGE 28 =====
+
+Chapitre 2. Sprint0 : Analyse et spécification des besoins
+2.5
+Diagramme de cas d’utilisation global
+FIGURE 2.4 – Diagramme de cas d’utilisation global
+2.6
+Backlog product
+Le backlog de produit représente l’ensemble des fonctionnalités à développer pour répondre
+aux objectifs du projet. Il se compose de user stories décrivant les attentes de manière claire et
+orientée métier. Chaque story peut être décomposée en tâches techniques à réaliser lors des dif-
+férents sprints. Ce document constitue ainsi la feuille de route du projet au long de son évolution.
+Notre backlog produit est représenté dans le tableau ci-dessous :
+14
+
+
+===== PAGE 29 =====
+
+Chapitre 2. Sprint0 : Analyse et spécification des besoins
+Thème
+ID
+User Story
+Priorité
+En Tant que....
+Je veux....
+Afin de....
+Mettre en
+place un
+entrepôt de
+données (DW)
+US1
+Développeur BI
+Concevoir un
+entrepôt de
+données structuré
+Centraliser et
+historiser les
+données pour les
+traitements
+analytiques
+1
+Création et
+automatisation
+des tableaux
+de bord
+dynamiques
+US2
+Analyste
+-Visualiser des
+KPIs via des
+tableaux de bord
+interactifs
+- Avoir des
+visualisations
+actualisées
+- Suivre les
+transactions et les
+anomalies de
+manière
+actualisée pour
+faciliter la prise
+de décision
+1
+Développement
+d’une
+plateforme
+web sécurisée
+et intégration
+de l’IA
+(Chatbot
+intelligent)
+US3
+Utilisateur
+authentifié
+-Me connecter et
+accéder aux
+tableaux de bord
+via une interface
+convivale
+-Poser des
+questions à un
+assistant virtuel
+-Naviguer
+facilement et en
+toute sécurité
+dans les
+fonctionnalités
+du projet
+-Obtenir des
+réponses
+instantanées sans
+requêtes
+manuelles
+2
+TABLE 2.5 – Backlog de produit
+2.7
+Pilotage de projet avec Scrum
+L’organisation du projet s’appuie sur la méthode scrum, impliquant plusieurs rôles bien dé-
+finis. Le tableau suivant présente les membres de l’équipe projet ainsi que leurs responsabilités
+respectives.
+15
+
+
+===== PAGE 30 =====
+
+Chapitre 2. Sprint0 : Analyse et spécification des besoins
+Nom du membre
+Role
+Mr. Zine Harbaoui
+Scrum Master
+Mr. Mounir Chtioui
+Product Owner
+Chaima Boubakri et Manel
+Baklouti
+Développeurs - Membre de
+l’équipe
+TABLE 2.6 – Présentation de l’équipe de projet
+2.8
+Environnement matériel
+— Processeur : 12th Gen Intel(R) Core(TM) i7-12650HX 2.00 GHz
+— Mémoire RAM : 16,0 Go
+— Système exploitation : Windows 11 Famille Unilingue
+2.9
+Conclusion
+Ce chapitre a posé les bases du projet à travers la phase de Sprint 0. Il a permis d’identifier
+les exigences fonctionnelles et non fonctionnelles, tout en exploitant l’architecture décisionnelle
+et les outils technologiques utilisés. Les indicateurs clés de performance ainsi que l’étude com-
+parative des solutions BI ont contribué à orienter les choix techniques. Cette phase préparatoire
+s’est révélée essentielle pour garantir la réussite des étapes suivantes du développement de la
+solution.
+16
+
+
+===== PAGE 31 =====
+
+CHAPITRE 3
+SPRINT 1 : PRÉPARATION DES DONNÉES ET
+ÉLABORATION DU DATA WAREHOUSE
+3.1
+Introduction
+Dans ce chapitre qui correspond au Sprint 1, nous avons concentré nos efforts sur la prépara-
+tion des données et la conception du Data Warehouse. Ce sprint a permis de définir le processus
+décisionnel à travers une architecture adaptée, de choisir les dimensions nécessaires, de structu-
+rer les données selon un modèle en étoile, et d’intégrer les données nettoyées dans un entrepôt
+centralisé.
+3.2
+Backlog Product
+Le tableau ci-dessous présente le backlog produit de Sprint 1 :
+17
+
+
+===== PAGE 32 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+ID
+User Story
+Tâche
+ID
+Tâche
+US1
+En tant que développeur BI, je
+souhaite construire un entrepot
+de données bancaire afin de cen-
+traliser les informations et facili-
+ter les analyses futures.
+US1.1
+Identifier les sources de données
+(clients, transactions, cartes, ...)
+US1.2
+Nettoyer, transformer et standariser
+les données avec Talend
+US1.3
+Définier les dimensions et la table de
+faits selon un modèle bien défini
+US1.4
+Charger les données dans le DW se-
+lon la conception validée dans Post-
+greSQL
+TABLE 3.1 – Backlog de produit de Sprint 1
+18
+
+
+===== PAGE 33 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+3.3
+Diagramme de Flux global
+FIGURE 3.1 – Diagramme de Flux global
+Ce diagramme illustre le flux global des données au sein de notre solution : Tout débute par
+l’importation des fichiers bruts(CSV), qui sont ensuite nettoyés et préparés à l’aide de l’outil
+Talend. Une fois les données validées, elles sont intégrées dans le DW sous PostgreSQL. À
+partir de là, les analystes peuvent exploiter ces données soit via des tableaux de bord interactifs,
+soit en posant des questions au chatbot connecté à la base. L’objectif final est de permettre une
+analyse claire et rapide des résultats et d’identifier les comportements suspects.
+3.4
+Architecture décisionnelle
+L’architecture décisionnelle repose sur une chaîne de traitement structurée qui va de la col-
+lecte des données issues des systèmes opérationnels jusqu’à leur restitution sous forme de ta-
+bleaux de bord ou d’analyses. Les données sont d’abord extraites, transformées et chargées via
+19
+
+
+===== PAGE 34 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+un processus ETL.
+FIGURE 3.2 – Architecture du système décisionnel
+3.4.1
+L’ETL
+Le processus ETL ( Extraction, Transformation, Chargement) permet d’automatiser la pré-
+paration des données pour l’analyse. Il consiste à récupérer les données brutes, en extraire les
+éléments utiles, les convertir dans un format adapté aux besoins métiers, puis les intégrer dans
+un entrepôt de données ( Data Warehouse). Ce mécanisme permet aussi de simplifier et de
+condenser les données afin d’optimiser leur traitement, notamment pour certaines analyses ci-
+blées.
+— La phase d’extraction : L’extraction constitue la première étape du processus ETL, elle
+joue un rôle crucial dans la réussite de l’ensemble du traitement des données. Elle consiste
+à récupérer les données brutes depuis différentes sources, qui peuvent être hétérogènes :
+fichiers plats (comme des CSV ou Excel), bases de données relationnelles, ou d’autres
+systèmes d’information.
+Durant cette phase, l’objectif est de collecter les données de manière fiable, sans perte ni
+modification, afin de conserver leur intégrité.
+— La phase de transformation : Une fois les données extraites, elles passent par la phase
+de transformation, qui vise à les rendre exploitables et cohérentes par rapport aux besoins
+métier. C’est durant cette étape que les données brutes sont nettoyées, réorganisées et
+parfois enrichies. Cela peut inclure :
+— La suppression des doublons (les données redondantes)
+— Correction des valeurs manquantes
+20
+
+
+===== PAGE 35 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+— La conversion de formats
+— L’harmonisation des unités
+La transformation permet aussi de structurer les données en vue de leur intégration dans
+un modèle d’analyse. Elle joue un rôle central dans la fiabilité des analyses à venir, car
+des données mal préparées peuvent fausser les résultats finaux.
+— La phase de chargement : C’est la dernière étape du processus ETL. Il consiste à in-
+sérer les données transformées dans la base cible, généralement un entrepôt de données
+(Data warehouse). Cette phase doit être gérée avec soin pour garantir la cohérence des
+informations et éviter les pertes de données. Le chargement peut se faire de plusieurs
+manières :
+— De manière complète (full load) lorsqu’on insère toutes les données
+— De manière incrémentale (incremental load) lorsqu’on n’ajoute que les nouvelles ou
+les données modifiées.
+Cette étape finalise la préparation du socle décisionnel, rendant les données prêtes à être
+exploitées par des outils de reporting ou de visualisation, comme Power BI.
+3.4.2
+Entrepôt de données :
+Définition : Un entrepôt de données, ou Data Warehouse, est une base de données centrali-
+sée conçue spécialement pour stocker des données provenant de différentes sources. Il regroupe
+des données historisées, nettoyées et structurées selon un modèle cohérent, ce qui permet aux
+utilisateurs (souvent des analystes ou des décideurs) d’explorer facilement l’information.
+3.4.3
+Data Mart :
+Définition : Un Data Mart est un sous-ensemble d’un Data Warehouse, centré sur un do-
+maine fonctionnel spécifique, structuré de manière à répondre aux besoins d’analyse d’un ser-
+vice ou d’une équipe métier donnée. Le Data Mart permet un accès plus rapide et ciblé aux
+informations essentielles pour la prise de décisions opérationnelles.
+3.4.4
+Les caractéristiques du DW :
+Un entrepôt de données peut être caractérisé par les éléments suivants :
+1. Orienté sujet (Subject-oriented) : L’entrepôt est structuré autour des grands axes d’analyse
+de l’organisation. Il ne suit pas la logique opérationnelle des systèmes classiques, mais
+facilite la vision métier.
+21
+
+
+===== PAGE 36 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+2. Intégré (Integrated) : Les données proviennent de sources diverses (systèmes internes,
+fichiers, applications externes) et sont unifiées au sein de l’entrepôt.
+3. Historisé (Time-variant) : Chaque donnée dans le DW est liée à une notion de temps.
+Cela permet de suivre l’évolution des phénomènes et d’effectuer des comparaisons dans
+le temps.
+4. Non volatile (Non-volatile) : Une fois les données chargées dans l’entrepôt, elles ne sont
+pas modifiées ni supprimées. Cela garantit la stabilité et la traçabilité des analyses.
+3.4.5
+La réstitution des données :
+La phase de restitution des données correspond à l’étape finale d’un processus décisionnel,
+durant laquelle les informations consolidées et analysées sont présentées aux utilisateurs finaux
+sous une forme exploitable. Cette restitution prend généralement la forme de tableaux de bord,
+de rapports interactifs ou de visualisations graphiques.
+3.5
+Préparation des données
+Pour élaborer notre solution décisionnelle, nous avons mobilisé plusieurs fichiers qui illus-
+trent les principales entités du secteur bancaire. Tous ces fichiers ont été soigneusement générés
+et enrichis manuellement, dans le but de recréer un environnement réaliste, intégrant des erreurs
+et des anomalies. Les sources de données comprennent :
+— Clients : ce fichier recense les informations personnelles des clients, telles que le code,
+nom, prénom, nationnalité, type ID, identifiant, nature, agence, chargé(employé), pays,
+sexe, etat civil, segment, date creation
+— Comptes : Détails sur les comptes bancaires reliés aux clients. Colonnes clés : type_cpt,
+agence, état, date création, date validation et devise
+— Cartes_bancaires : Détails sur les cartes associées aux comptes. Colonnes clés : ID_Carte,
+compte, date_demande, date_activation, date_expiration et type_carte
+— Transactions : Toutes les opérations bancaires enregistrées. Colonnes clés : ID_Transac,
+date, montant, devise, compte, type, canal, statut, pays
+— Pack : Ce fichier montre l’historique d’abonnement des comptes aux packs bancaires.
+Colonnes clés : compte, code, data_activation, etat, date_expiration
+— Anomalies : Ce fichier fournit l’historique des anomalies détectées sur les transactions.
+Colonnes clés : ID_Transac, date, montant, commentaire
+— Agences : Liste des agences de la banque avec leur code et adresse
+22
+
+
+===== PAGE 37 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+— Employes : Liste des employés de la banque et leur affectation. Colonnes clés : code,
+nom, prenom, affect_AG, fonction, rôle
+— Segment : Segmentation des clients. Colonnes clés : code, libelle, type_segment
+— Fraude_historique : Fichier de réfèrence qui contient toutes les transactions anormales.
+Ces fichiers, au format CSV, représentent environ 10 000 lignes de transactions avec quelques
+anomalies simulées, permettant ainsi d’évaluer la capacité du système à les traiter de manière
+efficace.
+3.6
+Modèle de conception
+Avant de pouvoir exploiter les données de manière efficace, il est essentiel de structurer
+l’entrepôt de données selon un modèle adapté. La modélisation d’un DW permet de représenter
+de façon logique et cohérente l’organisation des informations à analyser.
+23
+
+
+===== PAGE 38 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+3.6.1
+Comparaison entre les modèles :
+Modèle
+Avantages
+Inconvénients
+Schéma
+Modèle en étoile
+— Facile à comprendre
+et à concevoir
+— Requêtes rapides et
+efficaces
+— Structure simple
+pour les outils BI
+— Redondance dans les
+données
+— Moins optimisé en
+espace de stockage
+Modèle en flocon
+de neige
+— Réduction de la
+redondance
+— Meilleur
+structuration des
+données
+— Normalisation des
+dimensions
+— Jointures plus
+nombreuses
+— Requêtes plus lentes
+— plus complexe à
+maintenir
+Modèle en
+constellation
+— Analyse de
+plusieurs processus
+métiers
+— Dimensions
+partagées
+— Grande flexibilité
+— Complexité élevée
+— Maintenance plus
+difficile
+— Requêtes plus lourdes
+TABLE 3.2 – Comparaison des modèles de conception
+3.6.2
+Choix du modèle :
+Le modèle en étoile a été retenu pour sa simplicité, sa lisibilité et sa performance lors des
+requêtes analytiques. Ce modèle facilite la structuration des données autour d’une table de faits
+centrale et de dimensions clairement définies.
+24
+
+
+===== PAGE 39 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+3.7
+Conception détaillée de Data Warehouse
+3.7.1
+Choix des dimensions :
+Les tables de dimensions décrivent le contexte des faits enregistrés dans la table de faits.
+Elles contiennent des informations qualitatives ou descriptives qui permettent d’analyser les
+données selon différents angles. Chaque table de dimension possède une clé primaire (souvent
+appelée identifiant de dimension), qui est utilisée dans la table de faits sous forme de clé étran-
+gère.
+Les dimensions
+Les définitions
+dim_client
+Dimension contenant les informations personnelles du client
+dim_compte
+Dimension décrivant les comptes bancaires
+dim_carte
+Dimension relative aux cartes bancaires
+dim_agence
+Dimension contenant les agences bancaires
+dim_date
+Dimension des informations calendaires nécessaires à l’analyse
+temporelle
+dim_segment
+Dimension regroupant les segments clients
+dim_pack
+Dimension des packs de services souscrits par les clients
+dim_Employe
+Dimension contenant les informations des employés
+dim_fraud
+Dimension contenant des informations descriptives sur les types
+de transactions identifiées comme frauduleuses ou anormales
+TABLE 3.3 – Les dimensions du Data Warehouse
+3.7.2
+Choix des mesures :
+Les mesures représentent les données quantitatives stockées dans la table de faits du Data
+Warehouse. Elles permettent d’effectuer des analyses et des agrégations selon différents axes
+d’observation définis par les dimensions. Ce tableau illustre les mesures de notre projet :
+Mesures
+Description
+Montant
+Montant d’une transaction
+Is_fraud
+Indicateur binaire (0 ou 1) pour la détection d’anomalie
+TABLE 3.4 – Les mesures de table de fait
+25
+
+
+===== PAGE 40 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+3.7.3
+Table de faits :
+La table de faits constitue l’élément central d’un modèle dimensionnel. Elle regroupe les
+mesures quantitatives (faits) liées à un processus métier spécifique. Chaque ligne de la table de
+faits correspond à un événement observé et est reliée aux différentes dimensions à l’aide de clés
+étrangères.
+Table de faits
+Catégorie
+Champ
+Description
+Fact_Transaction
+Clé primaire
+ID_Transac
+L’identifiant de la transac-
+tion
+Clés étrangères
+ID_code_client
+L’identifiant du client
+ID_carte
+L’identifiant de la carte
+ID_CPT
+L’identifiant du compte
+ID_code_agence
+L’identifiant de l’agence
+ID_code_emp
+L’identifiant de l’employé
+ID_code_pack
+L’identifiant du pack
+ID_code_segment
+L’identifiant
+du
+segment
+client
+ID_date
+L’identifiant de la date
+Attributs
+Type_Trans
+Le type de transaction
+Pays
+Le pays de transaction
+Canal
+Le canal utilisé pour la tran-
+saction
+Statut
+Statut de l’opération tran-
+sactionnelle
+Devise
+Devise utilisée
+Mesures
+Montant
+Le montant de la transac-
+tion
+Is_Fraud
+Indicateur binaire : opéra-
+tion suspecte ou non
+TABLE 3.5 – La table de faits de transactions
+3.8
+Modèlisation de Data Warehouse
+La figure ci-dessous représente le modèle conceptuel final de notre entrepôt de données, il
+contient une table de faits et 9 dimensions :
+26
+
+
+===== PAGE 41 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+FIGURE 3.3 – Modèle en étoile
+3.9
+Intégration des données du Data Warehouse (ETL)
+Afin de garantir une base analytique fiable, l’intégration des données est une étape essen-
+tielle qui inclut l’importation, le nettoyage, la mise en relation et la transformation des données
+vers un entrepôt cible, dans le but de les rendre plus accessibles et exploitables par les utilisa-
+teurs finaux.
+On commence tout d’abord par l’établissement de la Connexion avec la base PostegreSQL :
+-Type de base de données : PostgreSQL
+-Nom de la base : PFE
+-Nom de schéma : BANQUE
+-Port : 5432
+-Mot de passe : 0000
+27
+
+
+===== PAGE 42 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+FIGURE 3.4 – Création de connexion avec la base-étape1
+FIGURE 3.5 – Création de connexion avec la base-étape2
+28
+
+
+===== PAGE 43 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+3.9.1
+Extraction des données :
+Étant donné que notre source de données est sous forme de fichiers CSV, on doit tout d’abord
+faire leur importation dans Talend comme on peut le voir dans la figure suivante :
+FIGURE 3.6 – Importation des fichiers sources
+3.9.2
+Transformation :
+Après l’extraction, plusieurs étapes ont été suivies pour préparer les données brutes pour
+leur intégration dans le DW, c’est la phase de transformation
+1. Création de Job cleaning all_tables.
+FIGURE 3.7 – Job cleaning all_tables
+2. Les fichiers sources (CSV) ont été importés à l’aide des composants tFileInputDelimited
+29
+
+
+===== PAGE 44 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+FIGURE 3.8 – Le composant tFileInputDelimited
+3. Les données sont nettoyées via le composant tMap, en supprimant les valeurs nulles ou
+les doublants, en corrigeant les formats de dates et en normalisant les libellés incohérants.
+FIGURE 3.9 – Vue globale Job cleaning all_tables
+Préparation des dimensions :
+1. Création du Dossier DWH puis création du Job pour les dimensions :
+30
+
+
+===== PAGE 45 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+FIGURE 3.10 – Job dimensions
+2. Pour chaque dimension on importe la table concernée avec le composant tDBInput.
+3. On faire les transformations nécessaires avec le composant tMap
+Exemple de configuration du tMap pour la dimension employes :
+FIGURE 3.11 – Exemple de configuration du tMap
+Remarque : La dimension date diffère des autres dimensions car elle est en sorte de calendrier
+qui contient les dates à partir de 2015 jusqu’à 2035. Donc, on a créé cette dimension avec un
+script SQL :
+31
+
+
+===== PAGE 46 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+FIGURE 3.12 – Script SQL de dimension date
+FIGURE 3.13 – Dimension date
+3.9.3
+Chargement :
+Chargement des dimensions : Après la transformation des données, celles-ci sont chargées
+dans les différentes tables du Data Warehouse à l’aide des composants tDBOutpt comme le
+montre la figure suivante :
+32
+
+
+===== PAGE 47 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+FIGURE 3.14 – Chargement des dimensions
+Après le chargement des dimensions, on a chargé le Fact_Table_Transaction comme re-
+présente la figure suivante :
+FIGURE 3.15 – Chargement de table de faits
+Finalement, on a les tables créées dans le Data Warehouse bancaire développé dans le cadre
+de notre projet :
+33
+
+
+===== PAGE 48 =====
+
+Chapitre 3. Sprint 1 : Préparation des données et élaboration du Data Warehouse
+FIGURE 3.16 – Tables de Data Warehouse final
+3.10
+Conclusion
+Le Sprint 1 a jeté les bases techniques de notre solution BI en structurant les données selon
+un modèle robuste et performant. Grâce au processus ETL, les données ont été correctement
+intégrées dans le Data Warehouse. Cette fondation permet désormais une exploitation optimale
+des informations à travers Power BI, et constitue un socle pour le développement des fonction-
+nalités analytiques à venir dans les sprints suivants.
+34
+
+
+===== PAGE 49 =====
+
+CHAPITRE 4
+SPRINT 2 : CRÉATION ET AUTOMATISATION DES
+TABLEAUX DE BORD DYNAMIQUES
+4.1
+Introduction
+Dans ce chapitre, nous allons aborder la valorisation des données via la création des tableaux
+de bord interactifs. Ces visualisations permettent d’exploiter les données stockées dans le Data
+Warehouse en simplifiant l’analyse et la découverte d’anomalies. Le but est d’offrir aux ana-
+lystes des interfaces dynamiques pour comprendre rapidement les KPIs et prendre les décisions
+nécessaires.
+35
+
+
+===== PAGE 50 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+4.2
+Backlog Product
+ID
+User Story
+Tâche
+ID
+Tâche
+US2
+En tant qu’analyste je souhaite
+disposer des tableaux de bord
+dynamiques et actualisés afin de
+suivre les transactions, détecter
+les anomalies et faciliter la prise
+de décision.
+US2.1
+Se connecter à la base de données
+PostgreSQL contenant les données
+nettoyées.
+US2.2
+Sélectionner les tables pertinentes
+pour l’analyse.
+US2.3
+Concevoir les KPIs et mesures per-
+sonnalisées dans Power BI.
+US2.4
+Créer des visuels interactifs répar-
+tis par thématique : transactions glo-
+bales, clients/comptes, anomalies.
+US2.5
+Mettre en place des filtres et des seg-
+ments dynamiques pour une naviga-
+tion fluide.
+US3.6
+Configuer
+l’actualisation
+automa-
+tique des tableaux de bord via une
+passerelle à fin de garantir la mise à
+jour régulière des données affichées.
+TABLE 4.1 – Backlog de produit de sprint 2
+4.3
+Préparation des données pour Power BI
+Pour créer des tableaux de bord interactifs, les données stockées dans le DW ont été liées à
+Power BI.
+4.3.1
+Connexion à l’entrepôt des données :
+Power BI a été directement lié à la base de données PostgreSQL contenant le DW. Ce lien
+garantit un accès direct aux données et facilite l’élaboration de rapports interactifs :
+36
+
+
+===== PAGE 51 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+FIGURE 4.1 – Connexion Power BI_PostgreSQL
+4.3.2
+Chargement des données :
+Une fois la connexion établie, les tables de DW ont été intégrées dans Power BI.
+FIGURE 4.2 – Chargement des données
+37
+
+
+===== PAGE 52 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+4.4
+Conception des tableaux de bord
+Divers tableaux de bord ont été élaborés dans Power BI et chacun traite un sujet précis pour
+faciliter l’analyse et la prise de décision.
+4.4.1
+Dashboard Home :
+FIGURE 4.3 – Tableau de bord d’accueil
+La page d’accueil intitulée « Analyse Bancaire ». L’utilisateur est invité à choisir le ta-
+bleau de bord qu’il veut consulter parmi trois catégories : Transactions, Comptes et Clients, et
+Anomalies. Chaque bouton redirige vers un dashboard spécifique.
+38
+
+
+===== PAGE 53 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+4.4.2
+Dashboard Transactions :
+FIGURE 4.4 – Tableau de bord d’analyse transactionnelle globale
+Le tableau de bord "Analyse des Transactions Global" offre une vue d’ensemble dyna-
+mique sur les transactions financières enregistrées. Il présente les KPIs suivants :
+— Somme de Montant : La somme totale des montants
+— Nb_Transactions : Le nombre total des transactions.
+— Montant_Moyen : Le montant moyen des transactions.
+— Top-Agence : L’agence qui a le plus grand nombre de transactions.
+Ainsi que des visualisations claires, comme les graphiques par mois, par type et par segment
+client. Et grâce aux filtres interactifs (Type_Transaction, Date, Agence, Type_Carte), l’utilisa-
+teur peut explorer les données de façon personnalisée.
+39
+
+
+===== PAGE 54 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+4.4.3
+Dashboard CPT/CLT :
+FIGURE 4.5 – Tableau de bord d’analyse des comptes et clients
+Le tableau de bord "Analyse des Comptes et de Clients" offre une vision complète sur les
+comptes bancaires. Il affiche les KPIs suivants :
+— NB_Total_Clients : Le nombre total des clients.
+— NB_Total_Comptes : Le nombre total des comptes.
+— Nombre de Packs : Le nombre de packs disponibles.
+Ainsi que des visualisations qui permettent d’explorer la répartition des comptes par type, leur
+évolution annuelle, ainsi que les comptes les plus transactionnels. Des filtres interactifs (Pack
+Client, Type_Compte, État_Compte) aident à l’analyse ciblée et rapide.
+40
+
+
+===== PAGE 55 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+4.4.4
+Dashboard Anomalie :
+FIGURE 4.6 – Tableau de bord d’analyse des anomalies
+Ce tableau de bord met en évidence les anomalies détectées dans les transactions bancaires.
+Il présente les KPIs suivants :
+— Somme Montant : Le montant total des anomalies.
+— Motant Moyen : Le montant moyen des transactions anormales.
+— Nombre_Anomalie : Le nombre total d’anomalies observées.
+Ainsi que d’autres visualisations comme le tableau qui détaille les transactions suspectes et le
+visuel de répartition par type de transaction qui permet d’identifier les anomalies dominantes,
+tandis que les filtres dynamiques (Montant et Canal) facilitent l’exploration ciblée.
+4.5
+Publication des tableaux de bord dans Power BI Service
+4.5.1
+Power BI Service :
+Microsoft propose Power BI Service, une plateforme en ligne qui permet de publier, par-
+tager et visualiser des rapports interactifs directement via un navigateur. Ce cloud permet aux
+utilisateurs de consulter leurs tableaux de bord, d’organiser des mises à jour automatiques des
+données et de collaborer en équipe.
+41
+
+
+===== PAGE 56 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+FIGURE 4.7 – Logo Power BI Service
+4.5.2
+Publication :
+FIGURE 4.8 – Composant de publication
+On choisit l’espace de travail concerné :
+FIGURE 4.9 – Sélection de destination dans Power BI Service
+42
+
+
+===== PAGE 57 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+FIGURE 4.10 – Publication sur Power BI Service
+FIGURE 4.11 – Espace de travail Power BI Service
+4.6
+Actualisation des données
+La mise à jour automatique des données est essentielle pour assurer la fiabilité des tableaux
+de bord. Dans un contexte où les décisions doivent être prises rapidement et avec précision, il
+est indispensable de travailler avec des données actualisées. C’est pour cette raison que Power
+BI Service fournit cette fonctionnalité qui permet de synchroniser régulièrement les rapports
+avec les sources de données.
+Nous avons mis en place une passerelle de données (Gateway) permettant à Power BI Ser-
+vice d’accéder en temps réel aux données stockées localement dans la base PostgreSQL sans
+intervention humaine. Donc, la passerelle joue un rôle d’intermédiaire sécurisé entre le service
+43
+
+
+===== PAGE 58 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+cloud de Power BI et la base de données locale.
+FIGURE 4.12 – Rôle de Gateway
+4.6.1
+Configuration de la passerelle Power BI
+Connexion à la passerelle de données :
+La passerelle a été installée sur la machine locale, ensuite les paramètres ont été configurés en se
+connectant au compte professionnel lié au Power BI. Une fois la passerelle est en ligne, comme
+on peut voir dans la figure, on passe à l’étape suivante.
+FIGURE 4.13 – Connexion à la passerelle de données (Gateway)
+44
+
+
+===== PAGE 59 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+Connexion à la source de données :
+Une nouvelle source de données a été configurée dans Power BI Service :
+FIGURE 4.14 – Connexion à la source de données
+–> La passerelle a été sélectionnée et associée à la source de données définie, comme le
+montre la figure suivante :
+45
+
+
+===== PAGE 60 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+FIGURE 4.15 – Association de la passerelle à la source de données
+Planification de l’actualisation : Enfin, un planning d’actualisation a été défini, permettant
+à Power BI Service de mettre à jour les données automatiquement à des intervalles réguliers (
+chaque jour à 8h).
+FIGURE 4.16 – Planification de l’actualisation
+46
+
+
+===== PAGE 61 =====
+
+Chapitre 4. Sprint 2 : Création et automatisation des tableaux de bord dynamiques
+4.6.2
+Flux de données automatisé :
+Aprés la configuration, on peut voir cette interface dans Power BI Service qui représente le
+flux de données automatisé :
+FIGURE 4.17 – Flux de données automatisé dans Power BI Service
+4.7
+Conclusion
+Ce chapitre a montré que l’élaboration des tableaux de bord dynamiques via Power BI a
+facilité la transformation des données provenant du DW en informations visuelles actualisées,
+interactives et facilement accessibles via Power BI Service. Les utilisateurs peuvent désormais
+parcourir efficacement les transactions, les comptes clients et les comportements anormaux.
+Cette étape marque un progrès notable vers une prise de décision rapide et plus éclairée.
+47
+
+
+===== PAGE 62 =====
+
+CHAPITRE 5
+SPRINT 3 : CRÉATION DU SITE WEB
+5.1
+Introduction
+Ce dernier sprint vise à rendre les résultats de l’analyse décisionnelle disponibles à travers
+une interface web intuitive et sécurisée. Ce chapitre décrit la création du site, allant de l’éta-
+blissement du système d’authentification jusqu’à l’intégration de caractéristiques interactives
+comme la visualisation des tableaux de bord et le chatbot bancaire.
+48
+
+
+===== PAGE 63 =====
+
+Chapitre 5. Sprint 3 : Création du site web
+5.2
+Backlog Product du Sprint 3
+ID
+User Story
+Tâche
+ID
+Tâche
+US3
+En tant qu’utilisateur authentifié,
+je souhaite accèder à une pla-
+teforme web interactive afin de
+consulter les dashboards, visua-
+liser les KPIs et interagir avec un
+assistant virtuel.
+US3.1
+Développer
+une
+interface
+de
+connexion
+sécurisée
+avec
+au-
+thentification des utilisateurs.
+US3.2
+Intégrer les tableaux de bord Power
+BI au sein du site web
+US3.3
+Ajouter un chatbot intelligent (Bank-
+Bot)
+US3.4
+Creéation du page contact simple
+qui contient les informations sur la
+banque.
+TABLE 5.1 – Backlog de produit de sprint3
+5.3
+Diagramme de cas d’utilisation
+FIGURE 5.1 – Diagramme de cas d’utilisation
+5.4
+Technologies utilisées
+Dans cette partie, plusieurs technologies ont été utilisées :
+49
+
+
+===== PAGE 64 =====
+
+Chapitre 5. Sprint 3 : Création du site web
+— Python : Langage principal utilisé pour développer l’application web grâce à sa simplicité
+d’utilisation et son abondance en bibliothèques.
+FIGURE 5.2 – Logo-Python
+— Streamlit : Un framework Python performant et léger facilitant la création d’interfaces
+web interactives avec une quantité minimale de code.
+FIGURE 5.3 – Logo-Streamlit
+— Dialogflow : Une plateforme de traitement du langage naturel utilisée pour créer le chat-
+bot et l’intégrer dans l’application web.
+FIGURE 5.4 – Logo-Dialogflow
+— Flask : Un micro framework Python utilisé pour établir le lien entre Dialogflow et la base
+de données PostgreSQL via des webhooks sécurisés.
+FIGURE 5.5 – Logo-Flask
+50
+
+
+===== PAGE 65 =====
+
+Chapitre 5. Sprint 3 : Création du site web
+5.5
+Présentation du site web
+Dans cette partie, nous exposons les différentes interfaces fonctionnelles de l’application
+web :
+5.5.1
+Page Login/ Sign Up :
+FIGURE 5.6 – Page Login
+FIGURE 5.7 – Page Sign Up
+La première étape d’accès au site se présente par deux méthodes : l’inscription (Sign Up) et
+la connexion (Login). L’utilisateur doit insérer ses informations personnelles pour se connecter.
+51
+
+
+===== PAGE 66 =====
+
+Chapitre 5. Sprint 3 : Création du site web
+– Sécurité d’accès :
+Les utilisateurs doivent obligatoirement se connecter pour pouvoir visualiser les tableaux de
+bord ou interagir avec le chatbot. Si ce n’est pas le cas, un message d’erreur clair leur indique
+qu’ils n’ont pas accès, comme on peut le voir dans les figures suivantes :
+FIGURE 5.8 – Accès refusé aux dashboards
+FIGURE 5.9 – Accès refusé au chatbot
+C’est pour cette raison qu’une table Users a été mise en place dans la base de données
+PostgreSQL pour conserver les identifiants, en intégrant le hachage des mots de passe pour
+assurer la protection de la confidentialité. Le script SQL pour la création de cette table est
+donné dans la figure ci-dessous :
+52
+
+
+===== PAGE 67 =====
+
+Chapitre 5. Sprint 3 : Création du site web
+FIGURE 5.10 – Script SQL de table users
+Exemple d’enregistrement d’un utilisateur dans la table users avec mot de passe haché :
+FIGURE 5.11 – Hachage sécurisé des mots de passe dans la base de données
+5.5.2
+Intégration des tableaux de bord : Page Dashboards
+La page Dashboards regroupe les visualisations Power BI mises en ligne sur Power BI
+Service. Grâce aux boutons clairs et intuitifs, l’utilisateur peut passer d’un tableau de bord à
+l’autre (Transactions, Comptes et Clients, Anomalies).
+53
+
+
+===== PAGE 68 =====
+
+Chapitre 5. Sprint 3 : Création du site web
+FIGURE 5.12 – Page Dashboards
+5.5.3
+Intégration de l’IA : Page BankBot Q-A
+L’intégration de l’intelligence artificielle dans notre interface utilisateur s’est traduite par
+l’ajout d’une page dédiée à l’assistant virtuel "BankBot Q-A".
+5.5.3.1
+Création de chatbot :
+Pour améliorer l’interactivité de la plateforme, une intelligence artificielle sous la forme de
+chatbot a été intégrée dans le site web. Sous le nom de "BankBot", ce dernier offre aux analystes
+la possibilité de poser des questions dynamiques relatives aux données bancaires. Ci-dessous,
+les étapes clés de sa mise en œuvre :
+1. Création du bot : Un chatbot a été créé sur Dialogflow avec plusieurs intents (questions)
+que l’analyste peut poser.
+2. Connexion à la base de données : Un petit serveur a été conçu avec Flask(Python) afin
+de permettre à Dialogflow de récupérer les vrais réponses depuis la base PostgreSQL.
+3. Réception et envoi des réponses : Lorsqu’une question est posée, Dialogflow la transfère
+au server Flask, qui effectue une requête SQL et retourne la réponse au chatbot.
+5.5.3.2
+Intégration dans le site :
+Une page appelée BankBot Q-A a été intégrée. Elle offre à l’utilisateur authentifié la pos-
+sibilité d’interroger le bot directement via l’interface web.
+54
+
+
+===== PAGE 69 =====
+
+Chapitre 5. Sprint 3 : Création du site web
+FIGURE 5.13 – Page BankBot Q-A
+Quand un utilisateur cherche à obtenir un guide d’utilisation, il peut demander une question
+comme "Comment utiliser ce chatbot?". Le chatbot lui répond avec des exemples de ques-
+tions possibles. Cette discussion facilite une orientation efficace pour l’utilisateur dès le début
+de son interaction, comme on peut voir dans la figure suivante :
+FIGURE 5.14 – Bulle de dialogue du chatbot affichant le guide d’utilisation
+55
+
+
+===== PAGE 70 =====
+
+Chapitre 5. Sprint 3 : Création du site web
+FIGURE 5.15 – Exemple des questions avec chatbot
+5.5.4
+Page Contact
+FIGURE 5.16 – Page Contact
+Cette page fournit à l’utilisateur un accès simplifié aux informations officielles de la banque.
+Ainsi qu’une carte interactive Google Maps pour une localisation précise.
+56
+
+
+===== PAGE 71 =====
+
+Chapitre 5. Sprint 3 : Création du site web
+5.6
+Conclusion
+La plateforme développée au cours de ce sprint offre aux analystes un accès aisé aux ta-
+bleaux de bord grâce à une interface protégée. Elle intègre un système d’authentification, un
+chatbot intelligent, et une navigation fluide entre les pages. Cette plateforme rend l’analyse des
+données plus interactive, moderne et accessible.
+57
+
+
+===== PAGE 72 =====
+
+CONCLUSION GÉNÉRALE
+Ce projet de fin d’études réalisé dans le cadre de notre formation en Business Intelligence, vise
+à répondre aux besoins croissants d’analyse et de valorisation des données transactionnelles au
+sein de l’Amen Bank.
+À travers ce travail, nous avons conçu et développé une solution décisionnelle complète qui vise
+à faciliter la prise de décision.
+Dès les premières étapes, l’analyse du contexte bancaire et l’identification des besoins spé-
+cifiques ont permis de cadrer efficacement notre démarche et de garantir son alignement avec
+les objectifs visés.
+L’environnement du travail a ensuite été établi, et un processus de traitement des données a été
+mis en place visant à garantir la qualité et la cohérence des informations utilisées.
+Sur le plan visuel, nous avons élaboré des tableaux de bord dynamiques pour suivre les in-
+dicateurs clés de performance (KPI) et d’identifier les comportements atypiques. Nous avons
+également développé une interface conviviale avec intégration d’une partie d’intelligence arti-
+ficielle sous forme de chatbot intelligent.
+Tout au long du projet, nous avons été confrontés à divers défis, qu’il s’agisse de probléma-
+tiques liées à la qualité des données, à l’intégration multi-outils et à la cohérence inter-sources.
+Grâce à une démarche progressive et à une capacité d’adaptation continue, nous avons su rele-
+ver ces défis et faire orienter notre solution dans le bon sens.
+En définitive, ce projet nous a permis de mobiliser l’ensemble des compétences acquises
+au cours de notre formation : conception de base de données, traitement de données, reporting,
+développement web, et intelligence artificielle. Il nous a également donné l’opportunité d’éva-
+luer dans un cadre professionnel exigeant, en répondant à des problématiques actuelles dans le
+domaine bancaire.
+Ce projet offre également des perspectives d’évolution, notamment par l’implémentation
+des modèles de machine learning pour la détection des transactions anormales ou encore l’élar-
+gissement de la plateforme à d’autres services bancaires.
+Ce travail constitue ainsi une étape déterminante de notre parcours et marque notre entrée dans
+le monde professionnel avec une vision claire des enjeux de la BI moderne.
+58
+
+
+===== PAGE 73 =====
+
+RÉFÉRENCES
+1. : https ://www.amenbank.com.tn/fr/notre-identite.html
+2. : https ://www.postgresql.org/
+3. : https ://streamlit.io/
+4. : https ://dialogflow.cloud.google.com/
+59
+
+
+===== PAGE 74 =====
+
+3%
+INDICE DE SIMILITUDE 0%
+SOURCES INTERNET
+0%
+PUBLICATIONS
+3%
+COPIES DE L'ÉTUDIANT
+1
+1%
+2
+1%
+3
+1%
+Exclure les citations
+Activer
+Exclure la bibliographie Activer
+Exclure les
+correspondances
+< 1%
+Rapport final.pdf
+RAPPORT DE SIMILITUDE
+SOURCES PRINCIPALES
+Submitted to University of Carthage
+Copie de l'étudiant
+Submitted to University of Sousse
+Copie de l'étudiant
+Submitted to University of Monastir
+Copie de l'étudiant
+
+
+===== PAGE 75 =====
+
+61

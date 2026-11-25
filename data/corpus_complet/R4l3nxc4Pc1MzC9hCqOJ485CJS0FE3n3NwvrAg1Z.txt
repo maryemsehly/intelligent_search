@@ -1,0 +1,3339 @@
+===== PAGE 1 =====
+
+ 
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de 
+Mahdia 
+ 
+MEMOIRE 
+ 
+N° d’ordre : LCE-IRS-3-2026-
+009  
+Ministère de l’Enseignement Supérieur et 
+de la Recherche Scientifique  
+ 
+ 
+ 
+MEMOIRE  
+                                                 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+                                                 
+ Effectué à 
+ 
+Pioneer-tech 
+ 
+ 
+En vue de l’obtention du diplôme de 
+ 
+Licence Computer Engineering : Ingénierie des Réseaux et Systèmes 
+ 
+Elaboré par : 
+ 
+Ben Khater Mehdi, Ghofrane Barouni 
+ 
+     
+Vers une nouvelle stratégie de cybersécurité : Cybershot, un firewall/IPS basé 
+sur l’IA 
+ 
+ 
+ 
+Soutenu le :  11 juin 2026  
+devant le jury composé de : 
+ 
+ 
+Président 
+: Ghannay Sana 
+Rapporteur 
+: Wiem Chebil 
+Encadrant Académique 
+: Najoua Achoura 
+Encadrant Professionnel 
+ : Nasredin Hajam 
+ 
+ 
+ 
+Année universitaire 2025-2026 
+
+
+===== PAGE 2 =====
+
+Dédicace
+À mes très chers parents,
+Zouhir & Amel
+Vous qui avez tout sacrifié pour me voir réussir,
+vous dont l’amour inconditionnel a été ma lumière
+dans les moments les plus difficiles.
+Ce travail est le vôtre avant d’être le mien.
+À mes frères et ma sœur,
+Saber, Bilel & Jihen
+Vous avez été mes premiers soutiens, mes complices de tous les instants,
+les racines solides qui m’ont permis de m’élever.
+À tous mes amis et à chaque personne
+qui a contribué, de près ou de loin, à mon parcours :
+Votre générosité, votre confiance et vos encouragements
+ont été un moteur tout au long de ce chemin.
+À ma binôme,
+Barouni Ghofrane
+Merci pour ta rigueur, ton engagement et ta bonne humeur
+tout au long de ce projet. Ce travail est aussi le tien.
+Ce travail vous est entièrement dédié.
+Ben Khater Mahdi
+
+
+===== PAGE 3 =====
+
+Dédicace
+À mes chers parents, NEJI et RAKIA,
+Pour leur amour infini, leur soutien constant
+et leurs sacrifices tout au long de mon parcours.
+Merci pour votre patience, vos encouragements
+et votre confiance en moi dans les moments les plus difficiles.
+À mes chères sœurs, MALEK, HANINE, NOUR et SOUJOUD,
+Pour votre présence, votre soutien
+et tous les moments de joie partagés
+tout au long de mon parcours.
+Merci pour vos encouragements, votre affection
+et votre confiance qui m’ont toujours donné la force d’avancer.
+À mes proches amis,
+Merci pour votre soutien, votre présence
+et tous les moments de motivation et de partage
+qui ont accompagné ce parcours.
+À mon binôme,
+Ben Khater Mahdi
+Merci pour ta collaboration, ton sérieux
+et les efforts fournis tout au long de ce projet.
+Ce travail est le résultat d’un esprit d’équipe.
+Barouni Ghofrane
+
+
+===== PAGE 4 =====
+
+Remerciements
+Au terme de ce travail, nous souhaitons exprimer notre profonde
+reconnaissance à toutes les personnes qui ont contribué,
+de près ou de loin, à sa réalisation.
+À notre encadrante académique,
+Mme Achoura Najoua
+Pour la qualité de son suivi, ses orientations pertinentes
+et sa disponibilité tout au long de cette année.
+Ses conseils méthodologiques et sa rigueur scientifique
+ont été déterminants dans l’aboutissement de ce travail.
+À notre encadrant professionnel au sein de Pioneer Tech,
+Mr Hajjem Nacredine
+Pour nous avoir accueillis, guidés et soutenus durant notre stage.
+Sa confiance en nos compétences et son expertise dans le domaine
+nous ont permis d’évoluer dans d’excellentes conditions
+et d’enrichir significativement notre expérience professionnelle.
+À l’ensemble de l’équipe de Pioneer Tech,
+Pour leur accueil bienveillant, leur disponibilité
+et leur esprit de collaboration tout au long de notre présence.
+Travailler à leurs côtés a constitué une expérience
+enrichissante et formatrice à plus d’un titre.
+
+
+===== PAGE 5 =====
+
+M. Ben Khater & G. Barouni
+Aux membres du jury,
+Pour le temps consacré à l’évaluation de ce mémoire.
+Leur lecture attentive et leurs remarques constructives
+sont pour nous une marque de respect sincèrement appréciée.
+À l’ensemble du corps enseignant et du personnel administratif
+de l’Institut Supérieur d’Informatique de Mahdia (ISIMA),
+Pour la qualité de la formation dispensée durant notre cursus
+et les conditions d’apprentissage qu’ils ont su créer.
+À nos familles et à nos proches,
+Pour leur soutien moral constant, leurs encouragements sans faille
+et leur patience exemplaire tout au long de ce parcours.
+C’est grâce à leur présence et à leur amour
+que nous avons pu mener ce projet à terme.
+Que chacune et chacun trouve ici
+l’expression sincère de notre gratitude.
+iv
+
+
+===== PAGE 6 =====
+
+Table des matières
+Dédicace
+i
+Dédicace
+ii
+Remerciements
+iii
+Table des figures
+ix
+Liste des tableaux
+x
+Liste des acronymes
+xi
+Introduction Générale
+1
+1
+Contexte général du projet
+3
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.1
+Présentation de l’organisme d’accueil . . . . . . . . . . . . . . . . . . .
+3
+1.1.1
+Présentation générale . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.1.2
+Secteur d’activités
+. . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Étude de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2.1
+Problématique . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2.2
+Critique de l’existant . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2.3
+Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3
+Méthodologie de travail . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.3.1
+Présentation des méthodologies . . . . . . . . . . . . . . . . . .
+6
+1.3.2
+Méthodologie retenue . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.4
+Planification du projet . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2
+Conception et choix techniques
+9
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1
+Identification des besoins . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1.1
+Besoins fonctionnels
+. . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1.2
+Besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . .
+9
+2.2
+Architecture globale du système . . . . . . . . . . . . . . . . . . . . . .
+10
+2.2.1
+Vue d’ensemble . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.2.2
+Identification des acteurs . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.3
+Les deux services inter-VM . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.4
+Flux de données entre les composants . . . . . . . . . . . . . . .
+13
+2.3
+Choix techniques et argumentation
+. . . . . . . . . . . . . . . . . . . .
+14
+v
+
+
+===== PAGE 7 =====
+
+TABLE DES MATIÈRES
+M. Ben Khater & G. Barouni
+2.3.1
+Systèmes d’exploitation des machines virtuelles
+. . . . . . . . .
+14
+2.3.2
+Langage de programmation
+. . . . . . . . . . . . . . . . . . . .
+16
+2.3.3
+Capture réseau
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.3.4
+Stockage des données . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.3.5
+Algorithme de détection (Machine Learning) . . . . . . . . . . .
+19
+2.3.6
+Blocage des attaques . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.3.7
+Notification de l’administrateur . . . . . . . . . . . . . . . . . .
+22
+2.3.8
+Disponibilité continue : services systemd . . . . . . . . . . . . .
+23
+2.3.9
+Dashboard de supervision
+. . . . . . . . . . . . . . . . . . . . .
+24
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3
+Implémentation de CyberShot
+27
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.1
+Mise en place de l’environnement de déploiement
+. . . . . . . . . . . .
+27
+3.1.1
+Étape 1 : Préparation de l’environnement matériel . . . . . . . .
+27
+3.1.2
+Étape 2 :Installation de VMware Workstation Pro . . . . . . . .
+28
+3.1.3
+Étape 3 : Création et configuration des machines virtuelles . . .
+28
+3.1.4
+Étape 4 : Vérification de la connectivité réseau . . . . . . . . . .
+29
+3.2
+Sécurisation et instrumentation de VM1
+. . . . . . . . . . . . . . . . .
+29
+3.2.1
+Le pare-feu : définition et rôle . . . . . . . . . . . . . . . . . . .
+29
+3.2.2
+Étape 5 : Configuration du pare-feu iptables sur VM1 . . . . . .
+29
+3.2.3
+Étape 6 : Installation des dépendances logicielles . . . . . . . . .
+30
+3.3
+Construction de la base de données . . . . . . . . . . . . . . . . . . . .
+30
+3.3.1
+Étape 7 : Création de la base de données MySQL sur VM2 . . .
+30
+3.4
+Service de capture réseau (VM1)
+. . . . . . . . . . . . . . . . . . . . .
+34
+3.4.1
+Étape 8 : Développement du script de capture ids_realtime.py
+34
+3.5
+Génération du dataset et entraînement du modèle . . . . . . . . . . . .
+36
+3.5.1
+Machine Learning appliqué à la cybersécurité
+. . . . . . . . . .
+36
+3.5.2
+Étape 9 : Génération du dataset en laboratoire . . . . . . . . . .
+36
+3.5.3
+Étape 10 : Entraînement du modèle Random Forest . . . . . . .
+37
+3.6
+Pipeline de détection et règle de décision . . . . . . . . . . . . . . . . .
+39
+3.6.1
+Étape 11 : Implémentation du pipeline de traitement . . . . . .
+39
+3.6.2
+Étape 12 : Règle de décision à double seuil . . . . . . . . . . . .
+41
+3.7
+Module XAI interne Explication des décisions
+. . . . . . . . . . . . . .
+41
+3.7.1
+Explicabilité des modèles de Machine Learning (XAI) . . . . . .
+41
+3.7.2
+Étape 13 : Développement du module d’explication (XAI sansApplication
+Programming Interface (API) externe) . . . . . . . . . . . . . .
+41
+3.8
+Module d’auto-apprentissage . . . . . . . . . . . . . . . . . . . . . . . .
+42
+3.8.1
+Étape 14 : Implémentation du module d’auto-apprentissage . . .
+42
+3.9
+Dashboard de supervision (React + FastAPI)
+. . . . . . . . . . . . . .
+43
+vi
+
+
+===== PAGE 8 =====
+
+TABLE DES MATIÈRES
+M. Ben Khater & G. Barouni
+3.9.1
+Étape 15 : Développement du backend FastAPI . . . . . . . . .
+43
+3.9.2
+Étape 16 : Développement du frontend React
+. . . . . . . . . .
+44
+3.9.3
+Étape 17 : Module d’alerte Telegram . . . . . . . . . . . . . . .
+46
+3.10 Récapitulatif de la séquence d’implémentation . . . . . . . . . . . . . .
+46
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4
+Étude comparative
+49
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.1
+Les limites des approches traditionnelles
+. . . . . . . . . . . . . . . . .
+49
+4.1.1
+Fonctionnement des systèmes de sécurité basés sur les signatures
+49
+4.1.2
+Les limites des systèmes basés sur les signatures face au Domain
+Name System (DNS) Tunneling . . . . . . . . . . . . . . . . . .
+50
+4.1.3
+Implications pour l’analyse expérimentale
+. . . . . . . . . . . .
+50
+4.2
+Présentation des deux architectures . . . . . . . . . . . . . . . . . . . .
+51
+4.2.1
+Architecture de CyberShot . . . . . . . . . . . . . . . . . . . . .
+51
+4.2.2
+Architecture pfSense + Suricata . . . . . . . . . . . . . . . . . .
+51
+4.2.3
+Mise en place de l’environnement pfSense + Suricata . . . . . .
+51
+4.2.4
+Architecture de test . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.3
+Tests comparatifs : attaques classiques
+. . . . . . . . . . . . . . . . . .
+53
+4.3.1
+Scan de ports Nmap
+. . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.3.2
+Force brute SSH
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.3.3
+Internet Control Message Protocol (ICMP) Flood . . . . . . . .
+57
+4.4
+Attaques modernes automatisées par l’Intelligence Artificielle . . . . . .
+59
+4.4.1
+Les attaques Zero-Day . . . . . . . . . . . . . . . . . . . . . . .
+59
+4.5
+Test principal :DNSTunneling . . . . . . . . . . . . . . . . . . . . . . .
+60
+4.5.1
+Définition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+4.5.2
+Mise en place de l’infrastructure d’attaque . . . . . . . . . . . .
+60
+4.5.3
+Lancement de l’attaque . . . . . . . . . . . . . . . . . . . . . . .
+61
+4.5.4
+Résultats du côté de pfSense . . . . . . . . . . . . . . . . . . . .
+62
+4.5.5
+Résultat côté CyberShot . . . . . . . . . . . . . . . . . . . . . .
+64
+4.6
+Bilan et discussion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+Conclusion Générale
+68
+Webographie
+69
+vii
+
+
+===== PAGE 9 =====
+
+Table des figures
+1.1
+Logo de Pioneer Tech . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Planning séquentiel de développement de CyberShot
+. . . . . . . . . .
+8
+2.1
+Architecture globale de CyberShot
+. . . . . . . . . . . . . . . . . . . .
+11
+2.2
+Diagramme des cas d’utilisation du système CyberShot . . . . . . . . .
+12
+2.3
+Les deux services systemd de communication inter-VM . . . . . . . . .
+13
+2.4
+Diagramme d’activité du pipeline de traitement de CyberShot . . . . .
+14
+2.5
+Logo Python
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.6
+Logo Scapy
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.7
+Logo MySQL
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.8
+Logo Telegram
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+2.9
+Logo FastAPI . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.10 Logo React
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+2.11 Diagramme des cas d’utilisation du dashboard de supervision . . . . . .
+26
+3.1
+Configuration iptables initiale sur VM1 . . . . . . . . . . . . . . . . . .
+30
+3.2
+Pipeline de traitement piloté par le moteur ML base CyberShot
+. . . .
+32
+3.3
+Structure de la table traffic_logs
+. . . . . . . . . . . . . . . . . . . . .
+33
+3.4
+Code d’entraînement du modèle Random Forest . . . . . . . . . . . . .
+38
+3.5
+Illustration du processus de décision du modèle Random Forest
+. . . .
+39
+3.6
+Architecture complète du pipeline de traitement et d’inférence de CyberShot 40
+3.7
+Architecture du processus d’auto-apprentissage de CyberShot . . . . . .
+43
+3.8
+Endpoints principaux de l’API FastAPI . . . . . . . . . . . . . . . . . .
+44
+3.9
+Page d’accueil du dashboard de supervision . . . . . . . . . . . . . . . .
+44
+3.10 Journal de trafic avec descriptions XAI intégrées . . . . . . . . . . . . .
+45
+3.11 Vue détaillée d’une attaque dans le dashboard . . . . . . . . . . . . . .
+45
+3.12 Exemple d’alerte Telegram reçue lors d’une attaque détectée . . . . . .
+46
+4.1
+Fonctionnement d’un système de détection/prévention basé sur les signa-
+tures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.2
+Architecture de l’étude comparative . . . . . . . . . . . . . . . . . . . .
+53
+4.3
+Commande du scan complet des ports avec Nmap . . . . . . . . . . . .
+54
+4.4
+Lancement du scan Nmap depuis Kali Linux . . . . . . . . . . . . . . .
+54
+4.5
+Détection du scan par CyberShot . . . . . . . . . . . . . . . . . . . . .
+54
+4.6
+Détection du scan par Suricata
+. . . . . . . . . . . . . . . . . . . . . .
+55
+viii
+
+
+===== PAGE 10 =====
+
+TABLE DES FIGURES
+M. Ben Khater & G. Barouni
+4.7
+Commande de l’attaque force brute SSH avec Hydra . . . . . . . . . . .
+55
+4.8
+Lancement de l’attaque force brute SSH depuis Kali Linux . . . . . . .
+56
+4.9
+Détection et blocage de la force brute par CyberShot . . . . . . . . . .
+56
+4.10 Détection de la force brute par Suricata . . . . . . . . . . . . . . . . . .
+57
+4.11 Commande de l’attaque ICMP Flood avec hping3 . . . . . . . . . . . .
+57
+4.12 Lancement du ICMP Flood depuis Kali Linux . . . . . . . . . . . . . .
+58
+4.13 Réaction de CyberShot face au flood ICMP (0,9 seconde) . . . . . . . .
+58
+4.14 Réaction de Suricata face au flood ICMP . . . . . . . . . . . . . . . . .
+59
+4.15 Configuration du fichier de zoneDNSsur Kali Linux . . . . . . . . . . .
+60
+4.16 Commande de lancement du serveur dnscat2 sur Kali Linux
+. . . . . .
+61
+4.17 Serveur dnscat2 lancé sur Kali — en attente de connexion
+. . . . . . .
+61
+4.18 Commande de connexion du client dnscat2 depuis la machine victime .
+62
+4.19 TraficDNStunnelisé — sous-domaines encodés en base64
+. . . . . . . .
+62
+4.20 Suricata ne détecte pas leDNSTunneling
+. . . . . . . . . . . . . . . . .
+63
+4.21 Session dnscat2 active — accès root obtenu sur la machine victime . . .
+64
+4.22 Blocage automatique de l’IP attaquante par CyberShot via iptables . .
+65
+4.23 Alerte envoyée en temps réel sur Telegram . . . . . . . . . . . . . . . .
+65
+ix
+
+
+===== PAGE 11 =====
+
+Liste des tableaux
+1.1
+Synthèse des limitations de l’existant et des besoins associés
+. . . . . .
+5
+1.2
+Comparaison des méthodologies de développement . . . . . . . . . . . .
+7
+2.1
+Table d’adressage complet de l’infrastructure CyberShot
+. . . . . . . .
+12
+2.2
+Comparaison des systèmes d’exploitation pour VM1 et VM2 . . . . . .
+15
+2.3
+Comparaison des systèmes d’exploitation pour VM3 (attaquant) . . . .
+16
+2.4
+Comparaison des langages de programmation . . . . . . . . . . . . . . .
+17
+2.5
+Comparaison des outils de capture réseau . . . . . . . . . . . . . . . . .
+18
+2.6
+Comparaison des systèmes de gestion de base de données . . . . . . . .
+19
+2.7
+Comparaison des algorithmes de classification
+. . . . . . . . . . . . . .
+20
+2.8
+Justification du choix de l’algorithme Random Forest . . . . . . . . . .
+20
+2.9
+Comparaison des mécanismes de blocage réseau sous Linux . . . . . . .
+21
+2.10 Comparaison des canaux de notification . . . . . . . . . . . . . . . . . .
+22
+2.11 Comparaison des mécanismes de gestion des processus persistants . . .
+23
+2.12 Comparaison des frameworks backend pour l’API REST
+. . . . . . . .
+24
+2.13 Comparaison des frameworks frontend
+. . . . . . . . . . . . . . . . . .
+25
+3.1
+Caractéristiques des machines hôtes . . . . . . . . . . . . . . . . . . . .
+27
+3.2
+Architecture des machines virtuelles de l’environnement de test . . . . .
+28
+3.3
+Features extraites par le script de capture
+. . . . . . . . . . . . . . . .
+35
+3.4
+Attaques simulées pour la génération du dataset . . . . . . . . . . . . .
+37
+3.5
+Composition du dataset d’entraînement . . . . . . . . . . . . . . . . . .
+37
+3.6
+Métriques du modèle Random Forest sur le jeu de test
+. . . . . . . . .
+38
+3.7
+Séquence linéaire d’implémentation de CyberShot . . . . . . . . . . . .
+47
+4.1
+Comparaison des résultats face auDNSTunneling Command and Control
+(C2)
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+4.2
+Bilan comparatif entre approche traditionnelle et approche par appren-
+tissage automatique . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+x
+
+
+===== PAGE 12 =====
+
+Liste des acronymes
+API Application Programming Interface
+C2
+Command and Control
+C.I.A Confidentiality, Integrity, Availability
+CSV Comma-Separated Values
+DDoS Distributed Denial of Service
+DGA Domain Generation Algorithm
+DNS Domain Name System
+DoS Denial of Service
+EDR Endpoint Detection and Response
+FTP File Transfer Protocol
+HTTP HyperText Transfer Protocol
+HTTPS HyperText Transfer Protocol Secure
+IA
+Intelligence Artificielle
+ICMP Internet Control Message Protocol
+IDS Intrusion Detection System
+IP
+Internet Protocol
+IPS Intrusion Prevention System
+LAN Local Area Network
+LIME Local Interpretable Model-agnostic Explanations
+ML
+Machine Learning
+REST Representational State Transfer
+RF
+Random Forest
+SHAP SHapley Additive exPlanations
+SIEM Security Information and Event Management
+SQL Structured Query Language
+SSH Secure Shell
+SYN Synchronize (flag TCP)
+TCP Transmission Control Protocol
+UDP User Datagram Protocol
+
+
+===== PAGE 13 =====
+
+LISTE DES TABLEAUX
+M. Ben Khater & G. Barouni
+URL Uniform Resource Locator
+VM Virtual Machine
+WAF Web Application Firewall
+WAN Wide Area Network
+XAI eXplainable Artificial Intelligence
+XSS Cross-Site Scripting
+xii
+
+
+===== PAGE 14 =====
+
+Introduction Générale
+En mars 2020, 18 000 organisations dont le Trésor américain, le Département d’État
+et des dizaines d’agences fédérales ont volontairement installé un logiciel espion sans
+le savoir, simplement en appliquant une mise à jour de routine [1]. Pendant neuf
+mois, un acteur étatique russe a exfiltré des données confidentielles via de simples
+requêtes DNS, un protocole que presque aucun pare-feu ne surveille [2]. L’attaque
+SUNBURST a démontré, de manière brutale, que les outils de défense traditionnels
+sont structurellement aveugles face aux menaces modernes.
+Nous vivons dans un monde hyperconnecté où les hôpitaux, les banques, les uni-
+versités et les entreprises échangent chaque seconde des millions de paquets réseau : à
+l’échelle mondiale, le trafic IP dépasse aujourd’hui 500 téraoctets par minute [3],
+soit l’équivalent de plusieurs milliards de requêtes DNS, HTTP et TCP transitant simul-
+tanément sur les infrastructures numériques mondiales. Derrière ce volume vertigineux
+se cache une réalité alarmante : en 2023, plus de 72 % des organisations dans le
+monde ont subi au moins une cyberattaque réussie [4], et le coût moyen d’une violation
+de données a atteint 4,45 millions de dollars [5]. Les pare-feux traditionnels, fondés
+sur des règles statiques établies il y a plusieurs décennies, se révèlent structurellement
+incapables de protéger ces flux : ils ne peuvent bloquer que ce qu’ils connaissent déjà,
+laissant passer les attaques inconnues, polymorphes et de plus en plus automatisées [6,
+4].
+C’est dans ce contexte que la cybersécurité intelligente s’impose comme une nécessité
+absolue : il ne s’agit plus seulement de filtrer le trafic réseau selon des règles figées, mais
+d’apprendre à reconnaître les comportements malveillants, y compris ceux que personne
+n’a encore documentés. C’est précisément la raison d’être de ce projet : concevoir un
+système capable de surveiller en temps réel les flux réseau, de détecter automatiquement
+les anomalies comportementales, de bloquer les intrusions sans intervention humaine, et
+d’offrir à l’administrateur une supervision moderne et explicable de l’état de sécurité de
+son infrastructure.
+Ce mémoire s’articule autour de cinq. Le premier chapitre pose le contexte général du
+projet en présentant l’organisme d’accueil, l’analyse de l’existant, le cahier des charges
+et la solution proposée. Le chapitre 2 dresse l’état de l’art en abordant les concepts
+fondamentaux de sécurité réseau, les algorithmes de Machine Learning retenus et les
+solutions existantes. Dans le troisième chapitre les choix d’architecture et les technologies
+retenues pour la conception de CyberShot. Le chapitre 4 décrit la réalisation concrète :
+implémentation, base de données, moteur ML et dashboard de supervision. Enfin, le
+1
+
+
+===== PAGE 15 =====
+
+Introduction Générale
+M. Ben Khater & G. Barouni
+chapitre 5 présente les tests comparatifs et valide expérimentalement les performances
+de CyberShot face à pfSense + Suricata.Ce rapport est achevé par une conclusion
+générale et quelques perspectives.
+2
+
+
+===== PAGE 16 =====
+
+Chapitre 1
+Contexte général du projet
+Introduction
+Dans un environnement numérique de plus en plus exposé aux cybermenaces, la
+sécurité des infrastructures réseau est devenue une priorité pour toute organisation.
+Ce premier chapitre vise à présenter le contexte général, l’organisme d’accueil Pioneer
+Tech, ainsi que l’état des lieux de son environnement de sécurité. Il permet de illustrer
+les motivations ayant conduit au développement de CyberShot, une solution intelligente
+de détection et de réponse automatique aux intrusions réseau.
+1.1
+Présentation de l’organisme d’accueil
+1.1.1
+Présentation générale
+Pioneer Tech est une agence numérique tunisienne spécialisée dans l’ingénierie
+logicielle et l’accompagnement stratégique des startups. Positionnée comme un catalyseur
+de transformation digitale, l’agence transforme les ambitions conceptuelles en solutions
+technologiques performantes et pérennes [7].
+Figure 1.1. Logo de Pioneer Tech
+1.1.2
+Secteur d’activités
+L’expertise de l’agence s’articule autour de trois piliers fondamentaux :
+— Ingénierie Logicielle : Conception et déploiement de plateformes web et mobiles.
+— Stratégie Digitale : Création d’identités numériques fortes et cohérentes.
+3
+
+
+===== PAGE 17 =====
+
+CHAPITRE 1. CONTEXTE GÉNÉRAL DU PROJET
+M. Ben Khater & G. Barouni
+— Accompagnement Stratégique : Conseil technique et opérationnel au service
+de la croissance des entreprises.
+1.2
+Étude de l’existant
+Pioneer Tech, comme la majorité des agences de sa taille, s’appuie sur des mécanismes
+de sécurité réseau traditionnels pour protéger son infrastructure. La sécurité repose
+essentiellement sur des pare-feux classiques de type pfSense pour le filtrage du trafic, et
+sur des systèmes de détection d’intrusions basés sur des signatures tels que Suricata [6].
+Ces outils filtrent le trafic selon des règles statiques prédéfinies et analysent les
+paquets à la recherche de patterns malveillants connus. Leur efficacité dépend directe-
+ment de la mise à jour régulière de leurs bases de règles. En dehors de ces mécanismes,
+aucune solution centralisée d’analyse comportementale, de blocage automatique ou
+d’explication des décisions de sécurité n’est en place.
+1.2.1
+Problématique
+Dans un contexte où les cybermenaces évoluent en permanence, les organisations
+doivent adopter une posture de sécurité proactive. Les solutions actuellement déployées
+chez Pioneer Tech sont fondées sur une logique réactive : elles ne peuvent bloquer que ce
+qu’elles connaissent déjà. Face à une attaque inconnue ou à un comportement malveillant
+inédit, ces dispositifs restent structurellement aveugles. L’attaque SUNBURST en est
+l’illustration la plus parlante : pendant neuf mois, un acteur malveillant a opéré dans
+les systèmes de milliers d’organisations sans déclencher la moindre alerte, en exploitant
+des protocoles que les pare-feux ne surveillaient pas [1].
+Cette lacune se traduit concrètement par plusieurs problèmes opérationnels : la
+détection des menaces inconnues est impossible avec des signatures statiques, le blocage
+d’une source malveillante reste manuel ce qui introduit un délai de réaction critique,
+et lorsqu’une alerte est levée, aucune explication n’est fournie à l’administrateur sur
+la nature de la menace, ce qui complique et ralentit la prise de décision. Il devient
+donc nécessaire de concevoir un système capable de détecter automatiquement des
+comportements malveillants inconnus, d’en expliquer la nature, et d’y répondre en
+temps réel sans intervention humaine.
+1.2.2
+Critique de l’existant
+L’analyse des outils actuellement en place révèle plusieurs lacunes importantes en
+matière de sécurité réseau [4] :
+— Rigidité face aux menaces inconnues : les pare-feux classiques et les Intrusion
+4
+
+
+===== PAGE 18 =====
+
+CHAPITRE 1. CONTEXTE GÉNÉRAL DU PROJET
+M. Ben Khater & G. Barouni
+Detection System (IDS) à base de signatures ne peuvent détecter que les attaques
+déjà répertoriées. Les menaces zero-day passent inaperçues.
+— Faux positifs élevés : les systèmes basés sur des signatures génèrent un volume
+d’alertes difficile à gérer pour l’équipe d’administration.
+— Absence d’automatisation de la réponse : les solutions en place se contentent
+d’alerter. Le blocage reste manuel, ce qui introduit un délai critique dans des
+contextes où chaque seconde compte.
+— Manque d’explicabilité : lorsqu’une alerte est déclenchée, les outils classiques
+n’indiquent pas pourquoi le trafic est considéré comme suspect, ce qui ralentit
+l’analyse et la réponse.
+Pour mieux visualiser ces enjeux et en déduire les besoins concrets, le tableau 1.1
+propose une synthèse claire des limitations actuelles et des besoins identifiés :
+Constat
+Conséquence
+Besoin identifié
+Détection uniquement par
+signatures
+Menaces inconnues non dé-
+tectées
+Analyse comportementale
+par Machine Learning
+Blocage manuel des sources
+malveillantes
+Délai de réaction critique
+Automatisation de la ré-
+ponse
+via
+règles
+dyna-
+miques
+Absence d’explication des
+décisions
+Analyse et investigation ra-
+lenties
+Génération
+automatique
+d’explications textuelles
+Absence de notification en
+temps réel
+Administrateur non alerté
+immédiatement
+Système d’alerte instanta-
+née
+Supervision fragmentée
+Faible visibilité sur l’état de
+sécurité
+Dashboard de monitoring
+unifié
+Table 1.1. Synthèse des limitations de l’existant et des besoins associés
+1.2.3
+Solution proposée
+La solution proposée repose sur le développement d’un système de sécurité réseau
+intelligent baptisé CyberShot, conçu pour répondre directement aux lacunes identifiées.
+Elle s’articule autour de trois grands principes :
+1. Détection intelligente par apprentissage automatique
+L’ensemble du trafic
+réseau est capturé et analysé en temps réel par un modèle de Machine Learning. Ce
+modèle classe chaque flux en trois catégories : normal, menace ou attaque. À la différence
+des systèmes à base de signatures, cette approche permet de détecter des comportements
+malveillants inconnus en se basant sur les caractéristiques statistiques du trafic observé.
+5
+
+
+===== PAGE 19 =====
+
+CHAPITRE 1. CONTEXTE GÉNÉRAL DU PROJET
+M. Ben Khater & G. Barouni
+2. Réponse automatique et explicable
+Lorsqu’une attaque est détectée, le système
+génère automatiquement une explication textuelle décrivant les raisons de la classifica-
+tion, puis bloque l’adresse IP source sans intervention humaine. Cette double action —
+explication et blocage distingue CyberShot des solutions classiques qui se limitent à
+alerter.
+3. Supervision et notification en temps réel
+Un tableau de bord web moderne
+permet à l’administrateur de visualiser l’état du trafic, les alertes et les statistiques de
+sécurité. En parallèle, une notification instantanée est envoyée dès qu’une attaque est
+détectée, garantissant une réactivité maximale même en l’absence de supervision active.
+Cette solution a été nommée CyberShot, Cyber pour le domaine de la cybersécurité
+dans lequel elle opère, et Shot pour l’idée d’une réponse précise et immédiate face à
+la menace détectée. CyberShot repose sur une architecture en trois nœuds virtuels,
+combinant capture réseau en temps réel, analyse par apprentissage automatique et
+réponse automatique aux menaces.
+1.3
+Méthodologie de travail
+1.3.1
+Présentation des méthodologies
+Le choix d’une méthodologie de développement est une décision structurante pour
+tout projet logiciel. Elle définit l’organisation des phases de travail, la gestion des risques
+et le mode de livraison des résultats [8]. Plusieurs approches sont couramment utilisées
+dans ce domaine :
+— Le modèle en cascade (Waterfall) : les phases du projet analyse, conception,
+réalisation, tests et déploiement se succèdent de manière séquentielle et ordonnée.
+Chaque phase doit être entièrement terminée avant de passer à la suivante. Ce
+modèle est adapté aux projets dont les exigences sont stables et bien définies dès
+le départ.
+— Le modèle en V : extension du modèle en cascade dans lequel chaque phase de
+développement est associée à une phase de validation correspondante. Il renforce
+la traçabilité entre les besoins exprimés et les tests de vérification.
+— Le modèle en spirale : approche itérative centrée sur la gestion continue des
+risques. Chaque itération couvre les phases d’analyse, de conception, de réalisation
+et d’évaluation. Ce modèle est adapté aux projets complexes comportant une
+forte incertitude technique.
+— Les méthodes agiles (Scrum, Kanban) : développement itératif et incrémental
+organisé en cycles courts appelés sprints. Ces méthodes favorisent l’adaptation
+6
+
+
+===== PAGE 20 =====
+
+CHAPITRE 1. CONTEXTE GÉNÉRAL DU PROJET
+M. Ben Khater & G. Barouni
+aux changements et la collaboration continue, mais supposent une interaction
+régulière avec le commanditaire tout au long du projet.
+Le tableau 1.2 synthétise les principales caractéristiques de ces méthodologies.
+Critère
+Cascade
+Modèle en
+V
+Spirale
+Agile
+(Scrum)
+Adaptation aux changements
+Faible
+Faible
+Moyenne
+Élevée
+Gestion des risques
+Faible
+Moyenne
+Élevée
+Moyenne
+Exigences stables requises
+Oui
+Oui
+Non
+Non
+Complexité de mise en œuvre
+Faible
+Moyenne
+Élevée
+Moyenne
+Traçabilité tests / besoins
+Partielle
+Élevée
+Partielle
+Variable
+Adapté aux projets courts
+Oui
+Oui
+Non
+Oui
+Table 1.2. Comparaison des méthodologies de développement
+1.3.2
+Méthodologie retenue
+La méthodologie linéaire (modèle en cascade) a été retenue pour ce projet. Ce choix
+repose sur les raisons suivantes :
+— Les exigences du projet sont clairement définies dès le départ et ne sont pas
+susceptibles d’évoluer de manière significative en cours de développement.
+— Le périmètre fonctionnel est délimité et maîtrisé, ce qui rend inutile la flexibilité
+propre aux méthodes agiles.
+— La durée du projet est bornée, et une progression séquentielle phase par phase
+garantit une livraison ordonnée et traçable.
+— La simplicité de mise en œuvre de ce modèle permet de concentrer les efforts sur
+la qualité technique plutôt que sur la gestion du processus.
+1.4
+Planification du projet
+Le développement de CyberShot a suivi une approche séquentielle structurée en
+cinq phases réparties sur quatre mois, chaque phase débutant à l’achèvement de la
+précédente afin de garantir une progression maîtrisée du projet. La figure 1.2 illustre
+cette organisation temporelle.
+7
+
+
+===== PAGE 21 =====
+
+CHAPITRE 1. CONTEXTE GÉNÉRAL DU PROJET
+M. Ben Khater & G. Barouni
+Figure 1.2. Planning séquentiel de développement de CyberShot
+Conclusion
+Ce chapitre a permis d’établir une vue claire du contexte dans lequel s’inscrit ce
+projet. L’analyse de l’existant a mis en évidence les limites des solutions actuellement
+en place, justifiant le développement d’une approche plus intelligente et proactive.
+La solution CyberShot a été présentée et ses principes fondamentaux définis. Les
+besoins fonctionnels et non fonctionnels ont été formalisés, les acteurs identifiés, et
+la méthodologie linéaire retenue pour encadrer le développement. Le chapitre suivant
+présentera l’état de l’art et les choix technologiques qui ont guidé la conception de cette
+solution.
+8
+
+
+===== PAGE 22 =====
+
+Chapitre 2
+Conception et choix techniques
+Introduction
+En se basant sur la problématique identifiée, l’étude de l’existant et la méthodologie
+de travail définis au chapitre précédent, ce chapitre présente l’architecture retenue et les
+technologies sélectionnées pour concevoir CyberShot : un système IDS/IPS qui combine
+capture réseau en temps réel, classification par machine learning et blocage automatique
+des sources malveillantes, déployé sur trois machines virtuelles complémentaires.
+2.1
+Identification des besoins
+Avant tout choix technique, il est indispensable de formaliser les besoins auxquels
+CyberShot doit répondre. Ces besoins se déclinent en deux catégories.
+2.1.1
+Besoins fonctionnels
+— Capture en temps réel : intercepter l’intégralité du trafic réseau entrant et
+sortant au niveau du pare-feu, sans perte de paquets.
+— Analyse intelligente : classifier automatiquement chaque paquet capturé afin
+de distinguer le trafic normal des tentatives d’attaque.
+— Explication des décisions : fournir à l’administrateur une description textuelle
+compréhensible justifiant chaque alerte générée.
+— Blocage automatique : appliquer immédiatement des règles de filtrage pour
+neutraliser les sources d’attaques identifiées.
+— Notification instantanée : alerter l’administrateur en temps réel via un canal
+mobile dès la détection d’une menace.
+— Tableau de bord de supervision : offrir une interface visuelle centralisant les
+journaux de trafic, les alertes et l’historique des IP bloquées.
+2.1.2
+Besoins non fonctionnels
+— Performance : l’analyse doit s’effectuer en quelques millisecondes pour ne pas
+introduire de latence perceptible sur le réseau.
+9
+
+
+===== PAGE 23 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+— Robustesse : le système doit tolérer les données incohérentes et les pics de trafic
+sans dégradation de fiabilité.
+— Modularité : chaque composant (capture, analyse, stockage, blocage, notification)
+doit pouvoir évoluer indépendamment.
+— Déployabilité : l’ensemble doit fonctionner sur une infrastructure virtualisée,
+sans matériel dédié coûteux [6].
+— Disponibilité continue : les services de capture et d’analyse doivent fonctionner
+24h/24, démarrer automatiquement au lancement des machines virtuelles et se
+relancer sans intervention humaine en cas de panne.
+2.2
+Architecture globale du système
+2.2.1
+Vue d’ensemble
+La solution CyberShot repose sur une infrastructure entièrement virtualisée, compo-
+sée de trois machines déployées sous VMware Workstation Pro. Ce choix architectural
+permet de reproduire fidèlement un environnement réseau réel avec ses zones, ses flux
+et ses menaces sans nécessiter de matériel physique dédié [6].
+La figure 2.1 illustre cette infrastructure. Les trois machines sont organisées en
+deux zones réseau distinctes : VM1 (pare-feu) et VM2 (serveur d’analyse) résident
+dans la zone LAN interne représentée par le bloc bleu, tandis que VM3 (Kali Linux,
+attaquant simulé) est positionnée à l’extérieur de cette zone, du côté du réseau de
+test. La flèche rouge symbolise les flux d’attaques entrants que VM1 doit intercepter
+et analyser. VM1 joue ainsi le rôle de passerelle entre trois réseaux distincts (réseau
+externe, réseau interne LAN, réseau de test), ce qui justifie qu’elle soit équipée de trois
+interfaces réseau séparées contrairement à VM2, qui n’appartient qu’au réseau interne
+LAN et ne nécessite qu’une seule interface.
+10
+
+
+===== PAGE 24 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+Figure 2.1. Architecture globale de CyberShot
+Le tableau 2.1 détaille l’adressage IP complet de l’infrastructure. Une interface
+réseau virtuelle est l’équivalent logiciel d’une carte réseau physique : elle permet à une
+machine virtuelle de communiquer sur un réseau donné. Sous Linux, ces interfaces
+portent des noms tels que ens33, ens37 ou eth0.
+11
+
+
+===== PAGE 25 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+Machine
+Rôle
+Interface
+Adresse IP
+Réseau
+VM1 — Firewall
+Pare-feu intelligent
+ens33
+192.168.106.159
+Réseau
+externe
+(WAN)
+ens37
+192.168.100.1
+Réseau
+in-
+terne (LAN)
+ens38
+10.0.0.1
+Réseau
+de
+test (Kali)
+VM2 — Serveur
+Analyse & dashboard
+ens33
+192.168.100.2
+Réseau
+in-
+terne (LAN)
+VM3 — Kali
+Attaquant simulé
+eth0
+10.0.0.2
+Réseau
+de
+test
+eth1
+192.168.118.128
+Réseau
+ex-
+terne
+Table 2.1. Table d’adressage complet de l’infrastructure CyberShot
+2.2.2
+Identification des acteurs
+Le système fait intervenir quatre acteurs distincts, deux humains et deux logiciels,
+dont les rôles sont complémentaires et interdépendants.
+Figure 2.2. Diagramme des cas d’utilisation du système CyberShot
+2.2.3
+Les deux services inter-VM
+La communication entre VM1 et VM2 repose sur deux services Python déployés en
+tant que démons systemd : ids_sniffer sur VM1, chargé de la capture et de la collecte
+12
+
+
+===== PAGE 26 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+du trafic réseau, et brain_ml sur VM2, responsable de l’analyse, de la décision et de la
+réponse automatique. Leurs rôles complémentaires et leur mécanisme de coordination
+sont illustrés par la figure 2.3.
+Figure 2.3. Les deux services systemd de communication inter-VM
+2.2.4
+Flux de données entre les composants
+Le pipeline de CyberShot désigne la chaîne de traitement complète qu’un paquet
+réseau traverse depuis sa capture jusqu’à la réponse finale. La figure 2.4 présente
+l’enchaînement de ses cinq phases sous forme de diagramme d’activité UML.
+13
+
+
+===== PAGE 27 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+Figure 2.4. Diagramme d’activité du pipeline de traitement de CyberShot
+2.3
+Choix techniques et argumentation
+L’architecture étant posée, nous justifions à présent chaque technologie retenue. Les
+choix qui suivent sont directement dictés par les contraintes de chaque VM : VM1, en
+tant que passerelle, nécessite un outil de capture réseau ; VM2, en tant que serveur
+d’analyse, nécessite une base de données, un moteur ML et uneAPI ; VM3, en tant
+que machine offensive, nécessite des outils d’attaque préinstallés. Pour chaque brique,
+les alternatives ont été évaluées selon des critères précis, et la solution choisie est
+argumentée en cohérence avec ce rôle.
+2.3.1
+Systèmes d’exploitation des machines virtuelles
+Choix disponibles : VM1 et VM2 (machines serveur)
+Le système d’exploitation de VM1 et VM2 conditionne directement la compatibilité
+avec l’ensemble de la pile logicielle : Python 3, MySQL, systemd, Scapy, FastAPI et
+iptables. Trois distributions Linux courantes ont été évaluées.
+14
+
+
+===== PAGE 28 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+Système
+Avantages
+Inconvénients
+Choix
+Ubuntu 22.04 LTS
+Support long terme (5
+ans), Python 3.11 natif,
+MySQL 8.0 natif, par-
+faite compatibilité sys-
+temd et iptables, très
+large documentation
+Légèrement plus lourd
+qu’une Debian minimale
+Retenu
+Debian 12
+Très stable, léger
+Paquets
+plus
+anciens,
+documentation
+moins
+abondante
+pour
+notre
+contexte Python/ML
+Non retenu
+CentOS / Rocky
+Orienté production entre-
+prise
+Gestion des paquets dif-
+férente (dnf/yum), moins
+compatible avec l’écosys-
+tème Python/ML
+Non retenu
+Table 2.2. Comparaison des systèmes d’exploitation pour VM1 et VM2
+Notre choix : Ubuntu 22.04 LTS (VM1 et VM2)
+Ubuntu 22.04 LTS a été retenu pour VM1 et VM2. Son cycle de support long terme
+de cinq ans garantit la stabilité des dépendances sur la durée du projet. Il embarque
+nativement Python 3.11, MySQL 8.0 et une intégration complète avec systemd : les trois
+piliers du pipeline CyberShot (capture, analyse, disponibilité continue). Sa compatibilité
+native avec iptables et Scapy, sans configuration supplémentaire, en fait le choix le plus
+cohérent avec le rôle de pare-feu intelligent de VM1 et le rôle de serveur d’analyse de
+VM2.
+Choix disponibles :VM3 (machine attaquante)
+VM3 doit disposer d’une collection d’outils offensifs préinstallés pour simuler les
+différents types d’attaques testés : scans de ports, inondation ICMP, DNS Tunneling et
+exploits. Trois distributions orientées sécurité offensive ont été évaluées.
+15
+
+
+===== PAGE 29 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+Système
+Avantages
+Inconvénients
+Choix
+Kali Linux 2025.1
+Suite complète d’outils
+offensifs
+préinstallés
+(nmap,
+hping3,
+Metas-
+ploit, Scapy), référence
+du
+domaine,
+mises
+à
+jour
+régulières,
+large
+communauté
+Consomme plus de RAM
+qu’une distribution mini-
+maliste
+Retenu
+Parrot OS
+Léger, orienté confidentia-
+lité et pentest
+Écosystème
+d’outils
+moins complet que Kali
+Non retenu
+BlackArch
+Très grand nombre d’ou-
+tils disponibles
+Configuration complexe,
+moins adapté à un usage
+rapide en environnement
+de test
+Non retenu
+Table 2.3. Comparaison des systèmes d’exploitation pour VM3 (attaquant)
+Notre choix : Kali Linux 2025.1 (VM3)
+Kali Linux 2025.1 a été retenu pour la machine attaquante. Il constitue la référence
+industrielle en matière de tests de pénétration et embarque nativement tous les outils
+nécessaires aux scénarios de test de CyberShot : nmap pour les scans de ports, hping3
+pour les attaques DoS par inondation ICMP, Metasploit pour les exploits et Scapy pour
+la génération de trafic DNS Tunneling personnalisé. Aucune installation supplémentaire
+n’est requise, ce qui est cohérent avec le rôle purement offensif de VM3.
+2.3.2
+Langage de programmation
+Choix disponibles
+Le langage de programmation est le fil conducteur de l’ensemble des composants :
+capture réseau sur VM1, moteur ML sur VM2,APIREST et dashboard. Quatre langages
+ont été évalués selon leur intégration avec les bibliothèques d’analyse réseau et de
+machine learning, leur rapidité de développement et la richesse de leur écosystème.
+16
+
+
+===== PAGE 30 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+Langage
+Avantages
+Inconvénients
+Choix
+Python
+Bibliothèques ML et réseau
+riches,
+syntaxe
+productive,
+large communauté cybersécu-
+rité
+Performances
+natives
+infé-
+rieures au C
+Retenu
+C/C++
+Performances maximales, ac-
+cès bas niveau
+Développement lent, risque
+d’erreurs mémoire
+Non retenu
+Java
+Portable, robuste
+Verbeux,
+moins
+adapté
+à
+l’analyse réseau et au ML
+Non retenu
+Go
+Concurrent, rapide
+Écosystème ML très limité
+Non retenu
+Table 2.4. Comparaison des langages de programmation
+Notre choix : Python 3.11
+Python 3.11 a été retenu comme langage principal pour l’ensemble des composants
+de CyberShot. La version 3.11 apporte des gains de performance de l’ordre de 10 à
+60% par rapport aux versions antérieures, tout en restant entièrement compatible avec
+l’écosystème de bibliothèques utilisé : Scapy pour la capture réseau sur VM1, scikit-learn
+pour le moteur ML, FastAPI pour l’API REST et mysql-connector-python pour la
+communication avec la base de données sur VM2 [9].
+Figure 2.5. Logo Python
+2.3.3
+Capture réseau
+Choix disponibles
+La capture réseau est le composant central de VM1 : elle constitue le point d’entrée
+de tout le pipeline de détection. Plusieurs outils ont été évalués selon trois critères : com-
+patibilité native avec Python 3.11, granularité d’extraction des champs de chaque paquet,
+et capacité à fonctionner de manière automatisée via le service systemd ids_sniffer.
+17
+
+
+===== PAGE 31 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+Outil
+Avantages
+Inconvénients
+Choix
+Scapy
+Python natif, très flexible, ex-
+traction granulaire de tous les
+champs, intégration systemd
+transparente
+Consomme plus de CPU que
+TCPdump
+Retenu
+TCPdump
+Très léger, très rapide
+Peu flexible pour l’intégra-
+tion directe en Python
+Non retenu
+Wireshark
+Interface
+graphique
+excel-
+lente, analyse détaillée
+Non adapté à une utilisation
+automatisée sans interface
+Non retenu
+libpcap
+Bibliothèque bas niveau très
+performante
+Développement
+complexe,
+pas
+d’abstraction
+Python
+native
+Non retenu
+Table 2.5. Comparaison des outils de capture réseau
+Notre choix : Scapy 2.5.0
+Scapy 2.5.0 est une bibliothèque Python conçue pour la capture et la manipulation
+de paquets réseau [10]. Cohérente avec le rôle de VM1, elle écoute en temps réel les
+interfaces ens33 et ens37 et extrait les champs clés de chaque paquet : longueur,
+protocole, port destination, IP source, drapeaux TCP et entropie DNS. Son intégration
+native avec Python 3.11 et sa capacité à s’exécuter via le service systemd ids_sniffer
+éliminent tout besoin de couche intermédiaire.
+Figure 2.6. Logo Scapy
+2.3.4
+Stockage des données
+Choix disponibles
+Le stockage des données est le composant central de VM2. Les paquets capturés par
+VM1, les statistiques de référence et le registre des attaques doivent être persistés de
+manière fiable et accessibles simultanément depuis les deux services inter-VM. Plusieurs
+18
+
+
+===== PAGE 32 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+systèmes ont été comparés selon leur nature relationnelle, leurs performances en accès
+concurrent et leur compatibilité avec Python.
+SGBD
+Avantages
+Inconvénients
+Choix
+MySQL 8.0
+Robuste, performant, rela-
+tionnel, excellent support
+Python, gestion native des
+connexions concurrentes
+Nécessite un serveur dédié
+Retenu
+PostgreSQL
+Très puissant, open source,
+fonctionnalités avancées
+Configuration plus complexe
+pour notre périmètre
+Non retenu
+SQLite
+Zéro configuration, embar-
+qué
+Non
+adapté
+aux
+accès
+concurrents multi-VM
+Non retenu
+MongoDB
+Flexible, NoSQL, schéma
+libre
+Requêtes moins efficaces sur
+données structurées et liées
+Non retenu
+Table 2.6. Comparaison des systèmes de gestion de base de données
+Notre choix : MySQL 8.0
+MySQL 8.0 [11] a été sélectionné et déployé sur VM2. La version 8.0 apporte des
+améliorations significatives sur la gestion des transactions et les performances en accès
+concurrent, ce qui est déterminant dans notre contexte : le service ids_sniffer sur
+VM1 et le service brain_ml sur VM2 écrivent et lisent simultanément dans la même
+base. Sa nature relationnelle convient parfaitement aux sept tables interdépendantes
+de CyberShot : journaux de trafic (traffic_logs), attaques confirmées (attaque),
+menaces suspectes (menace), IP bloquées, statistiques de référence par protocole, versions
+de modèle et actions administrateur.
+Figure 2.7. Logo MySQL
+2.3.5
+Algorithme de détection (Machine Learning)
+Choix disponibles
+Le moteur ML est le cœur décisionnel de VM2. Il doit distinguer le trafic normal des
+attaques en quelques millisecondes, tout en tolérant les données bruitées et déséquilibrées
+caractéristiques du trafic réseau réel. Cinq algorithmes ont été évalués selon leur précision,
+19
+
+
+===== PAGE 33 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+leur vitesse d’inférence et leur capacité à fournir une explication interprétable de chaque
+décision.
+Algorithme
+Avantages
+Inconvénients
+Choix
+Random Forest
+Haute précision, robuste
+au bruit, importance des
+variables, pas de norma-
+lisation requise
+Modèle plus lourd qu’un
+arbre seul
+Retenu
+SVM
+Bonne généralisation sur
+petits jeux de données
+Lent sur grands jeux,
+normalisation
+obliga-
+toire
+Non retenu
+Réseau de neurones
+Très puissant, flexible
+Boîte
+noire,
+longue
+phase d’entraînement
+Non retenu
+K-NN
+Simple à implémenter
+Très lent à l’inférence sur
+données volumineuses
+Non retenu
+Arbre de décision
+Interprétable, rapide
+Surajustement fréquent,
+moins précis
+Non retenu
+Table 2.7. Comparaison des algorithmes de classification
+Notre choix : Random Forest (scikit-learn 1.3.0)
+Le Random Forest est une méthode d’ensemble qui construit plusieurs arbres de
+décision indépendants et agrège leurs prédictions par vote majoritaire [12]. Il a été
+retenu pour les raisons synthétisées dans le tableau suivant :
+Critère
+Justification
+Précision
+Parmi les meilleurs algorithmes pour la classification multi-
+classe du trafic réseau
+Robustesse au bruit
+Résistant aux données incohérentes, fréquentes dans le trafic
+réseau réel
+Importance des variables
+Identifie quels attributs contribuent à la décision — clé pour
+le module d’explication textuelle
+Pas de normalisation
+Ne nécessite pas de normalisation des données, simplifiant
+le pipeline de VM2
+Temps d’inférence
+Classifie un paquet en quelques millisecondes, compatible
+avec la détection en temps réel
+Table 2.8. Justification du choix de l’algorithme Random Forest
+20
+
+
+===== PAGE 34 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+L’implémentation repose sur scikit-learn 1.3.0 [13], entraîné sur un jeu de données
+constitué et annoté manuellement. Ce choix s’explique par deux raisons : d’une part,
+les datasets open source tels que CICIDS2018 [14] ou NSL-KDD [15] présentent des
+limitations connues en termes de représentativité du trafic réel et de déséquilibre entre les
+classes ; d’autre part, les contraintes de notre environnement virtualisé ne permettaient
+pas d’exploiter des jeux de données de grande volumétrie. Notre dataset personnalisé,
+généré directement depuis notre infrastructure de test, reflète fidèlement les conditions
+réelles du réseau surveillé.
+2.3.6
+Blocage des attaques
+Choix disponibles
+Dès qu’une attaque est détectée par le service brain_ml sur VM2, la réponse doit
+être appliquée immédiatement sur VM1 sans intervention humaine. Le mécanisme de
+blocage doit être pilotable programmatiquement depuis Python et s’intégrer nativement
+dans l’environnement Ubuntu 22.04 de VM1.
+Outil
+Avantages
+Inconvénients
+Choix
+iptables
+Standard Linux, très flexible,
+pilotable via subprocess Py-
+thon, natif Ubuntu 22.04
+Interface ligne de commande
+uniquement
+Retenu
+nftables
+Successeur d’iptables, syntaxe
+plus moderne
+Moins documenté, moins in-
+tégré dans les scripts Python
+existants
+Non retenu
+fail2ban
+Automatisation native, facile
+à configurer
+Orienté bruteforce SSH, peu
+flexible pour notre cas d’usage
+Non retenu
+pfSense
+Interface graphique, riche en
+fonctionnalités
+Nécessite une VM dédiée avec
+OS spécifique
+Non retenu
+Table 2.9. Comparaison des mécanismes de blocage réseau sous Linux
+Notre choix : iptables
+iptables est l’interface standard de filtrage de paquets du noyau Linux, nativement
+disponible sur Ubuntu 22.04 de VM1 [16]. Il est appelé dynamiquement par Python via
+subprocess à chaque détection d’attaque, ajoutant une règle DROP ciblant l’IP source
+malveillante. Cela permet un blocage immédiat et persistant sans aucune intervention
+humaine. Le déverrouillage manuel reste possible via l’interface du dashboard sur VM2.
+21
+
+
+===== PAGE 35 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+2.3.7
+Notification de l’administrateur
+Choix disponibles
+La détection d’une attaque n’a de valeur que si l’administrateur en est informé
+immédiatement, quel que soit l’endroit où il se trouve. Le canal doit garantir une
+livraison instantanée, être accessible depuis un appareil mobile et s’intégrer facilement
+dans le service brain_ml sur VM2.
+Canal
+Avantages
+Inconvénients
+Choix
+Bot Telegram
+Gratuit,APIPython
+simple, mobile, livraison
+instantanée,
+messages
+structurés en HTML
+Nécessite une connexion
+Internet
+Retenu
+E-mail (SMTP)
+Universel, aucun coût
+Latence
+variable,
+peu
+adapté aux alertes temps
+réel
+Non retenu
+SMS
+Très fiable, universel
+Coût par message, intégra-
+tion complexe
+Non retenu
+Slack
+Professionnel, gestion de
+groupes
+Payant au-delà d’un cer-
+tain volume de messages
+Non retenu
+Table 2.10. Comparaison des canaux de notification
+Notre choix : Bot Telegram
+L’API Telegram [17] a été choisie pour sa facilité d’intégration dans le service
+brain_ml via la bibliothèque requests, sa gratuité totale et sa disponibilité instantanée
+sur appareil mobile. Le bot envoie à l’administrateur, dès la détection d’une attaque,
+un message structuré en HTML contenant : la nature de l’attaque, l’adresse IP source,
+le port ciblé, l’horodatage et l’explication textuelle générée par le module d’analyse de
+VM2.
+Figure 2.8. Logo Telegram
+22
+
+
+===== PAGE 36 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+2.3.8
+Disponibilité continue : services systemd
+Choix disponibles
+Un système de détection d’intrusion n’a de valeur que s’il fonctionne en permanence.
+Les services ids_sniffer sur VM1 et brain_ml sur VM2 doivent démarrer automa-
+tiquement, rester actifs 24h/24 et se relancer sans intervention en cas de défaillance.
+Plusieurs mécanismes ont été évalués.
+Mécanisme
+Avantages
+Inconvénients
+Choix
+systemd
+Natif Ubuntu 22.04, dé-
+marrage automatique au
+boot, restart automatique
+en cas de crash, logs via
+journalctl, aucune dé-
+pendance externe
+Configuration via fichier
+.service
+Retenu
+cron (@reboot)
+Simple à configurer
+Pas de gestion de crash,
+pas de restart automatique
+Non retenu
+screen / tmux
+Pratique en développement
+Non persistant après re-
+boot, nécessite session ac-
+tive
+Non retenu
+Supervisor
+Interface
+web,
+gestion
+multi-processus
+Dépendance externe sup-
+plémentaire, moins natif
+Non retenu
+Table 2.11. Comparaison des mécanismes de gestion des processus persistants
+Notre choix : systemd
+systemd est le gestionnaire de services standard d’Ubuntu 22.04, natif sur VM1 et
+VM2. Dans un système d’exploitation Linux, un gestionnaire de services est le com-
+posant responsable du démarrage, de l’arrêt et de la surveillance des processus de fond
+(démons). Il remplace avantageusement une session terminal ouverte en permanence :
+même si aucun utilisateur n’est connecté à la machine virtuelle, les services continuent
+de tourner.
+Deux services systemd distincts ont été conçus pour CyberShot, répondant directe-
+ment au besoin de disponibilité continue identifié en section 2.2. Un service systemd
+apporte quatre garanties essentielles :
+— Fonctionnement permanent : les scripts tournent 24h/24 et ne s’arrêtent pas
+lorsqu’un terminal est fermé.
+23
+
+
+===== PAGE 37 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+— Démarrage automatique : si une VM redémarre (coupure de courant, mise à
+jour système), le service reprend sans aucune intervention humaine.
+— Relance en cas de crash : si un script plante à cause d’une erreur MySQL ou ré-
+seau, le service le redémarre automatiquement après 5 secondes (Restart=always,
+RestartSec=5).
+— Indépendance de session : les services tournent même si aucun utilisateur n’est
+connecté aux VMs.
+2.3.9
+Dashboard de supervision
+Choix disponibles : Backend (API REST)
+Le backend du dashboard doit exposer les données de la base MySQL de VM2 sous
+forme d’uneAPIREST consommable par le frontend. Il doit être léger, performant et
+s’intégrer nativement dans l’environnement Python déjà utilisé pour le moteur ML et
+le module XAI.
+Framework
+Avantages
+Inconvénients
+Choix
+FastAPI
+Asynchrone, très perfor-
+mant, génération automa-
+tique de documentation
+OpenAPI, natif Python,
+syntaxe concise
+Écosystème plus jeune
+que Flask
+Retenu
+Flask
+Très
+répandu,
+simple,
+large documentation
+Synchrone
+par
+défaut,
+moins performant pour
+les requêtes concurrentes
+Non retenu
+Django
+Complet, sécurisé, ORM
+intégré
+Trop
+lourd
+pour
+uneAPIREST
+simple,
+courbe
+d’apprentissage
+élevée
+Non retenu
+Express (Node.js)
+Léger, populaire pour les
+APIs REST
+Nécessite un écosystème
+JavaScript séparé de Py-
+thon
+Non retenu
+Table 2.12. Comparaison des frameworks backend pour l’API REST
+Notre choix : FastAPI
+FastAPI [18] a été retenu comme framework backend pour sa performance asynchrone
+native, indispensable dans un contexte où plusieurs clients (frontend React, service
+24
+
+
+===== PAGE 38 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+brain_ml, module Telegram) interrogent simultanément la même API. Sa génération
+automatique de documentation OpenAPI facilite la maintenance et les évolutions futures.
+Son intégration dans l’écosystème Python de VM2 est immédiate : aucune dépendance
+supplémentaire n’est requise au-delà des bibliothèques déjà installées.
+Figure 2.9. Logo FastAPI
+Choix disponibles :Frontend (interface utilisateur)
+Le frontend doit offrir une interface de supervision dynamique, actualisée en temps
+réel sans rechargement de page, et consommer l’API FastAPI. Trois approches ont été
+évaluées.
+Framework
+Avantages
+Inconvénients
+Choix
+React
+Composants réutilisables,
+mise à jour dynamique
+de l’interface, large écosys-
+tème, idéal pour les dash-
+boards temps réel
+Nécessite une étape de com-
+pilation
+Retenu
+Vue.js
+Léger, syntaxe accessible
+Écosystème de composants
+moins riche que React pour
+les dashboards complexes
+Non retenu
+HTML/JS pur
+Aucune dépendance, dé-
+ploiement immédiat
+Difficile à maintenir pour
+une interface dynamique
+multi-composants
+Non retenu
+Table 2.13. Comparaison des frameworks frontend
+Notre choix : React
+React [19] a été retenu pour le développement du frontend du dashboard de su-
+pervision. Son architecture orientée composants permet de structurer l’interface en
+sections indépendantes (vue d’ensemble, journal des incidents, gestion des IP bloquées,
+basculement IDS/Intrusion Prevention System (IPS)) et de mettre à jour chacune sépa-
+rément sans rechargement complet de la page. Le mécanisme de polling (interrogation
+périodique de l’API FastAPI toutes les 5 secondes) garantit une actualisation continue
+des données sans websocket supplémentaire.
+25
+
+
+===== PAGE 39 =====
+
+CHAPITRE 2. CONCEPTION ET CHOIX TECHNIQUES
+M. Ben Khater & G. Barouni
+Figure 2.10. Logo React
+Le dashboard offre à l’administrateur quatre fonctionnalités principales, illustrées
+par le diagramme des cas d’utilisation de la figure 2.11 : superviser le trafic en temps
+réel, explorer l’historique des logs, consulter les diagnostics ML générés par le module
+XAI, suivre l’état des blocages actifs et débloquer manuellement une adresse IP
+directement depuis l’interface sans intervenir sur VM1.
+Figure 2.11. Diagramme des cas d’utilisation du dashboard de supervision
+Conclusion
+Ce chapitre a présenté de manière méthodique l’architecture globale de CyberShot,
+en sélectionnant et argumentant chaque technologie retenue en cohérence avec le rôle
+de la machine virtuelle qui l’héberge. L’ensemble de ces choix constitue une fondation
+homogène et modulaire sur laquelle l’implémentation, décrite dans le chapitre suivant,
+prend forme.
+26
+
+
+===== PAGE 40 =====
+
+Chapitre 3
+Implémentation de CyberShot
+Introduction
+Ce chapitre présente l’implémentation complète et séquentielle du système CyberShot,
+en suivant la méthodologie linéaire adoptée tout au long du projet. Chaque étape est
+réalisée dans un ordre précis et s’appuie sur les résultats de l’étape précédente : de la
+création des machines virtuelles jusqu’au déploiement du dashboard de supervision et
+des alertes en temps réel.
+3.1
+Mise en place de l’environnement de déploie-
+ment
+3.1.1
+Étape 1 : Préparation de l’environnement matériel
+Conformément à la méthodologie linéaire, la première action concrète est la prépara-
+tion des deux machines hôtes physiques qui supporteront l’ensemble de l’infrastructure
+virtualisée. Aucune installation logicielle n’est entreprise avant d’avoir vérifié que le
+matériel répond aux spécifications minimales définies lors de la phase de conception. Le
+tableau 3.1 récapitule les caractéristiques retenues pour chaque machine hôte, ainsi que
+la répartition des machines virtuelles entre elles.
+Composant
+Machine hôte 1
+Machine hôte 2
+Processeur
+Intel Core i5 (64 bits)
+Intel Core i3 (64 bits)
+Mémoire vive (RAM)
+24 Go
+16 Go
+Stockage
+SSD 512 Go
+SSD 256 Go
+Système d’exploitation
+Windows 11
+Windows 11
+Logiciel de virtualisation
+VMware Workstation Pro
+VMware Workstation Pro
+Machines virtuelles hébergées
+VM1,
+VM2
+(Ubuntu
+22.04)
+VM3 (Kali Linux 2025)
+Table 3.1. Caractéristiques des machines hôtes
+27
+
+
+===== PAGE 41 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+3.1.2
+Étape 2 :Installation de VMware Workstation Pro
+Une fois le matériel validé, VMware Workstation Pro est installé sur les deux
+machines hôtes. La version Pro est retenue pour ses fonctionnalités avancées de réseau
+interne (VMnet) et la prise en charge des modes NAT, Host-Only et LAN Segment,
+essentiels à l’architecture isolée de CyberShot.
+3.1.3
+Étape 3 : Création et configuration des machines vir-
+tuelles
+Trois machines virtuelles sont créées séquentiellement, dans l’ordre suivant : VM1
+(Firewall), VM2 (Serveur), puis VM3 (Attaquant). Cet ordre est délibéré :
+VM1 définit le plan réseau dont dépendent VM2 et VM3. Le tableau 3.2 présente la
+configuration matérielle et logicielle de chacune des trois machines, ainsi que les adresses
+IP qui leur sont assignées.
+Machine
+RAM
+Système
+Rôle
+Adresse(s)
+IP
+VM1 (Firewall)
+8 Go
+Ubuntu 22.04
+Capture, iptables, passerelle
+192.168.106.159
+/
+192.168.100.1
+/ 10.0.0.1
+VM2 (Serveur)
+4 Go
+Ubuntu 22.04
+BD, ML, Dashboard,API
+192.168.100.2
+VM3 (Kali)
+2 Go
+Kali Linux 2025
+Attaquant simulé
+10.0.0.2
+Table 3.2. Architecture des machines virtuelles de l’environnement de test
+VM1 (Firewall) est configurée avec trois interfaces réseau, conformément à son
+rôle de passerelle entre trois zones distinctes : une interface bridgée vers le réseau hôte
+(192.168.106.159/ens33), une interface sur le réseau interne (192.168.100.1/ens37) pour
+la communication avec VM2, et une interface sur le segment attaquant (10.0.0.1/ens38)
+partagée avec VM3.
+VM2 (Serveur) dispose d’une seule interface réseau (192.168.100.2). Elle est
+intentionnellement isolée d’Internet et n’est accessible que depuis VM1, ce qui protège
+les données d’entraînement et les modèles de toute exposition externe.
+VM3 (Kali Linux) est connectée au segment attaquant (10.0.0.2/eth0) et au
+réseau externe (192.168.118.128/eth1), simulant un attaquant externe qui doit traverser
+VM1 pour atteindre VM2.
+28
+
+
+===== PAGE 42 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+3.1.4
+Étape 4 : Vérification de la connectivité réseau
+Avant toute installation logicielle sur les VMs, la connectivité réseau entre les
+machines est vérifiée par tests de ping : VM3 →VM1, puis VM1 →VM2. Cette
+validation est un prérequis strict de la méthodologie linéaire : si le réseau n’est pas
+opérationnel, les étapes suivantes ne peuvent pas démarrer.
+3.2
+Sécurisation et instrumentation de VM1
+3.2.1
+Le pare-feu : définition et rôle
+Un pare-feu (ou firewall) est un composant de sécurité réseau chargé de réguler le
+trafic entrant et sortant selon des règles prédéfinies. Il établit une barrière de protection
+entre un réseau de confiance et des réseaux externes potentiellement hostiles [6].
+On distingue principalement trois types de pare-feux :
+— Pare-feu à filtrage de paquets : examine chaque paquet de manière indépen-
+dante (adresse IP, port, protocole).
+— Pare-feu à inspection d’état : suit le contexte des connexions actives.
+— Pare-feu applicatif (WAF) : analyse le contenu applicatif pour détecter des
+attaques spécifiques telles que les injections SQL ou les Cross-Site Scripting (XSS).
+3.2.2
+Étape 5 : Configuration du pare-feu iptables sur VM1
+Une fois la connectivité réseau validée, la première mesure de sécurité est appliquée
+sur VM1 : la mise en place d’une politique de pare-feu stricte avec iptables. Cette étape
+est réalisée avant toute installation applicative, car elle définit le périmètre de sécurité
+dans lequel l’ensemble du système opère. La figure 3.1 présente les règles fondatrices
+appliquées sur VM1, qui bloquent par défaut tout le trafic et n’autorisent que les
+communications strictement nécessaires au fonctionnement de CyberShot.
+29
+
+
+===== PAGE 43 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Figure 3.1. Configuration iptables initiale sur VM1
+3.2.3
+Étape 6 : Installation des dépendances logicielles
+Après la sécurisation du périmètre réseau, les dépendances logicielles sont installées
+sur chaque VM dans l’ordre logique de la chaîne de traitement :
+— Sur VM1 : Python 3.11, Scapy 2.5.0, mysql-connector-python (pour l’insertion
+distante vers VM2).
+— Sur VM2 : MySQL Server 8.0, Python 3.11 avec scikit-learn 1.3.0, pandas,
+numpy, FastAPI, Uvicorn, mysql-connector-python, requests (Telegram).
+— Sur VM3 : outils d’attaque natifs de Kali Linux 2025 (nmap, hping3, Metasploit,
+Scapy, dnscat2).
+3.3
+Construction de la base de données
+3.3.1
+Étape 7 : Création de la base de données MySQL sur
+VM2
+La base de données constitue le composant central du système : elle représente le canal
+de communication principal entre VM1 et VM2. Elle est créée avant le développement
+des scripts de capture et ML, car tous les composants en dépendent.
+La base cybershot comprend sept tables indépendantes — traffic_logs, reference_stats,
+dictionnaire_attaques, menaces, attaques, blocked_ip et alert — qui ne sont liées
+par aucune relation au sens relationnel classique (pas de clés étrangères). C’est le moteur
+ML, déployé sur VM2, qui joue le rôle de chef d’orchestre : il lit les données brutes depuis
+traffic_logs, consulte reference_stats et dictionnaire_attaques pour l’analyse
+statistique et la traduction XAI, puis écrit les résultats de classification dans menaces
+ou attaques selon le seuil de probabilité atteint. Les actions de réponse blocage IP
+30
+
+
+===== PAGE 44 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+dans blocked_ip et génération d’alerte dans alert sont également déclenchées par ce
+même moteur. La figure 3.2 illustre ce pipeline de traitement piloté par le moteur ML.
+31
+
+
+===== PAGE 45 =====
+
+Figure 3.2. Pipeline de traitement piloté par le moteur ML base CyberShot
+
+
+===== PAGE 46 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Table 1 : traffic_logs point d’entrée universel
+La table traffic_logs est le cœur de la base de données : chaque paquet capturé
+par VM1 y est enregistré, et chaque étape du pipeline (classification ML, explication
+XAI, mise à jour du statut) y laisse sa trace. La figure 3.3 en illustre la structure
+colonne par colonne ; le champ status est particulièrement central, car sa valeur NULL
+signale qu’un paquet est en attente de traitement par le moteur ML.
+Figure 3.3. Structure de la table traffic_logs
+Table 2 : reference_stats référentiel du trafic normal
+La table reference_stats stocke les statistiques caractéristiques du trafic normal,
+calculées et mises à jour périodiquement par le module d’auto-apprentissage. Elle
+constitue la base de comparaison du module XAI : pour chaque paquet suspect, les
+valeurs mesurées sont confrontées à ces références afin d’identifier et de formuler les
+anomalies. Les statistiques sont séparées par protocole et par port de destination, ce
+qui permet une comparaison précise adaptée à chaque type de trafic.
+Table 3 : dictionnaire_attaques traduction des anomalies
+La table dictionnaire_attaques est la pièce centrale du module XAI interne : elle
+établit la correspondance entre un type d’anomalie détectée (par exemple, entropieDNSélevée)
+et la description textuelle en français qui sera affichée dans le dashboard et transmise
+via Telegram. Le tableau ?? montre la structure de cette table, qui est initialisée
+manuellement lors du déploiement, puis enrichie progressivement au fil des détections.
+33
+
+
+===== PAGE 47 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Table 4 : attaques historique des incidents critiques
+La table attaques constitue le registre permanent de tous les incidents dont la
+probabilité calculée par le Random Forest est supérieure ou égale à 85%. Elle est
+alimentée par le service brain_ml lors de la phase de réponse du pipeline et sert de
+source de données principale pour le journal des incidents du dashboard. Le tableau ??
+en présente la structure, qui reprend les champs essentiels de traffic_logs en y
+ajoutant la description XAI et les informations de blocage.
+Table 5 : menaces suivi des comportements suspects
+La table menaces stocke les incidents dont la probabilité se situe entre 60% et 84,9%,
+correspondant à des comportements suspects qui ne justifient pas encore un blocage
+automatique mais méritent une surveillance active de l’administrateur. Elle partage
+la même structure que la table attaques, à l’exception du champ blocked qui reste
+systématiquement à 0 (aucun blocage automatique pour les menaces). Son alimentation
+par le dashboard permet à l’administrateur de consulter l’historique des signaux faibles
+et d’identifier des patterns d’attaques préparatoires.
+Table 6 : blocked_ip registre des adresses bloquées
+La table blocked_ip maintient la liste des adresses IP actuellement bloquées par
+iptables sur VM1. Elle est mise à jour en temps réel par le service brain_ml lors de
+chaque détection d’attaque et consultée par le dashboard pour alimenter l’interface de
+gestion des IP bloquées. Cette table garantit la cohérence entre l’état des règles iptables
+actives et l’affichage dans le dashboard, permettant à l’administrateur de débloquer
+une IP via l’interface web sans avoir à intervenir manuellement sur VM1.
+Table 7 : alert journal des alertes Telegram
+La table alert conserve l’historique de toutes les alertes envoyées via Telegram à
+l’administrateur, qu’elles aient été transmises avec succès ou non. Elle permet de tracer
+chaque notification, d’identifier d’éventuels problèmes de connectivité Telegram et de
+conserver un historique d’audit complet des alertes générées par le système.
+3.4
+Service de capture réseau (VM1)
+3.4.1
+Étape 8 : Développement du script de capture ids_realtime.py
+Le script ids_realtime.py est développé sur VM1 après la validation de la base
+de données. Il constitue le premier maillon de la chaîne de traitement : sans lui, aucune
+34
+
+
+===== PAGE 48 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+donnée n’entre dans le système. Il est exécuté en tant que service systemd ids_sniffer,
+garantissant sa disponibilité continue.
+Écoute réseau avec Scapy
+Le script utilise Scapy 2.5.0 pour intercepter en mode promiscuous l’intégralité
+du trafic transitant par les interfaces ens33 et ens37 de VM1. Pour chaque paquet
+capturé, il extrait les neuf features que le modèle ML utilisera pour sa classification.
+Le tableau 3.3 détaille chacune de ces features, son mode d’extraction depuis les couches
+du paquet réseau, et sa contribution à la détection.
+Feature
+Description et mode d’extraction
+protocol
+Protocole réseau (TCP=6, UDP=17, ICMP=1) — champ proto
+de la couche IP
+src_port
+Port source — champ sport des couches TCP/UDP
+dst_port
+Port destination — champ dport des couches TCP/UDP
+packet_length
+Taille totale du paquet en octets — len(packet)
+tcp_flags
+Combinaison de drapeaux TCP (SYN, ACK, FIN, RST, PSH)
+— champ flags
+dns_entropy
+Entropie de Shannon calculée sur le nom de domaine complet
+dns_subdomain_len
+Longueur du sous-domaineDNSextrait du champ qname
+dns_query_freq
+Fréquence des requêtesDNSde la même IP source sur 60 secondes
+dns_unique_subs
+Nombre de sous-domaines uniques interrogés par la même IP
+source
+Table 3.3. Features extraites par le script de capture
+Insertion en base de données
+Une fois les features extraites, le script effectue une insertion MySQL vers VM2 via
+la connexion réseau interne (192.168.100.2). Le champ status est systématiquement
+initialisé à NULL, signalant que l’enregistrement est en attente de classification par le
+moteur ML.
+35
+
+
+===== PAGE 49 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+3.5
+Génération du dataset et entraînement du mo-
+dèle
+3.5.1
+Machine Learning appliqué à la cybersécurité
+Le Machine Learning (apprentissage automatique) est une branche de l’Intelligence
+Artificielle qui permet aux systèmes d’apprendre à partir de données d’entraînement
+sans être explicitement programmés pour chaque tâche.
+Apport du Machine Learning en cybersécurité
+Le Machine Learning permet de dépasser les limites des approches par signatures en
+adoptant une détection par anomalie et comportementale. Il offre une meilleure capacité
+à identifier des menaces inconnues, réduit les faux positifs et permet une adaptation
+continue face à l’évolution des attaques.
+3.5.2
+Étape 9 : Génération du dataset en laboratoire
+Contribution originale : un dataset 100% laboratoire
+L’une des contributions majeures de CyberShot est l’utilisation d’un dataset entiè-
+rement généré dans notre propre environnement de test, à partir des échanges réels
+entre VM1, VM2 et VM3. Ce choix se distingue fondamentalement des travaux aca-
+démiques utilisant des datasets publics tels que CICIDS2018 [14] ou NSL-KDD [15],
+qui présentent plusieurs limitations documentées : déséquilibre sévère entre les classes,
+trafic non représentatif de réseaux modernes, et absence de certains types d’attaques
+récents comme leDNSTunneling par dnscat2.
+Notre dataset a été constitué en deux phases distinctes.
+Phase A :Capture du trafic normal. Pendant plusieurs sessions de fonc-
+tionnement normal du réseau, le service ids_sniffer a capturé et enregistré dans
+traffic_logs l’intégralité du trafic entre VM1, VM2 et les hôtes physiques : navigation
+web, transferts de fichiers, requêtes DNS légitimes, connexions SSH. Ces enregistrements
+constituent la classe Normal.
+Phase B :Simulation d’attaques contrôlées depuis VM3. Quatre types
+d’attaques ont été simulés depuis la machine Kali Linux. Le tableau 3.4 décrit les outils
+utilisés pour chaque type d’attaque, ainsi que la classe attribuée aux enregistrements
+correspondants dans le dataset.
+36
+
+
+===== PAGE 50 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Type d’attaque
+Outil
+Description
+Classe
+Scan de ports (SYN/NULL/XMAS)
+nmap
+Exploration
+des
+services
+exposés
+par VM1
+Attaque
+Inondation ICMP (DoS)
+hping3
+Envoi massif de
+paquets
+ICMP
+vers VM1
+Attaque
+DNS Tunneling (dnscat2)
+dnscat2 + Scapy
+Exfiltration
+de
+données encodées
+en Base64 dans
+les requêtesDNS
+Attaque
+Trafic suspect (faible volume)
+Scapy
+Sondages lents et
+requêtesDNSinhabituelles
+Menace
+Table 3.4. Attaques simulées pour la génération du dataset
+Le tableau 3.5 présente la composition finale du dataset utilisé pour l’entraînement,
+avec la répartition des exemples par classe et leur source respective.
+Classe
+Nombre d’exemples
+Proportion
+Source
+Normal
+1 020
+49,5%
+Trafic naturel du laboratoire
+Menace
+670
+32,5%
+Sondages lents et requêtesDNSinhabituelles
+Attaque
+370
+18,0%
+Scans, DoS ICMP,DNSTunneling dnscat2
+Total
+2 060
+100%
+—
+Table 3.5. Composition du dataset d’entraînement
+3.5.3
+Étape 10 : Entraînement du modèle Random Forest
+Le modèle Random Forest est entraîné sur le dataset ainsi constitué via scikit-
+learn 1.3.0 [13]. Les neuf features extraites par le service de capture constituent les
+variables d’entrée du modèle. La figure 3.4 présente le code d’entraînement complet,
+depuis le chargement du dataset depuis MySQL jusqu’à la sauvegarde du modèle dans
+un fichier .pkl.
+37
+
+
+===== PAGE 51 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Figure 3.4. Code d’entraînement du modèle Random Forest
+Le paramètre class_weight=’balanced’ est crucial : il compense le déséquilibre
+naturel entre les classes (Normal étant beaucoup plus fréquent qu’Attaque), évitant
+ainsi que le modèle ne privilégie systématiquement la classe majoritaire. Le tableau 3.6
+présente les résultats de l’évaluation du modèle sur le jeu de test, constitué de 20% du
+dataset.
+Classe
+Précision
+Rappel
+F1-score
+Support
+Normal
+0,97
+0,96
+0,96
+204
+Menace
+0,91
+0,89
+0,90
+134
+Attaque
+0,95
+0,97
+0,96
+74
+Moyenne pondérée
+0,95
+0,95
+0,95
+412
+Table 3.6. Métriques du modèle Random Forest sur le jeu de test
+Le modèle atteint un score F1 global de 95%, dépassant le seuil de 90% fixé dans le
+cahier des charges. La classe Menace présente le score le plus bas (F1 = 0,90), ce qui
+est attendu pour une catégorie intermédiaire dont les frontières statistiques avec les
+deux autres classes sont naturellement moins nettes. La figure 3.5 illustre le processus
+de décision du modèle, depuis les features d’entrée jusqu’au vote majoritaire entre les
+arbres.
+38
+
+
+===== PAGE 52 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Figure 3.5. Illustration du processus de décision du modèle Random Forest
+3.6
+Pipeline de détection et règle de décision
+3.6.1
+Étape 11 : Implémentation du pipeline de traitement
+Définition. On appelle pipeline la chaîne de traitement automatique qu’un paquet
+réseau traverse depuis sa capture jusqu’à la réponse finale. Dans CyberShot, cette chaîne
+comprend quatre phases séquentielles, toutes orchestrées par le service brain_ml sur
+VM2 :
+Phase 1 : Capture : ids_realtime.py intercepte chaque paquet sur VM1 et insère
+une ligne dans traffic_logs sur VM2, avec status = NULL.
+Phase 2 : Analyse ML : le service brain_ml récupère les entrées NULL et calcule la
+probabilité d’attaque via le Random Forest. En dessous de 60%, le statut passe à
+normal et le traitement s’arrête.
+Phase 3 : Explication XAI : au-delà de 60%, le module XAI interne identifie les
+features anormales et gécupére une description textuelle depuis la base de données
+à destination de l’administrateur.
+Phase 4 : Réponse : iptables bloque l’IP source, les tables attaques/menaces et
+blocked_ip sont mises à jour, et une alerte Telegram est envoyée.
+La figure 3.6 présente l’architecture complète du pipeline, en montrant les interactions
+entre les composants de VM1 et VM2 à chacune des quatre phases de traitement.
+39
+
+
+===== PAGE 53 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Figure 3.6. Architecture complète du pipeline de traitement et d’inférence de CyberShot
+40
+
+
+===== PAGE 54 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+3.6.2
+Étape 12 : Règle de décision à double seuil
+La règle de décision implémente un mécanisme à double seuil conçu pour réduire
+les faux positifs tout en garantissant une réactivité optimale face aux attaques avérées :
+— Probabilité < 60% : trafic classé Normal. Le statut de l’entrée dans traffic_logs
+est mis à jour et le traitement s’arrête. Aucune alerte, aucun blocage.
+— Entre 60% et 84,9% : trafic classé Menace. Une ligne est insérée dans la table
+menaces avec la description XAI. L’incident est affiché dans le dashboard, mais
+aucun blocage automatique ni alerte Telegram n’est déclenché, laissant à l’admi-
+nistrateur le soin d’évaluer.
+— ≥85% : trafic classé Attaque. Le blocage automatique est appliqué immédia-
+tement via iptables, une ligne est insérée dans la table attaques, et une alerte
+Telegram instantanée est envoyée à l’administrateur.
+Cette zone tampon entre 60% et 85% est une décision architecturale délibérée : elle
+distingue CyberShot d’un système binaire (normal/attaque) et réduit significativement
+les blocages intempestifs causés par du trafic légitime atypique.
+3.7
+Module XAI interne Explication des décisions
+3.7.1
+Explicabilité des modèles de Machine Learning (XAI)
+L’Intelligence Artificielle Explicable (eXplainable Artificial Intelligence (XAI),
+de l’anglais eXplainable Artificial Intelligence) désigne l’ensemble des méthodes visant
+à rendre les décisions d’un modèle de Machine Learning compréhensibles par un être
+humain [20]. Un modèle dit « boîte noire » peut atteindre des performances élevées tout
+en restant incapable d’expliquer pourquoi il a produit une décision donnée.
+Dans le domaine de la cybersécurité, cette opacité est un obstacle opérationnel
+concret : un administrateur qui reçoit une alerte sans justification ne sait ni si elle est
+fiable, ni quelle menace est en cours, ni quelle action entreprendre. Le XAI transforme
+une décision binaire en information actionnable en indiquant quelles variables ont
+contribué à la prédiction, dans quel sens et dans quelle proportion [21].
+3.7.2
+Étape 13 : Développement du module d’explication (XAI
+sansAPI externe)
+Principe de fonctionnement
+Le module XAI de CyberShot repose sur deux mécanismes complémentaires.
+41
+
+
+===== PAGE 55 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Mécanisme 1 : Importance des variables du Random Forest. L’algo-
+rithme Random Forest calcule nativement l’importance de chaque feature (attribut
+feature_importances_ de scikit-learn), qui mesure la contribution moyenne de chaque
+variable à la réduction d’impureté dans les arbres. Le module XAI exploite ces impor-
+tances pour identifier, pour chaque paquet classé comme menace ou attaque, les deux
+ou trois features qui ont le plus contribué à la décision.
+Mécanisme 2 : Détection statistique par comparaison aux références. En
+parallèle, chaque valeur du paquet est comparée aux statistiques de référence stockées
+dans la table reference_stats : la moyenne (µ) et l’écart-type (σ) du trafic normal,
+séparés par protocole et par port. Une feature est signalée comme anormale si sa valeur
+s’écarte de plus de deux écarts-types de la moyenne de référence. La description textuelle
+correspondante est alors récupérée dans la table dictionnaire_attaques :
+anormal ⇐⇒|x −µ| > 2σ
+(3.1)
+Récupération de la description textuelle
+Une fois le type d’anomalie identifié par la comparaison statistique, le module XAI
+effectue une requête dans la table dictionnaire_attaques en utilisant comme clé de
+recherche la combinaison (feature_name, anomaly_type, protocol). La description
+en français prérédigée et stockée lors du déploiement est ainsi récupérée directement,
+sans aucun calcul de langage naturel, puis enregistrée dans le champ description de
+la table traffic_logs.
+3.8
+Module d’auto-apprentissage
+3.8.1
+Étape 14 : Implémentation du module d’auto-apprentissage
+Un module d’auto-apprentissage est implémenté en complément du moteur d’infé-
+rence en temps réel. Il s’exécute dans un fil d’exécution (thread) indépendant au sein du
+service brain_ml, sans interrompre ni ralentir la détection. Il déclenche périodiquement
+deux opérations successives.
+Opération 1 Mise à jour des statistiques de référence
+Le module recalcule les moyennes et écarts-types des features depuis les enregis-
+trements classifiés normal dans traffic_logs, séparés par protocole et par port de
+destination, puis met à jour la table reference_stats. Cette mise à jour maintient la
+pertinence du module XAI au fur et à mesure que le trafic normal évolue.
+42
+
+
+===== PAGE 56 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Opération 2 Réentraînement automatique du modèle
+Le module fusionne les données des tables traffic_logs, attaques et menaces
+pour construire un dataset enrichi plus représentatif du trafic réel observé. Un nouveau
+modèle Random Forest est entraîné et sauvegardé dans un fichier .pkl dont le nom inclut
+le timestamp de génération. La boucle principale du service détecte automatiquement
+ce nouveau fichier et recharge le modèle à chaud, sans redémarrage du service. La
+figure 3.7 illustre l’architecture complète de ce processus, montrant comment le thread
+d’auto-apprentissage coexiste avec la boucle de détection principale sans la perturber.
+Figure 3.7. Architecture du processus d’auto-apprentissage de CyberShot
+3.9
+Dashboard de supervision (React + FastAPI)
+3.9.1
+Étape 15 : Développement du backend FastAPI
+FastAPI (Python) est choisi pour ses performances asynchrones et sa génération
+automatique de documentation OpenAPI. Il sert d’intermédiaire entre le moteur ML,
+le frontend React et le module de notification Telegram. La figure 3.8 présente les
+endpoints REST principaux exposés par le backend, couvrant la consultation des logs,
+la gestion des IP bloquées et le basculement entre les modes IDS et IPS.
+43
+
+
+===== PAGE 57 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Figure 3.8. Endpoints principaux de l’API FastAPI
+3.9.2
+Étape 16 : Développement du frontend React
+Le frontend est développé en React (JavaScript) après la validation du backend
+FastAPI. Il consomme l’API REST et présente les données sous forme de tableaux,
+graphiques et indicateurs visuels actualisés automatiquement via des appels périodiques
+(polling toutes les 5 secondes). Le dashboard est organisé en quatre sections fonction-
+nelles : vue d’ensemble avec compteurs temps réel, journal des incidents avec descriptions
+XAI, gestion des IP bloquées, et basculement IDS/IPS. La figure 3.9 présente la page
+d’accueil du dashboard, qui centralise en un seul écran l’ensemble des indicateurs de
+risque du réseau surveillé.
+Figure 3.9. Page d’accueil du dashboard de supervision
+La figure 3.10 montre le journal de trafic tel qu’il apparaît dans le dashboard :
+44
+
+
+===== PAGE 58 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+chaque ligne correspond à un paquet traité par le pipeline, avec sa classification, sa
+probabilité calculée et la description XAI générée automatiquement.
+Figure 3.10. Journal de trafic avec descriptions XAI intégrées
+La figure 3.11 illustre la vue détaillée d’un incident classifié comme attaque dans
+le dashboard, permettant à l’administrateur de consulter l’ensemble des informations
+disponibles sur l’incident et de déclencher un déblocage manuel si nécessaire.
+Figure 3.11. Vue détaillée d’une attaque dans le dashboard
+45
+
+
+===== PAGE 59 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+3.9.3
+Étape 17 : Module d’alerte Telegram
+En complément du dashboard, chaque attaque (≥85%) déclenche l’envoi automatique
+d’une alerte Telegram à l’administrateur [17]. L’alerte est construite à partir de la
+description XAI générée et contient : l’IP source, le port ciblé, le protocole, la probabilité
+calculée, l’horodatage et l’explication textuelle de l’anomalie. La figure 3.12 montre
+un exemple d’alerte reçue sur l’application Telegram lors d’une attaque réelle simulée
+depuis VM3, illustrant le niveau de détail fourni à l’administrateur en temps réel.
+Figure 3.12. Exemple d’alerte Telegram reçue lors d’une attaque détectée
+3.10
+Récapitulatif de la séquence d’implémentation
+Le tableau 3.7 récapitule l’ensemble des dix-sept étapes de la séquence d’implé-
+mentation, en précisant pour chacune la VM concernée et l’étape dont elle dépend
+directement, illustrant ainsi le caractère strictement conditionnel de la méthodologie
+linéaire adoptée.
+46
+
+
+===== PAGE 60 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Étape
+Action
+VM
+concer-
+née
+Prérequis
+1
+Validation du matériel hôte
+—
+Aucun
+2
+Installation VMware Workstation Pro
+Hôtes
+Étape 1
+3
+Création des VMs (VM1, VM2, VM3)
+Hôtes
+Étape 2
+4
+Vérification de la connectivité réseau
+VM1,
+VM2,
+VM3
+Étape 3
+5
+Configuration iptables (pare-feu initial)
+VM1
+Étape 4
+6
+Installation des dépendances logicielles
+VM1,
+VM2,
+VM3
+Étape 5
+7
+Création de la base de données MySQL (7 tables)
+VM2
+Étape 6
+8
+Développement du script de capture ids_realtime.py
+VM1
+Étape 7
+9
+Génération du dataset en laboratoire
+VM1,
+VM3
+Étape 8
+10
+Entraînement du modèle Random Forest
+VM2
+Étape 9
+11
+Implémentation du pipeline ML (4 phases)
+VM2
+Étape 10
+12
+Règle de décision à double seuil
+VM2
+Étape 11
+13
+Module XAI interne (sansAPIexterne)
+VM2
+Étape 12
+14
+Module d’auto-apprentissage
+VM2
+Étape 13
+15
+Développement du backend FastAPI
+VM2
+Étape 14
+16
+Développement du frontend React
+VM2
+Étape 15
+17
+Module d’alerte Telegram
+VM2
+Étape 16
+Table 3.7. Séquence linéaire d’implémentation de CyberShot
+Conclusion
+Ce chapitre a présenté l’implémentation complète et séquentielle de CyberShot en
+dix-sept étapes selon la méthodologie linéaire. Chaque composant a été construit dans un
+ordre précis et conditionnel : infrastructure réseau virtualisée avec VMware, périmètre
+de sécurité iptables, base de données à sept tables dont le dictionnaire_attaques et
+la reference_stats sont au cœur du module XAI interne, chaîne de traitement Scapy
+→MySQL →Random Forest avec double seuil de décision, module XAI développé
+sans aucune dépendance tierce, auto-apprentissage en production, backend FastAPI,
+frontend React et notifications Telegram enrichies.
+47
+
+
+===== PAGE 61 =====
+
+CHAPITRE 3. IMPLÉMENTATION DE CYBERSHOT
+M. Ben Khater & G. Barouni
+Trois contributions originales traversent l’ensemble de cette implémentation : un
+dataset généré intégralement en laboratoire, un module XAI sans dépendance tierce
+s’appuyant sur la table dictionnaire_attaques pour produire des descriptions en
+français, et une architecture hybride combinant détection statistique et machine learning.
+Le chapitre suivant présente la validation expérimentale de ces performances à travers
+une série de tests réalisés dans des conditions réelles, en comparaison avec pfSense +
+Suricata.
+48
+
+
+===== PAGE 62 =====
+
+Chapitre 4
+Validation expérimentale et étude
+comparative
+Introduction
+Ce chapitre met en évidence les insuffisances des technologies de sécurité statiques
+traditionnelles face à la détection de certaines attaques avancées. Pour ce faire, une
+analyse expérimentale est menée à travers l’évaluation comparée de CyberShot et de la
+solution classique pfSense associée à Suricata, soumis aux mêmes scénarios d’attaque
+dans des conditions identiques.
+4.1
+Les limites des approches traditionnelles
+4.1.1
+Fonctionnement des systèmes de sécurité basés sur les
+signatures
+Les systèmes traditionnels de détection d’intrusions reposent majoritairement sur la
+détection par signatures. Une signature est un motif ou une séquence caractéristique
+d’une attaque connue.
+Le système capture le flux réseau entrant, puis compare en continu le contenu des
+paquets avec sa base de signatures. En cas de correspondance, une alerte est déclenchée
+et une action de protection peut être entreprise.
+49
+
+
+===== PAGE 63 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Figure 4.1. Fonctionnement d’un système de détection/prévention basé sur les signatures
+Cette approche est rapide et efficace contre les menaces déjà répertoriées. Néanmoins,
+elle présente des limites structurelles majeures : elle est incapable de détecter les nouvelles
+variantes d’attaques ou les menaces inédites.
+4.1.2
+Les limites des systèmes basés sur les signatures face au
+DNS Tunneling
+Des chercheurs ont démontré lors du 12e Symposium International sur la Crimi-
+nalistique Numérique et la Sécurité (ISDFS, 2024) que les pare-feux et les systèmes
+de détection d’intrusion (IDS) sont fondamentalement aveugles face au DNS Tunne-
+ling [22]. En effet, ces systèmes de sécurité basés sur les signatures autorisent par défaut
+le passage du protocole DNS sans l’inspecter, car bloquer ce protocole perturberait
+le fonctionnement normal de l’ensemble des services réseau (sites web, messagerie,
+transfert de fichiers). Les attaquants exploitent précisément cette confiance aveugle
+accordée au DNS pour ouvrir un canal dissimulé, totalement invisible aux règles de
+filtrage classiques.
+Gürsoy et al. concluent que les méthodes de détection basées sur des signatures ou
+des seuils fixes sont insuffisantes face à cette menace comportementale, et que seule une
+approche par apprentissage automatique permet d’analyser le comportement du trafic
+DNS pour identifier les anomalies caractéristiques d’un tunnel.
+4.1.3
+Implications pour l’analyse expérimentale
+Ce résultat confirme que le ML est la méthode adaptée pour détecter les attaques
+comportementales là où les signatures échouent. C’est exactement ce que CyberShot
+50
+
+
+===== PAGE 64 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+met en pratique : au lieu de chercher une signature connue, il analyse le comportement
+du trafic et détecte les anomalies par son modèle RF [12].
+4.2
+Présentation des deux architectures
+4.2.1
+Architecture de CyberShot
+CyberShot est la solution développée dans ce projet. Elle repose sur une approche
+comportementale fondée sur le ML, ce qui lui permet de détecter des menaces inconnues
+sans dépendre de signatures prédéfinies. Son fonctionnement détaillé a été présenté au
+Chapitre 4.
+4.2.2
+Architecture pfSense + Suricata
+pfSense est un pare-feu classique open source basé sur FreeBSD. Suricata, intégré
+comme moteur IDS/IPS, analyse le trafic en le comparant à une base de signatures
+connues. Si l’attaque est connue, elle est détectée. Sinon, elle passe inaperçue. pfSense a
+été retenu comme représentant des pare-feux classiques en raison de sa large adoption
+en milieu professionnel, de sa interface web intuitive et de son intégration native avec
+Suricata, ce qui en fait une référence incontournable et un candidat idéal pour illustrer
+les limites des approches basées sur les signatures face aux attaques inconnues.
+4.2.3
+Mise en place de l’environnement pfSense + Suricata
+La configuration de pfSense + Suricata a été réalisée de manière à offrir les meilleures
+conditions possibles à la solution traditionnelle, garantissant ainsi une comparaison
+équitable et rigoureuse.
+Installation et configuration de pfSense
+pfSense a été déployé sur une machine virtuelle dédiée sous VMware Workstation
+Pro, avec deux interfaces réseau : une interface WAN exposée au trafic de Kali Linux,
+et une interface LAN (192.168.1.0/24) protégeant la machine victime. Afin de ne pas
+biaiser les tests en faveur de CyberShot, tous les ports ont été volontairement ouverts
+côté WAN, y compris le port 53 (DNS), le port 22 (SSH) et l’ensemble des ports
+TCP/UDP. Cette décision reflète un scénario réaliste où un administrateur ne peut pas
+bloquer leDNSsans couper l’accès Internet.
+51
+
+
+===== PAGE 65 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Activation de Suricata en mode IDS
+Suricata a été intégré à pfSense et configuré en mode IDS passif : il surveille le trafic
+et génère des alertes sans bloquer automatiquement les connexions. Ce mode a été
+retenu pour l’ensemble des tests afin de garantir la continuité des scénarios d’attaque et
+permettre une observation complète des comportements des deux systèmes dans des
+conditions strictement identiques.
+L’intégralité des règles de signatures open source disponibles a été activée, répartie
+en deux sources :
+— Emerging Threats Open : ensemble de règles communautaires librement dispo-
+nibles, couvrant les attaques réseau courantes (scans, DoS, exploits connus) ainsi
+que des signatures pour les comportements DNS anormaux [23].
+— Emerging Threats OpenDNS : sous-ensemble de règles spécifiquement dédiées au
+protocole DNS, incluant les signatures pour les tunnelsDNSrépertoriés dans les
+bases de menaces connues et publiquement documentés.
+Au total, plus de 30 000 règles de signatures open source ont été activées, plaçant
+Suricata dans ses meilleures conditions opérationnelles pour chaque scénario de test.
+Machine victime dans le LAN CyberShot
+Pour le test duDNSTunneling, une machine victime Debian a également été déployée
+dans le LAN interne de CyberShot (192.168.100.0/24, adresse 192.168.100.10), derrière
+VM1. Cette machine simule un poste de travail compromis qui établit un tunnelDNSvers
+le serveur dnscat2 de Kali Linux. Son trafic transite obligatoirement par VM1, ce qui
+permet à CyberShot d’analyser les requêtesDNSmalveillantes au niveau du pare-feu,
+exactement comme pfSense + Suricata le fait de son côté.
+Protocole d’évaluation
+Pour chaque scénario d’attaque, la procédure suivante a été appliquée identiquement
+aux deux systèmes :
+1. Lancement de l’attaque depuis Kali Linux dans les mêmes conditions.
+2. Observation et relevé des alertes générées par Suricata (interface pfSense) et par
+CyberShot (dashboard + Telegram).
+3. Évaluation de la détection : attaque détectée ou non, délai de réaction, qualité de
+l’information fournie à l’administrateur.
+4. Consignation des résultats dans un tableau comparatif.
+52
+
+
+===== PAGE 66 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+4.2.4
+Architecture de test
+Les deux environnements de test ont été déployés en parallèle afin de soumettre
+chaque système exactement au même trafic d’attaque. La figure 4.2 illustre cette
+architecture duale : à gauche, pfSense + Suricata protège une machine Debian victime
+en zone LAN 192.168.1.0/24 ; à droite, CyberShot opère en zone LAN 192.168.100.0/24.
+Les deux systèmes reçoivent exactement le même trafic d’attaque depuis Kali Linux, ce
+qui garantit une comparaison équitable.
+Figure 4.2. Architecture de l’étude comparative
+4.3
+Tests comparatifs : attaques classiques
+L’ensemble des tests a été réalisé en mode IDS, avec la fonctionnalité de blocage au-
+tomatique désactivée, afin de garantir la continuité des scénarios d’attaque et permettre
+une observation complète des résultats.
+4.3.1
+Scan de ports Nmap
+Description de l’attaque
+Avant de lancer une attaque, un intrus a besoin de cartographier sa cible. Un scan
+de ports consiste à solliciter successivement chaque port pour identifier lesquels sont
+ouverts, quels services y tournent et quelles versions sont utilisées. Ces informations
+permettent à l’attaquant de choisir la vulnérabilité à exploiter.
+53
+
+
+===== PAGE 67 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Déroulement du test
+La commande exécutée depuis Kali Linux combine trois options complémentaires :
+-sS pour l’envoi de paquets SYN discrets, -A pour la détection du système d’exploitation
+et des versions de services, et -p- pour l’analyse exhaustive des 65 535 ports. La
+figure 4.3 montre la commande telle qu’elle a été saisie dans le terminal Kali.
+Figure 4.3. Commande du scan complet des ports avec Nmap
+Une fois le scan lancé, Nmap génère un volume important de paquets SYN vers
+toutes les plages de ports de la cible. La figure 4.4 illustre l’exécution du scan et les
+premières réponses reçues depuis la machine victime.
+Figure 4.4. Lancement du scan Nmap depuis Kali Linux
+Du côté de CyberShot, le modèle Random Forest identifie immédiatement la déviation
+comportementale provoquée par le volume et la fréquence des paquets SYN. La figure 4.5
+présente la détection telle qu’elle apparaît dans le dashboard, avec la description XAI
+générée automatiquement.
+Figure 4.5. Détection du scan par CyberShot
+54
+
+
+===== PAGE 68 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Du côté de pfSense + Suricata, la signature du scan Nmap étant référencée dans la
+base Emerging Threats, une alerte est générée. La figure 4.6 montre les alertes produites
+par Suricata dans l’interface pfSense.
+Figure 4.6. Détection du scan par Suricata
+Les deux systèmes détectent le scan de ports. CyberShot se distingue toutefois en
+fournissant une explication textuelle sur la nature de la menace, que Suricata ne produit
+pas.
+4.3.2
+Force brute SSH
+Description de l’attaque
+Une attaque par force brute SSH consiste à tester automatiquement des milliers de
+combinaisons de mots de passe jusqu’à trouver le bon, dans le but d’obtenir un accès
+administrateur sur la machine victime.
+Déroulement du test
+L’outil Hydra a été utilisé depuis Kali Linux pour automatiser les tentatives d’au-
+thentification SSH en utilisant le dictionnaire rockyou.txt. La figure 4.7 montre la
+commande complète telle qu’elle a été exécutée.
+Figure 4.7. Commande de l’attaque force brute SSH avec Hydra
+L’exécution de l’attaque génère un flux dense et régulier de tentatives de connexion
+SSH vers la machine cible. La figure 4.8 illustre ce flux tel qu’il apparaît dans le terminal
+Kali pendant l’attaque.
+55
+
+
+===== PAGE 69 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Figure 4.8. Lancement de l’attaque force brute SSH depuis Kali Linux
+CyberShot détecte la répétition anormale des tentatives de connexion sur le port
+22 et classe le trafic comme une attaque. La figure 4.9 montre la réaction du système :
+détection, description XAI et blocage automatique de l’adresse IP source.
+Figure 4.9. Détection et blocage de la force brute par CyberShot
+Suricata dispose de signatures dédiées à la détection des attaques par force brute
+SSH. La figure 4.10 présente les alertes générées dans l’interface pfSense au cours du
+test.
+56
+
+
+===== PAGE 70 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Figure 4.10. Détection de la force brute par Suricata
+Les deux solutions détectent l’attaque. pfSense est plus fiable sur le comptage pur des
+tentatives, tandis que CyberShot apporte un contexte précis sur la nature et l’intensité
+de la menace.
+4.3.3
+ICMP Flood
+Description de l’attaque
+Un ICMP Flood consiste à envoyer un très grand nombre de paquets ping simulta-
+nément vers une cible, jusqu’à saturer sa connexion réseau. La machine victime passe
+tout son temps à répondre à ces fausses demandes et ne peut plus traiter les requêtes
+légitimes, provoquant ainsi un déni de service (DoS).
+Déroulement du test
+L’outil hping3 a été utilisé en mode flood ICMP pour générer un volume maximal
+de paquets vers la cible. La figure 4.11 montre la commande exécutée depuis Kali Linux,
+avec l’option –flood qui supprime tout délai entre les paquets.
+Figure 4.11. Commande de l’attaque ICMP Flood avec hping3
+Le flood génère immédiatement un pic de trafic ICMP anormal sur l’interface réseau
+de VM1. La figure 4.12 illustre le lancement de l’attaque et le volume de paquets
+57
+
+
+===== PAGE 71 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+produits par seconde.
+Figure 4.12. Lancement du ICMP Flood depuis Kali Linux
+CyberShot réagit en 0,9 seconde grâce à la détection comportementale du modèle
+Random Forest, sans attendre qu’un seuil fixe soit atteint. La figure 4.13 montre la
+détection dans le dashboard ainsi que le blocage automatique déclenché.
+Figure 4.13. Réaction de CyberShot face au flood ICMP (0,9 seconde)
+Suricata détecte également le flood ICMP grâce à ses signatures de déni de service.
+La figure 4.14 présente les alertes produites dans l’interface pfSense, avec un délai de
+réaction de 2,5 secondes.
+58
+
+
+===== PAGE 72 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Figure 4.14. Réaction de Suricata face au flood ICMP
+CyberShot est significativement plus rapide (0,9 s contre 2,5 s) car il ne dépend pas
+d’un seuil fixe. Son modèle RF détecte la déviation comportementale dès les premières
+secondes.
+4.4
+Attaques modernes automatisées par l’Intelli-
+gence Artificielle
+L’émergence de l’Intelligence Artificielle a profondément transformé le paysage des
+cybermenaces. Les attaquants utilisent désormais des outils d’Intelligence Artificielle (IA)
+pour automatiser la découverte de vulnérabilités, générer du code malveillant, créer des
+campagnes de phishing hautement personnalisées et orchestrer des attaques autonomes
+à grande échelle.
+Cette automatisation permet une augmentation significative de la vitesse, de l’échelle
+et de la sophistication des attaques, rendant la défense traditionnelle encore plus
+complexe [24].
+4.4.1
+Les attaques Zero-Day
+Les attaques Zero-Day représentent l’une des menaces les plus redoutables en
+cybersécurité. Elles exploitent une vulnérabilité inconnue du fabricant ou pour la-
+quelle aucun correctif n’a encore été publié. Ces attaques contournent totalement les
+mécanismes de détection par signatures et sont particulièrement difficiles à anticiper.
+59
+
+
+===== PAGE 73 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+4.5
+Test principal :DNSTunneling
+C’est ici que la comparaison prend tout son sens. LeDNSTunneling est l’attaque qui
+révèle la vraie limite des systèmes basés sur les signatures.
+4.5.1
+Définition
+LeDNSest le service qui traduit les noms de sites web en adresses IP. Le port 53 est
+toujours ouvert sur les pare-feux car sans lui, rien ne fonctionne sur Internet.
+LeDNSTunneling exploite cette contrainte : au lieu de transporter de simples noms
+de domaines, l’attaquant encode des données malveillantes à l’intérieur des requêtes
+DNS. Les paquets circulent librement sur le port 53 car ils ressemblent à du trafic
+DNS normal. Comme le soulignent Chowdhary et al. [25], la capacité de l’attaquant à
+imiter de vraies requêtes rend la détection particulièrement difficile pour les approches
+classiques.
+4.5.2
+Mise en place de l’infrastructure d’attaque
+L’attaque nécessite deux éléments : un serveur C2 sur Kali Linux qui attend les
+connexions, et un client sur la machine victime qui se connecte via DNS. La figure 4.15
+montre la configuration du fichier de zone BIND déployé sur Kali, qui fait de cette
+machine le serveurDNSautoritaire pour le domaine cybershot.lab.
+Figure 4.15. Configuration du fichier de zoneDNSsur Kali Linux
+Une fois BIND configuré, le serveur dnscat2 est lancé en écoute sur le port 5353.
+La figure 4.16 présente la commande de démarrage du serveur avec les paramètres de
+60
+
+
+===== PAGE 74 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+sécurité utilisés lors du test.
+Figure 4.16. Commande de lancement du serveur dnscat2 sur Kali Linux
+4.5.3
+Lancement de l’attaque
+Le serveur dnscat2 étant opérationnel, il attend les connexions entrantes des clients
+compromis. La figure 4.17 illustre l’état du serveur en attente, confirmant que l’infra-
+structure C2 est prête à recevoir le tunnel DNS.
+Figure 4.17. Serveur dnscat2 lancé sur Kali — en attente de connexion
+Depuis la machine victime Debian, le client dnscat2 est exécuté pour établir la
+connexion vers le serveur C2. La figure 4.18 montre la commande utilisée, qui encapsule
+les communications dans des requêtes DNS vers le serveur Kali.
+61
+
+
+===== PAGE 75 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Figure 4.18. Commande de connexion du client dnscat2 depuis la machine victime
+Une fois le tunnel établi, les échanges entre la victime et Kali transitent sous forme
+de requêtes DNS dont les sous-domaines contiennent des données encodées en base64.
+La figure 4.19 montre une capture de ce trafic : les sous-domaines anormalement longs
+sont caractéristiques duDNSTunneling mais syntaxiquement valides.
+Figure 4.19. TraficDNStunnelisé — sous-domaines encodés en base64
+4.5.4
+Résultats du côté de pfSense
+Pendant toute la durée de l’attaque, les logs de Suricata ont été surveillés en temps
+réel depuis l’interface pfSense. La figure 4.20 confirme ce que la recherche scientifique
+avait prédit [25] : aucune alerte n’est générée malgré l’activation de plus de 30 000
+signatures.
+62
+
+
+===== PAGE 76 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Figure 4.20. Suricata ne détecte pas leDNSTunneling
+La machine victime est donc compromise et l’attaquant dispose d’un canal C2
+opérationnel sans avoir déclenché la moindre alerte. La figure 4.21 montre la session
+dnscat2 active depuis Kali : l’attaquant obtient un accès root complet sur la machine
+victime en passant par des requêtesDNSque pfSense considère comme parfaitement
+légitimes.
+63
+
+
+===== PAGE 77 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Figure 4.21. Session dnscat2 active — accès root obtenu sur la machine victime
+4.5.5
+Résultat côté CyberShot
+CyberShot identifie l’attaque grâce à trois indicateurs comportementaux, exactement
+comme le recommande la littérature scientifique [25] :
+— Fréquence anormale : 47 requêtes DNS par minute, contre 2 à 3 pour un utilisateur
+normal. Cette anomalie est imperceptible pour une signature mais évidente pour
+un modèle comportemental.
+— Longueur suspecte : les sous-domaines contiennent en moyenne 28 caractères,
+contre des noms courts pour les requêtes légitimes (www, mail, File Transfer
+Protocol (FTP)). Des sous-domaines aussi longs indiquent des données encodées.
+— Entropie élevée : les données encodées en base64 présentent une entropie ca-
+ractéristique d’un contenu chiffré. CyberShot mesure cette entropie sur chaque
+requête.
+64
+
+
+===== PAGE 78 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Dès la détection, CyberShot déclenche le blocage automatique de l’adresse IP source
+via iptables sur VM1. La figure 4.22 montre la règle de blocage ajoutée dynamiquement,
+coupant immédiatement le tunnelDNSétabli par l’attaquant.
+Figure 4.22. Blocage automatique de l’IP attaquante par CyberShot via iptables
+Simultanément, une alerte détaillée est transmise à l’administrateur via Telegram,
+contenant l’IP source, le protocole, la probabilité calculée et l’explication textuelle de
+l’anomalie. La figure 4.23 montre l’alerte telle qu’elle est reçue sur l’application mobile.
+Figure 4.23. Alerte envoyée en temps réel sur Telegram
+CyberShot détecte le tunnel DNS, bloque l’IP automatiquement via iptables et
+notifie l’administrateur sur Telegram. La machine est protégée. pfSense + Suricata ne
+détecte rien.
+65
+
+
+===== PAGE 79 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Critère
+pfSense + Suricata
+CyberShot
+Détection du tunnel
+Non détecté
+Détecté
+Blocage automatique
+Non
+Oui (iptables)
+Compromission machine
+Oui (réussie)
+Non (échouée)
+Notification admin
+Non
+Oui (Telegram)
+Table 4.1. Comparaison des résultats face auDNSTunneling C2
+4.6
+Bilan et discussion
+Les résultats obtenus révèlent une différence structurelle entre les deux approches
+testées. pfSense associé à Suricata représente ici l’exemple typique des systèmes de
+sécurité traditionnels fondés sur les signatures : efficaces et éprouvés face aux menaces
+connues et cataloguées, ils atteignent cependant une limite inhérente à leur conception
+dès lors que l’attaque ne correspond à aucune signature répertoriée. Cette limite n’est
+pas propre à pfSense ou à Suricata en particulier, mais caractérise l’ensemble des
+approches réactives basées sur la reconnaissance de motifs connus.
+CyberShot illustre au contraire ce que permet une approche comportementale fondée
+sur l’apprentissage automatique : détecter non pas ce qui est connu, mais ce qui est
+anormal. Ce résultat est cohérent avec les conclusions de la littérature scientifique [25,
+12], dont CyberShot constitue une application directe et validée expérimentalement.
+Critère
+Approche traditionnelle
+CyberShot
+(basée sur les signatures)
+(basée sur le ML)
+Détection attaques connues
+Oui
+Oui
+Détection attaques inconnues
+Non
+Oui
+Explication de la décision
+Non
+Oui
+Blocage automatique
+Partiel
+Oui
+Alerte temps réel
+Oui
+Oui
+Adaptatif sans mise à jour
+Non
+Oui
+Table 4.2. Bilan comparatif entre approche traditionnelle et approche par apprentissage
+automatique
+Conclusion
+Ce chapitre a démontré, de façon concrète et expérimentale, la différence fondamen-
+tale entre une approche de sécurité basée sur les signatures et une approche basée sur
+l’apprentissage automatique.
+66
+
+
+===== PAGE 80 =====
+
+CHAPITRE 4. ÉTUDE COMPARATIVE
+M. Ben Khater & G. Barouni
+Face aux attaques classiques (scan de ports, force brute SSH, flood ICMP), les
+deux approches produisent des résultats comparables. C’est face au DNS Tunneling
+une attaque qui imite syntaxiquement le trafic légitime et ne possède aucune signature
+identifiable que la frontière devient nette : l’approche traditionnelle reste structurellement
+aveugle, tandis que CyberShot identifie l’anomalie comportementale et protège le réseau
+en quelques secondes. en quelques secondes.
+67
+
+
+===== PAGE 81 =====
+
+Conclusion Générale
+Les systèmes de sécurité traditionnels fondés sur les signatures demeurent des
+solutions performantes et éprouvées pour une large catégorie de menaces. Les tests
+réalisés dans ce projet en apportent la preuve : face au scan de ports, à la force brute
+SSH et au flood ICMP, l’approche à base de signatures détecte les attaques avec
+efficacité et réactivité. Ces systèmes constituent un socle de défense solide, mature et
+largement déployé. Cependant, l’émergence de techniques d’attaque capables d’imiter
+syntaxiquement le trafic légitime révèle une limite inhérente à toute approche réactive
+fondée sur la reconnaissance de motifs connus. LeDNSTunneling illustre précisément ce
+point de rupture : une attaque parfaitement furtive face aux signatures, mais détectable
+par l’analyse comportementale. Avec les avancées de l’intelligence artificielle au service
+des attaquants, ces techniques de contournement ne feront que se multiplier, rendant
+l’approche purement réactive structurellement insuffisante face aux menaces de demain.
+C’est dans ce contexte que CyberShot prend tout son sens. À travers une architecture
+en trois nœuds virtuels, un pipeline de traitement en temps réel et un moteur de décision
+fondé sur le Random Forest, le système a atteint un score F1 global de 95% avec un
+délai de réaction inférieur à deux secondes. Trois contributions originales traversent
+l’ensemble du projet : un dataset intégralement généré en laboratoire, un module XAI
+développé sans dépendance tierce, et une architecture hybride combinant détection
+statistique et apprentissage automatique.
+Les résultats obtenus en environnement virtualisé valident la faisabilité de l’ap-
+proche. Les travaux futurs porteront sur l’enrichissement du dataset, la diversification
+des vecteurs d’attaque et la validation en déploiement réel. Conclusions générales et
+pistes pour les travaux futurs : Enrichissement de l’ensemble de données à partir de
+nouvelles familles d’attaques [14], renforcement auxiliaire du visage. Techniques d’appli-
+cation adverses, distribution multisite et techniques d’amélioration. Optimisation par
+l’intégration de méthodes telles que SHAP ou LIME.
+Ce projet s’est inscrit dans une démarche visant à démontrer la faisabilité d’un
+système de détection et de prévention d’intrusions fondé sur l’apprentissage automatique,
+capable de compléter et de dépasser les limites structurelles des approches classiques,
+tout en restant déployable sur une infrastructure virtualisée à ressources limitées.
+68
+
+
+===== PAGE 82 =====
+
+Webographie
+[1]
+SUNBURST Additional Technical Details — cloud.google.com. Consulté le 09-
+02-2026. 2020. url : https://cloud.google.com/blog/topics/threat-
+intelligence/sunburst-additional-technical-details.
+[2]
+SUNBURST backdoor : Kaspersky link to Turla — securelist.com. Consulté le
+09-02-2026. 2020. url : https://securelist.com.
+[3]
+Cisco Annual Internet Report 2018–2023 — cisco.com. Consulté le 06-02-2026.
+2023. url : https://www.cisco.com/c/en/us/solutions/collateral/
+executive - perspectives / annual - internet - report / white - paper - c11 -
+741490.html.
+[4]
+ENISA Threat Landscape 2023 — enisa.europa.eu. Consulté le 07-02-2026. 2023.
+url : https : / / www . enisa . europa . eu / publications / enisa - threat -
+landscape-2023.
+[5]
+Cost of a Data Breach Report 2023 — ibm.com. Consulté le 05-05-2026. 2023.
+url : https://www.ibm.com/reports/data-breach.
+[6]
+Recommandations de sécurité pour l’architecture des systèmes d’information —
+ssi.gouv.fr. Consulté le 07-02-2026. 2023. url : https://www.ssi.gouv.fr.
+[7]
+Pioneer Tech — Agence numérique tunisienne — pioneertech.tn. Consulté le
+05-02-2026. 2025. url : https://pioneertech.tn.
+[8]
+Software Engineering, 10th Edition — pearson.com. Consulté le 07-02-2026. 2016.
+url : https://www.pearson.com/en-us/subject-catalog/p/software-
+engineering/P200000003258.
+[9]
+Python Programming Language — python.org. Version 3.11, consulté le 08-03-2026.
+2023. url : https://www.python.org.
+[10]
+Scapy — Interactive Packet Manipulation Library — scapy.net. Consulté le 10-
+03-2026. 2023. url : https://scapy.net.
+[11]
+MySQL — The World’s Most Popular Open Source Database — mysql.com.
+Version 8.0, consulté le 12-03-2026. 2023. url : https://www.mysql.com.
+[12]
+Random Forests — link.springer.com. Consulté le 28-02-2026. 2001. url : https:
+//link.springer.com/article/10.1023/A:1010933404324.
+[13]
+Scikit-learn : Machine Learning in Python — scikit-learn.org. Version 1.3.0,
+consulté le 28-02-2026. 2023. url : https://scikit-learn.org.
+69
+
+
+===== PAGE 83 =====
+
+WEBOGRAPHIE
+M. Ben Khater & G. Barouni
+[14]
+CICIDS2018 : A Realistic Cyber Defense Dataset — unb.ca. University of New
+Brunswick, consulté le 25-02-2026. 2018. url : https://www.unb.ca/cic/
+datasets/ids-2018.html.
+[15]
+NSL-KDD Dataset — unb.ca. Consulté le 25-02-2026. 2009. url : https://www.
+unb.ca/cic/datasets/nsl.html.
+[16]
+iptables — Administration tool for IPv4 packet filtering — netfilter.org. Consulté
+le 14-03-2026. 2023. url : https://www.netfilter.org/projects/iptables/.
+[17]
+Telegram Bot API — Documentation officielle — core.telegram.org. Consulté le
+18-04-2026. 2023. url : https://core.telegram.org/bots/api.
+[18]
+FastAPI — Modern, fast web framework for building APIs with Python — fas-
+tapi.tiangolo.com. Consulté le 16-03-2026. 2023. url : https://fastapi.tiangolo.
+com.
+[19]
+React — The library for web and native user interfaces — react.dev. Consulté le
+16-03-2026. 2023. url : https://react.dev.
+[20]
+Explainable Artificial Intelligence (XAI) : Concepts, taxonomies, opportunities
+and challenges toward responsible AI — sciencedirect.com. Consulté le 26-02-
+2026. 2020. url : https://www.sciencedirect.com/science/article/pii/
+S1566253519308103.
+[21]
+Network Intrusion Detection System Using Explainable AI — arxiv.org. Consulté
+le 27-02-2026. 2021. url : https://arxiv.org/abs/2101.10127.
+[22]
+DNS Tunnel Problem In Cybersecurity — ieeexplore.ieee.org. Consulté le 18-05-
+2026. 2024. url : https://ieeexplore.ieee.org/document/10527301.
+[23]
+Emerging Threats Open Ruleset — rules.emergingthreats.net. Consulté le 15-04-
+2026. 2023. url : https://rules.emergingthreats.net/open/suricata/
+rules.
+[24]
+ENISA Threat Landscape 2025 — enisa.europa.eu. Consulté le 05-05-2026. 2025.
+url : https : / / www . enisa . europa . eu / publications / enisa - threat -
+landscape-2025.
+[25]
+DNS Tunneling Detection using Machine Learning and Cache Miss Properties
+— ieeexplore.ieee.org. Consulté le 27-02-2026. 2021. url : https://ieeexplore.
+ieee.org/document/9432279.
+70
+
+
+===== PAGE 84 =====
+
+
+
+===== PAGE 85 =====

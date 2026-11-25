@@ -1,0 +1,4629 @@
+===== PAGE 1 =====
+
+ 
+ 
+Republic of Tunisia 
+ 
+ 
+ 
+University of Monastir 
+Higher Institute of Computer 
+Science of Mahdia 
+MEMOIRE 
+ 
+Order N°: MP-SD-2-2025-
+015  
+Ministry of Higher Education and Scientific 
+Research 
+ 
+ 
+ 
+MASTER THESIS 
+ 
+Presented to 
+ 
+Higher Institute of Computer Science of Mahdia 
+ 
+ Carried out at 
+ 
+RB IT SOLUTIONS 
+ 
+ 
+In order to obtain the degree of 
+ 
+Professional Master’s in Data Science 
+ 
+Prepared by: 
+ 
+WAILI AICHA 
+ 
+ 
+Exploitation of Natural Language in Visual Modeling:  
+Automation of UML Diagram Generation Processes 
+ 
+ 
+ 
+defended on: 13 December 2025   
+in front of the jury composed of: 
+ 
+ 
+President 
+  :  Tarek m. Hamdani 
+Examiner 
+  :  Riadh Hadj m'tir 
+Academic Supervisor 
+  : Inès Zribi 
+Professional Supervisor 
+: Rahma Ben boubaker 
+ 
+ 
+ 
+ 
+ 
+Academic Year: 2025-2026 
+
+
+===== PAGE 2 =====
+
+Dedication
+بسم ﺍلله ﺍلرحمن ﺍلرحيم
+"إِنَّا فَتَحْنَا لَكَ فَتْحًا مُّبِينًا"
+To Allah,
+For granting me health, wisdom, and patience throughout this journey, and for
+guiding my steps through every challenge and obstacle.
+To My Dear Father,
+Who instilled in me the roots of patience and perseverance, and has been a constant
+support and a guiding light in every step of my journey.
+To My Dear Mother,
+Who surrounded me with care and provided me with stability and reassurance
+under all circumstances, her presence a gentle light comforting my heart.
+To My Dear Brother,
+Who stood by me in every situation, sharing encouragement and support, his pres­
+ence a source of confidence and tranquility.
+To My Dear Sister,
+Whose support and care have always helped ease my path, providing steady en­
+couragement in times of effort and fatigue.
+To My Friends,
+Who added a touch of joy and light­heartedness to my days.
+To Myself,
+For the patience, perseverance, and courage demonstrated throughout this journey,
+for facing challenges and overcoming obstacles with determination and resilience.
+Aicha Waili
+
+
+===== PAGE 3 =====
+
+Acknowledgements
+I wish to express my gratitude to all those who contributed to the successful completion of this
+project.
+First, I acknowledge the Higher Institute of Computer Science of Mahdia (ISIMA) for provid-
+ing a solid academic foundation and a supportive learning environment throughout my studies.
+I am sincerely grateful to my academic supervisor, Ms. Inès Zribi, whose guidance, valuable
+advice, and availability, along with her expertise in this field, greatly assisted me throughout this
+project.
+I also extend my appreciation to the RB IT Solutions team for their support: Ms. Rahma Ben
+Boubaker for providing valuable opportunities and Ms. Sabrine Boussemaa for her professional
+insights and constructive ideas, which significantly contributed to this work.
+Finally, I would like to thank the members of the jury for dedicating their time to evaluate this
+project and for their attention to its content.
+
+
+===== PAGE 4 =====
+
+Contents
+General Introduction
+1
+1
+General Context
+3
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Presentation of the Host Company . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+Project Context . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3.1
+Analysis of Existing Practices . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.2
+Proposed Solution
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.4
+Methodologies for data science projects . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4.1
+Existing methodologies . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4.2
+Methodology selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.5
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2
+Business Understanding
+11
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2
+Business Objectives and Functional Requirements . . . . . . . . . . . . . . . . . . .
+12
+2.2.1
+UML Diagrams Selection
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.2
+Languages Selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.3
+Analysis of existing tools and technologies . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.3.1
+Conceptual overview and identified limitations . . . . . . . . . . . . . . . .
+13
+2.3.2
+Technological Foundations of Existing Tools
+. . . . . . . . . . . . . . . . .
+15
+4
+
+
+===== PAGE 5 =====
+
+Contents
+2.4
+Proposed method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.5
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3
+Data Understanding
+18
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.2
+Data Collection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.3
+Data Description
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.4
+Data Quality Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.4.1
+Dataset A . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+3.4.2
+Dataset B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.5
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+4
+Data Preparation
+28
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+4.2
+Data Cleaning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+4.2.1
+Corpus Cleaning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+4.2.2
+Code Cleaning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+4.3
+Data Translation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+4.3.1
+Diagram Description Translation . . . . . . . . . . . . . . . . . . . . . . . .
+33
+4.3.2
+Code Translation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+4.4
+Corpus Annotation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.4.1
+Corpus Annotation Techniques . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.4.2
+Use Case Corpus Annotation . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.4.3
+Class Corpus Annotation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.4.4
+Sequence Diagram Corpus Annotation . . . . . . . . . . . . . . . . . . . . .
+48
+4.5
+Post-Annotation Data Preparation
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+ISI Mahdia
+5
+
+
+===== PAGE 6 =====
+
+Contents
+5
+Modeling
+58
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.2
+Modeling Steps and Strategies . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.2.1
+Modeling Steps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.2.2
+Modeling Strategies
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.3
+Extraction of entities, relationships, and events
+. . . . . . . . . . . . . . . . . . . .
+61
+5.3.1
+Model Selection
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.3.2
+Single Model Strategy Implementation
+. . . . . . . . . . . . . . . . . . . .
+62
+5.3.3
+Separate Models Strategy Implementation . . . . . . . . . . . . . . . . . . .
+68
+5.4
+Code generation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+70
+5.4.1
+Model selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+71
+5.4.2
+Model Implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+5.5
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+6
+Evaluation
+74
+6.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+6.2
+Evaluation of the Single Model Strategy . . . . . . . . . . . . . . . . . . . . . . . .
+75
+6.2.1
+Training Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+6.2.2
+Qualitative Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+6.3
+Evaluation of the Separate Models Strategy
+. . . . . . . . . . . . . . . . . . . . . .
+76
+6.3.1
+Evaluation of the Classification Model . . . . . . . . . . . . . . . . . . . . .
+77
+6.3.2
+Evaluation of Each Separate Model
+. . . . . . . . . . . . . . . . . . . . . .
+78
+6.3.3
+Strategy and Model Adopted . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+6.4
+Code generation Model Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+6.4.1
+Training Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+6.4.2
+Qualitative Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+6.4.3
+Adopted Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+ISI Mahdia
+6
+
+
+===== PAGE 7 =====
+
+Contents
+6.5
+Evaluation of Models Interconnections . . . . . . . . . . . . . . . . . . . . . . . . .
+84
+6.5.1
+Use Case Model to Code Generation Interconnection . . . . . . . . . . . . .
+84
+6.5.2
+Class Diagram Model to Code Generation Interconnection . . . . . . . . . .
+85
+6.5.3
+Sequence Diagram to Code Generation Interconnection . . . . . . . . . . . .
+86
+6.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+7
+Deployment
+88
+7.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+7.2
+Deployment Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+7.2.1
+System Components . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+7.2.2
+System Interaction Flow . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+90
+7.3
+Deployment Implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+91
+7.3.1
+Used Technologies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+91
+7.3.2
+Hybrid Development and Integration . . . . . . . . . . . . . . . . . . . . . .
+93
+7.3.3
+Model Development and Integration . . . . . . . . . . . . . . . . . . . . . .
+95
+7.3.4
+Environment Execution . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+96
+7.3.5
+Functional Testing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+97
+7.4
+Illustrations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+98
+7.4.1
+Application Interfaces
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+98
+7.4.2
+Functional Demonstration . . . . . . . . . . . . . . . . . . . . . . . . . . .
+101
+7.5
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+105
+General Conclusion
+106
+Bibliography
+107
+ISI Mahdia
+7
+
+
+===== PAGE 8 =====
+
+List of Figures
+1.1
+Official Logo of RB IT Solutions . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Overview of Team Data Science Process (TDSP)
+. . . . . . . . . . . . . . . . . . .
+7
+1.3
+Overview of Knowledge Discovery in Databases (KDD)
+. . . . . . . . . . . . . . .
+8
+1.4
+Overview of CRISP-DM (Cross-Industry Standard Process for Data Mining) . . . . .
+9
+2.1
+Example of a diagram generated by UML AI
+. . . . . . . . . . . . . . . . . . . . .
+14
+2.2
+Example of a diagram generated by Diagramming AI . . . . . . . . . . . . . . . . .
+14
+2.3
+Mermaid.js Logo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.4
+PlantUML Logo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.5
+Graphviz Logo
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+3.1
+Sample Diagram Description . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.2
+Sample PlantUML Code
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.3
+Sample Diagram Description . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4
+Sample PlantUML Code
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.5
+Sample of Incorrect UML Diagram from Dataset A . . . . . . . . . . . . . . . . . .
+24
+3.6
+Sample of Incorrect UML Class Diagram
+. . . . . . . . . . . . . . . . . . . . . . .
+26
+3.7
+Sample of Incorrect UML Sequence Diagram . . . . . . . . . . . . . . . . . . . . .
+26
+3.8
+Sample of Incorrect UML Class Diagram
+. . . . . . . . . . . . . . . . . . . . . . .
+26
+4.1
+Sample of Description Before cleaning . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+4.2
+Sample of Description After cleaning
+. . . . . . . . . . . . . . . . . . . . . . . . .
+30
+8
+
+
+===== PAGE 9 =====
+
+List of Figures
+4.3
+Exemple of Actor Declaration
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.4
+Sample of English Description . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+4.5
+Sample of Translated Description with Opus-MT . . . . . . . . . . . . . . . . . . .
+35
+4.6
+Sample of Translated Description with Google Translator . . . . . . . . . . . . . . .
+35
+4.7
+Sample of Translated Use Case Code . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+4.8
+Sample of Translated Class Code . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+4.9
+Sample of Translated Sequence Code
+. . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.10 SequenceMatcher Output . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.11 Labeling Studio Overview
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.12 Sample of Use Case Entities Annotation . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.13 Sample of Use Case Relationships Annotation . . . . . . . . . . . . . . . . . . . . .
+44
+4.14 Use Case Relationships Counts . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.15 Sample of Class Entities Annotation . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.16 Sample of Class Relation Annotation . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.17 Use Case Relationships Counts . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.18 Sample of Sequence Entities Annotation . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.19 Sample of Sequence Events Annotation
+. . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.20 Events Counts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.21 Sample of Use Cases Representation . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.22 Sample of PlantUML Code for Use case Diagram . . . . . . . . . . . . . . . . . . .
+54
+4.23 Sample of Methods Representation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.24 Sample of PlantUML Code for Class Diagram . . . . . . . . . . . . . . . . . . . . .
+55
+4.25 Sample of Events Representation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+4.26 Sample of PlantUML Code for Sequence Diagram
+. . . . . . . . . . . . . . . . . .
+56
+5.1
+Single Model Strategy
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.2
+Separate Models Strategy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+ISI Mahdia
+9
+
+
+===== PAGE 10 =====
+
+List of Figures
+5.3
+Prompt Used in Testing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+5.4
+Decoder-only Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.5
+Encoder-Decoder Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.6
+Instruction Used For the Single Model . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+5.7
+BitsAndBytesConfig Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+5.8
+LoraConfig Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+6.1
+French Classification Test . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+6.2
+English Classification Test . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+6.3
+Output generated by the Use Case Mode . . . . . . . . . . . . . . . . . . . . . . . .
+84
+6.4
+Use Case Code generated . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+85
+6.5
+Output generated by the Class Diagram Model . . . . . . . . . . . . . . . . . . . . .
+85
+6.6
+Class Diagram Code generated . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+86
+6.7
+Output generated by the sequence Diagram Model . . . . . . . . . . . . . . . . . . .
+86
+6.8
+Class Diagram Code generated . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+7.1
+System Components
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+90
+7.2
+Cloud Environment Execution . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+96
+7.3
+Local Environment Execution
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+97
+7.4
+Overview Home Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+98
+7.5
+Diagram Preview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+99
+7.6
+Overview About Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+99
+7.7
+Use Case Diagram Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+100
+7.8
+Class Diagram Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+100
+7.9
+Sequence Diagram Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+101
+7.10 Use Case Diagram (English) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+101
+7.11 Use Case Diagram (French) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+102
+ISI Mahdia
+10
+
+
+===== PAGE 11 =====
+
+List of Figures
+7.12 Generated Use Case Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+102
+7.13 Class Diagram (English)
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+103
+7.14 Class Diagram (French) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+103
+7.15 Generated Class Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+104
+7.16 Sequence Diagram (English) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+104
+7.17 Sequence Diagram (French)
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+105
+7.18 Generated sequence Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+105
+ISI Mahdia
+11
+
+
+===== PAGE 12 =====
+
+List of Tables
+2.1
+Comparison of UML Code Generators . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+3.1
+Diagram Distribution in Dataset A and Dataset B . . . . . . . . . . . . . . . . . . .
+22
+4.1
+Structured Elements in Dataset A Descriptions . . . . . . . . . . . . . . . . . . . . .
+29
+4.2
+English corpus word count . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+4.3
+Comparison between Opus-MT and Google Translator (deep_translator) . . . . . . .
+33
+4.4
+Evaluation of Translation Methods for UML Descriptions . . . . . . . . . . . . . . .
+34
+4.5
+French corpus Word count
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+4.6
+Use Case Diagrams Annotation Statistics
+. . . . . . . . . . . . . . . . . . . . . . .
+44
+4.7
+Class Diagrams Annotation Statistics . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.8
+Sequence Diagrams Annotation Statistics
+. . . . . . . . . . . . . . . . . . . . . . .
+51
+4.9
+Statistics of annotated dataset by diagram type and language. . . . . . . . . . . . . .
+53
+5.1
+Comparison of Selected Models
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.2
+Baseline Extraction Models Evaluation . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+5.3
+Data preparation and tokenization process for Gemma-it and Flan-T5 models
+. . . .
+64
+5.4
+Training Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+5.5
+Seq2Seq Libraries . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.6
+Causal LM Libraries
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.7
+Model Architecture and Parameters
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+5.8
+Training Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+12
+
+
+===== PAGE 13 =====
+
+List of Tables
+5.9
+Instructions provided to the models for UML element extraction . . . . . . . . . . .
+70
+5.10 Training Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+70
+5.11 Comparison of selected code generation models . . . . . . . . . . . . . . . . . . . .
+71
+5.12 Baseline Evaluation of Selected Models . . . . . . . . . . . . . . . . . . . . . . . .
+72
+5.13 Training Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+6.1
+Models Training Evaluation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+6.2
+Models Evaluation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+6.3
+Qualitative Evaluation of Single Models . . . . . . . . . . . . . . . . . . . . . . . .
+76
+6.4
+Classification Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+6.5
+Use Case Diagram Models Training Evaluation . . . . . . . . . . . . . . . . . . . .
+78
+6.6
+Use Case Diagram Models Evaluation . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+6.7
+Qualitative Evaluation of Use Case Models
+. . . . . . . . . . . . . . . . . . . . . .
+79
+6.8
+Class Diagram Models Training Evaluation
+. . . . . . . . . . . . . . . . . . . . . .
+79
+6.9
+Class Diagram Models Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+6.10 Qualitative Evaluation of Class Diagram Models
+. . . . . . . . . . . . . . . . . . .
+80
+6.11 Sequence Diagram Models Training Evaluation . . . . . . . . . . . . . . . . . . . .
+80
+6.12 Sequence Diagram Models Evaluation . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+6.13 Qualitative Evaluation of Sequence Diagram Models
+. . . . . . . . . . . . . . . . .
+81
+6.14 Training and Validation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+6.15 Structural and Execution Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+6.16 Qualitative Evaluation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+7.1
+Technologies Used in Deployment . . . . . . . . . . . . . . . . . . . . . . . . . . .
+92
+ISI Mahdia
+13
+
+
+===== PAGE 14 =====
+
+General Introduction
+In the context of software system development, Unified Modeling Language (UML) plays a fun-
+damental role as a standard visual modeling language. It allows for a structured representation of
+functional requirements, business processes, and the software architecture of a project. This repre-
+sentation facilitates communication between various stakeholders (analysts, developers, and project
+managers) and ensures a better understanding of the system to be designed.
+Visual modeling, through standardized diagrams, such as use cases, class diagrams, and sequence
+diagrams, is an essential step in ensuring the coherence, maintainability, and scalability of applica-
+tions. It serves as a bridge between the expression of requirements in natural language and their
+technical implementation, while reducing ambiguities and the risk of errors from the earliest phases
+of the software development lifecycle.
+Recent progress in Natural Language Processing (NLP), especially with Large Language Model
+(LLM) techniques, has introduced innovative methods to assist UML designers during the require-
+ment analysis and modeling stages. By applying NLP with LLM techniques, it becomes possible
+to automatically identify and generate UML elements directly from textual descriptions. This syn-
+ergy enables the creation of intelligent modeling tools capable of transforming natural language into
+structured and accurate visual representations.
+This project follows this trend by presenting a UML Support Tool based on NLP techniques, with
+the goal of facilitating the generation of visual models from textual descriptions.
+To achieve this objective, the report is structured as follows:
+• Chapter 1 – General Context presents the project background, problem statement, proposed
+solution, and adopted methodology.
+• Chapter 2 – Business Understanding defines business goals, system requirements, and tech-
+nical strategy, including UML modeling approach and technology selection.
+• Chapter 3 – Data Understanding describes data sources, formats, and characteristics to ensure
+effective processing.
+• Chapter 4 – Data Preparation covers dataset cleaning, transformation, translation, and anno-
+tation to create a structured and high-quality dataset for modeling.
+1
+
+
+===== PAGE 15 =====
+
+General Introduction
+• Chapter 5 – Modeling describes model development, strategy-based adaptation methods, and
+implementation.
+• Chapter 6 – Evaluation presents a comprehensive evaluation of the modeling strategies, in-
+cluding detailed performance analysis, comparative assessment of models, and their effective-
+ness and limitations.
+• Chapter 7 – Deployment: describes the integration of the models into a functional system and
+the steps to make the UML generation tool operational.
+ISI Mahdia
+2
+
+
+===== PAGE 16 =====
+
+Chapter 1
+General Context
+Sommaire
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Presentation of the Host Company . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+Project Context
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3.1
+Analysis of Existing Practices . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.2
+Proposed Solution
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.4
+Methodologies for data science projects . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4.1
+Existing methodologies . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4.2
+Methodology selection . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+3
+
+
+===== PAGE 17 =====
+
+Chapter 1. General Context
+1.1
+Introduction
+This first chapter is structured into multiple sections, providing a comprehensive overview of the host
+company, an in-depth presentation of the project problem, the proposed solution designed to address
+these challenges, and a detailed explanation of the methodology employed for the development and
+execution of the project.
+1.2
+Presentation of the Host Company
+RB IT Solutions is a company specialized in the development of IT solutions and the hosting of
+digital services. It offers custom applications tailored to meet the specific needs of businesses while
+also providing support in the management and maintenance of their IT systems.
+RB IT Solutions also offers a co-working space, providing a modern and collaborative environ-
+ment for professionals and entrepreneurs, in addition to its development and hosting services. The
+official company logo is shown in Figure 1.1.
+Figure 1.1: Official Logo of RB IT Solutions
+1.3
+Project Context
+Unified Modeling Language (UML) [1] is a standardized modeling language that enables visual rep-
+resentation of the structure and behavior of software systems using various types of diagrams. It is an
+essential language in the software modeling process, facilitating communication among stakeholders
+and improving understanding of the system to be developed.
+However, manual creation of diagrams from natural language descriptions remains a time-consuming,
+complex, and error-prone task. To address this issue, this project proposes the development of an au-
+tomated tool based on NLP, capable of generating UML diagrams from descriptive texts.
+ISI Mahdia
+4
+
+
+===== PAGE 18 =====
+
+Chapter 1. General Context
+1.3.1
+Analysis of Existing Practices
+At RB IT Solutions, UML modeling is currently performed manually using dedicated software tools
+based on requirements specifications. While these tools assist in creating diagrams, the process is not
+fully automated and involves significant manual effort. This approach presents several challenges.
+• Time-consuming and labor-intensive: Despite tool support, modelers must manually draw
+and update diagrams, which can be slow and requires continuous attention, especially for com-
+plex or evolving projects.
+• Dependence on skilled personnel: Skilled modelers are needed to accurately interpret require-
+ments and use the tools effectively to produce correct UML diagrams.
+• Risk of human errors and inconsistencies: Manual input increases the chance of mistakes,
+such as misinterpretation of requirements or inconsistent diagram styles, which can affect model
+quality.
+• Limited scalability and adaptability: Updating UML diagrams in response to changing re-
+quirements demands repeated manual work, reducing efficiency and agility.
+• Challenges in process synchronization: The reliance on manual efforts hampers the smooth
+coordination between UML modeling and other automated software development processes,
+leading to delays and potential inconsistencies in project documentation.
+These limitations highlight the challenges inherent in the current manual UML modeling process,
+underscoring issues related to accuracy, consistency, and productivity at RB IT Solutions.
+1.3.2
+Proposed Solution
+The proposed solution aims to provide effective and practical support to UML modelers by automat-
+ing the generation of UML diagrams. This approach addresses the limitations of traditional manual
+modeling methods, which are often time-consuming and prone to human error. The solution is de-
+signed with several key features that make it both efficient and accessible.
+• Generation of UML diagrams: Enables the automated creation of three widely used UML
+diagram types: class diagrams, use case diagrams, and sequence diagrams. This automation
+ensures structural and semantic consistency while significantly accelerating the modeling pro-
+cess.
+• Bilingual support: Offers comprehensive support for both French and English, enabling dia-
+gram generation and user interface components to be displayed in either language. This multi-
+lingual feature significantly enhances the tool’s flexibility and adaptability across diverse pro-
+fessional contexts.
+ISI Mahdia
+5
+
+
+===== PAGE 19 =====
+
+Chapter 1. General Context
+• Fully automated workflow: Integrates an end-to-end automated process covering input data
+processing, model interpretation, diagram synthesis, and output generation. This automation
+reduces manual effort and minimizes errors, which is particularly valuable for users who are
+still developing their modeling expertise.
+• User-friendly interface: Special emphasis has been placed on designing an intuitive and ac-
+cessible interface. Clear navigation, contextual guidance, and streamlined controls contribute
+to a smooth and efficient user experience, accommodating different levels of expertise.
+1.4
+Methodologies for data science projects
+The selection of an appropriate methodological framework constitutes a critical determinant of a
+project’s coherence, effectiveness, and overall success. It ensures a structured progression through
+each development phase, from problem formulation and data preparation to modeling, evaluation, and
+deployment, while promoting methodological rigor, reproducibility, and alignment with the project’s
+objectives.
+1.4.1
+Existing methodologies
+Team Data Science Process (TDSP) [2]: A comprehensive framework developed to support the
+collaborative execution of data science initiatives by incorporating principles from software engineer-
+ing and project management. It fosters structured teamwork, encourages reproducibility, and ensures
+scalable and reliable outcomes through an iterative process that allows continuous refinement while
+remaining aligned with business objectives.
+The main phases of the TDSP are as follows:
+• Business Understanding: Defines the project’s objectives, ensures alignment with business
+needs, and sets clear success criteria.
+• Data Acquisition and Exploration: Involves collecting relevant data sources and performing
+initial analysis to assess quality and gain insights.
+• Data Preparation: Focuses on cleaning, transforming, and organizing data into a suitable
+format for modeling.
+• Modeling: Applies appropriate algorithms to build predictive or descriptive models, followed
+by evaluation and optimization.
+• Deployment: Integrates the selected model into a production environment to enable real-world
+usage and decision-making.
+ISI Mahdia
+6
+
+
+===== PAGE 20 =====
+
+Chapter 1. General Context
+• Customer Acceptance: Validates the deployed solution with stakeholders to ensure it meets
+expectations and business requirements.
+• Lifecycle Management: Ensures ongoing monitoring, maintenance, and updating of the solu-
+tion to maintain performance over time.
+The overall workflow is represented in Figure 1.2, which provides a structured overview of the pro-
+cess.
+Figure 1.2: Overview of Team Data Science Process (TDSP)
+Knowledge Discovery in Databases (KDD) [3]: A structured and comprehensive methodology
+for extracting meaningful, reliable, and actionable knowledge from large and complex datasets stored
+in databases, enabling organizations and researchers to gain insights, support decision-making, and
+uncover hidden patterns and relationships within the data.
+The KDD process transforms raw data into meaningful knowledge through the following key
+steps.
+• Data Selection: Identifying and extracting relevant data from various sources for analysis.
+• Data Preprocessing: Cleaning and transforming raw data to handle noise, missing values, and
+inconsistencies, preparing it for mining.
+• Data Preparation: Focuses on cleaning, transforming, and organizing data into a suitable
+format for modeling.
+• Data Transformation: Converting data into suitable formats or structures, often involving
+dimensionality reduction or feature construction.
+ISI Mahdia
+7
+
+
+===== PAGE 21 =====
+
+Chapter 1. General Context
+• Data Mining: Applying algorithms to extract patterns or models from the prepared data.
+• Pattern Evaluation: Assess the validity, novelty, usefulness, and understandability for discov-
+ered patterns.
+• Knowledge Presentation: Visualize and presents the results in an interpretable manner for
+decision support.
+Figure 1.3 provides a visual representation of the overall methodological workflow.
+Figure 1.3: Overview of Knowledge Discovery in Databases (KDD)
+CRISP-DM (Cross-Industry Standard Process for Data Mining) [4]: It constitutes a com-
+prehensive, industry-agnostic framework designed to guide the systematic and iterative execution of
+data mining projects. It encompasses the full project lifecycle, from the initial elicitation of business
+objectives through data preparation, modeling, evaluation, and deployment of solutions. The method-
+ology’s versatility renders it well-suited for application in diverse fields, including NLP and Artificial
+Intelligence (AI), ensuring rigorous alignment with organizational requirements and strategic goals.
+The main phases of the CRISP-DM process are detailed as follows:
+• Business Understanding: This initial phase focuses on defining the objectives and constraints
+of the project from a business perspective. It ensures that the data mining efforts are aligned
+with strategic goals and success criteria.
+• Data Understanding: Data is collected and examined to assess its quality and relevance. Ex-
+ploratory analysis is conducted to identify patterns, detect issues, and guide the next steps.
+ISI Mahdia
+8
+
+
+===== PAGE 22 =====
+
+Chapter 1. General Context
+• Data Preparation: Relevant data is cleaned and transformed into a structured format suitable
+for modeling. This includes handling missing values, selecting features, and normalizing the
+data.
+• Modeling: Appropriate modeling techniques are applied to the prepared data. Parameters are
+fine-tuned, and different models are tested to find the most effective solution.
+• Evaluation: The model’s performance is evaluated to ensure it meets the initial objectives.
+Results are validated for reliability, relevance, and business usefulness.
+• Deployment: The validated model is implemented in a real-world environment. This phase
+includes delivering results to stakeholders and planning for maintenance or integration.
+Their interconnections are shown in Figure 1.4, which offers an integrated visualization of the method-
+ology’s structure, operational flow, and progressive phases.
+Figure 1.4: Overview of CRISP-DM (Cross-Industry Standard Process for Data Mining)
+1.4.2
+Methodology selection
+After presenting the available methodologies, the selection of an appropriate framework that aligns
+with the specific requirements of this NLP project was essential. Although KDD and TSDP provide
+valuable guidance in data processing and project management, they present limitations when applied
+ISI Mahdia
+9
+
+
+===== PAGE 23 =====
+
+Chapter 1. General Context
+to NLP tasks characterized by iterative model development and the handling of unstructured textual
+data.
+KDD primarily focuses on structured data analysis and pattern extraction but offers limited sup-
+port for iterative evaluation and deployment phases crucial in NLP workflows. Additionally, its ap-
+proach assumes relatively clean and well-defined datasets, whereas NLP projects often require exten-
+sive preprocessing and feature engineering tailored to complex language structures.
+TSDP designed for managing data science teams and integrating software engineering practices,
+is more suited for projects with formalized team structures and less for experimental, research-driven
+tasks. Its rigid process and extensive documentation demands may hinder the flexibility needed for
+prototyping and adapting NLP models based on continuous feedback.
+In contrast, CRISP-DM provides a comprehensive, iterative, and flexible framework that effec-
+tively accommodates the challenges of NLP projects. Its phases ranging from business understanding
+through to deployment support continuous refinement of data preparation and modeling. The cyclical
+nature of CRISP-DM allows revisiting earlier stages based on model performance and new insights,
+which is vital for the evolving nature of natural language understanding systems. This adaptability,
+combined with its proven track record in diverse data science applications, makes CRISP-DM the
+most appropriate methodology for guiding this project’s development lifecycle.
+1.5
+Conclusion
+This chapter has provided a detailed overview of the project context, encompassing the presentation
+of the host company and the challenges inherent in manual UML modeling. It critically examined
+existing solutions and identified their shortcomings in meeting project requirements. The chapter
+further introduced the proposed automated approach, emphasizing its key functionalities designed to
+address identified limitations. A thorough evaluation of established data science methodologies was
+conducted, culminating in the selection of the CRISP-DM framework. Its iterative and adaptable
+structure aligns closely with the complex and evolving nature of NLP tasks, thereby offering a ro-
+bust methodological foundation to ensure the systematic progression and successful execution of the
+project.
+ISI Mahdia
+10
+
+
+===== PAGE 24 =====
+
+Chapter 2
+Business Understanding
+Sommaire
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2
+Business Objectives and Functional Requirements . . . . . . . . . . . . . . . .
+12
+2.2.1
+UML Diagrams Selection
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.2
+Languages Selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.3
+Analysis of existing tools and technologies . . . . . . . . . . . . . . . . . . . . .
+13
+2.3.1
+Conceptual overview and identified limitations . . . . . . . . . . . . . . .
+13
+2.3.2
+Technological Foundations of Existing Tools
+. . . . . . . . . . . . . . . .
+15
+2.4
+Proposed method
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+11
+
+
+===== PAGE 25 =====
+
+Chapter 2. Business Understanding
+2.1
+Introduction
+In this chapter, an in-depth overview of the business goals and system requirements is provided. The
+chapter introduces the UML-based modeling approach, explains the rationale behind the choice of
+technologies, and describes the general technical methodology followed in the system’s development
+process.
+2.2
+Business Objectives and Functional Requirements
+2.2.1
+UML Diagrams Selection
+Based on an extensive review of industry practices, including the article: Which UML Diagrams are
+Mostly Used? [5], the following three UML diagrams have been identified as the most effective for
+system modeling. These diagrams were selected because of their ability to accurately represent both
+the static and dynamic aspects of a system, as well as to capture essential functional requirements.
+Class Diagram:
+A Class Diagram is a static diagram that illustrates the structure of a system by
+showing its classes, attributes, methods, and the relationships among them, including associations,
+generalizations, and dependencies. It is used to model the system’s architecture, provide a blueprint
+for implementation, and ensure that developers and stakeholders understand the organization and
+interaction of the system’s components. Class diagrams are particularly useful during the design
+phase for defining object-oriented structures and validating the logical architecture of the system.
+Use Case Diagram:
+A Use Case Diagram is a behavioral diagram that represents the interactions
+between external actors (such as users or other systems) and the system itself. It is used to capture and
+illustrate the functional requirements of a system, define its boundaries, and communicate how the
+system is intended to be used. Use Case diagrams help ensure alignment between stakeholders and
+technical teams by providing a high-level view of system functionality and identifying all possible
+user interactions with the system.
+Sequence Diagram:
+A Sequence Diagram is a dynamic diagram that shows how objects interact
+in a particular scenario over time, emphasizing the chronological order of messages exchanged be-
+tween them. It is used to model the flow of operations, illustrate system behavior, and document
+interactions for specific use cases. Sequence diagrams are particularly valuable for understanding and
+verifying the temporal aspects of system processes, such as workflows, data exchanges, and method
+calls between components.
+ISI Mahdia
+12
+
+
+===== PAGE 26 =====
+
+Chapter 2. Business Understanding
+2.2.2
+Languages Selection
+The selection of language for UML diagrams in this project constitutes a fundamental aspect of system
+modeling. The language employed directly influences the clarity, precision, and overall readability
+of the diagrams, which are intended to accurately represent the system’s structure, components, and
+interactions. A careful choice of language ensures that the diagrams convey the intended information
+effectively and conform to recognized technical conventions, thereby supporting the integrity and
+rigor of the system design process.
+English:
+English has been chosen as the primary language because it is the most widely used lan-
+guage in software engineering and system modeling. Using English ensures that the diagrams follow
+international standards, are precise, and are easy to interpret according to common technical conven-
+tions.
+French:
+French is included as a secondary language to provide additional clarity and accessibility
+within the project. Including French allows the diagrams to be easily understood in the local context,
+ensuring that the system’s design is clear and well-communicated. The combination of English and
+French helps maintain accuracy while improving readability and comprehension.
+2.3
+Analysis of existing tools and technologies
+2.3.1
+Conceptual overview and identified limitations
+In the domain of automated UML diagram generation, tools like UML AI and Diagramming AI
+serve as examples of solutions designed to convert textual descriptions into visual models.
+UML AI [6] is a software tool designed to assist users in generating UML diagrams from textual
+descriptions. It enables the transformation of written requirements into visual UML representations
+to support software modeling and design processes.
+Diagramming AI [7] is an automated tool that converts written descriptions into UML diagrams.
+Its purpose is to streamline the diagram creation process by reducing manual effort and helping users
+quickly produce standardized UML models.
+These tools aim to simplify the modeling process by converting natural language input into stan-
+dardized UML diagrams. They are accessible via online platforms and designed to provide user-
+friendly interfaces for a broad range of users. However, while promising, these tools currently do
+not fully address the specific and nuanced requirements of the organization. The principal limitations
+common to these tools include.
+ISI Mahdia
+13
+
+
+===== PAGE 27 =====
+
+Chapter 2. Business Understanding
+1. Manual Diagram Type Selection: Users must explicitly specify the type of diagram to gener-
+ate (class diagram, sequence diagram...), limiting the degree of automation within the modeling
+process.
+2. Inadequate Processing of French Descriptions: These tools frequently encounter difficulties
+accurately interpreting textual inputs in French, resulting in diagrams predominantly generated
+in English that may be incomplete or inaccurate due to misinterpretation.
+These limitations are illustrated in Figures 2.1 and 2.2, based on tests conducted using French de-
+scriptions.
+Figure 2.1: Example of a diagram generated by UML AI
+Figure 2.2: Example of a diagram generated by Diagramming AI
+ISI Mahdia
+14
+
+
+===== PAGE 28 =====
+
+Chapter 2. Business Understanding
+2.3.2
+Technological Foundations of Existing Tools
+The technology stack behind UML generation tools is composed of several key components, each
+playing a crucial role in ensuring efficiency, scalability, and seamless integration. These components
+include.
+Rule-Based Reasoning (Ontologies):
+A symbolic method that encodes domain knowledge, rules,
+and relationships in a formalized structure. Ontologies provide explicit guidance for interpreting the
+elements extracted from text and for validating the generated UML diagrams. This reasoning layer
+ensures logical consistency, adherence to modeling standards, and supports the integration of domain-
+specific constraints.
+Large Language Models (LLMs):
+LLMs are advanced models trained on vast collections of text
+and programming code. They combine strong language understanding with generative capabilities,
+allowing them to interpret complex and nuanced inputs. In the context of UML generation, these
+models can examine textual requirements to extract essential components such as actors, classes,
+attributes, relationships, and interactions. They can resolve ambiguities, determine the most suitable
+types of UML diagrams, and produce precise textual or code-based representations that serve as the
+foundation for constructing accurate diagrams. Their performance can be enhanced through targeted
+techniques, including:
+• Prompt Engineering [8]: A prompt is a carefully instruction given to a language model to
+guide its behavior. In UML generation, it helps the model understand exactly what elements to
+extract and how to represent them clearly.
+• Fine-Tuning [9]: Fine-tuning is the process of further training an existing language model
+on specific examples to improve its performance in a particular task. For UML generation,
+this allows the model to better recognize domain-specific terms and relationships, producing
+diagrams that are more accurate and consistent.
+Diagram-as-Code Generators:
+Diagram-as-Code generators are specialized software components
+that convert structured textual representations into visual diagrams. Once the textual input has been
+processed and translated into a formalized description, these tools render the graphical UML diagrams
+based on that description. Popular frameworks include:
+• Mermaid.js [10]: A JavaScript library that enables the generation of flowcharts, sequence
+diagrams, class diagrams, and other visualizations directly from simple Markdown-like syntax.
+Its integration capabilities make it suitable for embedding diagrams within documentation or
+web pages.Figure 2.3 displays the Mermaid logo.
+ISI Mahdia
+15
+
+
+===== PAGE 29 =====
+
+Chapter 2. Business Understanding
+Figure 2.3: Mermaid.js Logo
+• PlantUML [11]: An open-source solution widely used for creating a variety of UML diagrams,
+such as class, sequence, use case, and activity diagrams. It uses a straightforward domain-
+specific language (DSL) that allows users and automated tools to define diagram components
+textually, which are then rendered into standardized UML visuals. The official logo illustrated
+in the figure 2.4.
+Figure 2.4: PlantUML Logo
+• Graphviz [12]: A powerful graph visualization software that translates descriptions written in
+the DOT language into detailed, high-quality graphical outputs. It is often used to represent
+complex network diagrams and hierarchical structures with precise layout control. Graphviz
+logo shown in the figure 2.5.
+Figure 2.5: Graphviz Logo
+Table 2.1 presents a comparison of several UML code generators based on key criteria of UML
+support, syntax, integration options, and flexibility. This comparison provides a clear overview of
+their relative strengths and limitations in UML modeling.
+Table 2.1: Comparison of UML Code Generators
+Criteria
+PlantUML
+Mermaid.js
+Graphviz
+UML Support
+Supports Class, Sequence,
+Use Case, and additional
+diagram types
+Supports Class,
+Sequence, and Use Case
+diagrams with some
+limitations
+UML is not native;
+diagrams can be created
+through the DOT
+language
+Syntax
+Uses a UML-specific
+language
+Provides a simple
+Markdown-like syntax
+Uses the DOT language,
+which is technical
+Integration
+Compatible with IDEs,
+documentation tools, and
+CI/CD pipelines
+Usable in web pages and
+Markdown files
+Requires scripts or
+external tools for
+integration
+Flexibility
+High, allows detailed
+UML modeling
+Medium, suitable for
+basic UML diagrams
+Limited for UML but
+strong for general graph
+visualization
+ISI Mahdia
+16
+
+
+===== PAGE 30 =====
+
+Chapter 2. Business Understanding
+2.4
+Proposed method
+The proposed method emphasizes the integration of Large Language Models (LLMs) with Diagram-
+as-Code generation tools. After evaluating several options, PlantUML was chosen as the diagram ren-
+dering engine due to its flexibility, ease of use, and support for a wide range of UML diagrams. This
+approach automates the creation of UML diagrams from unstructured textual requirements, bridging
+the gap between informal stakeholder descriptions and formalized UML models, and enabling a more
+efficient and accurate software modeling process.
+LLMs, with fine-tuning, analyze the content and context of textual descriptions to identify key ele-
+ments such as actors, classes, attributes, relationships, and actions. They organize these elements into
+structured representations that can be directly translated into UML syntax, preserving the meaning
+and intent of the original requirements while minimizing manual interpretation. Fine-tuning allows
+the models to better understand domain-specific terminology and project conventions, improving the
+relevance and quality of the extracted elements.
+PlantUML then transforms these structured representations into standardized UML diagrams, in-
+cluding class diagrams, sequence diagrams, and use case diagrams, ensuring that the generated visuals
+are coherent, consistent, and ready for documentation.
+Overall, this method combines advanced AI-driven text understanding, with LLMs fine-tuned,
+and robust diagram rendering technology, improving modeling accuracy, reducing manual effort, and
+facilitating clearer documentation and communication of requirements. It also aligns with CRISP-
+DM principles by translating business understanding into actionable, formalized models that guide
+subsequent development stages.
+2.5
+Conclusion
+In this chapter, the business context, objectives, and functional requirements of the UML diagram
+generation project have been presented. The selection of Class, Use Case, and Sequence diagrams
+was justified for their ability to clearly represent the system’s structural and behavioral aspects. Ad-
+ditionally, the use of English and French for the diagrams ensures precision, clarity, and accessibility.
+These decisions establish a solid foundation for the project, guiding the modeling process and sup-
+porting the generation of accurate and well-organized UML diagrams.
+ISI Mahdia
+17
+
+
+===== PAGE 31 =====
+
+Chapter 3
+Data Understanding
+Sommaire
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.2
+Data Collection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.3
+Data Description . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.4
+Data Quality Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.4.1
+Dataset A . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+3.4.2
+Dataset B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+18
+
+
+===== PAGE 32 =====
+
+Chapter 3. Data Understanding
+3.1
+Introduction
+A thorough understanding of the data is fundamental to guarantee precise processing and to derive
+meaningful insights in subsequent analytical stages. This chapter presents a comprehensive overview
+of the datasets employed in the study, highlighting their key characteristics, structure, and content.
+By establishing this foundational knowledge, it prepares the ground for the detailed analyses and
+interpretations that follow.
+3.2
+Data Collection
+The data utilized consist of two distinct datasets, both obtained from Hugging Face, a well-established
+open-source platform that provides access to a wide range of machine learning resources. Both
+datasets are provided in the .parquet format, which ensure efficient data storage, schema consis-
+tency, and compatibility with large-scale analytical workflows.
+A key feature of these two datasets is that they contain multiple types of UML diagrams, and each
+diagram is accompanied by a natural language description as well as the corresponding PlantUML
+code. The description provides semantic context, while the PlantUML code offers a precise formal
+representation of the diagram. This dual structure enhances the analytical value of the datasets by
+enabling both semantic and syntactic analysis.
+The collection process involved downloading the datasets from Hugging Face and importing them
+into the analytical environment. Preliminary validation procedures were performed to verify com-
+pleteness, structural integrity, and the consistency between the descriptions and their corresponding
+PlantUML code. These steps ensure that both datasets are reliable and suitable for subsequent stages
+of exploration and analysis.
+3.3
+Data Description
+The data description phase aims to provide a detailed overview of the datasets, including their struc-
+ture, content, and characteristics. Understanding these aspects is essential for subsequent analysis, as
+it allows for the identification of patterns, potential inconsistencies, and the selection of appropriate
+preprocessing and modeling strategies.
+The two datasets are analyzed separately to highlight their specificity, content organization, and
+the types of UML diagrams they contain.
+ISI Mahdia
+19
+
+
+===== PAGE 33 =====
+
+Chapter 3. Data Understanding
+Structure and Characteristics of the Dataset A
+Dataset A1 provides a structured collection of UML diagrams, which will be described in detail in
+the following sections. It includes both textual descriptions and their corresponding PlantUML code,
+enabling a comprehensive analysis of its structure, intrinsic characteristics, and the distribution of
+diagram types.
+Format: .parquet
+Number of Records: 1,942 row
+Number of words: 1,260,338 word
+Description Column:
+The descriptions follow fixed format rather than natural language, conveying the purpose, func-
+tionality, or scenario represented through structured elements such as Actors, Triggers, Preconditions,
+Postconditions, Exceptions, Scenarios, and other predefined features. This structure provides a uni-
+form representation of the diagrams, though expressed in a more formulaic style. Figure 3.1 illustrates
+a sample of these structured descriptions.
+Figure 3.1: Sample Diagram Description
+PlantUML Code Column:
+The PlantUML code for each diagram provides a representation of the corresponding UML dia-
+gram. The code defines the diagram elements, relationships, and interactions in a consistent format
+across all entries. Each code snippet corresponds to its associated description, allowing the textual
+and coded representations to be aligned. Figure 3.2 displays a representative code sample.
+1https://huggingface.co/datasets/coai/plantuml_generation
+ISI Mahdia
+20
+
+
+===== PAGE 34 =====
+
+Chapter 3. Data Understanding
+Figure 3.2: Sample PlantUML Code
+Structure and Characteristics of the Dataset B
+Dataset B 2 provides a distinct set of UML diagrams, which will be described in detail in the follow-
+ing sections. The dataset contains information on both the textual descriptions and the corresponding
+PlantUML code, allowing an examination of its structure, characteristics, and the distribution of dia-
+gram types.
+Format: .parquet
+Number of Records: 972 row
+Number of words: 203,031 word
+Description Column: The descriptions in dataset B come from emails and are fully unstructured,
+written in natural language without fixed templates. They offer rich context for each diagram, with
+diverse styles and formats contrasting the structured descriptions in Dataset A. Figure 3.2 shows a
+sample from Dataset B, illustrating its unstructured and natural language content.
+Figure 3.3: Sample Diagram Description
+2https://huggingface.co/datasets/ibivibiv/plantuml-training
+ISI Mahdia
+21
+
+
+===== PAGE 35 =====
+
+Chapter 3. Data Understanding
+PlantUML Code Column:
+The PlantUML code in Dataset B is variable in structure, with some entries not fully representing
+standard UML elements. The code format differs across diagrams, and certain entries include ele-
+ments that do not correspond to standard UML concepts, resulting in a non-uniform representation.
+Figure 3.4 presents a sample of this code variability.
+Figure 3.4: Sample PlantUML Code
+From both Datasets, the analysis focuses on the three main types of UML diagrams: Use Case,
+Class, and Sequence diagrams. Table 3.1 presents the distribution of these diagram types in Dataset
+A and Dataset B.
+Table 3.1: Diagram Distribution in Dataset A and Dataset B
+Dataset
+Use Case Diagrams
+Class Diagrams
+Sequence Diagrams
+Dataset A
+170
+180
+130
+Dataset B
+130
+120
+170
+3.4
+Data Quality Analysis
+Data quality is important to make sure that datasets can be used effectively for analysis and modeling.
+It helps ensure that the information is correct, consistent, and useful. In our case, we focus on both
+the natural language descriptions and the PlantUML code, looking at how complete, reliable, and
+adaptable they are for later tasks
+ISI Mahdia
+22
+
+
+===== PAGE 36 =====
+
+Chapter 3. Data Understanding
+3.4.1
+Dataset A
+The Dataset A contains textual descriptions and their related PlantUML code. To evaluate its quality,
+we look at two main aspects: the descriptions, which show how suitable the text is for NLP tasks, and
+the PlantUML code, which shows how well the diagrams are represented. This analysis highlights
+both the strengths and the weaknesses of the dataset.
+Description Quality
+This analysis highlights both their strengths and potential limitations, providing a foundation for
+assessing the overall dataset quality.
+Advantages:
+• Provides correct UML descriptions, ensuring strict alignment with UML standards and accurate
+interpretation of diagram semantics.
+• Contains long and detailed textual descriptions, which facilitate understanding of complex dia-
+grams and provide rich contextual information.
+Limitations:
+• The descriptions are overly structured, following rigid templates that harm the naturalness and
+fluency of the text.
+• Sections such as Actors, Scenarios, Exceptions, Preconditions, Postconditions, etc. enforce
+predefined patterns. While they increase UML clarity, they reduce linguistic diversity and
+flexibility, which limits their usefulness for NLP tasks (tokenization, parsing, semantic role
+labeling).
+• The same standardization that ensures consistency creates a trade-off: it favors UML accuracy
+but hinders the variability and spontaneity of natural language, making the descriptions less
+representative of real-world texts.
+PlantUML Code Quality
+This evaluation highlights both the strengths and potential limitations of the code, providing insight
+into the overall reliability of the dataset’s diagrammatic representations.
+Advantages:
+ISI Mahdia
+23
+
+
+===== PAGE 37 =====
+
+Chapter 3. Data Understanding
+• The PlantUML code is well-structured, syntactically correct, and UML-compliant, accurately
+representing the corresponding diagrams.
+• Consistently defines diagram elements, relationships, and interactions, enabling reliable dia-
+gram reconstruction and automated parsing.
+• The code is adaptable and aligned with textual descriptions, allowing for integrated semantic
+and syntactic analysis and facilitating downstream computational processing.
+Limitations:
+• Some entries contain incorrect UML constructs, such as wrong associations between Use Cases,
+which may affect the accuracy of diagram interpretation and automated analysis, as illustrated
+in Figure 3.5.
+Figure 3.5: Sample of Incorrect UML Diagram from Dataset A
+3.4.2
+Dataset B
+The Dataset B consists of textual descriptions in the form of emails and their corresponding PlantUML
+code. To evaluate its quality, we examine two main aspects: the descriptions, which reflect how
+natural and linguistically rich the text is for NLP tasks, and the PlantUML code, which indicates
+how accurately and consistently the diagrams are represented. This analysis emphasizes both the
+advantages of natural language variability and the limitations due to informal vocabulary and non-
+standard UML code constructs.
+Description Quality:
+This analysis examines their strengths and limitations, laying the groundwork for evaluating the over-
+all quality of the dataset.
+Advantages:
+• The descriptions are emails, written in simple natural language, resembling real human com-
+munication, which provides linguistic fluency beneficial for NLP tasks.
+ISI Mahdia
+24
+
+
+===== PAGE 38 =====
+
+Chapter 3. Data Understanding
+• They are short and straightforward, making them easier to parse and process automatically
+compared to the multi-level, detailed descriptions of Dataset A.
+Limitations:
+• The descriptions frequently include greetings and email-specific headers ("Subject", standard
+salutations such as "Hello" or "Hi", and closings such as "Best regards"), as well as informal
+expressions , which may introduce noise and inconsistencies for NLP tasks aimed at extracting
+UML semantics.
+• They include diverse expressions and context, resulting in repetitive or irrelevant information
+that can complicate automated parsing and semantic analysis.
+• Some descriptions lack explicit references to UML concepts, making alignment with diagrams
+inconsistent.
+PlantUML Code Quality:
+The analysis identifies both advantages and limitations of the PlantUML code, shedding light on the
+overall dependability of the diagrams.
+Advantages:
+• The code is adaptable with the descriptions, allowing partial integration of textual context and
+diagrammatic elements.
+Limitations:
+• The code is poorly structured and non-uniform, often missing participant declarations, actors,
+or associations.
+• Contains PlantUML-specific constructs (box in sequence diagrams, skinparam, color specifi-
+cations) and Java class representations in class diagrams, which do not correspond to standard
+UML semantics, potentially introducing ambiguities and inconsistencies in automated parsing
+or semantic mapping. Figure 3.6 demonstrated an sample of Incorrect UML Class Diagram.
+ISI Mahdia
+25
+
+
+===== PAGE 39 =====
+
+Chapter 3. Data Understanding
+Figure 3.6: Sample of Incorrect UML Class Diagram
+• Sequence diagram messages do not use parentheses or standard syntax, making the representa-
+tion inconsistent with UML standards, as illustrated in Figure 3.7.
+Figure 3.7: Sample of Incorrect UML Sequence Diagram
+• Lacks visibility signs (+, -) and type annotations, reducing UML compliance. as presented in
+the following diagram in Figure 3.8.
+Figure 3.8: Sample of Incorrect UML Class Diagram
+Dataset A provides detailed and structured descriptions along with well-formed UML code, making
+it precise for diagram analysis, but the text is less natural for NLP tasks. Dataset B contains simple,
+email-like natural descriptions, which are better for NLP, but the code is poorly structured and missing
+UML elements. Both datasets will be adapted and processed according to the project objectives,
+ensuring they are suitable for NLP analysis, diagram understanding.
+ISI Mahdia
+26
+
+
+===== PAGE 40 =====
+
+Chapter 3. Data Understanding
+3.5
+Conclusion
+In this chapter, we collected and analyzed two datasets from Hugging Face containing textual descrip-
+tions and PlantUML code. Dataset A has detailed, structured descriptions and well-formed UML
+code, making it precise but less natural for NLP, while Dataset B has simpler, email-like descrip-
+tions with more natural language but less reliable code. This assessment highlights the strengths and
+weaknesses of both datasets and provides a clear understanding of the data, preparing for the next
+step.
+ISI Mahdia
+27
+
+
+===== PAGE 41 =====
+
+Chapter 4
+Data Preparation
+Sommaire
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+4.2
+Data Cleaning
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+4.2.1
+Corpus Cleaning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+4.2.2
+Code Cleaning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+4.3
+Data Translation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+4.3.1
+Diagram Description Translation . . . . . . . . . . . . . . . . . . . . . . .
+33
+4.3.2
+Code Translation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+4.4
+Corpus Annotation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.4.1
+Corpus Annotation Techniques . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.4.2
+Use Case Corpus Annotation . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.4.3
+Class Corpus Annotation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.4.4
+Sequence Diagram Corpus Annotation . . . . . . . . . . . . . . . . . . . .
+48
+4.5
+Post-Annotation Data Preparation . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+28
+
+
+===== PAGE 42 =====
+
+Chapter 4. Data Preparation
+4.1
+Introduction
+This chapter addresses the preparation and cleaning of the datasets to ensure their suitability for sub-
+sequent model training and automatic diagram generation. The process encompasses the standard-
+ization and refinement of textual descriptions, the uniformization and correction of PlantUML code,
+the translation of data from English to French, and the annotation of UML elements. These steps
+aim to establish a consistent, structured, and high-quality dataset that serves as a solid foundation for
+downstream computational and NLP-based tasks.
+4.2
+Data Cleaning
+In this section, we will clean the textual descriptions from both datasets by removing errors, stan-
+dardizing the format, and improving the natural language quality to make the text more consistent
+and readable. We will also uniform and correct the PlantUML code, ensuring proper syntax and
+alignment with UML standards. These steps will prepare the datasets for model training and diagram
+generation.
+4.2.1
+Corpus Cleaning
+Cleaning and Naturalizing Dataset A Descriptions
+In Dataset A, the textual descriptions initially encompassed highly structured elements, as summa-
+rized in Table 4.1.
+Table 4.1: Structured Elements in Dataset A Descriptions
+Name
+Use Case
+Description
+Actors
+Triggers
+Preconditions
+Postconditions
+Flow
+Exceptions
+Business Rules
+Notes
+Scenarios
+While these components are critical for capturing UML semantics, their presence results in an
+excessively structured format, which limits the naturalness and linguistic fluency of the text. Conse-
+quently, during the data cleaning phase, these structural labels were systematically removed from the
+textual descriptions, thereby producing more coherent human-like narratives.
+The descriptions were cleaned using regular expressions (regex). Since the structured elements
+similar labels are known, regex patterns were specifically designed to detect and remove them. Ad-
+ditional steps included normalizing whitespace, removing extra line breaks, and correcting minor
+inconsistencies. These procedures produce clear, consistent, and natural-like descriptions.
+ISI Mahdia
+29
+
+
+===== PAGE 43 =====
+
+Chapter 4. Data Preparation
+Figures 4.1 and 4.2 illustrate samples of textual descriptions before and after the cleaning process,
+highlighting the improvement in readability and structural clarity.
+Figure 4.1: Sample of Description Before cleaning
+Figure 4.2: Sample of Description After cleaning
+Dataset B contains textual descriptions that resemble email communication, including informal
+vocabulary, greetings, and email-specific phrases.
+• Subject:
+• Hello / Hi
+• Best regards / Kind regards
+• I hope this mail finds you well
+The texts also include polite requests and filler expressions, for example:
+• Thank you
+• Could you please create...
+• I would like it to have...
+• Please
+Some entries additionally contain particular cases or atypical content that do not conform to UML
+semantics. To clean these descriptions, regular expressions (regex) and programmatic string process-
+ing were employed. Regex patterns were designed to:
+ISI Mahdia
+30
+
+
+===== PAGE 44 =====
+
+Chapter 4. Data Preparation
+1. Detect and remove email-specific greetings and closings, ensuring that only UML-relevant con-
+tent remains.
+2. Identify and eliminate informal phrases and filler expressions, reducing noise in the textual data.
+3. Handle particular cases or non-standard instructions, which were manually reviewed to preserve
+semantic completeness.
+After cleaning, the descriptions from Dataset A and Dataset B were merged to create a unified,
+high-quality corpus. This combined corpus is suitable for UML diagram generation, as it balances
+the structured semantic information from the first Dataset with the more natural language style from
+second Dataset. Table 4.2 presents the word distribution across the three UML diagram types in the
+English corpus.
+Table 4.2: English corpus word count
+Class
+Use Case
+Sequence
+Total
+91,624
+81,588
+73,572
+246,784
+4.2.2
+Code Cleaning
+The PlantUML code in Dataset A is high quality and mostly follows UML standards, with only minor
+fixes needed. Therefore, the cleaning work focused mainly on Dataset B, correcting and standardizing
+its code to match the quality and format of Dataset A.
+Removing Non-UML Constructs from Code:
+During the code cleaning process, non-standard or non-UML elements present in the PlantUML files
+were identified and removed to ensure uniformity and UML compliance. These included:
+• Copyright or author headers (Copyright (c)...)
+• Diagram layout and styling directives as box, skinparam, and backgroundColor, etc..
+• Notes positioned with directions (note right, and note left)
+• Colors specified by names (LightBlue, DarkSalmon, and DeepSkyBlue) or hex codes (#EEEBDC)
+Correcting Incorrect UML Concepts:
+After removing non-UML constructs, the PlantUML code was further corrected to fix invalid or mis-
+represented UML concepts. The main corrections included:
+ISI Mahdia
+31
+
+
+===== PAGE 45 =====
+
+Chapter 4. Data Preparation
+Use Case relationships: Any associations between two use cases that were incorrectly repre-
+sented were replaced with the proper UML relationships, include or extend.
+Sequence diagram messages: Missing parentheses were added to sequence diagram messages
+to comply with standard UML syntax.
+Class diagrams: Any classes written in Java-specific notation were converted to standard UML
+class representations.
+Uniforming PlantUML Code:
+After correcting UML concepts, the PlantUML code from both datasets was standardized to ensure
+uniformity and consistency across all diagrams. The main included:
+1. Declaration of actors and use cases: All actors and use cases were explicitly declared at the
+beginning of each diagram to avoid implicit or missing elements.
+2. Declaration of participants: In sequence diagrams, any element not explicitly declared as an
+actor or participant was automatically declared as a participant to ensure completeness.
+Figure 4.3: Exemple of Actor Declaration
+3. Visibility and type specifications: For class diagrams, visibility indicators (+, -, #) were added
+to attributes and methods, and attribute types were explicitly included to comply with UML
+standards.
+4. Attribute type unification: Attribute types were standardized, int was replaced by Integer,
+bool by Boolean, ensuring consistency across all diagrams.
+5. Naming of relations: Associations between classes were assigned consistent names to clearly
+indicate the type and purpose of each relationship.
+ISI Mahdia
+32
+
+
+===== PAGE 46 =====
+
+Chapter 4. Data Preparation
+6. Uniform arrow notation: All diagram relations were standardized to a single arrow style for
+each type of relationship. Examples include:
+• Associations in class diagrams previously using "->" or "-" were unified to a consistent
+format.
+• Include and extend relationships in use case diagrams, previously represented with "..>"
+or "..", were standardized to a single notation.
+• Messages in sequence diagrams, previously represented as "-»" or "->", were unified to
+a consistent arrow style.
+After cleaning, correcting, and standardizing, the PlantUML code from Datasets A and B was
+merged, forming 300 examples per diagram type, for a total of 900 code examples. The resulting
+dataset is uniform, coherent, and combines structured semantic information with natural language
+descriptions, providing a high-quality resource for further processing.
+4.3
+Data Translation
+In this step, the cleaned data will be translated from English to French in order to build a bilingual
+dataset. The translation will be applied to both textual descriptions and code elements, with the
+objective of maintaining semantic and structural coherence.
+4.3.1
+Diagram Description Translation
+The description translation process converts natural-language inputs into French while preserving
+their meaning and context. Two translation methods were used: Opus-MT (EN→FR) and Google
+Translator via Deep-Translator, Table 4.3 summarizes the main characteristics of each method.
+Table 4.3: Comparison between Opus-MT and Google Translator (deep_translator)
+Aspect
+Opus-MT (en-fr)
+Google Translator (deep_translator)
+Type
+Pretrained neural machine translation
+model
+API-based translation service
+Objective
+Translation of structured and technical
+text
+Translation of natural text and techni-
+cal content
+Advantage
+Works offline, provides stable and re-
+producible output
+Easy to use, fast, and effective even on
+technical content
+Inconvenient
+Requires local setup and computa-
+tional resources
+sometimes less consistent for domain-
+specific terms
+Customization
+Possible through adaptation of input
+formatting and controlled vocabulary
+Possible through preprocessing text
+and enforcing consistent terminology
+ISI Mahdia
+33
+
+
+===== PAGE 47 =====
+
+Chapter 4. Data Preparation
+These translation methods were applied to the three different types of diagrams using the cleaned
+dataset, with each entry stored in JSON format. After performing the translations, the outputs of both
+methods were systematically evaluated to determine the most accurate and consistent results for each
+diagram type. The evaluation of the translation outputs was conducted according to the following
+characteristics:
+• Grammatical Accuracy: Measures the correctness of French grammar in the translated text.
+Errors are detected and quantified using the language_tool_python library, providing a Gram-
+mar error rate for each translation.
+• CamelCase and Terminology Preservation: Assesses whether technical terms, method names,
+actors, and participants retain their correct format, including CamelCase conventions, to ensure
+alignment with UML elements.
+• Text Quality: Evaluates the fluency, coherence, and readability of the translated descriptions,
+verifying that the sentences are natural and semantically faithful to the original English text.
+• Technical Term Accuracy: Verifies the correct translation and usage of UML-specific termi-
+nology, including use cases, extends, includes, sequences, and other modeling concepts.
+• Text Size Handling: Examines the ability of the translation method to handle longer textual
+descriptions without truncation, loss of information, or distortion of semantic meaning.
+The translation outputs of the two methods, Opus-MT and Google Translator via deep translator,
+were systematically evaluated across the three diagram types according to the previously defined
+characteristics. The results are represented in Table 4.4.
+Table 4.4: Evaluation of Translation Methods for UML Descriptions
+Metric
+Opus-MT
+Google Translator
+Grammar Errors
+12.49%
+20.15%
+CamelCase
+Not consistently detected
+Well detected with custom function
+Text Quality
+Repeated sentences, artifacts (Ã©)
+Clean, coherent descriptions
+Technical Terms
+Accurate but less consistent
+Accurate and consistent
+Long Texts
+Truncates longer texts
+Successfully translates long texts
+Figure 4.4 presents the original English description, Figure 4.5 shows the translation produced
+using Opus-MT, and Figure 4.6 displays the translation generated using Google Translator.
+ISI Mahdia
+34
+
+
+===== PAGE 48 =====
+
+Chapter 4. Data Preparation
+Figure 4.4: Sample of English Description
+Figure 4.5: Sample of Translated Description with Opus-MT
+Figure 4.6: Sample of Translated Description with Google Translator
+After evaluating both translation methods, Google Translator via deep translator is selected for
+translating the descriptions. This method produces cleaner and more coherent French text, preserves
+technical terms, and handles long descriptions without truncation, ensuring the integrity of UML-
+related content. To further enhance the quality of the translations, LanguageTool, an open-source
+grammar and style correction tool, is used to detect and correct grammatical errors. With this inte-
+gration, the error rate was significantly reduced, decreasing from 20.15 to 2.21, thus ensuring more
+accurate and linguistically reliable French descriptions.
+ISI Mahdia
+35
+
+
+===== PAGE 49 =====
+
+Chapter 4. Data Preparation
+Table 4.5 presents the word distribution across the three UML diagram types in the French corpus.
+Use Case
+Class
+Sequence
+Total
+96,005
+104,781
+84,244
+285,030
+Table 4.5: French corpus Word count
+4.3.2
+Code Translation
+After translating the descriptions, the corresponding PlantUML code is also translated. Unlike text
+translation, this step requires strict preservation of both semantic meaning and syntactic correctness
+to ensure the diagrams remain executable. PlantUML translation is performed using Google Trans-
+lator via the Deep-Translator library, which allows customization of keywords and predefined UML
+functions. Each diagram type is processed with its specific code elements adapted to maintain clarity
+and functionality.
+Use Case Code Translation
+For Use Case diagrams, the translation process focuses on carefully preserving the predefined Plan-
+tUML keywords and functions. The main points.
+• Preserve fixed keywords and elements: actor, usecase, rectangle, left to right direction,
+as, include, extend, @startuml, @enduml.
+• Apply function for CamelCase consisting of more than four words.
+• Do not modify line breaks (\n) or escaped quotes (\").
+• Keep relationship arrows intact: -, ..>, -|>, <|-.
+• Preserve braces: {}.
+The Figure 4.7 presents a Use Case code before and after translation, demonstrating how the textual
+content is adapted through the translation process, while keeping the code correct and preserving all
+key UML keywords and syntax.
+ISI Mahdia
+36
+
+
+===== PAGE 50 =====
+
+Chapter 4. Data Preparation
+Figure 4.7: Sample of Translated Use Case Code
+After translating the PlantUML codes for Use Case diagrams, we used the PlantUML server to run
+each diagram individually and ensure its executability. This step was applied to every code snippet.
+By executing each code, we confirmed that the translations did not break the syntax or functionality,
+and that the resulting diagrams accurately reflect the intended structure and relationships described in
+the original models.
+Class Diagram Code Translation
+For Class diagrams, the translation process focuses on preserving the key PlantUML elements. The
+main points.
+• Preserve fixed keywords: class, @startuml, @enduml.
+• Preserve attribute types: String, Integer, Boolean, Double, Float, Array, Date, Void.
+• Preserve method parentheses: ().
+• Preserve relationship arrows: o--, *--, --, --|>, ..>, <...
+• Preserve cardinality indicators.
+• Preserve visibility symbols: +, -, #.
+• Preserve braces: {}.
+ISI Mahdia
+37
+
+
+===== PAGE 51 =====
+
+Chapter 4. Data Preparation
+• Preserve line breaks: \n.
+• Function to translate long method names: they are written in CamelCase.
+Figure 7.8 presents a Class diagram code before and after translation, demonstrating how the textual
+descriptions of classes and methods are adapted through the translation process, while keeping the
+code correct and preserving all key UML keywords, visibility indicators, and type annotations.
+Figure 4.8: Sample of Translated Class Code
+After translating the PlantUML codes for Class diagrams, we ran each diagram on the PlantUML
+server to verify that it executes correctly. Every code snippet was carefully checked to ensure that the
+syntax remained intact and that all classes, attributes, methods, visibility symbols, and relationship
+arrows were correctly represented. This verification step confirmed that the translated diagrams main-
+tain the structure and relationships defined in the original models while remaining fully functional.
+Sequence Diagram Code Translation
+For Sequence diagrams, the translation process preserves the following PlantUML elements.
+• Fixed keywords: @startuml, @enduml, actor, participant, activate, deactivate, as,
+alt, else, loop, opt, end, end alt, end loop, end opt, end else, autonumber.
+• Preserve special characters:\" \n.
+• Message arrows: -> and --> and message parentheses: ().
+• Function to translate long names of actors and participants written in CamelCase.
+ISI Mahdia
+38
+
+
+===== PAGE 52 =====
+
+Chapter 4. Data Preparation
+Figure 7.9 presents a Sequence diagram code snippet before and after translation, showing how
+events and messages are adapted while keeping the code correct and preserving all key UML elements.
+Figure 4.9: Sample of Translated Sequence Code
+Following the translation of the PlantUML codes for Sequence diagrams, we tested each diagram
+individually using the PlantUML server to ensure proper execution. Each code snippet, including ac-
+tors, participants, message flows, and control structures, was validated to confirm that the syntax and
+diagram logic were preserved. This procedure guarantees that the translated diagrams accurately re-
+flect the original interactions and message sequences, while remaining executable for further analysis
+or visualization.
+Regular expressions were used to identify and adapt key elements within the PlantUML code,
+ensuring a consistent and accurate translation while preserving both syntax and semantics across all
+diagram types.
+4.4
+Corpus Annotation
+In this step, we focus on the annotation of the textual corpus associated with the UML diagrams.
+The main goal is to fix and structure the descriptions by identifying and marking relevant elements,
+like keywords, labels, relationships, and events, particularly for Sequence diagrams. This structured
+annotation allows us to clearly link the textual descriptions with the corresponding diagram compo-
+nents, ensuring that each description is accurately represented and can be effectively used for further
+processing, analysis, or model training.
+ISI Mahdia
+39
+
+
+===== PAGE 53 =====
+
+Chapter 4. Data Preparation
+4.4.1
+Corpus Annotation Techniques
+Label Fixing
+The objective of this section is to present the techniques used to annotate the textual corpus, as well
+as to fix and extract the labels. The process of fixing the labels is based on.
+• The latest version of UML [13] (version 2.5.1, released in December 2017).
+• The corresponding PlantUML codes.
+This process ensures that the textual descriptions are consistent with the most up-to-date UML
+features and accurately reflect all existing diagram elements. By aligning the descriptions with the
+correct labels, relationships, and events, we create a reliable reference that links each description to its
+corresponding diagram component. This step is essential for maintaining the integrity of the dataset
+and facilitating further analysis or automated processing.
+The fixed labels in the corpus are represented in the form.
+• Entities
+• Relationships Between Entities
+• Events
+This structured representation allows us to systematically extract the entities, the relationships con-
+necting them, and the events described in the textual corpus. By organizing the data in this way,
+we ensure that each description can be mapped precisely to its corresponding diagram elements, fa-
+cilitating automated processing, analysis, and accurate reconstruction of the UML models from the
+annotated text.
+Techniques Used for Annotation
+Since we already have the PlantUML code as a reliable reference, we used it to guide the annotation
+of the natural language descriptions. The code provides a normalized structure, while the descriptions
+are expressed in free natural language. To bridge this gap, we applied the following techniques.
+1. Regular Expressions (RegEx)
+Regular expressions play a crucial role in extracting named entities, whether they are simple
+names(one word) or compound names composed of up to three or four words. They are partic-
+ularly effective for identifying actors or entities appearing in different text formats, those found
+in source code and in textual descriptions.
+ISI Mahdia
+40
+
+
+===== PAGE 54 =====
+
+Chapter 4. Data Preparation
+More specifically, RegEx serves as a bridge between these two formats by addressing variations
+are:
+• Uppercase and lowercase variations of the same word, which are standardized to ensure
+consistent matching.
+• CamelCase identifiers in the code, where words are concatenated and capitalized.
+• Normal spaced words in textual descriptions, where words are explicitly separated by
+spaces.
+• Singular and plural forms of the same entity, which are recognized and treated as equiva-
+lent references.
+By handling these variations, the use of regular expressions significantly improves the accuracy
+and consistency of entity name extraction, and this method successfully retrieves about 93% of
+the targeted entities.
+2. SequenceMatcher
+• Definition: SequenceMatcher [14] is a Python tool (from the difflib module) used to
+compare two sequences of text and measure their similarity. It returns a similarity ratio
+between 0 and 1, where 1 indicates an exact match and 0 indicates no similarity.
+• Role: In this method, SequenceMatcher is used to align sentences from the code with nat-
+ural language descriptions. Since descriptions can be longer, paraphrased, or formatted
+differently, exact matches often fail. This allows detection of textual segments in descrip-
+tions that correspond to code components.
+• Similarity ratio: A similarity ratio of 0.7 or higher is considered valid.
+Figure 4.10: SequenceMatcher Output
+This method successfully retrieved approximately 77% of targeted sequence entities, ensuring
+that even slightly different wording in descriptions is accurately matched to the corresponding
+code elements.
+3. Manual Verification: The manual verification step serves as a complementary process to the
+automatic extraction performed using Regular Expressions (RegEx) and SequenceMatcher. Al-
+though these techniques provide high accuracy, certain entities may still be missed or incorrectly
+identified due to variations in language or formatting.
+To ensure data quality, each description was carefully reviewed using Labeling Studio, an open-
+source annotation tool that enables precise and efficient manual labeling.During this step, all
+ISI Mahdia
+41
+
+
+===== PAGE 55 =====
+
+Chapter 4. Data Preparation
+extracted entities were validated, corrected, or completed when necessary, ensuring full align-
+ment with the corresponding PlantUML code. Figure 4.11 presents Label Studio Overview.
+Figure 4.11: Labeling Studio Overview
+4. Relationship Mapping: involves connecting the annotated entities based on the structure and
+logic defined in the code. Once entities have been accurately identified, this step establishes the
+links between them, reflecting how they interact or relate within the system, as represented in
+the PlantUML code.
+5. Event Mapping: Event Mapping involves grouping the annotated entities and their mapped
+relationships into a structured unit, referred to as an event. Each event encapsulates the partic-
+ipating entities along with the relationships that define their interaction, forming a higher-level
+representation of system actions or behaviors.
+These events are specifically used to construct Sequence Diagrams, where they help represent
+conditions, interactions, and the flow of actions between entities. By structuring entities and
+relationships into event classes, the methodology ensures that the resulting Sequence Diagrams
+are both accurate and semantically meaningful.
+4.4.2
+Use Case Corpus Annotation
+The corpus contains textual descriptions of Use Case diagrams with fixed labels and structured ele-
+ments. Key components include.
+• Rectangle: represents the system diagram container.
+• Actor: the external entities interacting with the system.
+• Use Case: defines a functionality of the system.
+• Relationships:
+– Association: connections between actors and use cases.
+– Extend: optional behavior extending a use case.
+ISI Mahdia
+42
+
+
+===== PAGE 56 =====
+
+Chapter 4. Data Preparation
+– Include: mandatory behavior included in a use case.
+– Generalization: inheritance relationships between actors.
+Figure 4.12: Sample of Use Case Entities Annotation
+The main features of the use case entities annotation as illustrated in the Figure 4.12.
+• span (start–end): shows where the selected text begins and ends in the document.
+• text: the exact part of the document that was selected.
+• normalized_text: The same text rewritten in a clean and standardized format for UML con-
+cepts.
+• label: the category of the selected text.
+ISI Mahdia
+43
+
+
+===== PAGE 57 =====
+
+Chapter 4. Data Preparation
+Figure 4.13: Sample of Use Case Relationships Annotation
+The main features of the use case Relationships annotation, as shown in Figure 4.13 :
+• from: represents the source element of the relation (can be an actor or a use case).
+• to: represents the target element of the relation (can also be an actor or a use case).
+• type: specifies the nature of the relation (association, include, extend, or generalization), de-
+pending on the types of the connected elements.
+After completing the annotation process, we present the final annotation statistics for the Use Case
+diagram corpus. The table 4.6 summarizes the total number of entities and relationships, representing
+the combined results of both the French and English corpora.
+Table 4.6: Use Case Diagrams Annotation Statistics
+Label
+Count & Details
+Rectangle
+600
+Actor
+7586 (1332 unique)
+Use Case
+5974
+Relationships
+6462
+ISI Mahdia
+44
+
+
+===== PAGE 58 =====
+
+Chapter 4. Data Preparation
+The relationships within the Use Case diagram corpus are divided into four main categories, as
+represented collectively in Figure 4.14.
+Figure 4.14: Use Case Relationships Counts
+4.4.3
+Class Corpus Annotation
+In this step, we proceed to fix and annotate the corpus related to Class diagrams. The goal is to correct
+the labels, entities, and relationships to ensure consistency between the natural language descriptions
+and the PlantUML codes. The annotated elements include:
+• Class: a representation of a concept or object in the model, defining its attributes and methods.
+• Attribute: a property or data belonging to a class.
+– Type: the data type of the attribute (String, Integer, Boolean, Array, Date, Double, float).
+– Visibility: the access level of the attribute, for example: public (+), private (-),
+protected (#).
+• Method: a function or operation that the class can perform.
+– Visibility: defines the access level for the method.
+– Return Type: the data type returned by the method.
+– Parameters: the inputs of the method, with their type (String, Integer, etc.).
+• Relationships between classes: define how classes interact. The main types are:
+– Association: a simple relationship between two classes, indicating they are linked.
+– Inheritance: indicates that one class derives from another.
+ISI Mahdia
+45
+
+
+===== PAGE 59 =====
+
+Chapter 4. Data Preparation
+– Dependency : indicates that one class depends on another to function.
+– Composition: a strong relationship where one class exclusively contains another.
+– Aggregation: a weaker relationship where one class contains another non-exclusively.
+• Cardinality: defines the numerical constraints between instances of related classes (one-to-
+one, one-to-many, many-to-many).
+Figure 4.15: Sample of Class Entities Annotation
+The main features of the class annotation, as illustrated in Figure 4.15:
+– span (start–end): shows where the selected text begins and ends in the document.
+– text: the exact part of the document that was selected.
+– normalized_text: the same content presented in a structured and standardized manner
+according to UML conventions.
+– label: the category of the selected text.
+– type: the kind of data stored or represented (string, float).
+– visibility: defines the access level of a class, attribute, or method.
+– return_type: the type of value returned by a method (void, string).
+ISI Mahdia
+46
+
+
+===== PAGE 60 =====
+
+Chapter 4. Data Preparation
+Figure 4.16: Sample of Class Relation Annotation
+The main features of the class relationships annotation, as depicted in Figure 4.16:
+– span (start–end): shows where the relation mention begins and ends in the text.
+– from: the source class in the relation.
+– to: the target class in the relation.
+– text: the exact part of the text describing the relation.
+– label: relation.
+– normalized_text: a clean and standardized version of the relation text.
+– type: the kind of relation (association, composition, aggregation, inheritance, etc.).
+– cardinality_from: the cardinality of the source class.
+– cardinality_to: the cardinality of the target class.
+Upon completing the annotation process, we present the final statistics for the Class diagram
+corpus. The table 4.7 summarizes the total number of identified entities and relationships,
+representing the combined results of both the French and English corpora.
+ISI Mahdia
+47
+
+
+===== PAGE 61 =====
+
+Chapter 4. Data Preparation
+Table 4.7: Class Diagrams Annotation Statistics
+Label
+Count & Details
+Classes
+18052 (2822 unique)
+Attributes
+3588
+Methods
+4504
+Parameters
+404
+Relationships
+2638
+The Figure 4.17 shows the number of relationship types.
+Figure 4.17: Use Case Relationships Counts
+4.4.4
+Sequence Diagram Corpus Annotation
+For Sequence diagrams, the annotation focuses on fixing the labels, entities, relationships be-
+tween entities, and events. These annotations ensure consistency between the natural language
+descriptions and the corresponding PlantUML code. The annotated elements include:
+– Actor: an external entity that interacts with the system, usually representing a user or
+another system.
+– Participant: an object or component within the system that takes part in the sequence of
+interactions.
+– Messages: communications between actors and participants or between participants them-
+selves. Messages are part of relationships.
+– Relationships: the connections defined in the sequence diagram, representing an interac-
+tion between two entities through a message. These relationships can be of two types:
+ISI Mahdia
+48
+
+
+===== PAGE 62 =====
+
+Chapter 4. Data Preparation
+* Synchronous: the sender entity sends a message and waits for the receiver entity to
+complete processing before continuing.
+* Asynchronous: the sender entity sends a message and continues processing without
+waiting for the receiver entity to respond.
+– Events: actions or occurrences that happen during the sequence. These are represented
+by specific control structures:
+* alternative (alt): represents conditional branches in the sequence; it defines alterna-
+tive flows of events based on conditions.
+* else: specifies an alternative path in an alt block when the condition is not met.
+* optional (opt): represents optional behavior that may occur depending on a condi-
+tion.
+* loop: indicates repetitive behavior, executing a sequence of messages multiple times
+based on a condition.
+Figure 4.18: Sample of Sequence Entities Annotation
+The main features of the Sequence entity annotation as presented in Figure 7.9:
+• span (start–end): shows where the entity begins and ends in the description.
+• text: the exact part of the description that represents the entity.
+• label: the type of class element (Class, Attribute, Method).
+ISI Mahdia
+49
+
+
+===== PAGE 63 =====
+
+Chapter 4. Data Preparation
+• normalized_text: a clean and standard version of the entity text, used for consistency and
+processing.
+Figure 4.19: Sample of Sequence Events Annotation
+The main features of a sequence diagram annotation as demonstrated in Figure 4.19:
+• Messages
+– span (start–end): shows where the messages begins and ends in the description.
+– from: the sender entity of the message.
+– to: the receiver entity of the message.
+– text: the exact part of the description representing the message.
+ISI Mahdia
+50
+
+
+===== PAGE 64 =====
+
+Chapter 4. Data Preparation
+– normalized_text: the clean and standard version of the message text for consistency and
+code generation.
+– type: the type of message ( synchronous or asynchronous).
+• Events
+– event: the type of event (alt, loop, opt).
+– span (start–end): shows where the event begins and ends in the description.
+– text: the exact part of the description representing the event.
+– normalized_text: the clean and standard version of the event text for consistency and
+code generation.
+– messages: a list of related messages within the event.
+• Else (for events of type alt)
+– span (start–end): shows where the else begins and ends in the description.
+– text: the exact part of the description representing the else branch.
+– normalized_text: the clean and standard version of the else branch text for consistency
+and code generation.
+Upon completing the annotation process, we present the final annotation statistics for the Sequence
+diagram corpus. The table 4.8 summarizes the total number of entities, messages, relationships, and
+events, representing the combined counts from both the French and English corpora.
+Table 4.8: Sequence Diagrams Annotation Statistics
+Label
+Count & Details
+Actors
+5770 (760 unique)
+Participants
+6734 (1558 unique)
+Messages
+5776
+Relationships
+4644 synchronous, 1132 asynchronous
+Events
+440
+ISI Mahdia
+51
+
+
+===== PAGE 65 =====
+
+Chapter 4. Data Preparation
+The Figure 4.20 shows the distribution of event types.
+Figure 4.20: Events Counts
+The annotation process enabled the systematic alignment of natural language descriptions with
+their corresponding PlantUML code elements for Class, Sequence, and Use Case diagrams. This
+involved correcting labels, identifying entities, and defining relationships for each diagram type, re-
+sulting in a coherent and structured annotated corpus. Such detailed annotation not only enhances
+the quality and consistency of the dataset but also prepares it for subsequent tasks as model training,
+diagram generation, or validation. The presented annotation statistics provide a clear quantitative
+overview, demonstrating the completeness and reliability of the annotation work.
+4.5
+Post-Annotation Data Preparation
+Following the annotation phase, the data undergoes a structured reformatting process to prepare it
+for training, evaluation, and automated diagram generation. This process is designed to simplify the
+dataset by removing unnecessary details while preserving essential information required for accurate
+entity extraction and PlantUML code generation.
+The reformatting process involves the following steps:
+1. Data Cleaning: Positional information and occurrences of annotated entities are removed.
+This eliminates redundancy and reduces noise in the dataset, ensuring a more concise and clean
+structure.
+2. Preservation of Core Information: Only the raw text and its normalized form are retained.
+Additionally, essential metadata features are preserved, including entity type and visibility in
+the diagram.
+ISI Mahdia
+52
+
+
+===== PAGE 66 =====
+
+Chapter 4. Data Preparation
+3. Alias Inclusion: For entities that possess aliases, an alias field is added to maintain consistency
+with the PlantUML code structure. This ensures that entity references are accurate in both the
+extraction and diagram generation steps.
+4. Replacement of Normalized Text: The field normalized text is replaced by a unified name
+attribute that represents the main name of each feature or entity, regardless of the diagram type.
+This enhances cross-diagram compatibility and simplifies the data model for different UML
+structures.
+5. Two-Level Data Organization: After reformatting, the dataset is organized into two separate
+JSONL files to clearly separate the extraction steps:
+• Corpus with Annotations: This corpus contains the natural language text together with
+its structured annotations (entities, relationships, and events). It serves as the bridge be-
+tween unstructured natural language and structured extraction.
+• Annotations with PlantUML Code: This corpus uses the structured annotations (enti-
+ties, relationships, and events) as input and provides the corresponding PlantUML code as
+output. It ensures the direct mapping of structured data into executable diagram specifica-
+tions.
+This organization ensures a clear separation between the transformation of natural language into
+structured extraction and the subsequent transformation of structured extraction into PlantUML dia-
+grams. It facilitates modular processing, improves traceability, and simplifies evaluation across dif-
+ferent stages of the pipeline.
+Dataset Statistics
+This section provides an overview of the annotated dataset, showing the distribution of diagram types
+across the two languages. Table 4.9 summarizes the number of examples per diagram type for English
+and French corpora.
+Language \Diagram Type
+Sequence Diagram
+Use Case Diagram
+Class Diagram
+Total
+English
+300
+300
+300
+900
+French
+300
+300
+300
+900
+Total
+600
+600
+600
+1800
+Table 4.9: Statistics of annotated dataset by diagram type and language.
+Overview of the Prepared Datasets
+These samples illustrate one representative instance for each diagram type and its corresponding struc-
+tured annotation. Each instance demonstrates how annotated textual data is transformed into a struc-
+tured format, capturing the key entities, relationships, and events specific to that UML diagram type.
+ISI Mahdia
+53
+
+
+===== PAGE 67 =====
+
+Chapter 4. Data Preparation
+This structured representation serves as the foundation for subsequent steps in automatic PlantUML
+code generation and diagram visualization.
+Use Case:
+The structured representation of a Use Case diagram captures the main elements of the diagram in a
+formal format. This allows textual descriptions to be systematically converted into a format suitable
+for automatic diagram generation.
+Corpus with Annotations:
+The 4.21 Figure illustrates a sample from the corpus for a Use Case diagram. It shows elements,
+including actor names and use cases, with each element labeled with its final UML name and an alias,
+demonstrating the mapping from textual descriptions to a formal diagram structure.
+Figure 4.21: Sample of Use Cases Representation
+PlantUML Code:
+The corresponding PlantUML code represents the same elements in a textual format suitable for
+automatic diagram generation. Each element and relationship are encoded in a single-line format,
+with \n used to indicate line breaks, preserving the structure of the diagram in machine-readable
+form.
+Figure 4.22: Sample of PlantUML Code for Use case Diagram
+ISI Mahdia
+54
+
+
+===== PAGE 68 =====
+
+Chapter 4. Data Preparation
+Class Diagram:
+The structured representation of a Class diagram organizes the essential components of the system in
+a clear and formal way.
+Corpus with Annotations:
+This structured format organizes the key details of each class and its methods, including visibility,
+parameters, and return types, in accordance with Class diagram standards
+Figure 4.23: Sample of Methods Representation
+PlantUML Code:
+Figure 4.24: Sample of PlantUML Code for Class Diagram
+Sequence Diagram:
+The structured representation of a Sequence diagram arranges the main elements and interactions of
+the diagram in an organized format.
+ISI Mahdia
+55
+
+
+===== PAGE 69 =====
+
+Chapter 4. Data Preparation
+Events Annotations:
+The structured representation of a Sequence diagram shows a sample event in the scenario. The event
+includes its associated condition and the messages exchanged, representing the interactions that occur
+during that event.
+Figure 4.25: Sample of Events Representation
+PlantUML Code:
+The corresponding PlantUML code provides a textual representation of the Sequence diagram. Each
+event, along with its conditions and exchanged messages, is encoded in a single-line format using \n
+to indicate line breaks.
+Figure 4.26: Sample of PlantUML Code for Sequence Diagram
+ISI Mahdia
+56
+
+
+===== PAGE 70 =====
+
+Chapter 4. Data Preparation
+4.6
+Conclusion
+In this chapter, we presented the complete preparation process of our dataset, starting with data
+cleaning for both corpus and code to ensure consistency, remove noise, and harmonize formats. We
+then performed data translation, converting the descriptions from English to French while preserving
+meaning and technical accuracy, followed by code translation, where PlantUML codes were translated
+and adapted to maintain their syntax, semantics, and executability. Finally, we detailed the corpus an-
+notation process, aligning natural language descriptions with their corresponding PlantUML code
+components for Class, Sequence, and Use Case diagrams. This involved fixing labels, identifying
+entities, and defining relationships, resulting in a structured and enriched annotated corpus. Together,
+these steps produce a high-quality, reliable dataset, providing a solid foundation for model training.
+ISI Mahdia
+57
+
+
+===== PAGE 71 =====
+
+Chapter 5
+Modeling
+Sommaire
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.2
+Modeling Steps and Strategies . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.2.1
+Modeling Steps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.2.2
+Modeling Strategies
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.3
+Extraction of entities, relationships, and events . . . . . . . . . . . . . . . . . .
+61
+5.3.1
+Model Selection
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.3.2
+Single Model Strategy Implementation
+. . . . . . . . . . . . . . . . . . .
+62
+5.3.3
+Separate Models Strategy Implementation . . . . . . . . . . . . . . . . . .
+68
+5.4
+Code generation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+70
+5.4.1
+Model selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+71
+5.4.2
+Model Implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+5.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+58
+
+
+===== PAGE 72 =====
+
+Chapter 5. Modeling
+5.1
+Introduction
+This chapter focuses on the development of the proposed model. It begins by outlining the modeling
+plan, covering the selection of algorithms, architecture design, and the training process. The aim is
+to show how the prepared and annotated dataset is used to construct an effective model capable of
+capturing the relevant patterns and achieving the objectives.
+5.2
+Modeling Steps and Strategies
+For the effective development of the model, we present the modeling process by dividing it into clear
+steps. Each step focuses on a specific part of model development, ensuring a systematic and structured
+pipeline. Additionally, we describe the strategies to be tested to identify the most effective methods
+for achieving optimal results.
+5.2.1
+Modeling Steps
+We divide our process into two steps. This allows each model to focus on a single task instead of
+learning multiple complex objectives at once. Targeted specialization reduces training noise, sim-
+plifies learning, and ensures the model captures the most relevant patterns for its task. As a result,
+models achieve more stable training, higher accuracy, and consistent performance. Task specialization
+is essential for better results, enabling each model to refine knowledge in a specific domain without
+distraction. The two steps are as follows.
+1. Extraction of entities, relationships, and events: This step focuses on leveraging the anno-
+tated corpus to train the model to accurately identify and extract the essential elements of UML
+diagrams. The aim is to ensure the model can effectively recognize entities, their relationships,
+and related events from natural language descriptions, providing a strong basis for generating
+structured outputs.
+2. Code generation: Building on the extraction process, the second step focuses on enabling the
+model to produce correct, consistent, and executable PlantUML code. This process translates
+the extracted information into structured code while maintaining syntax accuracy, semantic in-
+tegrity, and diagram logic. Special attention is given to the correct use of PlantUML keywords,
+syntax symbols, and proper formatting. This ensures that the generated code is directly exe-
+cutable and produces accurate UML diagrams.
+ISI Mahdia
+59
+
+
+===== PAGE 73 =====
+
+Chapter 5. Modeling
+5.2.2
+Modeling Strategies
+For the extraction step, we proposed two different strategies to test and evaluate their effectiveness.
+This section presents these strategies and explains how they are applied to optimize model perfor-
+mance and ensure accurate extraction of relevant patterns.
+1. Single Model Strategy
+The single model represents the main strategy for the first step of the process. A single model is
+trained on all three diagram types, allowing it to learn common structures and shared patterns across
+different representations. This simplifies the modeling pipeline by using a unified model for extrac-
+tion, reducing the complexity of managing multiple models and ensuring consistent handling of input
+data.
+As shown in Figure 5.1, the process begins with the input data, which is fed into the single extrac-
+tion model. The model identifies and extracts relevant elements from all types of diagrams simultane-
+ously. The extracted information is then passed to the next stage, the code generation model, enabling
+a seamless transition from extraction to generation.
+Figure 5.1: Single Model Strategy
+2. Separate Models Strategy
+The second strategy is based on the principle of specialization, where a classification model deter-
+mines the diagram type, and each type is then handled by its own dedicated extraction model. This
+design allows each model to focus on the unique characteristics and structures of its assigned diagram
+type, improving the effectiveness of task-specific element extraction compared to a unified model.
+As presented in Figure 5.2, the process begins with the input data, which is first passed to a
+classification model to determine the diagram type. Based on the classification, the input is then
+routed to the corresponding extraction model for the different diagrams. The extracted information
+from each specialized model is subsequently forwarded to the code generation model, enabling a
+smooth transition from diagram-specific extraction to code generation.
+ISI Mahdia
+60
+
+
+===== PAGE 74 =====
+
+Chapter 5. Modeling
+Figure 5.2: Separate Models Strategy
+5.3
+Extraction of entities, relationships, and events
+In this step, we focus on identifying the main elements of the corpus, including entities, relation-
+ships, and events. Different models are tested to evaluate their ability to recognize these components
+accurately and prepare the data for the next stage of code generation.
+5.3.1
+Model Selection
+This stage involves selecting an appropriate model for entity, relationship, and event extraction. Given
+that the task relies on natural language extraction process, the chosen model is an LLM capable
+of processing both structured and unstructured text. Additionally, it must support bilingual input
+(English and French), as the corpus contains descriptions in both languages.
+Models considered were those successfully applied in similar projects, particularly in information
+extraction. This approach ensures that the selected model is well-suited to the domain and provides
+a solid foundation for accurate and consistent extraction. Based on these criteria, the chosen models
+and their comparison are presented in the Table 5.1.
+Table 5.1: Comparison of Selected Models
+Model
+Gemma-2-2b-it
+Flan-T5-XL
+mT5-large
+mBART-large
+Size
+2B params
+3B params
+1.2B params
+610M params
+Languages
+Multilingual
+Multilingual
+101 languages
+25 languages
+Advantages
+Strong text genera-
+tion
+Strong
+generaliza-
+tion
+Good
+multilingual
+performance
+Good sequence gen-
+eration
+Limitations
+Slow inference
+Large size
+Slow inference
+High memory usage
+Training Data
+Diverse multilingual
+domains
+C4, mC4, Wikipedia
+mC4 multilingual
+CC25 dataset
+Type
+Causal LM
+Seq2Seq
+Seq2Seq
+Seq2Seq
+ISI Mahdia
+61
+
+
+===== PAGE 75 =====
+
+Chapter 5. Modeling
+To select the most suitable model, we first test the base versions of the chosen models on our
+task. This preliminary evaluation helps identify their strengths and limitations in extracting entities,
+relationships, and events. The evaluation is conducted using a zero-shot prompt, as presented in
+Figure 5.3.
+Figure 5.3: Prompt Used in Testing
+To evaluate the tested models, we use three basic metrics that show how well each one extracts
+the correct UML elements. The results are shown in Table 5.2.
+• Precision: The percentage of generated UML elements that are correct.
+• Recall: The percentage of reference UML elements that were correctly generated.
+• F1-score: A balance of Precision and Recall to show overall accuracy.
+Table 5.2: Baseline Extraction Models Evaluation
+Model
+Precision
+Recall
+F1-score
+Gemma-2-2b-it
+0.5676
+0.3889
+0.4616
+Flan-T5-XL
+0.3529
+0.2449
+0.2892
+mT5-large
+0.1165
+0.0198
+0.0338
+mBART-large
+0.2903
+0.2000
+0.2369
+Based on the evaluation results, Gemma-it and Flan-T5 performed the best among the models.
+These two were selected for further training to better adapt them for extracting entities, relationships,
+and events for our project.
+5.3.2
+Single Model Strategy Implementation
+In this phase, we present the implementation of the Single Model Strategy, showing how the model is
+fine-tuned to extract UML elements across all diagram types.
+Data Preparation and Tokenization
+Since the models used in our project have different architectures, each requires specific data prepa-
+ration and tokenization to achieve optimal performance. The preparation and tokenization steps are
+adapted to the needs of each model. We consider two main architectures:
+ISI Mahdia
+62
+
+
+===== PAGE 76 =====
+
+Chapter 5. Modeling
+Causal-LM [15]: A decoder-only model that generates tokens one at a time. The decoder uses:
+• Masked self-attention to generate tokens sequentially.
+• Feed-forward networks to transform token representations.
+• Normalization layers for stable training.
+This allows the model to produce annotations step by step until the output is complete as shown in
+Figure 5.4.
+Figure 5.4: Decoder-only Architecture
+Seq2Seq [16]: A encoder-decoder model works in two parts:
+• Encoder: reads the input sequence and captures all contextual information using bidirectional
+self-attention.
+• Decoder: generates output tokens step by step using masked self-attention, aligns with the
+encoder outputs through cross-attention, and applies feed-forward transformations and normal-
+ization.
+This architecture enables a direct mapping from natural language descriptions to structured annota-
+tions, as illustrated in Figure 5.5.
+Figure 5.5: Encoder-Decoder Architecture
+ISI Mahdia
+63
+
+
+===== PAGE 77 =====
+
+Chapter 5. Modeling
+The Table 5.3 summarizes the differences and specific choices made for each model in terms of
+data preparation and tokenization. Additionally, the dataset was split into 80% for training, 10% for
+validation, and 10% for testing.
+Table 5.3: Data preparation and tokenization process for Gemma-it and Flan-T5 models
+Aspect
+Gemma-it (Causal LM)
+Flan-T5 (Seq2Seq)
+Data Format
+JSONL files containing:
+- instruction
+- input
+- output:
+structured annotations
+and diagram type.
+JSONL files containing:
+- instruction
+- input
+- output:
+structured annotations
+and diagram type.
+Input Structure
+The instruction and input are con-
+catenated into a single sequence
+processed by the causal model.
+The instruction and input are com-
+bined
+into
+one
+input
+sequence
+encoded by the encoder of the
+Seq2Seq model.
+Output Structure
+The decoder Generates annotations
+and diagram type in a single autore-
+gressive sequence.
+The decoder produces annotations
+and diagram type based on the en-
+coded input.
+Tokenization
+1.
+Subword segmentation using
+Byte-Pair Encoding (BPE) tailored
+for long UML descriptions.
+2. Insert special tokens for UML
+keywords and diagram type mark-
+ers.
+3. Merge instruction, diagram de-
+scription, and diagram type into a
+single token sequence, preserving
+syntax and newlines.
+1.
+Subword segmentation using
+SentencePiece with unigram lan-
+guage modeling for multilingual
+UML descriptions.
+2. Define special tokens for UML
+key elements and diagram type to
+guide generation.
+3.
+Separate tokenized input from
+output annotations to map precisely
+between description and extracted
+elements.
+The instruction provided to the model aims to guide it in extracting key elements from textual
+descriptions of UML diagrams according to their types. The used instruction presented in Figure 5.6.
+Figure 5.6: Instruction Used For the Single Model
+ISI Mahdia
+64
+
+
+===== PAGE 78 =====
+
+Chapter 5. Modeling
+Training Configuration
+For training the models in our extraction task, we configured the training process to balance perfor-
+mance, efficiency, and accuracy. The key parameters used are as follows.
+• Number of epochs: This allows the model to sufficiently learn patterns from the training data
+while reducing the risk of overfitting to the training set.
+• Batch size: A small batch size was used to accommodate the large sequence length within
+available hardware memory, while still allowing the model to learn effectively.
+• Gradient accumulation: This technique simulates a larger batch size by accumulating gradi-
+ents over multiple steps before updating the model weights, helping stabilize learning without
+exceeding memory constraints.
+• Learning rate: Selected based on preliminary experiments to ensure smooth convergence dur-
+ing fine-tuning without overshooting optimal weight adjustments.
+The parameter values are detailed in Table 5.4.
+Table 5.4: Training Parameters
+Epochs
+Batch Size
+Grad. Accumulation
+Learning Rate
+3
+1
+16
+2e-4
+Used Libraries
+A set of libraries and tools was employed to facilitate model training, data preparation, tokenization,
+and inference. While some libraries are common across all approaches, others are tailored to the
+specific requirements of each model architecture.
+ISI Mahdia
+65
+
+
+===== PAGE 79 =====
+
+Chapter 5. Modeling
+1. Common Libraries
+• AutoTokenizer: Tokenization framework that converts raw text into token IDs and atten-
+tion masks for model input.
+• pandas: Data manipulation library for efficient handling of structured datasets in tabular
+format.
+• Dataset: Data processing utility enabling dataset creation, transformation, and integra-
+tion.
+• Torch: Deep learning framework used for performing tensor computations and automatic
+differentiation to efficiently update model weights.
+• Hugging Face Hub: An open-source platform integrated to retrieve pre-trained models
+to fine-tune them for UML element extraction.
+• Evaluate: A Python library used for computing metrics to assess and validate the perfor-
+mance of a model during fine-tuning.
+• PEFT (Parameter-Efficient Fine-Tuning) [17]: Fine-tuning method that updates a sub-
+set of model parameters, reducing computational and memory requirements while main-
+taining task performance.
+• QLoRA (Quantized Low-Rank Adaptation) [18]: An extension of LoRA that applies
+low-rank adaptation matrices on a fully 4-bit-quantized model. This method enables effi-
+cient fine-tuning of LLMs with minimal memory usage while maintaining stable perfor-
+mance.
+• BitsAndBytesConfig: Configures the model to use 4-bit weight quantization, signifi-
+cantly reducing memory requirements and allowing training on limited-resource hard-
+ware while preserving adequate numerical precision. The configuration used is illustrated
+in Figure 5.7.
+Figure 5.7: BitsAndBytesConfig Parameters
+– load_in_4bit: Loads model weights in 4-bit precision to reduce memory usage.
+– bnb_4bit_quant_type: Specifies the quantization type (Normal Float 4) for a bet-
+ter accuracy-memory trade-off.
+– bnb_4bit_compute_dtype: Data type for computations (float16) to ensure stabil-
+ity.
+ISI Mahdia
+66
+
+
+===== PAGE 80 =====
+
+Chapter 5. Modeling
+• LoraConfig: Specifies the QLoRA parameters, including the rank of the adaptation ma-
+trices, the scaling factor, and the target layers. This configuration ensures coherent inte-
+gration of the low-rank adapters and stable fine-tuning, as configured in Figure 5.8.
+Figure 5.8: LoraConfig Parameters
+– r: Rank of low-rank matrices; controls adaptation capacity.
+– lora_alpha: Scaling factor for LoRA updates relative to original weights.
+– target_modules: Specifies which model layers receive LoRA adapters.
+– lora_dropout: Dropout for LoRA layers to prevent overfitting.
+– task_type: Task type, either "CAUSAL_LM" or "SEQ_2_SEQ_LM".
+2. Specific Libraries
+The following tables summarize the main libraries used for each model type. Table 5.5 lists the
+libraries for Seq2Seq models, and Table 5.6 presents those for Causal Language Models.
+Table 5.5: Seq2Seq Libraries
+Library
+Definition
+AutoModelForSeq2SeqLM
+Encoder-decoder
+transformer
+model
+for
+sequence-to-
+sequence generation, translating input sequences into struc-
+tured outputs.
+DataCollatorForSeq2Seq
+Data preparation utility for batching, padding, and masking
+input and output sequences.
+Seq2SeqTrainer
+High-level framework for model training, evaluation, and
+optimization of encoder-decoder architectures.
+Table 5.6: Causal LM Libraries
+Library
+Definition
+AutoModelForCausalLM
+Decoder-only transformer model optimized for au-
+toregressive language generation.
+Trainer
+Generalized training loop and evaluation interface for
+transformer-based language models.
+DataCollatorForLanguageModeling
+Utility to dynamically batch and mask tokens for
+causal language modeling tasks.
+ISI Mahdia
+67
+
+
+===== PAGE 81 =====
+
+Chapter 5. Modeling
+5.3.3
+Separate Models Strategy Implementation
+In this phase, we present the implementation of the steps of this strategy, showing how the training of
+the classification model is configured, as well as the fine-tuning of the individual extraction models.
+1. Classification Model
+In this model, we selected and evaluated two deep learning architectures, a Bidirectional LSTM (BiL-
+STM) and a Bidirectional Recurrent Neural Network (BiRNN), to classify UML diagram types from
+their textual descriptions. The main objective is to automatically differentiate between the different
+types of diagrams. Both architectures are well suited for sequence-based natural language processing
+tasks and were trained on the same dataset to enable a fair and consistent performance comparison.
+Bidirectional Long Short-Term Memory (BiLSTM) [19]: Bidirectional LSTM (BiLSTM) is an
+extension of the traditional LSTM that processes sequences in both forward and backward directions,
+capturing context from the entire text. This is especially useful for UML diagram type classification,
+as important cues in the descriptions may appear anywhere in the sequence. By considering both past
+and future context, the BiLSTM can more accurately distinguish between the different types.
+Bidirectional Recurrent Neural Network (BiRNN) [20]: Bidirectional Recurrent Neural Net-
+work (BiRNN) is an extension of the standard RNN that processes sequences in both forward and
+backward directions, capturing information from the entire sequence. This bidirectional context is
+especially useful for UML diagram type classification, as key cues can appear anywhere in the textual
+description. By considering both past and future tokens, the BiRNN can more accurately distinguish
+between different types .
+Data Preparation
+• Loading and Processing Data: Each description was loaded together with its corresponding
+label indicating its type.
+• Label Encoding: Diagram types were converted into numerical labels required for supervised
+classification.
+• Data Splitting: The dataset was separated into training and testing subsets to allow objective
+performance evaluation, using an 80% training and 20% testing split.
+• Tokenization and Padding: Textual descriptions were transformed into numerical sequences
+and padded to a fixed length to ensure consistent input dimensions for both BiLSTM and Bidi-
+rectional RNN models.
+• Additional Considerations: Preprocessing included text normalization, vocabulary size con-
+trol, and the use of word embeddings to improve model performance and reduce complexity.
+ISI Mahdia
+68
+
+
+===== PAGE 82 =====
+
+Chapter 5. Modeling
+Model Construction
+The model was implemented using a Sequential architecture composed of an embedding layer fol-
+lowed by either a Bidirectional LSTM (BiLSTM) or a Bidirectional RNN (BiRNN), depending on
+the configuration being evaluated. Both architectures were trained on the same preprocessed textual
+descriptions of UML diagrams.
+Table 5.7: Model Architecture and Parameters
+Layer Type
+Parameters / Description
+Embedding Layer
+• Embedding dimension: 100
+• Maximum sequence length: 200
+BiLSTM / BiRNN Layer
+BiLSTM:
+• Units: 128
+• Dropout: 0.5
+• Bidirectional: Yes
+BiRNN:
+• SimpleRNN units: 128
+• Dropout: 0.5
+• Bidirectional: Yes
+Dense Layer
+• Fully connected units: 64
+Output Layer
+• Activation: Softmax
+• Number of classes: 3 (Sequence, Use Case, Class)
+Models Training
+In the training phase, both BiLSTM and BiRNN models were trained using the same parameters to
+allow a fair comparison of their performance. Table 5.8 presents the main settings and configurations
+used.
+Table 5.8: Training Parameters
+Epochs
+Batch Size
+3
+32
+ISI Mahdia
+69
+
+
+===== PAGE 83 =====
+
+Chapter 5. Modeling
+2. Separate Models
+The data preparation and tokenization process in this step remains similar to the previous step, except
+that the column indicating the type of diagram is removed. This is because each diagram will be
+processed by its own dedicated model.
+The following instructions were provided to the models to guide the extraction of relevant compo-
+nents from textual descriptions, depending on the type of UML diagram, as summarized in Table 5.9.
+Table 5.9: Instructions provided to the models for UML element extraction
+Diagram Type
+Instruction
+Use Case
+Extract the actors, use cases, and relationships
+from the textual description of the Use Case
+diagram.
+Class
+Extract the classes, attributes, methods, and
+relationships from the textual description of the
+Class diagram.
+Sequence
+Extract the actors, participants, and events
+(including messages and conditions) from the
+textual description of the Sequence diagram.
+Training Configuration
+The training process was configured with the following parameters listed in Table 5.10
+Table 5.10: Training Parameters
+Epochs
+Batch Size
+Grad. Accumulation
+Learning Rate
+5
+1
+8
+2e-4
+5.4
+Code generation
+After completing the extraction of entities, relationships, and events, the next stage involved trans-
+forming the extracted structured information into formal UML representations. This code generation
+step is essential for visualizing and validating the extracted knowledge in a standardized way.
+ISI Mahdia
+70
+
+
+===== PAGE 84 =====
+
+Chapter 5. Modeling
+5.4.1
+Model selection
+The model selection phase is an important step in the pipeline. It is essential to choose models that
+can translate structured information into correct and coherent code.
+Recent advances in AI have produced LLMs specialized in code generation. These models are pre-
+trained on large code repositories and technical documentation, allowing them to learn programming
+syntax and domain-specific conventions. They perform well in tasks requiring structural generation,
+including translating high-level specifications into executable code and generating UML diagrams
+The models ultimately selected are presented in the Table 5.11, along with their key characteristics
+and comparative advantages.
+Table 5.11: Comparison of selected code generation models
+Criterion
+CodeT5-large
+StarCoder2-3B
+CodeGemma-2B
+Size
+∼1B parameters
+3B parameters
+2B parameters
+Languages
+Python, Java, JavaScript, PHP, C, C++...
+80+ languages (Python, C, C++, Java...)
+Mainly Python and C++
+Advantages
+Good for code generation, Seq2Seq
+Wide language coverage, robust
+Lightweight, fast, optimized
+Limitations
+Short context, weaker in NLP
+May produce incorrect code
+Less versatile, fewer languages
+Training Data
+GitHub + technical docs
+The Stack v2 (open-source code)
+Code-focused corpus
+Type
+Seq2Seq (Encoder-Decoder)
+Causal LM (Decoder-only)
+Causal LM (Decoder-only)
+Before fine-tuning, the selected models were tested in their baseline form to check how well they
+could generate PlantUML code from structured input. The evaluation used the zero-shot prompt:
+"Convert the following structured input into PlantUML code."
+To perform this evaluation, a customized metric was implemented.
+Syntax Validity: checks that each generated UML diagram follows the correct PlantUML struc-
+ture. The principle of this metric is based on these points:
+• Verification of valid start and end tags.
+• Checking the presence of required keywords for the corresponding diagram type.
+• Validation of symbols and syntax rules specific to each UML diagram.
+ISI Mahdia
+71
+
+
+===== PAGE 85 =====
+
+Chapter 5. Modeling
+These points are combined into a single metric to check the overall Syntax Validity.
+Table 5.12 presents the results of this evaluation and helps guide the selection of models for the
+next phase.
+Table 5.12: Baseline Evaluation of Selected Models
+Model
+Syntax Validity
+CodeT5
+0.00
+StarCoder2
+0.1429
+CodeGemma
+0.1667
+Based on the baseline syntax evaluation, StarCoder2 and CodeGemma were selected, as they
+achieved the highest validity rates. Although these scores are modest, they indicate that the models
+can already produce some correct PlantUML syntax.
+5.4.2
+Model Implementation
+Following the selection of StarCoder2 and CodeGemma based on the baseline syntax evaluation,
+the implementation phase focuses on configuring and adapting these models through fine-tuning to
+improve their ability to generate syntactically correct and executable PlantUML diagrams.
+Data Preparation and Tokenization
+In the data preparation and tokenization phase, it is important to note the architecture of the selected
+models. StarCoder2 and CodeGemma are causal models, as defined earlier, with a decoder-only
+design. They use JSONL files containing instruction + input from the previous step and output code.
+The instruction provided is:
+"Convert the following structured input into PlantUML code."
+The process of converting text into tokens for the model, performed in three key technical steps:
+1. Structure-Aware Encoding: preserve the JSON structure of inputs and syntax of outputs.
+2. Token Conversion: transform text into sequences of token IDs, preserving special symbols, key-
+words, and delimiters.
+ISI Mahdia
+72
+
+
+===== PAGE 86 =====
+
+Chapter 5. Modeling
+3. Sequence Formatting: apply padding, truncation, and add special tokens to maintain consistent
+sequence lengths for training.
+Training Configuration
+The fine-tuning was carried out using a set of hyperparameters chosen to balance training efficiency,
+computational requirements, and model performance. The parameter values are listed in Table 5.13.
+Table 5.13: Training Parameters
+Epochs
+Batch Size
+Grad. Accumulation
+Learning Rate
+4
+2
+8
+2e-4
+5.5
+Conclusion
+This chapter detailed the modeling process. It covered two main steps: the extraction of entities,
+relationships, and events, and the generation of UML code using the selected models. Two strategies
+were tested for the extraction step, and the implementation and configuration of the code generation
+models were addressed, leading to the adoption of a unified generation model that provides a strong
+foundation for the system’s implementation in the following stages.
+ISI Mahdia
+73
+
+
+===== PAGE 87 =====
+
+Chapter 6
+Evaluation
+Sommaire
+6.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+6.2
+Evaluation of the Single Model Strategy . . . . . . . . . . . . . . . . . . . . . .
+75
+6.2.1
+Training Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+6.2.2
+Qualitative Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+6.3
+Evaluation of the Separate Models Strategy . . . . . . . . . . . . . . . . . . . .
+76
+6.3.1
+Evaluation of the Classification Model . . . . . . . . . . . . . . . . . . . .
+77
+6.3.2
+Evaluation of Each Separate Model
+. . . . . . . . . . . . . . . . . . . . .
+78
+6.3.3
+Strategy and Model Adopted . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+6.4
+Code generation Model Evaluation . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+6.4.1
+Training Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+6.4.2
+Qualitative Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+6.4.3
+Adopted Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+6.5
+Evaluation of Models Interconnections
+. . . . . . . . . . . . . . . . . . . . . .
+84
+6.5.1
+Use Case Model to Code Generation Interconnection . . . . . . . . . . . .
+84
+6.5.2
+Class Diagram Model to Code Generation Interconnection . . . . . . . . .
+85
+6.5.3
+Sequence Diagram to Code Generation Interconnection . . . . . . . . . . .
+86
+6.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+74
+
+
+===== PAGE 88 =====
+
+Chapter 6. Evaluation
+6.1
+Introduction
+This chapter presents the evaluation of the models. It focuses on the two main steps of the pipeline,
+extracting entities, relationships, and events, and code generation. The chapter also evaluates the
+performance of different strategies and models, providing a comprehensive analysis of the system’s
+effectiveness at each stage.
+6.2
+Evaluation of the Single Model Strategy
+The evaluation of the models for UML element extraction from natural language descriptions aims to
+assess both the textual quality of the generated output and its structural correctness compared to the
+expected UML representation.
+6.2.1
+Training Evaluation
+During training, we monitor quantitative metrics that provide direct feedback on the model’s learning
+progress.
+• Training Loss: Measures how well the model predicts during training. Lower values mean
+better learning.
+• Validation Loss: Measures similarity by dividing common elements by total unique elements.
+Useful for comparing predicted and reference annotations.
+• F1-score: measures how well a generated UML diagram matches the reference by balancing
+correctness and completeness.
+• ROUGE-L: Measures similarity based on the Longest Common Subsequence (LCS), providing
+insight into how much relevant information the model captures.
+Table 6.1 shows the training performance of the models, including training and validation losses,
+while Table 6.2 presents their evaluation metrics, F1-score and ROUGE-L.
+Table 6.1: Models Training Evaluation
+Model
+Epoch
+Training Loss
+Validation Loss
+Gemma-it
+1
+0.647400
+0.636600
+3
+0.577800
+0.561100
+Flan-T5
+1
+1.141900
+1.020000
+3
+0.738100
+0.697000
+ISI Mahdia
+75
+
+
+===== PAGE 89 =====
+
+Chapter 6. Evaluation
+Table 6.2: Models Evaluation
+Model
+F1-score
+ROUGE-L
+Gemma-it
+0.556
+0.444
+Flan-T5
+0.458
+0.497
+6.2.2
+Qualitative Evaluation
+After training, we conduct a qualitative and more detailed evaluation, focusing on structural accuracy
+and robustness of the generated UML diagrams.
+• Diagram Type Recognition: Evaluates whether the model correctly identifies the UML di-
+agram type (use case, class, sequence) from the natural language description and extracts its
+elements.
+• Error Tolerance: Analyzes robustness when input descriptions contain ambiguous or incorrect
+UML concepts.
+• Handling Long Texts: Measures the model’s ability to process extended text inputs while
+preserving all relevant UML information.
+Table 6.3 presents a qualitative evaluation of the models, highlighting their performance in diagram
+type recognition, error tolerance, and ability to handle long texts.
+Table 6.3: Qualitative Evaluation of Single Models
+Aspect
+Gemma-it
+Flan-T5
+Diagram Type Recognition
+Most of the recognitions are
+wrong
+Unable to recognize correctly
+Error Tolerance
+Some misclassifications
+Wrong entity classification
+Handling Long Texts
+Handles long texts even with in-
+correct UML concepts
+Does not handle long texts
+6.3
+Evaluation of the Separate Models Strategy
+The evaluation was performed separately for each diagram type and model. The accuracy values
+obtained reflect the model’s ability to correctly extract structured annotations from natural language
+descriptions of diagrams.
+ISI Mahdia
+76
+
+
+===== PAGE 90 =====
+
+Chapter 6. Evaluation
+6.3.1
+Evaluation of the Classification Model
+To assess how well the models can identify the diagram type, a classification evaluation was per-
+formed. The results are summarized in Table 6.4, showing the accuracy achieved by each model on
+the test set.
+Table 6.4: Classification Evaluation
+Model
+Accuracy
+BiLSTM
+0.9750
+BiRNN
+0.9161
+The evaluation shows that BiLSTM performs better than BiRNN in identifying UML diagram
+types from text. Therefore, BiLSTM was adopted as the main model for this classification task.
+Testing on Unseen Texts
+We test the BiLSTM classification model using different descriptions to check if it can correctly
+identify the type of UML diagram.
+Figure 6.1: French Classification Test
+Figure 6.2: English Classification Test
+ISI Mahdia
+77
+
+
+===== PAGE 91 =====
+
+Chapter 6. Evaluation
+6.3.2
+Evaluation of Each Separate Model
+For the separate models, evaluation is conducted for each diagram type, focusing on two aspects:
+training performance and qualitative outcomes.
+Use case Diagram Models
+For this type of diagram, the models were evaluated based on their ability to identify actors, use cases,
+and relationships.
+1. Training Evaluation
+The performance of the Use Case models is evaluated using training and validation loss and then
+F1-score and ROUGE-L. The training results are shown in Table 6.5, and the evaluation results are
+presented in Table 6.6.
+Table 6.5: Use Case Diagram Models Training Evaluation
+Model
+Epoch
+Training Loss
+Validation Loss
+Gemma-it
+1
+0.607100
+0.594900
+5
+0.462500
+0.459200
+Flan-T5
+1
+0.755200
+0.726600
+5
+0.517800
+0.506200
+Table 6.6: Use Case Diagram Models Evaluation
+Model
+F1-score
+ROUGE-L
+Gemma-it
+0.8475
+0.8550
+Flan-T5
+0.7700
+0.8076
+2. Qualitative Evaluation
+After training, we carry out a qualitative and detailed evaluation to check the structural accuracy
+and robustness of the generated diagrams, as summarized in Table 6.7.
+ISI Mahdia
+78
+
+
+===== PAGE 92 =====
+
+Chapter 6. Evaluation
+Table 6.7: Qualitative Evaluation of Use Case Models
+Aspect
+Gemma-it
+Flan-T5
+UML Concept and
+Error Tolerance
+Effectively
+handles
+input
+er-
+rors and remains consistent with
+UML concepts
+Less flexible when UML errors
+are present, leading to misinter-
+pretations
+Handling
+Long
+Texts
+Can process and interpret long
+and complex textual inputs accu-
+rately
+Struggles with long inputs and
+loses coherence in extended con-
+texts
+Class Diagram Models
+In the case of class diagrams, the evaluation focused on correctly extracting classes, attributes, meth-
+ods, and relationships.
+1. Training Evaluation
+The Class diagram models are evaluated using training and validation loss, followed by F1-score
+and ROUGE-L to measure extraction quality. The training results are presented in Table 6.8, and the
+evaluation results are shown in Table 6.9.
+Table 6.8: Class Diagram Models Training Evaluation
+Model
+Epoch
+Training Loss
+Validation Loss
+Gemma-it
+1
+0.367200
+0.348000
+5
+0.249400
+0.236900
+Flan-T5
+1
+0.418400
+0.409900
+5
+0.321000
+0.303000
+Table 6.9: Class Diagram Models Evaluation
+Model
+F1-score
+ROUGE-L
+Gemma-it
+0.7218
+0.7555
+Flan-T5
+0.6666
+0.6818
+2. Qualitative Evaluation
+Following the training evaluation, a qualitative and in-depth evaluation is conducted, for the over-
+all robustness of the generated diagrams. This evaluation is reported in Table 6.10.
+ISI Mahdia
+79
+
+
+===== PAGE 93 =====
+
+Chapter 6. Evaluation
+Table 6.10: Qualitative Evaluation of Class Diagram Models
+Aspect
+Gemma-it
+Flan-T5
+UML Concept and
+Error Tolerance
+Correctly identifies UML classes and
+relationships
+Accurately extracts class names but of-
+ten misses attributes and methods
+Handling Long De-
+scriptions
+Can interpret long textual descriptions
+and maintain UML consistency but is
+limited by token size
+Generates consistent outputs for short
+inputs but loses coherence with long
+descriptions
+Sequence Diagram Models
+For sequence diagrams, the models were evaluated on their ability to identify participants and actors,
+capture interactions and messages, and extract events, where each event comprises its associated
+conditions and messages.
+1. Training Evaluation
+The Sequence diagram models are assessed based on their training/validation loss and their per-
+formance metrics, including F1-score and ROUGE-L. The training results are shown in Table 6.11,
+and the evaluation results are provided in Table 6.12.
+Table 6.11: Sequence Diagram Models Training Evaluation
+Model
+Epoch
+Training Loss
+Validation Loss
+Gemma-it
+1
+0.558700
+0.530700
+5
+0.365300
+0.355800
+Flan-T5
+1
+0.624100
+0.617300
+5
+0.408700
+0.394900
+Table 6.12: Sequence Diagram Models Evaluation
+Model
+F1-score
+ROUGE-L
+Gemma-it
+0.7251
+0.7598
+Flan-T5
+0.6867
+0.6867
+2. Qualitative Evaluation
+Once the training is completed, we perform a qualitative assessment complemented by a detailed
+analysis, focusing on both the structural correctness and the robustness of the UML diagrams pro-
+duced. The corresponding evaluation results are displayed in Table 6.13.
+ISI Mahdia
+80
+
+
+===== PAGE 94 =====
+
+Chapter 6. Evaluation
+Table 6.13: Qualitative Evaluation of Sequence Diagram Models
+Aspect
+Gemma-it
+Flan-T5
+UML Concept and
+Error Handling
+Generates correct UML sequence con-
+cepts, accurately identifying partici-
+pants, actors, and messages. Handles
+minor structural or syntax errors but
+struggles to infer implicit events.
+Extracts actors as participants with lim-
+ited structural accuracy.
+Sensitive to
+UML inconsistencies and fails to detect
+events.
+Handling Long De-
+scriptions
+Handles long textual descriptions ef-
+fectively within a limited token con-
+text.
+Processes long inputs but loses coher-
+ence beyond token limits.
+6.3.3
+Strategy and Model Adopted
+The extraction of UML elements from natural language was evaluated using two strategies. The single
+model strategy uses one model for all diagram types, while the separate models strategy employs a
+dedicated model for each diagram type and a BiLSTM classifier to identify the diagram type before
+extraction.
+Analysis of the strategies showed that the single model strategy is simpler but less effective with
+complex inputs, where errors and inconsistencies in diagram recognition are more frequent. The sep-
+arate models strategy provides a structured step: first classify the diagram, then use the corresponding
+specialized model for extraction. This method improves accuracy, handles errors better, and maintains
+UML consistency for long or complex descriptions.
+Regarding the models, Gemma-it was consistently more robust than Flan-T5 across all diagram
+types. It accurately extracts elements, tolerates input errors, and preserves structure for extended
+descriptions. Flan-T5 performs adequately for simple cases but struggles with complex or lengthy
+diagrams.
+Based on this evaluation, the separate models strategy and Gemma-it extraction models was se-
+lected. This combination ensures accurate, reliable UML extraction and establishes a solid foundation
+for the subsequent stages of generation, testing, and system integration.
+6.4
+Code generation Model Evaluation
+The evaluation of the fine-tuned models was designed to measure both the quality of the generated
+code and its functional correctness. This evaluation is divided into two main parts: training evaluation
+and qualitative evaluation.
+ISI Mahdia
+81
+
+
+===== PAGE 95 =====
+
+Chapter 6. Evaluation
+6.4.1
+Training Evaluation
+To evaluate the generated code, we measure its accuracy, correctness, and functionality using the
+following metrics:
+• Pass@k Evaluation [21]: Pass@k is a metric used to evaluate code generation models, repre-
+senting the probability that at least one of k generated samples is correct. It provides insight
+into the model’s capacity to generate accurate outputs within multiple attempts. This metric is
+particularly relevant when generating UML diagrams, where multiple attempts may be required
+to produce a correct representation.
+• Syntax Validity: The Customized metric used to evaluate the baseline models was reused to
+check whether the generated code follows PlantUML syntax.
+• Executable Code: To evaluate whether the generated PlantUML code is functional, each gen-
+erated diagram is tested for execution. This step ensures that the output is not only syntactically
+correct but also executable without errors.
+The results of the model training and validation are summarized in Table 6.14, showing the training
+and validation loss. Table 6.15 presents the structural and execution evaluation for the both models.
+Table 6.14: Training and Validation
+Model
+Epoch
+Training Loss
+Validation Loss
+StarCoder2
+1
+0.493900
+0.481400
+4
+0.391200
+0.387900
+CodeGemma
+1
+0.849900
+0.823100
+4
+0.664300
+0.658800
+Table 6.15: Structural and Execution Evaluation
+Model
+Syntax Validity
+Executable Code
+Pass@1
+Pass@3
+StarCoder2
+0.8333
+0.9889
+0.9309
+0.6889
+CodeGemma
+0.7256
+0.8123
+0.6518
+0.8577
+6.4.2
+Qualitative Evaluation
+To assess the qualitative performance of the models, we consider the following aspects:
+• Error Tolerance: Given the complexity of UML diagram generation and the possibility of
+input errors.
+ISI Mahdia
+82
+
+
+===== PAGE 96 =====
+
+Chapter 6. Evaluation
+– If the input contains minor syntax errors, the system attempts to automatically correct
+them while preserving semantic meaning.
+– If errors are critical and irrecoverable, the system either outputs the error explicitly or
+keeps the incorrect code for analysis.
+• Long Diagram Generation: Evaluation also includes the capability of the models to handle
+long and complex UML diagrams. This is measured by the model’s ability to generate complete
+diagrams without truncation, preserving the structure and relationships defined in the input.
+The qualitative performance of the models is summarized in Table 6.16, highlighting their ability to
+handle errors and generate long, complex UML diagrams.
+Table 6.16: Qualitative Evaluation
+Metric
+StarCoder2
+CodeGemma
+Error Tolerance
+Effectively handles
+UML-related errors and
+maintains correct structure
+and logic.
+Handles minor UML errors
+but
+occasionally
+misinter-
+prets complex structures.
+Long Diagram Generation
+Can generate coherent and
+well-structured long UML di-
+agrams.
+Capable of producing long di-
+agrams but may lose struc-
+tural precision in complex
+cases.
+6.4.3
+Adopted Model
+To determine the most suitable model for generating accurate PlantUML diagrams, both CodeGemma
+and StarCoder2 were examined based on quantitative metrics and qualitative behavior, focusing on
+syntax correctness, executability, and semantic consistency.
+CodeGemma showed solid baseline performance, handling straightforward diagrams effectively
+and producing valid outputs in many cases. However, it was less stable with complex or deeply
+structured inputs, occasionally failing to preserve relationships or maintain overall coherence.
+StarCoder2, on the other hand, demonstrated more consistent and reliable performance. It closely
+followed the PlantUML syntax, produced executable diagrams, handled minor input imperfections
+gracefully, and managed long or complex diagrams without losing structural integrity.
+Considering these factors, StarCoder2 was selected as the preferred model. Its combination of
+stability, robustness, and ability to generate coherent, executable UML diagrams makes it the most
+suitable.
+ISI Mahdia
+83
+
+
+===== PAGE 97 =====
+
+Chapter 6. Evaluation
+6.5
+Evaluation of Models Interconnections
+This section focuses on evaluating the interconnections between the extraction models and the code
+generation model. The goal is to assess how effectively the outputs from the extraction phase serve
+as inputs for the code generation model, ensuring smooth and accurate integration within the overall
+system.
+6.5.1
+Use Case Model to Code Generation Interconnection
+The Use Case model testing phase evaluates the system’s ability to generate accurate Use Case dia-
+grams. The process starts by providing the model with a specific textual description. For testing, the
+following input is used:
+"A user logs in to the system. Once logged in, they can view their dashboard and place
+orders."
+Based on this input, Figure 6.3 presents the output produced by the extraction model, showing the
+extracted rectangle, actors, use cases, and relationships.
+Figure 6.3: Output generated by the Use Case Mode
+Figure 6.4 then shows the result generated by the code-generation model, which converts these
+extracted elements into executable PlantUML code.
+ISI Mahdia
+84
+
+
+===== PAGE 98 =====
+
+Chapter 6. Evaluation
+Figure 6.4: Use Case Code generated
+6.5.2
+Class Diagram Model to Code Generation Interconnection
+The Class Diagram model testing phase aims to evaluate the system’s capability to generate accurate
+Class diagrams. The process begins with providing the model a specific description as input. For
+testing purposes, the following input is used:
+"A User has a username, email, and password. They can log in and log out, and can have
+many Orders, each with an ID and total amount."
+Based on the provided input, Figure 6.5 shows the output generated by the extraction model, including
+the identified classes, attributes, methods, and relationships.
+Figure 6.5: Output generated by the Class Diagram Model
+ISI Mahdia
+85
+
+
+===== PAGE 99 =====
+
+Chapter 6. Evaluation
+Figure 6.6 presents the corresponding PlantUML code produced by the generation model, illus-
+trating how the extracted structure is transformed into an executable class diagram.
+Figure 6.6: Class Diagram Code generated
+6.5.3
+Sequence Diagram to Code Generation Interconnection
+The Sequence Diagram model testing phase aims to evaluate the system’s ability to generate accurate
+sequence diagrams. The process begins by providing the model with a specific textual description as
+input. For testing purposes, the used input is:
+"User enters login credentials. The system checks the credentials in a loop until the user
+logs in successfully. After login, the system shows the dashboard."
+Based on the input description, Figure 6.7 shows the output produced by the extraction model, includ-
+ing the identified actors, participants, interaction messages, and events with their associated conditions
+and messages.
+Figure 6.7: Output generated by the sequence Diagram Model
+ISI Mahdia
+86
+
+
+===== PAGE 100 =====
+
+Chapter 6. Evaluation
+Figure 6.8 presents the corresponding PlantUML code generated by the code-generation model,
+illustrating how the extracted interactions are transformed into a complete sequence diagram.
+Figure 6.8: Class Diagram Code generated
+The interconnection testing demonstrates that the extraction models effectively provide structured
+and syntactically correct outputs, which serve as reliable inputs for the code generation model. Across
+all diagram types, the system consistently extracts relevant entities, relationships, and events. These
+outputs maintain proper syntax and structure, enabling the generation of accurate and executable
+PlantUML code. This confirms the robustness and efficiency of the integrated pipeline for UML
+diagram generation.
+6.6
+Conclusion
+This chapter presented a comprehensive evaluation of the UML diagram generation pipeline, cov-
+ering both extraction and code generation steps. For extraction, the Separate Models Strategy with
+Gemma-it and the BiLSTM classifier was adopted, ensuring accurate identification of entities, rela-
+tionships, and events for each diagram type. For code generation, StarCoder2 was selected due to its
+strong syntax adherence, execution reliability, and ability to handle complex diagrams. The evalua-
+tions demonstrated that the chosen models and strategy work effectively together, producing syntac-
+tically correct, executable, and semantically meaningful UML diagrams across Use Case, Class, and
+Sequence models, establishing a solid foundation for the next stages of the project.
+ISI Mahdia
+87
+
+
+===== PAGE 101 =====
+
+Chapter 7
+Deployment
+Sommaire
+7.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+7.2
+Deployment Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+7.2.1
+System Components . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+7.2.2
+System Interaction Flow . . . . . . . . . . . . . . . . . . . . . . . . . . .
+90
+7.3
+Deployment Implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+91
+7.3.1
+Used Technologies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+91
+7.3.2
+Hybrid Development and Integration . . . . . . . . . . . . . . . . . . . . .
+93
+7.3.3
+Model Development and Integration . . . . . . . . . . . . . . . . . . . . .
+95
+7.3.4
+Environment Execution . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+96
+7.3.5
+Functional Testing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+97
+7.4
+Illustrations
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+98
+7.4.1
+Application Interfaces
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+98
+7.4.2
+Functional Demonstration . . . . . . . . . . . . . . . . . . . . . . . . . .
+101
+7.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+105
+88
+
+
+===== PAGE 102 =====
+
+Chapter 7. Deployment
+7.1
+Introduction
+The deployment chapter addresses the practical implementation of the UML diagram generation sys-
+tem. It details the integration of the selected models into a functional environment, the configuration
+of required resources, and the setup for end-user accessibility. The objective is to convert the trained
+models and the developed pipeline into a fully deployable system capable of generating UML dia-
+grams efficiently and reliably.
+7.2
+Deployment Architecture
+The system is built as a web application that can automatically generate UML diagrams from text.
+The user writes a short description, and the system creates the matching UML diagram image. The
+application includes language models that understand the text and a rendering service that produces
+the final diagram. All parts of the system work together to ensure fast and accurate results.
+7.2.1
+System Components
+The system is composed of several main components, each playing a specific role in the process of
+transforming user input into a UML diagram image.
+1. User: The user is the main actor who interacts with the application. They provide a textual
+description of the diagram to be generated and visualize the final UML diagram on the interface.
+2. Frontend (User Interface): The frontend is the visual part of the application that connects
+the user with the system. Its main role is to collect the user’s input and display the generated
+diagram. It includes.
+• A Home page where the user can write text and generate diagrams,
+• An About page that explains the purpose of the application and presents the available
+UML types such as use case, sequence, and class diagrams.
+3. Backend: The backend is responsible for processing the user input. It includes five AI models:
+• A classification model to identify the type of UML diagram,
+• Three extraction models to extract entities, relations, and interactions depending on the
+diagram type,
+• A generation model to produce the corresponding PlantUML code.
+ISI Mahdia
+89
+
+
+===== PAGE 103 =====
+
+Chapter 7. Deployment
+4. PlantUML Server: This component executes the generated PlantUML code and converts it
+into a UML diagram image that can be displayed on the user interface. It serves as a bridge
+between the backend models and the visual output.
+These components are illustrated in the Figure 7.1 schematic representation, which visually presents
+the overall structure of the deployed system.
+Figure 7.1: System Components
+7.2.2
+System Interaction Flow
+The interaction flow of the UML diagram generation system is designed to ensure a seamless transfor-
+mation of natural language input into a visual UML diagram. The communication between compo-
+nents is handled through structured API requests, allowing efficient integration between the frontend
+interface, backend models, and the PlantUML rendering server.
+1. User Input: The process begins when the user enters a textual description of the desired UML
+diagram through the web interface. Upon submission, the text is transmitted to the backend via
+an API call, initiating the diagram generation pipeline.
+2. Classification Model (API Endpoint): The backend receives the input and forwards it to the
+classification model. This model determines the type of UML diagram to be generated —
+such as a use case, class, or sequence diagram. The classification result is then returned to the
+backend controller to guide the selection of the corresponding extraction model.
+3. Extraction Model: Depending on the identified diagram type, the backend invokes the appro-
+priate extraction model. The extraction phase aims to identify and structure essential elements
+within the user description, such as actors, system components, or interactions. The extracted
+information is represented in a structured format suitable for the next generation phase.
+4. Code Generation Model: The extracted data is then provided as input to the code generation
+model. This model translates the structured information into PlantUML code, representing
+ISI Mahdia
+90
+
+
+===== PAGE 104 =====
+
+Chapter 7. Deployment
+the diagram’s logical and structural relationships. The output code is subsequently sent to the
+PlantUML rendering service through an API request.
+5. PlantUML Server: The PlantUML server processes the received code and generates a visual
+UML diagram image. This image is then returned to the backend and transmitted to the frontend
+for user display.
+6. Result Visualization: The frontend receives the rendered diagram and displays it on the user
+interface. The user can visualize the generated UML diagram and, if necessary, modify the
+textual description to refine the output.
+7. Diagram Exporting: Once the diagram is generated, the system allows the user to export it in
+multiple formats, including PNG, PDF, SVG, and JPG. This functionality ensures that users can
+easily download, share, or integrate the generated diagrams into their documentation or reports.
+7.3
+Deployment Implementation
+The deployment is implemented through a hybrid infrastructure that integrates both local and remote
+(cloud-based) environments. In this configuration, the web application and user interface are main-
+tained locally to support development, monitoring, and interface management, while the backend
+services and trained models are hosted on a remote cloud server.
+7.3.1
+Used Technologies
+The key technologies used in developing and deploying the hybrid UML diagram generation system
+are presented, covering both local and cloud environments. Each technology contributes to the ap-
+plication’s interface, backend processing, model execution, and communication between local and
+remote components. The technologies employed are summarized in Table 7.1.
+ISI Mahdia
+91
+
+
+===== PAGE 105 =====
+
+Chapter 7. Deployment
+Table 7.1: Technologies Used in Deployment
+Technology
+Main Usage in the Project
+Environment
+HTML: Structures the web interface where users input
+diagram descriptions.
+Local
+CSS: Defines the visual design and layout of the inter-
+face.
+Local
+JavaScript: Adds interactivity and manages dynamic el-
+ements in the web app.
+Local
+Bootstrap: Ensures responsive and consistent UI de-
+sign.
+Local
+FastAPI: Manages API endpoints and communication
+between the frontend and backend models.
+Local & Cloud
+Uvicorn:
+ASGI server used to deploy and run the
+FastAPI application efficiently.
+Local & Cloud
+Python: Core programming language for implementing
+the NLP and UML generation models.
+Local & Cloud
+PlantUML Server:
+Generates UML diagrams (Use
+Case, Class, Sequence) from PlantUML code.
+Local
+Visual Studio Code: Integrated development environ-
+ment for writing and debugging code.
+Local
+Google Colab: Runs backend AI models in a cloud en-
+vironment with GPU.
+Cloud
+Google Drive: Stores and loads the fine-tuned model
+used by the backend during deployment.
+Cloud
+Ngrok: Creates a secure connection between the local
+server and the cloud environment.
+Local & Cloud
+ISI Mahdia
+92
+
+
+===== PAGE 106 =====
+
+Chapter 7. Deployment
+7.3.2
+Hybrid Development and Integration
+Local Part: Interface Development and Client-Side Processing
+The local development focuses on implementing the user interface, handling inputs, rendering dia-
+grams, and coordinating with the cloud backend. Each stage is implemented as follows.
+1. Interface Implementation:
+• Structure and layout are designed to allow users to input textual descriptions of UML
+diagrams, select diagram types, and visualize the generated diagrams.
+• Styling and responsiveness are ensured using CSS and Bootstrap.
+• Dynamic behavior is implemented with JavaScript to handle UI events, real-time feed-
+back, and updates of available diagram types.
+• User guidance features such as tooltips, placeholders, and example descriptions help users
+provide input that models can process efficiently.
+2. Input Handling and Validation:
+• JavaScript functions validate user input in real time, checking for empty fields, maximum
+length, and unsupported characters.
+• Invalid inputs trigger user-friendly messages, preventing erroneous data from being sent
+to the backend.
+• Input text is sanitized to remove extra whitespace or escape characters that could affect
+model processing.
+3. Communication with Cloud Backend:
+• Ngrok is used locally to create a secure tunnel and a public URL for the local server.
+• Validated inputs are sent via HTTP POST requests to the remote API endpoints, allowing
+seamless integration with the backend models.
+• Responses are asynchronously received using JavaScript, enabling smooth rendering of
+results without page reloads.
+4. PlantUML Code Rendering and Export:
+• PlantUML code returned from the cloud backend is dynamically rendered into diagrams.
+• JavaScript provides export functionality, allowing users to download diagrams in {PNG,
+SVG, PDF, and JPG formats}.
+• Logging and error handling ensure corrupted or incomplete code does not disrupt the
+interface.
+ISI Mahdia
+93
+
+
+===== PAGE 107 =====
+
+Chapter 7. Deployment
+Cloud: Backend Model Execution and Processing
+The remote development handles model storage, execution, GPU, and returning results. Each stage is
+implemented as follows:
+1. Model Loading and Initialization:
+• Fine-tuned models for classification, extraction, and code generation are stored in Google
+Drive.
+• The cloud backend (Python + FastAPI) loads these models into memory at startup for
+immediate availability.
+2. Processing Pipeline with GPU:
+The cloud backend executes the AI models to generate UML diagrams. The pipeline consists
+of sequential stages with structured data flow:
+Step 1 – Classification
+The backend receives the input text from the local interface via Ngrok and determines the
+diagram type (Use Case, Sequence, or Class).
+Step 2 – Extraction
+Depending on the classified type, the corresponding extraction model identifies key entities,
+relationships, and actions from the text.
+Step 3 – Code Generation
+Extracted elements are formatted into PlantUML code using the code generation model.
+3. Communication with Local Server:
+• Ngrok ensures bidirectional communication, allowing the cloud backend to receive in-
+puts from the local interface and return PlantUML code securely.
+• Responses are sent as JSON payloads with proper error handling, retries, and headers to
+guarantee data integrity.
+ISI Mahdia
+94
+
+
+===== PAGE 108 =====
+
+Chapter 7. Deployment
+7.3.3
+Model Development and Integration
+This section presents the internal workflow of the deployed models, focusing on how each fine-tuned
+neural network processes the input text, performs its specialized function, and exchanges data be-
+tween components. The complete processing pipeline consists of three core models: the BiLSTM
+Classification Model, the Gemma Extraction Model, and the StartCoder2 Code Generation Model.
+Classification Model
+a. Input Preprocessing and Tokenization
+User-provided text is normalized through punctuation removal, lowercasing, and stop-word filter-
+ing. A custom tokenizer converts each token into integer indices based on a predefined vocabulary.
+Sequences are padded or truncated to a uniform length before being passed into the model.
+b. Embedding and Sequence Encoding
+Each token index is mapped into a dense embedding vector via a trainable embedding layer. The
+sequence is processed by a bidirectional LSTM, which encodes context from both forward and
+backward directions. The resulting hidden states are concatenated to form a unified representation
+capturing semantic dependencies across the input.
+c. Classification Head and Output
+The encoded representation is passed through a fully connected layer followed by a softmax ac-
+tivation. The output consists of three probability values representing the likelihood of each UML
+diagram type: Class, Use Case, or Sequence. The predicted class is then transmitted to the next
+model in the pipeline.
+Extraction Model
+a. Tokenization and Encoding
+The model receives both the user input and the predicted diagram type as a structured prompt. This
+prompt is tokenized using a SentencePiece tokenizer, which segments the text into subword units
+suitable for model processing. Each token is embedded through the Gemma embedding layer and
+forwarded to the transformer stack.
+b. Transformer Inference Process
+The embeddings pass through multiple layers of multi-head self-attention and feed-forward net-
+works, supported by residual connections and layer normalization. The attention mechanism cap-
+tures contextual relationships, allowing the model to extract key UML components and their de-
+pendencies.
+c. Output Decoding and Structuring
+ISI Mahdia
+95
+
+
+===== PAGE 109 =====
+
+Chapter 7. Deployment
+At inference, the decoder generates structured text that represents the UML elements and relation-
+ships. This structured output serves as the input for the code generation model.
+Code Generation Model
+a. Input Formatting and Tokenization
+The structured representation produced by the Gemma model is reformatted into a descriptive
+textual prompt designed to guide PlantUML generation. The prompt is tokenized using the Star-
+Coder2 tokenizer, which converts textual tokens into numerical identifiers.
+b. Autoregressive Generation
+Each token embedding is passed through multiple self-attention layers, enabling the model to learn
+structural and syntactic dependencies. The decoder generates PlantUML code token by token in
+an autoregressive manner, conditioned on the previously generated context.
+c. Output Formatting
+The output is formatted with standard PlantUML delimiters (@startuml and @enduml) and vali-
+dated for syntax correctness. The final PlantUML code is sent back to the local frontend via Ngrok,
+enabling rendering and exporting.
+7.3.4
+Environment Execution
+Cloud Environment
+The cloud environment is launched by executing the Colab notebook. Dependencies are installed, and
+the FastAPI backend is started using Uvicorn. Ngrok generates a secure public URL to expose the
+FastAPI server, allowing external access.
+• Run all cells in the Colab notebook.
+• Start the FastAPI server with Uvicorn.
+• Launch Ngrok to obtain the public URL.
+Figure 7.2: Cloud Environment Execution
+ISI Mahdia
+96
+
+
+===== PAGE 110 =====
+
+Chapter 7. Deployment
+Local Environment
+The local environment connects to the cloud backend using the Ngrok public URL. The FastAPI
+server can also run locally on localhost:8000 to handle requests.
+• Insert the Ngrok public URL from the cloud into the local configuration.
+• Launch the local FastAPI server with the command in Figure 7.3
+Figure 7.3: Local Environment Execution
+• Access the local frontend, which communicates with the cloud backend via the public link.
+7.3.5
+Functional Testing
+Functional testing ensures the application works correctly from user input to final diagram render-
+ing, including communication between local frontend and cloud backend, error handling, and export
+functionalities.
+User Interface and Input Validation
+• Ensure that the interface captures and validates user input correctly.
+• Handle invalid input, empty fields, or unsupported characters.
+• Verify that error messages are displayed appropriately.
+• Check responsive layout and usability across different screen sizes.
+Communication Between Local and Cloud
+• Ensure seamless data transfer between local frontend and cloud backend via Ngrok.
+• Send user input from the local interface to the cloud server and receive responses correctly.
+• Handle network interruptions or timeout scenarios.
+• Verify that multiple simultaneous requests do not break the system.
+• Test the end-to-end generation of different UML diagrams.
+ISI Mahdia
+97
+
+
+===== PAGE 111 =====
+
+Chapter 7. Deployment
+PlantUML Server Testing
+• Ensure the PlantUML server correctly converts structured UML representations into images.
+• Send generated UML code to the PlantUML server and verify image rendering.
+• Verify that the UML code sent is executable and can produce a valid diagram.
+Exporting Diagrams as Images
+• Ensure diagrams can be exported correctly.
+• Verify that exported images match the rendered diagrams.
+7.4
+Illustrations
+7.4.1
+Application Interfaces
+This section presents the main interfaces of the D-UML application, highlighting the user-friendly
+design and accessibility features. Screenshots of the interfaces are included to illustrate the layout,
+navigation, and available functionalities.
+Home Page
+The home page has two main parts. The Overview Section explains the platform and its steps: De-
+scribe, Understand, Model, and Load to Implement, as illustrated in Figure 7.4.
+Figure 7.4: Overview Home Page
+ISI Mahdia
+98
+
+
+===== PAGE 112 =====
+
+Chapter 7. Deployment
+The Diagram Preview and Export Section lets users enter a description, see a preview of the UML
+diagram, and export it as an image, illustrated in Figure 7.5.
+Figure 7.5: Diagram Preview
+About Page
+The About Page explains how the D-UML app works. It shows how users can describe their diagram,
+the system analyzes it, and then generates the correct UML diagram. It also presents RB IT Solutions,
+the company that hosts the application, presented in Figure 7.6.
+Figure 7.6: Overview About Page
+ISI Mahdia
+99
+
+
+===== PAGE 113 =====
+
+Chapter 7. Deployment
+Figure 7.7 describes how use case diagrams represent system functionalities and interactions be-
+tween actors and the system, helping to capture user requirements.
+Figure 7.7: Use Case Diagram Overview
+Figure 7.8 presents how class diagrams illustrate the structure of the system by showing classes,
+their attributes, methods, and relationships.
+Figure 7.8: Class Diagram Overview
+Figure 7.9 explains how sequence diagrams model the flow of messages and interactions between
+different objects over time.
+ISI Mahdia
+100
+
+
+===== PAGE 114 =====
+
+Chapter 7. Deployment
+Figure 7.9: Sequence Diagram Overview
+7.4.2
+Functional Demonstration
+Practical tests were carried out by providing text descriptions and generating the corresponding UML
+diagrams. The tests were conducted in both English and French.
+Test 1 – Use Case Diagram
+The first test generates a Use Case diagram from a text description in both English and French, demon-
+strating the app’s bilingual capability. Figure 7.10 presents the English version, while Figure 7.11
+shows the French version.
+Figure 7.10: Use Case Diagram (English)
+ISI Mahdia
+101
+
+
+===== PAGE 115 =====
+
+Chapter 7. Deployment
+Figure 7.11: Use Case Diagram (French)
+This test checks the Use Case model’s capacity to generate actors and use cases from only the
+diagram subject. The output appears in Figure 7.12.
+Figure 7.12: Generated Use Case Diagram
+Test 2 – class Diagram
+The second test focuses on generating a Class diagram from a textual description. The scenario is
+provided in both English and French to demonstrate the app’s bilingual support and its ability to
+accurately create classes, attributes, and methods, as well as the relationships between them. Figure
+7.13 presents the English version, while Figure 7.14 shows the French version.
+ISI Mahdia
+102
+
+
+===== PAGE 116 =====
+
+Chapter 7. Deployment
+Figure 7.13: Class Diagram (English)
+Figure 7.14: Class Diagram (French)
+ISI Mahdia
+103
+
+
+===== PAGE 117 =====
+
+Chapter 7. Deployment
+This test assesses the generative capacity of the Class model. The user provides only the diagram
+subject, and the model generates the related classes, as presented in Figure 7.15.
+Figure 7.15: Generated Class Diagram
+Test 3 – Sequence Diagram
+The third test illustrates the generation of a Sequence diagram from English and French descriptions.
+It demonstrates the system’s ability to detect actors, participants, and the message flow, accurately
+reflecting the temporal order of events. Figure 7.16 presents the English version, while Figure 7.17
+shows the French version.
+Figure 7.16: Sequence Diagram (English)
+ISI Mahdia
+104
+
+
+===== PAGE 118 =====
+
+Chapter 7. Deployment
+Figure 7.17: Sequence Diagram (French)
+This test examines the generative behavior of the Sequence model. Based solely on the given
+subject. The resulting diagram is illustrated in Figure 7.18.
+Figure 7.18: Generated sequence Diagram
+7.5
+Conclusion
+This chapter presented the deployment of the application, covering both local and cloud components.
+Locally, the interface, input validation, error handling, diagram preview, and export were imple-
+mented. In the cloud, AI models handle classification, structure extraction, and PlantUML generation
+via Ngrok. Functional tests confirmed reliability and multilingual support. Overall, the deployment
+provides a fully operational platform for professional UML diagram generation.
+ISI Mahdia
+105
+
+
+===== PAGE 119 =====
+
+General Conclusion
+This project aimed to design, develop, and deploy an automated UML diagram generation system,
+called D-UML, based on LLMs techniques . The main objective was to bridge the gap between textual
+requirement specifications and formal software design by enabling the automatic transformation of
+natural language descriptions into UML diagrams. The project focused on creating a system capable
+of supporting multiple diagram types, including Use Case, Class, and Sequence diagrams, in both
+French and English, providing multilingual support for a diverse range of users and use cases.
+A critical step in this project was the preparation of a robust bilingual dataset by combining two
+different sources: textual descriptions in French and English and corresponding PlantUML code ex-
+amples. Through rigorous data cleaning, standardization, translation, and annotation, these sources
+were merged into a unified, high-quality dataset. This careful preparation ensured consistency and
+reliability, providing the models with a strong foundation to learn both natural language patterns and
+code structures. This integration of corpus and code datasets was key to achieving high performance
+in both entity extraction and code generation phases.
+The system pipeline was built around a classification model based on BiLSTM, which identifies
+the type of UML diagram to generate from a given textual input. Following the classification, two
+specialized models were employed: Gemma-it, for extracting entities, relationships, and events from
+textual descriptions, and StarCoder, for generating executable PlantUML code. This combination was
+carefully evaluated and demonstrated its effectiveness in producing syntactically correct and seman-
+tically meaningful diagrams. The structured interconnection between extraction and code generation
+phases allows the system to accurately convert requirements into visual UML representations, reduc-
+ing ambiguity and improving design accuracy.
+For deployment, FastAPI was used to implement the D-UML system with a hybrid architecture,
+supporting both local and cloud-based execution. This architecture ensures flexibility, scalability, and
+accessibility, allowing end users to interact with the system in real-time while supporting integration
+into diverse development and operational environments. The deployment strategy guarantees that the
+system can be extended and adapted to different organizational needs and project scales.
+Overall, this project demonstrates the significant potential of combining NLP techniques and LLMs
+to automate UML modeling, significantly reducing manual work, minimizing errors, and accelerat-
+ing the software design process. In the long term, D-UML can evolve into a fully comprehensive
+106
+
+
+===== PAGE 120 =====
+
+General Conclusion
+tool capable of managing the entire software development lifecycle, starting directly from specifica-
+tion documents, extracting relevant information, and producing complete UML models in multiple
+languages. Such a tool would fully integrate requirement analysis, system modeling, and code gener-
+ation, offering an efficient, reliable, and automated method to software development, while opening
+perspectives for intelligent project management and enhanced collaboration between stakeholders.
+ISI Mahdia
+107
+
+
+===== PAGE 121 =====
+
+Bibliography
+[1] Unified Modeling Language (UML). https://www.omg.org/uml/. Accessed July 2025.
+[2] Team Data Science Process (TDSP). https://www.datascience-pm.com/tdsp/. Accessed July
+2025.
+[3] Knowledge Discovery in Databases (KDD). https://www.geeksforgeeks.org/dbms/kdd-process-
+in-data-mining/. Accessed July 2025.
+[4] Cross-Industry
+Standard
+Process
+for
+Data
+Mining
+(CRISP-DM).
+https://www.geeksforgeeks.org/dbms/traditional-data-mining-life-cycle-crisp-methodology/.
+Accessed July 2025.
+[5] Which UML Diagrams are Mostly Used? https://www.geeksforgeeks.org/system-design/which-
+uml-diagrams-are-mostly-used/. Accessed July 2025.
+[6] UML AI. https://umlai.vercel.app/. Accessed July 2025.
+[7] Diagramming AI. https://diagrammingai.com/docs/getting-started/introduction. Accessed July
+2025.
+[8] prompt-engineering.
+https://www.ibm.com/think/topics/prompt-engineering.
+Accessed July
+2025.
+[9] Fine-Tuning. https://www.geeksforgeeks.org/what-is-fine-tuning/. Accessed September 2025.
+[10] Mermaid JS. https://mermaid-js.github.io/mermaid/#/. Accessed July 2025.
+[11] PlantUML. https://plantuml.com/. Accessed July 2025.
+[12] Graphviz. https://graphviz.org/. Accessed July 2025.
+[13] Unified
+Modeling
+Language
+(UML)
+Version
+2.5.1
+Specification.
+https://www.omg.org/spec/uml/2.5.1. Accessed August 2025.
+[14] Python Software Foundation. https://docs.python.org/3/library/difflib.html#difflib.sequencematcher.
+Accessed August 2025.
+[15] Gemma-IT. https://ai.google.dev/gemma. Accessed September 2025.
+108
+
+
+===== PAGE 122 =====
+
+Bibliography
+[16] Flan-T5.
+https://medium.com/georgian-impact-blog/the-practical-guide-to-llms-flan-t5-
+6d26cc5f14c0. Accessed September 2025.
+[17] Parameter-Efficient
+Fine-Tuning
+(PEFT).
+https://www.ibm.com/think/topics/parameter-
+efficient-fine-tuning. Accessed September 2025.
+[18] QLoRA. https://www.geeksforgeeks.org/deep-learning/fine-tuning-using-lora-and-qlora/. Ac-
+cessed September 2025.
+[19] Bidirectional-Long Short-Term Memory.
+https://www.geeksforgeeks.org/nlp/bidirectional-
+lstm-in-nlp/. Accessed September 2025.
+[20] Bidirectional
+Recurrent
+Neural
+Networks.
+https://www.geeksforgeeks.org/deep-
+learning/bidirectional-recurrent-neural-network/. Accessed September 2025.
+[21] pass@k.
+https://medium.com/@yananchen1116/a-dive-into-how-pass-k-is-calculated-for-
+evaluation-of-llms-coding-e52b8528235b. Accessed September 2025.
+ISI Mahdia
+109
+
+
+===== PAGE 123 =====
+
+Abstract
+This project presents a bilingual solution (French and English) leveraging Large Language Models
+(LLMs) for automatic UML diagram generation and visual modeling from natural language descrip-
+tions. The D-UML application integrates three main modules: a BiLSTM classification model that
+identifies the UML diagram type (Use Case, Class, Sequence), fine-tuned GEMMA IT extraction
+models that analyze and structure the textual input, and a StartCoder generation module that converts
+the structured output into executable PlantUML code to produce a visual UML diagram. This end-to-
+end pipeline automates the interpretation, structuring, and visual representation of software scenarios,
+simplifying the modeling process and reducing manual design effort.
+Keywords: UML, Visual modeling, Automatic UML diagram generation, Class diagram, Use
+Case diagram, Sequence diagram, LLMs, NLP, GEMMA-IT, StartCoder, Fine-tuning
+Résumé
+Ce projet présente une solution bilingue (Français et Anglais) utilisant des modèles de langage de
+grande taille (LLMs) pour la génération automatique de diagrammes UML et la modélisation visuelle
+à partir de descriptions en langage naturel. L’application D-UML intègre trois modules principaux
+: un modèle de classification BiLSTM qui identifie le type de diagramme UML (Use Case, Classe,
+Séquence), des modèles d’extraction GEMMA IT fine-tunés qui analysent et structurent le texte, et
+un module de génération StartCoder qui convertit la structure obtenue en code PlantUML exécutable
+pour produire un diagramme UML visuel. Ce pipeline complet automatise l’interprétation, la struc-
+turation et la représentation visuelle des scénarios logiciels, simplifiant le processus de modélisation
+et réduisant les efforts manuels de conception.
+Mots-clés : UML, Modélisation visuelle, Génération automatique de diagrammes UML, Dia-
+gramme de classes, Diagramme de cas d’utilisation, Diagramme de séquence, LLMs, NLP, GEMMA-
+IT, StartCoder, Fine-tuning
+
+
+===== PAGE 124 =====
+
+7% Similarité globale
+Total combiné de toutes les correspondances, y compris les sources qui se recoupent, po…
+Groupes de correspondances
+131 Pas de citations  7%
+Correspondances sans citation dans le texte ni guillemets
+11 Guillemets manquants  0%
+Correspondances restant très similaires au support source
+1 Citation manquante  0%
+Correspondances avec guillemets, mais pas de citation dans le texte
+0 Citations  0%
+Correspondances avec citation dans le texte, mais sans guillemets
+Sources principales
+4%
+Sources Internet
+3%
+Publications
+4%
+Travaux envoyés (copies des étudiants)
+Indicateurs d'intégrité
+0 indicateur d'intégrité à vérifier
+Aucune manipulation de texte suspecte détectée.
+Les algorithmes de notre système examinent un document en profondeur pour 
+détecter toute incohérence qui le distinguerait d'une copie normale. Si nous 
+remarquons quelque chose d'étrange, nous le signalons pour que vous puissiez 
+l'examiner.
+Un indicateur n'est pas nécessairement le signe d'un problème. Cependant, il est 
+recommandé d'effectuer un examen plus approfondi.
+Page 2 sur 132 - Vue d'ensemble de l'intégrité
+ID de la copie
+trn:oid:::1:3434377325
+Page 2 sur 132 - Vue d'ensemble de l'intégrité
+ID de la copie
+trn:oid:::1:3434377325

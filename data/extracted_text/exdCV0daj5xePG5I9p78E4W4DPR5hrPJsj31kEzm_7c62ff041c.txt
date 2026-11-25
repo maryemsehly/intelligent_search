@@ -1,0 +1,3966 @@
+===== PAGE 1 =====
+
+ 
+ 
+Tunisian Republic 
+ 
+ 
+ 
+University of Monastir 
+Higher Institute of Computer 
+Science  
+of Mahdia 
+ 
+Final Year Project 
+Registration No: 16/2025 
+Ministry of Higher Education and Scientific 
+Research 
+ 
+ 
+ 
+DISSERTATION 
+                                                 
+Presented at 
+ 
+Higher Institute of Computer Science of Mahdia 
+                                                 
+ Carried out at 
+ 
+ABBK PHYSICS WORKS 
+ 
+ 
+In view of obtaining the diploma of 
+ 
+Bachelor’s Degree in Computer Engineering 
+ 
+Prepared by: 
+ 
+Youssef Khabir 
+ 
+     
+Development of a Hackathon and 
+Challenges Platform 
+ 
+ 
+ 
+Defended on: July 16, 2025 
+before the jury composed of: 
+ 
+ 
+President 
+ : Ms. Nader Fnaiech 
+Reviewer 
+ : Ms. Behij Ben amor 
+Academic Supervisor 
+ : Mrs. Raddaoui Zahra 
+Industrial Supervisor 
+: Mrs. Ouaghelani Maha 
+ 
+ 
+ 
+Academic Year:   2024-2025 
+
+
+===== PAGE 2 =====
+
+
+
+===== PAGE 3 =====
+
+Dedication
+I dedicate this work to my family and relatives.
+To my parents—Your endless support and the countless sacrifices you have
+made throughout my life have been the foundation of everything I have
+achieved. For that, I am forever grateful.
+To my brothers and cousins—Thank you for your encouragement and
+supportive motivation throughout this journey.
+I also extend this dedication to my friends—For the unforgettable moments
+we shared, the laughter, and the support you offered during both the highs
+and lows. Your encouragement has meant more than words can express.
+Thank you all for being part of this journey.
+
+
+===== PAGE 4 =====
+
+Remerciements
+Before presenting my work, I would like to express my great gratitude to
+the people who gave me their support to carry out this work.
+I would like to give huge thanks to my supervisor at ISIMa, Mrs. Addaoui
+Zahra, for the time she devoted to supervising and monitoring this work,
+the advice she gave me after her meticulous readings, and for the meetings
+that punctuated the various stages of writing this report.
+I would also like to thank Mrs. Ouaghelani Maha, my supervisor at work,
+for the enriching and interesting experience she gave me during the work
+placement and for all the advice and information she provided.
+My sincere thanks also go to the employees of ABBK-SW for their
+welcome and cooperation during my internship.
+I would also like to sincerely express my gratitude to all the professors who
+taught me during my university studies at the Higher Institute of
+Computer Science in Mahdia.
+Finally, I would like to pay my respects to all the members of the jury who
+assessed my project.
+
+
+===== PAGE 5 =====
+
+Abstract
+This final year thesis is a crucial part of the requirements for obtaining the National Bach-
+elor’s Degree in Computer Engineering: IoT & Embedded Systems from the Higher Institute
+of Computer Science of Mahdia. This project was created by me and proposed to the ABBK
+enterprise, which provided the necessary guidance and mentorship throughout its development
+phases.
+The project’s primary objective is to develop a hackathon platform designed to streamline
+the organization and management of hackathons, challenges, and competitions for the tech
+community. This platform enables participants to register and submit their projects, organizers
+to create and manage events, and judges to evaluate and score submissions. It also includes a
+48-hour live featured hackathon powered with a strong anti-cheat AI system.
+To ensure a scalable and practical solution, the platform leverages cutting-edge technologies
+including Java Spring Boot for the backend (based on microservices architecture), Angular for
+the frontend, and WPF for the admin desktop application. Additionally, AI & ML techniques
+are integrated to develop the anti-cheat system, and cybersecurity techniques are integrated
+into the RBAC authentication system (Spring Security, JWT, etc.).
+An Agile methodology was adopted to facilitate iterative development and adaptability.
+UML (Unified Modeling Language) was used in each sprint to ensure a structured and clear
+representation of the system’s architecture.
+Keywords: Spring Boot, PostgreSQL, Angular, WPF, JWT, Agile, UML, Microservices,
+Cybersecurity, Anti-cheat AI.
+
+
+===== PAGE 6 =====
+
+Contents
+General Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1
+1
+General context of the project
+2
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.2
+host company . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.3
+projet presentation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.3.1
+Problematic . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.3.2
+Project objectives
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.4
+Study and criticism of the existing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.4.1
+Study of the existing situation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.4.2
+Critique of the existing
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.5
+Proposed Solution
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.6
+Methodology
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.6.1
+Agile Scrum Model (Adopted Methodology) . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.7
+Technological choices . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.7.1
+Software Tools :
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.7.2
+Programming languages : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.7.3
+Frameworks :
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.7.4
+Technologies :
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.8
+Conclusion :
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2
+Product Backlog
+15
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.2
+Requirements Specification
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.2.1
+Functional requirements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.3
+Non-functional requirements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.4
+Product Backlog :
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.4.1
+Identification of the actors : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.4.2
+Product backlog items . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.5
+Sprints planning : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+3
+Sprint 1 – Accounts Service
+25
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.2
+Sprint1: Backlog . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.3
+Functional description of Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.3.1
+Global Use Case Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.3.2
+Textual Description
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.4
+Behavioral Description of Sprint 1
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.4.1
+Sequence Diagram: Register . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.4.2
+Sequence Diagram: Log In
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.4.3
+Sequence Diagram: Manage Accounts
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.4.4
+Sequence Diagram: Manage Profile . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.4.5
+Sequence Diagram: Delete Account . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.4.6
+Sequence Diagram: Reset Password
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.5
+Class Diagram of Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.6
+Review of Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.6.1
+Admin Space . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.6.2
+Client Space
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+1
+
+
+===== PAGE 7 =====
+
+4
+Sprint 2 - Hackathon Service
+41
+4.1
+Introduction : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.2
+Sprint 2: Backlog . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.3
+Functional description of Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.3.1
+Global Use Case Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.3.2
+Textual Description
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.4
+Behavioral description of sprint 2 : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.4.1
+Sequence Diagram: Create Hackathon . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.4.2
+Sequence Diagram: Cancel Hackathon . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.4.3
+Sequence Diagram: Update Hackathon . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.4.4
+Sequence Diagram: Assign Judge . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.4.5
+Sequence Diagram: Join Hackathon
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.4.6
+Sequence Diagram: Leave Hackathon . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.5
+Class Diagram of Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.6
+Review of Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.6.1
+Organizer Space
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.6.2
+Participent Space . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+5
+Sprint 3 – Team Service Module
+56
+5.1
+Introduction :
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+5.2
+Sprint 3 : Backlog . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+5.3
+Functional description of Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+5.3.1
+Global Use Case Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+5.3.2
+Textual Description
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+5.4
+Behavioral description of sprint 3 : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+5.4.1
+Sequence Diagram: Join Team
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+5.4.2
+Sequence Diagram: Create Team . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+5.4.3
+Sequence Diagram: Team Invitation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.4.4
+Sequence Diagram: Leave Team
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+5.4.5
+Sequence Diagram: Kick Teammember
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+5.4.6
+Sequence Diagram: Transfer Leadership . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+5.5
+Class Diagram of Sprint 3 : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+5.6
+Review of Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.6.1
+ParticipantDashboard UI
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.6.2
+Team join/creation UI . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.6.3
+Team Overview (Team member side) UI . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+5.6.4
+Team Managment (Team Leader side) UI . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+6
+Sprint 4 – Project Submission and Evaluation Module
+69
+6.1
+Introduction :
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+6.2
+Sprint 4 : Backlog . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+6.3
+Functional description of Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+71
+6.3.1
+Global Use Case Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+71
+6.3.2
+Textual Description
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+6.4
+Behavioral description of sprint 4 : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+6.4.1
+Sequence Diagram: Create Project
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+6.4.2
+Sequence Diagram: Submit project
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+6.4.3
+Sequence Diagram: See Submissions & Rate project . . . . . . . . . . . . . . . . . . . . .
+78
+6.4.4
+Sequence Diagram: Publish Results
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+6.5
+Class Diagram of Sprint 4 : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+6.6
+Review of Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+6.6.1
+Participant Space . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+6.6.2
+Judge Space . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+6.6.3
+Organizer Space
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+
+
+===== PAGE 8 =====
+
+ff
+3
+
+
+===== PAGE 9 =====
+
+List of Figures
+1.1
+Logo ABBK . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.2
+Comparison table of existing platforms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.3
+Agile methodology: Scrum . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+3.1
+Global Use Case Diagram – Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.2
+Register Sequence Diagram – Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.3
+Log In Sequence Diagram – Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.4
+Manage Accounts Sequence Diagram – Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.5
+Manage Profile Sequence Diagram – Sprint 1
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.6
+Delete Account Sequence Diagram – Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.7
+Reset Password Sequence Diagram – Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.8
+Class Diagram – Sprint 1
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.9
+Admin Login Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+3.10 Admin Dashboard Interface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+3.11 Manage Accounts Interface
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.12 Add admin Interface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.13 user All Log-IN Interface Based on Role . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.14 Profile UI for Participant (Top) and Judge (bottom) . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.1
+Global Use Case Diagram – Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.2
+Create Hackathon Sequence Diagram – Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.3
+Cancel Hackathon Sequence Diagram – Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.4
+update Hackathon Sequence Diagram – Sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.5
+update Hackathon Sequence Diagram – Sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.6
+join Hackathon Sequence Diagram – Sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.7
+Leave Hackathon Sequence Diagram – Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.8
+Class Diagram – Sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.9
+OrganizerDashBoard Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.10 Hackathon Management Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.11 Hackathon Assign judge Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.12 Explore Hackathons Page
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.13 Hackathons overview Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.14 Hackathons overview Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+5.1
+Global Use Case Diagram – Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+5.2
+Join Team Sequence Diagram – Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+5.3
+Create Team Sequence Diagram – Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.4
+Team Invitation Sequence Diagram – Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+5.5
+Leave Team Sequence Diagram – Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+5.6
+Kick Teammember Sequence Diagram – Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+5.7
+Transfer Leadership Sequence Diagram – Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+5.8
+Class Diagram – Sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+5.9
+Collaboration Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.10 Collaboration Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.11 Collaboration Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+5.12 Collaboration Page . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+6.1
+Global Use Case Diagram – Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+71
+6.2
+Create Project Sequence Diagram – Sprint 4
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+6.3
+Submit project Sequence Diagram – Sprint 4
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+4
+
+
+===== PAGE 10 =====
+
+6.4
+See Submissions & Rate project Sequence Diagram – Sprint 4 . . . . . . . . . . . . . . . . . . . .
+78
+6.5
+Publish Results Sequence Diagram – Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+6.6
+Class Diagram – Sprint 4
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+6.7
+No Project Yet (Top) Project created and submitted with waiting for result(bottom) sprint 4 . .
+81
+6.8
+project Creation and edit form - sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+6.9
+Evaluation section UI- sprint 4
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+6.10 Project Creation and edit form UI- sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+6.11 Resulting section (select hackathon part UI) - sprint 4 . . . . . . . . . . . . . . . . . . . . . . . .
+83
+6.12 Resulting section (Top Rated projects UI) - sprint 4
+. . . . . . . . . . . . . . . . . . . . . . . . .
+84
+6.13 Resulting section (Final Decision form UI) - sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . .
+84
+
+
+===== PAGE 11 =====
+
+List of Tables
+2.1
+Product Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.2
+Planning des sprints . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.1
+Sprint 1 Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.2
+Textual Description of the Use Case "Register" . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.3
+Textual Description of the Use Case "Log-IN" . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.4
+Textual Description of the Use Case "Manage Accounts" . . . . . . . . . . . . . . . . . .
+29
+3.5
+Textual Description of the Use Case "Manage Profile"
+. . . . . . . . . . . . . . . . . . .
+29
+3.6
+Textual Description of the Use Case "Reset Password" . . . . . . . . . . . . . . . . . . .
+30
+3.7
+Textual Description of the Use Case "Delete Account" . . . . . . . . . . . . . . . . . . .
+30
+4.1
+Sprint 2 Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.2
+Textual Description of the Use Case "Create Hackathon"
+. . . . . . . . . . . . . . . . .
+44
+4.3
+Textual Description of the Use Case "Cancel Hackathon"
+. . . . . . . . . . . . . . . . .
+44
+4.4
+Textual Description of the Use Case "Update Hackathon" . . . . . . . . . . . . . . . . .
+45
+4.5
+Textual Description of the Use Case "Assign Judge" . . . . . . . . . . . . . . . . . . . . .
+45
+4.6
+Textual Description of the Use Case "Join Hackathon" . . . . . . . . . . . . . . . . . . .
+46
+4.7
+Textual Description of the Use Case "Leave Hackathon" . . . . . . . . . . . . . . . . . .
+46
+5.1
+Sprint 3 Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+5.2
+Use Case: Join Existing Team Using Invitation Code . . . . . . . . . . . . . . . . . . . .
+58
+5.3
+Textual Description of the Use Case "Create Team" . . . . . . . . . . . . . . . . . . . . .
+59
+5.4
+Use Case: Invite Others to Team . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.5
+Use Case: Access Team Collaboration Dashboard . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.6
+Textual Description of the Use Case "Leave Team"
+. . . . . . . . . . . . . . . . . . . . .
+60
+5.7
+Textual Description of the Use Case "Kick Team Member"
+. . . . . . . . . . . . . . . .
+61
+5.8
+Textual Description of the Use Case "Transfer Leadership"
+. . . . . . . . . . . . . . . .
+61
+6.1
+Sprint 4 Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+6.2
+Textual Description of the Use Case "Create Project" . . . . . . . . . . . . . . . . . . . .
+72
+6.3
+Textual Description of the Use Case "Edit Project" . . . . . . . . . . . . . . . . . . . . .
+73
+6.4
+Textual Description of the Use Case "Delete Project" . . . . . . . . . . . . . . . . . . . .
+73
+6.5
+Textual Description of the Use Case "Submit Project" . . . . . . . . . . . . . . . . . . .
+74
+6.6
+Textual Description of the Use Case "Access Submitted Projects" . . . . . . . . . . . .
+74
+6.7
+Textual Description of the Use Cases "Rate Project" . . . . . . . . . . . . . . . . . . . .
+75
+6.8
+Textual Description of the Use Case "Publish Results" . . . . . . . . . . . . . . . . . . .
+75
+
+
+===== PAGE 12 =====
+
+General Introduction
+In an era where technological advances continuously redefine the standards of innovation and
+collaboration, the global demand for platforms that empower IT professionals to showcase
+their talents on a worldwide scale has never been greater. **IdeaPo** emerges as an innovative
+solution and a powerful tool for companies seeking top talent.
+This project, carried out in collaboration with the **ABBK Company** (formerly known
+as *EMWorks*) based in Tataouine, aims to meet the specific needs of the IT community. Its
+main objective is to develop a cutting-edge web platform designed to promote competition and
+collaboration through hackathons, challenges, and team-based projects.
+At its core, the project fosters both teamwork and competition, encouraging participants
+to tackle mid- to high-complexity problems under pressure.
+This is exemplified in its 48-
+hour live hackathon feature, where students engage in intensive collaborative problem-solving.
+These events not only enhance technical skills but also promote critical thinking and teamwork,
+preparing participants for real-world challenges.
+By creating a vibrant and inclusive community where diverse talents converge, **IdeaPo**
+redefines how skills are demonstrated and how opportunities are accessed—fueling innovation
+through collective effort and competitive spirit.
+This dissertation is structured into four main parts:
+• Chapter 1: Project Presentation, Objectives, and Methodology
+– Introduces the project context, defines the objectives, and outlines the adopted method-
+ology.
+• Chapter 2: Conceptual Study: Software Architecture, Functionalities, Technologies, and
+Global System Overview
+– Details the conceptual foundation including system architecture, platform functional-
+ities, selected technologies, and system overview.
+• Chapters 3–7: Sprint-Based Platform Development
+– Provides a detailed view of sprint-based development, implementation phases, and
+interface design.
+• Final Conclusion
+1
+
+
+===== PAGE 13 =====
+
+Chapter 1
+General context of the project
+“The only way to do great work is to love what you do.” – Steve Jobs
+1.1
+Introduction
+In this chapter ,i will begin by presenting the host company ,subsequently i will
+detail the context and objectives of my final year project , which focuses on
+the development of a fully functionnal web platform dedicated to managing and
+hosting hackathons challanges ,finally i will describes the development method-
+ology adopted and enumerate the software tools, frameworks and programming
+languages involved.
+1.2
+host company
+ABBK PhysicsWorks is a certified and authorised SOLIDWORKS reseller operat-
+ing in Tunisia and West Africa. Founded in 2015, the company is based in Ariana,
+Tunisia, with additional offices in Djerba and Tataouine. ABBK PhysicsWorks
+offers a full suite of engineering solutions, including 3D CAD design, electrical
+design, simulation tools (such as Flow Simulation and Plastics) and product
+data management (PDM) systems. It is also the exclusive reseller of CAMWorks
+in Tunisia, providing integrated computer-aided manufacturing solutions in the
+SOLIDWORKS environment.
+Figure 1.1: Logo ABBK
+Through ABBK University, the company offers online and face-to-face training
+programmes covering various aspects of SOLIDWORKS, including design, simula-
+2
+
+
+===== PAGE 14 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+tion, PDM and API development. ABBK PhysicsWorks actively promotes STEM
+education in Tunisia, offering training and certification programmes for educators
+and students, particularly in regions such as Mahdia and Monastir. Its mission
+is to empower engineers, educational institutions and industries in Tunisia and
+West Africa by providing advanced engineering tools and encouraging innovation.
+For more information, you can visit their official website: https://abbk-tn.
+com/.
+1.3
+projet presentation
+1.3.1
+Problematic
+Organising a hackathon is a complex task that generally requires a lot of re-
+sources: booking rooms, logistics, welcoming participants, coordination between
+members, and using disparate tools to manage registrations, communication and
+project submissions. For university clubs and student associations, this represents
+a significant barrier in terms of time, budget and management.
+Similarly, for companies looking for innovative talent, organising or sponsoring
+a face-to-face hackathon involves high costs and limited scope. It is therefore
+essential to modernise the way hackathons are designed, hosted and monitored.
+IdeaPo, a comprehensive digital platform, removes these constraints.
+It al-
+lows students to easily organise hackathons online without having to worry about
+physical logistics. Participants can join in from their own computers, wherever
+they are. On the corporate side, IdeaPo offers a strategic opportunity to organise
+hackathons on a global scale, identify promising profiles, and even offer positions
+to the winners - creating a win-win environment.
++ Can we then offer an intelligent collaborative and accessible online plat-
+form that redefines the standards for organising hackathons for students and com-
+panies ?.
+1.3.2
+Project objectives
+The objectives of my project include :
+• Simplify the organisation of hackathons: Offer a centralised platform enabling
+both students (club events) and companies to easily organise hackathons on-
+line without logistical constraints or costs linked to physical infrastructure
+.
+June 2025
+3
+Page 3 of 97
+
+
+===== PAGE 15 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+• Expand access to opportunities : Enabling participant, wherever they are, to
+take part in hackathons via a computer, thereby promoting inclusiveness and
+equal access to collaborative innovation .
+• Strengthening collaboration between participant and companies: Connecting
+emerging talent with companies looking for innovators, by creating a space
+where both parties can interact, propose challenges and identify promising
+profiles .
+• Enhancing skills and facilitating recruitment: Offering companies a platform
+for identifying the best profiles, offering internships or jobs to the winners,
+and thus turning hackathons into effective recruitment pools .
+1.4
+Study and criticism of the existing
+In this section, we will analyse the various solutions currently available on the
+market for managing and organising hackathons. This detailed examination will
+reveal the strengths and weaknesses of each system, as well as the technologies and
+approaches they employ. This study will enable us to identify the essential aspects
+to be integrated into IdeaPo and the areas for improvement to be considered in
+order to offer a more complete solution adapted to the academic and professional
+context.
+1.4.1
+Study of the existing situation
+In this section, we present a selection of existing platforms that are well known
+in the field of online hackathons.
+1.4.1.1
+Devpost
+Devpost is one of the best-known platforms for organising hackathons, particu-
+larly in the English-speaking world. It enables companies to publish technical
+competitions and participants to form teams, submit their projects and gain vis-
+ibility. The platform is very much geared towards developers and start-ups, with
+a strong presence in competitions sponsored by major technology companies. It
+also includes tools for project discovery, profile management and community in-
+teraction. However, it is not well adapted to local academic contexts, and its
+interface is strictly in English, which can be a barrier for some audiences.
+1.4.1.2
+HackerEarth
+HackerEarth offers a complete ecosystem for online coding competitions and
+hackathons, including an integrated automatic code evaluation environment, the
+June 2025
+4
+Page 4 of 97
+
+
+===== PAGE 16 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+ability to carry out technical evaluations, and a strong business focus. The plat-
+form is often used by recruiters to scout technical talent through customised
+competitions. However, its customisation for purely academic or not-for-profit
+events remains limited, and the interface is designed more for professional use.
+1.4.1.3
+Hackathon.com
+Hackathon.com is a global aggregator of hackathon events. It lets you discover
+events and register for them, but does not provide an integrated infrastructure for
+managing submissions, real-time chat or team management. It functions more as
+a distribution platform than as a fully-fledged organisational tool.
+1.4.1.4
+BeMyApp
+BeMyApp is an agency specialising in organising hackathons and innovation chal-
+lenges for businesses and institutions. It offers full support from the design stage
+through to the event itself, but is mainly geared towards B2B. The costs of their
+services are often high, making them unaffordable for student clubs or organisa-
+tions on a limited budget.
+1.4.2
+Critique of the existing
+After examining existing solutions, we will carry out a detailed analysis of their
+functionalities in order to identify gaps and potential improvements to be made
+as part of my IdeaPo platform. This critique is structured along functional lines
+relevant to academic hackathons.
+1.4.2.1
+Real-time competition model
+Traditional platforms such as Devpost or HackerEarth can be used to organise
+hackathons, but do not offer a time-limited mode with dynamic control of sub-
+missions.
+• Lack of a ‘Live Hackathon’ mode constrained to a specific duration such as
+48 hours.
+• No locking or active surveillance during the submission period.
+IdeaPo’s contribution: IdeaPo includes a 48-hour live hackathon mode
+that restricts submissions and interactions to a fixed time period, with real-time
+monitoring of team activity and dynamic score management.
+1.4.2.2
+Security and integrity of the competition
+The majority of current solutions do not offer mechanisms for actively detecting
+cheating or unauthorised behaviour during competitions.
+June 2025
+5
+Page 5 of 97
+
+
+===== PAGE 17 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+• No detection of the use of AI tools or access to prohibited resources
+• No visual surveillance to detect the presence of unauthorised third parties.
+IdeaPo’s contribution: IdeaPo includes a Advanced AI Anti-Cheat sys-
+tem capable of :
+• Monitor browser actions to detect the use of AI tools or unauthorised
+websites.
+• Analyse the camera feed to verify the physical presence of the participant
+and detect any unauthorised human assistance.
+1.4.2.3
+Educational approach and accessibility
+The existing platforms are not specifically designed for academic or university
+use.
+• Interface too complex or business-oriented.
+• High user costs for student clubs.
+IdeaPo’s contribution: IdeaPo is designed to be ‘education-ready’, with an
+intuitive interface, fast learning curve and flexible pricing for educational estab-
+lishments.
+1.4.2.4
+Communication and collaboration
+Existing solutions offer few real-time collaboration functions:
+• Messaging limited to comments or forums.
+• No integrated live team voice or text chat solution.
+IdeaPo’s contribution : Integration of a complete communication mod-
+ule, including :
+• Real Time global hackathon chat.
+• Dedicated voice rooms per team (using WebRTC).
+• Instant administrative announcements
+1.4.2.5
+Comparative summary
+1.5
+Proposed Solution
+After analyzing existing solutions with ABBK , we came up with the idea of de-
+veloping an innovative web platform: IdeaPo, , a feature-rich solution developed
+June 2025
+6
+Page 6 of 97
+
+
+===== PAGE 18 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+Plateforme
+Hackathon 48h
+AI Anti-Cheat
+Collaboration
+Academic targeting
+Devpost
+No
+No
+Partial
+Partial
+HackerEarth
+No
+No
+Yes
+No
+Hackathon.com
+No
+No
+No
+No
+BeMyApp
+No
+No
+Partial
+No
+IdeaPo (my project)
+Yes
+Yes
+Yes
+Yes
+Figure 1.2: Comparison table of existing platforms
+with modern, fast and high-performance technologies, and featuring intuitive,
+dynamic and easy-to-use interfaces.
+Our solution will enable users (organizers, participants, juries and partner com-
+panies) to :
+• Create and organize online hackathons.
+• Set up hackathons in 48h Live mode, with reinforced surveillance via anti-
+cheating AI.
+• Take part in competitions from the comfort of your own computer, without
+having to travel.
+• Be monitored by an AI that automatically detects, through the browser, the
+use of AI tools or forbidden sources, and verifies through the camera the
+presence of a single participant.
+• Manage your profile, register for events, form or join teams. projects, consult
+results and follow official announcements.
+• Communicate with other participants and organizers via instant messaging
+and real-time voice channels notifications of deadlines, schedule changes and
+results.
+As for the web interface dedicated to organizers and companies, it will offer the
+following functionalities:
+• Event management (creation, configuration, planning of hackathons).
+• Management of registrations, user profiles and participating teams.
+• Monitoring of submissions, validation or disqualification according to cheating
+rules.
+• Assigning grades and rankings in collaboration with the juries.
+• Receive and process user requests and complaints.
+• Manage job offers, internships or opportunities for winners by contacting them
+through messages and email.
+June 2025
+7
+Page 7 of 97
+
+
+===== PAGE 19 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+This platform aims to reduce event organization costs, make hackathons acces-
+sible globally, and offer companies a pool of talent to assess in real-life competition
+situations.
+1.6
+Methodology
+Before starting an IT project, it is essential to select a working methodology
+and a monitoring process to ensure the creation of reliable software. There are
+a multitude of methodologies available, each offering its own advantages. How-
+ever, choosing the most suitable for a particular project is not an easy decision.
+That’s why we’ll undertake an in-depth study of the different methods available
+to determine which is best suited to my project.
+1.6.1
+Agile Scrum Model (Adopted Methodology)
+When I started my project i found that the best choise for me is to use Scrum
+methode it is a well-known agile method in the IT field I actullay know that Scrum
+is normally used in team based projects , its flexible and iterative structure makes
+it ideally suited to individual development at least thats what i think.
+Since I’m working alone on this project, I have to imitate all the Scrum Frame-
+work roles : Product Owner (I think and then decide what to create), Scrum
+Master and Developer (I code it all). It sounds tough but it allows me to see the
+project as a whole , manage priorities and adapt quickly when needs change.
+Figure 1.3: Agile methodology: Scrum
+June 2025
+8
+Page 8 of 97
+
+
+===== PAGE 20 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+The sprint approach gives me a clear framework for planning, organising and
+delivering features at regular intervals. Each sprint corresponds to a precise and
+measurable objective which allows me to monitor the progress of the project in a
+structured and continuous way. This methodology also gives me the opportunity
+to incorporate new ideas or readjust certain functionalities along the way, without
+compromising the stability or quality of the final product. In short Scrum helps
+me to maintain organisation while remaining flexible in the face of unforeseen
+developments at least thats what i think.
+1.7
+Technological choices
+1.7.1
+Software Tools :
+We begin by describing the software tools used throughout the design and devel-
+opment of our project.
+• Visual Studio Code :
+Visual Studio Code is an extensible code editor developed by Mi-
+crosoft for Windows, Linux and macOS. Features include debug-
+ging support, syntax highlighting , intelligent code completion,
+snippets, code refactoring and Git integration.
+• IntelliJ IDEA :
+IntelliJ IDEA, also known as ‘IntelliJ’, “IDEA” or ‘IDJ’, is a devel-
+opment environment for developing computer software based on Java
+technology. It has been developed by JetBrains (formerly known as
+IntelliJ) and is available in two versions, one open source under an
+Apache 2 licence and the other proprietary under a commercial li-
+cence. Both support the Java, Kotlin, Groovy and Scala program-
+ming languages.
+June 2025
+9
+Page 9 of 97
+
+
+===== PAGE 21 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+• Docker :
+Docker is a container platform launched in 2013 that has largely
+contributed to the democratization of containerization. It makes
+it easy to create containers and container-based applications.
+There are others, but this is the most widely used. It is also
+easier to deploy and use than its competitors.
+• PostgreSQL :
+PostgreSQL is a powerful, open-source object-relational database
+management system (ORDBMS) that can securely handle the
+most complex data workloads.
+Unlike traditional relational
+database management systems (RDBMS), PostgreSQL has an
+object-oriented architecture, allowing it to store more informa-
+tion, such as different data types and SQL functions
+• Postman :
+Postman is an API development environment that helps users to
+create, test, document, monitor and publish documentation for
+their APIs.
+• Adobe XD :
+A vector-based user experience design tool for web applications
+and mobile applications, developed and published by Adobe Inc.
+• Lucidchart :
+Lucidchart is an online, cloud-based collaboration platform for
+creating diagrams and visualising data and other conceptual dia-
+grams.
+June 2025
+10
+Page 10 of 97
+
+
+===== PAGE 22 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+• ZEGOCLOUD :
+ZEGOCLOUD is a real-time audio and video communication
+platform that provides cloud-based SDKs and APIs to create in-
+teractive features such as voice calls, video calls, live streaming
+and in-app messaging. It supports cross-platform integration for
+web, mobile and desktop applications, and delivers high-quality,
+low-latency communication powered by a global network infras-
+tructure.
+ZEGOCLOUD is widely used in social, educational,
+gaming and enterprise solutions.
+• Cloudinary :
+Cloudinary is a cloud-based media management platform that
+provides developers with APIs and SDKs for uploading, storing,
+optimizing, and delivering images and videos at scale. It supports
+on-the-fly media transformations, automatic format and quality
+optimization, and seamless integration with web and mobile ap-
+plications. Cloudinary is commonly used to enhance performance
+and user experience in media-rich applications.
+1.7.2
+Programming languages :
+• TypeScript :
+TypeScript is a programming language developed by Microsoft
+to improve and secure the production of JavaScript code. It is a
+strict syntax superset of JavaScript (i.e., any correct JavaScript
+code can be used with TypeScript). TypeScript code is transcom-
+piled into JavaScript and can therefore be interpreted by any web
+browser or JavaScript engine. TypeScript was co-created by An-
+ders Hejlsberg, the main inventor of C.
+June 2025
+11
+Page 11 of 97
+
+
+===== PAGE 23 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+• Java :
+Java is a high-level, object-oriented programming language devel-
+oped by Sun Microsystems (now owned by Oracle). It is designed
+to be platform-independent through the Java Virtual Machine
+(JVM), allowing code to run on any device that supports the
+JVM. Java is widely used for building enterprise-level applica-
+tions, Android apps, web services, and backend systems due to
+its strong type system, robustness, scalability, and rich ecosystem
+of libraries and frameworks.
+• Python 3.0 :
+Python is a versatile, high-level, interpreted programming lan-
+guage. It’s known for its clear, readable syntax, making it accessi-
+ble to beginners yet powerful for experienced developers. Python
+is used in diverse fields such as web development, data analysis,
+artificial intelligence which is our case here ,automation and much
+more.
+1.7.3
+Frameworks :
+• Spring boot :
+Spring Boot is a JAVA development framework. It is an offshoot
+of the framework, the classic Spring framework for building mi-
+croservices.
+June 2025
+12
+Page 12 of 97
+
+
+===== PAGE 24 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+• Angular :
+Angular is a client-side MVC / MVVM framework developed
+in JavaScript by Google that is free and open-source and, like
+JQUERY, improves JavaScript syntax and developer productiv-
+ity. Angular is based on MVC logic. (controller view model).
+Created in 2009 by Google, this framewok has become a must-
+have for web applications.
+1.7.4
+Technologies :
+• JWT :
+A JSON Web Token is an access token compliant with RFC 7519
+standards that enables secure data exchange between two parties.
+It contains all the important information about an entity.
+• Swagger V3 :
+Swagger is an Open Source set of rules, specifications and tools
+for developing and describing RESTful APIs. The Swagger frame-
+work allows developers to create interactive, machine and human-
+readable API documentation.
+• OpenApi :
+OpenApi or "OpenGen" is an open-source API documentation
+tools that facilitate the integration and binding between back-
+end and front-end
+June 2025
+13
+Page 13 of 97
+
+
+===== PAGE 25 =====
+
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+ISIMA Mahdia
+• WebSocket :
+The WebSocket API is an advanced technology that opens a two-
+way communication channel between a browser (client side) and
+a server.
+• Apache Kafka & Zookeeper : :
+Kafka is a distributed system consisting of servers and clients that
+communicate via a high-performance TCP network protocol. It
+can be deployed on bare-metal hardware, virtual machines, and
+containers in on-premise as well as cloud environments.
+1.8
+Conclusion :
+Throughout this chapter, i have discussed the context of the project. I began
+with a presentation of the host organisation, which was followed by a study of the
+existing situation. Thisenabled me to understand the needs and to envisage the
+solution best suited to the client’s expectations, In the next chapter, I’ll go into
+more detail about my project planning.
+June 2025
+14
+Page 14 of 97
+
+
+===== PAGE 26 =====
+
+Chapter 2
+Product Backlog
+2.1
+Introduction
+This chapter is devoted to analysing and specifying requirements.
+I start by
+defining the functional and non-functional requirements and then defining my
+product backlog.
+2.2
+Requirements Specification
+This chapter will includes both the extraction of functional and non-functional
+requirements.
+2.2.1
+Functional requirements
+Functional requirements are the functionalities offered by the system in response
+to a user request. In what follows, is in this section, I present the functional
+requirements for my project, which includes a Client application and a Admin
+application.
+Web App Functional requirements – IdeaPo Platform:
+• User Management
+– Users can register with roles: Participant, Organizer, Judge.
+– Users can log in and log out securely using email and password.
+– Users can reset their password via a secure email flow.
+– Users can update their profile information including bio, profile image,
+and skills.
+– Role-based access control is enforced throughout the platform thanks to
+JWT Auth system.
+• Hackathon Management (Organizer)
+– Organizers can create, update, and delete hackathons.
+15
+
+
+===== PAGE 27 =====
+
+CHAPTER 2. PRODUCT BACKLOG
+ISIMA Mahdia
+– Organizers can specify hackathon details such as name, description, type
+(e.g., public, private, live48h), rules, and timeline.
+– Organizers can assign evaluation criteria and select judges for their hackathon.
+– Organizers can create task-based challenges for “live48h” hackathon type.
+– Organizers can control the registration status (open/closed).
+• Hackathon Browsing and Registration (Participant)
+– Participants can browse upcoming, ongoing, and past hackathons.
+– Participants can view hackathon information and register to join.
+– Participants can view rules, timeline, evaluation criteria, and task details
+(if applicable).
+• Team Collaboration
+– Participants can create and manage teams.
+– Team leaders can invite users or accept join requests.
+– Teams can manage members and update team information.
+– Each team has a dedicated collaboration space during the hackathon.
+• Project Submission
+– Participants can submit a project including a title, description, repository
+link, and uploaded files (images, presentations, code).
+– Submissions can be updated before the deadline.
+– Projects are locked from editing after the submission deadline.
+• Judging and Evaluation
+– Judges can access their assigned submissions.
+– Judges can score projects based on custom evaluation criteria (e.g., orig-
+inality, impact, completeness).
+– Judges can leave feedback for each project.
+– The system automatically aggregates and ranks submissions based on
+judge scores.
+• Messaging and Communication
+– A global chat is available during active hackathons for general discussions.
+– Each team has a private team chat for collaboration.
+– Organizers can send announcements to all participants.
+– judge/participants can contact Organizers via a real-time messaging ser-
+vice .
+June 2025
+16
+Page 16 of 97
+
+
+===== PAGE 28 =====
+
+CHAPTER 2. PRODUCT BACKLOG
+ISIMA Mahdia
+– Real-time notifications are sent for new messages, invites, deadlines, and
+updates.
+– All users can contact the admin.
+• Voice Communication (ZegoCloud Integration)
+– Team members can join a voice room for real-time collaboration.
+– Users can mute/unmute themselves or exit the voice room.
+• Friend Invitation and Social Features
+– Users can send friend requests to other users.
+– Accepted friends are added to the user’s contact list.
+– Users can chat with friends outside of team or hackathon scope.
+– Friends can be invited to join teams or participate in hackathons.
+• Security and System Integrity
+– The system enforces secure password hashing and token-based authenti-
+cation (JWT).
+– File uploads are validated for type and size to prevent malicious content.
+– Inputs are sanitized to prevent common vulnerabilities such as XSS and
+SQL injection.
+– The system optionally detects project plagiarism via code similarity checks
+or AI tools.
+Admin App Functional requirements – IdeaPo Admin Panel :
+• Admin Panel (Admin Role)
+– Admins can manage all users, including promoting, banning, or verifying
+them.
+– Admins can moderate hackathon content and remove inappropriate con-
+tent.
+– Admins have access to platform statistics (e.g., registered users, active
+hackathons).
+– Admins can configure platform-wide settings and perform maintenance
+tasks.
+June 2025
+17
+Page 17 of 97
+
+
+===== PAGE 29 =====
+
+CHAPTER 2. PRODUCT BACKLOG
+ISIMA Mahdia
+2.3
+Non-functional requirements
+Non-functional requirements define the quality attributes of the system including
+how it performs , how secure it is, how well it integrates with various environments,
+and how it scales under usage. Below are the key non-functional requirements of
+the IdeaPo platform :
+- security : It is vital to ensure that user data is protected against any po-
+tential threat. To achieve this i use secure authentication mechanisms such
+as JWT and optional fingerprint ID to prevent unauthorized access. All user
+actions require validated JWT tokens, ensuring only authenticated users can
+interact with the system. Additionally, Spring Security’s built-in CSRF pro-
+tection is enabled to defend against cross-site request forgery attacks, espe-
+cially in state-changing operations and also i use a strong hashing algorithms
+provided by "bcrypt" java Library to store Sensitive user data such as pass-
+words
+- Ergonomics : The application must offer user-friendly interfaces that are
+easy to manipulate and understand.
+- Performance : Given the number of simultaneous users with different roles
+, the application must be able to satisfy all customers without reducing per-
+formance.
+- Compatibility : The application must be functional on any architecture
+and operating system.
+- Scalability : The application must be scalable so that other modules can be
+added transparently to users and without altering the current operation.
+June 2025
+18
+Page 18 of 97
+
+
+===== PAGE 30 =====
+
+CHAPTER 2. PRODUCT BACKLOG
+ISIMA Mahdia
+2.4
+Product Backlog :
+2.4.1
+Identification of the actors :
+The IdeaPo platform is designed to support various types of users, each with
+distinct roles and responsibilities. These actors interact with the system according
+to their access privileges:
+• Admin: the user with the Advanced privilege he can manage users: suspend,
+verify, or promote and configure platform settings.
+• Organizer: Creates and manages hackathons or competitions. Organizers
+define the rules, upload tasks or problem sets, set deadlines, assign judges,
+and monitor participant progress throughout the event.
+• Participant: Users who register and take part in hackathons. They can
+form or join teams, submit projects, complete challenges, and communicate
+with teammates or organizers.
+• Judge: Reviews and evaluates participant submissions based on predefined
+criteria. Judges score projects, provide feedback, and contribute to the final
+ranking and results.
+• Guest User: A non-authenticated user who can browse public hackathons
+and view general platform content but must register to participate or interact.
+2.4.2
+Product backlog items
+The backlog is a list of prioritised tasks defining the characteristics of a prod-
+uct. It is one of the fundamental elements of the Scrum methodology. It is the
+main working tool of the Product Owen, who is responsible for gathering require-
+ments from stakeholders and transforming them into a list of features ready to be
+developed by the development team.
+June 2025
+19
+Page 19 of 97
+
+
+===== PAGE 31 =====
+
+CHAPTER 2. PRODUCT BACKLOG
+ISIMA Mahdia
+Table 2.1: Product Backlog
+Module
+Functionality ID
+User Story
+Priority
+Accounts
+service
+Registration
+1.1
+As a new user, I want to register
+with my email and password so
+I can access all the platform fea-
+tures.
+1
+Login
+1.2
+As a registered user, I want to log
+into the platform securely with
+my credentials.
+2
+Manage
+Profile
+1.3
+As a user, I want to edit my ac-
+count, add profile image and ban-
+ner, skills and interest.
+3
+Accounts
+&
+platform
+settings
+1.4
+As an admin, I want to ban, pro-
+mote or remove user, and manage
+platform settings and content.
+4
+Hackathon
+Setup
+2.1
+As an organizer, I want to cre-
+ate a hackathon by defining title,
+theme, dates, and description etc.
+5
+2.2
+As an organizer, I want to define
+the rules, eligibility, max team
+size and participants.
+6
+Continued on next page
+June 2025
+20
+Page 20 of 97
+
+
+===== PAGE 32 =====
+
+CHAPTER 2. PRODUCT BACKLOG
+ISIMA Mahdia
+2.3
+As an organizer, I want to assign
+judges for evaluation.
+7
+Hackathon
+Service
+organizer
+Dashboard
+2.4
+As an organizer, I want to view
+and manage all hackathons I cre-
+ated from a dashboard.
+8
+2.5
+As an organizer, I want to update
+hackathons in real time.
+9
+Hackathon
+Overview
+2.6
+As a participant, I want to view
+hackathons ordered by deadline,
+domain, or status.
+10
+2.7
+As a participant, I want to regis-
+ter for hackathons solo or with a
+team.
+11
+2.8
+As a participant, I want to see all
+details about a hackathon (prize,
+type, company, judges...).
+12
+Team
+Service
+Team
+Management
+3.1
+As a participant, I want to create
+a team for a hackathon and invite
+others.
+13
+3.2
+As a team leader, I want to man-
+age members, remove users or
+transfer leadership.
+14
+Continued on next page
+June 2025
+21
+Page 21 of 97
+
+
+===== PAGE 33 =====
+
+CHAPTER 2. PRODUCT BACKLOG
+ISIMA Mahdia
+Team
+collaboration
+3.3
+As a team member, I want to ac-
+cess a dashboard to collaborate
+with mates.
+15
+Team
+Join/leave
+3.4
+As a participant, I want to join
+an existing team using a code or
+invitation and leave if i want.
+17
+Project
+Submission
+and
+Evaluation
+Project
+Submission
+4.1
+As a team member, I want to sub-
+mit our project before the dead-
+line.
+18
+4.2
+As a team member, I want to edit
+our submission until the deadline.
+19
+Evaluation
+4.3
+As a judge, I want to access all
+submitted projects for evaluation.
+20
+4.4
+As a judge, I want to rate projects
+and provide feedback.
+21
+4.5
+As an organizer, I want to publish
+results and winners.
+22
+4.6
+As a participant, I want to view
+the results and feedback from
+judges.
+23
+Continued on next page
+June 2025
+22
+Page 22 of 97
+
+
+===== PAGE 34 =====
+
+CHAPTER 2. PRODUCT BACKLOG
+ISIMA Mahdia
+Communication
+Module
+Messaging
+5.3
+As a user of the platform, I can
+send messages and talk with the
+admin.
+26
+5.4
+As the platform admin, I can re-
+ceive and message users.
+27
+Notifications
+5.5
+As a user of the platform, I receive
+notifications by email or through
+the platform.
+28
+Voice Chat
+5.6
+As a team member, I want to use
+voice chat to discuss something
+with my teammates.
+29
+5.7
+As a team member, I want to
+turn off mic and mute myself or
+a teammate whenever I like.
+30
+2.5
+Sprints planning :
+I have chosen to divide the project into 4 sprints, with each sprint developing
+a module of the application. The duration and module title of each sprint are
+shown in the table below.
+June 2025
+23
+Page 23 of 97
+
+
+===== PAGE 35 =====
+
+CHAPTER 2. PRODUCT BACKLOG
+ISIMA Mahdia
+Table 2.2: Planning des sprints
+Sprints
+Module
+Ti
+Sprint 1
+Accounts service Module
+2 weeks.
+Sprint 2
+Hackathon service Module
+3 weeks.
+Sprint 3
+Team Service Module
+2 weeks.
+Sprint 4
+Project Submission and Evaluation Module
+3 weeks.
+Sprint 5
+Communication Module
+2 weeks.
++ Conclusion :
+• In this chapter, I defined the list of functional and non-functional requirements and the
+actors involved in the project. Then i presented the elements of the product backlog, and
+the sprint planning. In what follows, i will detail the stages of each sprint in , starting
+with sprint 1.
+June 2025
+24
+Page 24 of 97
+
+
+===== PAGE 36 =====
+
+Chapter 3
+Sprint 1 – Accounts Service
+3.1
+Introduction
+This chapter is about the first sprint, which is the module dedicated to manag-
+ing and setting accounts and platform. On it, I will demonstrate the functional
+description of this sprint using "use case diagrams", then I will move on to the
+behavioural description using sequence diagrams. Finally, I will present the class
+diagram and the sprint UI interfaces.
+3.2
+Sprint1: Backlog
+The table below presents the backlog for this sprint, including the tasks to be
+completed for each user story.
+Table 3.1: Sprint 1 Backlog
+Functionality
+ID
+User Story
+Tasks
+User Registration
+1
+"As a new user, I want to register with
+my email and password so I can access
+All the platform features."
+• Create the user class.
+• ADD methodes creat account, delete ac-
+count, activate account, generate activa-
+tion code.
+• frontEnd side:
+create the registration
+page (Add form validation (e.g., valid
+email format, required fields)) and the
+guest page.
+Continued on next page
+25
+
+
+===== PAGE 37 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Table 3.1 continued from previous page
+Functionality
+ID
+User Story
+Tasks
+Login
+2
+"As a registered user, I want to log into
+the platform securely with my creden-
+tials."
+• Create the Authentication service Logic
+classes(controller, service, etc.).
+• ADD methodes login, generateToken,
+resend activation code, reset password.
+• Add JwTfilter class logic for security and
+RBAC control.
+• Create the login interface for both client
+and admin apps.
+Manage profile
+3
+"As a user, I want to edit my account,
+add profile image and banner, skills and
+interest."
+• create class profile.
+• ADD methodes edit profile,
+seePro-
+fileDetails, add profile banner and add
+profile image.
+• frontEnd side:
+Create the Profile UI
+page.
+Manage platform
+4
+"As an admin, I want to ban, promote
+or remove user, and manage platform
+settings and content."
+• create Admin Panel dashboard.
+• ADD methodes remove user, promote
+user(change role), ban user, desactivate
+account and search user.
+• dashboard
+statistics:
+add
+methodes
+gettotalUserNumber, current connected
+users.
+3.3
+Functional description of Sprint 1
+To give an overall view of the system’s functional behavior, I will use "use case
+diagrams". In this section, I begin by presenting the global use case diagram
+corresponding to sprint 1 and then I will describe it textually.
+3.3.1
+Global Use Case Diagram
+A use case diagram is a functional representation of the system to model users’
+expectations in order to achieve a clear delimitation of the system and under-
+standing of how it works. This below is the global Sprint 1 Use Case diagram.
+June 2025
+26
+Page 26 of 97
+
+
+===== PAGE 38 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Figure 3.1: Global Use Case Diagram – Sprint 1
+3.3.2
+Textual Description
+In this section I describe textually the main use cases that appear in the global
+use case diagram.
+June 2025
+27
+Page 27 of 97
+
+
+===== PAGE 39 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Table 3.2: Textual Description of the Use Case "Register"
+Use Case
+Register
+Initiating Actor
+Admin, User
+Use Case Goal
+Create a user account on the IdeaPo platform
+Precondition
+The email/login must not already exist in the system
+Scenario
+Description:
+Main Scenario (Success):
+1. The system displays the registration form.
+2. The user fills in the required information (name, email, password, etc.) and
+submits the form.
+3. The system validates the provided data, creates the user account, generates a
+unique login ID, and sends a confirmation email containing the generated login
+(Activation Token).
+Alternative Scenario:
+3.1. The user submits incomplete or incorrect data.
+3.2. The system displays an error message prompting the user to correct the infor-
+mation.
+Table 3.3: Textual Description of the Use Case "Log-IN"
+Use Case
+Log-IN
+Initiating Actor
+Admin, User
+Use Case Goal
+Access the application’s advanced features
+Precondition
+The user must have an account and well aware of his login and password.
+Scenario
+Description:
+Main Scenario (Success):
+1. The system displays the Login-In form.
+2. The user fills in the required information (email, password.) and submits the
+form.
+3. The system validates the provided data get the Token claims required to filter
+the user role and profile and displays the Home interface.
+Alternative Scenario:
+3.1. User enters incorrect data.
+3.2. The User Account is disabled Or banned.
+June 2025
+28
+Page 28 of 97
+
+
+===== PAGE 40 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Table 3.4: Textual Description of the Use Case "Manage Accounts"
+Use Case
+Manage Accounts
+Initiating Actor
+Admin
+Use Case Goal
+Manage Users Accounts
+Precondition
+The administrator is authenticated, the User already exists in the database.
+Scenario
+Description:
+Main Scenario (Success):
+1. The system displays the List of users Accounts.
+2. The Admin select a user Account.
+3. The system displays the user profile details.
+4. The Admin select Manage user.
+5. The system displays the modification form.
+6. The admin makes the changes and validates(remove / ban / promote..).
+7. The system saves the change to the database and redisplays the list of Accounts.
+Alternative Scenario:
+6.1. The Admin enters incorrect or incomplete data.
+6.2. The system throw an error message to help the admin correct.
+Table 3.5: Textual Description of the Use Case "Manage Profile"
+Use Case
+Access and edit Profile details
+Initiating Actor
+User
+Use Case Goal
+Manage Users Accounts
+Precondition
+The user is authenticated.
+Scenario
+Description:
+Main Scenario (Success):
+1. The user access his Profile interface.
+2. The System displays the user Profile Info.
+3. The User Select edit Profile.
+4. The User makes the changes and validates(add Banner / Avatar / Skills/ etc..).
+5. The system saves the change to the database and redisplays the Profile Info.
+Alternative Scenario:
+4.1. The User enters incorrect or incomplete data.
+4.2. The system throw an error message to help the User correct.
+June 2025
+29
+Page 29 of 97
+
+
+===== PAGE 41 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Table 3.6: Textual Description of the Use Case "Reset Password"
+Use Case
+Reset forgotten password
+Initiating Actor
+User
+Use Case Goal
+Allow the user to reset their password securely
+Precondition
+The user has access to their registered email address
+Scenario
+Description:
+Main Scenario (Success):
+1. The user clicks on the "Forgot Password" link.
+2. The system prompts the user to enter their registered email address.
+3. The user submits the email address.
+4. The system sends a password reset link to the user’s email.
+5. The user clicks on the reset link and is redirected to the reset form.
+6. The user enters a new password and confirms it.
+7. The system validates the input and updates the password in the database.
+8. The user is notified of a successful password reset.
+Alternative Scenario:
+3.1. The user enters an unregistered email address.
+3.2. The system shows an error message indicating that the email is not found.
+6.1. The user enters passwords that do not match or do not meet complexity re-
+quirements.
+6.2. The system displays a validation error prompting the user to correct the input.
+Table 3.7: Textual Description of the Use Case "Delete Account"
+Use Case
+Delete user account permanently
+Initiating Actor
+User
+Use Case Goal
+Allow the user to permanently delete their account and associated data
+Precondition
+The user is authenticated and confirms their decision
+Scenario
+Description:
+Main Scenario (Success):
+1. The user navigates to the Account Settings and selects "Delete Account".
+2. The system prompts for confirmation and password re-entry.
+3. Upon confirmation, the system permanently deletes the user account and data.
+Alternative Scenario:
+2.1. The user cancels the deletion process.
+2.2. The system aborts the operation and returns to the Account Settings page.
+3.4
+Behavioral Description of Sprint 1
+To illustrate the behavioral aspect of the first sprint release, I used sequence diagrams. A
+sequence diagram represents the exchanges between the various objects and actors in the system
+June 2025
+30
+Page 30 of 97
+
+
+===== PAGE 42 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+over time, to illustrate a use case — in other words, a user story of an actor within the system.
+Below are the sequence diagrams corresponding to the main use cases of Sprint 1.
+3.4.1
+Sequence Diagram: Register
+Figure 3.2 illustrates the sequence required to realize the "Register" use case.
+Figure 3.2: Register Sequence Diagram – Sprint 1
+3.4.2
+Sequence Diagram: Log In
+Figure 3.3 illustrates the sequence for the "Log In" use case.
+June 2025
+31
+Page 31 of 97
+
+
+===== PAGE 43 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Figure 3.3: Log In Sequence Diagram – Sprint 1
+3.4.3
+Sequence Diagram: Manage Accounts
+Figure 3.4 illustrates the sequence required to manage user accounts.
+June 2025
+32
+Page 32 of 97
+
+
+===== PAGE 44 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Figure 3.4: Manage Accounts Sequence Diagram – Sprint 1
+3.4.4
+Sequence Diagram: Manage Profile
+Figure 3.5 illustrates the sequence required to update user profiles.
+June 2025
+33
+Page 33 of 97
+
+
+===== PAGE 45 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Figure 3.5: Manage Profile Sequence Diagram – Sprint 1
+3.4.5
+Sequence Diagram: Delete Account
+Figure 3.6 illustrates the sequence for deleting a user account.
+Figure 3.6: Delete Account Sequence Diagram – Sprint 1
+June 2025
+34
+Page 34 of 97
+
+
+===== PAGE 46 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+3.4.6
+Sequence Diagram: Reset Password
+Figure 3.7 illustrates the sequence for resetting a password.
+Figure 3.7: Reset Password Sequence Diagram – Sprint 1
+3.5
+Class Diagram of Sprint 1
+The class diagram is a static representation of the system’s components and their relationships.
+It shows the classes involved in the system. For Sprint 1, the class diagram shown in Figure 3.8
+includes 8 classes.
+June 2025
+35
+Page 35 of 97
+
+
+===== PAGE 47 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Figure 3.8: Class Diagram – Sprint 1
+3.6
+Review of Sprint 1
+To illustrate the implementation of Sprint 1, I will present the UI interfaces of the key func-
+tionalities provided by the Setup and Management of Accounts module.
+3.6.1
+Admin Space
+This section presents the interfaces accessible to the administrator.
+3.6.1.1
+Authentication UI
+First, the administrator must authenticate via this UI. They enter their login and password,
+then click the "Connect" button. The system verifies the credentials: if they are incorrect, an
+error message is displayed; otherwise, the admin is redirected to the Dashboard interface.
+June 2025
+36
+Page 36 of 97
+
+
+===== PAGE 48 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Figure 3.9: Admin Login Page
+3.6.1.2
+Dashboard UI
+After a successful login, the system displays the Dashboard interface, which includes platform
+settings and statistical information.
+Figure 3.10: Admin Dashboard Interface
+3.6.1.3
+Manage Accounts UI
+The admin can navigate to the Accounts Management section to view all user accounts. This
+interface includes a search bar and individual management options for each account.
+June 2025
+37
+Page 37 of 97
+
+
+===== PAGE 49 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Figure 3.11: Manage Accounts Interface
+3.6.1.4
+Add admin UI
+The admin can navigate to the Add admin section to create an account for admin. This interface
+is only available for the TOP Admin(Manager).
+Figure 3.12: Add admin Interface
+3.6.2
+Client Space
+3.6.2.1
+Log-IN UI
+There are three different login interfaces in the client application. Depending on user role , a
+user enter his username and password (if his token has expired, a message appears saying ‘Last
+June 2025
+38
+Page 38 of 97
+
+
+===== PAGE 50 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+logged in 48 hours ago’), then click on the corresponding login button. The system checks the
+validity of the information entered, validates the token and then redirects the user to the home
+page.If the user is new and does not yet have an account, they can click on the ‘Register’ button
+to display the registration form.
+Figure 3.13: user All Log-IN Interface Based on Role
+3.6.2.2
+Profile UI
+These are two screenshots showcasing the profile interfaces for Judges and Participants:
+• Participant Profile UI: In this interface, the participant can view statistics related to
+their achievements. They can also edit their profile picture and banner, as well as add
+their skills and interests.
+• Judge Profile UI: Judges can update their profile picture or avatar, specify their spe-
+cialties, and view the list of hackathons they have been assigned to.
+June 2025
+39
+Page 39 of 97
+
+
+===== PAGE 51 =====
+
+CHAPTER 3. SPRINT 1 – ACCOUNTS SERVICE
+ISIMA Mahdia
+Figure 3.14: Profile UI for Participant (Top) and Judge (bottom)
+Conclusion :
+In this chapter I have established the 1st sprint, and I have defined its various functionalities
+achieved through its functional and behavioural descriptions of the stories. Finally I defined
+its class diagram followed by its achievements in terms of interfaces achieved in this sprint. In
+the next chapter I will describe the 2nd sprint in the form of chapter 4.
+June 2025
+40
+Page 40 of 97
+
+
+===== PAGE 52 =====
+
+Chapter 4
+Sprint 2 - Hackathon Service
+4.1
+Introduction :
+As with the first sprint, I began with the sprint backlog, followed by the functional and behav-
+ioral analysis, and concluded with the class diagram and implementation phase.
+4.2
+Sprint 2: Backlog
+The table below presents the backlog for this sprint, including the tasks to be completed for
+each user story.
+Table 4.1: Sprint 2 Backlog
+Functionality
+ID
+User Story
+Tasks
+Hackathon Setup
+Service
+2.1
+As an organizer,
+I want to create
+a hackathon by defining title, theme,
+dates, and description.
+• Create Hackathon entity with fields: ti-
+tle, theme, start/end dates, description.
+• Build controller, service, and repository
+layers.
+• Create frontend form for hackathon cre-
+ation with validation.
+2.2
+As an organizer, I want to define the
+rules, eligibility, max team size, and
+participant limits.
+• Extend Hackathon entity to include
+rules, eligibility, and team constraints.
+• Add backend endpoints to persist con-
+straints.
+• Update frontend creation form to in-
+clude these inputs.
+Continued on next page
+41
+
+
+===== PAGE 53 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+Table 4.1 continued from previous page
+Functionality
+ID
+User Story
+Tasks
+Organizer
+Dashboard
+2.3
+As an organizer, I want to view and
+manage all hackathons I created from
+a dashboard.
+• Create Organizer Dashboard UI to dis-
+play hackathons.
+• Implement backend endpoint to fetch
+hackathons by organizer ID.
+• Add edit and delete options for each en-
+try.
+2.4
+As an organizer, I want to update
+hackathons in real time.
+• Implement
+update
+logic
+in
+backend
+(PUT/PATCH endpoint).
+• Add real-time sync using WebSocket or
+polling (if applicable).
+• Create edit form prefilled with current
+hackathon data.
+Hackathon Overview
+2.5
+As
+a
+participant,
+I
+want
+to
+view
+hackathons ordered by deadline, do-
+main, or status.
+• Implement filter and sorting logic in the
+backend.
+• Create dynamic filter UI components
+(status, deadline, domain).
+• Connect UI to backend via REST API
+or GraphQL.
+2.6
+As a participant, I want to register for
+hackathons solo or with a team.
+• Implement
+participant/team
+registra-
+tion endpoints.
+• Add validation for team size and existing
+registration.
+• Build frontend registration modal or sec-
+tion.
+Continued on next page
+June 2025
+42
+Page 42 of 97
+
+
+===== PAGE 54 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+Table 4.1 continued from previous page
+Functionality
+ID
+User Story
+Tasks
+2.7
+As a participant, I want to see all de-
+tails about a hackathon (prizes, type,
+company, judges).
+• Extend Hackathon entity to include
+prize, type, company, judges.
+• Create a detailed hackathon preview
+page.
+• Connect detail page to dynamic route by
+hackathon ID.
+4.3
+Functional description of Sprint 2
+To give an overall view of the system’s functional behavior, I will use "use case diagrams". In this section, I
+begin by presenting the global use case diagram corresponding to sprint 2 and then I will describe it textually.
+4.3.1
+Global Use Case Diagram
+For this second sprint, I present the global use case diagram illustrating the functionalities offered by the
+Hackathon service module.
+Figure 4.1: Global Use Case Diagram – Sprint 2
+June 2025
+43
+Page 43 of 97
+
+
+===== PAGE 55 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+4.3.2
+Textual Description
+In this section I describe textually the main use cases that appear in the global use case diagram.
+Table 4.2: Textual Description of the Use Case "Create Hackathon"
+Use Case
+Create a Hackathon
+Initiating Actor
+Organizer
+Use Case Goal
+To allow the organizer to create and configure a new hackathon event on the platform
+Precondition
+The organizer must be authenticated and have an active organizer role.
+Scenario
+Description:
+Main Scenario (Success):
+1. The organizer navigates to the "Create Hackathon" section.
+2. The system displays the hackathon creation form.
+3. The organizer enters all required details
+4. The organizer submits the form.
+5. The system validates the input data.
+6. The system creates the hackathon and displays a confirmation message.
+Alternative Scenarios:
+5.1. If required fields are missing or contain invalid data:
+5.1.1. The system highlights the errors and prompts the organizer to correct
+them.
+6.1. If there is a system error during creation:
+6.1.1. The system displays an error message and logs the issue.
+Postcondition
+A new hackathon is added to the platform and becomes visible to potential partici-
+pants.
+Table 4.3: Textual Description of the Use Case "Cancel Hackathon"
+Use Case
+Cancel Hackathon
+Initiating Actor
+Organizer
+Use Case Goal
+To cancel a previously scheduled hackathon event
+Precondition
+The organizer must be authenticated and the hackathon must not have started yet
+Scenario
+Description:
+Main Scenario (Success):
+1. The organizer selects the hackathon they wish to cancel from the dashboard.
+2. The system prompts for confirmation.
+3. Upon confirmation, the system marks the hackathon as cancelled and notifies
+all registered users.
+Alternative Scenario:
+3.1. If the hackathon has already started, the system prevents cancellation and dis-
+plays an appropriate error message.
+June 2025
+44
+Page 44 of 97
+
+
+===== PAGE 56 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+Table 4.4: Textual Description of the Use Case "Update Hackathon"
+Use Case
+Update Hackathon
+Initiating Actor
+Organizer
+Use Case Goal
+To modify the details of an existing hackathon before it starts
+Precondition
+The organizer must be authenticated and the hackathon must not be in progress
+Scenario
+Description:
+Main Scenario (Success):
+1. The organizer selects an existing hackathon to edit.
+2. The system displays a form pre-filled with the current hackathon details.
+3. The organizer updates the required fields and submits the changes. The system
+saves the updated hackathon.
+Alternative Scenario:
+3.1. If the updated data is invalid or missing, the system prompts the organizer to
+correct the errors.
+Postcondition
+The hackathon details are updated and reflected in the platform interface
+Table 4.5: Textual Description of the Use Case "Assign Judge"
+Use Case
+Assign Judge
+Initiating Actor
+Organizer
+Use Case Goal
+To assign one or more judges to a hackathon for evaluation purposes
+Precondition
+The organizer is authenticated and the judge has a valid registered account
+Scenario
+Description:
+Main Scenario (Success):
+1. The organizer accesses the hackathon evaluation interface.
+2. The system displays a list of eligible judges.
+3. The organizer selects one or more judges and confirms the assignment; the
+system send an assignment request to the judges .
+Alternative Scenario:
+3.1. If a selected judge refuse the assignment request.
+Postcondition
+The selected judges who accepts the assignment request are associated with the
+hackathon
+June 2025
+45
+Page 45 of 97
+
+
+===== PAGE 57 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+Table 4.6: Textual Description of the Use Case "Join Hackathon"
+Use Case
+Register for hackathon
+Initiating Actor
+Participant
+Use Case Goal
+join a hackathon tournament
+Precondition
+The Participant must not already registred in the hackathon
+Scenario
+Description:
+Main Scenario (Success):
+1. The system displays the registration form.
+2. The user fills in the required information and click join.
+3. The system validates the provided data, add the user as a participant in the
+hackathon .
+Alternative Scenario:
+3.1. The user submits incomplete or incorrect data.
+3.2. The system displays an error message prompting the user to correct the infor-
+mation.
+Table 4.7: Textual Description of the Use Case "Leave Hackathon"
+Use Case
+Leave hackathon
+Initiating Actor
+Participant
+Use Case Goal
+cancel participation
+Precondition
+The Participant must already registred in the hackathon
+Scenario
+Description:
+Main Scenario (Success):
+1. The user click the "leave hackathon" button in the hackathon overview page.
+2. The System accept the user choice and remove him from the hackathon partic-
+ipants list.
+Alternative Scenario:
+1.1. The user Cancel the request.
+June 2025
+46
+Page 46 of 97
+
+
+===== PAGE 58 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+4.4
+Behavioral description of sprint 2 :
+In the following, I present the sequence diagrams corresponding to the main use cases of my sprint 2.
+4.4.1
+Sequence Diagram: Create Hackathon
+Figure 4.2 illustrates the sequence required to realize the "Create Hackathon" use case.
+Figure 4.2: Create Hackathon Sequence Diagram – Sprint 2
+June 2025
+47
+Page 47 of 97
+organizer
+
+
+===== PAGE 59 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+4.4.2
+Sequence Diagram: Cancel Hackathon
+Figure 4.3 illustrates the sequence required to realize the "Cancel Hackathon" use case.
+Figure 4.3: Cancel Hackathon Sequence Diagram – Sprint 2
+4.4.3
+Sequence Diagram: Update Hackathon
+Figure 4.4 illustrates the sequence required to realize the " Update Hackathon" use case.
+June 2025
+48
+Page 48 of 97
+organizer
+
+
+===== PAGE 60 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+Figure 4.4: update Hackathon Sequence Diagram – Sprint 2
+4.4.4
+Sequence Diagram: Assign Judge
+Figure 4.5 presents the sequence of interactions involved in the Assign Judge use case. The process begins when
+the Organizer initiates a judge assignment for an upcoming hackathon. The System responds by recording
+the request in a pending state and notifying the selected Judge.
+The judge’s acceptance is a required step in the workflow.
+Only after the judge explicitly accepts the
+assignment does the system confirm and persist the association in the database. This validation mechanism
+ensures that judges are formally assigned only when they have acknowledged and accepted their role in the
+evaluation process.
+June 2025
+49
+Page 49 of 97
+organizer
+
+
+===== PAGE 61 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+Figure 4.5: update Hackathon Sequence Diagram – Sprint 2
+4.4.5
+Sequence Diagram: Join Hackathon
+Figure 4.6 illustrates the sequence of interactions involved in the Join Hackathon use case. It outlines how
+a participant engages with the system to register for an available hackathon, detailing each step from form
+submission to data validation and confirmation of successful enrollment.
+June 2025
+50
+Page 50 of 97
+
+
+===== PAGE 62 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+Figure 4.6: join Hackathon Sequence Diagram – Sprint 2
+4.4.6
+Sequence Diagram: Leave Hackathon
+Figure 4.7 illustrates the sequence of interactions involved in the Leave Hackathon use case. It outlines how a
+participant engages with the system to Leave a hackathon, detailing each step involved.
+June 2025
+51
+Page 51 of 97
+
+
+===== PAGE 63 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+Figure 4.7: Leave Hackathon Sequence Diagram – Sprint 2
+4.5
+Class Diagram of Sprint 2
+The class diagram in Figure 4.8 shows the classes involved in the system. For Sprint 2,
+Figure 4.8: Class Diagram – Sprint 2
+June 2025
+52
+Page 52 of 97
+
+
+===== PAGE 64 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+4.6
+Review of Sprint 2
+To illustrate the implementation of Sprint 2, I will present the UI interfaces of the key functionalities provided
+by the Setup and Management of Accounts module.
+4.6.1
+Organizer Space
+This section presents the interfaces accessible to the Organizer.
+4.6.1.1
+OrganizerDashBoard UI
+After a successful authentication, the Organizer is redirected to the dashboard UI, where they have a global
+overview of their hackathons and related statistics.
+Figure 4.9: OrganizerDashBoard Page
+4.6.1.2
+Hackathon Management UI
+After a successful authentication, the Organizer can navigate to the Hackathon Management section from the
+menu to create, update, or delete hackathons.
+Figure 4.10: Hackathon Management Page
+June 2025
+53
+Page 53 of 97
+
+
+===== PAGE 65 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+4.6.1.3
+Assign Judge
+After a successful authentication, the Organizer can navigate to the Judging & Results section from the
+menu.And assign a judge to a selected hackathon.
+Figure 4.11: Hackathon Assign judge Page
+4.6.2
+Participent Space
+This section presents the interfaces accessible to the Participent.
+4.6.2.1
+Explore Hackathons UI
+After a successful authentication, the Participant is redirected to the Home page, where he can navigate to the
+Explore Hackathons section to view all available hackathons, sorted by time, expertise level, prize, and other
+criteria.
+Figure 4.12: Explore Hackathons Page
+June 2025
+54
+Page 54 of 97
+
+
+===== PAGE 66 =====
+
+CHAPTER 4. SPRINT 2 - HACKATHON SERVICE
+ISIMA Mahdia
+4.6.2.2
+Hackathons overview UI
+Upon selecting a hackathon, the Participant is redirected to a dedicated page that provides a global overview
+of the event. On this page, the user can view complete details about the hackathon.
+Figure 4.13: Hackathons overview Page
+4.6.2.3
+Hackathons Join form UI
+Upon clicking the ’Join’ button, a form will be displayed to the participant, allowing them to join the hackathon
+using one of the following three options: ’Solo Join’, ’Looking for Teammates’, or ’Join with Existing Team’ (if
+the user is already part of a team).
+Figure 4.14: Hackathons overview Page
+Conclusion :
+In this chapter I have established the second sprint, and I have defined its various functionalities achieved
+through its functional and behavioural descriptions of the stories. Finally I defined its class diagram followed
+by its achievements in terms of interfaces achieved in this sprint. In the next chapter I will describe the 3rd
+sprint in the form of chapter 5.
+June 2025
+55
+Page 55 of 97
+
+
+===== PAGE 67 =====
+
+Chapter 5
+Sprint 3 – Team Service Module
+5.1
+Introduction :
+Throughout this chapter, as with the previous sprint chapters, I will maintain
+the same approach: beginning with the backlog, followed by the functional and
+behavioral analysis, and concluding with the class diagram.
+5.2
+Sprint 3 : Backlog
+The table below presents the back log for this sprint, including the tasks to be
+completed for each user story.
+Table 5.1: Sprint 3 Backlog
+Functionality
+ID
+User Story
+Tasks
+Team Management
+3.1
+As a participant, I want to create a
+team for a hackathon and invite others.
+• Create Team entity with fields: name,
+hackathon reference,team leader,
+members list, creation date.
+• Implement team creation controller, ser-
+vice, and repository layers.
+• Build frontend form for team creation
+with validation.
+• Develop invitation system (email/code
+generation).
+Continued on next page
+56
+
+
+===== PAGE 68 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+Table 5.1 continued from previous page
+Functionality
+ID
+User Story
+Tasks
+3.2
+As a team leader, I want to manage
+members, remove users or transfer
+leadership.
+• Implement member management end-
+points (add, remove, update roles).
+• Create leadership transfer functionality
+with confirmation workflow.
+• Build team management UI for team
+leaders.
+• Add authorization checks to verify team
+leadership permissions.
+Team Collaboration
+3.3
+As a team member, I want to access a
+dashboard to collaborate with mates.
+• Design and implement team dashboard
+UI with activity feeds.
+• Create backend endpoints to fetch team-
+specific data and activities.
+• Implement shared document/resource
+section.
+• Add task assignment and tracking
+functionality.
+Team Join/Leave
+3.4
+As a participant, I want to join an
+existing team using a code or invitation
+and leave if I want.
+• Create invitation code generation and
+validation system.
+• Implement team join endpoint with
+proper validation (max size, eligibility).
+• Build team leave functionality with
+appropriate notifications.
+• Develop UI components for code entry
+and team joining process.
+• Add confirmation dialogs for leaving
+teams.
+5.3
+Functional description of Sprint 2
+To give an overall view of the system’s functional behavior, I will use "use case diagrams". In this section, I
+begin by presenting the global use case diagram corresponding to sprint 3 and then I will describe it textually.
+June 2025
+57
+Page 57 of 97
+
+
+===== PAGE 69 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+5.3.1
+Global Use Case Diagram
+For this third sprint, I present the global use case diagram illustrating the functionalities offered by the Team
+service module.
+Figure 5.1: Global Use Case Diagram – Sprint 3
+5.3.2
+Textual Description
+In this section I describe textually the main use cases that appear in the global use case diagram.
+Table 5.2: Use Case: Join Existing Team Using Invitation Code
+Initiating Actor
+Participant
+Goal
+Join an existing team using a valid invitation code.
+Precondition
+User is authenticated and not already in a team.
+Main Flow
+1. User navigates to the join team section.
+2. Enters invitation code.
+3. System validates code.
+4. If valid, user joins the team.
+Alternative Flows
+A1: Invalid/expired code →Show error.
+A2: Team full or closed →Show warning.
+A3: Already in a team →Reject join request.
+Postcondition
+User becomes a member of the target team.
+June 2025
+58
+Page 58 of 97
+
+
+===== PAGE 70 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+Table 5.3: Textual Description of the Use Case "Create Team"
+Use Case
+Create Team
+Initiating Actor
+Participant
+Use Case Goal
+To allow a participant to create a team on the platform, which can be used for future
+hackathons or collaboration.
+Precondition
+The participant must be authenticated and must not already be a member of another
+active team.
+Scenario
+Description:
+Main Scenario (Success):
+1. The participant Click the "Create Team" button in their dashboard.
+2. The system displays the team creation interface.
+3. The participant enters the required team information (e.g., team name, optional
+description).
+4. The participant submits the team creation request.
+5. The system validates the input data.
+6. The system creates the team, assigns the participant as the Team Leader, and
+generates a unique team code or invitation link.
+7. The system displays a confirmation message with options to invite other users.
+Alternative Scenarios:
+5.1. If required fields are missing or contain invalid data:
+5.1.1. The system highlights the errors and prompts the participant to correct
+them.
+6.1. If the participant is already part of another active team:
+6.1.1. The system displays a warning message preventing multiple active team
+memberships.
+6.2. If there is a system error during creation:
+6.2.1. The system displays an error message and logs the issue.
+Postcondition
+A new team is created and associated with the creator, who becomes the Team Leader.
+The team can now invite other members or register for hackathons.
+Table 5.4: Use Case: Invite Others to Team
+Initiating Actor
+Participant (Team Member or Team Leader)
+Goal
+Invite users who are not in a team or marked as looking for a team.
+Precondition
+User is in a team. Invitee is authenticated and not already in another
+team.
+Main Flow
+1. User opens the invite panel.
+2. Selects user from "looking for team" list or enters user info.
+3. System sends invitation.
+4. Invitee receives and accepts the invite.
+Alternative Flows
+A1: Invitee is already in a team →Show error.
+A2: Team is full →Prevent invitation.
+A3: Invitee rejects or ignores invite →No action taken.
+Postcondition
+Invitee joins the team upon accepting the invitation.
+June 2025
+59
+Page 59 of 97
+
+
+===== PAGE 71 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+Table 5.5: Use Case: Access Team Collaboration Dashboard
+Initiating Actor
+Participant (Team Member or Team Leader)
+Goal
+Access a centralized dashboard to collaborate with team members, view
+activities, share resources, and track tasks this feature is only available
+in the 48h live hackathons .
+Precondition
+User is authenticated and is a member of a team and In a Live hackathon
+Event.
+Main Flow
+1. User navigates to the team section .
+2. System verifies user’s team membership.
+3. System loads dashboard with activity feeds, shared resources,voice
+chat , messagin chat and task tracking .
+4. User can collaborate with teammates.
+Alternative Flows
+A1: User’s membership has been revoked →Redirect with access denied
+message.
+A2: Connection issues since it is a live.
+Postcondition
+User can view and interact with team collaboration features and re-
+sources.
+Table 5.6: Textual Description of the Use Case "Leave Team"
+Use Case
+Leave team
+Initiating Actor
+Participant (Team Member)
+Use Case Goal
+Remove oneself from a team
+Precondition
+• The Team Member must be part of a team.
+Scenario
+Description:
+Main Scenario (Success):
+1. The user navigates to the Dashboard page.
+2. The user clicks the "Leave Team" button.
+3. The system confirms the action via a dialog.
+4. The user confirms the request.
+5. The system removes the user from the team and updates the team members
+list.
+Alternative Scenarios:
+4.1. The user cancels the request:
+– The system closes the dialog without changes.
+June 2025
+60
+Page 60 of 97
+
+
+===== PAGE 72 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+Table 5.7: Textual Description of the Use Case "Kick Team Member"
+Use Case
+Kick Team Member
+Initiating Actor
+Participant (Team Leader)
+Use Case Goal
+Remove a member from the team
+Precondition
+• The initiator must have permission to manage the team (team leader).
+• The target member must be part of the team.
+Scenario
+Description:
+Main Scenario (Success):
+1. The Team Leader navigates to the team management page.
+2. The Team Leader selects the "Kick Member" option next to the member’s name.
+3. The system displays a confirmation dialog.
+4. The Team Leader confirms the action.
+5. The system removes the member from the team and updates the team list.
+6. The system notifies the kicked member via email .
+Alternative Scenarios:
+4.1. The Team Leader cancels the request:
+– The system closes the dialog without changes.
+Table 5.8: Textual Description of the Use Case "Transfer Leadership"
+Use Case
+Transfer Leadership
+Initiating Actor
+Participant (Current Team Leader)
+Use Case Goal
+Transfer team leadership to another member
+Precondition
+• The initiator must be the current team leader and the target is a member.
+Scenario
+Description:
+Main Scenario (Success):
+1. The Team Leader navigates to the team management page.
+2. The Team Leader selects the "Transfer Leadership" option next to the target
+member’s name.
+3. The Team Leader confirms the action.
+4. The system assigns leadership to the target member and notifies the new team
+leader.
+Alternative Scenarios:
+4.1. The Team Leader cancels the request:
+– The system closes the dialog without changes.
+June 2025
+61
+Page 61 of 97
+
+
+===== PAGE 73 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+5.4
+Behavioral description of sprint 3 :
+In the following, I present the sequence diagrams corresponding to the main use cases of my sprint 3.
+5.4.1
+Sequence Diagram: Join Team
+Figure 5.2 illustrates the sequence required to realize the "join Team with invitation code" use case.
+Figure 5.2: Join Team Sequence Diagram – Sprint 3
+5.4.2
+Sequence Diagram: Create Team
+Figure 5.3 illustrates the sequence of interactions for the "Create Team" use case. The sequence begins after
+the participant is authenticated and has accessed the collaboration page, where they click the "Create Team"
+button to open the creation form.
+June 2025
+62
+Page 62 of 97
+
+
+===== PAGE 74 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+Figure 5.3: Create Team Sequence Diagram – Sprint 3
+5.4.3
+Sequence Diagram: Team Invitation
+Figure 5.4 illustrates the sequence of interactions for the "Team Invitation" use case The sequence begins after
+the participant is authenticated and has accessed the collaboration page team section, where he click the "Invite
+to Team" button to open the invitation panel.
+June 2025
+63
+Page 63 of 97
+
+
+===== PAGE 75 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+Figure 5.4: Team Invitation Sequence Diagram – Sprint 3
+5.4.4
+Sequence Diagram: Leave Team
+Figure 5.5 illustrates the sequence of interactions for the " Leave Team" use case .
+Figure 5.5: Leave Team Sequence Diagram – Sprint 3
+June 2025
+64
+Page 64 of 97
+
+
+===== PAGE 76 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+5.4.5
+Sequence Diagram: Kick Teammember
+Figure 5.6 illustrates the sequence of interactions for the " Kick Teammember" use case .
+Figure 5.6: Kick Teammember Sequence Diagram – Sprint 3
+5.4.6
+Sequence Diagram: Transfer Leadership
+Figure 5.7 illustrates the sequence of interactions for the " Kick Teammember" use case .
+Figure 5.7: Transfer Leadership Sequence Diagram – Sprint 3
+June 2025
+65
+Page 65 of 97
+
+
+===== PAGE 77 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+5.5
+Class Diagram of Sprint 3 :
+As always the class diagram is a static representation of the system’s components and their relationships. this
+is the one For Sprint 3 shown in Figure 5.8 includes 6 classes.
+Figure 5.8: Class Diagram – Sprint 3
+June 2025
+66
+Page 66 of 97
+
+
+===== PAGE 78 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+5.6
+Review of Sprint 3
+To illustrate the implementation of Sprint 3, As always I will present the UI interfaces of the key functionalities
+provided by the team service for both the team elder and member.
+5.6.1
+ParticipantDashboard UI
+This interface displays the Participant dashboard, which is shared among all team members it shows a global
+overview of the team achivments(joined in hackathons / submitted projects) and a quick access panel contains
+team managment , quick join , create project and view friends.
+Figure 5.9: Collaboration Page
+5.6.2
+Team join/creation UI
+This interface displays the team creation and joining functions, which are available to all participants who have
+not yet joined or created a team
+Figure 5.10: Collaboration Page
+June 2025
+67
+Page 67 of 97
+
+
+===== PAGE 79 =====
+
+CHAPTER 5. SPRINT 3 – TEAM SERVICE MODULE
+ISIMA Mahdia
+5.6.3
+Team Overview (Team member side) UI
+This interface provides team members with a global overview of their team, including achievements, the number
+of hackathons joined, and a list of participants.
+Figure 5.11: Collaboration Page
+5.6.4
+Team Managment (Team Leader side) UI
+This is the same Team Overview interface, but it is tailored for the team leader. While it includes all the
+features available to regular team members, it also provides advanced administrative privileges. The leader can
+remove or transfer leadership, rename the team, or even delete it entirely.
+Figure 5.12: Collaboration Page
+Conclusion :
+In this chapter I have established the Third sprint, and I have defined its various functionalities achieved
+through its functional and behavioural descriptions of the stories. Finally I defined its class diagram followed
+by its achievements in terms of interfaces achieved in this sprint. In the next chapter I will describe the 4th
+sprint in the form of chapter 6.
+June 2025
+68
+Page 68 of 97
+
+
+===== PAGE 80 =====
+
+Chapter 6
+Sprint 4 – Project Submission and
+Evaluation Module
+6.1
+Introduction :
+Throughout this chapter, as with the previous sprint chapters, I will maintain the
+same approach: beginning with the backlog, followed by the functional and behav-
+ioral analysis, and concluding with the class diagram and some of the important
+User interfaces.
+6.2
+Sprint 4 : Backlog
+The table below presents the back log for this sprint, including the tasks to be
+completed for each user story.
+Table 6.1: Sprint 4 Backlog
+Functionality
+ID
+User Story
+Tasks
+Project Submission
+4.1
+As a Participant (team member), I
+want to submit our project before the
+deadline.
+• Create Project Submission entity with
+fields: team reference, files, description,
+submission date, last edit date
+• Implement file upload system with size
+and type validation
+• Build submission form UI with progress
+tracking
+• Add deadline validation on backend and
+frontend
+Continued on next page
+69
+
+
+===== PAGE 81 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+Table 6.1 continued from previous page
+Functionality
+ID
+User Story
+Tasks
+4.2
+As a team member, I want to edit our
+Project .
+• Implement Project update functionality
+in all layers
+• Create edit Project UI with change
+tracking
+• Add confirmation for overwriting previ-
+ous content
+Evaluation
+4.3
+As a judge, I want to access all submit-
+ted projects for evaluation.
+• Create judge dashboard showing as-
+signed projects
+• Implement project browsing interface
+with search/filter
+• Set up secure access to submission files
+• Add download functionality for project
+materials
+4.4
+As a judge, I want to rate projects and
+provide feedback.
+• Design evaluation form with scoring cri-
+teria
+• Implement rating system backend with
+validation
+• Build feedback text editor with format-
+ting options
+• Add save/submit workflow for evalua-
+tions
+4.5
+As an organizer, I want to publish re-
+sults and winners.
+• Create results calculation system (aver-
+ages, rankings)
+• Implement results publication workflow
+with confirmation
+• Design winners announcement UI
+• Add email notifications for results pub-
+lication
+Continued on next page
+June 2025
+70
+Page 70 of 97
+
+
+===== PAGE 82 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+Table 6.1 continued from previous page
+Functionality
+ID
+User Story
+Tasks
+4.6
+As a participant, I want to view the re-
+sults and feedback from judges.
+• Build results display page for partici-
+pants
+• Implement
+feedback
+visualization
+(scores, comments)
+• Add download option for official results
+• Create
+comparison
+view
+with
+other
+teams (if public)
+6.3
+Functional description of Sprint 4
+To give an overall view of the system’s functional behavior, I will use "use case diagrams". In this section, I
+begin by presenting the global use case diagram corresponding to sprint 4 and then I will describe it textually.
+6.3.1
+Global Use Case Diagram
+For this sprint, I present the global use case diagram illustrating the functionalities offered by the Team service
+module.
+Figure 6.1: Global Use Case Diagram – Sprint 4
+June 2025
+71
+Page 71 of 97
+
+
+===== PAGE 83 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+6.3.2
+Textual Description
+In this section I describe textually the main use cases that appear in the global use case diagram.
+Table 6.2: Textual Description of the Use Case "Create Project"
+Use Case
+Create Project
+Initiating Actor
+Participant (Team Member)
+Use Case Goal
+To allow a team member to create a project for a hackathon before the deadline.
+Precondition
+• The user must be authenticated and a member of a team
+• The team must be registered for a hackathon that is accepting submissions
+• The submission deadline must not have passed
+Scenario
+Description:
+Main Scenario (Success):
+1. The team member navigates to the hackathon’s submission page
+2. The system verifies eligibility (team registration, deadline)
+3. The system displays the project creation form
+4. The team member enters project details (title, description, technologies)
+5. The team member uploads required files (code, presentation, demo video)
+6. The team member save the project
+7. The system validates all inputs and file requirements
+8. The system creates the project and stores uploaded files
+Alternative Scenarios:
+2.1. If eligibility checks fail:
+2.1.1. The system displays appropriate error (not registered, deadline passed)
+7.1. If validation fails:
+7.1.1. The system highlights missing/invalid fields
+7.1.2. The system rejects files that exceed size limits or have invalid types
+Postcondition
+• A new project is created and associated with the team
+• Team members can view and edit the project until it submitted
+June 2025
+72
+Page 72 of 97
+
+
+===== PAGE 84 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+Table 6.3: Textual Description of the Use Case "Edit Project"
+Use Case
+Edit Project
+Initiating Actor
+Participant (Team Member)
+Use Case Goal
+To allow a team member to Edit his Team project before it is submitted.
+Precondition
+• The user must be authenticated and a member of an active team
+• The Project state is still "Draft" not submitted yet.
+Scenario
+Description:
+Main Scenario (Success):
+1. The team member navigates to the hackathon’s submission page and click
+"Edit".
+2. After check the system displays the "Edit" form
+3. The team member enters Updated project details and save
+4. The system validates all inputs and save the changes
+5. The system alerts team members of the update
+Alternative Scenarios:
+2.1. The system displays appropriate error (project already submitted, deadline
+passed)
+Postcondition
+project details updated
+Table 6.4: Textual Description of the Use Case "Delete Project"
+Use Case
+Delete Project
+Initiating Actor
+Participant (Team leader)
+Use Case Goal
+To allow the team leader to Delete the project .
+Precondition
+• The user must be authenticated and the team leader
+• The Project state is still "Draft" not submitted yet.
+Scenario
+Description:
+Main Scenario (Success):
+1. The team leader click "Delete Project".
+2. The system display a confirm dialog
+3. Team leader confirm
+4. The system delete the project and associates.
+Alternative Scenarios:
+3.1. The team leader cancel request
+June 2025
+73
+Page 73 of 97
+
+
+===== PAGE 85 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+Table 6.5: Textual Description of the Use Case "Submit Project"
+Use Case
+Submit Project
+Initiating Actor
+Participant (Team leader)
+Use Case Goal
+To allow the team leader to submit the project .
+Precondition
+• The user must be authenticated and the team leader
+• The Project state is still "Draft" not submitted yet.
+Scenario
+Description:
+Main Scenario (Success):
+1. The team leader click "submit" in the submission page.
+2. The system display a confirm dialog
+3. Team leader confirm
+4. The system change project state to "Submitted"
+Alternative Scenarios:
+3.1. The team leader cancel request
+Postcondition
+• Project can’t be edited
+• Judges can evaluate the project
+Table 6.6: Textual Description of the Use Case "Access Submitted Projects"
+Use Case
+Access Submitted Projects
+Initiating Actor
+Judge
+Use Case Goal
+To allow judges to view and filter project submissions for evaluation
+Precondition
+• Judge is authenticated
+• Submissions exist for assigned category/track
+Scenario
+Main Flow:
+1. Judge accesses evaluation dashboard
+2. System displays list of submissions with basic info
+3. Judge applies filters (category, status, etc.)
+4. System returns filtered submissions
+5. Judge selects project to view details
+Alternate Flows:
+3a. No submissions match filters: System displays empty state
+4a. Network error: System shows retry option
+Postcondition
+Judge can view and evaluate filtered submissions
+June 2025
+74
+Page 74 of 97
+
+
+===== PAGE 86 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+Table 6.7: Textual Description of the Use Cases "Rate Project"
+Use Case
+Rate Project
+Initiating Actor
+Judge
+Use Case Goal
+To allow judges to evaluate and score a submitted project
+Precondition
+• Judge is authenticated
+• Project exists and is assigned to judge
+• Evaluation period is active
+Scenario
+Main Flow:
+1. Judge selects project from evaluation dashboard
+2. System displays evaluation form with criteria
+3. Judge enters scores and optional comments
+4. Judge submits evaluation
+5. System validates and saves ratings
+6. System confirms successful submission
+Alternate Flows:
+4a. Incomplete data: System highlights missing fields
+Postcondition
+• Project has new evaluation record
+• Scores are included in overall results
+Table 6.8: Textual Description of the Use Case "Publish Results"
+Use Case
+Publish Results
+Initiating Actor
+Organizer
+Use Case Goal
+To finalize and publish hackathon results to all participants
+Precondition
+• All judge evaluations are completed
+• Results are calculated and verified
+Scenario
+Main Flow:
+1. Organizer accesses results section
+2. System displays scores provided by judges
+3. Organizer reviews and confirms results
+4. Organizer clicks "Publish Results"
+5. System makes results publicly visible
+6. System notifies all participants
+Alternate Flows:
+5a. Publication fails: System retries or alerts administrators
+Postcondition
+• Results are visible to all participants
+• Winners are officially announced and No further modifications allowed
+June 2025
+75
+Page 75 of 97
+
+
+===== PAGE 87 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+6.4
+Behavioral description of sprint 4 :
+In the following, I present the sequence diagrams corresponding to the main use cases of my sprint 4.
+6.4.1
+Sequence Diagram: Create Project
+Figure 6.2 illustrates the sequence required to realize the Create Project use case.
+Figure 6.2: Create Project Sequence Diagram – Sprint 4
+June 2025
+76
+Page 76 of 97
+
+
+===== PAGE 88 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+6.4.2
+Sequence Diagram: Submit project
+Figure 6.3 illustrates the sequence diagram for the "Submit Project" use case. It illustrates the interaction flow
+in which the team leader submits the team’s project. This action is restricted exclusively to the team leader
+and cannot be performed by other team members.
+Figure 6.3: Submit project Sequence Diagram – Sprint 4
+June 2025
+77
+Page 77 of 97
+
+
+===== PAGE 89 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+6.4.3
+Sequence Diagram: See Submissions & Rate project
+Figure 6.4 presents the sequence diagram for the "Rate Project" and "Access Submitted Projects" use cases.
+It illustrates the interaction flow in which the judge accesses the submitted project details, reviews the project
+workflow, and evaluates the submission by assigning a final score.
+Figure 6.4: See Submissions & Rate project Sequence Diagram – Sprint 4
+June 2025
+78
+Page 78 of 97
+
+
+===== PAGE 90 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+6.4.4
+Sequence Diagram: Publish Results
+Figure 6.5 presents the sequence diagram for the "Publish Results" use case. It illustrates the interaction flow
+in which the organizer publishes the final hackathon results, assigns prizes to the winners, notifies them of their
+victory, and updates the hackathon overview to reflect the winners and the concluded state of the event.
+Figure 6.5: Publish Results Sequence Diagram – Sprint 4
+6.5
+Class Diagram of Sprint 4 :
+As always the class diagram is a static representation of the system’s components and their relationships. this
+is the one For Sprint 4 shown in Figure 5.8 includes 6 classes.
+June 2025
+79
+Page 79 of 97
+
+
+===== PAGE 91 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+Figure 6.6: Class Diagram – Sprint 4
+June 2025
+80
+Page 80 of 97
+
+
+===== PAGE 92 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+6.6
+Review of Sprint 4
+To illustrate the implementation of Sprint 4, As always I will present the UI interfaces of the key functionalities
+the project submmisson and evaluation Module.
+6.6.1
+Participant Space
+This section presents the interfaces accessible to the Participant for submission .
+6.6.1.1
+Project Submission Section
+This interface provides all participants with a global overview of their project, if one has been created.
+Figure 6.7: No Project Yet (Top) Project created and submitted with waiting for result(bottom) sprint 4
+6.6.1.2
+Project create/edit form
+This is the interface where team members can create and edit their project for evaluation.
+June 2025
+81
+Page 81 of 97
+
+
+===== PAGE 93 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+Figure 6.8: project Creation and edit form - sprint 4
+6.6.2
+Judge Space
+This section presents the interfaces accessible for the Judge to see projects details and rate them .
+6.6.2.1
+Judge Evaluation section
+This interface provides judges with a global overview of all submissions, including statistics and a list of sub-
+mitted projects. Upon selecting a project, the judge can view all related details.
+Figure 6.9: Evaluation section UI- sprint 4
+June 2025
+82
+Page 82 of 97
+
+
+===== PAGE 94 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+6.6.2.2
+Judge Evaluation Form
+This interface provides judges with the evaluation criteria necessary to assess each project, presenting five
+adjustable sliders with a place for feedback as shown on the figuer .
+Figure 6.10: Project Creation and edit form UI- sprint 4
+6.6.3
+Organizer Space
+This section presents the interfaces accessible for the Organizer to see Evaluated Projects by orgnizers and
+assign the winning teams .
+6.6.3.1
+Resulting section (select hackathon part UI)
+Through this interface, the organizer can select a specific hackathon to access and review its results.
+Figure 6.11: Resulting section (select hackathon part UI) - sprint 4
+June 2025
+83
+Page 83 of 97
+
+
+===== PAGE 95 =====
+
+CHAPTER 6. SPRINT 4 – PROJECT SUBMISSION AND EVALUATION MODULE
+ISIMA Mahdia
+6.6.3.2
+Resulting section (Top Rated projects UI)
+after the organizer select a hackathon this top rated projects table apears for him making hima able to see what
+is the most rated projects by judges and thier feedback.
+Figure 6.12: Resulting section (Top Rated projects UI) - sprint 4
+6.6.3.3
+Resulting section (Final Final Decision form UI)
+After selecting a hackathon and reviewing the judges’ feedback and top-rated projects, the organizer proceeds
+to the Final Decision stage, where they can select up to three winning teams and confirm the results.
+Figure 6.13: Resulting section (Final Decision form UI) - sprint 4
+Conclusion :
+In this chapter I have established the forth sprint, and I have defined its various functionalities achieved through
+its functional and behavioural descriptions of the stories. Finally I defined its class diagram followed by its
+achievements in terms of interfaces achieved in this sprint. In the next chapter I will describe the Final sprint
+in the form of chapter 7.
+June 2025
+84
+Page 84 of 97
+
+
+===== PAGE 96 =====
+
+Chapter 6
+Sprint 5 – Communication Module
+6.1
+Introduction :
+Throughout this chapter, as with the previous sprint chapters, I will maintain the
+same approach: beginning with the backlog, followed by the functional and behav-
+ioral analysis, and concluding with the class diagram and some of the important
+User interfaces.
+6.2
+Sprint 5: Backlog
+The table below presents the backlog for the entire communication module system.
+Table 6.1: Sprint 5 Backlog
+Functionality
+ID
+User Story
+Tasks
+Messaging
+Management
+5.3
+As a user of the platform, I can send
+messages and talk with the admin.
+• Design messaging model: sender, receiver,
+timestamp, content
+• Implement backend endpoints for sending
+and retrieving messages
+• Create frontend chat UI
+• Add real-time updates using WebSocket
+Continued on next page
+85
+
+
+===== PAGE 97 =====
+
+CHAPTER 6. SPRINT 5 – COMMUNICATION MODULE
+ISIMA Mahdia
+Table 6.1 continued from previous page
+Functionality
+ID
+User Story
+Tasks
+5.4
+As the platform admin, I can receive
+and message users.
+• Build admin chat panel with user list and
+search
+• Implement reply interface and unread
+message indicators
+• Secure admin-user communication via role
+checks
+Notification Man-
+agement
+5.5
+As a user of the platform, I receive
+notifications by email or through the
+platform.
+• Design
+notification
+entity
+with
+fields:
+type, message, channel, userId
+• Implement email notification service
+• Create in-app notification dropdown UI
+• Add read/unread state and user prefer-
+ences
+Voice Chat
+5.6
+As a team member, I want to use
+voice chat to discuss something with
+my teammates.
+• Integrate ZegoCloud SDK for voice rooms
+• Build UI component for joining/leaving
+voice chat
+• Connect voice room to team context
+• Test connection stability and performance
+5.7
+As a team member, I want to turn
+off mic and mute myself or a team-
+mate whenever I like.
+• Add self mute/unmute control
+• Allow team leader to mute others (with
+permission checks)
+• Display mute indicators in UI
+• Ensure mute state sync across users
+6.3
+Functional description of Sprint 5
+To give an overall view of the system’s functional behavior, I will use "use case diagrams". In this section, I
+begin by presenting the global use case diagram corresponding to sprint 5 and then I will describe it textually.
+June 2025
+Page 86 of 97
+
+
+===== PAGE 98 =====
+
+CHAPTER 6. SPRINT 5 – COMMUNICATION MODULE
+ISIMA Mahdia
+6.3.1
+Global Use Case Diagram
+For this sprint, I present the global use case diagram illustrating the functionalities offered by the Team service
+module.
+Figure 6.1: Global Use Case Diagram – Sprint 5
+6.3.2
+Textual Description
+In this section I describe textually the main use cases that appear in the global use case diagram.
+Table 6.2: Textual Description of the Use Case "Send Message"
+Use Case
+Send Message
+Initiating Actor
+User (Participant, Organizer, Judge), Admin
+Use Case Goal
+To allow a user to send a message to another user or group in a chat context.
+Precondition
+The user must be authenticated and in an active session (global chat, team chat, or
+private chat)
+Scenario
+Description:
+Main Scenario (Success):
+1. The user opens the chat interface (global/team/private)
+2. The system loads existing conversation history
+3. The user writes a message in the input field and clicks "Send"
+4. The system validates the content (non-empty, size limit, etc.)
+5. The message is transmitted and stored in the chat service backend
+6. The system updates the chat UI for both sender and recipient(s)
+Alternative Scenarios : 6.1 If the backend service is unreachable:
+Postcondition
+The message is saved and becomes visible to the recipient(s)
+June 2025
+Page 87 of 97
+
+
+===== PAGE 99 =====
+
+CHAPTER 6. SPRINT 5 – COMMUNICATION MODULE
+ISIMA Mahdia
+Table 6.3: Textual Description of the Use Case "Send/receive Notification(event or message)"
+Use Case
+Receive Notification
+Initiating Actor
+System (triggered after a "system event" or "Admin" sends a notification)
+Use Case Goal
+To inform users (participants, organizers, judges) about an event.
+Precondition
+• The user email must be connected
+• The user must be online on the platform to receive it via platform notif service
+Scenario
+Description:
+Main Scenario (Success):
+1. The admin or system(Event) send a notification
+2. The backend prepares the notification payload (message, target audience, times-
+tamp)
+3. The system identifies the target users based on scope (global or specific
+role/team)
+4. The system pushes the notification to each user via real-time socket or via email
+5. The user receives the notification popup in the UI or in the email (inbox)
+6. The user can click or dismiss the notification
+Alternative Scenarios:
+4.1. If the user is offline:
+4.1.1. The system stores the notification for later delivery upon login and the
+user is notified via email.
+Postcondition
+The user is notified and can act on the information
+Table 6.4: Textual Description of the Use Case "Live Voice Chat"
+Use Case
+Live Voice Chat
+Initiating Actor
+Participant
+Use Case Goal
+To enable participants in a team to communicate using voice during a live hackathon
+challenge.
+Precondition
+The participant must be authenticated, in a team, and actively participating in an
+ongoing live hackathon challenge.
+Scenario
+Description:
+Main Scenario (Success):
+1. The participant joins a live hackathon challenge with their team.
+2. The hackathon is started by the organizer.
+3. Upon the start of the live session, the system activates the voice chat feature
+and assigns each team to a private voice room.
+4. The participant accesses the team section and manages the voice chat settings
+(mute/unmute).
+Alternative Scenarios: 3.1. the Voice Chat Microservice is unreachable
+Postcondition
+Participants can communicate in real-time within their team using voice chat until
+the end of the live hackathon challenge.
+June 2025
+Page 88 of 97
+
+
+===== PAGE 100 =====
+
+CHAPTER 6. SPRINT 5 – COMMUNICATION MODULE
+ISIMA Mahdia
+6.4
+Behavioral description of sprint 5 :
+In the following, I present the sequence diagrams corresponding to the main use cases of my sprint 5.
+6.4.1
+Sequence Diagram: Send Message
+This sequence diagram 6.2 models the flow of events involved in the "Send Message" use case. It is a shared
+functionality accessible to all user types on the platform, including Participants, Organizers, Judges, and Ad-
+mins. The diagram demonstrates how a user initiates a message send request, how the system processes and
+validates the message, and how the message is persisted in the database and delivered to the recipient.
+Figure 6.2: Send Message Sequence Diagram – Sprint 5
+June 2025
+Page 89 of 97
+
+
+===== PAGE 101 =====
+
+CHAPTER 6. SPRINT 5 – COMMUNICATION MODULE
+ISIMA Mahdia
+6.4.2
+Sequence Diagram: Live voice Chat
+Figure 6.3 presents the sequence diagram for the "Live Voice Chat" use case. It depicts the real-time voice
+communication flow between team members participating in a live hackathon session.
+Figure 6.3: Live voice chat Sequence Diagram – Sprint 5
+6.5
+Class Diagram of Sprint 5 :
+As always the class diagram is a static representation of the system’s components and their relationships . this
+is the one For Sprint 5 shown in Figure 6.4.
+June 2025
+Page 90 of 97
+
+
+===== PAGE 102 =====
+
+CHAPTER 6. SPRINT 5 – COMMUNICATION MODULE
+ISIMA Mahdia
+Figure 6.4: Class Diagram – Sprint 5
+6.6
+Review of Sprint 5
+To illustrate the implementation of Sprint 5, As always I will present the UI interfaces of the key functionalities
+starting with.
+6.6.1
+Notifications :
+This section presents the various notification interfaces available to different user roles, along with a screenshot
+example of an email notification sent by the system.
+6.6.1.1
+notification pannel Ui
+This is where participants can view their notification and message history.
+June 2025
+Page 91 of 97
+
+
+===== PAGE 103 =====
+
+CHAPTER 6. SPRINT 5 – COMMUNICATION MODULE
+ISIMA Mahdia
+Figure 6.5: little popUp Notif (Top) detailed notification interface (bottom) sprint 5
+6.6.1.2
+Sended email exemple :
+This is an example of an alert email sent through Gmail to a specific user.
+Figure 6.6: Email exemple - sprint 5
+June 2025
+Page 92 of 97
+
+
+===== PAGE 104 =====
+
+CHAPTER 6. SPRINT 5 – COMMUNICATION MODULE
+ISIMA Mahdia
+6.6.2
+Messaging
+This section outlines the different messaging interfaces implemented within the platform.
+6.6.2.1
+Private Messaging
+I implemented this interface with Role-Based Access Control (RBAC) to ensure appropriate communica-
+tion permissions across all platform users.
+• Admins have the highest level of access, allowing them to communicate with all registered users,
+including organizers, judges, and participants.
+• Organizers have more limited privileges. They can contact the admin for complaints, the judges
+assigned to their hackathons, and the participants involved in their own events.
+• Judges can communicate with the organizers of the hackathons they are assigned to, other judges
+within the same hackathon, and the admin for complaints.
+• Participants have the most restricted access. They can communicate only with their team members
+or friends, the organizer of their hackathon, and the admin if they need to raise a complaint.
+Figure 6.7: Private Messaging interface - sprint 5
+6.6.2.2
+team chat & global hackathon chat
+This is a collection of chat interfaces designed to enhance collaboration among participants.
+June 2025
+Page 93 of 97
+
+
+===== PAGE 105 =====
+
+CHAPTER 6. SPRINT 5 – COMMUNICATION MODULE
+ISIMA Mahdia
+Figure 6.8: Participants chats collection - sprint 5
+6.6.3
+Live hackathon team collaboration Ui
+This is the main team collaboration interface used during a live hackathon event. It provides a compre-
+hensive suite of communication and collaboration tools for the team. The interface includes several key
+features: a voice chat channel for real-time discussion, a team chat space that supports code sharing, a
+task panel where each team member can select and manage their assigned tasks, and a file sharing feature
+to exchange documents and resources. Additionally, it includes a code submission module to streamline the
+final delivery of each task work.
+6.6.3.1
+Live hackathon main team collaboration Ui
+This interface serves as the main working space for teams during a live hackathon.
+June 2025
+Page 94 of 97
+
+
+===== PAGE 106 =====
+
+CHAPTER 6. SPRINT 5 – COMMUNICATION MODULE
+ISIMA Mahdia
+Figure 6.9: main team working space - sprint 5
+6.6.3.2
+Task selection & document upload
+This figure illustrates the interface displayed when a team member attempts to upload a document or
+select a task to work on.
+Figure 6.10: Task selection & document upload - sprint 5
+Conclusion :
+In this final sprint, I focused on the design and development of the communication system. With this component
+completed, the project has become a fully functional, feature-complete, and deliverable product.
+June 2025
+Page 95 of 97
+
+
+===== PAGE 107 =====
+
+Final Conclusion
+As part of my final year project, I designed and developed an application
+for a hackathon management platform. This report has outlined all
+the stages I went through to achieve this goal, ultimately resulting in a
+functional, complete, and deliverable product.
+During the development lifecycle, I adopted the SCRUM methodology,
+which allowed me to build the system incrementally. I started by analyzing
+the overall context of the project and identifying the functional and
+non-functional requirements. Once the scope was clear, I established a
+prioritized work schedule to guide each sprint.
+I then proceeded to the design and implementation phases, organizing
+the work into well-defined sprints. Regular meetings with my SCRUM
+master helped validate deliverables and review progress, ensuring
+continuous improvement and quality control.
+Despite various technical challenges and time constraints, I successfully
+completed each sprint on time. The system adheres to important security
+principles and is well-documented to support future development.
+This project has been a highly enriching experience, offering practical
+exposure beyond traditional academic work. It strengthened my knowledge
+of modern web development using Angular and Spring Boot, and
+provided valuable insight into collaborative software engineering.
+Although the current version includes a comprehensive set of core features,
+several enhancements remain possible. Notably, the integration of an
+advanced anti-cheat detection system and an intelligent chatbot
+module for automated client support are promising directions for future
+work.
+96
+
+
+===== PAGE 108 =====
+
+Bibliography
+[1] Auth0. Json web tokens - jwt.io. https://jwt.io/, 2021. [Online; accessed 26-May-2025].
+[2] Oracle Corporation. Java. https://www.java.com/, 2021. [Online; accessed 26-May-2025].
+[3] Apache Software Foundation. Apache kafka. https://kafka.apache.org/, 2021. [Online; accessed 26-
+May-2025].
+[4] Apache Software Foundation. Apache zookeeper. https://zookeeper.apache.org/, 2021. [Online; ac-
+cessed 26-May-2025].
+[5] Mozilla
+Foundation.
+Websocket
+api.
+https://developer.mozilla.org/en-US/docs/Web/API/
+WebSocket, 2021. [Online; accessed 26-May-2025].
+[6] Python Software Foundation. Python 3.0 release. https://www.python.org/download/releases/3.0/,
+2008. [Online; accessed 26-May-2025].
+[7] PostgreSQL Global Development Group. Postgresql: The world’s most advanced open source database.
+https://www.postgresql.org/, 2025. [Online; accessed 26-May-2025].
+[8] Adobe Inc. Adobe xd. https://www.adobe.com/products/xd.html, 2021. [Online; accessed 26-May-
+2025].
+[9] Docker Inc. Docker: Accelerated container application development. https://www.docker.com/, 2024.
+[Online; accessed 26-May-2025].
+[10] Lucid Software Inc. Lucidchart: Diagramming powered by intelligence. https://www.lucidchart.com/
+pages, 2021. [Online; accessed 26-May-2025].
+[11] OpenAPI Initiative. Openapi specification. https://www.openapis.org/, 2021. [Online; accessed 26-
+May-2025].
+[12] JetBrains. Intellij idea. https://www.jetbrains.com/idea/, 2021. [Online; accessed 26-May-2025].
+[13] Google LLC. Angular. https://angular.dev/, 2021. [Online; accessed 26-May-2025].
+[14] Cloudinary Ltd. Cloudinary. https://cloudinary.com/, 2021. [Online; accessed 26-May-2025].
+[15] Microsoft.
+Typescript: Javascript with syntax for types.
+https://www.typescriptlang.org/, 2021.
+[Online; accessed 26-May-2025].
+[16] Microsoft. Visual studio code. https://code.visualstudio.com/, 2021. [Online; accessed 26-May-2025].
+[17] Inc. Pivotal Software. Spring boot. https://spring.io/projects/spring-boot, 2021. [Online; accessed
+26-May-2025].
+[18] Postman. Postman: The world’s leading api platform. https://www.postman.com/, 2021. [Online; accessed
+26-May-2025].
+[19] SmartBear Software. Swagger v3. https://swagger.io/specification/, 2021. [Online; accessed 26-
+May-2025].
+[20] ZEGOCLOUD. Zegocloud: Voice, video & chat apis for real-time interaction. https://www.zegocloud.
+com/, 2021. [Online; accessed 26-May-2025].
+97

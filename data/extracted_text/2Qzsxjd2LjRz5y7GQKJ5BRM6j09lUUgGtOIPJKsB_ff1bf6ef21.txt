@@ -1,0 +1,2692 @@
+===== PAGE 1 =====
+
+ 
+ 
+Republic of Tunisia 
+ 
+           
+ 
+ 
+University of Monastir 
+Higher Institute of Computer Science of 
+Mahdia 
+Faculty of Economics and Management of 
+Mahdia 
+   
+MEMORY 
+ 
+Order N°:LBC-BI-3-2025-046 
+Ministry of Higher Education and 
+Scientific Research  
+ 
+ 
+ 
+DISSERTATION 
+ 
+Introduced to 
+ 
+Higher Institute of computer Science of Mahdia 
+ 
+Carried out at 
+ 
+Enova robotics 
+ 
+ 
+In view of obtaining the diploma of 
+ 
+Bachelor’s Degree in Business Computing: Business Intelligence 
+ 
+ 
+Prepared by 
+ 
+BDIRI CHAIMA 
+ 
+ 
+Domain transfer for licence plate detection and recognition from optical to 
+thermal 
+ 
+ 
+ 
+Defended on : 17 June 2025 
+ 
+Before the jury composed of: 
+ 
+ 
+President    
+      : Amal Gassara 
+Reviewer 
+      : Anis Hadj Said 
+Academic Supervisor 
+      : Rania Mkhinini Gahar 
+Professional Supervisor 
+    : Amir Ismail 
+ 
+ 
+Academic year: 2024 - 2025 
+
+
+===== PAGE 2 =====
+
+Acknowledgement
+I would like to express my sincere and heartfelt gratitude to all those who, in one way or
+another, contributed to the successful completion of this final-year project. Their support,
+guidance, and encouragement were instrumental in allowing me to overcome challenges and
+achieve the objectives of this work.
+First and foremost, I would like to thank my academic supervisor, Mrs. Rania Mkhinini Gahar,
+for her continuous guidance, constructive feedback, and unwavering support throughout the
+duration of this project. Her expertise, patience, and insightful comments greatly enriched
+my understanding and helped shape the direction of this work.
+I am also deeply grateful to Mr. Amir Ismail, my professional supervisor at Enova Robotics,
+for his availability, valuable technical advice, and for providing a productive and stimulating
+work environment. His mentorship and encouragement were vital throughout the internship
+period, especially during the most complex phases of the project.
+My sincere thanks also go to the entire team at Enova Robotics for their warm welcome and
+collaboration, which made this experience both enriching and enjoyable.
+I would like to extend my deepest appreciation to my family, whose love, patience, and
+encouragement have been my anchor and source of strength. Their moral support throughout
+my academic journey has been invaluable. Special thanks to my friends and classmates for
+their companionship, encouragement, and for always being there during moments of doubt
+and stress.
+This project represents not only the culmination of my academic training but also the fruit of
+a collective effort to which many people have contributed. To all of them, I say: thank you
+from the bottom of my heart.
+i
+
+
+===== PAGE 3 =====
+
+Dedications
+To my father
+I pay tribute to you for the strength, courage, and wisdom you embody.
+Your example taught me the value of hard work, honesty, and perseverance.
+Without your unwavering support, this project would not have been possible.
+Thank you for your constant presence and love.
+To my mother
+Your tenderness, your attentive ear, and your unconditional love have carried
+me throughout my journey. You are my anchor and my source of comfort in
+difficult times. This work is also the result of your dedication and sacrifice.
+Thank you for everything, Mom.
+Chaima BDIRI
+
+
+===== PAGE 4 =====
+
+Contents
+Acknowledgement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+i
+Dedications . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ii
+List of Figures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+v
+List of Tables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+vii
+Abbreviations and Acronyms
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ix
+General Introduction
+1
+1
+General context
+3
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.1
+Host company: Enova Robotics . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Review of existing solutions
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+Problem statement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.4
+Proposed solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.5
+Methodology and project planning
+. . . . . . . . . . . . . . . . . . . . . . .
+6
+1.5.1
+Adopting a project management methodology . . . . . . . . . . . . .
+6
+1.5.2
+Knowledge Discovery in Databases (KDD) . . . . . . . . . . . . . . .
+6
+1.5.3
+SEMMA . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.5.4
+CRoss-Industry Standard Process for Data Mining (CRISP-DM) . . .
+8
+1.5.5
+Comparison of methodologies
+. . . . . . . . . . . . . . . . . . . . . .
+9
+1.5.6
+Methodology selection
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.5.7
+Project planning
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2
+Thechnical background and domain understanding
+12
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.1
+Artificial intelligence
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.2
+Machine learning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.3
+Deep learning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+iii
+
+
+===== PAGE 5 =====
+
+2.4
+Transfer learning and fine-tuning
+. . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.5
+Computer vision
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.6
+Convolutional neural network (CNN) . . . . . . . . . . . . . . . . . . . . . .
+17
+2.7
+Domain adaptation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.7.1
+Key definitions
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.7.2
+Types of domain adaptation . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.7.3
+Techniques in domain adaptation . . . . . . . . . . . . . . . . . . . .
+21
+2.8
+Object detection algorithms . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.8.1
+Two stage object detectors . . . . . . . . . . . . . . . . . . . . . . . .
+22
+2.8.1.1
+R-CNN (Region-based Convolutional Neural Network) . . .
+22
+2.8.1.2
+Fast R-CNN
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+2.8.1.3
+Faster R-CNN
+. . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.8.1.4
+Mask R-CNN . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.8.2
+One stage object detectors . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.8.2.1
+SSD (Multibox Single Shot Detector) . . . . . . . . . . . . .
+24
+2.8.2.2
+YOLO (You Only Look Once) . . . . . . . . . . . . . . . . .
+25
+2.8.3
+Object detection architecture comparison . . . . . . . . . . . . . . . .
+30
+2.9
+Text recognition models
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+2.9.1
+CRNN (Convolutional Recurrent Neural Network) . . . . . . . . . . .
+31
+2.9.2
+Attention-based encoder-decoder models . . . . . . . . . . . . . . . .
+31
+2.9.3
+Transformer-based models . . . . . . . . . . . . . . . . . . . . . . . .
+32
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3
+Data collection and preprocessing
+34
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.1
+Detection task . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.1.1
+Data collection
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.1.2
+Data annotation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.1.3
+Data splitting . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.1.4
+Data structure
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.1.5
+Data preprocessing for the detection task . . . . . . . . . . . . . . . .
+40
+3.2
+Recognition task
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+3.2.1
+Data collection
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.2.2
+Data cleaning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.2.3
+Data annotation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.2.4
+Data structure
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.2.5
+Data splitting . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+3.2.6
+Data preprocessing for the recognition task . . . . . . . . . . . . . . .
+42
+iv
+
+
+===== PAGE 6 =====
+
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4
+Modeling and evaluation
+43
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.1
+Model selection strategy . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.1.1
+Implementation of Faster R-CNN with ResNet18 backbone . . . . . .
+44
+4.1.2
+Implementation of YOLOv8 . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.1.3
+Models evaluation and compraison
+. . . . . . . . . . . . . . . . . . .
+48
+4.2
+Domain adaptation for detection task . . . . . . . . . . . . . . . . . . . . . .
+49
+4.2.1
+Domain adaptation strategy . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.2.1.1
+Used method . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.2.1.2
+Architecture changes . . . . . . . . . . . . . . . . . . . . . .
+50
+4.2.1.3
+Domain-adaptive YOLOv8 workflow . . . . . . . . . . . . .
+51
+4.2.1.4
+Architecture diagram . . . . . . . . . . . . . . . . . . . . . .
+51
+4.2.2
+Implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.2.3
+Evaluation after adaptation
+. . . . . . . . . . . . . . . . . . . . . . .
+53
+4.3
+Recognition task (OCR) . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.3.1
+Model used for OCR . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.3.2
+Dataset and preprocessing . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.3.3
+Implementation details . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.3.4
+Evaluation metrics . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.4
+OCR implementation with domain adaptation . . . . . . . . . . . . . . . . .
+56
+4.4.1
+Baseline evaluation on optical and thermal . . . . . . . . . . . . . . .
+56
+4.4.2
+Domain adaptation strategy for OCR . . . . . . . . . . . . . . . . . .
+56
+4.4.3
+Evaluation after adaptation
+. . . . . . . . . . . . . . . . . . . . . . .
+57
+4.5
+Summary of findings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+4.6
+Deployment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+General conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+References
+60
+v
+
+
+===== PAGE 7 =====
+
+List of Figures
+1.1
+Enova Robotics logo[11]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+An overview of the Knowledge Discovery in Databases (KDD) process[14].
+.
+7
+1.3
+The SEMMA process [8]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.4
+The CRISP-DM process model[25]. . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1
+Artificial intelligence process[1]. . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.2
+Machine learning[27]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.3
+Transfer learning vs fine tuning[12]. . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.4
+The architecture of convolutional neural network[4]. . . . . . . . . . . . . . .
+17
+2.5
+Using filters to obtain activation maps[6]. . . . . . . . . . . . . . . . . . . . .
+17
+2.6
+Max-pooling process[22]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.7
+fully connected layers within Convolutional Neural Networks (CNNs)[7]. . . .
+19
+2.8
+Domain adaptation[10]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.9
+Overview of the R-CNN pipeline[23]. . . . . . . . . . . . . . . . . . . . . . .
+22
+2.10 Overview of the Faster R-CNN pipeline[23].
+. . . . . . . . . . . . . . . . . .
+23
+2.11 Overview of the Mask R-CNN pipeline[23]. . . . . . . . . . . . . . . . . . . .
+24
+2.12 SSD architecture[26]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.13 Overview of YOLO[30]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.14 YOLO speed compared to other state-of-the-art object detectors[15]. . . . . .
+26
+2.15 YOLO architecture[15]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.1
+Examples of optical and thermal images. . . . . . . . . . . . . . . . . . . . .
+36
+3.2
+LabelImg[21]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+3.3
+Annotated image of a license plate captured with optical camera.
+. . . . . .
+37
+3.4
+Example of image annotation structured in Pascal VOC XML format. . . . .
+38
+3.5
+Dataset directory structure for training and validation. . . . . . . . . . . . .
+39
+3.6
+yaml file for the optical data.
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+vi
+
+
+===== PAGE 8 =====
+
+3.7
+Examples of optical and thermal cropped images. . . . . . . . . . . . . . . .
+41
+4.1
+Simplified architecture of Faster R-CNN for license plate detection.
+. . . . .
+45
+4.2
+Faster rcnn training command.
+. . . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.3
+Simplified architecture of yolov8 for license plate detection. . . . . . . . . . .
+46
+4.4
+yolov8 training command.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.5
+The architecture of the proposed thermal-to-visible domain adaptation for
+detection.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+vii
+
+
+===== PAGE 9 =====
+
+List of Tables
+1.1
+Comparison of CRISP-DM, KDD, and SEMMA methodologies across different
+phases. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.2
+Compact project planning table. . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.1
+Common activation functions used in CNNs. . . . . . . . . . . . . . . . . . .
+18
+2.3
+Comparison of recent YOLO versions based on innovations and performance.
+28
+2.6
+Comparison of object detection models based on speed and performance. . .
+30
+2.8
+Comparison of common text recognition models. . . . . . . . . . . . . . . . .
+32
+4.1
+Comparison of Faster R-CNN and YOLOv8 on license plate detection.
+. . .
+48
+4.2
+Performance comparison on thermal validation set.
+. . . . . . . . . . . . . .
+53
+viii
+
+
+===== PAGE 10 =====
+
+Abbreviations and Acronyms
+ALPR
+Automatic License Plate Recognition
+AI
+Artificial Intelligence
+CRISP-DM
+CRoss-Industry Standard Process for Data Mining
+KDD
+Knowledge Discovery in Databases
+AI
+Artificial Intelligence
+ML
+Machine Learning
+CNN
+Convolutional Neural Network
+SDA
+Supervised Domain Adaptation
+UDA
+Unsupervised Domain Adaptation
+MMD
+Maximum Mean Discrepancy
+RPN
+Region Proposal Network
+R-CNN
+Region-based Convolutional Neural Network
+SVM
+Support Vector Machines
+ROI
+Region Of Interest
+SSD
+Single Shot Detector
+YOLO
+You Only Look Once
+CRNN
+Convolutional Recurrent Neural Networks
+RNN
+Recurrent Neural Networks
+CTC
+Connectionist Temporal Classification
+FPS
+Frames Per Second
+ix
+
+
+===== PAGE 11 =====
+
+mAP
+mean Average Precision
+ViT
+Vision Transformer
+OCR
+Optical Character Recognition
+LMBD
+Lightning Memory Mapped Database
+x
+
+
+===== PAGE 12 =====
+
+General Introduction
+In an increasingly connected and automated world, the need for intelligent and reliable vehicle
+monitoring systems is growing rapidly,especially in environments where visibility is low or
+conditions are less than ideal. This project focuses on the development of an automatic license
+plate recognition (ALPR) system that operates effectively both during the day, using optical
+images, and at night, using thermal imagery.
+The core objective is to ensure accurate and consistent recognition of vehicle license plates
+regardless of lighting conditions. This is particularly important for surveillance systems, traffic
+monitoring, and security applications that must function reliably in real-time, 24/7. A major
+challenge addressed in this work is the performance gap between optical and thermal data.
+To overcome this, the system integrates mechanisms that help it adapt to differences between
+the two image types, with a particular focus on improving recognition in thermal imagery,
+where visual information is often limited.
+This project was carried out in collaboration with Enova Robotics as part of a professional
+internship. Beyond the research and model development phase, it also includes a deployment
+phase in which the system is applied to thermal video footage of moving vehicles. This allows
+for practical evaluation in a realistic setting and provides insights into the system’s readiness
+for real-world use.
+This report presents the project’s motivation, goals, technical approach, and evaluation results.
+It also discusses the limitations faced and proposes ideas for future improvements to make
+the solution more efficient, scalable, and robust for industrial or security deployment.
+The dissertation is organized as follows:
+• Chapter 1: General context presents the host company, defines the problem ad-
+dressed by the project, proposes a solution, and outlines the adopted methodology and
+project management approach.
+1
+
+
+===== PAGE 13 =====
+
+General Introduction
+• Chapter 2: Technical background provides the theoretical foundation necessary for
+the project, covering key concepts in computer vision, machine learning, deep learning,
+and domain adaptation. It sets the stage for understanding the challenges of license
+plate detection and recognition in both optical and thermal imagery.
+• Chapter 3: Data collection and preprocessing describes how the data was gathered
+and the techniques applied to prepare it for model training and evaluation.
+• Chapter 4: Modeling and evaluation details the implementation phase, including
+model selection, training strategies, and performance evaluation using relevant metrics.
+• General conclusion summarizes the main outcomes of the project, highlights its
+impact for Enova Robotics, and suggests possible directions for future improvements.
+2
+
+
+===== PAGE 14 =====
+
+Chapter 1
+General context
+Contents
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.1
+Host company: Enova Robotics . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Review of existing solutions . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+Problem statement
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.4
+Proposed solution . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.5
+Methodology and project planning . . . . . . . . . . . . . . . . . .
+6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+3
+
+
+===== PAGE 15 =====
+
+Chapter 1. General context
+Introduction
+This chapter presents the general context of our project. It begins with an overview of the
+host company, followed by a discussion of the problem addressed, the project objectives, and
+the adopted methodology.
+1.1
+Host company: Enova Robotics
+Founded in 2014 by Dr. Anis Sahbani, Enova Robotics is a pioneering Tunisian company
+specializing in intelligent mobile robotics. Stemming from over twenty years of academic
+research, it is the first company in Africa and the Arab world to design, develop, and
+manufacture intelligent robots under its own brand.
+Enova’s expertise lies in a powerful combination of autonomous robotics, artificial intelligence,
+and advanced security technologies, aimed at automating complex, repetitive, or hazardous
+tasks to improve everyday life.
+Among its most iconic products are Mini-Lab, HelloBot, eTouch-Bot, and notably, Pearl
+Guard (PGuard), an autonomous security robot capable of detecting intrusions and providing
+intelligent surveillance. The company places strong emphasis on research and development to
+deliver cutting-edge solutions tailored to evolving market demands.
+Operating in a rapidly growing sector—advanced robotics and applied AI, Enova Robotics
+serves diverse fields such as security, education, healthcare, assistance, reception, and market-
+ing. It collaborates with both public and private sectors, positioning itself as a key player in
+national and international digital transformation.
+Figure 1.1 shows the logo of Enova Robotics.
+Figure 1.1: Enova Robotics logo[11].
+1.2
+Review of existing solutions
+Most existing ALPR systems are designed for daytime conditions using optical images. They
+perform well with modern deep learning models like YOLO for detection and CRNN for
+4
+
+
+===== PAGE 16 =====
+
+Chapter 1. General context
+recognition. However, these systems often fail in low-light or nighttime scenarios due to poor
+visibility in optical data.
+Few approaches use thermal imagery, and even fewer address the gap between optical and
+thermal domains. When domain adaptation is used, it’s often basic and not optimized for
+real-world deployment.
+Critique
+• Existing models struggle with thermal images due to lack of training on such data.
+• Domain adaptation is rarely applied or not effective enough.
+• Most systems are not tested in real-world or video scenarios.
+• Recognition models are often not adapted to specific plate formats like Tunisian ones.
+1.3
+Problem statement
+In traditional vehicle monitoring systems, license plate recognition relies heavily on optical
+cameras, which perform well during the day but become unreliable in low-light or nighttime
+conditions. As a result, vehicles passing at night often go undetected or are misread due to
+poor visibility. This limits the effectiveness of surveillance, traffic monitoring, and security
+applications. While thermal cameras can operate in the dark, their images lack the details
+that most recognition models need. Bridging this gap remains a challenge, especially when
+most existing systems are not adapted to handle the differences between optical and thermal
+data. These limitations call for a smarter solution that ensures accurate license plate detection
+and recognition in all lighting conditions.
+1.4
+Proposed solution
+To overcome the limitations of manual monitoring and ensure reliable performance in all
+lighting conditions, we propose developing an automated license plate recognition system that
+works with both day and night visuals. The solution aims to detect and read license plates
+accurately, even in challenging environments.
+This system will reduce dependence on manual inspection, improve consistency, and support
+continuous monitoring. By combining visual data with intelligent processing, the solution is
+5
+
+
+===== PAGE 17 =====
+
+Chapter 1. General context
+designed to be adaptable, efficient, and ready for integration into real-world applications.
+1.5
+Methodology and project planning
+In this section, we aim to explore, compare, and select the most suitable project management
+methodology for our work. This choice plays a key role in organizing tasks, setting priorities,
+and ensuring smooth progress throughout the project.
+1.5.1
+Adopting a project management methodology
+Effective project management is essential for the successful planning, execution, and monitoring
+of technical projects. A structured methodology provides a clear framework for guiding the
+project from analysis to deployment. It helps define project stages, organize tasks, manage
+resources, and align each component with the overall objectives.
+Selecting the appropriate methodology facilitates coordination between key activities such as
+data collection, model training, evaluation, and system integration. In the following sections,
+we will explore various project methodologies and justify the one most suitable for our specific
+objectives.
+1.5.2
+Knowledge Discovery in Databases (KDD)
+The Knowledge Discovery in Databases (KDD) methodology provides a structured, iterative
+process for extracting useful patterns and insights from large datasets. It involves the following
+stages:
+Selection: Identifying and collecting relevant data sources. The quality and relevance of the
+data are critical to the entire process [9].
+Preprocessing: Cleaning the data to handle noise, inconsistencies, and missing values,
+thereby ensuring accuracy and reliability [9].
+Transformation: Converting the data into suitable formats for mining, including normaliza-
+tion, aggregation, and feature selection [9].
+Data Mining: Applying advanced algorithms to discover hidden patterns, correlations, or
+trends in the data [9].
+Interpretation/Evaluation: Assessing the significance and usefulness of the extracted
+6
+
+
+===== PAGE 18 =====
+
+Chapter 1. General context
+patterns to ensure they are aligned with project goals [9].
+Knowledge Presentation: Presenting insights through visualizations or reports for clear
+interpretation and informed decision-making [9].
+Figure 1.2 illustrates the iterative nature of the KDD process.
+Figure 1.2: An overview of the Knowledge Discovery in Databases (KDD) process[14].
+1.5.3
+SEMMA
+The SEMMA methodology is a structured approach developed by SAS to guide the process
+of data mining. It consists of five main steps:
+Sample: This step involves selecting a relevant subset of data from a larger dataset. The
+aim is to identify key variables and split the data into training and validation sets.
+Explore: Exploratory analysis is performed to examine relationships between variables and
+detect anomalies or missing data, using both univariate and multivariate techniques alongside
+data visualization.
+Modify: Based on insights from exploration, the data is cleaned, transformed, and structured
+according to business logic to prepare it for modeling.
+Model: Data mining techniques are applied to the refined dataset to build predictive or
+descriptive models that represent the underlying patterns.
+Assess: The final step evaluates the model’s accuracy, reliability, and relevance, ensuring it
+meets the project’s objectives and performs effectively on validation data. [8]
+Figure 1.3 illustrates the SEMMA process.
+7
+
+
+===== PAGE 19 =====
+
+Chapter 1. General context
+Figure 1.3: The SEMMA process [8].
+1.5.4
+CRoss-Industry Standard Process for Data Mining (CRISP-
+DM)
+The CRISP-DM (Cross-Industry Standard Process for Data Mining), depicted in Figure 1.4, is
+a well-established, flexible, and iterative methodology used to guide data science and analytics
+projects across industries. It is structured into six key phases:
+Business understanding: The primary goal of this initial phase is to align the data mining
+goals with business objectives. This step involves identifying what the client wants to achieve
+and defining measurable success criteria. It also includes assessing resources, constraints,
+risks, and creating a detailed project plan to guide the entire workflow.
+Data understanding: In this stage, the focus shifts to collecting and exploring the data to
+identify quality issues and gain initial insights. This phase involves acquiring data, describing
+its structure, exploring patterns or relationships, and validating data quality to ensure
+readiness for the next step.
+Data preparation: This phase involves transforming raw data into a clean and structured
+format suitable for modeling. It includes selecting relevant data, handling missing or incorrect
+values, engineering new features, merging sources, and formatting data to meet modeling
+requirements.
+8
+
+
+===== PAGE 20 =====
+
+Chapter 1. General context
+Modeling: The primary objective here is to apply suitable algorithms to the prepared data
+to create predictive or descriptive models. This step involves choosing appropriate modeling
+techniques, designing test strategies, building models, and iterating to improve performance.
+Evaluation: The evaluation phase assesses whether the developed model meets both business
+and technical objectives. It involves reviewing model results, validating against business
+criteria, and deciding whether to move forward with deployment or revisit earlier stages.
+Deployment: The deployment phase ensures the model’s output is delivered effectively to
+end-users or systems. This phase involves planning for operational integration, establishing
+monitoring and maintenance strategies, producing a final report, and reviewing the project
+for future improvement.
+Figure 1.4: The CRISP-DM process model[25].
+1.5.5
+Comparison of methodologies
+The following Table 1.1 provides a comparison of the three data mining methodologies
+discussed, highlighting their key phases and differences.
+9
+
+
+===== PAGE 21 =====
+
+Chapter 1. General context
+Table 1.1: Comparison of CRISP-DM, KDD, and SEMMA methodologies across different phases.
+Phase
+CRISP-DM
+KDD
+SEMMA
+Business understanding
+✓
+–
+–
+Data collection
+✓
+✓
+✓
+Data preprocessing
+✓
+✓
+✓
+Exploratory data analysis
+✓
+✓
+✓
+Modeling
+✓
+✓
+✓
+Evaluation
+✓
+✓
+✓
+Deployment
+✓
+–
+–
+Presentation
+✓
+✓
+–
+1.5.6
+Methodology selection
+After evaluating three approaches, KDD, SEMMA, and CRISP-DM, we decided to opt
+for CRISP-DM methodology for our project. Unlike KDD and SEMMA, which primarily
+emphasize the technical steps of data processing and modeling, CRISP-DM offers a more
+comprehensive framework that begins with a strong focus on business understanding and ends
+with deployment and result communication. Its structured, iterative nature and clear phase
+definitions make it highly adaptable to real-world projects, ensuring that technical insights
+are aligned with practical business objectives. This makes CRISP-DM particularly suitable
+for our project, where both technical rigor and strategic relevance are essential.
+1.5.7
+Project planning
+To ensure efficient execution and meet deadlines, we developed a project timeline outlining
+major tasks, their dependencies, and durations.
+Table 1.2: Compact project planning table.
+Feb
+Mar
+Apr
+May
+W1 W2 W3 W4 W1 W2 W3 W4 W1 W2 W3 W4 W1 W2 W3 W4
+Domain understanding
+Data collection & preprocessing
+Modeling
+Testing & evaluation
+Model deployment
+Report writing
+10
+
+
+===== PAGE 22 =====
+
+Chapter 1. General context
+Conclusion
+This chapter introduced the general context of the project, covering the host company, problem
+statement, proposed solution, and chosen methodology. In the next chapter, we will explore
+the technical background necessary to support the development and successful implementation
+of the project.
+11
+
+
+===== PAGE 23 =====
+
+Chapter 2
+Thechnical background and domain
+understanding
+Contents
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.1
+Artificial intelligence
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.2
+Machine learning . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.3
+Deep learning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.4
+Transfer learning and fine-tuning . . . . . . . . . . . . . . . . . . .
+15
+2.5
+Computer vision . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.6
+Convolutional neural network (CNN) . . . . . . . . . . . . . . . .
+17
+2.7
+Domain adaptation
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.8
+Object detection algorithms . . . . . . . . . . . . . . . . . . . . . .
+21
+2.9
+Text recognition models
+. . . . . . . . . . . . . . . . . . . . . . . .
+30
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+12
+
+
+===== PAGE 24 =====
+
+Chapter 2. Thechnical background and domain understanding
+Introduction
+In this chapter, we explore several key aspects essential to understanding and implementing our
+project. The chapter aims to introduce the technologies, methods, and concepts that enable
+effective license plate detection and recognition across both optical and thermal domains.
+2.1
+Artificial intelligence
+Artificial Intelligence (AI) refers to the branch of computer science focused on creating systems
+capable of performing tasks that typically require human intelligence. These tasks include
+learning, reasoning, adapting, and self-correction. While the term "intelligence" itself is
+difficult to define precisely, AI can broadly be understood through four main perspectives:
+systems that think like humans, act like humans, think rationally, and act rationally.
+Over time, definitions of AI have evolved from simply enhancing computer programming
+techniques to the more ambitious goal of imitating intelligent human behavior. Modern AI
+systems aim to replicate cognitive functions such as decision-making, problem-solving, and
+pattern recognition, often using machine learning and neural networks. This reflects the field’s
+ongoing effort to extend and mimic human intelligence through computational means [16].
+Figure 2.1: Artificial intelligence process[1].
+2.2
+Machine learning
+Machine Learning (ML) is a subset of artificial intelligence (AI) that enables computers to
+learn from data and perform tasks without being explicitly programmed. Instead of following
+a set of predefined rules, ML systems are trained using large datasets, allowing them to
+13
+
+
+===== PAGE 25 =====
+
+Chapter 2. Thechnical background and domain understanding
+discover patterns, draw inferences, and make data-driven predictions or decisions.
+The core mechanism of machine learning relies on algorithms that analyze and process vast
+amounts of information. As more data is fed into these algorithms, their performance typically
+improves. This adaptive ability makes machine learning especially powerful for handling
+complex, data-rich tasks where manual rule-coding is infeasible.
+There are three main types of machine learning approaches, each defined by the nature of the
+data used in the learning process [27]:
+Figure 2.2: Machine learning[27].
+• Supervised learning:
+Supervised learning is based on training an algorithm using labeled data, where both the
+input and the corresponding expected output are known. The algorithm learns to map inputs
+to outputs by identifying patterns within this known dataset. Over time, the model learns to
+associate visual features with the correct label and can generalize to new, unseen examples[27].
+14
+
+
+===== PAGE 26 =====
+
+Chapter 2. Thechnical background and domain understanding
+• Unsupervised learning:
+Unsupervised learning deals with unlabeled data, where no explicit output or target variable
+is provided. The goal is for the algorithm to identify underlying patterns, groupings, or
+structures within the data on its own. It learns to distinguish and cluster data based on
+inherent similarities without prior knowledge of categories[27].
+• Reinforcement learning:
+Reinforcement learning takes a different approach: the algorithm interacts with an environment
+and learns through a system of rewards and penalties. Instead of being told what the correct
+action is, the model receives feedback based on the outcome of its actions. Over time, it
+learns to take sequences of decisions that maximize cumulative rewards[27].
+2.3
+Deep learning
+Deep learning is an advanced subfield of machine learning that leverages multiple computa-
+tional layers to learn complex representations directly from raw data. Each layer extracts
+features from the output of the previous one, forming a hierarchical structure of abstractions
+that enables models to understand intricate patterns by combining simpler ones. Essentially,
+deep learning algorithms mimic human brain functions through artificial neural networks
+composed of dozens or even hundreds of layers of neurons. This approach has empowered
+organizations to solve complex machine learning problems and is tightly linked to advance-
+ments in artificial intelligence, enabling machines to “think” and adapt when faced with new
+challenges[28].
+2.4
+Transfer learning and fine-tuning
+Transfer learning is a machine learning technique where a model developed for one task
+is reused as the starting point for a model on a second task. This approach leverages the
+knowledge gained from the initial task to enhance performance on the new, related task.
+Typically, in transfer learning, the pre-trained model’s layers are kept frozen, and only the
+new layers added for the specific task are trained[3][29][24].
+Fine-tuning is a specific form of transfer learning. It involves taking a pre-trained model and
+continuing the training process on a new, typically smaller, dataset. This allows the model to
+adjust its weights and biases to better suit the new task. Fine-tuning often involves adjusting
+15
+
+
+===== PAGE 27 =====
+
+Chapter 2. Thechnical background and domain understanding
+the learning rate to prevent overwriting the previously learned features too rapidly[17].
+In summary, while both transfer learning and fine-tuning involve utilizing pre-trained models,
+fine-tuning goes a step further by allowing some or all of the pre-trained model’s layers to be
+retrained on the new dataset, enabling the model to better adapt to the specifics of the new
+task
+Figure 2.3: Transfer learning vs fine tuning[12].
+2.5
+Computer vision
+Computer vision is a specialized field within artificial intelligence (AI) that enables machines
+to interpret and understand visual information from the world, such as images and videos.
+It involves developing algorithms and models that allow computers to process visual data,
+recognize patterns, and make decisions based on that information. This capability is akin
+to giving machines the ability to "see" and comprehend their surroundings, facilitating tasks
+that traditionally required human visual perception[5].
+the core tasks in computer vision are:
+• Image classification: Assigning a label to an image based on its content.
+• Object detection: Identifying and locating objects within an image.
+• Image segmentation: Partitioning an image into segments to simplify analysis.
+• Facial recognition: Identifying individuals based on facial features.
+• Motion analysis: Tracking movement and changes within video sequences.
+16
+
+
+===== PAGE 28 =====
+
+Chapter 2. Thechnical background and domain understanding
+2.6
+Convolutional neural network (CNN)
+CNNs are a class of deep neural networks designed to process data with a grid-like topology,
+such as images. Inspired by the human visual cortex, CNNs are adept at capturing spatial
+hierarchies in data through the use of multiple layers that learn increasingly abstract repre-
+sentations. This hierarchical learning enables CNNs to automatically and adaptively learn
+spatial hierarchies of features, from low- to high-level patterns.
+Figure 2.4: The architecture of convolutional neural network[4].
+Core components of CNN architecture
+1. Convolutional layers: The convolutional layer is the fundamental building block of
+a CNN. It applies a set of learnable filters (kernels) to the input data, performing a
+convolution operation that produces feature maps. Each filter activates certain features
+from the input, such as edges, textures, or specific shapes, allowing the network to learn
+spatial hierarchies of features.
+Figure 2.5: Using filters to obtain activation maps[6].
+2. Activation functions: After each convolution operation, an activation function is
+17
+
+
+===== PAGE 29 =====
+
+Chapter 2. Thechnical background and domain understanding
+applied to introduce non-linearity into the model. It filters, normalizes and nonlinearizes
+the dataset and also triggers the input to the perceptron of the next layer. The most
+commonly used activation functions are listed in the table below:
+Table 2.1: Common activation functions used in CNNs.
+Activation
+function
+Equation
+Range
+Gradient
+disappearance
+Figure
+ReLU
+max(0, x)
+[0, ∞)
+Leaky ReLU
+max(αx, x)
+(−∞, ∞)
+Sigmoid
+1
+1+e−x
+(0, 1)
+Tanh
+tanh(x)
+(−1, 1)
+3. Pooling layers: Pooling layers reduce the spatial dimensions (width and height) of
+the feature maps, thereby decreasing the number of parameters and computation in
+the network. This process also helps control overfitting. The most common pooling
+operation is max pooling, which selects the maximum value from a region of the feature
+map, effectively capturing the most prominent features.
+18
+
+
+===== PAGE 30 =====
+
+Chapter 2. Thechnical background and domain understanding
+Figure 2.6: Max-pooling process[22].
+4. Fully connected layers: After several convolutional and pooling layers, the high-level
+reasoning in the neural network is performed via fully connected layers. These layers
+take the flattened output from the previous layers and produce the final output, such as
+class scores. Each neuron in a fully connected layer is connected to all activations in
+the previous layer, allowing for the combination of features across the entire image.
+Figure 2.7: fully connected layers within Convolutional Neural Networks (CNNs)[7].
+2.7
+Domain adaptation
+Domain adaptation is a crucial technique in machine learning and computer vision, enabling
+models trained on one data distribution (source domain) to perform effectively on a different,
+but related, data distribution (target domain). This is particularly important when labeled
+data in the target domain is scarce or unavailable[10].
+19
+
+
+===== PAGE 31 =====
+
+Chapter 2. Thechnical background and domain understanding
+Figure 2.8: Domain adaptation[10].
+2.7.1
+Key definitions
+Domain adaptation addresses the challenge of domain shift, where differences in data dis-
+tributions between the source and target domains can lead to degraded model performance.
+For instance, a model trained on images captured by optical imaging camera may not per-
+form well on images taken by thermal imaging camera due to variations in image quality
+and characteristics. Domain adaptation techniques aim to bridge this gap by aligning the
+feature distributions between domains, allowing the model to generalize better to the target
+domain[20][18].
+• Source domain: This is the data distribution on which the model is trained using
+labeled examples[18].
+• Target domain: This is the data distribution on which a model pre-trained on a
+different domain is used to perform a similar task[18].
+• Domain translation: Domain Translation is the problem of finding a meaningful
+correspondence between two domains[18].
+• Domain shift: A domain shift is a change in the statistical distribution of data between
+the different domains (like the training, validation, and test sets) for a model[18].
+20
+
+
+===== PAGE 32 =====
+
+Chapter 2. Thechnical background and domain understanding
+2.7.2
+Types of domain adaptation
+Domain adaptation methods can be categorized based on the availability of labeled data in
+the target domain:
+• Supervised Domain Adaptation (SDA): Assumes that labeled data is available in
+the target domain, facilitating the adaptation process.
+• Unsupervised Domain Adaptation (UDA): No labeled data is available in the
+target domain. Techniques focus on aligning the feature distributions between the source
+and target domains without relying on target labels.
+• Semi-supervised domain adaptation: A small amount of labeled data is available in
+the target domain, which can be used alongside unlabeled data to improve adaptation.
+2.7.3
+Techniques in domain adaptation
+Several techniques have been developed to facilitate domain adaptation:
+• Feature alignment: Aligning the feature distributions of the source and target domains
+using methods like Maximum Mean Discrepancy (MMD) or adversarial training
+• Adversarial training: Employing domain discriminators to encourage the model to
+learn domain-invariant features.
+• Domain translation: Transforming data from one domain to resemble the other, often
+using generative models like CycleGANs.
+• Self-training: Using the model’s predictions on unlabeled target data as pseudo-labels
+to iteratively refine the model.
+These techniques aim to reduce the discrepancy between domains, enabling the model to
+perform effectively on the target domain.
+2.8
+Object detection algorithms
+Object detection models are image processing algorithms that identify and localize objects in
+an image or video. These models are used in a variety of applications, such as surveillance,
+license plate recognition, face detection, and autonomous driving. Object detection models
+are typically based on covolutional neural networks (CNNs), which are capable of learning to
+extract relevant features from an image and use them to identify objects.
+21
+
+
+===== PAGE 33 =====
+
+Chapter 2. Thechnical background and domain understanding
+2.8.1
+Two stage object detectors
+Two-stage object detectors work in two main steps to find and identify objects in an image.
+First, they look for parts of the image that might contain an object. This is done by a system
+called the Region Proposal Network (RPN). These parts are like guesses of where an object
+could be. Then, in the second step, another part of the system takes a closer look at those
+guessed areas to figure out exactly what object is there (like a car, a person, or a dog) and to
+draw a better box around it.
+These types of detectors are very accurate, but because they do two steps, they take a bit
+more time than simpler methods. Some of the best-known two-stage object detectors are
+R-CNN, Fast R-CNN, Faster R-CNN, and Mask R-CNN.
+2.8.1.1
+R-CNN (Region-based Convolutional Neural Network)
+Introduced in 2014, R-CNN was a pioneering model that combined region proposals with
+deep learning for object detection. It utilized selective search to generate approximately 2,000
+region proposals per image. Each proposal was then processed through a Convolutional Neural
+Network (CNN) to extract features, which were subsequently classified using Support Vector
+Machines (SVMs). While R-CNN significantly improved detection accuracy, its computational
+inefficiency, due to processing each region independently, posed challenges for real-time
+applications[23].
+Figure 2.9: Overview of the R-CNN pipeline[23].
+2.8.1.2
+Fast R-CNN
+To address the inefficiencies of R-CNN, Fast R-CNN was developed. This model processed
+the entire image through a CNN to produce a feature map, from which region proposals were
+extracted using a Region of Interest (RoI) pooling layer. These pooled features were then
+fed into fully connected layers for classification and bounding box regression. By sharing
+22
+
+
+===== PAGE 34 =====
+
+Chapter 2. Thechnical background and domain understanding
+computations across proposals, Fast R-CNN achieved faster training and inference times while
+maintaining high accuracy[2][13].
+2.8.1.3
+Faster R-CNN
+Building upon its predecessors, Faster R-CNN introduced the Region Proposal Network
+(RPN), a fully convolutional network that generates region proposals directly from the feature
+maps. This integration eliminated the need for external proposal methods, enabling end-to-
+end training and further improving detection speed and accuracy. Faster R-CNN became a
+foundational model in object detection, influencing numerous subsequent architectures[23].
+Figure 2.10: Overview of the Faster R-CNN pipeline[23].
+2.8.1.4
+Mask R-CNN
+Extending Faster R-CNN, Mask R-CNN added a parallel branch for predicting segmentation
+masks, allowing the model to perform instance segmentation alongside object detection. It
+replaced the RoI pooling layer with RoIAlign to preserve spatial alignment, enhancing the
+quality of the predicted masks. Mask R-CNN demonstrated versatility in tasks requiring
+precise object delineation, such as medical imaging and autonomous driving[23].
+23
+
+
+===== PAGE 35 =====
+
+Chapter 2. Thechnical background and domain understanding
+Figure 2.11: Overview of the Mask R-CNN pipeline[23].
+2.8.2
+One stage object detectors
+One-stage detectors predict both the class (what the object is) and the exact position of the
+object at the same time. Since they do everything in a single step, they are much faster.
+That’s why they are widely used in real-time object detection. These detectors focus on speed
+and are very fast, but they may be slightly less accurate when detecting oddly shaped objects
+or small objects that are close together. Some of the most well-known one-stage detectors are:
+YOLO, SSD and RetinaNet.
+2.8.2.1
+SSD (Multibox Single Shot Detector)
+The Single Shot MultiBox Detector (SSD) is an object detection algorithm that employs a
+single convolutional neural network (CNN) to simultaneously predict class probabilities and
+bounding box coordinates for a set of default boxes. These default boxes, also known as
+anchor boxes, are predefined with various aspect ratios and scales, enabling the detection
+of objects of different sizes and shapes. The CNN architecture typically comprises a base
+network, such as VGG or ResNet, followed by additional convolutional and pooling layers
+that generate predictions for class probabilities and bounding box coordinates.
+24
+
+
+===== PAGE 36 =====
+
+Chapter 2. Thechnical background and domain understanding
+Figure 2.12: SSD architecture[26].
+2.8.2.2
+YOLO (You Only Look Once)
+YOLO, short for "You Only Look Once," is a real-time object detection system that reframes
+object detection as a single regression problem, directly predicting bounding boxes and class
+probabilities from full images in one evaluation.
+Unlike traditional object detectors that apply a classifier to various regions of an image,
+YOLO processes the entire image with a single neural network. It divides the image into
+an S × S grid, and each grid cell predicts B bounding boxes, confidence scores, and class
+probabilities. This unified approach enables YOLO to achieve high detection speeds while
+maintaining accuracy[30].
+Figure 2.13: Overview of YOLO[30].
+25
+
+
+===== PAGE 37 =====
+
+Chapter 2. Thechnical background and domain understanding
+Its advantages lie in:
+• Speed: YOLO is extremely fast because it does not deal with complex pipelines. It can
+process images at 45 Frames Per Second (FPS). In addition, YOLO reaches more than
+twice the mean Average Precision (mAP) compared to other real-time systems, which
+makes it a great candidate for real-time processing[15].
+From Figure 3.2 below, we observe that YOLO is far beyond the other object detectors with
+91 FPS.
+Figure 2.14: YOLO speed compared to other state-of-the-art object detectors[15].
+• High detection accuracy: YOLO is far beyond other state-of-the-art models in accuracy,
+with very few background errors.[15]
+• Better generalization: This is especially true for the new versions of YOLO, which will
+be discussed later in the article. With those advancements, YOLO has gone a little
+further by providing better generalization for new domains, which makes it great for
+applications relying on fast and robust object detection[15].
+YOLO architecture
+YOLO architecture is similar to GoogleNet. As illustrated below, it has 24 convolutional
+layers, four max-pooling layers, and two fully connected layers[15].
+26
+
+
+===== PAGE 38 =====
+
+Chapter 2. Thechnical background and domain understanding
+Figure 2.15: YOLO architecture[15].
+The architecture works as follows: it first resizes the input image to 448×448 before passing
+it through the convolutional network. A 1×1 convolution is initially applied to reduce the
+number of channels, which is then followed by a 3×3 convolution to generate a cuboidal
+output. The activation function used throughout the network is ReLU, except for the final
+layer, which employs a linear activation function[15].
+Evolution of YOLO versions
+The YOLO family has seen several iterations:
+• YOLOv1: Introduced the unified detection model.
+• YOLOv2 (YOLO9000): Enhanced accuracy and introduced anchor boxes.
+• YOLOv3: Improved small object detection with multi-scale predictions.
+• YOLOv4: Integrated advanced features like CSP and PANet.
+• YOLOv5 to YOLOv7: Focused on model efficiency and deployment flexibility.
+• YOLOv8 and beyond: Continued improvements in accuracy, speed, and adaptability to
+various tasks.
+27
+
+
+===== PAGE 39 =====
+
+Chapter 2. Thechnical background and domain understanding
+Table 2.3: Comparison of recent YOLO versions based on innovations and performance.
+Version
+Year
+Key features &
+innovations
+Performance
+highlights
+YOLOv1
+2016
+Introduced unified
+detection with a
+single CNN pass;
+divided images into
+grids for prediction.
+Achieved 63.4%
+mAP on PASCAL
+VOC; real-time
+speed but struggled
+with small object
+detection.
+YOLOv2
+2017
+Introduced anchor
+boxes, batch
+normalization, and
+higher resolution
+input (YOLO9000).
+Improved accuracy
+and speed; capable
+of detecting over
+9000 object
+categories.
+YOLOv3
+2018
+Utilized Darknet-53
+backbone;
+multi-scale
+predictions; better
+handling of small
+objects.
+Achieved 57.9%
+mAP@0.5;
+maintained real-time
+speed with enhanced
+accuracy.
+YOLOv4
+2020
+Incorporated
+CSPDarknet53,
+PANet, Mish
+activation, and
+CIoU loss; extensive
+data augmentation.
+Achieved 43.5% AP
+on MS COCO;
+balanced speed and
+accuracy effectively.
+YOLOv5
+2020
+Developed by
+Ultralytics;
+implemented in
+PyTorch; introduced
+auto-learning
+bounding boxes.
+Offered multiple
+model sizes (s, m, l,
+x); improved
+training speed and
+deployment
+flexibility.
+28
+
+
+===== PAGE 40 =====
+
+Chapter 2. Thechnical background and domain understanding
+Version
+Year
+Key features &
+innovations
+Performance
+highlights
+YOLOv6
+2022
+Introduced
+EfficientRep
+backbone; optimized
+for industrial
+applications; used
+SIoU loss.
+Achieved 52.8% AP
+with YOLOv6-L;
+focused on real-time
+performance and
+deployment
+efficiency.
+YOLOv7
+2022
+Employed E-ELAN
+architecture;
+introduced model
+re-parameterization
+and dynamic label
+assignment.
+Achieved 56.8% AP;
+surpassed previous
+versions in both
+speed and accuracy.
+YOLOv8
+2023
+Featured a new
+backbone
+(CSPDarknet-AA);
+utilized ELU
+activation and GIoU
+loss; multi-scale
+detection.
+Achieved 1.2%
+higher AP than
+YOLOv7; reduced
+model size by 80.6
+MB, enhancing
+deployment on edge
+devices.
+YOLOv9
+2024
+Integrated GELAN
+architecture and
+Programmable
+Gradient
+Information (PGI)
+for better learning.
+Enhanced accuracy
+and performance by
+retaining crucial
+information
+throughout the
+detection process.
+29
+
+
+===== PAGE 41 =====
+
+Chapter 2. Thechnical background and domain understanding
+2.8.3
+Object detection architecture comparison
+In this project, it is essential to adopt an architecture that supports real-time object detection.
+Therefore, a comparison of existing architectures was conducted based on key criteria such as
+detection speed and accuracy, as shown in table 2.6.
+Table 2.6: Comparison of object detection models based on speed and performance.
+Model
+Detection speed
+Accuracy (mAP)
+Architecture type
+R-CNN
+Very Slow ( 5 FPS)
+High (66–70% on
+VOC)
+Two-stage
+Fast R-CNN
+Slow ( 7–10 FPS)
+High ( 70% on
+VOC)
+Two-stage
+Faster R-CNN
+Moderate ( 15–18
+FPS)
+Very High (up to
+76%)
+Two-stage + RPN
+SSD
+Fast ( 45–60 FPS)
+Good ( 74% on
+VOC)
+One-stage
+YOLOv3
+Very Fast ( 45–70
+FPS)
+Good ( 57.9% on
+COCO)
+One-stage
+YOLOv4/v5/v8
+Extremely Fast
+( 60–120 FPS)
+Very High (up to
+60%+ COCO AP)
+One-stage
+From the previous table, we conclude that the YOLO algorithm is the best option in terms of
+speed and accuracy.
+2.9
+Text recognition models
+Once an object (license plate) is detected, recognition models are used to read and interpret
+the text. This is different from detection models, which only locate where the object is.
+30
+
+
+===== PAGE 42 =====
+
+Chapter 2. Thechnical background and domain understanding
+2.9.1
+CRNN (Convolutional Recurrent Neural Network)
+CRNN is a hybrid architecture that combines Convolutional Neural Networks (CNNs) and
+Recurrent Neural Networks (RNNs) to effectively recognize text in images.
+• Convolutional Layers (CNNs): These layers extract spatial features from the input
+image, capturing patterns like edges and textures.
+• Recurrent Layers (RNNs): The extracted features are then passed through RNNs,
+typically using Long Short-Term Memory (LSTM) units, to model the sequential nature
+of text.
+• Connectionist Temporal Classification (CTC): CTC is employed as the loss function
+to align the predicted sequences with the target text without requiring pre-segmented
+data.
+CRNNs are particularly effective for recognizing regular, horizontally aligned text, such as in
+license plates or printed documents. However, they may struggle with irregular text layouts
+or complex backgrounds.
+2.9.2
+Attention-based encoder-decoder models
+These models enhance the traditional encoder-decoder architecture by incorporating an
+attention mechanism, allowing the model to focus on specific parts of the input image when
+generating each character in the output sequence.
+• Encoder: Typically a CNN that processes the input image to extract feature representa-
+tions.
+• Attention mechanism: This component assigns weights to different parts of the encoded
+features, guiding the decoder to focus on relevant regions for each output step.
+• Decoder: Often an RNN or Transformer that generates the output text sequence, one
+character at a time, using the context provided by the attention mechanism.
+• Attention-based models are well-suited for recognizing text in complex scenes, curved
+layouts, or images with varying orientations. They offer improved accuracy over models
+without attention mechanisms but can be more computationally intensive.
+Attention-based models are well-suited for recognizing text in complex scenes, curved layouts,
+or images with varying orientations. They offer improved accuracy over models without
+31
+
+
+===== PAGE 43 =====
+
+Chapter 2. Thechnical background and domain understanding
+attention mechanisms but can be more computationally intensive.
+2.9.3
+Transformer-based models
+Transformer-based models, leverage the Transformer architecture’s self-attention mechanisms
+to process entire sequences simultaneously, capturing global dependencies effectively.
+• Vision Transformer (ViT) Encoder: Processes the input image by dividing it into patches
+and encoding them into a sequence of embeddings.
+• Transformer decoder: Generates the output text sequence by attending to the encoded
+image representations, producing one character at a time.
+These models excel in handling complex and diverse text recognition tasks, including hand-
+written text, multilingual content, and documents with intricate layouts. They achieve
+state-of-the-art performance but require substantial computational resources for training and
+inference.
+Table 2.8: Comparison of common text recognition models.
+Model
+Architecture
+Strengths
+Ideal applications
+CRNN
+CNN + RNN + CTC
+Efficient for regular
+text sequences
+License
+plates,
+printed text
+Attention-based
+models
+CNN + Attention +
+Decoder
+Handles complex and
+distorted
+text
+lay-
+outs
+Scene text, handwrit-
+ten notes
+Transformer-
+based models
+ViT
+Encoder
++
+Transformer decoder
+Captures global con-
+text, high scalability
+Document
+OCR,
+multilingual
+text
+recognition
+In this work, attention-based encoder-decoder models were selected as the core architecture
+for license plate recognition due to their proven effectiveness in handling complex, irregular,
+and distorted text layouts, as highlighted in the table above. This choice is particularly
+relevant given the challenging scenarios such as blurry images and non-standard text formats
+that require a robust and flexible recognition approach.
+32
+
+
+===== PAGE 44 =====
+
+Chapter 2. Thechnical background and domain understanding
+Conclusion
+This chapter reviewed the foundations and current advances in ALPR systems, focusing
+on AI, deep learning, and computer vision techniques. We then reviewed the main object
+detection models and finally, we discussed text recognition models and justified the choice of
+attention-based encoder-decoder models for handling the complexity of our dataset.
+33
+
+
+===== PAGE 45 =====
+
+Chapter 3
+Data collection and preprocessing
+Contents
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.1
+Detection task
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.2
+Recognition task . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+34
+
+
+===== PAGE 46 =====
+
+Chapter 3. Data collection and preprocessing
+Introduction
+In this chapter, we focus on the first step in implementing a license plate detection model.
+This step consists of preparing the necessary data, which involves collecting and annotating
+We will describe these different steps in the rest of this chapter.
+3.1
+Detection task
+In order to train and evaluate our license plate detection system across diverse visual conditions,
+we began by gathering comprehensive datasets from both optical and thermal domains.
+3.1.1
+Data collection
+Data collection is a critical first step in the development of our ALPR system. This project
+utilizes two separate datasets, each representing a different imaging modality: optical and
+thermal. The data was gathered using the P-Guard surveillance robot, which is equipped with
+high-resolution RGB and thermal cameras. The robot was deployed in real-world outdoor
+settings, capturing images from various angles and distances to simulate realistic license plate
+detection conditions.
+• Optical dataset:
+The optical dataset was captured using RGB cameras and contains high-quality images
+of vehicles under normal lighting conditions. These images have an average resolution of
+1472 × 865 and are rich in detail, color, and contrast , features that traditional ALPR
+systems rely on for accurate detection and recognition. A total of 4910 images were
+collected and are stored in JPG format.
+This dataset serves as the source domain in our domain adaptation framework, providing
+a baseline for training models under ideal visual conditions.
+• Thermal dataset:
+The thermal dataset was captured using infrared cameras, primarily at night or in
+low-visibility environments such as fog or darkness. These images have an average
+resolution of 768 × 576. Due to the nature of thermal imaging, the data lacks color
+and fine textures, making license plate detection and recognition considerably more
+challenging. The dataset includes 1752 images stored in JPG format.
+35
+
+
+===== PAGE 47 =====
+
+Chapter 3. Data collection and preprocessing
+This dataset serves as the target domain, representing conditions where standard optical
+systems typically fail.
+It is important to note that the optical and thermal datasets are independent. They do not
+depict the same vehicles or scenes. This lack of correspondence introduces a domain shift
+which is a gap in visual characteristics between the two datasets that can significantly affect
+model performance.
+Figure 3.7 illustrates the visual differences between license plate images taken with optical
+and thermal cameras.
+(a) Optical
+(b) Thermal
+Figure 3.1: Examples of optical and thermal images.
+3.1.2
+Data annotation
+Once the data is collected, it needs to be annotated. Annotation involves labeling images or
+videos to identify license plates. This task is performed using the following annotation tool.
+LabelImg is a free, open-source graphical image annotation tool designed for labeling object
+bounding boxes in images. Written in Python and utilizing Qt for its graphical interface,
+it supports annotations in formats such as PASCAL VOC (XML), YOLO (TXT), and
+CreateML.[21][19]
+36
+
+
+===== PAGE 48 =====
+
+Chapter 3. Data collection and preprocessing
+Figure 3.2: LabelImg[21].
+During the annotation process, each image was manually labeled by drawing a bounding box
+around every visible license plate. For each annotated region, the assigned class label was
+"license_plate" , representing the object of interest in both the optical and thermal datasets.
+This labeling task was essential for training the object detection model, as it provided the
+ground truth required to learn how to localize and identify license plates across different
+imaging conditions.
+Figure 3.3: Annotated image of a license plate captured with optical camera.
+At the end of the annotation task, an XML file is generated for each image. This file includes
+the image filename, the class name, and the bounding box coordinates (xmin, ymin, xmax,
+ymax) following the Pascal VOC format as shown in Figure 3.4
+37
+
+
+===== PAGE 49 =====
+
+Chapter 3. Data collection and preprocessing
+Figure 3.4: Example of image annotation structured in Pascal VOC XML format.
+Figure 3.4 contains metadata such as the image filename, size, the class label and the
+coordinates of the bounding box (xmin, ymin, xmax, ymax) that localize the object within
+the image. Here’s how to interpret these values:
+• Size of the Image: The first section we’re looking at is under the size tag, which
+describes the overall dimensions and structure of the image itself.
+• Object: Now we move on to the object tag, which tells us about something specific
+that’s been identified in the image—in this case, a license plate. This section is like a
+little dossier on the object, describing what it is, its properties, and where it’s located
+in the image.
+• Bounding box: Now we get to the bndbox (bounding box) section, which tells us
+exactly where the license plate is located within the image.The bounding box is defined
+by four coordinates: xmin, ymin, xmax, and ymax.
+3.1.3
+Data splitting
+In this step, both the optical and thermal datasets were divided into two distinct subsets: a
+training set and a validation set. The split followed an 80/20 ratio to ensure sufficient data
+for model training while preserving enough samples to validate performance.
+• Optical data:
+– Training set: 3928 images (80%)
+38
+
+
+===== PAGE 50 =====
+
+Chapter 3. Data collection and preprocessing
+– Validation set: 982 images (20%)
+• Thermal data:
+– Training set: 1401 images (80%)
+– Validation set: 351 images (20%)
+The training sets were used to fit the object detection model, while the validation sets served
+to assess its performance during training and guide hyperparameter tuning. This approach
+helps mitigate overfitting and ensures the model can generalize to unseen data.
+3.1.4
+Data structure
+To efficiently organize the dataset for the object detection task, a clear directory structure
+was adopted, aligning with the requirements of the training framework.
+The dataset is stored within the Google Drive path /content/gdrive/MyDrive/Mydataset/,
+and is structured into separate subfolders for images and labels. These are further divided
+into training and validation subsets.
+Specifically, the images used for training are placed in /images/train, while validation images
+are stored in /images/val.
+Correspondingly, the annotations (label files) are located in
+/labels/train and /labels/val.
+This structure ensures that each image in the dataset has a corresponding label file with the
+same filename, allowing seamless integration during the model training and evaluation phases.
+Dataset Folder Structure
+/Mydataset
+images
+train
+val
+labels
+train
+val
+Figure 3.5: Dataset directory structure for training and validation.
+To configure the training process, a configuration file named data.yaml was created. This file
+specifies the structure and essential metadata of the dataset.
+39
+
+
+===== PAGE 51 =====
+
+Chapter 3. Data collection and preprocessing
+Figure 3.6: yaml file for the optical data.
+3.1.5
+Data preprocessing for the detection task
+All images from both the optical and thermal datasets were resized to a fixed resolution
+of 640×640 pixels, as required by the YOLO model. To preserve the original aspect ratio,
+images were scaled based on their longer side and padded on the shorter side with black or
+gray borders. This resizing ensured consistent input dimensions and correct alignment of
+bounding box coordinates across the dataset.
+Bounding box annotations were also scaled accordingly. For example, a box from a 2024×1140
+image was resized proportionally to fit the 640×640 frame, maintaining accurate object
+localization post-resizing.
+In addition to resizing, various data augmentation techniques were applied during training to
+enhance model generalization. These included random horizontal flipping (50% probability),
+mosaic augmentation (combining four images into one), and color-based transformations
+such as hue, saturation, and brightness adjustments. Random scaling, translation, and
+AutoAugment policies were also employed to simulate diverse imaging conditions and reduce
+overfitting.
+3.2
+Recognition task
+Following the detection of license plates, the next step focuses on recognizing the alphanumeric
+content within the extracted regions. In the sections that follow, we detail the data collection
+and refinement processes that support this recognition task.
+40
+
+
+===== PAGE 52 =====
+
+Chapter 3. Data collection and preprocessing
+3.2.1
+Data collection
+The recognition task relied on cropped license plate images extracted from the bounding boxes
+generated during the detection phase. These cropped images were collected from both optical
+and thermal datasets. The dataset presents several challenges including blurred characters,
+various scripts and non-uniform angles due to varying vehicle positions and camera viewpoints.
+(a) Optical
+(b) Thermal
+Figure 3.7: Examples of optical and thermal cropped images.
+3.2.2
+Data cleaning
+To ensure high recognition accuracy, a filtering step was performed. Cropped images containing
+unreadable or heavily blurred license plates were removed. These were identified by filenames
+containing the symbol "#", and subsequently discarded to prevent degradation in model
+performance caused by noisy or ambiguous data.
+3.2.3
+Data annotation
+Manual annotation was implicitly performed during the cropping stage: each image was
+named using the correct license plate number it contained. These filenames were aggregated
+into a single labels.txt file, then split into two separate files (train.txt and val.txt) for both
+optical and thermal domains. These label files were later used to generate LMDB datasets.
+3.2.4
+Data structure
+The images and their corresponding labels were then organized and converted into LMDB
+format. Two separate LMDB datasets were created: one for optical images and one for
+thermal images. Each dataset was further split into training and validation subsets. The
+labeling format was straightforward: each cropped image was named using the corresponding
+license plate number, serving as both the filename and the ground truth label.
+41
+
+
+===== PAGE 53 =====
+
+Chapter 3. Data collection and preprocessing
+3.2.5
+Data splitting
+In this step, Each dataset (optical and thermal) was split into two subsets:
+• Optical data:
+– Training set: 5237 images (80%)
+– Validation set: 1310 images (20%)
+• Thermal data:
+– Training set: 877 images (80%)
+– Validation set: 377 images (20%)
+3.2.6
+Data preprocessing for the recognition task
+During preprocessing, optical labels were filtered to remove invalid sequences, those too long
+or containing characters outside a predefined set, then normalized to lowercase and cleaned
+using regular expressions. Thermal labels were set as empty, reflecting their role in domain
+adaptation. Thermal images were also enhanced using histogram equalization to improve
+contrast, then converted back to RGB format. All images were resized to 100×32 pixels
+with aspect ratio preserved via padding to avoid text distortion. Finally, the images were
+normalized to the range [-1, 1] to improve training efficiency.
+Conclusion
+In conclusion, this chapter outlined the key steps in preparing the data for both detection
+and recognition tasks. From collecting optical and thermal images to annotating, splitting,
+and preprocessing them, each step ensured data quality and consistency. For recognition,
+cropped plates were filtered, labeled, and converted into LMDB format. These efforts set a
+strong foundation for building a reliable ALPR system across different imaging conditions.
+42
+
+
+===== PAGE 54 =====
+
+Chapter 4
+Modeling and evaluation
+Contents
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.1
+Model selection strategy . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.2
+Domain adaptation for detection task . . . . . . . . . . . . . . . .
+49
+4.3
+Recognition task (OCR)
+. . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.4
+OCR implementation with domain adaptation . . . . . . . . . . .
+56
+4.5
+Summary of findings
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+4.6
+Deployment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+General conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+43
+
+
+===== PAGE 55 =====
+
+Chapter 4. Modeling and evaluation
+Introduction
+This chapter presents the models used for license plate detection and recognition, as well
+as the techniques applied to evaluate their performance. It is divided into two main parts:
+detection and recognition. Each section details the model architecture, training settings,
+domain adaptation strategies, and performance evaluation using relevant metrics. The goal is
+to demonstrate the effectiveness of our approach in both clear and low-visibility conditions.
+4.1
+Model selection strategy
+This project begins by comparing two state-of-the-art object detection models: Faster R-CNN
+and YOLOv8. These models were trained and evaluated exclusively on the optical dataset to
+identify the one offering the best detection performance under ideal visual conditions. The
+model that achieves the highest performance on the optical domain (evaluated by mAP and
+precision/recall) is then selected for further adaptation to the thermal domain.
+4.1.1
+Implementation of Faster R-CNN with ResNet18 backbone
+To implement the Faster R-CNN model, I used an open-source repository developed by Sovit
+Rath, titled "Faster R-CNN PyTorch Training Pipeline" (available at: https://github.com/
+sovit-123/fasterrcnn-pytorch-training-pipeline.git). This repository was selected
+for its robust support for custom datasets, flexible model configurations, and built-in utilities
+for training, evaluation, and logging—features that align well with the experimental needs of
+this project.
+The model was configured with a ResNet18 backbone, a lightweight yet effective architecture
+chosen for its balance between computational efficiency and detection performance. Specifically,
+the implementation uses the fasterrcnn_resnet18 variant provided in the repository, which
+integrates ResNet18 as the feature extractor within the Faster R-CNN framework. The model
+architecture is as follows:
+44
+
+
+===== PAGE 56 =====
+
+Chapter 4. Modeling and evaluation
+Figure 4.1: Simplified architecture of Faster R-CNN for license plate detection.
+The Faster R-CNN architecture follows a two-stage detection approach. It processes input
+images through several key components as follows:
+• Input Image: The process begins with an input image (e.g., a vehicle scene) that is
+passed into the model for analysis.
+• Backbone CNN (ResNet18): The image is passed through a convolutional neural
+network, ResNet18 in this case, which acts as the feature extractor. It transforms
+the high-resolution image into a lower-resolution feature map that captures essential
+information about the objects present in the scene.
+• Region Proposal Network (RPN): The RPN scans the feature map to identify
+regions that are likely to contain objects. These regions, called proposals, are not
+yet classified—they are simply candidate bounding boxes that may contain objects of
+interest.
+• ROI pooling: The proposed regions are of varying shapes and sizes. ROI (Region of
+Interest) pooling resizes and aligns them into a uniform size, making them suitable for
+further processing by the classifier and regressor layers.
+• Fully connected layers (Classifier + Regressor): Each pooled region is then
+passed through two parallel branches:
+– The classifier assigns a class label to the proposed region ("license plate").
+– The regressor adjusts the bounding box coordinates to better fit the actual object.
+• Output: The final output consists of:
+– Refined bounding boxes that localize objects within the image.
+– Corresponding class labels for each detected object.
+To begin, we outline the model’s hyperparameters and training configuration. The training
+45
+
+
+===== PAGE 57 =====
+
+Chapter 4. Modeling and evaluation
+was initiated with the following command:
+Figure 4.2: Faster rcnn training command.
+• model’s hyperparameters:
+– Epochs: Fixed at 50 after following a step-wise approach. Initially we started with
+a lower number of epochs, then gradually increased this number while monitoring.
+– learning rate: is set at 0.001
+– Batch size: A batch size of 8 was employed, balancing computational efficiency.
+– Weights: The weights used for initializing the Faster R-CNN model were pre-
+trained on the COCO (Common Objects in Context) dataset, a widely used
+benchmark containing 80 object categories across 118,287 training images. This
+pre-training provides a robust starting point by learning general object detection
+features, which are then fine-tuned on the optical dataset for license plate detection.
+4.1.2
+Implementation of YOLOv8
+To implement the YOLOv8 model, I utilized the open-source repository developed by Ultralyt-
+ics, titled "Ultralytics YOLOv8" (available at: https://github.com/ultralytics/ultralytics.git).
+This repository was chosen for its comprehensive support for object detection tasks, ex-
+tensive customization options, and integrated tools for training, validation, and visualiza-
+tion—attributes that perfectly suit the requirements of this project.
+The model was configured with a lightweight architecture, likely the YOLOv8n (nano) variant,
+selected for its optimal balance of computational efficiency and detection accuracy. The model
+architecture details are as follows:
+Figure 4.3: Simplified architecture of yolov8 for license plate detection.
+46
+
+
+===== PAGE 58 =====
+
+Chapter 4. Modeling and evaluation
+The YOLOv8 model follows a one-stage detection architecture, optimized for both speed and
+accuracy. Its structure consists of the following main components:
+• Input image: The input is a resized RGB image (e.g., 640×640 pixels) provided to
+the network for processing.
+• Backbone: This component is responsible for extracting rich hierarchical features from
+the input. It is composed of:
+– Convolutional layers that capture low-level patterns such as edges and textures.
+– C2f Modules, which are enhanced bottleneck blocks designed to improve gradient
+flow and feature reuse while maintaining computational efficiency.
+• SPPF block (Spatial Pyramid Pooling – Fast): Located at the end of the backbone,
+this module pools features at different scales to make the model more robust to variations
+in object size and scale. It significantly boosts the receptive field without increasing
+computation.
+• Neck (Feature fusion): This part merges multi-scale features to better detect objects
+of various sizes. It consists of:
+– Upsampling layers that increase spatial resolution.
+– Concatenation operations that combine features from earlier layers (skip con-
+nections).
+– Additional C2f and convolution layers to refine the merged features.
+• Detection head: This final stage is where the model makes its predictions:
+– It outputs bounding box coordinates for each detected object.
+– It predicts an objectness score indicating the presence of an object.
+– It outputs class probabilities to classify the detected object (in this case, a
+license plate).
+– These predictions are made at three different scales (coarse to fine), allowing
+the model to detect small, medium, and large objects.
+• Output: The final output consists of the predicted bounding boxes, confidence scores,
+and class labels, which are then used to locate and identify license plates in the image.
+The training was initiated with the following command:
+47
+
+
+===== PAGE 59 =====
+
+Chapter 4. Modeling and evaluation
+Figure 4.4: yolov8 training command.
+• model’s hyperparameters:
+– Epochs: 50
+– learning rate: is set at 0.001
+– Batch size: 16
+– Weights: the model was initialized with pretrained weights on COCO dataset
+and fine-tuned for license plate detection.
+4.1.3
+Models evaluation and compraison
+To determine the most suitable model for license plate detection, both Faster R-CNN and
+YOLOv8 were evaluated on the optical dataset using standard object detection metrics,
+including mean Average Precision (mAP), precision, recall, and inference time.
+Both models were trained to detect license plates, and their performance can be compared
+using the provided metrics. Below is a summarized comparison of the key metrics:
+Table 4.1: Comparison of Faster R-CNN and YOLOv8 on license plate detection.
+Metric
+Faster R-CNN
+YOLOv8
+mAP@50:95
+0.5688 (56.9%)
+0.8251 (82.5%)
+mAP@50
+0.8918 (89.2%)
+0.9534 (95.3%)
+Precision
+0.5690 (56.9%)
+0.9800 (98.0%)
+Recall
+0.6204 (62.0%)
+0.8870 (88.7%)
+F1 Score
+0.5930 (59.3%)
+0.9302 (93.0%)
+Based on the quantitative results presented in Table 4.1, the comparative evaluation between
+Faster R-CNN and YOLOv8 reveals clear performance differences.
+While both models
+demonstrate strong capabilities in detecting license plates, YOLOv8 consistently outperforms
+0F1 Score for Faster R-CNN was calculated based on available precision and recall values: F1 = 2 · P ·R
+P +R,
+assuming estimated precision of 90%.
+48
+
+
+===== PAGE 60 =====
+
+Chapter 4. Modeling and evaluation
+Faster R-CNN across multiple metrics. It achieves a notably higher mAP@50:95 (82.5% vs.
+56.9%) and recall (88.7% vs. 62.0%), and also demonstrates excellent precision (98.0%). In
+addition to its accuracy, YOLOv8 benefits from a lightweight design and fast inference time,
+making it more suitable for real-time and resource-constrained applications.
+Conclusion: Based on the evaluation, YOLOv8 is the preferred model for license plate
+detection due to its superior performance, speed, and deployment efficiency.
+4.2
+Domain adaptation for detection task
+Before applying any domain adaptation techniques, the YOLOv8 model trained exclusively
+on optical data was evaluated on the thermal validation set to assess its generalization
+performance across domains. This test highlights the impact of the domain shift between
+optical and thermal modalities.
+The evaluation was conducted using Ultralytics YOLOv8 with the following model summary:
+A total of 351 thermal images were evaluated. The performance metrics are summarized
+below:
+• Precision: 78.5
+• Recall: 47.9
+• mAP@50: 59.8
+• mAP@50:95: 36.7
+• Inference speed: 3.0 ms per image
+These results clearly indicate a performance drop compared to the model’s evaluation on the
+optical validation set. The relatively low recall and mAP metrics reflect the model’s difficulty
+in detecting license plates in thermal imagery without prior exposure to that domain during
+training.
+4.2.1
+Domain adaptation strategy
+The primary objective of this project was to mitigate the domain shift between optical (source)
+and thermal (target) images for license plate detection. Optical images, typically captured
+under visible light conditions, differ significantly from thermal images, which capture heat
+49
+
+
+===== PAGE 61 =====
+
+Chapter 4. Modeling and evaluation
+signatures and often lack fine-grained details like color and texture. This domain shift poses
+a challenge for object detection models, leading to degraded performance when applied to
+thermal imagery. The goal was to adapt a YOLOv8 model to effectively detect license plates
+in thermal images by leveraging domain adaptation techniques.
+4.2.1.1
+Used method
+To address the domain shift, a Domain-Adversarial Neural Network (DANN) was integrated
+into the YOLOv8 framework. The DANN approach facilitates unsupervised domain adaptation
+by adversarially aligning feature distributions across the optical and thermal domains, enabling
+the model to focus on domain-invariant features critical for license plate detection. This
+method was selected for its proven efficacy in handling domain discrepancies without requiring
+labeled target data.
+4.2.1.2
+Architecture changes
+The YOLOv8 architecture was modified to incorporate the DANN framework, introducing
+the following components:
+• Gradient Reversal Layer (GRL): A custom GradientReversalLayer class was
+implemented using a GradientReversalFunction to invert gradients during backprop-
+agation. The reversal coefficient α was dynamically adjusted throughout training,
+following the formula:
+α = min
+
+1.0,
+2.0
+1.0 + e−10.0·progress −1.0
+
+This schedule ensures a gradual transition, strengthening domain alignment as training
+progresses.
+• Domain classifier head: To make the model adapt to both optical and thermal
+images, a domain classifier was added to the YOLOv8 architecture. Feature maps were
+extracted from layers of the backbone. These features were passed through a Gradient
+Reversal Layer (GRL), which reversed the gradients during training to encourage
+domain-invariant features.
+The domain classifier, called RobustDiscriminator, included:
+– Spectral-normalized convolutional layers,
+50
+
+
+===== PAGE 62 =====
+
+Chapter 4. Modeling and evaluation
+– A simple neural network
+– One final output (binary classification: 0 for optical, 1 for thermal),
+– Batch normalization, LeakyReLU (slope = 0.2), and dropout (rate = 0.3).
+• Feature Hooking from the backbone: Intermediate features were extracted from
+the YOLOv8 backbone at layers 4, 6, and 8—corresponding to the C2f modules located
+before the SPPF block. These features were captured using forward hooks and used for
+adversarial training, enabling multi-scale domain alignment.
+• Pseudo-labeling:
+Since thermal images were unlabeled, the model generated pseudo-labels using a con-
+fidence threshold of 0.5. However, these pseudo-labels were not used to compute the
+detection loss but to maintain an unsupervised domain adaptation setup focused on
+feature alignment.
+4.2.1.3
+Domain-adaptive YOLOv8 workflow
+• Shared feature extractor: The YOLOv8 backbone, composed of convolutional layers,
+C2f modules, and the SPPF block, acts as a shared feature extractor for both the
+main detection task and the auxiliary domain classification task. It is trained to learn
+feature representations that are useful for object detection while being invariant to
+domain-specific characteristics.
+• Adversarial training via GRL: A Gradient Reversal Layer (GRL) is inserted between
+the backbone and the domain classifier. During backpropagation, the GRL multiplies
+gradients by a negative scalar α, which gradually increases throughout training. This
+encourages the backbone to produce domain-invariant features by confusing the domain
+classifier, thereby minimizing the domain gap.
+4.2.1.4
+Architecture diagram
+Below is a conceptual diagram illustrating the modified YOLOv8 architecture with the domain
+classifier. The diagram highlights the shared feature extractor, the GRL, and the domain
+classifier head, showing how features are processed for both detection and domain alignment.
+51
+
+
+===== PAGE 63 =====
+
+Chapter 4. Modeling and evaluation
+Figure 4.5: The architecture of the proposed thermal-to-visible domain adaptation for detection.
+4.2.2
+Implementation
+The implementation was built upon the open-source Ultralytics YOLOv8 repository1. This
+repository was chosen for its comprehensive support for object detection, flexible architecture
+modifications, and built-in training utilities, which facilitated the integration of the Domain-
+Adversarial Neural Network (DANN) framework.
+Training hyperparameters
+• Epochs: 70, to ensure convergence of detection and domain adaptation objectives.
+This was increased from the initially tested 50 epochs to allow for more robust feature
+alignment.
+• Batch size: 16, with equal representation of optical and thermal images per batch.
+• Learning rate: 0.001 using the AdamW optimizer with a cosine annealing schedule.
+A separate RMSprop optimizer with an initial learning rate of 10−4 was used for the
+discriminator, warmed up over the first 100 steps.
+Dataset
+• Source domain (Optical): Labeled images, serving as the supervised training set.
+• Target domain (Thermal): Unlabeled thermal images (351 images in the validation
+set), with pseudo-labels generated during training.
+1https://github.com/davidjaw/Domain-adaptation-object-detection-with-YOLOv8.git
+52
+
+
+===== PAGE 64 =====
+
+Chapter 4. Modeling and evaluation
+4.2.3
+Evaluation after adaptation
+The domain-adapted YOLOv8 model was evaluated on the thermal validation set (351 images),
+yielding the following performance metrics:
+• Precision: 0.964
+• Recall: 0.382
+• mAP@50: 0.674
+• mAP@50–95: 0.439
+• Inference Speed: 0.1 ms (preprocess), 1.6 ms (inference), 1.3 ms (postprocess) —
+Total: 3.0 ms per image
+Comparison: Pre-adaptation vs. Post-adaptation
+Table 4.2 presents a comparison between the baseline model (without domain adaptation)
+and the domain-adapted model on thermal data.
+Table 4.2: Performance comparison on thermal validation set.
+Metric
+Baseline (Pre-adaptation)
+Adapted model
+Improvement (%)
+Precision
+0.785
+0.964
++22.8%
+Recall
+0.479
+0.382
+−20.3%
+mAP@50
+0.598
+0.674
++12.7%
+mAP@50–95
+0.367
+0.439
++19.6%
+Total Speed (ms)
+4.5
+3.0
+−33.3%
+Analysis
+The adapted model shows significant improvements in:
+• Precision: Increased by 22.8%, meaning fewer false positives.
+• mAP scores: Notably higher mAP@50 (+12.7%) and mAP@50–95 (+19.6%), reflecting
+better overall detection and localization performance.
+• Speed: A reduction in inference time from 4.5 ms to 3.0 ms per image enhances
+suitability for real-time deployment.
+However, recall dropped by 20.3%, indicating that some license plates are missed in the
+53
+
+
+===== PAGE 65 =====
+
+Chapter 4. Modeling and evaluation
+thermal domain.
+Effectiveness of the adaptation strategy
+The integration of Domain-Adversarial Neural Networks (DANN) effectively reduced the
+domain gap. By adversarially aligning feature distributions through the Gradient Reversal
+Layer (GRL) and the RobustDiscriminator, the model learned domain-invariant features.
+This led to improved generalization across domains without relying on thermal image labels.
+Remaining challenges and limitations
+• Thermal image limitations: Thermal images lack detailed textures, which hinders
+the detection of license plates, particularly in low-contrast scenarios.
+• Recall-precision trade-off: While the model became more confident and precise, it
+lost some sensitivity, reducing recall.
+4.3
+Recognition task (OCR)
+After preparing the cropped license plate images, the recognition phase aimed to accurately
+decode the characters contained within each plate. This task was addressed using a deep
+learning-based OCR model specifically tailored to the characteristics of tunisian license plates.
+The following subsections describe the architecture, dataset, implementation details, and
+evaluation metrics used throughout the OCR process.
+4.3.1
+Model used for OCR
+We used a text recognition model from the open-source repository Deep text recognition
+Benchmark2. The architecture was based on:
+• Feature extraction: ResNet
+• Prediction method: Attention-based decoder
+• No transformation or sequence modeling modules were applied.
+The model takes RGB images of license plates (resized to 32×100 pixels) and predicts the
+sequence of characters. The allowed character set was restricted to digits and Tunisian license
+2https://github.com/clovaai/deep-text-recognition-benchmark
+54
+
+
+===== PAGE 66 =====
+
+Chapter 4. Modeling and evaluation
+plate letters (0123456789BCEFHKMNRTW).
+4.3.2
+Dataset and preprocessing
+The training was performed only on optical license plate images:
+• Training data: 5,237 cropped images in LMDB format
+• Validation data: 1,310 cropped images in LMDB format
+All images were filtered to ensure that the labels only contained allowed characters and did
+not exceed 9 characters. Images were padded to preserve aspect ratio.
+4.3.3
+Implementation details
+The model was trained for 15,000 iterations with the following setup:
+• Batch size: 128
+• Learning rate: 0.0005 with the Adam optimizer
+• Gradient clipping: 5.0
+• Validation: Every 1000 iterations
+• Seed: 1111 for reproducibility
+4.3.4
+Evaluation metrics
+Two metrics were used to evaluate the OCR model:
+• Accuracy: The percentage of predictions that exactly match the ground truth.
+• Normalized Edit Distance (normED): Measures the character-level difference
+between the prediction and ground truth, normalized by the length of the ground truth.
+The best accuracy was reached at iteration 14,000. The model achieved:
+• Accuracy: 94.809%
+• Normalized Edit Distance (normED): 0.99
+In this work, we mainly focused on the final accuracy of full license plate recognition.
+55
+
+
+===== PAGE 67 =====
+
+Chapter 4. Modeling and evaluation
+4.4
+OCR implementation with domain adaptation
+To address the performance gap between optical and thermal data, we applied domain
+adaptation techniques. The next sections outline the baseline results and the improvements
+achieved through this approach.
+4.4.1
+Baseline evaluation on optical and thermal
+The OCR model, initially trained on optical data, achieved high performance on the optical
+validation set (1,310 samples), with a best accuracy of 94.809% at iteration 14,000, as reported
+in the section above. The model was then evaluated on the thermal validation set (377
+samples) without domain adaptation, using the pre-trained weights from the trained model.
+The accuracy on thermal data was 29.178%, The significant performance gap between optical
+and thermal domains highlights the domain shift, as thermal images lack the texture and
+contrast of optical images, making character recognition more challenging.
+4.4.2
+Domain adaptation strategy for OCR
+To address the domain shift between optical and thermal license plate images, a second training
+phase was conducted using the deep text recognition benchmark framework, integrating domain
+adaptation techniques:
+• Batch composition: A total batch size of 127 was used during training.
+• Domain-adversarial loss: A lightweight neural network (domain classifier) was added
+to distinguish whether the extracted features came from optical or thermal images.
+It predicted values close to 1 for optical and 0 for thermal inputs. A binary cross-
+entropy loss was used, weighted by domain_lambda = 0.7. This adversarial setup
+encouraged the model to learn domain-invariant features, making optical and thermal
+data representations more similar and reducing the domain gap.
+• Pseudo-labeling: the model generated pseudo-labels using a confidence threshold of
+0.5
+• Training settings: The model was trained for 20,000 iterations with an initial learning
+rate of 0.001 using the Adam optimizer. and validation was performed every 1,000
+iterations using the thermal validation set.
+56
+
+
+===== PAGE 68 =====
+
+Chapter 4. Modeling and evaluation
+4.4.3
+Evaluation after adaptation
+The domain-adapted model was evaluated on the thermal validation set (377 samples) over
+20,000 iterations. The best performance was achieved at iteration 12,000, with an accuracy of
+38.727% and a norm_ED of 0.80.
+Analysis and observations
+Improvement on thermal data: The integration of domain
+adaptation techniques led to a noticeable improvement in OCR performance on thermal
+images, with accuracy increasing from 29.178% to 38.727%, representing a relative gain of
+approximately 32.7%. This enhancement was mainly due to the domain-adversarial loss,
+which helped align feature representations between the optical and thermal domains, and
+the use of pseudo-labeling, which allowed the model to benefit from unlabeled thermal data
+during training.
+Remaining challenges: Despite this improvement, the model’s performance on thermal
+images remains significantly lower than on optical images (38.727% vs. 94.5% accuracy). This
+gap highlights the inherent difficulties of thermal imagery, such as lower contrast, reduced
+detail, and lack of texture, which make text recognition more challenging in the thermal
+domain.
+4.5
+Summary of findings
+Detection model summary
+The detection model, built on YOLOv8 and enhanced with
+domain-adversarial training (DANN), showed clear improvements in detecting license plates
+on thermal images after domain adaptation.
+The domain-adversarial training strategy, which extracted features from multiple levels of
+the backbone, effectively reduced the domain gap between optical and thermal images. This
+resulted in better localization (mAP@50–95) and a significant decrease in false positives
+(precision). However, the decrease in recall suggests the model still misses some license plates
+in thermal images—likely due to lower image quality, poor contrast, or reduced detail in the
+thermal domain.
+Recognition model summary
+The OCR model, based on an attention-based encoder-
+decoder with a ResNet backbone, delivered strong results on optical data. On the optical
+validation set, it achieved an accuracy of 94.809%.
+57
+
+
+===== PAGE 69 =====
+
+Chapter 4. Modeling and evaluation
+However, without domain adaptation, performance on thermal images was significantly lower.
+On the thermal validation set, the model reached only 29.178% accuracy.
+After applying domain adaptation using domain-adversarial training (DANN) and pseudo-
+labeling over 20,000 training iterations, thermal performance improved notably:
+• Accuracy: 38.727%
+(+32.7% relative improvement)
+These results highlight the benefit of combining adversarial training and pseudo-labeling for
+domain adaptation.
+Domain adaptation impact
+Domain adaptation clearly improved the system’s perfor-
+mance on thermal data, enhancing both detection and recognition. While the model became
+more reliable, thermal results still lag behind optical, suggesting further refinement is needed
+for full robustness.
+4.6
+Deployment
+To demonstrate the effectiveness of the proposed system in a real-world scenario, the final
+step involves deploying the detection and recognition pipeline on a thermal video of moving
+vehicles. The video is provided by the supervisor and consists of cars captured using a thermal
+camera. The goal is to process this video frame by frame using the trained YOLOv8 detection
+model (with domain adaptation) to locate license plates, followed by the OCR model to read
+their content.
+Conclusion
+This chapter presented the modeling and evaluation of our license plate detection and recog-
+nition system. We detailed the implementation of both models, discussed training strategies,
+and analyzed performance before and after domain adaptation. The results demonstrate the
+effectiveness of our approach and lay the groundwork for real-world deployment and future
+enhancements.
+58
+
+
+===== PAGE 70 =====
+
+General conclusion
+As part of this graduation project, we undertook the development of an automatic license
+plate recognition system capable of operating in both optical and thermal imaging conditions.
+This project was carried out in collaboration with Enova Robotics, a company specializing in
+artificial intelligence and intelligent robotics solutions.
+Our work followed an iterative methodology inspired by CRISP-DM, ensuring a structured
+and goal-driven process. We began with a deep understanding of the domain, identifying the
+key challenges associated with license plate detection under varying lighting conditions. This
+was followed by the data preparation phase, where we collected and preprocessed both optical
+and thermal images to build a suitable dataset for training. During the modeling phase,
+we explored and trained different architectures, integrating domain adaptation strategies to
+bridge the performance gap between optical and thermal modalities. Finally, we conducted
+thorough evaluation steps to assess the system’s accuracy, robustness, and efficiency under
+realistic conditions.
+By the end of the project, we successfully achieved our main objective: building a detection
+and recognition system capable of functioning across multiple domains. Our solution is
+expected to add value to Enova Robotics by enhancing their surveillance capabilities and
+supporting vehicle monitoring in low-visibility environments.
+In conclusion, this project has been a truly enriching experience, allowing us to strengthen our
+technical skills in computer vision and deep learning, while also facing real-world constraints
+and deployment challenges. We are grateful for the opportunity to contribute to a meaningful
+and innovative initiative and hope that our work will have a positive and lasting impact on
+intelligent monitoring systems in the field.
+59
+
+
+===== PAGE 71 =====
+
+References
+[1]
+Ai, https://serpstat.com/blog/5-cutting-edge-technologies-to-explore-
+using-neural-networks/.
+[2]
+G. Boesch, The fundamental guide to faster r-cnn, https://viso.ai/deep-learning/
+faster-r-cnn-2/.
+[3]
+J. Brownlee, A gentle introduction to transfer learning for deep learning.
+[4]
+Cnn, https://botpenguin.com/glossary/deep-neural-network.
+[5]
+Computer vision - an overview, https://www.sciencedirect.com/topics/computer-
+science/computer-vision.
+[6]
+Conv, https://machine-learning-engineer.tistory.com/12.
+[7]
+Convolutiona neural network, https://medium.com/@alejandro.itoaramendia/
+convolutional-neural-networks-cnns-a-complete-guide-a803534a1930.
+[8]
+DataScience-PM, Semma - data science process, https://www.datascience-pm.com/
+semma/.
+[9]
+J. Debuse, B. De la Iglesia, C. Howard, and V. Rayward-Smith, “Building the kdd
+roadmap: A methodology for knowledge discovery”, Industrial Knowledge Management:
+A Micro-level Approach, pp. 179–196, 2001.
+[10]
+Domain adaptation, https://en.wikipedia.org/wiki/Domain_adaptation.
+[11]
+Enova, https://www.enovarobotics.eu/logo/.
+[12]
+Ft, https://www.linkedin.com/posts/avi-chawla_machinelearning-datascience-
+activity-7127920678300753923-tVKY?utm_source=share&utm_medium=member_
+android&rcm=ACoAADyCa5cByAvKoW3ON0d7rs8UuXTnqeGEOe0.
+[13]
+R. B. Girshick, “Fast R-CNN”, CoRR, vol. abs/1504.08083, 2015. arXiv: 1504.08083.
+[14]
+Kdd, https://www.geeksforgeeks.org/kdd-process-in-data-mining/.
+[15]
+Z. Keita, You only look once: Unified, real-time object detection, https://www.datacamp.
+com/blog/yolo-object-detection-explained.
+60
+
+
+===== PAGE 72 =====
+
+References
+[16]
+J. N. Kok, E. J. Boers, W. A. Kosters, P. Van der Putten, and M. Poel, “Artificial
+intelligence: Definition, trends, techniques, and cases”, Artificial intelligence, vol. 1,
+no. 270-299, p. 51, 2009.
+[17]
+D. Kumar, Difference between fine-tuning and transfer learning.
+[18]
+R. Kundu, Domain adaptation in computer vision: Everything you need to know, https:
+//www.v7labs.com/blog/domain-adaptation-guide.
+[19]
+Labelimg, https://sourceforge.net/projects/labelimg.mirror/.
+[20]
+J. Li, Domain adaptation techniques for cross-environmental vision tasks, https://
+medium.com/@jingli0155/domain-adaptation-techniques-for-cross-environmental-
+vision-tasks-97065ac9815d.
+[21]
+A. Medewar, Labelimg: The ultimate tool for efficient data annotation, https://
+abhishri-medewar.medium.com/labelimg-the-ultimate-tool-for-efficient-
+data-annotation-b2fea57fce83.
+[22]
+Pool, https://medium.com/better-programming/understanding-an-ai-algorithm-
+that-can-see-5f74bcdadc7b.
+[23]
+Region based convolutional neural networks, https://en.wikipedia.org/wiki/
+Region_Based_Convolutional_Neural_Networks?utm_source=chatgpt.com.
+[24]
+S. Saxena, Fine-tuning vs. transfer learning: An in-depth guide with code examples.
+[25]
+Semma, https://michael-fuchs-python.netlify.app/2020/08/21/the-data-
+science-process-crisp-dm/.
+[26]
+Ssd network, https://www.researchgate.net/figure/The-explained-architecture-
+of- SSD- 27- The- architecture- of- SSD- is- based- on- the- VGG- 16_fig10_
+352709239.
+[27]
+A. Systems, What’s the difference between machine learning and deep learning?, https:
+/ / medium . com / @aristeksystems / whats - the - difference - between - machine -
+learning-and-deep-learning-7a3e188cecd8/.
+[28]
+Z. L. Wang, H. Yang, A. C. Bovik, and X. Wang, Deep learning.
+[29]
+What is transfer learning?
+[30]
+You only look once: Unified, real-time object detection, https://arxiv.org/abs/1506.
+02640?utm_source.
+61
+
+
+===== PAGE 73 =====
+
+02/06/2025 10:19
+Turnitin - Rapport de Similitude - Template_PFE_2024_2025_Chaima.pdf
+https://www.turnitin.com/newreport_classic.asp?lang=fr&oid=2687612814&ft=1&bypass_cv=1
+1/9
+Turnitin Rapport de Similitude
+Traité le: 02-juin-2025 10:00 CET
+Numéro : 2687612814
+Nombre de mots : 10806
+Envoyé : 9
+Template_PFE_2024_2025_Chaima.pdf Par Rania MKHININI GAHAR
+ 
+Indice de Similitude
+5%
+Internet Sources:
+4%
+Publications :
+8%
+Copies de l'étudiant :
+5%
+Similarité par source
+Visualiseur de document
+Inclure les citations Inclure la bibliographie exclusion des correspondances < 1 %
+ Mode : rapport condensé (classique)
+ Imprimer
+télécharger
+2% match (Internet depuis le 24-mars-2024)
+https://www.datacamp.com/blog/yolo-object-detection-explained?gad_source=1&gclid=Cj0KCQjw-r-vBhC-
+ARIsAGgUO2B1wkGXi6H1WyUNzksorA80GlKHrFn_s7PtUBYJYwfg_3rUoYx3ft0aAvA6EALw_wcB&utm_adgroupid=152984013534&utm_adpostion=&utm_campaignid=19589720824&utm_creative
+2222697811358
+1% match (Pradeep Singh, Balasubramanian Raman. "Deep Learning Through the Prism of Tensors", Springer Science and Business Media LLC, 2024)
+Pradeep Singh, Balasubramanian Raman. "Deep Learning Through the Prism of Tensors", Springer Science and Business Media LLC, 2024
+1% match (Travaux des étudiants depuis le 24-mars-2023)
+Submitted to University of Lancaster on 2023-03-24
+1% match (Internet depuis le 27-nov.-2024)
+https://oleg-dubetcky.medium.com/project-management-for-data-science-kdd-semma-and-crisp-dm-fe9d03d3ab6c
+1% match (Travaux des étudiants depuis le 26-sept.-2023)
+Submitted to University of Carthage on 2023-09-26
+1% match (Travaux des étudiants depuis le 29-déc.-2024)
+Submitted to The Scientific & Technological Research Council of Turkey (TUBITAK) on 2024-12-29
+Dedications To my father I pay tribute to you for the strength, courage, and wisdom you embody. Your example taught me the value of hard work, honesty, and
+perseverance. Without your unwavering support, this project would not have been possible. Thank you for your constant presence and love. To my mother Your
+tenderness, your attentive ear, and your unconditional love have carried me throughout my journey. You are my anchor and my source of comfort in difficult times. This
+work is also the result of your dedication and sacrifice. Thank you for everything, Mom. Chaima BDIRI Acknowledgement I would like to express my deep gratitude to all
+those who contributed, directly or indirectly, to the completion of this final-year project. I would especially like to thank my academic supervisor, Mrs. Rania Mkhinini
+Gahar, for her insightful advice and guidance throughout this work. I am also grateful to Mr. Amir Ismail, my professional supervisor, for his availability, technical support,
+and valuable advice. Finally, I thank my family and friends for their constant moral support. ii Abstract hello iii Table of Contents Dedications .......................................
+Acknowledgement.................................... Abstract......................................... Table des figures Liste des tableaux Abbreviations and acronyms . . . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . 1 General Context 1.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.2 Host Company: Enova Robotics . . . . . . . . . . . . . . . . . . . .
+. . . . . 1.3 Project Description . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.3.1 Problem Statement . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.3.2 Project Objective . . . .
+. . . . . . . . . . . . . . . . . . . . . . . . . 1.4 Methodology and Project Planning . . . . . . . . . . . . . . . . . . . . . . . 1.4.1 Adopting a Project Management Methodology . . . . . . . .
+. . . . . 1.4.2 Knowledge Discovery in Databases (KDD) . . . . . . . . . . . . . . . 1.4.3 SEMMA . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1.4.4 CRoss-Industry Standard
+Process for Data Mining (CRISP-DM) . . . 1.4.5 Comparison of Methodologies . . . . . . . . . . . . . . . . . . . . . . 1.4.6 Methodology Selection . . . . . . . . . . . . . . . . . . . . . . .
+. . . 1.4.7 Project Planning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2 State of the Art Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.1 Problem
+statement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.2 Proposed Solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.3 Artificial Intelligence . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . . . . 2.4 Machine learning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.5 Deep learning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.6
+Transfer learning and Fine-tuning . . . . . . . . . . . . . . . . . . . . . . . . 2.7 Computer Vision . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.8 Convolutional neural network
+(CNN) . . . . . . . . . . . . . . . . . . . . . . 2.8.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . iv i ii iii vi vii ix 1 2 2 2 2 3 3 3 3 4 5 7 7 7 2.9 2.8.2 Core
+Components of CNN Architecture . . . . . . . . . . . . . . . . . Domain adaptation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.9.1 Key definitions . . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . . 2.9.2 Types of Domain Adaptation . . . . . . . . . . . . . . . . . . . . . . 2.9.3 Techniques in Domain Adaptation . . . . . . . . . . . . . . . . . . . . 2.10 Object
+
+
+===== PAGE 74 =====

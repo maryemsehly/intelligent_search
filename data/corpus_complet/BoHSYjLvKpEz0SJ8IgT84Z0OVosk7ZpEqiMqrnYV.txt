@@ -1,0 +1,3634 @@
+===== PAGE 1 =====
+
+ 
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de 
+Mahdia 
+ 
+MEMOIRE 
+ 
+ N° d’ordre: MP-EXR-2;2025-017 
+Ministère de l’Enseignement Supérieur et 
+de la Recherche Scientifique  
+ 
+ 
+ 
+MEMOIRE  
+                                                 
+Présenté à 
+Institut Supérieur d’Informatique de Mahdia 
+ 
+Effectué à 
+OneFold Tech    
+ 
+En vue de l’obtention du diplôme de 
+Master Professionnel Computer Engineering: 
+Expert Réseaux 
+ 
+Elaboré par 
+GUEDDI SALMA 
+ 
+     
+Conception et Implémentation d'un 
+pipeline DevSecOps 
+   
+              
+              Soutenu le :   13 décembre 2025  , devant le  jury composé de : 
+ 
+ 
+ 
+ 
+ 
+ 
+Année universitaire  2024 – 2025 
+            Président 
+: Ghannay Sana 
+            Rapporteur 
+: Ines Ben Hassine 
+            Encadrant Académique 
+: Bessem Zaabar 
+  Encadrant Professionnel 
+: Feres Ayadi 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 2 =====
+
+DÉDICACES
+À mes parents
+Votre amour, vos sacrifices et votre foi en moi ont illuminé chaque étape de ce parcours.
+Ce travail est le fruit de votre soutien sans faille.
+À ma famille
+Merci pour votre présence, vos rires et vos encouragements qui ont rendu ce chemin plus
+léger.
+À mes mentors et amis
+Votre confiance a été mon moteur. Merci de m’avoir poussée à aller toujours plus loin.
+À mes lecteurs
+Puissiez-vous trouver dans ces pages une source d’inspiration, comme d’autres œuvres ont
+nourri la mienne.
+À moi-même
+Merci de ne pas m’avoir laissée tomber, d’avoir persévéré malgré les obstacles
+Avec gratitude,
+Gueddi Salma
+ii
+
+
+===== PAGE 3 =====
+
+REMERCIEMENTS
+Nous tenons tout d’abord à exprimer nos sincères remerciements à notre encadrant
+pédagogique, M. Zabbar Bessem, pour son accompagnement, ses précieux conseils et
+la confiance qu’il nous a accordée tout au long de la réalisation de ce projet. Aucun mot
+ne saurait traduire pleinement notre profonde reconnaissance pour sa disponibilité et son
+soutien constant.
+Nos remerciements vont également aux membres du jury, pour l’intérêt qu’ils ont
+porté à notre travail, ainsi que pour la pertinence de leurs remarques et recommandations,
+qui ont contribué à enrichir la qualité de ce mémoire.
+Nous souhaitons également adresser toute notre gratitude à nos encadrants au sein de
+la société OneFold Tech, M. Fares Ayadi et M. Ahmed Akrout, pour leur encadre-
+ment bienveillant, leur disponibilité et le suivi rigoureux dont nous avons bénéficié durant
+toute notre période de stage. Leur soutien, leurs conseils techniques et leur confiance ont
+grandement contribué à la réussite de cette expérience professionnelle.
+Nos remerciements s’étendent à l’ensemble de nos professeurs de l’Institut Supérieur
+d’Informatique de Mahdia, pour la qualité de leur enseignement, leur engagement et
+l’excellence de la formation qu’ils dispensent.
+Enfin, nous tenons à remercier toutes les personnes qui, de près ou de loin, ont participé
+à la réussite de ce travail, par leur aide, leurs encouragements ou simplement leur présence
+bienveillante.
+iii
+
+
+===== PAGE 4 =====
+
+TABLE DES MATIÈRES
+1
+Présentation du cadre du projet
+3
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Présentation de l’organisme d’accueil . . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+Cadre du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3.1
+Étude critique de l’existant
+. . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.2
+Problématique
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.3
+Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.4
+Méthodologie de gestion de projet . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4.1
+Étude comparative des méthodologies
+. . . . . . . . . . . . . . . .
+6
+1.4.2
+Méthodologie choisie . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+2
+Etat del’art
+8
+2.1
+L’approche DevSecOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1.1
+Présentation de DevSecOps . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1.2
+DevOps vs DevSecOps . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1.3
+Le cycle de vie DevSecOps . . . . . . . . . . . . . . . . . . . . . . .
+10
+iv
+
+
+===== PAGE 5 =====
+
+TABLE DES MATIÈRES
+2.1.4
+Avantages de DevSecOps . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.2
+L’approche CI/CD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.1
+Définition de CI/CD . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.2
+Intégration Continue (CI) . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.3
+Déploiement Continu (CD)
+. . . . . . . . . . . . . . . . . . . . . .
+14
+2.2.4
+Continuous Delivery vs Continuous Deployment . . . . . . . . . . .
+16
+2.3
+Architecture Cloud et déploiement sécurisé via DevSecOps . . . . . . . . .
+17
+3
+Analyse des Besoins
+19
+3.1
+Besoins Fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.2
+Besoins Techniques . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.3
+Besoins Non Fonctionnels
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4
+Choix Technologique et Architectural . . . . . . . . . . . . . . . . . . . . .
+21
+3.4.1
+Technologies Utilisées
+. . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4.2
+Tests Unitaires et Fonctionnels
+. . . . . . . . . . . . . . . . . . . .
+21
+3.4.3
+GitHub et GitHub Actions . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.4.4
+Docker et Docker Compose
+. . . . . . . . . . . . . . . . . . . . . .
+25
+3.4.5
+SonarQube
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.4.6
+Semgrep . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.4.7
+OWASP Dependency-Check . . . . . . . . . . . . . . . . . . . . . .
+28
+3.4.8
+Trivy
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.4.9
+Ansible
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.4.10 Prometheus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.4.11 Grafana . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.4.12 PuTTY et VPS . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.4.13 Slack . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+v
+
+
+===== PAGE 6 =====
+
+TABLE DES MATIÈRES
+3.5
+Intégration à l’écosystème CNCF . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.6
+Architecture globale de la solution
+. . . . . . . . . . . . . . . . . . . . . .
+34
+4
+Configuration et orchestration de l’infrastructure
+37
+4.1
+Environnement de travail
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.1.1
+Contexte
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.1.2
+Environnement matériel . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.1.3
+Choix de l’utilisation d’un VPS réel . . . . . . . . . . . . . . . . . .
+39
+4.1.4
+Choix de WSL2 au lieu de machine virtuelle . . . . . . . . . . . . .
+40
+4.2
+Environnement de développement intégré (IDE) . . . . . . . . . . . . . . .
+41
+4.3
+Installation et configuration des outils pour le pipeline CI/CD sécurisé
+. .
+43
+4.4
+Comparaison entre un Runner hébergé et un Runner auto-hébergé . . . . .
+44
+4.4.1
+Runner hébergé par GitHub . . . . . . . . . . . . . . . . . . . . . .
+44
+4.4.2
+Runner auto-hébergé (Self-Hosted) . . . . . . . . . . . . . . . . . .
+45
+4.4.3
+Comparaison synthétique
+. . . . . . . . . . . . . . . . . . . . . . .
+45
+4.5
+Environnement de développement fullstack conteneurisé avec Docker Com-
+pose . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.5.1
+Exposition des services frontend et backend avec Nginx . . . . . . .
+46
+4.5.2
+Contrôle de version avec Git . . . . . . . . . . . . . . . . . . . . . .
+47
+4.5.3
+Configuration de SonarQube . . . . . . . . . . . . . . . . . . . . . .
+48
+4.5.4
+Configuration d’Ansible
+. . . . . . . . . . . . . . . . . . . . . . . .
+49
+5
+Implémentation du pipeline DevSecOps et intégration des outils de sé-
+curité
+51
+5.1
+Intégration de Git et déclenchement via GitHub Actions
+. . . . . . . . . .
+52
+5.2
+Architecture des pipelines CI/CD . . . . . . . . . . . . . . . . . . . . . . .
+52
+5.3
+Installation des dépendances et exécution des tests unitaires . . . . . . . .
+53
+vi
+
+
+===== PAGE 7 =====
+
+TABLE DES MATIÈRES
+5.3.1
+Tests unitaires avec Jest (frontend) . . . . . . . . . . . . . . . . . .
+53
+5.3.2
+Tests unitaires avec JUnit 5 (backend) . . . . . . . . . . . . . . . .
+53
+5.4
+Analyse statique du code (SAST) . . . . . . . . . . . . . . . . . . . . . . .
+54
+5.4.1
+Analyse statique avec Semgrep
+. . . . . . . . . . . . . . . . . . . .
+55
+5.4.2
+Analyse statique avec SonarQube
+. . . . . . . . . . . . . . . . . .
+56
+5.5
+Analyse des dépendances avec SCA (Software Composition Analysis) . . .
+58
+5.5.1
+Analyse de sécurité SCA avec Snyk . . . . . . . . . . . . . . . . . .
+59
+5.5.2
+Traitement de la vulnérabilité détectée par Snyk . . . . . . . . . . .
+60
+5.5.3
+Rapport OWASP Dependency-Check . . . . . . . . . . . . . . . . .
+61
+5.6
+Gestion des Images Docker avec GitHub Actions . . . . . . . . . . . . . . .
+62
+5.6.1
+Construction des Images Docker Frontend et Backend
+. . . . . . .
+63
+5.6.2
+Analyse de Sécurité des Images Docker (Trivy)
+. . . . . . . . . . .
+63
+5.6.3
+Connexion à Docker Hub (Login) . . . . . . . . . . . . . . . . . . .
+64
+5.6.4
+Publication des Images Docker sur Docker Hub (Push) . . . . . . .
+65
+5.6.5
+Artifacts générés par le pipeline . . . . . . . . . . . . . . . . . . . .
+66
+5.7
+OWASP et tests dynamiques DAST . . . . . . . . . . . . . . . . . . . . . .
+67
+5.7.1
+OWASP ZAP : un outil DAST open-source
+. . . . . . . . . . . . .
+67
+5.7.2
+Méthode intégrée au pipeline CI/CD . . . . . . . . . . . . . . . . .
+68
+5.7.3
+Exemple de rapport OWASP ZAP
+. . . . . . . . . . . . . . . . . .
+68
+6
+Déploiement continu sécurisé et Monitoring
+71
+6.1
+Configuration des serveurs avec Ansible . . . . . . . . . . . . . . . . . . . .
+72
+6.1.1
+Préparation des hôtes
+. . . . . . . . . . . . . . . . . . . . . . . . .
+72
+6.1.2
+Installation des dépendances . . . . . . . . . . . . . . . . . . . . . .
+72
+6.1.3
+Création du playbook Ansible . . . . . . . . . . . . . . . . . . . . .
+72
+6.2
+Continuous Delivery et Continuous Deployment . . . . . . . . . . . . . . .
+74
+vii
+
+
+===== PAGE 8 =====
+
+TABLE DES MATIÈRES
+6.2.1
+Continuous Delivery . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+6.2.2
+Continuous Deployment . . . . . . . . . . . . . . . . . . . . . . . .
+75
+6.3
+Application déployée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+6.4
+Mise en place du monitoring . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+6.4.1
+Installation et configuration de Prometheus
+. . . . . . . . . . . . .
+77
+6.4.2
+Interface Prometheus . . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+6.4.3
+Installation et configuration de Node Exporter et cAdvisor . . . . .
+79
+6.4.4
+Node Exporter . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+6.4.5
+cAdvisor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+6.5
+Installation et configuration de Grafana . . . . . . . . . . . . . . . . . . . .
+80
+6.5.1
+Tableau de bord Grafana pour Node Exporter . . . . . . . . . . . .
+82
+viii
+
+
+===== PAGE 9 =====
+
+TABLE DES FIGURES
+1.1
+Logo de ONE FOLD TECH . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2.1
+approche DevSecOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.2
+DevOps VS DevSecOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.3
+cycle de vie DevSecOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.4
+approche CI/CD
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.5
+Intégration Continue (CI . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.6
+déploiement continu (CD . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.7
+Continuous Delivery vs Continuous Deployment . . . . . . . . . . . . . . .
+16
+2.8
+services Cloud . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.1
+Logo Jest
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.2
+Logo JUnit 5
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.3
+Logo Postman . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+3.4
+Logo GitHub Actions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.5
+Logo Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.6
+Logo SonarQube
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.7
+Logo Semgrep . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+ix
+
+
+===== PAGE 10 =====
+
+Table des figures
+3.8
+Logo OWASP Dependency-Check . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.9
+Logo Trivy
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.10 Logo Ansible
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.11 Logo Prometheus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.12 Logo Grafana . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.13 Logo Putyy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.14 Logo OVHcloud . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.15 Logo Slack . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.16 Logo Cloud Native Computing Foundation (CNCF) . . . . . . . . . . . . .
+34
+3.17 Architecture globale du la solution
+. . . . . . . . . . . . . . . . . . . . . .
+36
+4.1
+Connexion au VPS via PuTTY . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.2
+VPS Ubuntu Server . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.3
+Environnement WSL2
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.4
+Extension Remote - WSL installée dans Visual Studio Code
+. . . . . . . .
+42
+4.5
+Extension Remote -SSH
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.6
+interface graphique GitHub Actions . . . . . . . . . . . . . . . . . . . . . .
+43
+4.7
+Docker Compose version . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.8
+Conteneurs actifs localement via Docker Compose . . . . . . . . . . . . . .
+44
+4.9
+runner hébergé par GitHub
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.10 configuration self-hosted-runner . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.11 Extrait du fichier docker-compose.yml. . . . . . . . . . . . . . . . . . . .
+46
+4.12 Architecture de redirection via Nginx . . . . . . . . . . . . . . . . . . . . .
+47
+4.13 Vérification de la version Git . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.14 SonarQube en cours d’exécution via Docker
+. . . . . . . . . . . . . . . . .
+48
+4.15 interface SonarQube
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+x
+
+
+===== PAGE 11 =====
+
+Table des figures
+4.16 Exécution du playbook Ansible . . . . . . . . . . . . . . . . . . . . . . . .
+50
+5.1
+Étapes Git dans VS Code . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+5.2
+Exécution des tests unitaires frontend (Jest) . . . . . . . . . . . . . . . . .
+53
+5.3
+Exécution des tests unitaire Backend junit . . . . . . . . . . . . . . . . . .
+54
+5.4
+Exécution du job de tes Junit via GitHub Actions . . . . . . . . . . . . . .
+54
+5.5
+Exécution du job sast-scan avec Semgrep dans GitHub Actions . . . . . .
+55
+5.6
+Sortie détaillée de Semgrep dans GitHub Actions
+. . . . . . . . . . . . . .
+55
+5.7
+Interface Semgrep montrant les résultats de scan . . . . . . . . . . . . . . .
+56
+5.8
+Création d’un token SonarQube . . . . . . . . . . . . . . . . . . . . . . . .
+57
+5.9
+Ajout du secret dans GitHub
+. . . . . . . . . . . . . . . . . . . . . . . . .
+57
+5.10 Exécution de l’analyse SonarQube via GitHub Actions
+. . . . . . . . . . .
+58
+5.11 Échec du job suite à la détection d’une vulnérabilité via Snyk
+. . . . . . .
+59
+5.12 Merge pull request
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.13 Exécution réussie du job SCA dans GitHub Actions
+. . . . . . . . . . . .
+61
+5.14 Extrait du rapport HTML généré par OWASP Dependency-Check . . . . .
+62
+5.15 Dockerfile backend
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.16 Dockerfile frontend . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.17 Logs d’exécution du stage Trivy . . . . . . . . . . . . . . . . . . . . . . . .
+64
+5.18 Exemple de rapport Trivy indiquant les vulnérabilités détectée . . . . . . .
+64
+5.19 Connexion réussie à Docker Hub depuis GitHub Actions
+. . . . . . . . . .
+65
+5.20 Publication de l’image backend et frontend sur Docker Hub . . . . . . . . .
+65
+5.21 Vue d’ensemble du pipeline GitHub Actions implémenté
+. . . . . . . . . .
+66
+5.22 Artifacts générés par le pipeline . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.23 Illustration conceptuelle des catégories de risques du OWASP Top 10. . . .
+67
+xi
+
+
+===== PAGE 12 =====
+
+Table des figures
+5.24 Intégration de ZAP dans un pipeline CI/CD (build, déploiement, DAST,
+rapports). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+5.25 Exemple de rapport OWASP ZAP : récapitulatif des vulnérabilités détec-
+tées et leur sévérité. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+6.1
+Fichier de configuration playbook
+. . . . . . . . . . . . . . . . . . . . . .
+73
+6.2
+Extrait du fichier d’inventaire Ansible . . . . . . . . . . . . . . . . . . . . .
+73
+6.3
+Schéma illustrant le principe du Continuous Delivery . . . . . . . . . . . .
+75
+6.4
+Continuous Deployment
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+6.5
+application deployé . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+6.6
+Interface d’ajout d’une boîte dans l’application RackManager. . . . . . . .
+77
+6.7
+Fichier de configuration Prometheus
+. . . . . . . . . . . . . . . . . . . . .
+78
+6.8
+Exemple de requête PromQL aﬀichant la mémoire utilisée par les conteneurs. 78
+6.9
+Aﬀichage automatique des endpoints dans Prometheus. . . . . . . . . . . .
+79
+6.10 Déploiement du Node Exporter . . . . . . . . . . . . . . . . . . . . . . . .
+79
+6.11 Déploiement du cAdvisor . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+6.12 Configuration de la source de données Grafana . . . . . . . . . . . . . . . .
+81
+6.13 interface grafana
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+6.14 Dashboard Grafana Node Exporter Full montrant les métriques système
+en temps réel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+xii
+
+
+===== PAGE 13 =====
+
+LISTE DES TABLEAUX
+1.1
+Comparaison entre Waterfall, Agile et DevOps . . . . . . . . . . . . . . . .
+6
+3.1
+Comparaison entre différents frameworks de tests unitaires Java . . . . . .
+23
+3.2
+Comparaison entre outils de test d’API . . . . . . . . . . . . . . . . . . . .
+24
+3.3
+Comparaison entre GitHub Actions, GitLab CI/CD et Jenkins . . . . . . .
+25
+3.4
+Comparaison entre Docker, Podman et LXC/LXD . . . . . . . . . . . . . .
+26
+3.5
+Comparaison entre SonarQube, CodeQL et PMD . . . . . . . . . . . . . .
+27
+3.6
+Comparaison entre Semgrep, ESLint Security et Bandit . . . . . . . . . . .
+27
+3.7
+Comparaison entre OWASP Dependency-Check, Snyk et Trivy . . . . . . .
+28
+3.8
+Comparaison entre Ansible, Chef et Puppet
+. . . . . . . . . . . . . . . . .
+29
+3.9
+Comparaison entre Prometheus, Grafana et Zabbix . . . . . . . . . . . . .
+31
+3.10 Comparaison entre OVHcloud et autres fournisseurs de VPS . . . . . . . .
+32
+4.1
+Configuration matérielle de l’environnement . . . . . . . . . . . . . . . . .
+39
+4.2
+Configuration réseau des machines
+. . . . . . . . . . . . . . . . . . . . . .
+39
+4.3
+Comparaison entre WSL2 et les machines virtuelles . . . . . . . . . . . . .
+41
+4.4
+Tableau comparatif entre un runner hébergé et un runner auto-hébergé . .
+45
+xiii
+
+
+===== PAGE 14 =====
+
+LISTE DES ABRÉVIATIONS
+IaaS
+Infrastructure as a Service
+PaaS
+Platform as a Service
+SaaS
+Software as a Service
+VM
+Virtual Machine
+RAM
+Random Access Memory
+CPU
+Central Processing Unit
+GPU
+Graphics Processing Unit
+K8S
+Kubernetes
+Dev
+Pratiques de Développement
+DevOps
+Development and Operations
+DevSecOps
+Development, Security, and Operations
+CI/CD
+Continuous Integration / Continuous Deployment
+SAST
+Static Application Security Testing
+SCA
+Software Composition Analysis
+DAST
+Dynamic Application Security Testing
+xiv
+
+
+===== PAGE 15 =====
+
+Liste des tableaux
+OWASP
+Open Web Application Security Project
+CVE
+Common Vulnerabilities and Exposures
+CVSS
+Common Vulnerability Scoring System
+CNCF
+Cloud Native Computing Foundation
+API
+Application Programming Interface
+CLI
+Command Line Interface
+HTTP
+Hypertext Transfer Protocol
+HTTPS
+Hypertext Transfer Protocol Secure
+SSH
+Secure Shell
+URL
+Uniform Resource Locator
+DNS
+Domain Name System
+TCP
+Transmission Control Protocol
+TLS
+Transport Layer Security
+SSL
+Secure Sockets Layer
+VPN
+Virtual Private Network
+JSON
+JavaScript Object Notation
+YAML
+YAML Ain’t Markup Language
+JWT
+JSON Web Token
+ISO
+International Organization for Standardization
+UI
+User Interface
+ZAP
+Zed Attack Proxy
+xv
+
+
+===== PAGE 16 =====
+
+INTRODUCTION GÉNÉRALE
+L’évolution fulgurante des technologies de l’information a bouleversé le paysage numé-
+rique mondial, transformant profondément la manière dont les organisations conçoivent,
+développent et exploitent les systèmes informatiques. Si cette transformation ouvre la voie
+à des avancées majeures en matière de productivité, d’agilité et d’innovation, elle amplifie
+en parallèle les risques de sécurité auxquels les systèmes d’information sont confrontés.
+Aujourd’hui, il devient crucial d’aborder la cybersécurité non plus comme une simple
+étape finale, mais comme un élément fondamental intégré dès la conception des solutions
+logicielles.
+Les approches classiques, qui compartimentaient les responsabilités entre dévelop-
+peurs, équipes de sécurité et opérateurs, se révèlent inadaptées face aux exigences de
+réactivité et de fiabilité actuelles. Dans ce contexte, la démarche DevSecOps apparaît
+comme une évolution naturelle du DevOps, en intégrant les considérations de sécurité
+tout au long du cycle de vie logiciel. Elle repose sur une vision collaborative et partagée,
+dans laquelle chaque acteur devient responsable de la robustesse des systèmes.
+C’est dans cette dynamique que s’inscrit notre Projet de Fin d’Études. L’objectif est de
+concevoir et de déployer un pipeline DevSecOps qui automatise les contrôles de sécurité
+à chaque étape du développement. Cette démarche permet d’identifier les vulnérabilités
+en amont, de renforcer la résilience des applications et d’aligner le processus de livraison
+avec les meilleures pratiques en matière de sécurité.
+Structure du rapport
+La structure de notre rapport est organisée comme suit :
+— Chapitre 1 : Contexte général du projet — ce chapitre expose la probléma-
+tique, la solution proposée, les objectifs ainsi que le cadre de réalisation.
+1
+
+
+===== PAGE 17 =====
+
+Liste des tableaux
+— Chapitre 2 : État de l’art — il aborde les concepts fondamentaux du DevOps, du
+DevSecOps, du Cloud Computing, de la conteneurisation et des pipelines CI/CD.
+— Chapitre 3 : Analyse et Spécifications des Besoins — ce chapitre décrit
+l’architecture globale du projet, les besoins identifiés et les choix technologiques
+adoptés.
+— Chapitre 4 : Configuration et orchestration de l’infrastructure — il présente
+la mise en place et l’automatisation de l’environnement de travail.
+— Chapitre 5 : Implémentation du pipeline DevSecOps et intégration des
+outils de sécurité — ce chapitre détaille les différentes étapes du pipeline et les
+outils de sécurité intégrés.
+— Chapitre 6 : Déploiement continu sécurisé et Monitoring — ce dernier
+chapitre décrit la stratégie de déploiement continu, la supervision .
+2
+
+
+===== PAGE 18 =====
+
+CHAPITRE 1
+PRÉSENTATION DU CADRE DU PROJET
+Sommaire
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Présentation de l’organisme d’accueil . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+Cadre du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3.1
+Étude critique de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.2
+Problématique
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.3
+Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.4
+Méthodologie de gestion de projet . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4.1
+Étude comparative des méthodologies
+. . . . . . . . . . . . . . . . . . . .
+6
+1.4.2
+Méthodologie choisie . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+3
+
+
+===== PAGE 19 =====
+
+Chapitre 1. Présentation du cadre du projet
+1.1
+Introduction
+Dans ce chapitre, nous allons présenter le cadre global dans lequel s’inscrit notre
+projet. Nous commencerons par une brève présentation de l’organisme d’accueil, puis
+nous décrirons le contexte dans lequel le projet a vu le jour. Nous détaillerons ensuite la
+problématique identifiée ainsi que la solution envisagée. Enfin, nous terminerons par la
+méthodologie adoptée tout au long de la réalisation.
+1.2
+Présentation de l’organisme d’accueil
+ONE FOLD TECH est une entreprise tunisienne spécialisée dans le domaine des acti-
+vités informatiques. Fondée il y a trois ans, elle est implantée à Sfax, sur la Route Al Aïn,
+Km 5, dans la région de Sfax Sud. L’activité principale de ONE FOLD TECH se concentre
+sur la fourniture de services et solutions informatiques, en accompagnant les entreprises
+dans leur transformation digitale et l’intégration de nouvelles technologies. Forte de son
+expertise, elle contribue au développement du secteur numérique en Tunisie.[1]
+Figure 1.1 – Logo de ONE FOLD TECH
+1.3
+Cadre du projet
+Notre projet, intitulé « design et implémentation d’un pipeline DevSecOps », s’inscrit
+dans le cadre d’un projet de fin d’études visant l’obtention d’un master en ingénierie
+des réseaux. L’objectif principal est de concevoir et de déployer un pipeline DevSecOps
+4
+
+
+===== PAGE 20 =====
+
+Chapitre 1. Présentation du cadre du projet
+automatisé intégrant des tests de sécurité (SAST, SCA, DAST) au sein du processus
+CI/CD.
+Avant d’entamer la réalisation, il est essentiel d’analyser et d’évaluer les solutions
+existantes afin de mieux cerner nos besoins et orienter notre démarche.
+1.3.1
+Étude critique de l’existant
+Dans un contexte où la sécurité applicative devient un enjeu prioritaire, de nombreuses
+organisations adoptent des outils d’analyse statique, de gestion des dépendances ou encore
+des systèmes de surveillance continue.
+Cependant, ces solutions sont souvent utilisées de manière indépendante, sans intégra-
+tion harmonieuse dans un pipeline automatisé. Cette fragmentation limite la réactivité
+face aux vulnérabilités et réduit l’eﬀicacité du cycle CI/CD.
+1.3.2
+Problématique
+Malgré les avancées apportées par DevOps, la sécurité reste souvent traitée en fin de
+cycle, ce qui retarde la détection des vulnérabilités et augmente les coûts de correction.
+La problématique principale est donc la suivante :
+« Comment intégrer eﬀicacement des mécanismes de sécurité automatisés dans un
+pipeline CI/CD afin de réduire les risques, améliorer la qualité du code et garantir un
+déploiement fiable et sécurisé ? »
+1.3.3
+Solution proposée
+Pour remédier à ces limites, la solution proposée consiste à intégrer une chaîne Dev-
+SecOps complète comprenant :
+— SAST : Analyse statique du code via Semgrep ou SonarQube.
+— SCA : Analyse des dépendances avec Snyk ou OWASP Dependency-Check.
+— DAST : Tests dynamiques via OWASP ZAP.
+— Analyse Docker : Vérification des images avec Trivy.
+— Monitoring : Surveillance des vulnérabilités en production.
+Ces outils seront intégrés au pipeline CI/CD à travers des étapes automatisées exé-
+cutées à chaque commit/push. L’objectif est de détecter et corriger les vulnérabilités dès
+leur apparition, avant même le déploiement en production.
+5
+
+
+===== PAGE 21 =====
+
+Chapitre 1. Présentation du cadre du projet
+1.4
+Méthodologie de gestion de projet
+La mise en place d’une méthodologie adaptée constitue un élément essentiel pour
+assurer la réussite de tout projet informatique.
+Cette partie présente l’approche adoptée pour la gestion et la réalisation du projet, en
+décrivant les étapes suivies ainsi que les outils mobilisés.
+1.4.1
+Étude comparative des méthodologies
+Afin d’identifier la méthode la plus appropriée, plusieurs approches de gestion de projet
+ont été analysées : Waterfall, DevOps et Agile.
+L’analyse comparative ci-dessous met en évidence les différences entre ces trois mé-
+thodologies selon plusieurs critères .
+Critère
+Waterfall
+Agile
+DevOps
+Flexibilité
+Faible
+Élevée
+Très élevée
+Livraison
+En fin de cycle
+Itérative
+Continue
+Collaboration Dev–Ops
+Faible
+Moyenne
+Très forte
+Focus Sécurité
+Tardif
+Intermédiaire
+Continu (DevSecOps)
+Table 1.1 – Comparaison entre Waterfall, Agile et DevOps
+1.4.2
+Méthodologie choisie
+Nous avons choisi d’adopter l’approche DevOps pour la mise en œuvre de ce projet,
+afin de garantir des déploiements fluides, automatisés et fiables.
+Cette méthodologie favorise :
+— une collaboration continue entre développement et exploitation ;
+— l’automatisation poussée des processus CI/CD ;
+— la reproductibilité des environnements ;
+— l’amélioration continue tout au long du cycle de vie ;
+— un monitoring constant pour une meilleure observabilité.
+L’adoption d’une démarche DevOps a permis d’accélérer le développement, renfor-
+cer la fiabilité du système, simplifier les opérations et établir une base solide pour une
+observabilité évolutive dans un environnement cloud dynamique et sécurisé.
+6
+
+
+===== PAGE 22 =====
+
+Chapitre 1. Présentation du cadre du projet
+1.5
+Conclusion
+Ce chapitre a présenté le cadre général du projet ainsi que la méthodologie adoptée.
+La suite du document détaillera l’architecture de la solution DevSecOps, la mise en œuvre
+du pipeline CI/CD et les résultats obtenus.
+7
+
+
+===== PAGE 23 =====
+
+CHAPITRE 2
+ETAT DEL’ART
+Sommaire
+3.1
+Besoins Fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.2
+Besoins Techniques . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.3
+Besoins Non Fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4
+Choix Technologique et Architectural . . . . . . . . . . . . . . . . . . . .
+21
+3.4.1
+Technologies Utilisées
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4.2
+Tests Unitaires et Fonctionnels . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4.3
+GitHub et GitHub Actions
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.4.4
+Docker et Docker Compose
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.4.5
+SonarQube
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.4.6
+Semgrep . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.4.7
+OWASP Dependency-Check . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.4.8
+Trivy
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.4.9
+Ansible
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.4.10 Prometheus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.4.11 Grafana . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.4.12 PuTTY et VPS . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.4.13 Slack . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.5
+Intégration à l’écosystème CNCF
+. . . . . . . . . . . . . . . . . . . . . .
+33
+3.6
+Architecture globale de la solution . . . . . . . . . . . . . . . . . . . . . .
+34
+8
+
+
+===== PAGE 24 =====
+
+Chapitre 2. Etat del’art
+Introduction
+Ce chapitre présente l’état de l’art des concepts, approches et technologies qui consti-
+tuent la base de notre projet. Nous introduisons d’abord les fondements de l’approche
+DevOps et DevSecOps, en mettant en évidence leurs principes, leurs objectifs et leurs
+apports en matière d’automatisation et de sécurité. Nous abordons ensuite les notions
+d’intégration et de déploiement continus (CI/CD), qui jouent un rôle central dans les
+processus modernes de développement logiciel.
+2.1
+L’approche DevSecOps
+2.1.1
+Présentation de DevSecOps
+DevSecOps, contraction de Development, Security et Operations, est une évolution
+naturelle de DevOps visant à intégrer la sécurité dès les premières étapes du développe-
+ment logiciel. Elle encourage la collaboration entre développeurs, équipes de sécurité et
+opérationnels pour automatiser les contrôles de sécurité sans ralentir le cycle de livraison.
+Figure 2.1 – approche DevSecOps
+2.1.2
+DevOps vs DevSecOps
+— DevOps : Le DevOps est une approche collaborative entre les équipes de dévelop-
+pement (Dev) et les opérations (Ops) visant à automatiser et optimiser le processus
+de livraison logicielle. L’objectif est de réduire le cycle de développement tout en
+augmentant la qualité et la stabilité des livraisons.[6]
+— Mise en place de pipelines CI/CD (Intégration Continue et Déploiement Continu).
+9
+
+
+===== PAGE 25 =====
+
+Chapitre 2. Etat del’art
+— Automatisation des tests, du déploiement et de la gestion des configurations.
+— Surveillance continue des applications en production.
+— DevSecOps : Le DevSecOps étend les principes du DevOps en intégrant les pra-
+tiques de sécurité dès le début du cycle de développement. L’objectif est de sécuriser
+chaque étape du pipeline CI/CD.
+— Intégration de la sécurité dans le code source et les dépendances .
+— Tests de sécurité dynamiques pendant les phases de test et de déploiement.
+— Vérification continue des vulnérabilités dans les images Docker, les configura-
+tions réseau et les environnements de production.
+— Différence clé : Alors que DevOps se concentre sur l’automatisation et l’eﬀicacité
+du développement et du déploiement, DevSecOps ajoute une couche de sécurité
+continue à chaque étape du cycle de vie applicatif.
+Figure 2.2 – DevOps VS DevSecOps
+2.1.3
+Le cycle de vie DevSecOps
+Le cycle de vie DevSecOps se compose généralement des phases suivantes :
+— Planification (Plan) : Cette phase permet de définir les exigences métier et les
+objectifs de sécurité dès le début du cycle. On identifie les risques potentiels, les
+menaces et les vulnérabilités, tout en planifiant les tests de sécurité. .
+— Développement (Code) : Le développement du code se fait en suivant les meilleures
+pratiques de sécurité. On intègre le Security by Design dès les premières lignes de
+code avec des contrôles automatisés. Des outils comme GitLab, GitHub ou Bitbucket
+permettent de collaborer et de versionner le code. Les analyses SAST
+— Intégration et Tests (Build & Test) : Lors de cette phase, le code est compilé,
+intégré et testé automatiquement. L’intégration continue (CI) permet de valider
+10
+
+
+===== PAGE 26 =====
+
+Chapitre 2. Etat del’art
+le code à chaque modification. Les tests de sécurité automatisés sont effectués, in-
+cluant :
+— SCA (Software Composition Analysis) : analyse des dépendances (OWASP
+Dependency-Check).
+— DAST (Dynamic Application Security Testing) : analyse dynamique des
+vulnérabilités (OWASP ZAP).
+— Tests unitaires avec des outils comme Mocha ou JUnit.
+— Scan d’images Docker pour vérifier les vulnérabilités (Trivy).
+Les outils d’intégration continue comme Jenkins, GitHub Actions ou GitLab CI
+automatisent ce processus.
+— Déploiement (Deploy) : Une fois les tests validés, le déploiement se fait de ma-
+nière fiable et automatisée sur les environnements de production. On utilise des or-
+chestrateurs de conteneurs comme Kubernetes ou OpenShift, et des outils de gestion
+de configuration tels que Ansible ou Puppet pour assurer la cohérence de l’environ-
+nement. Le déploiement est souvent réalisé avec des stratégies comme le Blue-Green
+Deployment ou le Canary Release pour minimiser les risques.
+— Surveillance et Monitoring (Monitor) : Cette phase permet de surveiller les
+applications en production, de détecter les anomalies, les incidents de sécurité et les
+violations de conformité. Les outils comme Prometheus/Grafana, Nagios, Splunk ou
+Elastic Stack collectent les métriques et génèrent des alertes en temps réel.
+— Retour d’information (Feedback) : Le retour d’information est crucial pour
+l’amélioration continue. Les données collectées lors de la phase de surveillance sont
+analysées pour renforcer les prochaines itérations. Cela inclut les incidents de sé-
+curité, les performances, et les retours des utilisateurs. Cette étape boucle le cycle
+DevSecOps en alimentant la phase de planification avec les apprentissages.
+Figure 2.3 – cycle de vie DevSecOps
+2.1.4
+Avantages de DevSecOps
+L’approche DevSecOps permet :
+— Une détection anticipée des vulnérabilités.
+11
+
+
+===== PAGE 27 =====
+
+Chapitre 2. Etat del’art
+— Une automatisation des tâches de sécurité.
+— Une meilleure collaboration entre les équipes.
+— Un respect plus facile des exigences réglementaires.
+2.2
+L’approche CI/CD
+2.2.1
+Définition de CI/CD
+CI/CD désigne un ensemble de pratiques visant à automatiser les étapes du cycle de
+vie des applications. L’intégration continue (CI) automatise les tests et les vérifications
+dès qu’une modification est apportée au code. Le déploiement continu (CD) permet la
+livraison rapide des changements validés vers les environnements de production.
+Figure 2.4 – approche CI/CD
+2.2.2
+Intégration Continue (CI)
+Processus d’intégration continue
+Intégration Continue (CI)
+L’intégration continue (CI) est un processus automatisé permettant de valider chaque
+modification du code source en temps réel. Cela permet de détecter les erreurs le plus
+tôt possible et d’assurer la stabilité de l’application. Le cycle d’intégration continue se
+décompose en plusieurs étapes :
+1. Commit de Code : Les développeurs soumettent régulièrement leurs modifications
+dans un dépôt de code source partagé (par exemple, GitHub, GitLab ou Bitbucket).
+Ces commits déclenchent automatiquement le pipeline CI.
+12
+
+
+===== PAGE 28 =====
+
+Chapitre 2. Etat del’art
+2. Build Automatisé : Un serveur d’intégration continue (par exemple, Jenkins,
+GitLab CI/CD, CircleCI) détecte les nouveaux commits et déclenche un processus
+de build automatisé. Cette étape inclut :
+— La compilation du code.
+— La génération des artefacts (binaries, packages, images Docker, etc.).
+— La vérification de la qualité du code.
+3. Tests Automatisés : Durant le build, plusieurs types de tests sont exécutés de
+manière automatisée :
+— Tests unitaires (Mocha, JUnit) : validation du bon fonctionnement de chaque
+composant.
+— Tests d’intégration : vérification de l’interaction entre les différents modules.
+— Tests de sécurité :
+— Analyse de code statique (SAST) avec des outils comme SonarQube pour
+détecter les vulnérabilités dans le code source.
+— Analyse de composition logicielle (SCA) pour scanner les dépendances du
+projet et identifier les bibliothèques vulnérables.
+— Tests de sécurité dynamiques (DAST) pour exécuter des tests de pénétra-
+tion automatisés sur l’application en cours d’exécution.
+4. Feedback Rapide : Si des tests échouent ou si des vulnérabilités sont détectées,
+les développeurs reçoivent un retour immédiat. Cette étape permet de corriger les
+erreurs avant de fusionner le code dans la branche principale, garantissant ainsi la
+stabilité et la sécurité de l’application.
+Intégration des Pratiques de Sécurité dans l’IC
+L’intégration continue dans un contexte DevSecOps inclut des pratiques de sécurité à
+chaque étape du pipeline CI :
+— Analyse de Code Statique (SAST) : L’analyse statique est effectuée pour dé-
+tecter les vulnérabilités dans le code source, telles que les failles XSS, les injections
+SQL ou les mauvaises pratiques de sécurité.
+— Analyse de Composition Logicielle (SCA) : Cette analyse permet d’identifier
+les bibliothèques obsolètes ou vulnérables utilisées dans le projet, réduisant ainsi les
+risques liés aux dépendances non sécurisées.
+— Tests de Sécurité Dynamiques (DAST) : Les tests dynamiques sont exécutés
+sur l’application en cours d’exécution pour détecter des vulnérabilités exploitables
+en conditions réelles.
+13
+
+
+===== PAGE 29 =====
+
+Chapitre 2. Etat del’art
+— Politiques de Conformité : Le pipeline CI peut intégrer des vérifications de
+conformité aux normes de sécurité reconnues, telles que OWASP, NIST. Cela ga-
+rantit que les déploiements respectent les standards de sécurité.
+Avantages de l’IC dans DevSecOps
+— Réduction du temps de détection des failles.
+— Amélioration de la qualité du code.
+— Automatisation des audits de sécurité.
+Figure 2.5 – Intégration Continue (CI
+2.2.3
+Déploiement Continu (CD)
+Processus Déploiement continue
+Déploiement Continu (CD)
+Le Déploiement Continu (CD) est un processus automatisé permettant de livrer les
+modifications validées lors de l’intégration continue (CI) dans un environnement de pro-
+duction ou de préproduction. Cette approche réduit les risques, accélère les mises en
+production, et garantit la qualité des livraisons.
+1. Préparation du Déploiement : Une fois les tests validés et le build généré, les ar-
+tefacts (images Docker, packages, fichiers binaires, etc.) sont stockés dans un registre
+sécurisé ou un espace de stockage temporaire, prêt pour le déploiement.
+— Création de l’image Docker (si l’application est conteneurisée).
+— Vérification des dépendances et de l’intégrité des artefacts.
+— Génération de fichiers de configuration (par exemple, .env, secrets).
+2. Déploiement Automatisé : Le pipeline CD déploie automatiquement les arte-
+facts dans un environnement cible. Cela peut être un environnement de staging
+14
+
+
+===== PAGE 30 =====
+
+Chapitre 2. Etat del’art
+pour des tests supplémentaires, ou directement en production selon la politique
+de déploiement choisie (Rolling Update, Blue/Green Deployment, Canary Release,
+etc.).
+— Déploiement sur un serveur cloud ou un serveur physique.
+— Mise à jour des conteneurs Docker ou des instances virtuelles.
+— Application des configurations réseau (DNS, proxy, load balancer).
+3. Vérification Post-Déploiement : Après le déploiement, plusieurs vérifications
+sont effectuées pour garantir la stabilité et la sécurité de l’application.
+— Tests de régression pour s’assurer que les nouvelles fonctionnalités n’ont pas
+introduit de bugs.
+— Vérification de la disponibilité (Health Checks).
+— Monitoring de la performance et des journaux d’erreurs.
+4. Validation et Mise en Production : Si toutes les vérifications sont validées, l’ap-
+plication est considérée comme stable et peut être mise à disposition des utilisateurs
+finaux. Si des problèmes sont détectés, un rollback automatisé peut être déclenché
+pour revenir à la version précédente.
+Intégration des Pratiques de Sécurité dans le CD
+Le Déploiement Continu dans un cadre DevSecOps intègre des pratiques de sécurité
+tout au long du processus :
+— Scans de Sécurité Automatisés : Avant le déploiement, un scan de sécurité est
+réalisé sur les artefacts (images Docker, binaires) pour détecter des vulnérabilités
+éventuelles.
+— Validation des Politiques de Sécurité : Les configurations réseau, les règles d’ac-
+cès, et les paramètres de sécurité sont vérifiés pour assurer le respect des politiques
+de sécurité de l’organisation.
+— Surveillance Active Post-Déploiement : Après le déploiement, les logs sont col-
+lectés et analysés en temps réel pour détecter d’éventuelles intrusions ou anomalies.
+— Rollback Sécurisé : En cas d’erreur critique détectée lors du monitoring, le pipeline
+peut déclencher un retour automatique à une version stable pour limiter les impacts.
+15
+
+
+===== PAGE 31 =====
+
+Chapitre 2. Etat del’art
+Figure 2.6 – déploiement continu (CD
+2.2.4
+Continuous Delivery vs Continuous Deployment
+— Continuous Delivery (CD) : Garantit que le code est toujours dans un état
+déployable après chaque modification. Le déploiement nécessite une validation hu-
+maine avant de passer en production.
+— Continuous Deployment (CD) : Étend l’automatisation en déployant chaque
+modification validée directement en production, sans intervention humaine.
+— Différence clé : Le Continuous Delivery inclut une étape de validation manuelle,
+alors que le Continuous Deployment est entièrement automatisé.
+Figure 2.7 – Continuous Delivery vs Continuous Deployment
+16
+
+
+===== PAGE 32 =====
+
+Chapitre 2. Etat del’art
+2.3
+Architecture Cloud et déploiement sécurisé via
+DevSecOps
+L’architecture Cloud constitue un socle essentiel pour la mise en place eﬀicace d’une
+stratégie DevSecOps. En effet, les trois modèles principaux de services Cloud — IaaS,
+PaaS et SaaS — jouent chacun un rôle spécifique dans l’intégration de la sécurité au
+sein du cycle de vie du développement logiciel.
+— IaaS (Infrastructure as a Service) désigne la fourniture de ressources informa-
+tiques virtuelles — comme des machines, du stockage ou des réseaux — sur demande.
+Les équipes DevOps utilisent cette couche pour déployer leurs environnements de
+développement et de production. L’ajout de solutions de sécurité comme Trivy (pour
+scanner les images Docker) ou Checkov (pour auditer les fichiers d’infrastructure)
+permet d’assurer un haut niveau de sécurité dès la phase de provisionnement.
+— PaaS (Platform as a Service) met à disposition une plateforme complète de
+développement et de déploiement, sans que les utilisateurs aient à gérer l’infrastruc-
+ture sous-jacente. Des outils CI/CD comme GitHub Actions, GitLab CI ou Azure
+DevOps s’intègrent facilement à ces plateformes pour injecter des étapes de sécurité
+(tests SAST, SCA, DAST) dans la chaîne de livraison.
+— SaaS (Software as a Service) désigne les applications accessibles directement via
+un navigateur, souvent proposées sous forme d’abonnement. Dans ce cas, la sécurité
+passe par la gestion des identités, . DevSecOps veille ici à maintenir une posture de
+sécurité constante lors de chaque mise à jour du service.
+En combinant ces modèles de services Cloud avec les pratiques DevSecOps, les entreprises
+peuvent assurer un déploiement continu sécurisé, réduire les risques liés aux failles de
+sécurité et garantir une meilleure résilience de leurs applications.
+17
+
+
+===== PAGE 33 =====
+
+Chapitre 2. Etat del’art
+Figure 2.8 – services Cloud
+Conclusion
+Ce chapitre a permis de détailler les concepts fondamentaux nécessaires à la concep-
+tion de notre solution. Nous avons introduit les principes du DevSecOps, présenté l’ar-
+chitecture CI/CD ainsi que les technologies de virtualisation et de conteneurisation et les
+notions Architecture Cloud . Ces fondations serviront à construire un pipeline sécurisé et
+automatisé adapté à notre projet.
+18
+
+
+===== PAGE 34 =====
+
+CHAPITRE 3
+ANALYSE DES BESOINS
+Sommaire
+4.1
+Environnement de travail
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.1.1
+Contexte
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.1.2
+Environnement matériel . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.1.3
+Choix de l’utilisation d’un VPS réel
+. . . . . . . . . . . . . . . . . . . . .
+39
+4.1.4
+Choix de WSL2 au lieu de machine virtuelle . . . . . . . . . . . . . . . . .
+40
+4.2
+Environnement de développement intégré (IDE) . . . . . . . . . . . . .
+41
+4.3
+Installation et configuration des outils pour le pipeline CI/CD sécurisé
+43
+4.4
+Comparaison entre un Runner hébergé et un Runner auto-hébergé . .
+44
+4.4.1
+Runner hébergé par GitHub . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.4.2
+Runner auto-hébergé (Self-Hosted) . . . . . . . . . . . . . . . . . . . . . .
+45
+4.4.3
+Comparaison synthétique
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.5
+Environnement de développement fullstack conteneurisé avec Docker
+Compose
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.5.1
+Exposition des services frontend et backend avec Nginx
+. . . . . . . . . .
+46
+4.5.2
+Contrôle de version avec Git
+. . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.5.3
+Configuration de SonarQube
+. . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.5.4
+Configuration d’Ansible . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+19
+
+
+===== PAGE 35 =====
+
+Chapitre 3. Analyse des Besoins
+Introduction
+Ce chapitre présente l’analyse des besoins pour le projet DevSecOps. Nous détaillons
+les besoins fonctionnels, les besoins techniques et les besoins non fonctionnels nécessaires
+à la réussite du projet. Par la suite, nous exposons les choix technologiques ainsi que
+l’architecture adoptée pour une intégration continue et sécurisée.
+3.1
+Besoins Fonctionnels
+Les besoins fonctionnels définissent les fonctionnalités que le système doit faire ou offrir
+. Dans le cadre de notre projet DevSecOps, les principaux besoins fonctionnels identifiés
+sont :
+— Automatisation du pipeline CI/CD : Mise en place de pipelines GitLab CI pour
+automatiser la compilation (build) et le déploiement des applications, garantissant
+ainsi l’intégration continue et le déploiement continu.
+— Sécurité intégrée dans le pipeline DevSecOps : Exécuter des tests de sécurité
+automatisés à chaque étape du pipeline, incluant l’analyse statique du code (SAST),
+l’analyse dynamique (DAST) et la vérification des conteneurs avec Trivy.
+— Audit et traçabilité : Journaliser toutes les étapes du pipeline (builds, tests,
+déploiements, scans de sécurité) pour permettre un audit complet.
+— supervision : Fournir un tableau de bord centralisé (Grafana) pour visualiser l’état
+des pipelines, des déploiements et des métriques de sécurité.
+— Notifications automatiques : Envoyer des notifications (email, Slack) en cas de
+succès ou d’échec des jobs CI/CD ou des scans de sécurité.
+3.2
+Besoins Techniques
+Les besoins techniques correspondent aux choix d’infrastructures et d’outils nécessaires
+pour la mise en œuvre du projet :
+— Serveur VPS : Hébergement des applications et des services de déploiement.
+— GitHub/GitLab Actions : Intégration et livraison continues (CI/CD).
+— Docker & Docker Hub : Conteneurisation et gestion d’images.
+— Ansible : Automatisation des configurations pour les déploiements.
+20
+
+
+===== PAGE 36 =====
+
+Chapitre 3. Analyse des Besoins
+— SonarQube, Semgrep, OWASP Dependency-Check, OWASP ZAP, Trivy :
+Sécurisation et analyse de vulnérabilités.
+— Prometheus & Grafana :
+3.3
+Besoins Non Fonctionnels
+Les besoins non fonctionnels concernent les qualités du système, comment le système
+doit être :
+— Performance : Optimiser le processus d’intégration et de livraison afin de
+réduire les temps de compilation, de build et de déploiement, garantissant
+ainsi une intégration continue et une livraison rapide.
+— Portabilité : Assurer que l’application puisse être déployée et exécutée de ma-
+nière homogène sur différents environnements (local, VPS, cloud) et systèmes
+d’exploitation (Ubuntu, Windows), indépendamment des versions utilisées.
+— Maintenabilité : Faciliter les mises à jour, les modifications et l’évolution du
+système.
+— Traçabilité : Historiser les logs, résultats de tests et rapports de scan pour
+un audit facile.
+3.4
+Choix Technologique et Architectural
+Cette section présente les technologies et l’architecture adoptées pour le projet Dev-
+SecOps.
+3.4.1
+Technologies Utilisées
+Ce projet s’appuie sur une stack technologique DevSecOps moderne et cohérente,
+intégrant des outils de développement, de test de conteneurisation, de sécurité, de
+supervision et d’automatisation.
+3.4.2
+Tests Unitaires et Fonctionnels
+Les tests constituent une étape essentielle du cycle de développement DevSecOps.
+Ils permettent d’assurer la fiabilité, la maintenabilité et la sécurité du code avant
+son déploiement. Dans ce projet, différents outils ont été utilisés selon le type de
+test.
+21
+
+
+===== PAGE 37 =====
+
+Chapitre 3. Analyse des Besoins
+Tests unitaires avec Jest et Junit5
+Jest est un framework de tests JavaScript développé par Facebook, largement utilisé
+dans les projets React, Node.js et TypeScript. Il offre un environnement complet
+incluant un moteur d’exécution, des assertions intégrées et un excellent support du
+mock.
+Figure 3.1 – Logo Jest
+JUnit 5 est le framework de tests unitaires moderne pour l’écosystème Java. Il
+succède à JUnit 4 et apporte une architecture modulaire, une meilleure extensibilité
+et une intégration fluide avec les projets Spring Boot. Il se distingue par sa simpli-
+cité d’annotation, sa compatibilité avec les IDE et son intégration native dans les
+pipelines CI/CD.
+Figure 3.2 – Logo JUnit 5
+Comparaison entre frameworks de tests unitaires Java :
+22
+
+
+===== PAGE 38 =====
+
+Chapitre 3. Analyse des Besoins
+Critère
+JUnit 5
+TestNG
+JUnit 4
+Performance
+Rapide, optimisé
+Rapide
+Correcte
+Configuration
+Très
+simple
+(annotations
+modernes)
+Flexible
+mais
+plus verbeux
+Plus limitée
+Compatibilité
+Spring
+Boot,
+Maven,
+Gradle,
+IDE
+Large (Java EE,
+Spring, etc.)
+Ancien mais en-
+core supporté
+Support du mo-
+cking
+Intégration
+facile avec Mo-
+ckito
+Compatible avec
+Mockito
+Compatible
+mais
+moins
+fluide
+Rapport de cou-
+verture
+Oui
+(via
+Ja-
+CoCo,
+Sonar-
+Qube)
+Oui
+Oui
+Table 3.1 – Comparaison entre différents frameworks de tests unitaires Java
+Le choix de JUnit 5 s’est imposé pour le back-end grâce à son intégration native
+avec Spring Boot, sa modularité et sa compatibilité avec les outils modernes de
+CI/CD. Il constitue aujourd’hui la norme de facto pour les tests unitaires dans
+l’écosystème Java.
+Tests d’API avec Postman
+Postman est un outil incontournable pour le test des API REST. Il permet de
+simuler des requêtes HTTP, d’automatiser les scénarios de test et de valider le
+comportement des endpoints.
+Figure 3.3 – Logo Postman
+23
+
+
+===== PAGE 39 =====
+
+Chapitre 3. Analyse des Besoins
+Comparaison avec d’autres outils de test d’API :
+Critère
+Postman
+Insomnia
+Swagger UI
+Interface utilisa-
+teur
+Très intuitive
+Moderne
+Basique
+Tests automati-
+sés
+Oui
+(collection
+runner)
+Limité
+Non
+Support CI/CD
+Oui
+(Newman
+CLI)
+Partiel
+Oui
+via
+Ope-
+nAPI
+Collaboration
+Excellente
+(workspace par-
+tagé)
+Bonne
+Limitée
+Table 3.2 – Comparaison entre outils de test d’API
+Postman a été retenu pour ce projet en raison de son intégration fluide avec les
+pipelines CI/CD via Newman, son moteur CLI qui permet d’automatiser les tests
+d’API dans GitHub Actions.
+3.4.3
+GitHub et GitHub Actions
+GitHub est une plateforme de collaboration logicielle basée sur Git. GitHub Ac-
+tions permet d’automatiser les processus CI/CD directement depuis les dépôts,
+intégrant compilation, tests, analyses de sécurité et déploiements.
+Figure 3.4 – Logo GitHub Actions
+Comparaison avec d’autres plateformes CI/CD :
+24
+
+
+===== PAGE 40 =====
+
+Chapitre 3. Analyse des Besoins
+Critère
+GitHub
+Ac-
+tions
+GitLab
+CI/CD
+Jenkins
+Intégration
+Native GitHub
+Native GitLab
+Indépendante
+Facilité de confi-
+guration
+moyenne
+Simple
+Complexe (Jen-
+kinsfile)
+Exécution cloud
+Oui
+Oui (self-hosted
+possible)
+Non
+Interface utilisa-
+teur
+Moderne
+Correcte
+Peu intuitive
+Table 3.3 – Comparaison entre GitHub Actions, GitLab CI/CD et Jenkins
+Pourquoi GitHub Actions ? Le choix de GitHub Actions s’explique par plusieurs
+raisons stratégiques dans le cadre d’un pipeline DevSecOps :
+— Intégration native avec GitHub : Les workflows sont directement liés aux
+dépôts GitHub, ce qui permet de déclencher automatiquement les pipelines à
+chaque push ou pull request, sans configuration complexe supplémentaire.
+— rapidité de mise en œuvre : La syntaxe YAML est claire et accessible,
+facilitant la création et la maintenance des pipelines même pour des équipes
+pluridisciplinaires.
+— Compatibilité DevSecOps : GitHub Actions s’intègre avec des outils de
+sécurité (Semgrep, SonarQube, Trivy, Snyk, OWASP ZAP), garantissant une
+automatisation complète des tests SAST, DAST et SCA.
+— Traçabilité et auditabilité : Chaque exécution est historisée avec des logs
+détaillés, permettant un suivi précis, un audit de sécurité et une transparence
+totale vis-à-vis des équipes.
+3.4.4
+Docker et Docker Compose
+Docker facilite la conteneurisation des applications pour garantir la portabilité et
+l’isolation.[7] Docker Compose orchestre plusieurs conteneurs via un fichier YAML
+unique, simplifiant la mise en place d’environnements multi-services (backend, fron-
+tend, base de données).[8]
+25
+
+
+===== PAGE 41 =====
+
+Chapitre 3. Analyse des Besoins
+Figure 3.5 – Logo Docker
+Comparaison des solutions de conteneurisation :
+Critère
+Docker
+Podman
+LXC/LXD
+Portabilité
+Excellente
+Bonne
+Moyenne
+Écosystème
+Très riche
+En croissance
+Limité
+Facilité d’utilisa-
+tion
+Simple
+Moyenne
+Complexe
+Support CI/CD
+Excellent
+Bon
+Faible
+Table 3.4 – Comparaison entre Docker, Podman et LXC/LXD
+Pourquoi Docker ? : Docker a été adopté en raison de sa large popularité, de
+sa compatibilité avec la majorité des outils DevOps et de sa simplicité dans le dé-
+ploiement multi-conteneurs. Il constitue aujourd’hui une référence incontournable
+de l’écosystème cloud-native, et fait partie intégrante de la Cloud Native Com-
+puting Foundation (CNCF), ce qui garantit son alignement avec les standards
+modernes de conteneurisation et d’orchestration.
+3.4.5
+SonarQube
+SonarQube est un outil d’analyse continue du code source (SAST). Il identifie les
+bugs, vulnérabilités et mauvaises pratiques, assurant un suivi de la dette technique.
+[3]
+Figure 3.6 – Logo SonarQube
+Comparaison d’outils d’analyse statique :
+26
+
+
+===== PAGE 42 =====
+
+Chapitre 3. Analyse des Besoins
+Critère
+SonarQube
+CodeQL
+PMD
+Langages
+sup-
+portés
++25
++10
+Java
+unique-
+ment
+Intégration
+CI/CD
+Excellente
+Bonne
+Moyenne
+Analyse sécurité
+Oui
+Oui
+Non
+Interface
+Très intuitive
+Technique
+Basique
+Table 3.5 – Comparaison entre SonarQube, CodeQL et PMD
+Pourquoi SonarQube ? SonarQube a été retenu pour sa maturité, son intégration
+native dans GitHub Actions et ses tableaux de bord clairs.
+3.4.6
+Semgrep
+Semgrep est un outil SAST rapide et personnalisable. Il détecte les vulnérabilités
+dans le code via des règles simples et adaptées au langage utilisé.
+Figure 3.7 – Logo Semgrep
+Critère
+Semgrep
+ESLint
+Secu-
+rity
+Bandit
+Langages
+sup-
+portés
++30
+JS/TS
+unique-
+ment
+Python unique-
+ment
+Vitesse
+d’ana-
+lyse
+Très rapide
+Rapide
+Moyenne
+Règles
+person-
+nalisables
+Oui
+Partiellement
+Non
+Simplicité
+d’in-
+tégration
+Excellente
+Bonne
+Moyenne
+Table 3.6 – Comparaison entre Semgrep, ESLint Security et Bandit
+Pourquoi Semgrep ? Choisi pour sa légèreté, sa rapidité et la possibilité de définir
+des règles spécifiques selon les besoins du projet.
+27
+
+
+===== PAGE 43 =====
+
+Chapitre 3. Analyse des Besoins
+3.4.7
+OWASP Dependency-Check
+OWASP Dependency-Check est un outil SCA (Software Composition Analysis)
+permettant d’identifier les bibliothèques vulnérables.
+Figure 3.8 – Logo OWASP Dependency-Check
+Critère
+Dependency-
+Check
+Snyk
+Trivy
+Base de données
+CVE
+NVD (oﬀicielle)
+NVD + privée
+NVD + GitHub
+Automatisation
+CI/CD
+Simple
+Très simple
+Simple
+Rapports
+HTML
+Oui
+Oui
+Oui
+Licence
+Open source
+Freemium
+Open source
+Table 3.7 – Comparaison entre OWASP Dependency-Check, Snyk et Trivy
+Pourquoi Dependency-Check ? Choisi pour son intégration native avec les pi-
+pelines CI/CD et son alignement avec les recommandations OWASP.
+3.4.8
+Trivy
+Trivy est un scanner tout-en-un pour images Docker, fichiers IaC et dépendances.
+Il détecte les vulnérabilités, erreurs de configuration et secrets exposés.
+Figure 3.9 – Logo Trivy
+28
+
+
+===== PAGE 44 =====
+
+Chapitre 3. Analyse des Besoins
+Pourquoi Trivy ? Trivy a été choisi pour sa rapidité, son faible coût en ressources
+et sa capacité à unifier SCA et IaC scan dans un seul outil.
+3.4.9
+Ansible
+Ansible automatise la configuration et le déploiement d’infrastructures via des
+playbooks YAML.
+Figure 3.10 – Logo Ansible
+Comparaison avec d’autres outils d’automatisation :
+Critère
+Ansible
+Chef
+Puppet
+Langage
+YAML
+Ruby
+DSL
+Agent requis
+Non
+Oui
+Oui
+Courbe
+d’ap-
+prentissage
+Faible
+Moyenne
+Élevée
+Intégration
+CI/CD
+Excellente
+Bonne
+Moyenne
+Table 3.8 – Comparaison entre Ansible, Chef et Puppet
+Pourquoi Ansible ? Sa simplicité, son approche agentless et sa compatibilité avec
+Docker en font l’outil idéal pour automatiser les déploiements.
+3.4.10
+Prometheus
+Prometheus est une solution open source de surveillance et de collecte de mé-
+triques. Elle enregistre des séries temporelles et permet de déclencher des alertes.
+Elle est particulièrement adaptée à la supervision d’environnements conteneurisés.
+29
+
+
+===== PAGE 45 =====
+
+Chapitre 3. Analyse des Besoins
+Figure 3.11 – Logo Prometheus
+3.4.11
+Grafana
+Grafana est un outil de visualisation de données open source qui permet de créer
+des tableaux de bord interactifs. Couplé à Prometheus, il permet de suivre en temps
+réel les performances et l’état de santé des applications et infrastructures.
+Figure 3.12 – Logo Grafana
+30
+
+
+===== PAGE 46 =====
+
+Chapitre 3. Analyse des Besoins
+Critère
+Prometheus
+Grafana
+Zabbix
+Type d’outil
+Collecte
+et
+stockage
+de
+métriques
+Visualisation et
+tableaux de bord
+Supervision
+complète
+(agents)
+Mode de collecte
+Pull (scrape)
+N/A (lecture de-
+puis sources ex-
+ternes)
+Push via agents
+Stockage
+des
+données
+PromQl
+Aucune
+(lit
+depuis
+Prome-
+theus, InfluxDB,
+etc.)
+Base SQL
+Alerting
+Intégré
+(Alert-
+manager)
+Possible via Pro-
+metheus ou plu-
+gins
+Intégré
+Interface utilisa-
+teur
+Basique
+(orien-
+tée métriques)
+Très
+ergo-
+nomique
+et
+interactive
+Classique, riche
+mais complexe
+Intégration
+Do-
+cker/Kubernetes
+Excellente
+(na-
+tive)
+Excellente
+Moyenne
+Table 3.9 – Comparaison entre Prometheus, Grafana et Zabbix
+Pourquoi Prometheus et Grafana ? Ce duo open source a été retenu pour ce
+projet, car il offre une solution complète et moderne d’observabilité : Prometheus
+assure la collecte eﬀicace des métriques système et conteneurs, tandis que Grafana
+fournit une visualisation claire et dynamique des données, adaptée aux besoins de
+supervision en environnement DevSecOps
+3.4.12
+PuTTY et VPS
+PuTTY est un client SSH gratuit utilisé pour accéder à distance à des serveurs via
+une connexion sécurisée. Il permet d’exécuter des commandes sur un VPS (Virtual
+Private Server), un serveur virtualisé hébergé par un fournisseur. Le VPS constitue
+l’environnement de production, hébergeant les conteneurs et les services déployés
+par le pipeline.
+31
+
+
+===== PAGE 47 =====
+
+Chapitre 3. Analyse des Besoins
+Figure 3.13 – Logo Putyy
+OVHcloud
+OVHcloud est un fournisseur européen de services cloud et d’hébergement. Il pro-
+pose des serveurs dédiés, des VPS (Virtual Private Server) et des solutions de sto-
+ckage adaptées aux environnements DevOps. Dans ce projet, OVH a été utilisé pour
+héberger un VPS de production, permettant de déployer et tester les services dans
+un environnement réaliste, accessible à distance et disponible en continu.
+Figure 3.14 – Logo OVHcloud
+Comparaison avec d’autres hébergeurs :
+Critère
+OVHcloud
+AWS EC2
+Google Cloud
+VM
+Localisation
+Europe (France,
+Allemagne, etc.)
+Mondiale
+Mondiale
+Coût
+Compétitif
+Plus élevé
+Plus élevé
+Simplicité
+Interface claire
+Complexe
+Complexe
+Intégration
+De-
+vOps
+Bonne
+(API,
+CLI)
+Excellente
+Excellente
+Table 3.10 – Comparaison entre OVHcloud et autres fournisseurs de VPS
+Pourquoi OVHcloud ? Choisi pour sa proximité géographique (latence réduite),
+sa conformité aux normes européennes et son rapport qualité/prix adapté à un
+32
+
+
+===== PAGE 48 =====
+
+Chapitre 3. Analyse des Besoins
+projet académique et professionnel.
+3.4.13
+Slack
+Slack est une plateforme de communication collaborative qui facilite les échanges
+en temps réel entre les membres d’une équipe. Dans un contexte DevOps, Slack est
+utilisé comme outil de ChatOps, permettant d’intégrer directement les notifications
+des pipelines CI/CD, des scans de sécurité et des déploiements dans des canaux
+dédiés. Cela centralise la communication et améliore la réactivité de l’équipe face
+aux incidents.
+Figure 3.15 – Logo Slack
+Exemples d’intégration :
+— Notifications automatiques lors de la fin d’un build GitHub Actions.
+— Alertes de sécurité envoyées par SonarQube ou Dependency-Check.
+— Suivi des déploiements Ansible et monitoring Prometheus/Grafana.
+Pourquoi Slack ? Adopté pour sa simplicité d’utilisation, son intégration avec de
+nombreux outils DevOps (GitHub, Jenkins, Azure DevOps, etc.) et sa capacité à
+centraliser les échanges techniques et organisationnels.
+3.5
+Intégration à l’écosystème CNCF
+Les outils de test et de sécurité utilisés dans ce projet s’inscrivent dans l’écosystème
+de la Cloud Native Computing Foundation (CNCF). La CNCF promeut les
+bonnes pratiques de développement cloud-native, basées sur la conteneurisation,
+l’automatisation et l’observabilité. L’intégration de solutions telles que Docker,
+Prometheus, Grafana et les tests automatisés s’aligne avec les standards DevSe-
+cOps modernes.
+33
+
+
+===== PAGE 49 =====
+
+Chapitre 3. Analyse des Besoins
+Figure 3.16 – Logo Cloud Native Computing Foundation (CNCF)
+3.6
+Architecture globale de la solution
+Pour réaliser ce projet, il est indispensable de mettre en place une architecture
+DevSecOps à la fois moderne et robuste, garantissant un développement sécurisé,
+un déploiement automatisé, une intégration continue eﬀicace et une surveillance
+complète des applications.
+— Le processus débute lorsque les développeurs rédigent leur code dans Visual
+Studio Code et le poussent vers le dépôt distant GitHub. À la suite de
+cette action, GitHub Actions orchestre l’exécution des pipelines d’intégration
+continue afin de construire, tester et analyser le code.
+— Ces pipelines sont exécutés dans un environnement Docker et incluent plusieurs
+étapes clés :
+— Build avec Maven : compilation du projet Java et génération des arte-
+facts.
+— Tests unitaires avec JUnit 5 : vérification du bon fonctionnement des
+composants.
+— Analyse SCA (Software Composition Analysis) :
+— Dependency-Check : détection des vulnérabilités dans les dépen-
+dances.
+— Snyk : identification des failles connues dans les bibliothèques open
+source.
+— Analyse SAST (Static Application Security Testing) :
+— SonarQube : inspection du code source pour détecter les bugs et
+vulnérabilités.
+— Semgrep : détection de patterns de sécurité dans le code.
+— Conteneurisation et scan de sécurité :
+— Docker Build : création de l’image backend-rack.
+34
+
+
+===== PAGE 50 =====
+
+Chapitre 3. Analyse des Besoins
+— Trivy : scan de l’image Docker pour identifier les failles de sécurité et
+secrets exposés.
+— Une fois ces étapes validées, l’image Docker est poussée vers Docker Hub,
+où elle est stockée pour être utilisée lors des étapes suivantes du cycle de
+déploiement.
+— Le déploiement est automatisé vers l’infrastructure cible, un serveur distant
+(VPS) identifié par l’adresse IP 137.74.41.137. Ce serveur héberge les conte-
+neurs via Docker et est configuré comme suit :
+— Reverse proxy avec NGINX :
+— proxy_pass http://frontend-rack:80
+— proxy_pass http://backend-rack:8090
+— Services back-end :
+— rack-manager-back exposé sur le port 8090:8090
+— postgres-container sur le port 5432:5432
+— Monitoring et sécurité dynamique :
+— Node Exporter, cAdvisor, Prometheus et Grafana pour la col-
+lecte et la visualisation des métriques.
+— OWASP ZAP pour les tests DAST (Dynamic Application Security
+Testing) sur les applications en cours d’exécution.
+— Automatisation du déploiement :
+— Ansible est utilisé pour exécuter les playbooks de configuration et de
+déploiement sur le VPS.
+Cette architecture illustre une approche DevSecOps complète, intégrant des outils
+de qualité, de sécurité et de supervision tout au long du cycle de développement et
+de mise en production. Elle permet de garantir la fiabilité, la traçabilité et la sécu-
+rité des applications déployées, tout en assurant une automatisation optimale des
+processus. La figure ci-dessous représente l’architecture adoptée pour notre projet
+DevSecOps.
+35
+
+
+===== PAGE 51 =====
+
+Chapitre 3. Analyse des Besoins
+Figure 3.17 – Architecture globale du la solution
+36
+
+
+===== PAGE 52 =====
+
+CHAPITRE 4
+CONFIGURATION ET ORCHESTRATION DE
+L’INFRASTRUCTURE
+Sommaire
+5.1
+Intégration de Git et déclenchement via GitHub Actions . . . . .
+52
+5.2
+Architecture des pipelines CI/CD . . . . . . . . . . . . . . . . . . .
+52
+5.3
+Installation des dépendances et exécution des tests unitaires . . .
+53
+5.3.1
+Tests unitaires avec Jest (frontend) . . . . . . . . . . . . . . . . . .
+53
+5.3.2
+Tests unitaires avec JUnit 5 (backend) . . . . . . . . . . . . . . . .
+53
+5.4
+Analyse statique du code (SAST)
+. . . . . . . . . . . . . . . . . . .
+54
+5.4.1
+Analyse statique avec Semgrep . . . . . . . . . . . . . . . . . . . .
+55
+5.4.2
+Analyse statique avec SonarQube
+. . . . . . . . . . . . . . . . . .
+56
+5.5
+Analyse des dépendances avec SCA (Software Composition Ana-
+lysis) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+5.5.1
+Analyse de sécurité SCA avec Snyk . . . . . . . . . . . . . . . . . .
+59
+5.5.2
+Traitement de la vulnérabilité détectée par Snyk
+. . . . . . . . . .
+60
+5.5.3
+Rapport OWASP Dependency-Check . . . . . . . . . . . . . . . . .
+61
+5.6
+Gestion des Images Docker avec GitHub Actions . . . . . . . . . .
+62
+5.6.1
+Construction des Images Docker Frontend et Backend . . . . . . .
+63
+5.6.2
+Analyse de Sécurité des Images Docker (Trivy) . . . . . . . . . . .
+63
+5.6.3
+Connexion à Docker Hub (Login) . . . . . . . . . . . . . . . . . . .
+64
+5.6.4
+Publication des Images Docker sur Docker Hub (Push) . . . . . . .
+65
+5.6.5
+Artifacts générés par le pipeline . . . . . . . . . . . . . . . . . . . .
+66
+5.7
+OWASP et tests dynamiques DAST . . . . . . . . . . . . . . . . . .
+67
+5.7.1
+OWASP ZAP : un outil DAST open-source . . . . . . . . . . . . .
+67
+5.7.2
+Méthode intégrée au pipeline CI/CD . . . . . . . . . . . . . . . . .
+68
+37
+
+
+===== PAGE 53 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+5.7.3
+Exemple de rapport OWASP ZAP . . . . . . . . . . . . . . . . . .
+68
+38
+
+
+===== PAGE 54 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+Introduction
+Ce chapitre a été consacré à la mise en place de l’environnement nécessaire au
+développement, à l’intégration continue (CI), au déploiement continu (CD) et à la
+sécurisation de l’ensemble du pipeline DevSecOps.
+4.1
+Environnement de travail
+4.1.1
+Contexte
+Dans le cadre de la mise en place de mon pipeline DevSecOps sécurisé, j’ai utilisé
+à la fois un poste de travail local performant et un serveur distant (VPS) afin de
+simuler un environnement réaliste de déploiement. L’environnement est composé de
+plusieurs outils tels que Docker, GitHub Actions, SonarQube, OWASP, etc., exécutés
+soit en local, soit sur le VPS selon les besoins.
+4.1.2
+Environnement matériel
+Machine
+OS
+RAM
+Disque
+CPU
+Poste local (WSL2)
+Ubuntu 24.04
+16 Go
+512 Go SSD
+Intel Core i7-10750H
+VPS
+Ubuntu 24.04 Server
+4 Go
+80 Go SSD
+2 vCPU (2.4 GHz)
+Table 4.1 – Configuration matérielle de l’environnement
+Machine
+Rôle
+Adresse IP
+Poste local (WSL2)
+Développement local
+172.26.37.211
+VPS
+Hébergement des services
+137.74.41.137
+Table 4.2 – Configuration réseau des machines
+4.1.3
+Choix de l’utilisation d’un VPS réel
+Mon poste de travail est suﬀisamment puissant pour exécuter tous les composants
+du projet en local via Docker et WSL2. Cependant, pour des raisons professionnelles
+et techniques, j’ai opté pour un VPS distant afin de :
+— Simuler un environnement de production réel accessible 24h/24 ;
+— Exécuter les services lourds (ex : SonarQube, scanners) sans impacter mon
+poste ;
+39
+
+
+===== PAGE 55 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+— Séparer les environnements local et distant pour plus de sécurité ;
+— Pouvoir effectuer les tests et déploiements à distance via SSH (PuTTY).
+Figure 4.1 – Connexion au VPS via PuTTY
+Figure 4.2 – VPS Ubuntu Server
+4.1.4
+Choix de WSL2 au lieu de machine virtuelle
+WSL2 a été préféré aux machines virtuelles classiques pour des raisons de perfor-
+mance, de simplicité et d’intégration native à Windows.
+40
+
+
+===== PAGE 56 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+Critère
+WSL2
+(Windows
+Sub-
+system for Linux)
+Machine virtuelle (VM-
+ware, VirtualBox)
+Installation
+Intégrée à Windows, activa-
+tion simple
+Requiert
+hyperviseur
+ex-
+terne
+Performance
+Accès natif, rapide
+Moins performant
+Consommation de res-
+sources
+Optimisée
+Élevée
+Intégration avec Win-
+dows
+Totale (fichiers, shell, ré-
+seau)
+Limitée
+Docker
+Supporté via Docker Desk-
+top
+Nécessite configuration ma-
+nuelle
+Utilisé dans ce projet
+Oui (développement, tests)
+Non utilisé
+Table 4.3 – Comparaison entre WSL2 et les machines virtuelles
+Figure 4.3 – Environnement WSL2
+4.2
+Environnement de développement intégré (IDE)
+Pour faciliter le développement sous Linux tout en restant sur un système Windows,
+j’ai utilisé l’extension WSL (Windows Subsystem for Linux) intégrée à Visual
+Studio Code (VS Code).
+Cette extension permet d’ouvrir et d’éditer directement des fichiers dans un envi-
+ronnement Linux (Ubuntu 24.04) à partir de l’interface de VS Code sous Windows.
+Cela offre de nombreux avantages :
+— Accès à un terminal bash Linux natif depuis VS Code ;
+41
+
+
+===== PAGE 57 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+— Installation et exécution des outils de développement dans un environnement
+isolé ;
+— Utilisation de Docker, Git, Node.js et autres outils directement sous WSL2 ;
+— Synchronisation fluide entre les fichiers Windows et Linux ;
+— Édition de fichiers distants (VPS) via l’extension Remote - SSH de VS Code.
+Figure 4.4 – Extension Remote - WSL installée dans Visual Studio Code
+Figure 4.5 – Extension Remote -SSH
+Grâce à cette configuration, j’ai pu bénéficier d’un environnement de développement
+performant, moderne.
+42
+
+
+===== PAGE 58 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+4.3
+Installation et configuration des outils pour le
+pipeline CI/CD sécurisé
+Tous les outils nécessaires ont été installés et configurés via des conteneurs Docker,
+sans recourir à des machines virtuelles (VM). GitHub Actions a été utilisé comme
+outil principal d’automatisation CI/CD. Voici les composants principaux :
+— GitHub Actions : Automatisation des étapes du pipeline (test, SAST, SCA,
+build, push image, déploiement SSH, DAST) ;
+Figure 4.6 – interface graphique GitHub Actions
+— Docker Compose : Orchestration locale des services (frontend, backend, da-
+tabase) ;
+Figure 4.7 – Docker Compose version
+Exécution locale avec Docker Compose :
+Tous les services (backend,
+frontend, base de données, outils d’analyse) ont été orchestrés via Docker Com-
+pose. La commande docker ps ci-dessous montre l’exécution simultanée de
+plusieurs conteneurs dans l’environnement local sous WSL2.
+43
+
+
+===== PAGE 59 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+Figure 4.8 – Conteneurs actifs localement via Docker Compose
+4.4
+Comparaison entre un Runner hébergé et
+un Runner auto-hébergé
+Les runners sont les serveurs utilisés par GitHub Actions pour exécuter les
+différents jobs définis dans les workflows. GitHub propose deux types princi-
+paux : les runners hébergés (GitHub-hosted runners) et les runners
+auto-hébergés (Self-hosted runners). Cette section présente la différence
+entre les deux types .
+4.4.1
+Runner hébergé par GitHub
+Les runners hébergés par GitHub sont des machines virtuelles temporaires
+fournies directement par GitHub. Chaque exécution de workflow s’effectue dans
+un environnement isolé et préconfiguré, supprimé à la fin du job.
+— Avantages : aucune maintenance, environnement propre à chaque exécu-
+tion, mise à jour automatique.
+— Inconvénients : ressources limitées, faible personnalisation, dépendance
+à GitHub.
+Figure 4.9 – runner hébergé par GitHub
+44
+
+
+===== PAGE 60 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+4.4.2
+Runner auto-hébergé (Self-Hosted)
+Les runners auto-hébergés sont des machines configurées par l’utilisateur
+(poste local, serveur, VPS, etc.) pour exécuter les workflows GitHub Actions.
+L’utilisateur a ainsi un contrôle total sur les ressources, la configuration et la
+sécurité.
+— Avantages : performances personnalisées, flexibilité, contrôle sur l’envi-
+ronnement.
+— Inconvénients : maintenance à la charge de l’utilisateur, configuration
+initiale plus complexe.
+Figure 4.10 – configuration self-hosted-runner
+4.4.3
+Comparaison synthétique
+Critère
+Runner hébergé
+Runner auto-hébergé
+Gestion
+de
+l’infra-
+structure
+Gérée par GitHub
+Gérée par l’utilisateur
+Environnement isolé
+Oui (VM jetable)
+Non (machine persistante)
+Personnalisation
+Limitée
+Totale
+Performance
+Standard
+Dépend du matériel local
+Coût
+Inclus avec GitHub
+Dépend de la machine
+Sécurité
+Assurée par GitHub
+Sous la responsabilité de
+l’utilisateur
+Table 4.4 – Tableau comparatif entre un runner hébergé et un runner auto-hébergé
+4.5
+Environnement de développement fullstack
+conteneurisé avec Docker Compose
+Afin de faciliter le développement, les tests et l’intégration continue de l’appli-
+cation, un environnement fullstack conteneurisé a été mis en place à l’aide
+45
+
+
+===== PAGE 61 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+de Docker Compose. Cet environnement regroupe les services essentiels du
+projet :
+— Backend Spring Boot : exposé sur le port 8080, connecté à la base de
+données PostgreSQL.
+— Frontend Angular : exposé sur le port 80, accessible via un navigateur.
+— Base de données PostgreSQL : exposée sur le port 5432, utilisée par
+le backend.
+— Réseau Docker dédié : permettant la communication interne entre les
+conteneurs.
+L’orchestration via Docker Compose permet de lancer simultanément tous les
+services définis dans le fichier docker-compose.yml, garantissant un environ-
+nement reproductible et cohérent entre les développeurs et les environnements
+(local, staging, production).
+Figure 4.11 – Extrait du fichier docker-compose.yml.
+4.5.1
+Exposition des services frontend et backend avec
+Nginx
+Afin de centraliser et sécuriser l’accès aux services frontend et backend, un
+serveur Nginx a été utilisé en tant que reverse proxy. Cette configuration per-
+met de rendre l’application accessible publiquement via des ports standards et
+d’assurer une meilleure séparation des rôles dans l’architecture.
+46
+
+
+===== PAGE 62 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+Figure 4.12 – Architecture de redirection via Nginx
+Rôle de Nginx dans l’architecture
+Nginx joue un rôle central dans notre
+architecture DevSecOps. Il agit comme un reverse proxy, recevant toutes les
+requêtes entrantes et les redirigeant vers les services internes appropriés (fron-
+tend, backend, etc.). Ce mécanisme permet de centraliser les accès, de sécuriser
+les échanges et de préparer l’intégration de futures mesures comme le SSL/TLS,
+les règles WAF et les authentifications.
+— Isolation des services internes
+— Point unique d’accès (reverse proxy)
+— Préparation à l’ajout de la couche HTTPS et sécurité applicative
+— Amélioration de la maintenabilité et de la scalabilité
+4.5.2
+Contrôle de version avec Git
+Git est un système de contrôle de version distribué utilisé pour suivre les mo-
+difications du code source tout au long du cycle de développement. Il permet
+de collaborer eﬀicacement, de gérer les versions, de revenir à un état stable en
+cas d’erreur, et d’intégrer facilement des workflows CI/CD.
+Dans notre projet, Git a été utilisé pour :
+— Versionner le code du frontend, backend et des fichiers de configuration
+(Docker, GitHub Actions, etc.)
+— Gérer la collaboration via une plateforme Git distante (GitHub) ;
+47
+
+
+===== PAGE 63 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+— Déclencher automatiquement des workflows d’intégration continue via Gi-
+tHub Actions à chaque ‘push‘
+— Centraliser l’historique et les modifications, permettant un suivi clair et
+sécurisé.
+Figure 4.13 – Vérification de la version Git
+4.5.3
+Configuration de SonarQube
+Dans le cadre de notre pipeline CI/CD sécurisé, SonarQube a été déployé via
+Docker CLI sur notre environnement de travail. Il est utilisé principalement
+pour analyser le code du backend et du frontend afin d’assurer un niveau de
+qualité et de sécurité élevé.
+Figure 4.14 – SonarQube en cours d’exécution via Docker
+48
+
+
+===== PAGE 64 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+Figure 4.15 – interface SonarQube
+4.5.4
+Configuration d’Ansible
+Dans le cadre de ce projet DevSecOps, Ansible a été utilisé comme outil d’au-
+tomatisation pour déployer et configurer l’environnement de développement
+et les services nécessaires, aussi bien en local que sur le VPS. Ansible permet
+d’exécuter des playbooks, des scripts déclaratifs en YAML qui définissent les
+tâches à exécuter sur un ou plusieurs hôtes. Il ne nécessite pas d’agent, ce qui
+le rend léger et facilement intégrable dans les pipelines CI/CD.
+Structure du projet :
+L’architecture d’Ansible se compose des fichiers sui-
+vants :
+— inventory : fichier contenant la liste des hôtes (localhost ou VPS) sur
+lesquels les tâches seront exécutées.
+— playbook.yml : fichier principal définissant les rôles, les tâches et les confi-
+gurations à appliquer.
+— docker-compose.yml : fichier utilisé pour lancer un conteneur Ansible
+prêt à l’emploi avec tous les outils nécessaires.
+Conteneur Ansible via Docker Compose :
+Pour exécuter ce playbook
+dans un environnement contrôlé, un conteneur Ansible a été lancé grâce à
+Docker Compose Ce conteneur permet d’éviter d’installer Ansible directement
+sur la machine hôte, tout en garantissant un environnement reproductible.
+49
+
+
+===== PAGE 65 =====
+
+Chapitre 4.
+Configuration et orchestration de l’infrastructure
+Exécution du playbook :
+Une fois dans le conteneur, le playbook peut
+être exécuté avec la commande suivante :
+ansible-playbook -i inventory playbook.yml
+Figure 4.16 – Exécution du playbook Ansible
+Cette configuration a facilité le déploiement rapide de l’environnement DevSe-
+cOps, tout en assurant une cohérence entre les environnements local et distant
+(VPS).
+Conclusion
+Durant ce chapitre, nous avons principalement concentré nos efforts sur la
+configuration de notre environnement de travail, en installant et intégrant les
+outils nécessaires à notre chaîne DevSecOps (Docker, GitHub Actions, Sonar-
+Qube, etc.). Cette phase préparatoire nous permettra d’aborder les prochains
+chapitre avec une base solide. Ainsi, nous pourrons nous focaliser sur la mise
+en œuvre fonctionnelle et progressive de notre pipeline CI/CD sécurisé
+50
+
+
+===== PAGE 66 =====
+
+CHAPITRE 5
+IMPLÉMENTATION DU PIPELINE DEVSECOPS ET
+INTÉGRATION DES OUTILS DE SÉCURITÉ
+Sommaire
+6.1
+Configuration des serveurs avec Ansible
+. . . . . . . . . . . .
+72
+6.1.1
+Préparation des hôtes
+. . . . . . . . . . . . . . . . . . . . . .
+72
+6.1.2
+Installation des dépendances
+. . . . . . . . . . . . . . . . . .
+72
+6.1.3
+Création du playbook Ansible . . . . . . . . . . . . . . . . . .
+72
+6.2
+Continuous Delivery et Continuous Deployment . . . . . . .
+74
+6.2.1
+Continuous Delivery . . . . . . . . . . . . . . . . . . . . . . .
+74
+6.2.2
+Continuous Deployment . . . . . . . . . . . . . . . . . . . . .
+75
+6.3
+Application déployée . . . . . . . . . . . . . . . . . . . . . . . .
+76
+6.4
+Mise en place du monitoring
+. . . . . . . . . . . . . . . . . . .
+77
+6.4.1
+Installation et configuration de Prometheus . . . . . . . . . .
+77
+6.4.2
+Interface Prometheus . . . . . . . . . . . . . . . . . . . . . . .
+78
+6.4.3
+Installation et configuration de Node Exporter et cAdvisor
+.
+79
+6.4.4
+Node Exporter . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+6.4.5
+cAdvisor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+6.5
+Installation et configuration de Grafana
+. . . . . . . . . . . .
+80
+6.5.1
+Tableau de bord Grafana pour Node Exporter
+. . . . . . . .
+82
+51
+
+
+===== PAGE 67 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+Introduction
+Après avoir mis en place l’infrastructure de l’environnement de travail, nous
+passons à l’implémentation du pipeline CI/CD. L’orchestration via GitHub
+Actions joue un rôle central en automatisant l’ensemble des tâches DevSecOps
+du projet, tant pour le frontend que pour le backend, dans une architecture
+microservices.
+5.1
+Intégration de Git et déclenchement via
+GitHub Actions
+L’intégration Git est déjà configurée dans l’environnement de développement
+(VS Code). À chaque modification du code source, l’exécution des commandes
+git add, git commit et git push déclenche les workflows GitHub Actions.
+Figure 5.1 – Étapes Git dans VS Code
+5.2
+Architecture des pipelines CI/CD
+Le projet est structuré en deux services indépendants selon une architecture
+microservices :
+— Frontend : développé avec Angular.
+— Backend : implémenté avec Spring Boot et utilisant PostgreSQL comme
+base de données.
+Deux pipelines GitHub Actions distincts ont été créés, un pour chaque service.
+Les étapes communes sont détaillées ci-dessous.
+52
+
+
+===== PAGE 68 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+5.3
+Installation des dépendances et exécution
+des tests unitaires
+À chaque git push, le workflow GitHub Actions correspondant est déclenché
+automatiquement pour installer les dépendances et exécuter les tests unitaires.
+5.3.1
+Tests unitaires avec Jest (frontend)
+Jest est un framework de tests JavaScript maintenu par Meta, largement utilisé
+pour tester des applications Node.js. Il offre des fonctionnalités avancées telles
+que les mocks, les snapshots et une exécution parallèle rapide. Dans notre
+projet, les tests frontend sont exécutés via la commande npm test .
+Figure 5.2 – Exécution des tests unitaires frontend (Jest)
+5.3.2
+Tests unitaires avec JUnit 5 (backend)
+JUnit 5 est le framework de référence pour l’écriture et l’exécution de tests
+unitaires en Java. Il succède à JUnit 4 et apporte une architecture modulaire,
+53
+
+
+===== PAGE 69 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+une syntaxe moderne et une intégration fluide avec Spring Boot. Son rôle
+est essentiel dans une démarche DevSecOps, car il permet de valider automa-
+tiquement la logique métier et de prévenir les régressions lors des mises à jour
+du code.
+Figure 5.3 – Exécution des tests unitaire Backend junit
+Figure 5.4 – Exécution du job de tes Junit via GitHub Actions
+Cette automatisation permet une détection rapide des régressions dès la phase
+d’intégration continue.
+5.4
+Analyse statique du code (SAST)
+Pour garantir un code de qualité et sécurisé dès le développement, nous utili-
+sons :
+— Semgrep : pour la détection rapide de vulnérabilités et mauvaises pra-
+tiques
+— SonarQube : pour une analyse avancée (duplications, complexité, sécu-
+rité)
+54
+
+
+===== PAGE 70 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+5.4.1
+Analyse statique avec Semgrep
+Semgrep est un outil de SAST (Static Application Security Testing) léger
+et rapide, utilisé pour détecter des failles de sécurité, des mauvaises pratiques
+de développement et des erreurs logiques dans le code. Il est particulièrement
+eﬀicace pour les projets en JavaScript, Node.js, React, etc. L’intégration de
+Semgrep dans notre pipeline CI/CD avec GitHub Actions permet d’exécuter
+automatiquement des scans à chaque push ou pull request. L’étape suivante
+est ajoutée dans notre fichier devsecops-pipeline.yml :
+Figure 5.5 – Exécution du job sast-scan avec Semgrep dans GitHub Actions
+— Cette exécution montre que le job SAST est bien déclenché après le test
+unitaire et avant le build.
+— Le job est réussi , ce qui indique une exécution correcte du scan sans échec
+bloquant.
+Figure 5.6 – Sortie détaillée de Semgrep dans GitHub Actions
+Le résultat indique que Semgrep a scanné le projet avec succès en appliquant
+1061 règles de sécurité issues du profil par défaut p/default :
+55
+
+
+===== PAGE 71 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+— Found 0 findings : aucune vulnérabilité détectée dans le code.
+— No blocking findings : aucune faille critique qui empêcherait la suite du
+pipeline.
+— Exiting with code 0 : le job s’est terminé avec succès.
+Figure 5.7 – Interface Semgrep montrant les résultats de scan
+L’interface Semgrep.io permet de consulter l’historique des scans réalisés sur
+différents projets. On y observe les projets analysés avec le nombre de dé-
+pendances scannées, les vulnérabilités détectées, et le type de scan effectué.
+Conclusion :
+— Semgrep est bien intégré dans le pipeline DevSecOps.
+— Aucun problème de sécurité détecté.
+— Le pipeline CI/CD continue normalement après cette étape.
+5.4.2
+Analyse statique avec SonarQube
+SonarQube est utilisé pour l’analyse statique avancée du code (SAST), afin
+d’identifier les vulnérabilités, la duplication de code et mesurer la qualité glo-
+bale du projet. L’intégration de SonarQube avec GitHub Actions nécessite
+plusieurs étapes :
+— Création d’un token SonarQube : Un jeton d’accès est généré depuis
+l’interface de SonarQube (Mon compte > Sécurité). Ce jeton permet à
+GitHub Actions de s’authentifier auprès du serveur SonarQube.
+56
+
+
+===== PAGE 72 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+Figure 5.8 – Création d’un token SonarQube
+— Ajout du secret dans GitHub : Le jeton est ensuite ajouté dans la sec-
+tion Settings > Secrets and variables > Actions du dépôt GitHub,
+sous le nom SONAR_TOKEN.
+Figure 5.9 – Ajout du secret dans GitHub
+— Ajout dans le workflow GitHub Actions : L’étape suivante est ajoutée
+dans le fichier devsecops pipeline Backend.yml pour lancer automati-
+quement l’analyse.
+Ce scan permet à chaque push ou pull request de déclencher une analyse au-
+tomatisée du code, dont les résultats sont visibles depuis l’interface web de
+SonarQube.
+57
+
+
+===== PAGE 73 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+Figure 5.10 – Exécution de l’analyse SonarQube via GitHub Actions
+5.5
+Analyse des dépendances avec SCA (Soft-
+ware Composition Analysis)
+Afin de détecter les vulnérabilités présentes dans les bibliothèques utilisées par
+le projet, une analyse automatisée a été intégrée à la chaîne CI/CD. Deux outils
+complémentaires ont été utilisés pour maximiser la couverture de sécurité :
+— OWASP Dependency-Check : un outil open-source qui identifie les
+dépendances vulnérables en se basant sur la base de données publique CVE
+(Common Vulnerabilities and Exposures). Il génère un rapport détaillé
+indiquant les bibliothèques à risque ainsi que les chemins d’exploitation
+possibles.[15]
+— Snyk : une solution cloud très puissante qui analyse les fichiers package.json
+et package-lock.json afin d’identifier les vulnérabilités connues, y com-
+pris les failles Zero-Day et les problèmes liés aux configurations par défaut.
+Snyk fournit également des recommandations précises de mise à jour pour
+corriger les vulnérabilités.
+L’exécution de ces outils permet d’automatiser l’analyse de sécurité à chaque
+push ou pull request, assurant un contrôle continu de la sécurité tout au long
+du cycle de développement.
+58
+
+
+===== PAGE 74 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+5.5.1
+Analyse de sécurité SCA avec Snyk
+Lors de la mise en place du pipeline CI/CD, nous avons intégré l’outil Snyk
+pour effectuer une analyse SCA (Software Composition Analysis). Cet outil
+permet de scanner les dépendances du projet npm à partir du fichier package-lock.json
+afin de détecter d’éventuelles vulnérabilités.
+— Nombre de dépendances analysées : 194
+— Vulnérabilités détectées : 1 (10 chemins d’exécution vulnérables)
+— Vulnérabilité principale : Regular Expression Denial of Service (ReDoS)
+via le paquet @babel/runtime@7.24.8
+— Solution proposée : mettre à jour @chakra-ui/react vers la version 2.9.0
+Le pipeline CI a échoué volontairement à cause de cette vulnérabilité critique
+(exit code 1). Ce comportement est voulu par la stratégie DevSecOps afin
+d’empêcher toute mise en production tant que la vulnérabilité persiste.
+Figure 5.11 – Échec du job suite à la détection d’une vulnérabilité via Snyk
+Pour assurer un suivi même en cas d’échec du pipeline, un job supplémentaire
+a été défini avec l’option continue-on-error: true. Ce job s’exécute tou-
+jours et permet d’envoyer une notification ou un résumé par e-mail, Slack ou
+webhook, même si le scan principal a échoué.
+59
+
+
+===== PAGE 75 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+5.5.2
+Traitement de la vulnérabilité détectée par Snyk
+Suite à l’analyse SCA effectuée avec l’outil Snyk, une vulnérabilité de type Re-
+gular Expression Denial of Service (ReDoS) a été détectée dans la dépendance
+@babel/runtime@7.24.8, introduite indirectement via @chakra-ui/react@2.8.2.
+Snyk a automatiquement proposé une solution corrective sous forme d’une Pull
+Request (PR), suggérant la mise à jour vers @chakra-ui/react@2.9.0.
+Étapes de traitement
+1. Détection automatique : Snyk a scanné les fichiers package.json et
+package-lock.json et a généré une PR contenant la mise à jour de la
+dépendance vulnérable.
+2. Vérification de la PR : En tant que DevSecOps, j’ai examiné les fichiers
+modifiés dans la PR, ainsi que la nature de la vulnérabilité corrigée.
+3. Validation : Après m’être assuré que la mise à jour était mineure et sans
+risque pour le fonctionnement du projet, j’ai décidé de valider cette PR.
+4. Merge : J’ai cliqué sur Merge pull request, puis sur Confirm merge
+pour intégrer cette mise à jour dans la branche principale (main).
+5. Nettoyage : Une fois la PR fusionnée, j’ai supprimé la branche temporaire
+générée automatiquement.
+Utilité de cette action
+— Elle permet de corriger rapidement une faille de sécurité sans inter-
+vention manuelle sur le code.
+— Elle s’inscrit dans une démarche d’automatisation et de sécurisation
+continue du pipeline CI/CD.
+— Elle montre l’intérêt d’outils comme Snyk dans un rôle DevSecOps : dé-
+tection proactive, intégration continue, et correction rapide.
+60
+
+
+===== PAGE 76 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+Figure 5.12 – Merge pull request
+En tant que DevSecOps, mon rôle a consisté à configurer ces outils, analyser
+les résultats des scans, et proposer des actions correctives aux développeurs
+sans modifier directement le code source. Par exemple, lors d’un scan Snyk,
+une vulnérabilité de type Regular Expression Denial of Service a été détec-
+tée, suggérant une mise à jour de la bibliothèque @chakra-ui/react vers une
+version sécurisée.
+Figure 5.13 – Exécution réussie du job SCA dans GitHub Actions
+5.5.3
+Rapport OWASP Dependency-Check
+le pipeline est déclenché automatiquement lors de chaque mise à jour ou commit
+sur la branche principale. Il scanne les dépendances localisées dans le dossier
+frontend-app et backend-app, puis génère un rapport au format HTML. Le
+61
+
+
+===== PAGE 77 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+Figure 5.14 – Extrait du rapport HTML généré par OWASP Dependency-Check
+rapport Dependency-Check présenté concerne le projet backend-app. Il a
+été généré le 19 novembre 2025 à l’aide de la version 12.1.9 de l’outil
+OWASP Dependency-Check. Ce rapport vise à analyser les dépendances tierces
+du projet afin d’identifier les vulnérabilités connues, référencées dans la base
+CVE (Common Vulnerabilities and Exposures).
+— Dépendances scannées : 95 (dont 74 uniques)
+— Dépendances vulnérables : 13
+— Vulnérabilités détectées : 17
+— Vulnérabilités supprimées : 0
+Ce rapport constitue une étape essentielle dans le processus DevSecOps, per-
+mettant de renforcer la sécurité applicative en identifiant les composants à
+risque avant leur mise en production. La colonne Éliminable permet à l’équipe
+de développement de prioriser les corrections en fonction de la faisabilité tech-
+nique et de l’impact sur le projet.
+5.6
+Gestion des Images Docker avec GitHub
+Actions
+Dans cette section du pipeline GitHub Actions, nous regroupons quatre étapes
+essentielles liées à la gestion des images Docker, permettant d’assurer un cycle
+de vie sécurisé, automatisé et cohérent pour les composants frontend et ba-
+ckend.
+62
+
+
+===== PAGE 78 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+5.6.1
+Construction des Images Docker Frontend et Ba-
+ckend
+Cette première étape consiste à construire deux images Docker : l’une pour
+l’application frontend, l’autre pour le backend, à partir des Dockerfiles définis
+dans chaque répertoire. Chaque image est taguée avec un identifiant de build
+pour une traçabilité facilitée.
+Figure 5.15 – Dockerfile backend
+Figure 5.16 – Dockerfile frontend
+5.6.2
+Analyse de Sécurité des Images Docker (Trivy)
+Avant le déploiement, chaque image Docker générée est soumise à une analyse
+de sécurité via l’outil Trivy, qui détecte les vulnérabilités connues dans les
+packages systèmes et dépendances logicielles.
+63
+
+
+===== PAGE 79 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+Figure 5.17 – Logs d’exécution du stage Trivy
+Figure 5.18 – Exemple de rapport Trivy indiquant les vulnérabilités détectée
+Conclusion : Cette étape essentielle permet d’identifier les failles potentielles
+de sécurité en amont du déploiement, assurant une meilleure posture sécuri-
+taire.
+5.6.3
+Connexion à Docker Hub (Login)
+Pour publier nos images sur un registre distant, une authentification vers Do-
+cker Hub est réalisée à l’aide de secrets GitHub configurés dans le dépôt.
+64
+
+
+===== PAGE 80 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+Figure 5.19 – Connexion réussie à Docker Hub depuis GitHub Actions
+Conclusion : L’étape de login sécurisée garantit que seules les actions auto-
+risées peuvent pousser des images dans notre registre distant.
+5.6.4
+Publication des Images Docker sur Docker Hub
+(Push)
+Enfin, les images validées sont poussées vers Docker Hub pour qu’elles puissent
+être utilisées dans des environnements de test, de staging ou de production.
+Figure 5.20 – Publication de l’image backend et frontend sur Docker Hub
+Conclusion : La mise en ligne des images sur Docker Hub permet une distribu-
+tion centralisée, accessible et versionnée de nos conteneurs. L’automatisation
+65
+
+
+===== PAGE 81 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+de ces étapes via GitHub Actions s’inscrit dans une logique DevSecOps, où
+sécurité, qualité, et rapidité de livraison sont optimisées.
+Figure 5.21 – Vue d’ensemble du pipeline GitHub Actions implémenté
+5.6.5
+Artifacts générés par le pipeline
+Lors de l’exécution du pipeline CI/CD, plusieurs artifacts sont produits au-
+tomatiquement. Ces fichiers représentent des éléments clés du processus Dev-
+SecOps, permettant la traçabilité, la vérification et le déploiement sécurisé des
+applications.
+— dependency-check-report-backend : Rapport d’analyse SCA généré
+par OWASP Dependency-Check, contenant les vulnérabilités détectées
+dans les dépendances du projet backend.
+— docker-image : Image Docker du backend construite à partir du projet
+Java. Elle est utilisée pour le déploiement sur le serveur VPS.
+— test-results-backend : Résultats des tests unitaires exécutés avec JUnit
+5, permettant de valider le bon fonctionnement des composants backend.
+— trivy-scan-report : Rapport de scan de sécurité généré par Trivy, iden-
+tifiant les vulnérabilités dans l’image Docker.
+Chaque artifact est associé à un digest SHA-256 garantissant son intégrité
+et facilitant son traçage dans les environnements de production. Ces éléments
+sont essentiels pour assurer la conformité, la sécurité et la reproductibilité du
+pipeline DevSecOps.
+66
+
+
+===== PAGE 82 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+Figure 5.22 – Artifacts générés par le pipeline
+5.7
+OWASP et tests dynamiques DAST
+Contexte et rôle de l’OWASP
+L’OWASP (Open Web Application Security Project) est une organisation mon-
+diale à but non lucratif dédiée à l’amélioration de la sécurité des applications.
+Elle publie des guides, méthodologies et projets open-source, dont le célèbre
+OWASP Top 10, pour aider les équipes à identifier et réduire les vulnérabilités
+les plus critiques. Son écosystème outille les pratiques DevSecOps en facilitant
+la sensibilisation, la standardisation et des contrôles de sécurité.[22]
+Figure 5.23 – Illustration conceptuelle des catégories de risques du OWASP Top 10.
+5.7.1
+OWASP ZAP : un outil DAST open-source
+OWASP ZAP (Zed Attack Proxy) est un outil DAST (Dynamic Application
+Security Testing) open-source qui analyse une application en exécution via
+67
+
+
+===== PAGE 83 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+un proxy HTTP/HTTPS. Il permet de détecter des failles telles que XSS,
+injections, mauvaises configurations d’en-têtes, authentification fragile, et ex-
+position d’URLs sensibles grâce à ses capacités de proxy d’interception, de
+spidering et de active scan. [3]
+Fonctionnalités clés :
+— Proxy d’interception : capture et inspection des requêtes/réponses.
+— Spider/Crawler : découverte des chemins, formulaires et endpoints.
+— Scans automatisés : baseline (non-intrusif) et full scan (actif).
+— Rapports : export en HTML, XML, JSON pour l’archivage et l’audit.
+— API REST : pilotage à distance, intégration dans CI/CD.
+5.7.2
+Méthode intégrée au pipeline CI/CD
+ZAP peut être intégré dans un pipeline CI/CD afin d’exécuter automatique-
+ment des scans à chaque déploiement. Les scans baseline (rapides, non-intrusifs)
+se déclenchent sur les environnements de test/staging, les rapports sont publiés
+comme artefacts et les seuils d’échec (fail on high/medium) peuvent bloquer le
+pipeline en cas de vulnérabilités critiques.
+Figure 5.24 – Intégration de ZAP dans un pipeline CI/CD (build, déploiement, DAST, rap-
+ports).
+5.7.3
+Exemple de rapport OWASP ZAP
+Afin d’illustrer concrètement les résultats d’un scan dynamique, la figure ci-
+dessous présente un extrait du rapport généré par OWASP ZAP. Celui-ci syn-
+thétise les vulnérabilités détectées sur l’application cible, en les classant par
+68
+
+
+===== PAGE 84 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+niveau de sévérité (élevé, moyen, faible, informationnel). Chaque alerte est ac-
+compagnée d’une description, d’une preuve (evidence) et de recommandations
+de correction.
+Figure 5.25 – Exemple de rapport OWASP ZAP : récapitulatif des vulnérabilités détectées et
+leur sévérité.
+Dans cet exemple, aucune vulnérabilité critique n’a été relevée, mais plusieurs
+failles de configuration ont été identifiées, telles que :
+— En-têtes de sécurité manquants (Content-Security-Policy, X-Frame-
+Options, X-Content-Type-Options) exposant l’application à des attaques
+de type XSS ou Clickjacking.
+— Fuites d’informations via l’en-tête Server, révélant la version du ser-
+veur web.
+— Politiques de permissions absentes, laissant potentiellement acces-
+sibles des fonctionnalités sensibles du navigateur (caméra, micro, etc.).
+Ces résultats mettent en évidence l’importance de la configuration des en-têtes
+HTTP de sécurité et confirment l’utilité de ZAP comme outil DAST pour
+détecter rapidement des failles exploitables dans un contexte DevSecOps.
+Rôle du DevSecOps
+En tant que DevSecOps, mon rôle a consisté à :
+— Intégrer des outils de sécurité comme Snyk dans le pipeline GitHub Ac-
+tions.
+— Analyser les résultats des scans SAST (ex : Semgrep, SonarCloud), DAST
+(ex : OWASP ZAP) et SCA (ex : Snyk, Dependency-Check).
+69
+
+
+===== PAGE 85 =====
+
+Chapitre 5. Implémentation du pipeline DevSecOps et intégration des outils de sécurité
+— Définir les stratégies de blocage du pipeline en cas de vulnérabilité critique.
+— Communiquer avec l’équipe de développement pour proposer des mises
+à jour correctives, tout en respectant les contraintes de stabilité et de
+performance de l’application.
+Il est important de noter que le DevSecOps n’intervient pas directement dans
+le code, mais agit en tant que garant de la sécurité et de la qualité tout au
+long du cycle de vie du projet.
+Conclusion
+Durant ce chapitre, nous avons mis en place l’intégration continue sécurisée via
+GitHub Actions. Le prochain chapitre sera dédié au déploiement continu et à
+la mise en place du monitoring, afin de compléter notre démarche DevSecOps.
+70
+
+
+===== PAGE 86 =====
+
+CHAPITRE 6
+DÉPLOIEMENT CONTINU SÉCURISÉ ET
+MONITORING
+71
+
+
+===== PAGE 87 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+Introduction
+Au cours de ce chapitre, nous avons entamé la phase de déploiement continu
+de notre application. Pour automatiser la configuration de l’environnement
+serveur, nous avons utilisé Ansible. Celui-ci a été intégré dans une pipeline
+GitHub Actions afin de permettre un déploiement automatique à chaque
+mise à jour du dépôt. Nous avons ensuite installé les composants nécessaires
+(Docker, Docker Compose et NGINX) pour assurer l’exécution et l’expo-
+sition de l’application. Enfin, une étape de monitoring a été mise en place
+à l’aide de Prometheus, Node Exporter et Grafana, afin de superviser
+l’état des services et visualiser les performances à travers des tableaux de bord
+dynamiques.
+6.1
+Configuration des serveurs avec Ansible
+L’automatisation de la configuration des serveurs distants a été réalisée à l’aide
+d’Ansible, un outil open-source écrit en Python. Grâce à un fichier d’inven-
+taire listant les hôtes cibles et à des playbooks décrivant les tâches à exécuter,
+nous avons pu préparer notre environnement et assurer le déploiement de l’ap-
+plication.
+6.1.1
+Préparation des hôtes
+Nous avons configuré un accès sécurisé par SSH entre la machine de déploie-
+ment (GitHub Actions runner) et notre serveur (VPS). Pour cela, la clé privée
+a été ajoutée dans les secrets GitHub (DEPLOY_KEY),
+6.1.2
+Installation des dépendances
+À l’aide de playbooks Ansible, nous avons automatisé l’installation de :
+— Docker Engine : pour exécuter les conteneurs,
+— Docker Compose : pour orchestrer plusieurs services,
+— NGINX : utilisé comme reverse proxy afin d’exposer l’application.
+6.1.3
+Création du playbook Ansible
+Après avoir configuré le fichier d’inventaire Ansible (incluant localhost comme
+maître et le serveur distant comme nœud cible), nous avons procédé à la créa-
+72
+
+
+===== PAGE 88 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+tion d’un playbook Ansible. Ce playbook a pour objectif d’automatiser l’ins-
+tallation des dépendances nécessaires sur les machines cibles, afin d’éviter toute
+configuration manuelle et de garantir la reproductibilité du déploiement.
+Dans notre cas, le playbook a été conçu pour :
+— installer et configurer Docker Engine, indispensable pour exécuter les
+conteneurs,
+— installer Docker Compose, permettant d’orchestrer plusieurs services au
+sein d’un même environnement,
+— installer et configurer NGINX en tant que reverse proxy, afin d’exposer
+l’application et gérer le routage du trafic.
+L’exécution de ce playbook permet donc de préparer automatiquement les ser-
+veurs distants pour accueillir notre application, tout en respectant les bonnes
+pratiques DevOps. Une fois lancé, Ansible applique les tâches de manière sé-
+quentielle sur les hôtes définis dans l’inventaire, garantissant ainsi une instal-
+lation cohérente et fiable de l’ensemble de l’environnement.
+Figure 6.1 – Fichier de configuration playbook
+Figure 6.2 – Extrait du fichier d’inventaire Ansible
+Cette figure illustre la configuration de l’inventaire Ansible pour l’environne-
+73
+
+
+===== PAGE 89 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+ment de production. Le groupe [vps] contient l’adresse IP publique du serveur
+, ainsi que les paramètres nécessaires à l’authentification SSH
+Cette configuration permet à Ansible d’automatiser le déploiement et la ges-
+tion des services directement sur le VPS de production, en garantissant une
+connexion sécurisée et reproductible. Elle constitue un élément central de la dé-
+marche Infrastructure as Code, où l’infrastructure est décrite et versionnée
+au même titre que le code applicatif.
+6.2
+Continuous Delivery et Continuous De-
+ployment
+Dans le cadre du DevOps, le processus de livraison logicielle repose sur l’auto-
+matisation des étapes depuis la construction du code jusqu’à sa mise en produc-
+tion. Deux concepts essentiels interviennent dans cette phase : Continuous
+Delivery (CD) et Continuous Deployment. Bien qu’ils soient étroitement
+liés, ils diffèrent par leur degré d’automatisation et leur objectif final.
+6.2.1
+Continuous Delivery
+La livraison continue (Continuous Delivery) est une pratique qui ga-
+rantit que le code est toujours prêt à être déployé en production. Chaque
+modification du code passe automatiquement par les étapes de build, de tests
+et d’intégration, jusqu’à la génération d’un artefact déployable. Cependant, la
+mise en production reste une action manuelle, validée par une équipe ou un
+responsable.
+Dans le cadre de ce projet, une fois le workflow GitHub Actions déclenché
+pour la phase de Continuous Delivery, le processus se poursuit automatique-
+ment vers la phase de Continuous Deployment, qui lance le déploiement de
+l’application sur l’environnement cible.
+74
+
+
+===== PAGE 90 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+Figure 6.3 – Schéma illustrant le principe du Continuous Delivery
+6.2.2
+Continuous Deployment
+Le déploiement continu (Continuous Deployment) pousse l’automati-
+sation encore plus loin : chaque modification validée et testée est déployée
+automatiquement en production sans intervention humaine. Cela permet
+une mise en production rapide, continue et fiable, tout en nécessitant une forte
+confiance dans la qualité des tests automatisés.
+Figure 6.4 – Continuous Deployment
+75
+
+
+===== PAGE 91 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+6.3
+Application déployée
+L’application RackManager constitue une solution métier dédiée à la gestion
+des boîtes de stockage ,des cellules biologiques utilisées dans les laboratoires
+biologiques. Elle permet d’organiser, tracer et visualiser les échantillons répartis
+dans des racks, chaque boîte étant définie par un format spécifique (lignes ×
+colonnes) et un identifiant unique.
+Déployée sur une machine virtuelle et accessible via son adresse IP publique,
+RackManager est validée par des tests d’accès réalisés par les utilisateurs fi-
+naux. Les interfaces sont consultées directement à travers le navigateur, confir-
+mant ainsi le bon fonctionnement de l’application et la disponibilité des services
+déployés.
+Figure 6.5 – application deployé
+76
+
+
+===== PAGE 92 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+Figure 6.6 – Interface d’ajout d’une boîte dans l’application RackManager.
+6.4
+Mise en place du monitoring
+La supervision a été réalisée grâce à ces composants complémentaires : Pro-
+metheus, Node Exporter et Grafana. Ces outils permettent de collecter,
+analyser et visualiser des métriques système et applicatives afin d’évaluer la
+performance et la disponibilité de l’infrastructure.
+6.4.1
+Installation et configuration de Prometheus
+Prometheus est un outil open-source très répandu pour la collecte et l’analyse
+de métriques. Nous avons créé des fichiers YAML de configuration afin de
+définir son déploiement et son service réseau le fichier appelé prometheus.yaml
+.
+77
+
+
+===== PAGE 93 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+Figure 6.7 – Fichier de configuration Prometheus
+Une fois installé, Prometheus est accessible sur le port 9090, ce qui permet
+d’accéder à son tableau de bord web pour explorer les métriques collectées.
+6.4.2
+Interface Prometheus
+L’interface de Prometheus permet de lancer des requêtes en PromQL afin de sur-
+veiller différents indicateurs liés aux conteneurs et aux nœuds du cluster. Par
+exemple, la requête suivante permet d’aﬀicher la mémoire utilisée par chaque
+conteneur Docker : containermemoryusagebytesIlexistegalementd’autresrequtesenrichiesp
+Figure 6.8 – Exemple de requête PromQL aﬀichant la mémoire utilisée par les conteneurs.
+En naviguant ensuite dans l’onglet Status →Targets, nous pouvons observer
+automatiquement tous les points d’extrémité détectés grâce à la découverte
+78
+
+
+===== PAGE 94 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+de services de Prometheus. Cela permet d’assurer un suivi dynamique sans
+configuration manuelle supplémentaire.
+Figure 6.9 – Aﬀichage automatique des endpoints dans Prometheus.
+6.4.3
+Installation et configuration de Node Exporter et
+cAdvisor
+La supervision de l’infrastructure Docker a été réalisée grâce à trois compo-
+sants complémentaires : Prometheus, Node Exporter et cAdvisor. Ces
+outils permettent de collecter, analyser et visualiser des métriques système et
+applicatives afin d’évaluer la performance et la disponibilité de l’infrastructure.
+6.4.4
+Node Exporter
+est un composant essentiel pour la collecte des métriques système telles que
+l’utilisation du CPU, de la mémoire, de l’espace disque et des statistiques
+réseau. Il permet de monitorer chaque nœud de manière détaillée et est parti-
+culièrement utile dans les environnements Docker ou Kubernetes.[20] Les mé-
+triques sont exposées sur le port 9100 via l’endpoint /metrics. Dans notre
+configuration Docker Compose, Node Exporter est déployé en tant que service
+distinct nommé node-exporter :
+Figure 6.10 – Déploiement du Node Exporter
+79
+
+
+===== PAGE 95 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+6.4.5
+cAdvisor
+(Container Advisor) est un outil open-source développé par Google pour sur-
+veiller les conteneurs Docker en temps réel. Il collecte des informations dé-
+taillées sur l’utilisation du CPU, de la mémoire, du stockage et des statistiques
+réseau pour chaque conteneur Docker.[21]
+Dans notre configuration Docker Compose, cAdvisor est intégré comme suit :
+Figure 6.11 – Déploiement du cAdvisor
+Grâce à ces volumes montés, cAdvisor peut accéder aux informations système
+et aux métadonnées des conteneurs. Les métriques collectées par cAdvisor sont
+ensuite scrappées par Prometheus, permettant une vue complète de l’état de
+tous les conteneurs Docker.
+6.5
+Installation et configuration de Grafana
+Pour la visualisation des données, nous avons utilisé Grafana. Cet outil permet
+de créer des tableaux de bord personnalisés connectés à Prometheus comme
+source de données.
+80
+
+
+===== PAGE 96 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+Figure 6.12 – Configuration de la source de données Grafana
+Interface de connexion Grafana
+Grafana a été configuré pour être accessible via le port 3006. L’accès initial à
+l’interface graphique se fait à l’aide des identifiants par défaut. Il est fortement
+recommandé de modifier ces identifiants dès la première connexion afin de
+renforcer la sécurité.
+Figure 6.13 – interface grafana
+81
+
+
+===== PAGE 97 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+6.5.1
+Tableau de bord Grafana pour Node Exporter
+La figure 6.14 présente le tableau de bord Grafana Node Exporter Full
+utilisé pour la surveillance des métriques système des nœuds Docker.
+Figure 6.14 – Dashboard Grafana Node Exporter Full montrant les métriques système en
+temps réel
+Ce dashboard fournit une vue complète et interactive de l’état des ressources
+système, regroupées par catégories :
+— Quick CPU / Mem / Disk : Indicateurs principaux aﬀichant :
+— L’utilisation du CPU (CPU Busy)
+— La charge système moyenne sur 5 et 15 minutes (Sys Load)
+— L’utilisation de la RAM (RAM Used) et de la SWAP (SWAP Used)
+— L’espace disque utilisé sur la partition racine (Root FS Used)
+— Le temps de fonctionnement du système (Uptime)
+— Basic CPU / Mem / Net / Disk : Plusieurs panneaux offrant une
+vision détaillée des performances CPU, mémoire, réseau et stockage.
+— Memory Meminfo et Vmstat : Aﬀichage des métriques avancées de
+mémoire, y compris la mémoire libre, la mémoire cache et les statistiques
+des processus.
+— System Timesync et Processes : Informations sur la synchronisation
+du système et les processus en cours d’exécution.
+— System Misc et Hardware Misc : Métriques complémentaires sur le
+système et le matériel, telles que les interruptions et la température.
+82
+
+
+===== PAGE 98 =====
+
+Chapitre 6.
+Déploiement continu sécurisé et Monitoring
+— Storage Disk : Graphiques détaillés sur les opérations d’entrée/sortie
+disque (Disk IOPs Completed) et sur les taux de lecture/écriture (Disk
+R/W Data), permettant de suivre la performance et la charge des disques.
+Grâce à ce tableau de bord, les administrateurs peuvent surveiller en temps réel
+l’état des ressources système, détecter des anomalies et anticiper les problèmes
+de performance. L’intégration avec Prometheus garantit la collecte continue et
+centralisée de toutes les métriques exposées par Node Exporter et cAdvisor.
+Conclusion
+Dans ce chapitre, nous avons présenté le processus de déploiement continu
+mis en place grâce à Ansible et GitHub Actions, ainsi que la configuration
+de Docker, Docker Compose et NGINX pour assurer l’exécution de l’applica-
+tion. Nous avons également détaillé la mise en œuvre d’une solution complète
+de monitoring basée sur Prometheus, Node Exporter et Grafana, permettant
+d’obtenir une vision claire et détaillée de l’état et des performances de l’infra-
+structure en production.
+83
+
+
+===== PAGE 99 =====
+
+CONCLUSION GÉNÉRALE
+À l’ère du numérique, où la rapidité de livraison et la complexité des applica-
+tions ne cessent de croître, la sécurité ne peut plus être reléguée à une étape
+secondaire. Elle doit être pensée comme une composante essentielle, intégrée
+dès les premières phases de développement. Le modèle DevSecOps incarne
+parfaitement cette vision moderne de la sécurité, en favorisant une approche
+proactive, automatisée et continue.
+Au cours de mon Projet de Fin d’Études , j’ai eu l’opportunité de mettre en
+œuvre un pipeline DevSecOps complet, combinant des outils d’analyse statique
+(SAST), d’analyse dynamique (DAST), et de contrôle des dépendances (SCA),
+tout en respectant les principes de l’intégration et du déploiement continus. Ce
+pipeline nous a permis de détecter les vulnérabilités à différents niveaux, de
+renforcer l’infrastructure conteneurisée .
+Ce projet a représenté bien plus qu’une simple réalisation technique. Il a permis
+de mettre en pratique des compétences transversales en développement, en
+sécurité informatique, en gestion de projet et en automatisation. Il a aussi mis
+en lumière l’importance d’une culture collaborative entre développeurs, devops
+,experts sécurité.
+En guise de perspective, plusieurs pistes d’amélioration peuvent être envisa-
+gées :
+— L’adoption de pratiques MLOps pour automatiser le cycle de vie des mo-
+dèles IA : entraînement, validation, déploiement et supervision continue,
+— L’automatisation complète du déploiement via des orchestrateurs comme
+Kubernetes.
+En conclusion, cette expérience a démontré qu’il est possible de concilier ,
+performance et sécurité, à condition d’adopter une démarche structurée et de
+s’appuyer sur les bons outils. DevSecOps n’est pas qu’un ensemble de techno-
+logies, c’est avant tout un changement de culture.
+84
+
+
+===== PAGE 100 =====
+
+BIBLIOGRAPHIE
+[1] OneFoldTech.
+https://www.linkedin.com/company/one-fold-tech
+[2] SonarSource, SonarQube Documentation.
+https://docs.sonarsource.com/sonarqube/
+[3] OWASP, OWASP ZAP - Zed Attack Proxy.
+https://www.zaproxy.org/
+[4] Grafana Labs, Grafana - Monitoring and Dashboards.
+https://grafana.com/
+[5] VMware, Introduction to Virtualization.
+https://www.vmware.com/topics/glossary/content/
+virtualization
+[6] Red Hat, What is DevOps ?.
+https://www.redhat.com/en/topics/devops
+[7] Docker Inc., Docker Documentation.
+https://docs.docker.com/
+[8] Docker Inc., Docker Compose Documentation.
+https://docs.docker.com/compose/
+[9] Docker Inc., Docker Hub.
+https://hub.docker.com/
+[10] OVHcloud, Guides VPS.
+https://docs.ovh.com/fr/vps/
+[11] Cloud Native Computing Foundation (CNCF), CNCF Landscape.
+https://landscape.cncf.io/
+[12] GitHub, GitHub Actions Documentation.
+https://docs.github.com/en/actions
+85
+
+
+===== PAGE 101 =====
+
+Bibliographie
+[13] Semgrep, Semgrep Documentation.
+https://semgrep.dev/docs
+[14] Snyk Ltd., Snyk Documentation (SCA & SAST).
+https://docs.snyk.io
+[15] OWASP, OWASP Dependency-Check.
+https://owasp.org/www-project-dependency-check/
+[16] OWASP, OWASP ZAP – Zed Attack Proxy.
+https://www.zaproxy.org/
+[17] Aqua Security, Trivy Vulnerability Scanner.
+https://aquasecurity.github.io/trivy/
+[18] Prometheus Authors, Prometheus Documentation.
+https://prometheus.io/docs/
+[19] Grafana Labs, Grafana Documentation.
+https://grafana.com/docs/
+[20] Prometheus Authors, Node Exporter.
+https://github.com/prometheus/node_exporter
+[21] Google, cAdvisor – Container Advisor.
+https://github.com/google/cadvisor
+[22] OWASP Foundation, OWASP Top 10.
+https://owasp.org/www-project-top-ten/
+86
+
+
+===== PAGE 102 =====
+
+9%
+INDICE DE SIMILITUDE 7%
+SOURCES INTERNET
+1%
+PUBLICATIONS
+5%
+COPIES DE L'ÉTUDIANT
+1
+2%
+2
+1%
+3
+1%
+4
+1%
+5
+<1%
+6
+<1%
+7
+<1%
+8
+<1%
+9
+<1%
+10
+<1%
+11
+<1%
+12
+<1%
+Memoire_Salma
+RAPPORT DE SIMILITUDE
+SOURCES PRINCIPALES
+Submitted to University of Sousse
+Copie de l'étudiant
+Submitted to University of Monastir
+Copie de l'étudiant
+Submitted to University of Manouba
+Copie de l'étudiant
+Submitted to University of Carthage
+Copie de l'étudiant
+Submitted to Université Virtuelle de Tunis
+Copie de l'étudiant
+Submitted to Tunisian Consortium
+Copie de l'étudiant
+Submitted to University of Jendouba
+Copie de l'étudiant
+www.audentia-gestion.fr
+Source Internet
+dspace.univ-tlemcen.dz
+Source Internet
+www.oodrive.com
+Source Internet
+blog.stephane-robert.info
+Source Internet
+owasp.org
+Source Internet
+
+
+===== PAGE 103 =====
+
+Bibliographie
+88

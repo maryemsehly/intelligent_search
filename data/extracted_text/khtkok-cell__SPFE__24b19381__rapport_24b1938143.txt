@@ -1,0 +1,876 @@
+===== PAGE 1 =====
+
+ 
+Royaume du Maroc 
+École Nationale Supérieure des Mines de Rabat 
+ENSMR — Département Ingénierie des Systèmes d’Information et de Pilotage (ISIP) 
+Rapport de Stage Ouvrier — 1ère année ISIP 
+Plate-forme d’Encadrement et de Suivi des Stages 
+(SPFE) 
+Développement d’une application web de gestion et de suivi des projets de fin d’études 
+Réalisé par : MAROUANE EL MAIMOUNI 
+Encadrant : Pr. Reda TAJINI 
+Année universitaire 2025 / 2026 
+
+
+===== PAGE 2 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 2 
+Sommaire 
+Sommaire .................................................................................................................................................... 2 
+1. Introduction ............................................................................................................................................. 4 
+1.1 Contexte général ............................................................................................................................... 4 
+1.2 Problématique ................................................................................................................................... 4 
+1.3 Objectifs du projet ............................................................................................................................. 4 
+2. Étude bibliographique ............................................................................................................................. 4 
+2.1 La gestion des stages en milieu universitaire .................................................................................... 4 
+2.2 Architectures et technologies web .................................................................................................... 4 
+2.3 Sécurité des applications web ........................................................................................................... 5 
+3. Analyse des besoins ................................................................................................................................. 5 
+3.1 Acteurs du système ........................................................................................................................... 5 
+3.2 Besoins fonctionnels .......................................................................................................................... 5 
+3.3 Besoins non fonctionnels .................................................................................................................. 5 
+4. Modélisation du système ........................................................................................................................ 6 
+4.1 Diagramme de cas d’utilisation ......................................................................................................... 6 
+4.2 Diagramme de classes ....................................................................................................................... 8 
+4.3 Modèle de données (diagramme entité-association) ....................................................................... 9 
+4.4 Diagrammes de séquence ............................................................................................................... 11 
+5. Conception et choix techniques ............................................................................................................ 13 
+5.1 Architecture générale ...................................................................................................................... 13 
+5.2 Justification des technologies .......................................................................................................... 13 
+5.3 Conception UI/UX ............................................................................................................................ 14 
+5.4 Organisation et planification du projet ........................................................................................... 14 
+6. Réalisation ............................................................................................................................................. 14 
+6.1 Pages publiques ............................................................................................................................... 15 
+6.2 Espace Étudiant ............................................................................................................................... 16 
+6.3 Espace Jury ...................................................................................................................................... 19 
+6.4 Espace Administration ..................................................................................................................... 23 
+7. Tests et validation.................................................................................................................................. 26 
+7.1 Démarche de test ............................................................................................................................ 26 
+7.2 Sécurité testée ................................................................................................................................. 27 
+7.3 Bugs corrigés lors de la validation ................................................................................................... 27 
+7.4 Mise en ligne ................................................................................................................................... 27 
+8. Conclusion et perspectives .................................................................................................................... 27 
+Annexe A — Dictionnaire des données ..................................................................................................... 29 
+Annexe B — Guide de déploiement .......................................................................................................... 30 
+
+
+===== PAGE 3 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 3 
+B.1 Prérequis ......................................................................................................................................... 30 
+B.2 Configuration (.env) ........................................................................................................................ 30 
+B.3 Lancement ....................................................................................................................................... 30 
+ 
+ 
+ 
+
+
+===== PAGE 4 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 4 
+1. Introduction 
+1.1 Contexte général 
+Dans le cadre du stage ouvrier de la première année du cycle ingénieur ISIP à l’École Nationale Supérieure 
+des Mines de Rabat (ENSMR), il a été confié le développement d’une plate-forme web d’encadrement et 
+de suivi des stages. Chaque année, l’école accueille des centaines d’étudiants effectuant des stages 
+(ouvriers, d’application et de fin d’études) dont le suivi repose encore largement sur des échanges de 
+courriels, des dépôts de documents en format papier et un suivi manuel par l’administration. 
+1.2 Problématique 
+Le processus d’encadrement des stages souffre de plusieurs insuffisances : la dispersion des informations 
+(courriels, fichiers partagés, documents papier), l’absence de visibilité en temps réel sur l’avancement 
+des stages, la difficulté d’appariement entre étudiants et encadrants, et l’absence d’un historique 
+centralisé des évaluations. Ces faiblesses engendrent une charge administrative importante et des 
+retards dans le traitement des dossiers. 
+1.3 Objectifs du projet 
+L’objectif du projet est de concevoir et de réaliser une plate-forme web centralisée — nommée SPFE 
+(Suivi des Projets de Fin d’Études) — qui couvre l’ensemble du cycle de vie d’un stage : 
+• 
+La soumission, la validation et le suivi des sujets de stage ; 
+• 
+La gestion des demandes d’encadrement entre étudiants et membres du jury ; 
+• 
+Le dépôt et le partage sécurisé des documents liés au stage (rapports, attestations, fiches 
+d’appréciation) ; 
+• 
+La messagerie intégrée entre étudiants, jurys et administration ; 
+• 
+L’évaluation des stagiaires et la consultation des évaluations ; 
+• 
+Un tableau de bord administratif avec des statistiques en temps réel. 
+2. Étude bibliographique 
+2.1 La gestion des stages en milieu universitaire 
+La littérature sur les systèmes d’information académiques montre que la digitalisation du suivi des stages 
+améliore sensiblement la traçabilité administrative et la satisfaction des parties prenantes. Les 
+plateformes existantes (portails de stages d’universités, solutions commerciales type « career center ») 
+articulent généralement trois espaces : étudiant, entreprise/encadrant et administration. Le sujet fourni 
+par l’école s’inscrit dans cette démarche tout en l’adaptant au contexte ENSMR. 
+2.2 Architectures et technologies web 
+Le développement web moderne privilégie les architectures client-serveur à trois niveaux (présentation, 
+logique métier, données) communiquant par une API REST. Côté serveur, Node.js avec le framework 
+Express s’est imposé comme une référence pour construire des API légères et performantes grâce à son 
+modèle événementiel non bloquant. Côté données, MySQL, système de gestion de bases de données 
+
+
+===== PAGE 5 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 5 
+relationnelles éprouvé, garantit l’intégrité relationnelle nécessaire à la gestion des utilisateurs, des stages 
+et des documents. Côté navigateur, les standards HTML5 / CSS3 / JavaScript permettent de réaliser des 
+interfaces responsives sans dépendre de frameworks lourds. 
+2.3 Sécurité des applications web 
+Les recommandations OWASP pour les applications web soulignent l’importance du stockage des mots 
+de passe par hachage adaptatif (bcrypt), des sessions HTTP-only, de la validation des fichiers téléversés 
+(type MIME et taille) et du contrôle d’accès basé sur les rôles. Ces principes ont guidé les choix 
+d’implémentation présentés au chapitre 5. 
+3. Analyse des besoins 
+3.1 Acteurs du système 
+Acteur 
+Rôle dans le système 
+Étudiant 
+Inscription en ligne, dépôt des pièces justificatives, suivi de son stage, 
+communication avec le jury 
+Jury / Encadrant 
+Gestion des étudiants encadrés, invitations d’encadrement, évaluations, 
+rapports 
+Administrateur 
+Validation des comptes et sujets, gestion des classes et des niveaux, 
+supervision globale 
+ 
+3.2 Besoins fonctionnels 
+Espace Étudiant : formulaire d’inscription en ligne avec vérification de l’adresse e-mail, authentification 
+sécurisée (y compris Google OAuth), consultation et mise à jour de son profil, dépôt de pièces 
+justificatives (attestation de stage, fiche d’appréciation, rapport, etc.) par téléversement multiple avec 
+barre de progression, consultation de son stage (entreprise, période, encadrant), consultation de ses 
+évaluations et envoi/réception de messages. 
+Espace Jury : consultation des étudiants affectés, parcours des documents déposés, saisie d’évaluations 
+par critères notés de 0 à 5 avec appréciation, envoi d’invitations d’encadrement aux étudiants sans 
+encadrant, réponse aux demandes reçues, génération de rapports PDF/Excel. 
+Espace Administration : tableau de bord avec statistiques en temps réel (stages validés, étudiants 
+restants, documents, évaluations), validation ou rejet des sujets, gestion des utilisateurs (étudiants, jurys, 
+administrateurs), gestion des stages et affectation des jurys, export de données en PDF et Excel. 
+Transverse : messagerie interne avec suivi des conversations et des messages non lus, système de 
+demandes d’encadrement avec statuts (en attente, acceptée, refusée, annulée), notification visuelle des 
+éléments en attente, thème clair/sombre. 
+3.3 Besoins non fonctionnels 
+• 
+Sécurité : mots de passe hachés (bcrypt), sessions HTTP-only, contrôle d’accès par rôle côté 
+serveur, validation des fichiers téléversés (10 Mo max, types MIME restreints) ; 
+
+
+===== PAGE 6 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 6 
+• 
+Ergonomie : interface responsive adaptée aux mobiles, écrans simples, thème clair/sombre ; 
+• 
+Performance : requêtes indexées, pagination, squelettes de chargement ; 
+• 
+Maintenabilité : architecture en couches (routes → contrôleurs → services → base de données), 
+code modulaire. 
+4. Modélisation du système 
+La modélisation du système a été réalisée avec le langage UML (Unified Modeling Language), standard 
+de référence pour la conception orientée objet. Elle comprend un diagramme de cas d’utilisation (vision 
+fonctionnelle), un diagramme de classes et un diagramme entité-association (vision structurelle), ainsi 
+que des diagrammes de séquence (vision comportementale). 
+4.1 Diagramme de cas d’utilisation 
+Le diagramme global met en évidence les trois acteurs du système et leurs interactions avec la plate-
+forme. L’étudiant intervient sur les cas d’utilisation liés à son parcours (inscription, documents, demandes 
+d’encadrement, messagerie) ; le jury encadre et évalue ; l’administrateur supervise l’ensemble et pilote 
+les référentiels. Le cas d’utilisation « S’authentifier » est partagé par les trois acteurs. 
+
+
+===== PAGE 7 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 7 
+ 
+Figure 1 — Diagramme de cas d’utilisation global 
+Chaque acteur dispose donc d’un périmètre fonctionnel clairement délimité, qui se traduit dans 
+l’implémentation par un contrôle d’accès basé sur les rôles (middleware de vérification de session et de 
+rôle sur chaque route de l’API). 
+
+
+===== PAGE 8 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 8 
+4.2 Diagramme de classes 
+Le diagramme de classes représente la structure statique du domaine. La classe mère User est spécialisée 
+en trois sous-classes (Student, Jury, Admin) selon le rôle, conformément au principe d’héritage. Les 
+classes Internship, Document, SupervisionRequest, Message et Evaluation matérialisent les concepts 
+métier et leurs associations : 
+ 
+Figure 2 — Diagramme de classes du système 
+• 
+User (abstract) : identité, authentification et rôle commun à tous les acteurs ; 
+
+
+===== PAGE 9 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 9 
+• 
+Internship : le stage réalisée par un étudiant et encadré par un membre du jury ; 
+• 
+Document : pièce jointe rattachée à un étudiant et, le cas échéant, à un stage, avec une 
+politique de visibilité (privé, jury, public) ; 
+• 
+SupervisionRequest : demande d’encadrement caractérisée par un statut (pending, accepted, 
+rejected, cancelled) et un émetteur ; 
+• 
+Message / Evaluation : échanges entre utilisateurs et évaluations par critères notés de 0 à 5. 
+ 
+4.3 Modèle de données (diagramme entité-association) 
+Le modèle physique dérive directement du diagramme de classes : chaque classe devient une table 
+relationnelle, les héritages sont résolus par une table users portant l’attribut role et des tables de 
+spécialisation (students, juries) référencées par clé étrangère. Le diagramme entité-association ci-
+dessous présente les cardinalités : 
+
+
+===== PAGE 10 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 10 
+ 
+Figure 3 — Diagramme entité-association de la base de données 
+Entité 
+Attributs principaux 
+Relations 
+users 
+id, name, email (unique), password_hash, role 
+(student/jury/admin), avatar, e-mail vérifié 
+Table centrale d’identité 
+students 
+user_id (FK), student_number (unique), 
+department, level 
+1-1 avec users 
+juries 
+user_id (FK), title, department, supervised_count 
+1-1 avec users 
+
+
+===== PAGE 11 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 11 
+Entité 
+Attributs principaux 
+Relations 
+internships 
+id, student_id (FK), jury_id (FK), company, 
+position, période, status 
+n-1 avec students / juries 
+documents 
+id, student_id (FK), internship_id (FK), 
+original_name, stored_name, mime_type, 
+category, visibility 
+n-1 avec students et 
+internships 
+supervision_requests 
+id, student_id (FK), jury_id (FK), message, status, 
+sent_by, created_at 
+n-1 avec students et juries 
+messages 
+id, sender_id (FK), receiver_id (FK), subject, 
+content, is_read, created_at 
+n-1 avec users 
+(émetteur/récepteur) 
+evaluations 
+id, student_id (FK), jury_id (FK), notes par critère, 
+commentaire, created_at 
+n-1 avec students et juries 
+ 
+Cette structure garantit l’intégrité référentielle (clés étrangères), l’unicité des adresses électroniques et 
+des numéros étudiants, ainsi que la traçabilité complète des échanges (horodatage des messages et des 
+documents). 
+4.4 Diagrammes de séquence 
+Les diagrammes de séquence décrivent les scénarios dynamiques majeurs du système, en montrant la 
+collaboration entre l’acteur, le front-end, l’API, les services (stockage, e-mail) et la base de données. 
+ 
+Figure 4 — Diagramme de séquence — inscription, vérification et authentification 
+
+
+===== PAGE 12 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 12 
+Le scénario d’authentification illustre les mécanismes de sécurité : hachage du mot de passe par bcrypt 
+avant stockage, envoi d’un lien de vérification par e-mail, comparaison sécurisée à la connexion puis 
+création d’une session HTTP-only. 
+ 
+Figure 5 — Diagramme de séquence — téléversement de documents 
+Le dépôt de documents montre le double niveau de validation : côté client (taille maximale de 10 Mo, 
+détection des doublons) puis côté serveur (contrôle du type MIME et de la taille par Multer avant 
+stockage et enregistrement en base). 
+ 
+Figure 6 — Diagramme de séquence — demande d’encadrement 
+
+
+===== PAGE 13 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 13 
+Le cycle de demande d’encadrement engage les deux acteurs : l’étudiant consulte les jurys disponibles et 
+envoie une demande ; le jury l’accepte ou la refuse, ce qui déclenche, en cas d’acceptation, l’affectation 
+automatique du jury au stage de l’étudiant. 
+ 
+Figure 7 — Diagramme de séquence — évaluation d’un étudiant 
+L’évaluation est réservée au jury affecté à l’étudiant : le serveur vérifie cette affectation avant 
+d’enregistrer les notes par critère (0 à 5) et le commentaire. L’étudiant consulte ensuite ses évaluations 
+dans son espace. 
+Le cycle des demandes d’encadrement suit une machine à états simple : pending → accepted / rejected 
+/ cancelled, chaque transition étant contrôlée par le rôle concerné. 
+5. Conception et choix techniques 
+5.1 Architecture générale 
+L’application adopte une architecture trois tiers : 
+• 
+Couche présentation : pages HTML statiques organisées par rôle (student/, jury/, admin/), 
+styles CSS (design system inspiré de Materio, thème clair/sombre) et modules JavaScript (app.js 
+partagé, student.js, jury.js, admin.js) communiquant avec l’API par fetch ; 
+• 
+Couche métier : serveur Express structuré en routes → contrôleurs → services, avec intergiciels 
+d’authentification par session et de contrôle de rôle ; 
+• 
+Couche données : base MySQL (stage_manager_pro) avec schéma normalisé et données de 
+démonstration, ainsi qu’un répertoire uploads/ pour les fichiers. 
+5.2 Justification des technologies 
+
+
+===== PAGE 14 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 14 
+Technologie 
+Rôle 
+Justification 
+Node.js + Express 
+Back-end / API REST 
+Léger, asynchrone, écosystème riche, courbe 
+d’apprentissage faible 
+MySQL 
+Base de données 
+Fiabilité, intégrité relationnelle, adapté aux 
+données structurées 
+HTML/CSS/JS vanilla 
+Front-end 
+Aucune dépendance lourde, chargement rapide, 
+maîtrise complète du rendu 
+express-session + bcrypt 
+Authentification 
+Sessions HTTP-only, hachage adaptatif des mots 
+de passe (OWASP) 
+Multer 
+Téléversement 
+Validation MIME/taille intégrée, stockage disque 
+simple 
+PDFKit / ExcelJS 
+Exports 
+Génération de rapports PDF et Excel à la volée 
+Resend (SMTP API) 
+E-mails 
+Vérification de compte et réinitialisation de mot 
+de passe 
+ 
+5.3 Conception UI/UX 
+L’interface suit une grille cohérente : barre latérale de navigation par espace, en-tête avec notifications 
+et bascule de thème, cartes et tableaux homogènes. Les écrans ont été conçus « mobile-first » (media 
+queries) et enrichis d’animations discrètes (entrées en cascade, squelettes de chargement) afin de rester 
+simples et lisibles, conformément au cahier des charges. 
+5.4 Organisation et planification du projet 
+Le projet a été conduit selon une démarche itérative et incrémentale inspirée des méthodes agiles : 
+chaque cycle (durée d’une semaine environ) livrait un incrément fonctionnel testable, validé avant de 
+passer au suivant. Cette approche a permis de détecter tôt les écarts par rapport au cahier des charges 
+et d’intégrer en continu les corrections. 
+Phase 
+Activités principales 
+Livrables 
+1. Cadrage 
+Analyse du sujet, étude de l’existant, définition du 
+périmètre 
+Cahier des charges, liste 
+des besoins 
+2. Modélisation 
+Cas d’utilisation, classes, entité-association, 
+séquences 
+Modèles UML validés 
+3. Conception 
+Architecture trois tiers, design system, maquettes 
+d’écrans 
+Architecture, charte 
+graphique 
+4. Développement 
+Base de données, API REST, trois espaces utilisateur, 
+messagerie, documents 
+Application 
+fonctionnelle 
+5. Tests et correctifs 
+Tests fonctionnels par parcours, corrections, 
+sécurisation 
+Application validée 
+6. Rédaction et 
+soutenance 
+Rapport, captures d’écran, support de présentation 
+Rapport, diapositives 
+ 
+6. Réalisation 
+
+
+===== PAGE 15 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 15 
+6.1 Pages publiques 
+La page d’accueil présente la plateforme et oriente vers la connexion ou la création de compte. La page 
+de connexion propose l’authentification classique (e-mail + mot de passe), la connexion Google et la 
+récupération de mot de passe. L’inscription en ligne intègre la vérification de l’adresse e-mail. 
+ 
+Figure 8 — Page d’accueil publique (landing) 
+ 
+Figure 9 — Page de connexion 
+
+
+===== PAGE 16 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 16 
+ 
+Figure 10 — Formulaire d’inscription en ligne 
+6.2 Espace Étudiant 
+Après connexion, l’étudiant accède à son tableau de bord (synthèse de son stage, documents, 
+évaluations), gère son stage et ses documents, consulte ses évaluations, gère ses demandes 
+d’encadrement, échange par messagerie avec son jury et met à jour son profil. 
+ 
+Figure 11 — Espace étudiant — tableau de bord 
+
+
+===== PAGE 17 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 17 
+ 
+Figure 12 — Espace étudiant — mon stage 
+ 
+Figure 13 — Espace étudiant — mes documents (téléversement multiple avec liste de fichiers) 
+
+
+===== PAGE 18 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 18 
+ 
+Figure 14 — Espace étudiant — mes évaluations 
+ 
+Figure 15 — Espace étudiant — demandes d’encadrement 
+
+
+===== PAGE 19 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 19 
+ 
+Figure 16 — Espace étudiant — messagerie 
+ 
+Figure 17 — Espace étudiant — profil 
+6.3 Espace Jury 
+Le membre du jury dispose d’un tableau de bord dédié, de la liste de ses étudiants encadrés, du dépôt et 
+de la consultation des évaluations, de la gestion des demandes d’encadrement (invitations envoyées et 
+demandes reçues), de la messagerie avec ses stagiaires et de rapports exportables. 
+
+
+===== PAGE 20 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 20 
+ 
+Figure 18 — Espace jury — tableau de bord 
+ 
+Figure 19 — Espace jury — étudiants encadrés 
+
+
+===== PAGE 21 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 21 
+ 
+Figure 20 — Espace jury — évaluations 
+ 
+Figure 21 — Espace jury — demandes d’encadrement 
+
+
+===== PAGE 22 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 22 
+ 
+Figure 22 — Espace jury — messagerie 
+ 
+Figure 23 — Espace jury — rapports 
+
+
+===== PAGE 23 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 23 
+ 
+Figure 24 — Espace jury — profil 
+6.4 Espace Administration 
+L’administrateur supervise la plateforme : statistiques en temps réel, gestion des comptes utilisateurs, 
+des étudiants, des jurys et des stages, contrôle des documents et rapports consolidés. Il peut valider ou 
+rejeter les sujets et gérer les classes et les niveaux. 
+ 
+Figure 25 — Espace administration — tableau de bord (statistiques en temps réel) 
+
+
+===== PAGE 24 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 24 
+ 
+Figure 26 — Espace administration — gestion des utilisateurs 
+ 
+Figure 27 — Espace administration — gestion des étudiants 
+
+
+===== PAGE 25 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 25 
+ 
+Figure 28 — Espace administration — gestion des jurys 
+ 
+Figure 29 — Espace administration — gestion des stages 
+
+
+===== PAGE 26 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 26 
+ 
+Figure 30 — Espace administration — documents 
+ 
+Figure 31 — Espace administration — rapports 
+7. Tests et validation 
+7.1 Démarche de test 
+La validation a été menée par des tests fonctionnels manuels couvrant les parcours critiques de chaque 
+acteur, sur les navigateurs Chrome et Edge, en vue bureau et mobile (media queries vérifiées). 
+
+
+===== PAGE 27 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 27 
+Fonctionnalité testée 
+Scénario 
+Résultat 
+Inscription / connexion 
+Création de compte, e-mail de vérification, 
+connexion étudiant, jury et admin 
+Conforme 
+Contrôle d’accès par rôle 
+Accès direct aux pages d’un autre rôle sans session 
+valide 
+Redirection, accès 
+refusé 
+Téléversement de documents 
+Ajout multiple, doublon rejeté, fichier > 10 Mo 
+rejeté, upload de 2 fichiers 
+Conforme 
+Messagerie 
+Envoi étudiant → jury, consultation côté jury, 
+marqueur « non lu », réponse 
+Conforme 
+Demandes d’encadrement 
+Invitation jury → étudiant, acceptation, annulation 
+Conforme 
+Évaluations 
+Saisie par critères 0-5, consultation par l’étudiant 
+Conforme 
+Exports PDF / Excel 
+Génération depuis les espaces jury et admin 
+Conforme 
+Thème clair / sombre 
+Bascule et persistance du choix 
+Conforme 
+ 
+7.2 Sécurité testée 
+• 
+Sessions invalidées après déconnexion ; routes API protégées par rôle (401/403) ; 
+• 
+Échappement HTML systématique des contenus affichés (protection XSS) ; 
+• 
+Requêtes SQL paramétrées (protection injection SQL) ; 
+• 
+Validation MIME et taille des fichiers côté serveur. 
+7.3 Bugs corrigés lors de la validation 
+• 
+Page de messagerie inopérante après refonte du gabarit applicatif — réécrite sur le bon point 
+d’entrée de rendu ; 
+• 
+Icônes SVG sans dimensions dans les boutons et en-têtes de cartes — règle globale corrigée ; 
+• 
+Zone d’actions du téléversement visible alors que la liste de fichiers était vide — masquage 
+corrigé. 
+7.4 Mise en ligne 
+L’application est exécutée localement (API sur le port 4000, front sur le port 5500 avec proxy /api). La 
+mise en production requiert un serveur Node.js (VPS ou plateforme managée type Render/Railway), une 
+base MySQL managée et un stockage persistant pour les fichiers ; la configuration est externalisée dans 
+un fichier d’environnement (.env). 
+8. Conclusion et perspectives 
+Ce stage a permis de couvrir l’intégralité du cycle de développement d’une application web : étude 
+bibliographique, analyse des besoins, modélisation statique et dynamique, conception UI/UX, 
+développement front-end, back-end et base de données, puis tests et validation. La plateforme SPFE 
+répond au cahier des charges : espaces étudiant, jury et administration opérationnels, messagerie 
+intégrée, gestion documentaire sécurisée, demandes d’encadrement et tableau de bord statistique. 
+
+
+===== PAGE 28 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 28 
+Plusieurs perspectives d’évolution sont envisagées : remplacement du stockage des sessions en mémoire 
+par un store persistant (Redis) pour la mise à l’échelle, notifications en temps réel (WebSockets), 
+application mobile compagnon, planification des réunions d’encadrement avec agenda partagé, et 
+intégration d’un module de plagiat pour les rapports finaux. 
+ 
+En conclusion, ce projet constitue une base solide et évolutive pour la digitalisation du processus 
+d’encadrement des stages à l’ENSMR, et m’a permis de renforcer mes compétences en développement 
+full-stack, en sécurité applicative et en conduite de projet. 
+ 
+ 
+
+
+===== PAGE 29 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 29 
+Annexe A — Dictionnaire des données 
+Le dictionnaire ci-dessous décrit précisément chaque table de la base de données stage_manager_pro, 
+avec ses champs, leurs types et leurs contraintes. 
+Table 
+Champ 
+Type 
+Contraintes / Description 
+users 
+id 
+INT AI 
+Clé primaire 
+users 
+name 
+VARCHAR(120) 
+Nom complet 
+users 
+email 
+VARCHAR(190) 
+Unique, indexé 
+users 
+password_hash 
+VARCHAR(255) 
+Hachage bcrypt 
+users 
+role 
+ENUM 
+student | jury | admin 
+users 
+avatar_path 
+VARCHAR(255) 
+Photo de profil (nullable) 
+users 
+email_verified_at 
+DATETIME 
+Vérification par e-mail 
+students 
+user_id 
+INT 
+PK, FK → users.id (CASCADE) 
+students 
+student_number 
+VARCHAR(30) 
+Unique (ex. ST-00001) 
+students 
+department / level 
+VARCHAR 
+Filière et niveau 
+juries 
+user_id 
+INT 
+PK, FK → users.id (CASCADE) 
+juries 
+title / department 
+VARCHAR 
+Titre et département 
+internships 
+id 
+INT AI 
+Clé primaire 
+internships 
+student_id / jury_id 
+INT 
+FK → students / juries 
+internships 
+company / position 
+VARCHAR 
+Entreprise et poste 
+internships 
+start_date / end_date 
+DATE 
+Période du stage 
+internships 
+status 
+ENUM 
+pending | active | completed | 
+rejected 
+documents 
+id 
+INT AI 
+Clé primaire 
+documents 
+student_id / 
+internship_id 
+INT 
+FK → students / internships 
+documents 
+original_name / 
+stored_name 
+VARCHAR 
+Nom d’origine / nom disque 
+documents 
+mime_type / file_size 
+VARCHAR / INT 
+Type contrôlé, max 10 Mo 
+documents 
+category / visibility 
+ENUM 
+report, identity… / private, jury, 
+public 
+supervision_requests 
+id 
+INT AI 
+Clé primaire 
+supervision_requests 
+student_id / jury_id 
+INT 
+FK → students / juries 
+supervision_requests 
+message / status / 
+sent_by 
+TEXT / ENUM / 
+ENUM 
+Statut : pending, accepted, 
+rejected, cancelled 
+messages 
+id 
+INT AI 
+Clé primaire 
+messages 
+sender_id / receiver_id 
+INT 
+FK → users.id 
+messages 
+subject / content 
+VARCHAR / TEXT 
+Objet et corps du message 
+messages 
+is_read / created_at 
+BOOLEAN / 
+DATETIME 
+Marqueur « non lu » et horodatage 
+evaluations 
+id 
+INT AI 
+Clé primaire 
+
+
+===== PAGE 30 =====
+
+Rapport de Stage — SPFE 
+ENSMR — 2025/2026 
+Page 30 
+Table 
+Champ 
+Type 
+Contraintes / Description 
+evaluations 
+student_id / jury_id 
+INT 
+FK → students / juries 
+evaluations 
+criteria (JSON) / 
+comment 
+JSON / TEXT 
+Notes 0-5 par critère et 
+appréciation 
+ 
+Annexe B — Guide de déploiement 
+B.1 Prérequis 
+• 
+Node.js 18 ou supérieur et npm ; 
+• 
+MySQL 8 (base stage_manager_pro créée depuis database/schema.sql, données de 
+démonstration via database/seed.sql) ; 
+• 
+Clé API Resend pour l’envoi des e-mails de vérification (optionnel en développement). 
+B.2 Configuration (.env) 
+Variable 
+Rôle 
+Exemple 
+PORT 
+Port de l’API 
+4000 
+DB_HOST / DB_USER / 
+DB_PASSWORD 
+Accès MySQL 
+localhost / root / **** 
+DB_NAME 
+Nom de la base 
+stage_manager_pro 
+SESSION_SECRET 
+Signature des sessions 
+Chaîne aléatoire longue 
+RESEND_API_KEY 
+Envoi des e-mails 
+re_**** 
+GOOGLE_CLIENT_ID / SECRET 
+Connexion Google OAuth 
+**** 
+ 
+B.3 Lancement 
+Après installation des dépendances (npm install), la commande npm run dev démarre simultanément 
+l’API (port 4000) et le serveur statique du front-end (port 5500) qui proxifie les appels /api vers l’API. Pour 
+la production, on privilégiera un serveur Node.js (VPS ou plateforme managée), une base MySQL 
+managée et un volume persistant pour le répertoire uploads/, avec HTTPS assuré par un reverse-proxy. 
+Comptes de démonstration (mot de passe Password123!) : admin@uni.edu (administration), 
+reda.tajini@ensmr.ma (jury) et marouane.mainmouni@student.ensmr.ma (étudiant).

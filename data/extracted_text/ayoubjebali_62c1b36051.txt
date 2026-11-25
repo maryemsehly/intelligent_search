@@ -1,0 +1,2505 @@
+===== PAGE 1 =====
+
+ 
+ 
+ 
+ 
+ 
+ 
+Encadrant Entreprise 
+Ben Nouri Aymen 
+Encadrant SESAME 
+ Ferchichi Olfa 
+ 
+ 
+ 
+RAPPORT DE STAGE DE PROJET DE FIN D’ETUDES 
+   INGENIEURS EN INFORMATIQUE 
+Option : Génie Logiciel 
+Intitulé du stage 
+Etude et Mise en place de l'approche DevOps dans un projet d’application Megara 
+Réalisé par 
+Jebali Ayoub 
+Entreprise d’accueil 
+ 
+Année Universitaire  
+2022-2023 
+
+
+===== PAGE 2 =====
+
+Remerciment
+Avant de commencer, Louange à Dieu tout-puissant qui m’a permis de voir ce jour
+tant attendu et m’avoir donné le courage, la force et la patience d’achever ce modeste
+travail.
+Je tiens à exprimer un remerciement spécial à VERMEG pour leur contribution excep-
+tionnelle à mon stage de projet de fin d’études. Leur soutien inébranlable, leurs conseils
+avisés et leur dévouement ont été des éléments clés de ma réussite. Je tiens à remer-
+cier aussi toutes les personnes qui ont participé, de près ou de loin, à la réalisation de
+ce travail. Tout d’abord, j’adresse mes remerciements à Madame Olfa Ferchichi Mon
+encadrant, pour ces précieux conseils afin de trouver le bon chemin vers la réussite de
+notre projet. Merci à tous mes professeurs a SESAME qui m’ont toujours encouragé
+et motivé.
+Et pour finir, en raison de l’expérience intéressante qu’ils m’ont apporté durant ces mois
+de stage au sein de l’entreprise Vermeg , je suis très reconnaissant aux personnes
+suivantes : Monsieur Aymen Ben Nouri, mon encadrant technique à Vermeg, je vous
+remercie infiniment de m’avoir accompagné durant ce stage et d’avoir confiance en
+moi. Madame Olfa DEROUICHE, mon coach pédagogique, que je remercie pour son
+encadrement et ses précieux conseils.
+Enfin, je tiens à exprimer ma gratitude envers toutes les autres personnes et entités
+qui ont contribué à cette expérience enrichissante. Ce stage a été une étape cruciale
+dans ma formation, et je suis reconnaissant(e) envers chaque personne qui a joué un
+rôle dans cette réussite.
+2
+
+
+===== PAGE 3 =====
+
+Dédicace
+Je dédie ce travail,
+À MA CHÈRE MÈRE MONIA
+Il n’y a pas de mots pour exprimer mon amour et ma gratitude envers toi, tu es la
+seule personne qui m’a tout donné sans rien attendre de moi. Cet humble travail est
+le résultat de tous les sacrifices que tu as fait pour mon éducation. Que le bon Dieu
+t’accorde une bonne santé et une vie longue pleine de joie.
+À MON CHER PÈRE HABIB
+Tu as toujours été pour moi un exemple à suivre, ton soutien m’a donné la force pour
+bien terminer mon parcours et achever mon rêve d’enfance, Il n’y a pas de dévouement
+pour montrer l’amour et le respect que j’ai toujours eu pour toi. Je ferai toujours de mon
+mieux pour être ta fierté.
+A MES CHERS FRERES ET PROCHE
+En signe de ma profonde gratitude pour l’aide qu’ils m’ont apporté, leurs soutiens,
+renforcement et encouragement. Que nos liens fraternels se renforce et se poursuive.
+À TOUS MES AMIES
+Pour l’amitié qui nous unit, je vous offre ce travail et je vous souhaite tout le bonheur
+du monde et que vous réaliser tous vos rêves.
+Je tiens à remercier toutes les personnes qui ont participé, de près ou de loin, à la
+réalisation de ce travail.
+3
+
+
+===== PAGE 4 =====
+
+Liste des acronymes
+VSCode : Visual Studio Code
+XML : Extensible Markup Language
+YAML : YAML Ain’t Markup Language
+POM : Project Object Model
+4
+
+
+===== PAGE 5 =====
+
+Table des matières
+Table des figures
+7
+Introduction générale
+9
+1
+Cadre général du projet
+11
+1.1
+introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.2
+Présentation de l’organisme d’accueil : VERMEG . . . . . . . . . . . . . .
+12
+1.2.1
+Organisation de l’entreprise . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.2.2
+Activités et produits de l’entreprise
+. . . . . . . . . . . . . . . . . .
+12
+1.3
+Présentation du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+1.3.1
+Etude de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+1.3.2
+Problématique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+1.3.3
+Solution proposée et objectifs
+. . . . . . . . . . . . . . . . . . . . .
+15
+1.4
+La méthodologie adoptée
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.4.1
+Découpage du projet . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+1.4.2
+Formalisme utilisé
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+1.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2
+Etat de l’art
+20
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.2
+L’approche DevOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.2.1
+Le concept DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.2.2
+Les éléments clés de Devops
+. . . . . . . . . . . . . . . . . . . . .
+21
+2.3
+L’approche conteneurisation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+2.3.1
+Les éléments clés de l’approche de conteneurisation . . . . . . .
+22
+2.3.2
+Spécification de besoin
+. . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.4
+Approche Intégration / Déploiement continu
+. . . . . . . . . . . . . . . . .
+23
+2.4.1
+Les éléments clés de l’approche d’intégration/déploiement continu 24
+2.4.2
+Spécification des besoins . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.5
+L’approche orchestration . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.5.1
+Les éléments clés de l’approche d’orchestration . . . . . . . . . .
+25
+2.5.2
+Spécification des besoins . . . . . . . . . . . . . . . . . . . . . . . .
+26
+2.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3
+Analyse des besoins et étude technique/Architecture
+28
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.2
+Analyse des besoins fonctionnels et non fonctionnels
+. . . . . . . . . . .
+29
+3.2.1
+Les besoins fonctionnels
+. . . . . . . . . . . . . . . . . . . . . . . .
+29
+5
+
+
+===== PAGE 6 =====
+
+3.2.2
+Les besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . .
+29
+3.2.3
+Spécifications des Besoins . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.3
+Synthèse et choix . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.3.1
+Synthèse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.3.2
+Choix clés . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.4
+Conception générale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.4.1
+Diagramme des cas d’utilisation . . . . . . . . . . . . . . . . . . . .
+31
+3.4.2
+Diagramme de séquence . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.4.3
+Diagramme d’activité CI . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.4.4
+Diagramme d’activité CD . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.4.5
+Diagramme de déploiement . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.5
+Architecture physique
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.6
+Architecture logicielle . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.6.1
+Architecture Logicielle Gitlab . . . . . . . . . . . . . . . . . . . . . .
+38
+3.6.2
+Architecture Logicielle Docker . . . . . . . . . . . . . . . . . . . . .
+40
+3.6.3
+Architecture Logicielle du jenkins
+. . . . . . . . . . . . . . . . . . .
+41
+3.7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4
+Réalisation et Validation
+43
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.2
+Environnements de Travail . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.2.1
+Technologies utilisées . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.3
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.3.1
+L’approche GitLab
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.3.2
+L’approche Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+4.3.3
+L’approche VM (Virtual Machine)
+. . . . . . . . . . . . . . . . . . .
+65
+4.3.4
+L’approche Maven . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.3.5
+L’approche SonarQube
+. . . . . . . . . . . . . . . . . . . . . . . . .
+72
+4.3.6
+L’approche Jenkins . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+4.3.7
+L’approche Sonatype Nexus . . . . . . . . . . . . . . . . . . . . . .
+81
+4.4
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+VERMEG
+6
+Jebali Ayoub
+
+
+===== PAGE 7 =====
+
+Table des figures
+2.2.1Les Modules de la solution Megara . . . . . . . . . . . . . . . . . . . . . . .
+13
+3.1.2Architecture de la solution actuelle . . . . . . . . . . . . . . . . . . . . . . .
+15
+4.0.3Processus 2TUP . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+4.2.4Diagramme de Gantt . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.2.1Le processus DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.2.2Conteneur Vs Machine Virtuelle . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+4.2.3Le pipeline CI/CD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+5.2.4L’architecture d’orchestration
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+4.1.1UC general . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.2.2Diagramme séquence système « mettre en place l’infrastructure De-
+vOps » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+4.3.3Diagramme d’activité ”CI”
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+4.4.4Diagramme d’activité ”CD” . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+4.5.5Diagramme de déploiement . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+5.0.6L’architecture physique du système
+. . . . . . . . . . . . . . . . . . . . . .
+38
+6.1.7L’architecture détaillée du Gitlab . . . . . . . . . . . . . . . . . . . . . . . .
+39
+6.2.8L’architecture détaillée du Docker . . . . . . . . . . . . . . . . . . . . . . . .
+40
+6.3.9L’architecture détaillée du jenkins . . . . . . . . . . . . . . . . . . . . . . . .
+41
+2.1.1Logo Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+2.1.2Logo Docker Hub
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+2.1.3Logo Gitlab . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+2.1.4Logo Jenkins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+2.1.5Logo Nexus Repository . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+2.1.6Logo Linux
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+2.1.7Logo Apache Maven
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+2.1.8Logo SonarQube . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+2.1.9Logo VSCode
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+2.1.10Logo XML . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+2.1.11YAML
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+2.1.12logo Visual Paradigm Online . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+2.1.13Logo Java . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+2.1.14Logo Python
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+2.1.15Logo Overleaf
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+3.1.16Commit le changement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+3.1.17Creation la merge request . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+7
+
+
+===== PAGE 8 =====
+
+3.1.18Interface de merge request
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+3.1.19lancement pipeline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+3.1.20Compilation du pipeline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+3.1.21Terminus de la compilation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+3.1.22gitlab-ci.yml . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+3.1.23runners
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+3.1.24CI/CD Variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+3.1.25Script builds dependent only Merge request . . . . . . . . . . . . . . . . .
+58
+3.1.26Code plugin Maven MegaraTreeMojo . . . . . . . . . . . . . . . . . . . . .
+59
+3.1.27Achèvement du Code plugin Maven MegaraTreeMojo . . . . . . . . . . .
+60
+3.1.28Code de classe Artifact . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+3.2.29Docker file . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+3.2.30Build Image Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+3.3.31Config.toml . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+3.3.32CleanDocker.sh
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+3.3.33CleanMemory.sh . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+3.3.34bash.profile . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+3.4.35Settings.xml . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+3.4.36plugins Maven dans le fichier pom.xml . . . . . . . . . . . . . . . . . . . . .
+70
+3.4.37Maven Goals . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+71
+3.5.38Interface SonarQube . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+3.5.39plugin SonarQube . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+3.5.40Exemple Erreur qualité code . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+3.5.41rapport Sonarqube d’Erreur qualité code . . . . . . . . . . . . . . . . . . .
+75
+3.6.42jobs Jenkins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+3.6.43interface de configuration des builds
+. . . . . . . . . . . . . . . . . . . . .
+76
+3.6.44interface de configuration build périodique . . . . . . . . . . . . . . . . . .
+77
+3.6.45interface de invoke top-level maven targets. . . . . . . . . . . . . . . . . .
+77
+3.6.46interface de Build
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+3.6.47Build Success
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+3.6.48Module Builds
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+3.7.49inertface Sonatype Nexus . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+VERMEG
+8
+Jebali Ayoub
+
+
+===== PAGE 9 =====
+
+Introduction générale
+Le projet d’étude et de mise en place de l’approche DevOps dans un projet d’applica-
+tion Megara vise à améliorer la productivité, la qualité et l’efficacité du développement
+logiciel au sein de l’organisation. Megara est une application complexe qui nécessite
+une gestion efficace du cycle de vie du logiciel, de la conception à la livraison et à la
+maintenance.
+L’approche DevOps est une méthodologie qui vise à intégrer les équipes de dévelop-
+pement logiciel et d’opérations informatiques pour améliorer la collaboration, l’automa-
+tisation et la livraison continue. En adoptant cette approche, l’objectif est d’accélérer le
+processus de développement et de déploiement, de réduire les risques et les erreurs,
+et de permettre des cycles de mise à jour plus fréquents et plus fiables.
+Ce projet d’étude et de mise en place de l’approche DevOps dans le contexte de l’ap-
+plication Megara comprendra plusieurs étapes clés. Tout d’abord, une analyse appro-
+fondie des processus de développement et de déploiement existants sera effectuée
+afin d’identifier les domaines d’amélioration potentiels. Ensuite, une stratégie DevOps
+sera élaborée en fonction des besoins spécifiques de Megara, en mettant l’accent sur
+l’automatisation, la collaboration et la transparence.
+Une fois la stratégie établie, une phase de mise en œuvre sera lancée, comprenant
+la sélection et la configuration des outils et des technologies nécessaires à l’approche
+DevOps. Cela peut inclure des outils de gestion de code source, de construction et de
+déploiement automatisés, de surveillance et de gestion des incidents, ainsi que des
+plateformes de collaboration et de communication.
+Pendant la phase de mise en œuvre, des formations et des sessions de sensibilisation
+seront organisées pour les membres de l’équipe de développement et d’exploitation,
+afin de les familiariser avec les concepts et les pratiques DevOps. La collaboration et
+la communication seront encouragées à tous les niveaux pour favoriser un environne-
+ment de travail efficace et harmonieux.
+Enfin, des métriques et des indicateurs de performance seront mis en place pour éva-
+luer l’impact de l’approche DevOps sur le projet Megara. Des évaluations régulières
+seront effectuées pour mesurer les progrès réalisés et apporter des ajustements si
+nécessaire.
+L’objectif ultime de ce projet est de transformer le processus de développement et
+de déploiement de l’application Megara grâce à l’approche DevOps, en améliorant
+l’agilité, la qualité et l’efficacité. En adoptant les meilleures pratiques DevOps, l’orga-
+nisation pourra répondre plus rapidement aux besoins changeants du marché, réduire
+9
+
+
+===== PAGE 10 =====
+
+les risques liés aux déploiements et offrir une meilleure expérience utilisateur pour les
+utilisateurs de l’application Megara.
+VERMEG
+10
+Jebali Ayoub
+
+
+===== PAGE 11 =====
+
+Chapitre 1
+Cadre général du projet
+Plan
+1.1
+introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.2
+Présentation de l’organisme d’accueil : VERMEG . . . . . . . . . . . . . .
+12
+1.2.1
+Organisation de l’entreprise . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.2.2
+Activités et produits de l’entreprise
+. . . . . . . . . . . . . . . . . .
+12
+1.3
+Présentation du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+1.3.1
+Etude de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+1.3.2
+Problématique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+1.3.3
+Solution proposée et objectifs
+. . . . . . . . . . . . . . . . . . . . .
+15
+1.4
+La méthodologie adoptée
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.4.1
+Découpage du projet . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+1.4.2
+Formalisme utilisé
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+1.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+11
+
+
+===== PAGE 12 =====
+
+1.1
+introduction
+Ce chapitre introductif est consacré à la présentation des études/recherches prélimi-
+naires du projet. Dans un premier temps, nous révélons l’organisme d’accueil du VER-
+MEG au sein nous avons réalisé ce projet de fin d’études, et bien sur ses domaines
+d’activités. Présentons ensuite les défis existants de l’entreprise dans le but de mettre
+en valeur les objectifs de ce travail. Finalement, nous illustrons la méthodologie utili-
+sée, le processus de planification du travail et le formalisme utilisé pour mener à bien
+notre projet.
+1.2
+Présentation de l’organisme d’accueil : VERMEG
+Dépuis l’année 2000 Vermeg a été fondée comme sociéte indépendante de l’entrepride
+BFI, établie depuis début 1994. Elle est dotée d’une ingénierie experte monde moné-
+tique et en création des logiciels bancaires et financiers, avec des services logiciels
+de transformation digitale , bancaire et d’assurance . pour la gestion des titres et des
+capitaux . Depuis sa création, Vermeg n’a pas arrêté de développer son expertise en
+finance pour offrir une large gamme des solutions innovants réalisant une multitude de
+fonctions pour les middles et back-offices des institutions concernées par le traitement
+des titres. Avec plus de 500 clients dans 45 pays et plus de 1 500 employés.
+1.2.1
+Organisation de l’entreprise
+VERMEG Groupe compte 3 principales unités à savoir :
+— Digital Financial Services .
+— Financial Markets and Securities Services.
+— Pension and Insurance
+1.2.2
+Activités et produits de l’entreprise
+Vermeg offre une large gamme de solutions destinés au secteur de finance. Cet en-
+treprise n’a pas arrêté de développer et innover expertise business . Les produits et
+services de Vermeg sont :
+La suite MEGARA :
+suite des applications didié au traitement des titres,destinées
+aux institutions financières. Elle offre un nombre de modules pouvant être implémentés
+et deployé séparément.
+MEGARA contients ces composants :
+VERMEG
+12
+Jebali Ayoub
+
+
+===== PAGE 13 =====
+
+— MEGACASH : C’est une application de gestion de monnaie, elle dont le role de
+optimiser les flux d’argent.
+— MEGACOR : C’est une application qui automatise des opérations sur titres , elle
+est certifie en ISO 20022 et ISO 15022.
+— MEGACOMMON : c’est une application qui permet de centraliser un ensemble
+des données référentiels de base requises à partir les back-offices des titres
+et elle permet de les partager sur tous les systèmes/sous systèmes de la suite
+Megara.
+— MEGABROKER : c’est une application a l’ojectif de centraliser la génération un
+ensemble des flux entrants/sortants, quelles que soient leur destination et leur
+origine application.
+— MEGACUSTODY : C’est une application de livraison permet aussi de récom-
+pensé par les Securities Settlement.
+— MEGALEND : C’est une application didié au suivi des empreints/prêts de titreset
+les gestion des contrats.
+graphics/1.1.png
+Figure 2.2.1 – Les Modules de la solution Megara
+Framewor Palmyra :
+est une solution JEE compatible avec l’architecture Architec-
+ture Orientée Service qui contient des services sous frome des composants aussi que
+des services web . Il est basé sur l’ingénierie dirigée par les applicaitons, Ce Frame-
+work génère des applications à partir un UML .A l’objectif d’automatiser la projection
+des modèles business d’un module sur n’importe quelle plateforme. L’automatisation
+de la partie génération de codes distinés principalement aux équipes de développe-
+ment de vermeg. En fait, Ce framework evite et facilite aux développeurs la complexité
+au niveau des traitements JEE et de la base de données dans le but que les develop-
+peurs se focalisent sur les traitements coté business .Cette automatisation permet de
+réduire et minimiser le redondance du code et d’eviter les tâches répétitives, Ce qui
+VERMEG
+13
+Jebali Ayoub
+
+
+===== PAGE 14 =====
+
+nous permet des gains en plusieurs phases (temps, en ressources) avec une améliora-
+tion de la qualité des applications développés. en traduit cet phase par l’indépendance
+des solutions avec la compatibilité avec toutes les systèmes d’exploitations et tous les
+systèmes des gestions de base de données et tous les serveurs d’applications et web.
+Avec MEGARA et PALMYRA, Cet entreprise offre une large gamme de solutions qui
+sont innovants et destinés au institus financieres :
+— SoLife : C’est une suite des applications didiés à l’assurance vie et interface
+web destiner aux clients brokers et financiérs .
+— Soliam : C’est une suite des applications didiés principalement à la gestion de
+portefeuilles pour les gestionnaires d’actifs institutionnels .
+1.3
+Présentation du projet
+Le projet consiste à étudier et mettre en place l’approche DevOps dans le projet d’ap-
+plication Megara. L’objectif est d’améliorer le processus de développement et de dé-
+ploiement en favorisant la collaboration, l’automatisation et la communication entre
+les équipes. Nous cherchons à accélérer la livraison des fonctionnalités, à réduire les
+risques et à améliorer la stabilité de l’application. Ce projet comprendra une analyse
+des processus existants, la définition d’une stratégie DevOps adaptée à Megara, la
+mise en place d’outils et de pratiques appropriés, ainsi que des évaluations pour me-
+surer l’impact des changements.
+1.3.1
+Etude de l’existant
+Pendant des années, Vermeg s’est appuyée sur le travail qui est 100% « on-permises»,
+qui est une solution informatique coûteuse directement installée sur des machines ou
+des serveurs de l’entreprise dans un «data center » interne. Ce terme nécessite la plu-
+part du temps une acquisition des licences à l’achat et une intervention des membres
+des autres équipes. Prenant l’exemple d’une simple création d’une chaine d’integration
+pour un seul projet, qui est bien évidemment manuelle :
+— Demande des VM (machines virtuelles) auprés de l’équipe Support IT du Ver-
+meg.
+— Préparation de l’infrastructure des VM.
+— Demande d’un backup des VM auprés de l’équipe Support IT du Vermeg.
+— Disposition d’un pipeline CI/CD, chaque outil est installé sur une machine vir-
+tuelle indépendante, comme la figure suivante montre, ce pipeline nécessite :
+— Un Gestionnaire de code source => GitLab.
+— Un Outil pour scanner la qualité de code => SonarQube.
+— Un Serveur d’intégration continue => Jenkins.
+— Un Gestionnaire de dépôt d’objets binaires ou des dépendances => Sonatype
+Nexus.
+1.3.2
+Problématique
+La problématique du projet d’étude et de mise en place de l’approche DevOps dans
+le projet d’application Megara réside dans l’amélioration du processus de développe-
+ment et de déploiement de l’application. L’objectif est d’identifier les lacunes et les
+VERMEG
+14
+Jebali Ayoub
+
+
+===== PAGE 15 =====
+
+graphics/1.2.png
+Figure 3.1.2 – Architecture de la solution actuelle
+inefficacités existantes, de favoriser la collaboration et l’automatisation, et d’améliorer
+la stabilité, la qualité et la réactivité de Megara.
+Cette stratégie réussit relativement bien à atteindre les objectifs nécessaires pour ré-
+pondre aux besoins. Cependant, le processus d’intégration et de déploiement actuel
+présente certains obstacles et limites au développement futur des produits de Vermeg.
+Dans ces restrictions, nous le nommons comme suit :
+— La décentralisation des outils.
+— La terminologie Devops n’a pas été pleinement appliquée et chaque projet a sa
+propre approche.
+— Les données sont stockées sur plusieurs serveurs de l’entreprise, il existe donc
+un risque de perte de données..
+— La chaine CI/CD, n’existe pas dans tous les projets, il y a quand même des
+interventions manuelles.
+— Les temps d’arrêt non planifiés « ShutDown » peuvent entraîner des milliers
+voire des millions d’euros de perte de productivité pour l’entreprise.
+— L’insatisfaction de quelques clients
+1.3.3
+Solution proposée et objectifs
+La solution proposée consiste à adopter l’approche DevOps dans le projet d’appli-
+cation Megara. Cela implique d’intégrer étroitement les équipes de développement,
+d’opérations informatiques et de contrôle qualité, en favorisant la collaboration, l’au-
+tomatisation et la communication continue. Des outils et des technologies appropriés
+seront mis en place pour automatiser les processus de développement, de test, de dé-
+ploiement et de surveillance de l’application. Des pratiques agiles et itératives seront
+également mises en œuvre pour permettre une livraison continue et une amélioration
+continue du projet.
+VERMEG
+15
+Jebali Ayoub
+
+
+===== PAGE 16 =====
+
+1.3.3.1
+Objectifs
+Accélérer le processus de développement et de déploiement de Megara en adoptant
+des pratiques d’automatisation, de tests automatisés et de déploiement continu.
+Améliorer la collaboration et la communication entre les équipes de développement,
+d’opérations et de contrôle qualité pour favoriser une approche DevOps intégrée.
+Réduire les risques et les erreurs liés aux déploiements en mettant en place des pro-
+cessus de validation, de surveillance et de gestion des changements efficaces.
+Améliorer la stabilité, la qualité et la réactivité de Megara en favorisant une culture
+d’amélioration continue et en encourageant la rétroaction rapide.
+Mesurer l’impact de l’adoption de l’approche DevOps à l’aide de métriques et d’indi-
+cateurs de performance pertinents, tels que le délai de déploiement, la fréquence des
+mises à jour et la résolution des incidents.
+En atteignant ces objectifs, le projet vise à transformer le processus de développement
+et de déploiement de l’application Megara, en créant un environnement plus agile, col-
+laboratif et automatisé. Cela permettra d’améliorer la productivité, la qualité et la sa-
+tisfaction des équipes impliquées, tout en offrant une meilleure expérience utilisateur
+pour les utilisateurs de Megara.
+1.4
+La méthodologie adoptée
+La méthodologie adoptée pour ce projet est le 2TUP (Two-Track Unified Process), qui
+est une approche agile adaptée à la mise en place de l’approche DevOps. Le 2TUP
+se caractérise par la combinaison de deux pistes parallèles : la piste ”Base” et la piste
+”Transformation”.
+Piste « Base » :
+La piste ”Base” représente le développement continu de l’appli-
+cation Megara. Elle suit une approche agile traditionnelle avec des itérations courtes
+(sprints) et des livraisons régulières de fonctionnalités. Les équipes de développement
+travaillent en étroite collaboration avec les parties prenantes pour recueillir les exi-
+gences, concevoir, développer, tester et livrer les fonctionnalités planifiées. Les pra-
+tiques agiles telles que Scrum ou Kanban peuvent être utilisées dans cette piste.
+Piste « Transformation »
+La piste ”Transformation” est dédiée à la mise en place
+de l’approche DevOps dans le projet. Elle se concentre sur l’amélioration continue des
+processus de développement, de déploiement et d’exploitation de Megara. Cette piste
+inclut les activités liées à l’adoption de pratiques DevOps, à l’automatisation des pro-
+cessus, à la mise en place d’outils appropriés, à la formation des équipes et à la mesure
+des performances. Les pratiques de DevOps telles que l’intégration continuent, le dé-
+ploiement continu, la surveillance et l’orchestration des environnements peuvent être
+mises en œuvre dans cette piste.
+Les deux pistes du 2TUP fonctionnent en parallèle et se nourrissent mutuellement. Les
+retours d’expérience et les leçons apprises de la piste ”Base” alimentent les améliora-
+tions et les ajustements de la piste ”Transformation”, tandis que les nouvelles pratiques
+et les outils adoptés dans la piste ”Transformation” sont appliqués dans la piste ”Base”
+VERMEG
+16
+Jebali Ayoub
+
+
+===== PAGE 17 =====
+
+pour optimiser le processus de développement.
+Cette approche permet d’intégrer progressivement les principes et les pratiques De-
+vOps tout en maintenant la continuité du développement et de la livraison des fonction-
+nalités. Elle favorise une amélioration continue et itérative, en permettant à l’équipe de
+développer de nouvelles fonctionnalités tout en optimisant les processus de dévelop-
+pement et de déploiement grâce à l’approche DevOps.
+VERMEG
+17
+Jebali Ayoub
+
+
+===== PAGE 18 =====
+
+graphics/1.3.png
+Figure 4.0.3 – Processus 2TUP
+Les deux pistes du 2TUP fonctionnent en parallèle, avec des retours d’expérience
+et des améliorations qui se propagent entre elles. Cette approche permet d’assurer
+un développement itératif et continu tout en intégrant progressivement les pratiques
+DevOps pour améliorer la productivité, la qualité et la stabilité de l’application Megara.
+1.4.1
+Découpage du projet
+Pour bien comprendre l’allocation de temps associée au travail demandé, il faut pré-
+senter un diagramme montrant l’allocation des tâches pour l’ensemble du projet au
+cours de ce stage de cinq mois.
+1.4.2
+Formalisme utilisé
+Le langage de modélisation UML (Unified Modeling Language) a été utilisé pour conce-
+voir ce projet. UML permet de décrire les besoins et conceptualiser le système ainsi
+que d’esquisser les architectures logicielles. Durant tout le rapport, nous nous limite-
+rons à la présentation des diagrammes que nous jugerons utiles pour notre projet :
+— Les diagrammes de cas d’utilisation qui permettent l’énumération des besoins
+du projet de point de vue de l’utilisateur (les développeurs).
+— Les diagrammes de déploiement et d’activité qui illustrent le comportement des
+objets et leurs interactions dans le temps.
+VERMEG
+18
+Jebali Ayoub
+
+
+===== PAGE 19 =====
+
+graphics/1.4.png
+Figure 4.2.4 – Diagramme de Gantt
+1.5
+Conclusion
+Dans ce premier chapitre, nous avons illustré le projet dans son contexte général. Nous
+avons commencé par présenter l’organisme d’accueil dans la première rubrique, la pro-
+blématique du projet et les objectifs à atteindre, et finalement nous avons présenté la
+méthodologie 2TUP, que nous avons utilisé comme méthode de développement de
+notre solution et les diagrammes UML utilisés en tant que formalisme de représenta-
+tion des fonctionnalités à développer. Afin d’avoir une image plus précise du projet,
+des recherches préliminaires font l’objet du chapitre suivant, comprenant les concepts
+généraux et explorant les techniques existantes.
+VERMEG
+19
+Jebali Ayoub
+
+
+===== PAGE 20 =====
+
+Chapitre 2
+Etat de l’art
+Plan
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.2
+L’approche DevOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.2.1
+Le concept DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.2.2
+Les éléments clés de Devops
+. . . . . . . . . . . . . . . . . . . . .
+21
+2.3
+L’approche conteneurisation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+2.3.1
+Les éléments clés de l’approche de conteneurisation . . . . . . .
+22
+2.3.2
+Spécification de besoin
+. . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.4
+Approche Intégration / Déploiement continu
+. . . . . . . . . . . . . . . . .
+23
+2.4.1
+Les éléments clés de l’approche d’intégration/déploiement continu 24
+2.4.2
+Spécification des besoins . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.5
+L’approche orchestration . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.5.1
+Les éléments clés de l’approche d’orchestration . . . . . . . . . .
+25
+2.5.2
+Spécification des besoins . . . . . . . . . . . . . . . . . . . . . . . .
+26
+2.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+20
+
+
+===== PAGE 21 =====
+
+2.1
+Introduction
+Dans ce chapitre, nous nous intéressons aux concepts de base de notre travail. Dans
+un premier Temps, anticipez les concepts associés à l’approche DevOps. A savoir,
+l’approche de virtualisation, de conteneurisation et d’intégration continue / déploiement
+continu (CI/CD). Ce qui suit décrit les stratégies d’orchestration et de déploiement.
+2.2
+L’approche DevOps
+2.2.1
+Le concept DevOps
+DevOps (un mot porte-manteau entre « Développement » et « Opérations ») est un
+ensemble de pratiques qui mettent l’accent sur la communication, la collaboration et
+l’intégration entre les développeurs logiciels (Dev) et les exploitants (Ops) d’une même
+plateforme. Simplifier la relation entre ces deux acteurs permet d’accélérer plus faci-
+lement la phase de déploiement tout en améliorant la fiabilité grâce à des tâches plus
+automatisées (tests unitaires, gestion de configuration et le déploiement). Ce système
+vise à augmenter la productivité des équipes, par conséquent, à être plus compétitif
+par rapport aux concurrents, avec une capacité de livraison des applications et des
+services, plus importante.
+2.2.2
+Les éléments clés de Devops
+DevOps décrit et organise le processus de développement pour créer, tester et dé-
+ployer des produits rapides et fiables. Cela s’articule généralement autour de ces cinq
+piliers simples illustrés à la figure 2.2.1.
+— CI (intégration continue)
+— CD (livraison continue)
+— Tests continus
+— Conteneurisation
+— Contrôle continu (monitoring)
+graphics/2.1.png
+Figure 2.2.1 – Le processus DevOps
+VERMEG
+21
+Jebali Ayoub
+
+
+===== PAGE 22 =====
+
+2.3
+L’approche conteneurisation
+L’approche de conteneurisation est une pratique courante dans le domaine de l’infor-
+matique et du développement logiciel, notamment dans le cadre de l’approche De-
+vOps. La conteneurisation consiste à encapsuler une application et toutes ses dépen-
+dances logicielles, y compris les bibliothèques, les outils et les fichiers de configuration,
+dans un conteneur léger et isolé.
+Les conteneurs offrent un environnement cohérent et portable, ce qui facilite le dé-
+ploiement et l’exécution des applications sur différentes plates-formes et environne-
+ments. Ils permettent également une gestion efficace des ressources, en isolant les
+applications les unes des autres et en partageant les ressources système de manière
+contrôlée.
+L’un des outils de conteneurisation les plus populaires est Docker. Docker simplifie le
+processus de création, de distribution et de déploiement des conteneurs en fournis-
+sant une plateforme complète pour la gestion des conteneurs. Il offre une gestion des
+versions, une isolation des ressources et des fonctionnalités de mise en réseau, per-
+mettant aux applications d’être exécutées de manière cohérente et prévisible quel que
+soit l’environnement.
+2.3.1
+Les éléments clés de l’approche de conteneurisation
+2.3.1.1
+Portabilité
+Les conteneurs offrent une portabilité élevée, ce qui signifie qu’une application conte-
+neurisée peut être exécutée de manière cohérente sur différentes infrastructures, telles
+que des serveurs locaux, des machines virtuelles ou des services de cloud computing.
+2.3.1.2
+Isolation
+Les conteneurs offrent une isolation entre les applications, garantissant que chaque
+application fonctionne de manière autonome et ne perturbe pas les autres applications
+sur le même système.
+2.3.1.3
+Répétabilité
+Les conteneurs permettent de créer des environnements de développement et de dé-
+ploiement reproductibles. Les mêmes conteneurs peuvent être utilisés pour exécuter
+l’application sur différentes machines, assurant ainsi une cohérence et une fiabilité ac-
+crues.
+2.3.1.4
+Évolutivité
+Les conteneurs permettent de gérer facilement des charges de travail à grande échelle.
+Ils peuvent être rapidement déployés, répliqués et orchestrés pour répondre aux be-
+soins de performances et de disponibilité des applications.
+VERMEG
+22
+Jebali Ayoub
+
+
+===== PAGE 23 =====
+
+2.3.1.5
+Gestion des ressources
+Les conteneurs permettent une gestion efficace des ressources système en utilisant
+uniquement les ressources nécessaires pour chaque conteneur. Cela permet d’opti-
+miser l’utilisation des ressources et de réduire les coûts.
+2.3.2
+Spécification de besoin
+Dans le contexte du projet Megara, l’approche de conteneurisation peut être utilisée
+pour faciliter le déploiement et la gestion de l’application, en fournissant un environne-
+ment cohérent et isolé pour son exécution. Cela peut contribuer à la portabilité, à la
+répétabilité et à la scalabilité de Megara, tout en simplifiant la gestion des dépendances
+logicielles et des environnements de déploiement.
+graphics/2.2.png
+Figure 3.2.2 – Conteneur Vs Machine Virtuelle
+2.4
+Approche Intégration / Déploiement continu
+L’approche d’intégration/déploiement continu (CI/CD) est une pratique clé de l’approche
+DevOps qui vise à automatiser et à accélérer le processus de développement, de test
+et de déploiement des applications.
+L’intégration continue (CI) consiste à intégrer régulièrement et automatiquement les
+modifications de code dans un référentiel partagé. Chaque fois qu’un développeur ef-
+fectue une modification de code, une série de tests automatisés est exécutée pour
+vérifier la qualité et la fonctionnalité du code. Cela permet de détecter rapidement les
+erreurs et les conflits, et de résoudre les problèmes dès qu’ils se produisent.
+Le déploiement continu (CD) va au-delà de l’intégration continue en automatisant le
+processus de déploiement des applications. Les modifications de code validées sont
+VERMEG
+23
+Jebali Ayoub
+
+
+===== PAGE 24 =====
+
+automatiquement déployées dans les environnements de test, de pré-production et de
+production, réduisant ainsi les délais entre les versions logicielles. Des stratégies de
+déploiement peuvent être mises en place pour permettre le déploiement progressif ou
+le basculement automatique vers de nouvelles versions.
+2.4.1
+Les éléments clés de l’approche d’intégration/déploiement
+continu
+2.4.1.1
+Livraison rapide
+L’automatisation des tests et du déploiement permet de réduire les délais entre les
+versions logicielles, ce qui permet de fournir rapidement de nouvelles fonctionnalités
+et des correctifs aux utilisateurs finaux.
+2.4.1.2
+Fiabilité accrue
+L’exécution régulière de tests automatisés garantit une meilleure qualité du code, en
+identifiant les erreurs et les incompatibilités dès leur apparition. Cela permet de détecter
+les problèmes plus tôt et de les résoudre rapidement.
+2.4.1.3
+Répétabilité
+Le processus d’intégration/déploiement continu permet de créer des pipelines d’au-
+tomatisation reproductibles, garantissant une exécution cohérente et fiable à chaque
+mise à jour du code.
+2.4.1.4
+Réduction des risques
+L’automatisation des tests et du déploiement minimise les risques d’erreurs humaines
+et de problèmes de compatibilité entre les différentes parties du système.
+2.4.1.5
+Collaboration et communication améliorées
+L’approche CI/CD favorise la collaboration entre les équipes de développement, d’opé-
+rations et de contrôle qualité, grâce à la mise en place de processus automatisés et à
+la visibilité sur les différentes étapes du cycle de vie logiciel.
+2.4.2
+Spécification des besoins
+Dans le contexte du projet Megara, l’approche d’intégration/déploiement continu peut
+permettre de livrer rapidement et de manière fiable les fonctionnalités et les mises à
+jour de l’application. Cela améliore la réactivité aux besoins des utilisateurs, réduit les
+risques d’erreurs et garantit une meilleure qualité de l’application.
+VERMEG
+24
+Jebali Ayoub
+
+
+===== PAGE 25 =====
+
+graphics/2.3.png
+Figure 4.2.3 – Le pipeline CI/CD
+2.5
+L’approche orchestration
+L’approche d’orchestration fait référence à la coordination et à la gestion des différentes
+composantes d’un système informatique dans le but d’assurer leur bon fonctionnement
+et leur intégration harmonieuse. Dans le contexte de l’approche DevOps, l’orchestra-
+tion se concentre sur la coordination des tâches et des processus liés au déploiement,
+à la gestion et à l’exploitation des applications.
+L’orchestration est souvent réalisée à l’aide de plateformes et d’outils spécifiques, tels
+que des orchestrateurs de conteneurs ou des outils de gestion des flux de travail. Ces
+outils permettent de définir et de gérer des flux de travail complexes, en automatisant
+les tâches et en assurant la cohérence et la synchronisation entre les différentes étapes
+du processus.
+2.5.1
+Les éléments clés de l’approche d’orchestration
+2.5.1.1
+Automatisation des processus
+L’orchestration vise à automatiser les processus et les tâches pour améliorer l’efficacité
+et réduire les erreurs. Les tâches manuelles et répétitives peuvent être automatisées,
+permettant aux équipes de se concentrer sur des activités à plus forte valeur ajoutée.
+2.5.1.2
+Gestion des dépendances
+L’orchestration gère les dépendances entre les différentes tâches et composantes du
+système. Cela garantit que les tâches sont exécutées dans l’ordre approprié et que les
+dépendances sont résolues de manière efficace.
+2.5.1.3
+Coordination des ressources
+: L’orchestration gère les ressources nécessaires à l’exécution des tâches, qu’il s’agisse
+de ressources informatiques, de données ou de services externes. Cela permet de ga-
+rantir que les ressources sont disponibles au bon moment et au bon endroit.
+VERMEG
+25
+Jebali Ayoub
+
+
+===== PAGE 26 =====
+
+2.5.1.4
+Suivi et gestion des erreurs
+L’orchestration permet de surveiller et de gérer les erreurs et les exceptions qui peuvent
+survenir lors de l’exécution des tâches. Cela inclut la gestion des erreurs, la journali-
+sation des événements et la mise en place de mécanismes de récupération en cas
+d’échec.
+2.5.1.5
+Scalabilité et répétabilité
+L’approche d’orchestration facilite la mise à l’échelle des processus et des applications.
+Les tâches peuvent être répliquées et exécutées sur plusieurs nœuds, permettant une
+exécution parallèle et une gestion de la charge efficace.
+2.5.2
+Spécification des besoins
+L’approche d’orchestration est particulièrement pertinente dans le contexte du déploie-
+ment et de la gestion d’applications basées sur des conteneurs, où la coordination et la
+gestion des tâches et des services sont essentielles. Les outils d’orchestration, offrent
+des fonctionnalités avancées pour la gestion des conteneurs, la gestion des ressources
+et la coordination des services.
+En utilisant une approche d’orchestration dans le projet Megara, les équipes peuvent
+automatiser et gérer efficacement les processus de déploiement, de gestion et d’exploi-
+tation de l’application. Cela permet d’assurer la cohérence, la fiabilité et la scalabilité
+du système, contribuant ainsi à l’efficacité globale du projet.
+graphics/2.4.png
+Figure 5.2.4 – L’architecture d’orchestration
+2.6
+Conclusion
+Ce chapitre a introduit les concepts de base de ce projet, défini le concept DevOps,
+puis s’est concentré sur l’intégration continue, la livraison et le déploiement continu,
+et enfin défini le concept de conteneurisation et d’orchestration. Procéder ensuite à la
+VERMEG
+26
+Jebali Ayoub
+
+
+===== PAGE 27 =====
+
+première phase de la réalisation proprement dite du projet, l’analyse et la spécifica-
+tion des besoins fonctionnels et non fonctionnels, et l’exploration technique des outils
+utilisés.
+VERMEG
+27
+Jebali Ayoub
+
+
+===== PAGE 28 =====
+
+Chapitre 3
+Analyse des besoins et étude
+technique/Architecture
+Plan
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.2
+Analyse des besoins fonctionnels et non fonctionnels
+. . . . . . . . . . .
+29
+3.2.1
+Les besoins fonctionnels
+. . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.2.2
+Les besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . .
+29
+3.2.3
+Spécifications des Besoins . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.3
+Synthèse et choix . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.3.1
+Synthèse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.3.2
+Choix clés . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.4
+Conception générale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.4.1
+Diagramme des cas d’utilisation . . . . . . . . . . . . . . . . . . . .
+31
+3.4.2
+Diagramme de séquence . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.4.3
+Diagramme d’activité CI . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.4.4
+Diagramme d’activité CD . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.4.5
+Diagramme de déploiement . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.5
+Architecture physique
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.6
+Architecture logicielle . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.6.1
+Architecture Logicielle Gitlab . . . . . . . . . . . . . . . . . . . . . .
+38
+3.6.2
+Architecture Logicielle Docker . . . . . . . . . . . . . . . . . . . . .
+40
+3.6.3
+Architecture Logicielle du jenkins
+. . . . . . . . . . . . . . . . . . .
+41
+3.7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+28
+
+
+===== PAGE 29 =====
+
+3.1
+Introduction
+Après avoir présenté le cadre général et les recherches préliminaires du projet, ce
+chapitre s’intéresse à identifier les outils à utiliser. Tout d’abord, nous allons montrer
+les exigences fonctionnelles et non fonctionnelles de la solution. Ensuite, nous allons
+présenter une analyse comparative et plus au moins détaillée des outils les plus utilisés
+dans le marché afin de justifier nos choix, et enfin nous illustrons le diagramme des
+cas d’utilisation puis nous allons décrire et analyser les fonctionnalités majeures à l’aide
+des diagrammes de déploiement.
+3.2
+Analyse des besoins fonctionnels et non fonction-
+nels
+L’analyse des besoins fonctionnels et non fonctionnels est une étape fondamentale
+dans la mise en place de l’approche DevOps dans le projet d’application Megara. Cette
+analyse permet de comprendre en détail ce que l’application doit accomplir ainsi que
+les exigences de performance et de qualité qui doivent être satisfaites.
+3.2.1
+Les besoins fonctionnels
+— Gestion des Utilisateurs : Les utilisateurs de l’application Megara doivent pou-
+voir s’inscrire, se connecter, gérer leur profil, et récupérer leur mot de passe en
+cas d’oubli.
+— Gestion des Projets : Les utilisateurs doivent pouvoir créer, modifier, supprimer
+et visualiser des projets. Chaque projet doit inclure des informations telles que
+le nom, la description, la date de début et de fin, ainsi que la liste des membres
+de l’équipe.
+— Gestion des Tâches : Pour chaque projet, les utilisateurs doivent pouvoir créer,
+attribuer, mettre à jour et supprimer des tâches. Chaque tâche devrait inclure
+un titre, une description, une date d’échéance et un statut (en cours, terminée,
+etc.).
+— Collaboration en Temps Réel : L’application doit permettre aux membres de
+l’équipe de collaborer en temps réel sur les projets et les tâches, en facilitant la
+communication et le partage d’informations.
+— Intégration et Déploiement Continus (CI/CD) : L’application doit prendre en
+charge l’intégration continue (CI) et le déploiement continu (CD) pour permettre
+des mises à jour fréquentes et fiables.
+— Monitoring et Gestion des Erreurs : Un système de surveillance doit être en
+place pour détecter les erreurs et les problèmes de performance en temps réel,
+permettant une intervention rapide et des améliorations continues.
+3.2.2
+Les besoins non fonctionnels
+— Performance : L’application Megara doit être performante, offrant une expé-
+rience utilisateur fluide même en cas d’utilisation intensive.
+VERMEG
+29
+Jebali Ayoub
+
+
+===== PAGE 30 =====
+
+— Disponibilité : L’application doit être disponible en permanence (24/7), avec un
+temps d’arrêt minimal pour les mises à jour et la maintenance.
+— Sécurité : La sécurité des données et de l’infrastructure doit être une priorité,
+avec des mesures de sécurité avancées pour protéger les informations sen-
+sibles.
+— Évolutivité : L’architecture de l’application doit être conçue pour permettre une
+mise à l’échelle horizontale facile, pour accompagner la croissance du nombre
+d’utilisateurs et de projets.
+— Sauvegarde et Récupération : Des mécanismes de sauvegarde régulière des
+données doivent être mis en place, avec la possibilité de restaurer rapidement
+en cas de perte de données.
+— Conformité : L’application doit être conforme aux réglementations en matière
+de protection des données personnelles et aux normes de sécurité.
+— Documentation : Une documentation complète de l’application, des processus
+DevOps et de l’infrastructure doit être maintenue pour faciliter la maintenance
+et les futures évolutions.
+— Formation : Les membres de l’équipe doivent être formés à l’utilisation de l’ap-
+proche DevOps et des outils associés.
+3.2.3
+Spécifications des Besoins
+Cette analyse des besoins fonctionnels et non fonctionnels servira de base solide pour
+la conception et la mise en place de l’approche DevOps dans le projet Megara. Elle
+garantira que les objectifs du projet sont clairs et que les solutions mises en œuvre ré-
+pondent aux attentes des utilisateurs tout en respectant les exigences de performance,
+de sécurité et de disponibilité.
+3.3
+Synthèse et choix
+La synthèse et les choix dans un contexte de mise en place de l’approche DevOps
+dans un projet d’application Megara sont cruciaux pour garantir la réussite du projet.
+3.3.1
+Synthèse
+Le projet vise à transformer le processus de développement, de déploiement et de ges-
+tion de l’application Megara en adoptant l’approche DevOps. Cette approche favorise
+l’intégration étroite des équipes de développement et d’exploitation, ainsi que l’auto-
+matisation des processus clés. La synthèse de ce projet met en évidence les objectifs
+principaux :
+1. Amélioration de la livraison logicielle : Réduire les délais de déploiement des
+nouvelles fonctionnalités et des correctifs.
+2. Renforcement de la qualité : Assurer des tests automatisés, une intégration
+continue et un déploiement continu pour garantir la stabilité de l’application.
+3. Sécurisation de l’application : Intégrer la sécurité dès le début du processus
+DevOps pour minimiser les vulnérabilités.
+VERMEG
+30
+Jebali Ayoub
+
+
+===== PAGE 31 =====
+
+4. Optimisation des coûts : Réduire les coûts opérationnels et de maintenance
+grâce à l’automatisation.
+5. Agilité accrue : Permettre une réponse plus rapide aux évolutions des besoins
+de l’entreprise.
+3.3.2
+Choix clés
+1. Outils DevOps : Sélectionner les outils DevOps appropriés pour l’intégration
+continue, le déploiement continu, la gestion des conteneurs, la surveillance, etc.
+Par exemple, choisir Jenkins pour l’intégration continue et Docker pour la conte-
+neurisation et l’orchestration.
+2. Flux de travail DevOps : Concevoir un modèle de flux de travail DevOps adapté
+aux besoins de l’application Megara. Définir comment les équipes travailleront
+ensemble, de la conception au déploiement.
+3. Sécurité DevSecOps : Définir les pratiques de sécurité spécifiques à mettre en
+œuvre pour garantir la sécurité tout au long du cycle de vie DevOps.
+4. Formation et documentation : Planifier la formation des membres de l’équipe
+pour qu’ils comprennent et adoptent les pratiques DevOps. Établir une docu-
+mentation exhaustive pour faciliter la gestion et la maintenance du système.
+La synthèse et les choix effectués dans le cadre de ce projet de mise en place de l’ap-
+proche DevOps dans l’application Megara sont essentiels pour atteindre les objectifs
+de manière efficace et efficiente. Ces choix détermineront la réussite de la transforma-
+tion DevOps et auront un impact significatif sur la performance, la qualité et la sécurité
+de l’application.
+3.4
+Conception générale
+3.4.1
+Diagramme des cas d’utilisation
+Dans le diagramme de cas d’utilisation UC-Général, nous regroupons les cas d’utilisa-
+tions de base pour obtenir une vue d’ensemble du fonctionnement du notre système
+et mettre en évidence les relations de liaison. Le diagramme de cas d’utilisation global
+présenté dans la figure 4.1.1 montre les principales fonctionnalités que notre système
+peut fournir aux différents acteurs.
+VERMEG
+31
+Jebali Ayoub
+
+
+===== PAGE 32 =====
+
+graphics/WhatsApp Image 2023-10-15 at 14.57.52.jpeg
+Figure 4.1.1 – UC general
+3.4.2
+Diagramme de séquence
+Le diagramme de séquence dans la figure ci-dessous présente les étapes effectuées
+par le système pour obtenir une vue d’ensemble du fonctionnement du notre système
+et les etapes de l’approche DevOps
+VERMEG
+32
+Jebali Ayoub
+
+
+===== PAGE 33 =====
+
+graphics/WhatsApp Image 2023-10-15 at 15.51.26.jpeg
+Figure 4.2.2 – Diagramme séquence système « mettre en place l’infrastructure DevOps
+»
+3.4.3
+Diagramme d’activité CI
+Le diagramme d’activité illustré dans la figure 4.3.3 explique la phase « Intégration
+continue » et décrit les interactions entre les différents composants
+VERMEG
+33
+Jebali Ayoub
+
+
+===== PAGE 34 =====
+
+graphics/3.2.png
+Figure 4.3.3 – Diagramme d’activité ”CI”
+3.4.4
+Diagramme d’activité CD
+Le diagramme d’activité de la partie déploiement continue présenté par la figure 4.4.4,
+montre une vue dynamique du cas d’utilisation « CD ». Comme pré-requis, l’activité
+précédemment déclenchée doit se terminer avec succès.
+VERMEG
+34
+Jebali Ayoub
+
+
+===== PAGE 35 =====
+
+graphics/3.3.png
+Figure 4.4.4 – Diagramme d’activité ”CD”
+3.4.5
+Diagramme de déploiement
+Le diagramme de déploiement, représenté par la figure 4.5.5, montre les spécifications
+et les points forts de l’architecture physique et des protocoles de communication entre
+les différentes entités. Cette figure montre tous les serveurs installés pour assurer le
+fonctionnement de la solution, des outils et des machines virtuelles.
+VERMEG
+35
+Jebali Ayoub
+
+
+===== PAGE 36 =====
+
+graphics/3.4.png
+Figure 4.5.5 – Diagramme de déploiement
+3.5
+Architecture physique
+L’architecture physique d’un projet informatique, notamment dans le cadre de la mise
+en place de l’approche DevOps pour l’application Megara, décrit la manière dont les
+composants matériels sont organisés pour soutenir l’application et son infrastructure.
+Voici une vue d’ensemble de l’architecture physique pour ce projet :
+VERMEG
+36
+Jebali Ayoub
+
+
+===== PAGE 37 =====
+
+Serveurs et Machines Virtuelles :
+Vous utiliserez probablement des serveurs phy-
+siques ou des machines virtuelles (VM) pour héberger les composants de l’application
+Megara. Les serveurs peuvent être situés dans un centre de données interne de l’en-
+treprise ou dans le cloud, en fonction des besoins de l’entreprise.
+Système de Contrôle de Version :
+Un système de contrôle de version distribué, tel
+que Git, est utilisé pour gérer et suivre les modifications du code source de Megara.
+Les dépôts Git sont hébergés sur une plateforme telle que GitLab
+Conteneurs Docker :
+Dans le cadre de l’approche DevOps, vous utiliserez pro-
+bablement la conteneurisation, en particulier Docker pour encapsuler et exécuter des
+applications et des services de manière isolée. Ces conteneurs peuvent être déployés
+sur des machines virtuelles ou directement sur des serveurs physiques.
+Intégration Continue (CI) :
+Un serveur d’intégration continue, tel que Jenkins est
+configuré pour surveiller les modifications du code source sur le référentiel Git. Il dé-
+clenche automatiquement des constructions (builds) et des tests unitaires à chaque
+commit.
+Gestionnaire de dépôts :
+Choisissez un gestionnaire de dépôts qui prend en charge
+les langages de programmation utilisés dans l’application Megara et qui répond aux
+besoins spécifiques du projet. Des options populaires incluent Nexus Repository Ma-
+nager.
+Analyseur de qualité de code :
+Choisissez un analyseur de qualité de code qui
+prend en charge les langages de programmation utilisés dans l’application Megara.
+Assurez-vous que l’outil offre des fonctionnalités de personnalisation pour refléter les
+normes de codage spécifiques de votre équipe.
+VERMEG
+37
+Jebali Ayoub
+
+
+===== PAGE 38 =====
+
+graphics/3.5.jpg
+Figure 5.0.6 – L’architecture physique du système
+Cette architecture physique offre une base solide pour la mise en place de l’approche
+DevOps dans le projet Megara. Elle permet une gestion efficace de l’application, une
+évolutivité facile, une haute disponibilité et une sécurité robuste, tout en favorisant la
+collaboration entre les équipes de développement et d’opérations.
+3.6
+Architecture logicielle
+Dans cette partie, nous allons détailler l’architecture logicielle de l’approche DevOps
+dans l’application Megara est un élément crucial pour garantir une intégration conti-
+nue, un déploiement continu, une gestion efficace du code source et une collaboration
+transparente entre les équipes de développement et d’exploitation
+3.6.1
+Architecture Logicielle Gitlab
+L’architecture GitLab dans un projet de mise en place de l’approche DevOps pour
+l’application Megara comprendra divers composants et configurations pour soutenir
+un pipeline de livraison continue (CI/CD), la gestion du code source, la collaboration
+et la surveillance
+VERMEG
+38
+Jebali Ayoub
+
+
+===== PAGE 39 =====
+
+graphics/3.6.png
+Figure 6.1.7 – L’architecture détaillée du Gitlab
+— Les développeurs travaillent dans le référentiel GitLab où ils gèrent le code
+source de l’application Megara.
+— Le pipeline GitLab CI/CD est configuré pour automatiser les tests, la construc-
+tion des images Docker, et le déploiement dans différents environnements.
+— Les images Docker générées sont stockées dans un registre Docker
+— Docker Compose est utilisé pour orchestrer et gérer les conteneurs Docker de
+l’application Megara.
+— L’application est déployée dans différents environnements (dev, test, prod)
+Cette représentation schématique illustre comment GitLab, en association avec Do-
+cker et Docker Compose, joue un rôle central dans l’automatisation, la gestion et le
+déploiement de l’application Megara dans le contexte de l’approche DevOps. Les pi-
+pelines CI/CD permettent d’assurer un déploiement continu et fluide à travers les dif-
+férents environnements.
+VERMEG
+39
+Jebali Ayoub
+
+
+===== PAGE 40 =====
+
+3.6.2
+Architecture Logicielle Docker
+L’architecture Docker de l’approche DevOps pour l’application Megara vise à fournir
+un environnement de conteneurisation qui facilite le déploiement, la gestion et la sca-
+labilité de l’application.
+graphics/3.7.png
+Figure 6.2.8 – L’architecture détaillée du Docker
+— L’environnement de développement utilise GitLab pour gérer le code source,
+GitLab CI/CD pour l’intégration continue, et des conteneurs Docker pour le dé-
+veloppement local.
+— L’environnement de test et d’intégration continue utilise une orchestration de
+conteneurs (comme Docker Swarm) pour gérer les conteneurs de test, des outils
+d’analyse de qualité de code (comme SonarQube) et des conteneurs Docker
+pour les tests automatisés.
+Les conteneurs Docker peuvent être orchestrés à l’aide d’outils comme Docker Com-
+pose, Docker Swarm pour gérer leur déploiement, leur mise à l’échelle et leur gestion
+efficace dans un environnement de production.
+Il est important de noter que cette architecture peut varier en fonction des besoins spé-
+cifiques de l’application Megara, des exigences de performances, de sécurité et des
+technologies choisies pour le développement.
+Ceci est une représentation simplifiée d’une architecture Docker typique dans le cadre
+d’un projet DevOps pour l’application Megara
+VERMEG
+40
+Jebali Ayoub
+
+
+===== PAGE 41 =====
+
+3.6.3
+Architecture Logicielle du jenkins
+L’architecture logicielle de Jenkins pour l’application Megara ressemble généralement
+à celle décrite précédemment, avec des ajustements spécifiques au projet.
+graphics/3.9.jpg
+Figure 6.3.9 – L’architecture détaillée du jenkins
+Le workflow de déploiement commences par placer le code de l’application sur le ré-
+férentiel GitLab. Pour automatiser ce scénario, j’ai ajouté la gestion du code source au
+projet Jenkins sous la section Code Source. J’ai choisi l’option GitLab, qui, de par sa
+conception, clone une copie du contenu du dépôt GitLab dans le répertoire de l’espace
+de travail local Jenkins.
+VERMEG
+41
+Jebali Ayoub
+
+
+===== PAGE 42 =====
+
+Cette figure détaillée de l’architecture Jenkins pour Megara DevOps illustre la manière
+dont Jenkins coordonne les processus automatisés pour garantir une intégration et un
+déploiement continus efficaces de l’application Megara. Elle montre également com-
+ment différents composants interagissent pour soutenir le cycle de vie du développe-
+ment logiciel dans un environnement DevOps.
+3.7
+Conclusion
+Au cours de ce chapitre, nous avons effectué une analyse approfondie des besoins du
+projet et avons élaboré une étude technique qui définit les fondements de l’architecture
+physique et logicielle a été une étape cruciale dans la planification et la préparation de
+notre projet de mise en place de l’approche DevOps dans l’application Megara.
+VERMEG
+42
+Jebali Ayoub
+
+
+===== PAGE 43 =====
+
+Chapitre 4
+Réalisation et Validation
+Plan
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.2
+Environnements de Travail . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.2.1
+Technologies utilisées . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.3
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.3.1
+L’approche GitLab
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.3.2
+L’approche Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+4.3.3
+L’approche VM (Virtual Machine)
+. . . . . . . . . . . . . . . . . . .
+65
+4.3.4
+L’approche Maven . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.3.5
+L’approche SonarQube
+. . . . . . . . . . . . . . . . . . . . . . . . .
+72
+4.3.6
+L’approche Jenkins . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+4.3.7
+L’approche Sonatype Nexus . . . . . . . . . . . . . . . . . . . . . .
+81
+4.4
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+43
+
+
+===== PAGE 44 =====
+
+4.1
+Introduction
+Le chapitre Réalisation et Validation représente une étape critique dans notre voyage
+vers la mise en place de l’approche DevOps au sein de l’application Megara. Après
+avoir défini l’architecture, planifié les processus et mis en place les outils nécessaires,
+ce chapitre nous plonge dans l’aspect concret de la réalisation de notre vision DevOps.
+Il s’agit de la phase où les idées deviennent réalité, où les lignes de code prennent
+forme, et où les systèmes commencent à évoluer.
+4.2
+Environnements de Travail
+Les environnements de travail, dans le contexte du développement logiciel et de la
+mise en place de l’approche DevOps, font référence aux différents espaces où les
+membres de l’équipe travaillent, développent, testent, et déploient des logiciels. Ces
+environnements sont essentiels pour la collaboration efficace des équipes DevOps, car
+ils fournissent les outils, les ressources et les infrastructures nécessaires pour chaque
+étape du cycle de vie du développement logiciel.
+Lorsque vous expliquez pourquoi vous estimez que vos choix d’outils sont préférables
+aux choix proposés, il est important de fournir des justifications solides et spécifiques
+pour étayer votre argument. Voici quelques raisons courantes pour lesquelles vous
+pourriez préférer vos propres choix d’outils par rapport aux alternatives proposées :
+Adaptation aux Besoins Spécifiques :
+Les outils que nous avons choisis sont
+mieux adaptés aux besoins spécifiques du projet Megara. Ils offrent des fonctionnalités
+et des capacités qui correspondent parfaitement aux exigences du projet.
+Compatibilité avec l’Infrastructure Existant :
+Nos choix d’outils s’intègrent de ma-
+nière transparente avec l’infrastructure existante de Megara. Cela évite de perturber
+les systèmes en place et facilite la transition vers l’approche DevOps.
+Expérience de l’Équipe :
+Notre équipe a une expérience préalable avec ces outils,
+ce qui accélérera la mise en œuvre et réduira les délais de formation. Nous avons déjà
+une courbe d’apprentissage plus courte.
+Personnalisation et Flexibilité :
+Les outils que nous avons choisis offrent une plus
+grande flexibilité et la possibilité de les personnaliser pour répondre aux besoins spé-
+cifiques du projet. Cela permet une adaptation plus précise.
+Coûts Abordables :
+Nos choix d’outils sont plus abordables en termes de coûts de
+licence et de maintenance par rapport aux alternatives proposées par le professeur.
+Cela réduit les dépenses et permet d’optimiser le budget.
+VERMEG
+44
+Jebali Ayoub
+
+
+===== PAGE 45 =====
+
+Support Actif de la Communauté :
+Les outils que nous avons sélectionnés béné-
+ficient d’une communauté active d’utilisateurs, ce qui signifie un meilleur accès à des
+ressources en ligne, des forums de discussion et des mises à jour fréquentes.
+Meilleures Performances :
+Nos outils offrent des performances supérieures, ce qui
+permettra une exécution plus rapide des tâches DevOps et une meilleure réactivité de
+l’ensemble du système.
+Sécurité Renforcée :
+Les outils que nous avons choisis intègrent des fonctionnalités
+de sécurité robustes pour protéger les données et les systèmes contre les menaces
+potentielles.
+Alignement avec la Vision du Projet :
+Nos choix d’outils sont en accord avec la
+vision globale du projet Megara telle que définie par notre équipe. Ils contribuent à la
+réalisation des objectifs du projet.
+Réduction de la Complexité :
+Les outils que nous avons sélectionnés sont conçus
+pour simplifier les processus DevOps et réduire la complexité globale de l’infrastruc-
+ture, ce qui facilite la gestion et la maintenance.
+Il est essentiel d’articuler ces raisons de manière claire et convaincante dans votre
+argumentation. Cela aidera à éclairer la décision et à montrer que vos choix d’outils
+sont fondés sur une compréhension approfondie des besoins du projet Megara.
+VERMEG
+45
+Jebali Ayoub
+
+
+===== PAGE 46 =====
+
+4.2.1
+Technologies utilisées
+Docker :
+Le logiciel Docker est une technologie de conteneurisation qui permet la
+création et l’utilisation de conteneurs Linux[1].
+graphics/4.1.png
+Figure 2.1.1 – Logo Docker
+Docker Hub :
+Le Docker Hub est le registre officiel de Docker. Il s’agit d’un répertoire
+SaaS permettant de gérer et de partager les conteneurs. On peut y trouver des images
+Docker de projets open source ou de vendeurs logiciels. Il est possible de télécharger
+ces images et de partager les vôtres [2].
+graphics/4.2.png
+Figure 2.1.2 – Logo Docker Hub
+VERMEG
+46
+Jebali Ayoub
+
+
+===== PAGE 47 =====
+
+Gitlab
+Gitlab c’est une plateforme permettant d’héberger et de gérer des projets web
+de A à Z. Présentée comme la plateforme des développeurs modernes, elle offre la
+possibilité de gérer ses dépôts Git et ainsi de mieux appréhender la gestion des ver-
+sions de vos codes sources [3].
+graphics/4.3.png
+Figure 2.1.3 – Logo Gitlab
+Jenkins :
+Jenkins est un outil d’intégration continue (CI) open source qui automatise
+le processus de construction, de test et de déploiement d’applications logicielles. Il est
+utilisé pour améliorer la qualité du code, accélérer le développement, et s’assurer que
+les modifications de code sont intégrées en douceur[4].
+graphics/4.4.jpg
+Figure 2.1.4 – Logo Jenkins
+Nexus Repository :
+Nexus Repository est un gestionnaire de dépôts logiciels open
+source, développé par Sonatype, qui fournit un endroit centralisé pour stocker, orga-
+niser et distribuer des artefacts logiciels, tels que des bibliothèques, des frameworks,
+des modules, des plug-ins, et d’autres composants réutilisables[5].
+VERMEG
+47
+Jebali Ayoub
+
+
+===== PAGE 48 =====
+
+graphics/4.5.jpg
+Figure 2.1.5 – Logo Nexus Repository
+Script Shell Linux :
+Un script shell Linux est un fichier contenant un ensemble de
+commandes et d’instructions destinées à être exécutées dans un interpréteur de com-
+mandes Unix ou Linux. Ces scripts sont utilisés pour automatiser des tâches répé-
+titives, effectuer des opérations système, manipuler des fichiers et des données, ou
+effectuer diverses autres actions en utilisant des commandes du shell[6].
+graphics/4.6.jpg
+Figure 2.1.6 – Logo Linux
+Apache Maven :
+Apache Maven est un système de gestion de projet basé sur des
+conventions qui automatise le processus de construction, de gestion des dépendances
+et de distribution de projets logiciels. Il utilise un modèle de projet standardisé et une
+structure de répertoires pour simplifier le développement, la compilation, les tests et le
+déploiement d’applications[7].
+graphics/4.7.png
+Figure 2.1.7 – Logo Apache Maven
+VERMEG
+48
+Jebali Ayoub
+
+
+===== PAGE 49 =====
+
+SonarQube :
+SonarQube est une plateforme open source d’analyse statique du code
+et de gestion de la qualité du logiciel. Elle est principalement utilisée pour évaluer et
+améliorer la qualité du code source des applications logicielles[8].
+graphics/4.8.png
+Figure 2.1.8 – Logo SonarQube
+Visual Studio Code (VSCode) :
+Visual Studio Code est un éditeur de code source
+multiplateforme qui offre un environnement de développement intégré (IDE) léger et
+extensible pour les développeurs de logiciels. Il est conçu pour être rapide, efficace
+et hautement personnalisable, tout en fournissant des fonctionnalités puissantes pour
+faciliter le développement de logiciels[9].
+graphics/4.9.png
+Figure 2.1.9 – Logo VSCode
+VERMEG
+49
+Jebali Ayoub
+
+
+===== PAGE 50 =====
+
+XML (Extensible Markup Language) :
+XML est un langage de balisage textuel qui
+permet de définir des règles pour marquer les données de manière structurée. Contrai-
+rement à HTML (Hypertext Markup Language), qui est principalement utilisé pour dé-
+finir la structure des pages web, XML est conçu pour être extensible et permettre la
+création de balises personnalisées pour décrire divers types de données[10].
+graphics/4.10.jpg
+Figure 2.1.10 – Logo XML
+YAML (YAML Ain’t Markup Language) :
+YAML est un langage de sérialisation de
+données qui utilise une syntaxe simple et lisible par les humains. Il est conçu pour être
+facile à écrire et à comprendre, ce qui en fait un choix populaire pour la configuration
+de logiciels et d’autres tâches de représentation de données [11].
+graphics/4.11.jpg
+Figure 2.1.11 – YAML
+VERMEG
+50
+Jebali Ayoub
+
+
+===== PAGE 51 =====
+
+Visual Paradigm Online :
+Visual Paradigm Online est une plateforme de modélisa-
+tion et de conception basée sur le cloud proposée par Visual Paradigm, une entreprise
+spécialisée dans les outils de modélisation. Elle offre une gamme complète d’outils de
+modélisation visuelle pour les professionnels de différents domaines, y compris les ar-
+chitectes d’entreprise, les développeurs de logiciels, les chefs de projet, les analystes
+métier et les ingénieurs système[12].
+graphics/4.12.png
+Figure 2.1.12 – logo Visual Paradigm Online
+Java :
+Java est un langage de programmation orienté objet de haut niveau développé
+par Sun Microsystems (aujourd’hui détenu par Oracle Corporation) au milieu des an-
+nées 1990. Il est conçu pour être indépendant de la plate-forme, ce qui signifie que
+les programmes Java peuvent s’exécuter sur différentes plates-formes matérielles et
+systèmes d’exploitation sans modification[13].
+graphics/4.13.png
+Figure 2.1.13 – Logo Java
+VERMEG
+51
+Jebali Ayoub
+
+
+===== PAGE 52 =====
+
+Python :
+Python est un langage de programmation interprété, de haut niveau et po-
+lyvalent. Il a été créé dans les années 1990 par Guido van Rossum et est devenu
+l’un des langages de programmation les plus populaires au monde en raison de sa
+simplicité, de sa lisibilité et de sa grande communauté de développeurs[14].
+graphics/4.14.png
+Figure 2.1.14 – Logo Python
+Overleaf
+Overleaf est un éditeur LaTeX collaboratif basé sur le cloud utilisé pour
+écrire, éditer et publier des documents scientifiques. Il s’associe à un large éventail
+d’éditeurs scientifiques pour fournir des modèles LaTeX de journaux officiels et des
+liens de soumission directs.[15]
+graphics/13.png
+Figure 2.1.15 – Logo Overleaf
+4.3
+Réalisation
+Dans cette partie nous exposons les différentes actions d’exécution, à partir des im-
+primes d’écrans qui présentent la description des fonctionnalités du système.
+4.3.1
+L’approche GitLab
+L’approche GitLab dans le cadre de la mise en place de l’approche DevOps dans un
+projet d’application Megara consiste à utiliser la plateforme GitLab comme un élément
+central de l’infrastructure DevOps.
+VERMEG
+52
+Jebali Ayoub
+
+
+===== PAGE 53 =====
+
+La figure ci-dessous montre le commit dans le projet
+graphics/r1.png
+Figure 3.1.16 – Commit le changement
+Après avoir effectué la validation le changement, il devrait être effectué la merge re-
+quest
+graphics/r2.png
+Figure 3.1.17 – Creation la merge request
+La figure ci-dessous expose l’interface de la merge request qui creer
+graphics/r3.png
+Figure 3.1.18 – Interface de merge request
+VERMEG
+53
+Jebali Ayoub
+
+
+===== PAGE 54 =====
+
+La figure ci-dessous expose le Lancement du pipeline pour faire la compilation
+graphics/r4.png
+Figure 3.1.19 – lancement pipeline
+La figure ci-dessous expose la compilation du pipeline sur interface GitLab
+graphics/r5.png
+Figure 3.1.20 – Compilation du pipeline
+VERMEG
+54
+Jebali Ayoub
+
+
+===== PAGE 55 =====
+
+La figure ci-dessous montre la fin de la compilation et la réussite de le job
+graphics/r6.jpg
+Figure 3.1.21 – Terminus de la compilation
+VERMEG
+55
+Jebali Ayoub
+
+
+===== PAGE 56 =====
+
+La figure ci-dessous montre le fichier de configuration gitlab-ci.yml qui définit les étapes
+et les jobs du pipeline
+graphics/r7.png
+Figure 3.1.22 – gitlab-ci.yml
+La figure ci-dessous montre le runner GitLab qui permet d’automatiser l’exécution de
+pipelines CI/CD (Intégration Continue et Livraison Continue) dans GitLab
+graphics/r8.png
+Figure 3.1.23 – runners
+VERMEG
+56
+Jebali Ayoub
+
+
+===== PAGE 57 =====
+
+La figure ci-dessous montre les variables sont des données que vous pouvez définir
+et utiliser dans vos pipelines.
+graphics/r9.png
+Figure 3.1.24 – CI/CD Variables
+VERMEG
+57
+Jebali Ayoub
+
+
+===== PAGE 58 =====
+
+La figure ci-dessous montre Le script Python que vous avez partagé semble être un
+script utilisé pour gérer les dépendances et la construction de projets Maven, en par-
+ticulier dans un environnement d’intégration continue (CI)
+graphics/r10.png
+Figure 3.1.25 – Script builds dependent only Merge request
+Ce script effectue les actions suivantes :
+— Il génère un arbre de dépendances inversé en utilisant le plugin Maven ”Megara-
+dependencyTree-maven-plugin” pour analyser les dépendances du projet, à la
+fois les dépendances Maven et UML. L’arbre de dépendances est stocké dans
+un fichier JSON.
+— Ensuite, il analyse les modifications dans les fichiers source en comparant la
+branche source et la branche cible d’une demande de fusion GitLab (MR). Il
+groupe les fichiers modifiés par module et submodule.
+— Il effectue la construction des modules qui ont des modifications dans les fi-
+chiers source. Si un module a un sous-module se terminant par ”-uml”, le script
+construit le module parent correspondant. Sinon, il construit le sous-module spé-
+cifique et son éventuel sous-module ”-impl-ui”.
+— Le script gère les dépendances entre les modules en fonction de l’arbre de
+dépendances inversé, garantissant que les modules dépendants sont construits
+avant les modules qui en dépendent.
+— Finalement, il lance la construction des modules et sous-modules spécifiques
+en utilisant Maven, en passant les paramètres requis pour l’intégration avec
+SonarQube, GitLab CI/CD.
+VERMEG
+58
+Jebali Ayoub
+
+
+===== PAGE 59 =====
+
+La figure ci-dessous montre Le code que vous avez partagé est une implémentation
+d’un plugin Maven appelé MegaraTreeMojo. Ce plugin Maven génère une structure
+de dépendance inversée à partir des fichiers POM (Project Object Model) des modules
+d’un projet Maven. La structure de dépendance inversée représente les dépendances
+entre les différents modules du projet.
+graphics/r11.png
+Figure 3.1.26 – Code plugin Maven MegaraTreeMojo
+VERMEG
+59
+Jebali Ayoub
+
+
+===== PAGE 60 =====
+
+graphics/r12.png
+Figure 3.1.27 – Achèvement du Code plugin Maven MegaraTreeMojo
+aperçu des principales fonctionnalités et composants du code :
+— Ce plugin est annoté avec @Mojo, ce qui indique qu’il s’agit d’un objectif Maven
+et spécifie son nom et d’autres paramètres.
+— Le code utilise des annotations @Parameter pour injecter des valeurs depuis
+la configuration du plugin Maven.
+— Il utilise la classe MavenProject pour accéder au projet Maven en cours de
+traitement.
+— Le plugin parcourt les fichiers POM du projet pour collecter des informations sur
+les dépendances et les modules.
+— Il génère une structure de dépendance inversée, où chaque module est associé
+à ses dépendances inverses.
+— Les dépendances sont collectées à partir des dépendances Maven du fichier
+POM, des profils Maven, et des fichiers UML générés.
+— Le plugin crée un fichier JSON en sortie (targetFile) qui représente la structure
+de dépendance inversée du projet.
+— Le plugin peut être configuré pour inclure ou exclure certaines dépendances
+en fonction de divers paramètres comme bsOnly, attachUmlDependencies,
+attachMavenDependencies, et ciProfiles.
+— Les dépendances inverses sont stockées sous forme d’objets Artifact.
+— Le code manipule également des fichiers XML, notamment des fichiers POM et
+des fichiers UML, en utilisant des bibliothèques Java standard.
+— Le fichier JSON généré peut être utilisé pour analyser les relations de dépen-
+dance entre les modules du projet.
+VERMEG
+60
+Jebali Ayoub
+
+
+===== PAGE 61 =====
+
+La figure ci-dessous montre le code de classe Artifact est une classe Java qui semble
+représenter un artefact ou module d’un projet. Cette classe est utilisée dans le code
+précédent pour modéliser les artefacts du projet Maven et leurs relations de dépen-
+dance.
+graphics/r13.png
+Figure 3.1.28 – Code de classe Artifact
+Description des principaux éléments de la classe Artifact :
+— La classe implémente l’interface Serializable, ce qui signifie que ses instances
+peuvent être sérialisées (converties en un flux d’octets) pour le stockage ou la
+transmission.
+— La classe possède trois attributs :
+— artifactId : Une chaîne de caractères représentant l’identifiant de l’artefact.
+— dependencies : Une liste d’objets Artifact représentant les dépendances de
+cet artefact.
+— reverseDependency : Une liste d’objets Artifact représentant les dépendances
+inverses vers cet artefact.
+VERMEG
+61
+Jebali Ayoub
+
+
+===== PAGE 62 =====
+
+— Le constructeur par défaut de la classe initialise les listes de dépendances et
+de dépendances inverses.
+— Il existe des méthodes d’accès (getters et setters) pour les attributs artifactId,
+dependencies, et reverseDependency.
+— La classe Artifact possède également des méthodes de type ”constructeur
+fluide” (artifactId, dependencies, reverseDependency) qui permettent de dé-
+finir les valeurs des attributs et de renvoyer l’instance actuelle, ce qui permet de
+chaîner les appels de méthodes.
+— La méthode statique uniqueIdentifier permet de générer un identifiant unique
+pour un modèle Maven (représenté par l’objet Model) ou une chaîne d’identifiant
+d’artefact. Cette méthode renvoie simplement la valeur passée en argument.
+— La méthode getOrderedReverseDependencies prend en argument une liste
+ordonnée d’artefacts (représentée par order) et renvoie une collection d’arte-
+facts dépendants, triée selon l’ordre spécifié. Le tri est effectué en utilisant un
+TreeMap basé sur l’index de chaque dépendance dans la liste order.
+Cette classe Artifact est utilisée pour modéliser les artefacts et leurs relations dans le
+contexte du code du plugin Maven MegaraTreeMojo.
+VERMEG
+62
+Jebali Ayoub
+
+
+===== PAGE 63 =====
+
+4.3.2
+L’approche Docker
+L’approche Docker en DevOps, est un élément clé de la modernisation des processus
+de développement, de déploiement et d’exploitation.
+La figure ci-dessous montre Un fichier Docker, couramment appelé ”Dockerfile”, est
+un script textuel qui contient un ensemble d’instructions pour construire une image
+Docker.
+graphics/r14.png
+Figure 3.2.29 – Docker file
+— FROM alpine :3 : Spécifie l’image de base à utiliser, qui est Alpine Linux version
+3.
+— RUN apk update && apk add bash wget xvfb git curl openjdk8 : Utilise apk
+(le gestionnaire de paquets d’Alpine) pour mettre à jour les dépôts de packages
+(apk update) et installer plusieurs packages, dont bash, wget, xvfb, git, curl,
+et OpenJDK 8.
+— COPY certif.crt /opt/ : Copie un fichier nommé certif.crt depuis le système de
+fichiers local vers le répertoire /opt/ de l’image.
+— COPY MagicDraw-UML /opt/MagicDraw-UML/ : Copie un répertoire nommé
+MagicDraw-UML depuis le système de fichiers local vers le répertoire /opt/MagicDraw-
+UML/ de l’image.
+VERMEG
+63
+Jebali Ayoub
+
+
+===== PAGE 64 =====
+
+— COPY .magicdraw /root/.magicdraw/ : Copie un répertoire nommé .magic-
+draw depuis le système de fichiers local vers le répertoire /root/.magicdraw/
+de l’image.
+— RUN keytool -importcert -alias server-alias -keystore /usr/lib/jvm/default-
+jvm/jre/lib/security/cacerts -file /opt/certif.crt -keypass changeit -storepass
+”changeit” -noprompt : Utilise l’outil keytool pour importer un certificat (certif.crt)
+dans le fichier keystore Java (cacerts). Cette étape est utile pour configurer un
+certificat de confiance dans le conteneur.
+— RUN wget –no-verbose -O /tmp/apache-maven-3.0.5.tar.gz ... : Télécharge
+Apache Maven version 3.0.5, le décompresse dans le répertoire /opt/, et crée
+un lien symbolique vers mvn dans /usr/local/bin.
+La figure ci-dessous montre la commande de build image Docker
+graphics/r15.jpg
+Figure 3.2.30 – Build Image Docker
+VERMEG
+64
+Jebali Ayoub
+
+
+===== PAGE 65 =====
+
+4.3.3
+L’approche VM (Virtual Machine)
+L’approche VM (Virtual Machine) en DevOps se réfère à l’utilisation de machines vir-
+tuelles pour faciliter le développement, le test, le déploiement et la gestion de logiciels
+au sein d’un environnement DevOps.
+La figure ci-dessous montre le fichier de configuration config.toml pour un runner Git-
+Lab CI/CD est spécifique à GitLab et est utilisé pour configurer les runners, qui sont
+des agents d’exécution pour les pipelines CI/CD.
+graphics/r16.png
+Figure 3.3.31 – Config.toml
+VERMEG
+65
+Jebali Ayoub
+
+
+===== PAGE 66 =====
+
+La figure ci-dessous montre le fichier ”clean Docker.sh” pour effectuer des opérations
+de nettoyage sur un système Docker.
+graphics/r17.png
+Figure 3.3.32 – CleanDocker.sh
+VERMEG
+66
+Jebali Ayoub
+
+
+===== PAGE 67 =====
+
+La figure ci-dessous montre le fichier “cleanMemory.sh “pour effectuer des opérations
+de nettoyage ou d’optimisation de la mémoire RAM.
+graphics/r18.png
+Figure 3.3.33 – CleanMemory.sh
+VERMEG
+67
+Jebali Ayoub
+
+
+===== PAGE 68 =====
+
+La figure ci-dessous montre Le fichier ”bash-profile” est un fichier de configuration spé-
+cifique à l’interpréteur de commandes Bash qui contient des commandes, des variables
+et des configurations personnalisées qui seront exécutées à chaque ouverture d’une
+session Bash.
+graphics/r19.png
+Figure 3.3.34 – bash.profile
+VERMEG
+68
+Jebali Ayoub
+
+
+===== PAGE 69 =====
+
+4.3.4
+L’approche Maven
+L’approche Maven en DevOps fait référence à l’utilisation de l’outil Apache Maven dans
+le cadre des pratiques DevOps pour automatiser la gestion de dépendances, la com-
+pilation, le packaging et le déploiement d’applications logicielles
+La figure ci-dessous montre Le fichier “settings.xml” de configuration qui permet de
+personnaliser le comportement de Maven. Il joue un rôle important dans la gestion des
+paramètres et des configurations spécifiques à un projet ou à un utilisateur.
+graphics/r20.jpg
+Figure 3.4.35 – Settings.xml
+VERMEG
+69
+Jebali Ayoub
+
+
+===== PAGE 70 =====
+
+La figure ci-dessous montre Les plugins Maven définis dans le fichier pom.xml (Project
+Object Model) jouent un rôle essentiel dans la gestion du cycle de vie de construction
+de votre projet. Ils permettent d’ajouter des fonctionnalités supplémentaires, d’exécuter
+des tâches spécifiques et de personnaliser le comportement de Maven
+graphics/r21.png
+graphics/r22.png
+Figure 3.4.36 – plugins Maven dans le fichier pom.xml
+— <GroupId> : Il s’agit du groupe auquel appartient le plugin Maven. Il permet
+d’identifier de manière unique le plugin sur Maven Central Repository ou d’autres
+référentiels.
+— <ArtifactId> : Il spécifie l’identifiant de l’artefact du plugin, ce qui permet de
+déterminer quel plugin vous souhaitez utiliser.
+— <Version> : Vous spécifiez ici la version du plugin que vous souhaitez utiliser.
+VERMEG
+70
+Jebali Ayoub
+
+
+===== PAGE 71 =====
+
+— <Configuration> : Cet élément vous permet de définir des configurations spé-
+cifiques au plugin. Les détails varient d’un plugin à l’autre.
+— <Exécutions> : Vous pouvez définir ici des exécutions du plugin. Chaque exé-
+cution peut avoir un identifiant unique, une phase d’exécution Maven et une liste
+de buts (goals) du plugin à exécuter.
+La figure ci-dessous montre La commande que vous avez fournie est destinée à être
+utilisée dans un pipeline GitLab CI/CD pour construire un projet Maven avec des op-
+tions spécifiques, notamment pour l’intégration de Jenkins et SonarQube.
+graphics/r23.png
+Figure 3.4.37 – Maven Goals
+VERMEG
+71
+Jebali Ayoub
+
+
+===== PAGE 72 =====
+
+— Maven : Il s’agit de la commande Maven que vous souhaitez exécuter.
+— Goal clean install : Cela indique à Maven d’exécuter les phases ”clean” (net-
+toyer les artefacts précédents) et ”install” (compiler, tester et installer l’applica-
+tion).
+— -U (update-snapshots) : Cela force Maven à mettre à jour les dépendances
+SNAPSHOT, ce qui est utile pour obtenir les dernières versions des dépen-
+dances.
+— -B (-batch-mode) : Cela active le mode batch de Maven, ce qui signifie qu’il
+s’exécute en mode non interactif, ce qui est approprié pour une intégration conti-
+nue.
+— -P jenkinsBuildProfile : Cela active le profil Maven appelé jenkinsBuildPro-
+file. Les profils Maven permettent de configurer des paramètres spécifiques au
+build en fonction de l’environnement. Dans ce cas, jenkinsBuildProfile pourrait
+contenir des configurations spécifiques à Jenkins.
+— -Dsonar.session.id=$CI-PIPELINE-ID : Cela définira une propriété système
+Maven appelée sonar.session.id en utilisant la valeur de la variable d’envi-
+ronnement
+— $CI-PIPELINE-ID, qui est fournie par GitLab CI/CD. Cette valeur peut être utile
+pour suivre les analyses de code avec SonarQube
+4.3.5
+L’approche SonarQube
+L’approche SonarQube en DevOps vise à améliorer la qualité du code source dans le
+cadre des pipelines de développement logiciel.
+VERMEG
+72
+Jebali Ayoub
+
+
+===== PAGE 73 =====
+
+La figure ci-dessous montre l’interface de serveur sonarqube
+graphics/r24.png
+Figure 3.5.38 – Interface SonarQube
+La figure ci-dessous montre plugin SOnarQube dans un fichier pom.xml
+graphics/r25.png
+Figure 3.5.39 – plugin SonarQube
+VERMEG
+73
+Jebali Ayoub
+
+
+===== PAGE 74 =====
+
+— <sonarGoalToExecute> : Il spécifie l’objectif SonarQube que le plugin doit exé-
+cuter. Dans cet exemple, il exécute org.sonarsource.scanner.maven :sonar-
+maven-plugin :3.7.0.1746 :sonar.
+— <sonarWaitingTime> : Il définit le temps d’attente en millisecondes pour que
+l’analyse SonarQube se termine. Dans cet exemple, il est défini à 600 000 mil-
+lisecondes (soit 10 minutes).
+— <issuesCreatedAfterDate> : Cette propriété spécifie la date à partir de laquelle
+les problèmes créés dans SonarQube doivent être inclus. Ici, elle est définie au
+26 juin 2023 à minuit, avec le fuseau horaire +0100.
+— <sonarSucessMetrics> : Cette section spécifie les critères de succès basés
+sur des métriques de qualité du code provenant de SonarQube. Les trois mé-
+triques incluses ici (blocker-violations, major-violations, critical-violations)
+sont définies avec des critères ”LessOrEqual” (inférieur ou égal) à zéro. Cela
+signifie que le processus de construction
+sera considéré comme un succès si ces métriques sont égales à zéro ou s’il y a moins
+de problèmes de qualité du code que le seuil spécifié.
+La figure ci-dessous montre un exemple de pipeline dans lequel Sonar échoue parce
+que la qualite code est erroné.
+graphics/r26.png
+Figure 3.5.40 – Exemple Erreur qualité code
+VERMEG
+74
+Jebali Ayoub
+
+
+===== PAGE 75 =====
+
+La figure ci-dessous montre le rapport d’erreur de qualité codé dans sonarqube
+graphics/r27.png
+Figure 3.5.41 – rapport Sonarqube d’Erreur qualité code
+4.3.6
+L’approche Jenkins
+L’approche Jenkins peut également être utilisé pour automatiser le déploiement des
+applications sur divers environnements, de la pré-production à la production. Cela per-
+met une livraison plus rapide et plus fiable des logiciels.
+VERMEG
+75
+Jebali Ayoub
+
+
+===== PAGE 76 =====
+
+La figure présente l’interface du serveur Jenkins en manifestant les jobs exécutés
+graphics/r28.png
+Figure 3.6.42 – jobs Jenkins
+La figure présente L’interface de configuration des builds dans Jenkins vous permet
+de définir comment votre projet doit être construit, testé et déployé.
+graphics/r29.png
+Figure 3.6.43 – interface de configuration des builds
+VERMEG
+76
+Jebali Ayoub
+
+
+===== PAGE 77 =====
+
+La figure ci-dessous configurer un build périodique dans Jenkins, vous pouvez utiliser
+l’option ”Construire périodiquement” dans la section des déclencheurs de build. Cela
+vous permet de planifier des builds à des intervalles réguliers (par exemple, toutes les
+heures, tous les jours, toutes les semaines
+graphics/r30.png
+Figure 3.6.44 – interface de configuration build périodique
+La figure ci-dessous montre La commande Maven que vous avez partagée semble
+être une commande de checkout (récupération) à partir d’un dépôt Git à l’aide du plugin
+Maven SCM
+graphics/r31.png
+Figure 3.6.45 – interface de invoke top-level maven targets.
+VERMEG
+77
+Jebali Ayoub
+
+
+===== PAGE 78 =====
+
+— org. apache.maven.plugins :maven-scm-plugin :1.11.2 :checkout : C’est l’ob-
+jectif du plugin Maven SCM qui indique que vous souhaitez effectuer une opé-
+ration de checkout.
+— DcheckoutDirectory=$WORKSPACE/workDirectory : Cette option spécifie le
+répertoire dans lequel les fichiers du projet Git seront récupérés. $WORKS-
+PACE est une variable d’environnement Jenkins qui représente le répertoire
+de travail du projet Jenkins. Les fichiers seront extraits dans un sous-répertoire
+appelé ”workDirectory”.
+— DconnectionUrl=”scm :git :git.vermeg.com/MegaraGroup/standard/Megara10
+.git” : C’est l’URL du dépôt Git que vous souhaitez récupérer. Cet exemple uti-
+lise Git avec l’URL HTTPS.
+— DscmVersionType=branch : Cette option indique que vous allez spécifier une
+branche pour la récupération.
+— DscmVersion= Support-MegaraProduct-10.7.8 : C’est le nom de la branche
+que vous souhaitez récupérer. Dans cet exemple, il s’agit de la branche ”Support-
+MegaBroker-12.6.5.2”.
+— Dusername=buildproduct : C’est le nom d’utilisateur à utiliser pour l’authen-
+tification. Il s’agit de l’utilisateur Git que vous utiliserez pour accéder au dépôt
+distant.
+— Dpassword=$BUILDPRODUCT-PASSWORD : C’est le mot de passe associé
+à l’utilisateur spécifié. Dans cet exemple, il semble que le mot de passe soit récu-
+péré à partir d’une variable d’environnement Jenkins appelée BUILDPRODUCT-
+PASSWORD.
+La figure ci-dessous montre La commande Maven que vous avez partagée semble
+être une commande de build et de déploiement à l’aide de Maven
+graphics/r32.png
+Figure 3.6.46 – interface de Build
+VERMEG
+78
+Jebali Ayoub
+
+
+===== PAGE 79 =====
+
+— $WORKSPACE est une variable d’environnement Jenkins qui représente le ré-
+pertoire de travail du projet Jenkins. La construction du projet Maven utilisera
+ce chemin pour localiser le fichier pom.xml du projet.
+— clean deploy : C’est la phase de build Maven que vous exécutez. La phase
+clean effaces les fichiers générés précédemment, tandis que deploy déploie
+les artefacts construits dans un dépôt Maven distant (comme Nexus).
+— P MegaraCI,jenkinsBuildProfile : Cela active les profils Maven lors de la construc-
+tion. Les profils Maven peuvent être configurés dans le fichier pom.xml et per-
+mettent de personnaliser la construction en fonction des besoins. Dans cet
+exemple, les profils MegaraCI et jenkinsBuildProfile sont activés.
+— DjenkinsBuildNumber=$BUILD-NUMBER : Cette option définit une propriété
+système Maven appelée jenkinsBuildNumber avec la valeur de la variable d’en-
+vironnement Jenkins BUILD-NUMBER. Vous pouvez utiliser cette propriété dans
+votre projet Maven pour incorporer le numéro de build Jenkins dans vos arte-
+facts ou rapports.
+La figure ci-dessous montre l’interface de terminus le build de projet a été construit
+avec succès dans Jenkins
+graphics/r33.png
+Figure 3.6.47 – Build Success
+VERMEG
+79
+Jebali Ayoub
+
+
+===== PAGE 80 =====
+
+La figure ci-dessous montre Les modules de builds dans Jenkins font référence aux
+tâches de construction individuelles que vous exécutez pour compiler, tester et générer
+un artefact spécifique de votre projet.
+graphics/r34.png
+Figure 3.6.48 – Module Builds
+VERMEG
+80
+Jebali Ayoub
+
+
+===== PAGE 81 =====
+
+4.3.7
+L’approche Sonatype Nexus
+L’approche Sonatype Nexus en DevOps pour la gestion des artefacts et des dépen-
+dances logiciels. Il joue un rôle clé dans le pipeline de livraison logicielle, la distribution
+d’artefacts et la sécurité des composants.
+La figure ci-dessous montre l’interface de serveur Sonatype Nexus et les projets qui
+dessous
+graphics/r35.png
+Figure 3.7.49 – inertface Sonatype Nexus
+4.4
+Conclusion
+Durant ce dernier chapitre, nous avons détaillé notre projet à l’aide des captures d’écran
+qui présentent la validation et réalisation de chaque fonctionnalité de la chaine CI/CD
+et approvisionnement. Nous avons bien respecté toutes les terminologies de la culture
+DevOps tels que les parties de sécurité, supervision et automatisation de tous les pro-
+cessus en appliquant les bonnes pratiques trouvés dans les documentations officiels
+de chaque outil utilisé.
+VERMEG
+81
+Jebali Ayoub
+
+
+===== PAGE 82 =====
+
+Conclusion générale
+En conclusion de notre projet de mise en place de l’approche DevOps dans le cadre du
+développement de l’application Megara, nous pouvons affirmer avec satisfaction que
+cette initiative a été couronnée de succès. Notre voyage à travers ce projet a été un
+voyage d’apprentissage, de collaboration et de transformation, et il est important de
+mettre en lumière les principaux points de notre réussite.
+L’objectif initial de ce projet était de répondre aux besoins croissants de notre entre-
+prise en matière de développement logiciel, tout en améliorant la qualité, la rapidité de
+déploiement et la fiabilité de nos applications. Grâce à l’approche DevOps, nous avons
+réussi à atteindre ces objectifs de manière significative.
+L’automatisation des processus de développement, de test et de déploiement a per-
+mis d’accélérer nos cycles de livraison, de réduire les erreurs humaines et d’augmen-
+ter notre agilité pour répondre aux évolutions du marché. Notre équipe a adopté des
+pratiques telles que l’intégration continue, la livraison continue et l’automatisation des
+tests, ce qui a contribué à une amélioration spectaculaire de la qualité logicielle.
+La collaboration entre les équipes de développement, d’exploitation et de sécurité a
+été renforcée, favorisant ainsi un esprit d’équipe et une communication transparente.
+Les barrières traditionnelles entre ces équipes ont été brisées, et nous avons travaillé
+main dans la main pour atteindre nos objectifs communs.
+L’adoption de technologies telles que Docker, Jenkins, SonarQube et Nexus a été es-
+sentielle pour la mise en œuvre réussie de DevOps. Ces outils ont facilité la gestion
+des conteneurs, l’intégration continue, l’analyse statique du code et la gestion des arte-
+facts, contribuant ainsi à l’efficacité et à la qualité de nos processus. En fin de compte,
+l’approche DevOps a eu un impact positif sur notre entreprise. Nous avons constaté
+une réduction significative du temps de déploiement des nouvelles fonctionnalités, une
+augmentation de la satisfaction client et une meilleure gestion des ressources informa-
+tiques. Le retour sur investissement de ce projet est indéniable.
+Cependant, notre voyage DevOps ne s’arrête pas ici. Il s’agit d’une philosophie conti-
+nue d’amélioration et d’adaptation. Nous continuerons à explorer de nouvelles pra-
+tiques et technologies pour rester à la pointe de l’efficacité et de la qualité.
+82
+
+
+===== PAGE 83 =====
+
+En conclusion, la mise en place de l’approche DevOps dans notre projet d’application
+Megara a été une étape majeure dans notre évolution en tant qu’organisation axée sur
+la qualité et l’efficacité. Nous sommes fiers de nos réalisations, et nous anticipons avec
+enthousiasme les opportunités futures que nous réserve notre engagement continu
+envers DevOps.
+VERMEG
+83
+Jebali Ayoub
+
+
+===== PAGE 84 =====
+
+Bibliographie
+[1]
+“https ://www.redhat.com/fr/topics/containers/what-is-docker”. In : ().
+[2]
+“https ://datascientest.com/docker-guide-complet”. In : ().
+[3]
+“https ://www.axopen.com/blog/2017/02/gitlab-cest-quoi/”. In : ().
+[4]
+“https ://www.lebigdata.fr/jenkins-definition-avantages”. In : ().
+[5]
+“https ://services.renater.fr/sourcesup/nexus”. In : ().
+[6]
+“https ://fr.theastrologypage.com/shell-script”. In : ().
+[7]
+“https ://www.editions-eni.fr/livre/apache-maven-maitrisez-l-infrastructure-d-un-projet-
+java-ee-2e-edition-9782409019531/definition-et-cycle-de-vie-d-un-projet”. In : ().
+[8]
+“https ://www.syloe.com/glossaire/sonarqube/”. In : ().
+[9]
+“https ://framalibre.org/content/visual-studio-code”. In : ().
+[10]
+“https ://www.journaldunet.fr/web-tech/dictionnaire-du-webmastering/1203615-xml-
+extensible-markup-language-definition-traduction/”. In : ().
+[11]
+“https ://www.redhat.com/fr/topics/automation/what-is-yaml”. In : ().
+[12]
+“https ://digitiz.fr/outil/visual-paradigm-online/”. In : ().
+[13]
+“https ://www.futura-sciences.com/tech/definitions/informatique-java-485/”. In : ().
+[14]
+“https ://www.journaldunet.fr/web-tech/dictionnaire-du-webmastering/1445304-python-
+definition-et-utilisation-de-ce-langage-informatique/”. In : ().
+[15]
+“https ://en.wikipedia.org/wiki/Overleaf”. In : ().
+84

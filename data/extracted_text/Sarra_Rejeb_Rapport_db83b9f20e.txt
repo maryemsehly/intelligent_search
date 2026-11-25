@@ -1,0 +1,2176 @@
+===== PAGE 1 =====
+
+ 
+ 
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de 
+Mahdia 
+ 
+Projet de fin d’études 
+ 
+N° d’ordre :  …. 
+Ministère de l’Enseignement Supérieur et 
+de la Recherche Scientifique  
+ 
+ 
+ 
+ 
+ 
+ 
+RAPPORT PROJET FIN 
+D’ETUDE  
+ 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+ 
+En vue de l’obtention 
+ 
+De la Licence en Ingénierie des Systèmes Informatiques 
+Spécialité : Ingénierie des Réseaux et Systèmes 
+ 
+Par 
+ 
+Sarra REJEB 
+ 
+ 
+MISE EN PLACE D'UNE SOLUTION DEVSECOPS SUR 
+UNE ARCHITECTURE CLOUD 
+ 
+ 
+Soutenu le 15 juin 2023, devant la commission d’examen : 
+ 
+Mme. Zaouali Meriam 
+Présidente 
+Mme. Ghannay Sana 
+Encadrante 
+Mme. Henaien Amira 
+Examinatrice 
+ 
+Année Universitaire 2022/2023 
+
+
+===== PAGE 2 =====
+
+ 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 3 =====
+
+Dédicaces
+Je dédie ce travail, qui n’est rien d’autre que l’aboutissement d’un très long parcours, aux
+personnes qui se sont toujours montrées présentes et qui m’ont soutenu par leurs actions, leurs
+pensées et leurs volontés, aux personnes qui donnent un sens à ma vie et à celles qui représentent
+ma source d’inspiration.
+À l’âme de mon grand-père, Sadok, pour tout la peine qu’il s’est donnée pour moi. J’espère
+qu’il appréciera cet humble geste comme une marque de gratitude de la part d’une fille qu’il n’a
+jamais oubliée. Qu’il repose en paix !
+À ma grand-mère, Wassila, une personne exceptionnelle qui a joué un rôle central dans ma
+vie pour son amour inconditionnel et son soutien indéfectible.
+À ma mère, Houria, ma source inépuisable de soutien, d’encouragement et d’amour. Sa force,
+sa patience et sa gentillesse m’ont inspiré à chaque étape de ma vie.
+À mon père, Sami, pour son soutien, sa patience, ses sacrifices et son amour, en reconnaissance
+de tous les sacrifices qu’il a faits pour moi.
+À mon frère, Amir, pour son amour inconditionnel et son soutien moral.
+À ma meilleure amie, Hadil, merci d’avoir été là pour moi quand j’en avais réellement besoin.
+À cellle qui m’a accompagnée durant ces trois ans, À ma sœur et binôme, Kawther.
+Je vous aime tous.
+Sarra
+i
+
+
+===== PAGE 4 =====
+
+Remerciements
+Au terme de ce projet de fin d’études, je tiens à exprimer mes sincères
+remerciements à tous ceux qui ont contribué, de près ou de loin, à son
+élaboration.
+Tout d’abord, je tiens à exprimer ma profonde gratitude à ma chère
+professeure et encadrante, Madame Sana GHANNAY, pour la confiance
+qu’elle m’a témoignée en acceptant de superviser ce projet de fin d’études. Je
+la remercie pour son encadrement, ses conseils et le temps qu’elle m’a
+consacré.
+Je voudrais profiter de cette occasion pour remercier tous les enseignants de
+l’ISIMA, qui ont fait preuve d’excellence dans leurs disciplines.
+Je tiens à remercier également mon encadrant Monsieur Bader
+MAHFOUDH.
+Pour conclure, je tiens à remercier sincèrement les membres du jury pour la
+bienveillance dont ils ont fait preuve en examinant et en jugeant ce travail.
+ii
+
+
+===== PAGE 5 =====
+
+Table des matières
+Introduction générale
+1
+1
+Contexte général
+3
+1.1
+Organisme d’accueil
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.1.1
+Présentation générale du Defensylab . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.1.2
+Secteur d’activité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.1.3
+Structure de la société . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.1.4
+Stratégie . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2
+Cadre du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2.1
+Etude critique de l’existant
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2.2
+Problématique
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.2.3
+Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+2
+État de l’art
+8
+2.1
+Approche DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1.1
+Origine du DevOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1.2
+Présentation du DevOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.1.3
+Pratiques DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.1.4
+Avantages de l’approche DevOps . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.2
+Approche DevSecOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.2.1
+Intégration de la sécurité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.2.2
+Contrôles DevOps en temps réel
+. . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.3
+DevOps vs DevSecOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.4
+Virtualisation VS conteneurisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.5
+Cloud Computing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.5.1
+Caractéristiques du Cloud Computing . . . . . . . . . . . . . . . . . . . . . .
+16
+2.5.2
+Services du Cloud Computing . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.5.3
+Modèles de déploiement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.6
+Combinaison DevOps et Cloud
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+iii
+
+
+===== PAGE 6 =====
+
+2.7
+Analyse des choix techniques
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.7.1
+Azure Devops . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.8
+Architecture de la solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3
+Mise en place de la sécurité dans le pipeline CI
+24
+3.1
+Intégration continue
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.2
+Sécurité de l’Intégration continue . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.2.1
+Analayse de la qualité du code
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.2.2
+Contrôle des dépendances . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.3
+Les outils exploités . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.3.1
+Git . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.3.2
+Yaml . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.3.3
+SonarQube
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.3.4
+WhiteSource Bolt . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.3.5
+Azure CLI . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.4
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.4.1
+Import du code sur Azure Devops et création du pipeline CI . . . . . . . . . .
+31
+3.4.2
+Installation et configuration du SonarQube
+. . . . . . . . . . . . . . . . . . .
+33
+3.4.3
+Installation et configuration du WhiteSource Bolt . . . . . . . . . . . . . . . .
+37
+4
+Mise en place de la sécurité dans le pipeline CD
+41
+4.1
+Déploiement continu . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.2
+Sécurité du déploiement continu . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.2.1
+Insertion des tests de pénétration . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.3
+Les outils exploités . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.3.1
+Owasp Zed Attack Proxy
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.3.2
+Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.4
+Etude détaillée du déploiement continue . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.5
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.5.1
+PRE-PROD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.5.2
+TEST . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.5.3
+PROD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+iv
+
+
+===== PAGE 7 =====
+
+Conclusion générale
+59
+Bibliographie
+60
+Annexes
+62
+Annexe 1 : CI pipeline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+v
+
+
+===== PAGE 8 =====
+
+Table des figures
+1.1
+Logo DefensyLab . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Les stratégies de DefensyLab
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+2.1
+Le cycle de vie DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.2
+Les outils de DevOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.3
+Le cycle de vie DevSecOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.4
+Comparaison entre les conteneurs et les machines virtuelles
+. . . . . . . . . . . . . .
+15
+2.5
+Les services du Cloud Computing . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.6
+Les modèles de déploiement du Cloud Computing . . . . . . . . . . . . . . . . . . . .
+18
+2.7
+Logo Azure Devops . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.8
+La chaîne DevOps avec Jenkins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.9
+Les services Azure DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.10 Architecture de la solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.1
+Schéma représentatif de l’intégration continue . . . . . . . . . . . . . . . . . . . . . .
+26
+3.2
+Logo Git . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.3
+Logo Yaml . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.4
+Logo SonarQube
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.5
+Logo WhiteSource Bolt . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.6
+Imprimé du projet Azure DevOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.7
+Publication du code sur Azure Repos . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.8
+Le pipeline d’intégration continue . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.9
+Authentification Azure avec CLI
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.10 Création du conteneur . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.11 L’instance du conteneur . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.12 La génération du jeton d’accès personne . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.13 L’importation de notre projet à l’interface SonarQube
+. . . . . . . . . . . . . . . . .
+36
+3.14 Généreration du jeton global . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.15 Service de connexion SonarQube
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+3.16 Installation de l’extension WhiteSource . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+vi
+
+
+===== PAGE 9 =====
+
+3.17 Imprimé de l’exécution du CI pipeline
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.18 Le résultat d’analyse de WhiteSource Bolt . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.19 Le rapport SonarQube avant l’analyse
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.20 Le rapport SonarQube après l’analyse
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.1
+Schéma représentatif du déploiement continu
+. . . . . . . . . . . . . . . . . . . . . .
+43
+4.2
+Logo Owasp Zed Attack Proxy
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.3
+Logo Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.4
+Atrifact de build
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.5
+Azure App Service . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.6
+Attente de la confirmation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.7
+Approbation de l’étape PRE-PROD
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.8
+La réussite de l’hébergement de l’application sur Azure App Service
+. . . . . . . . .
+49
+4.9
+Ajout de TEST . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.10 Les différentes tâches de TEST . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.11 ZAP Scanner . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.12 OWASP NUnit template . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.13 Generate NUnit type file . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.14 Publish Test Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.15 Création du feed
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.16 Publication du package . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.17 Exécution du TEST
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.18 Téléchargement des résultats de test . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.19 Le rapport généré par Owasp ZAP . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.20 Ajout de la tâche PROD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.21 Les différentes tâches de PROD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.22 Configure Application Insights Alerts . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+4.23 Attente de l’approbation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+4.24 Exécution du Release pipeline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+4.25 Les ressources ajoutées . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+5.1
+Script du CI pipeline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+vii
+
+
+===== PAGE 10 =====
+
+Table des figures
+5.2
+Suite script du CI pipeline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+viii
+
+
+===== PAGE 11 =====
+
+Liste des tableaux
+3.1
+Comparaison entre SonarQube et Veracode
+. . . . . . . . . . . . . . . . . . . . . . .
+27
+3.2
+Comparaison entre WhiteSource Bolt et Sonatype Nexus IQ . . . . . . . . . . . . . .
+28
+4.1
+Comparaison entre OWASP ZAP et Invicti
+. . . . . . . . . . . . . . . . . . . . . . .
+44
+ix
+
+
+===== PAGE 12 =====
+
+Liste des abréviations
+—
+ACI
+=
+Azure Container Instance
+—
+CD
+=
+Continuous Delivery
+—
+CI
+=
+Continuous Integration
+—
+DAST
+=
+Dynamic Application Security Testing
+—
+HTML =
+HyperText Markup Language
+—
+IT
+=
+Information Technology
+—
+IaaS
+=
+Infrastructure as a Service
+—
+PaaS
+=
+Plateform as a Service
+—
+SAST
+=
+Static Application Security Testing
+—
+SDLC
+=
+Software Development Life Cycle
+—
+SaaS
+=
+Software as a Service
+—
+TFVC
+=
+Team Foundation Version Control
+—
+XML
+=
+Extensible Markup Language
+—
+XSS
+=
+Cross-Site Scripting
+—
+YAML
+=
+Yet Another Markup Language
+x
+
+
+===== PAGE 13 =====
+
+Introduction générale
+Il est désormais inutile de préciser que les technologies de l’information sont un phénomène
+effervescent qui a progressivement pénétré dans tous les domaines de notre vie quotidienne. Son
+accélération redoutable dans la plupart des secteurs a conduit à utiliser le terme de "révolution"
+pour la décrire. De ce fait, la concurrence entre les entreprises du monde informatique ne cesse de
+croître. Cet environnement concurrentiel oblige les entreprises à utiliser les nouvelles technologies
+pour adapter leur organisation, leurs produits et leurs services aux défis du marché, et à anticiper
+ses évolutions afin d’attirer de nouveaux clients en leur fournissant des services rapides et efficaces.
+Cependant, il ne suffit pas d’offrir des services rapides et efficaces. La sécurité est également
+devenue une préoccupation majeure. Les cyberattaques et les violations de données sont devenues
+monnaie courante, menaçant la confiance des clients et la réputation des entreprises. La sécurité
+doit donc être intégrée dès les premières phases de développement des logiciels, afin de garantir la
+protection des données sensibles et de prévenir les vulnérabilités potentielles.
+Afin de générer une véritable valeur stratégique, les entreprises doivent accorder autant
+d’importance à la fourniture de leurs applications qu’à leur développement, d’où la nécessité d’adopter
+une nouvelle approche pour se démarquer sur le marché. C’est dans ce contexte que s’inscrit notre
+projet réalisé au sein de DefensyLab. Notre tâche consiste à mettre en œuvre une solution DevSecOps
+sur une architecture cloud. Ce rapport explique clairement les différentes étapes du projet. Il est
+divisé en quatre chapitres.
+Le premier chapitre expose le contexte général dans lequel le projet a été élaboré, en présentant
+l’organisation d’accueil, le problème et la solution proposée.
+Le deuxième chapitre traite des concepts théoriques liés à notre projet. Une présentation
+détaillée de l’approche DevOps, de l’approche DevSecOps et du Cloud Computing. Ce chapitre
+présente également une analyse de nos choix techniques et de l’architecture de notre solution.
+Le troisième chapitre couvre la définition de l’intégration continue, les concepts de sécurité
+qui lui sont appliqués, les outils utilisés pour garantir ces concepts et les étapes nécessaires à
+l’implémentation de la sécurité dans le pipeline d’intégration continue (CI).
+Le quatrième chapitre explore le déploiement continu, en fournissant une définition claire de
+cette pratique. Il étudie également les mesures de sécurité impliquées dans le déploiement continu, les
+outils couramment utilisés pour garantir la protection de notre application et les étapes nécessaires
+1
+
+
+===== PAGE 14 =====
+
+Introduction générale
+à l’implémentation de la sécurité dans le pipeline de déploiement continu (CD).
+2
+
+
+===== PAGE 15 =====
+
+Chapitre 1
+Contexte général
+Plan
+1
+Organisme d’accueil . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2
+Cadre du projet
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+
+
+===== PAGE 16 =====
+
+Chapitre 1. Contexte général
+Introduction
+Dans ce chapitre introductif, nous allons exposer le cadre général de notre étude. Nous
+présenterons d’abord l’organisme d’accueil et ses activités, puis nous analyserons le système existant
+en mettant en évidence les enjeux du projet. Enfin, nous allons proposer notre solution.
+1.1
+Organisme d’accueil
+1.1.1
+Présentation générale du Defensylab
+DefensyLab est une startup tunisienne, située dans le Technoparc El-Ghazela et fondée en
+2021 par un spécialiste de la cybersécurité. Elle est spécialisée dans les services de cybersécurité
+et le développement d’outils d’automatisation des processus. DefensyLab construit des outils de
+sécurité modernes pour les entreprises qui souhaitent détecter les menaces et les risques pour leur
+organisation et répondre instantanément aux incidents de sécurité. Grâce à la collaboration avec
+l’intelligence artificielle et l’apprentissage automatique, la performance de ces outils s’améliore au
+fur et à mesure que les incidents deviennent plus sophistiqués.
+Figure 1.1 : Logo DefensyLab
+1.1.2
+Secteur d’activité
+Les principaux domaines d’activité de l’entreprise sont la sécurité informatique, le développement
+de logiciels et les services de conseil pour les normes de qualité ISO.
+Les activités de l’entreprise consistent principalement à :
+• La consultation avec l’assistance comprend la gestion des exigences, la conception et la sécurité
+des technologies de l’information.
+• La gestion de projets en fournissant des solutions et des processus informatiques.
+• Le développement d’applications : conception, mise en œuvre, réalisation de tests de pénétration
+et maintenance.
+4
+
+
+===== PAGE 17 =====
+
+Chapitre 1. Contexte général
+1.1.3
+Structure de la société
+L’équipe est composée d’ingénieurs en sécurité logicielle, d’ingénieurs en développement
+informatique, de chef de projet, d’architecte système et d’une équipe Cloud et DevOps.
+1.1.4
+Stratégie
+La société DefencyLab met en œuvre plusieurs stratégies clés pour atteindre ses objectifs.
+Parmi elles, on peut citer la sécurité gérée, les processus automatisés, la protection intelligente et la
+réduction des coûts. Ces technologies sont basées sur une combinaison d’innovation et d’orientation
+vers le marché, et visent à répondre aux besoins des clients et à atteindre une croissance rentable
+dans son secteur d’activité.
+La Figure 1.2 représente les stratégies de DefensyLab.
+Figure 1.2 : Les stratégies de DefensyLab
+1.2
+Cadre du projet
+Notre projet, intitulé "Implémentation d’une solution DevSecOps sur une architecture cloud",
+sera réalisé dans le cadre d’un projet de fin d’études qui vise à obtenir une licence appliquée en
+ingénierie des réseaux et des systèmes. Le projet sera réalisé au sein de "DefensyLab" en collaboration
+avec l’Institut Suppérieure d’Informatique de Mahdia (ISIMA). Avant de se lancer dans un projet,
+et afin de bien comprendre nos besoins, il est nécessaire d’analyser et de critiquer ce qui existe déjà.
+1.2.1
+Etude critique de l’existant
+DefensyLab suit la méthode traditionnelle dans le développement et la production de ses
+applications. Il s’agit de la méthode non itérative où tous les objectifs doivent être spécifiés dès le
+départ, et où le test est effectué après la sortie d’une version stable et le déploiement du produit
+5
+
+
+===== PAGE 18 =====
+
+Chapitre 1. Contexte général
+se fait manuellement. Cette méthode manque de flexibilité, car après avoir validé les exigences et
+les fonctionnalités souhaitées avec le client, ce dernier n’aura de visibilité que sur le résultat final,
+sans possibilité de retour en arrière. Ce manque d’adaptabilité au changement signifie que le produit
+livré peut ne pas satisfaire pleinement les attentes du client. Un autre problème à considérer est que
+les tests sont effectués à la fin du processus. Il est donc plus difficile et plus coûteux de corriger les
+bogues et d’apporter des modifications. Par conséquent, compte tenu des critiques soulevées, nous
+devrons modifier la façon de la gestion de notre projet.
+1.2.2
+Problématique
+DefensyLab est spécialisé dans le conseil de sécurité, la cybersécurité et l’évaluation des
+vulnérabilités pour aider les entreprises à assurer la sécurité de leurs systèmes et de leurs données.
+Dans le paysage numérique actuel, la sécurité est une préoccupation majeure pour notre entreprise.
+Bien que nous nous efforcions d’améliorer l’efficacité, la collaboration et la rapidité de nos processus
+de développement grâce à des approches plus agiles, nous ne devons pas négliger le fait que la sécurité
+doit être considérée comme un élément fondamental de notre solution.
+— Comment favoriser une culture de collaboration et de partage des responsabilités entre les
+équipes de développement, d’exploitation et de sécurité ?
+— Comment assurer une intégration fluide et efficace des processus de développement et d’exploitation,
+tout en garantissant la sécurité, la qualité et la stabilité du système ?
+— Comment améliorer l’efficacité et la sécurité du processus de développement des logiciels afin
+de réduire le risque de vulnérabilité ?
+1.2.3
+Solution proposée
+Afin de surmonter ces problèmes, l’objectif de notre projet consiste à adapter une approche
+collaborative et automatisée tout en effectuant les tests de sécurité nécessaires pour minimiser le
+risque des attaques.
+Par conséquent, nous visons à concevoir une solution basée sur la méthode DevOps. En effet,
+DevOps, qui met l’accent sur l’intégration et la livraison continues, est devenu une approche de plus
+en plus populaire pour le développement des logiciels. Cependant, en raison des menaces croissantes
+en matière de cybersécurité et pour assurer la sécurité de leurs applications, DefensyLab doit intégrer
+la sécurité dès le début du processus de développement. Cela signifie qu’il faut adopter des concepts
+6
+
+
+===== PAGE 19 =====
+
+Chapitre 1. Contexte général
+DevOps innovants qui incluent les tests de sécurité comme une partie essentielle du processus. Cette
+approche de développement est connue sous le nom de DevSecOps.
+L’objectif de notre projet consiste donc à créer un pipeline d’intégration sécurisé et un pipeline
+de livraison continue sécurisé.
+L’intégration continue est utilisée pour automatiser la génération et le test du code suite à
+un commit dans le référentiel de contrôle de version.
+La livraison continue permet le déploiement automatique dans l’environnement souhaité dès
+qu’un artefact de construction ("build artefact") est disponible.
+Conclusion
+Dans ce premier chapitre, nous avons exposé notre projet dans son contexte général en
+présentant l’organisme d’accueil, une étude de l’existant et de ses limites, et en introduisant la
+solution proposée.
+Dans le chapitre suivant, nous allons étudier théoriquement l’approche DevOps, l’approche
+DevSecOps et le Cloud Computing.
+7
+
+
+===== PAGE 20 =====
+
+Chapitre 2
+État de l’art
+Plan
+1
+Approche DevOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2
+Approche DevSecOps . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+3
+DevOps vs DevSecOps
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+4
+Virtualisation VS conteneurisation . . . . . . . . . . . . . . . . . . . . . .
+15
+5
+Cloud Computing
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+6
+Combinaison DevOps et Cloud . . . . . . . . . . . . . . . . . . . . . . . .
+18
+7
+Analyse des choix techniques
+. . . . . . . . . . . . . . . . . . . . . . . . .
+19
+8
+Architecture de la solution . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+
+
+===== PAGE 21 =====
+
+Chapitre 2. État de l’art
+Introduction
+Dans ce chapitre, nous commencerons par une mise en évidence des différents concepts de
+base impliqués dans notre projet. Ensuite, nous présenterons quelques éléments clés. Enfin, nous
+analyserons les choix technologiques que nous allons faire et nous exposerons les outils que nous
+allons adopter dans le cadre de notre projet.
+2.1
+Approche DevOps
+2.1.1
+Origine du DevOps
+Avant la création de l’approche Devops, l’informatique d’entreprise a séparé les responsabilités
+de l’équipe de développement logiciel de celles de l’équipe opérationnelle.
+La première est chargée de collecter les besoins de l’entreprise, de développer les applications
+et enfin de les tester. Après avoir fixé les bogues et assuré le bon fonctionnement de l’application
+ou du logiciel, le code source est mis à la disposition de la seconde équipe, qui est responsable de
+l’exploitation des applications et des infrastructures. Le manque de communication entre ces deux
+équipes et la méconnaissance des obstacles auxquels chacune pouvait être confrontée, ont créé de
+nombreux problèmes et empêché l’avancement des travaux. Pour cela, une nouvelle méthode a dû
+être adoptée.
+2.1.2
+Présentation du DevOps
+DevOps est une stratégie opérationnelle conçue pour améliorer la communication et minimiser
+les frictions organisationnelles entre les équipes de développement de logiciels (Dev) et les équipes
+d’exploitation (Ops).
+L’objectif opérationnel de cette approche vise à réduire le temps entre une demande de
+changement de service informatique et sa mise en production, tout en optimisant la qualité et en
+réduisant les coûts.
+Cette méthode de travail simplifie et automatise les processus, en unissant les équipes de
+développement et d’exploitation pour offrir aux clients des produits plus fiables et évolutifs.
+Le cycle de vie DevOps présenté par la Figure2.1 consiste à mettre en œuvre divers processus
+automatisés dans un flux itératif. Chaque phase est continue, formant une boucle infinie qui représente
+l’itération et la collaboration tout au long du cycle de vie du développement logiciel [1].
+9
+
+
+===== PAGE 22 =====
+
+Chapitre 2. État de l’art
+Figure 2.1 : Le cycle de vie DevOps
+Les équipes de développement et d’exploitation travaillent ensemble dans un écosystème
+DevOps, durant tout le cycle de vie du logiciel, tout en développant des compétences étendues. Les
+équipes DevOps utilisent également de divers outils et technologies pour automatiser les processus
+manuels et lents pour chaque phase.
+Comme nous le voyons dans la Figure 2.2 [2], DevOps consiste à combiner plusieurs étapes,
+pour lesquelles différents outils sont disponibles afin de réaliser chaque maillon de la chaîne. Ces
+outils exécutent les principales tâches et activités nécessaires à l’automatisation du processus.
+Figure 2.2 : Les outils de DevOps
+2.1.3
+Pratiques DevOps
+DevOps est un ensemble de bonnes pratiques conçues pour répondre au besoin croissant
+d’industrialisation et de standardisation des systèmes d’information.
+Cette approche vise à automatiser les tâches du cycle de développement d’une application
+ou d’un logiciel, tout en garantissant :
+— Un développement et des tests constants.
+— Une intégration et une mise en œuvre constantes.
+— Une surveillance constante et une validation de la qualité opérationnelle.
+10
+
+
+===== PAGE 23 =====
+
+Chapitre 2. État de l’art
+Les pratiques DevOps améliorent et automatisent continuellement les processus. Un grand
+nombre de ces pratiques se concentrent sur une ou plusieurs phases du cycle de développement [3] :
+• Développement continu : Le développement continu peut inclure des mécanismes de contrôle
+des versions pour la planification et le codage.
+• Tests continus : Les tests automatisés sont exécutés dans l’environnement DevOps afin de
+minimiser les régressions, de renforcer la confiance dans le projet et d’accélérer la livraison du
+code à la production.
+• Intégration continue : Cette pratique réunit des outils de gestion de la configuration, de
+test et de développement pour contrôler la mise en production de différentes parties du code.
+• Livraison continue : La livraison continue permet d’automatiser la publication des modifications
+de code dans un environnement intermédiaire ou de pré-production.
+• Déploiement continu : Une fois que tous les tests et toutes les exigences de l’entreprise
+ont été satisfaits, le logiciel est prêt pour la production. L’application est configurée pour
+fonctionner dans un environnement de production préétabli. L’objectif principal à ce stade
+consiste à fournir le logiciel ou les mises à jour aux utilisateurs en utilisant une stratégie axée
+sur l’entreprise, afin qu’ils ne rencontrent aucun problème.
+• Surveillance continue : Cela implique une surveillance constante du code en cours d’exécution
+et de l’infrastructure qui le supporte. Cette surveillance permet aux développeurs d’être informés
+en temps réel des bogues ou des problèmes et de pouvoir y remédier rapidement.
+• Infrastructure-as-code : Cette pratique peut être utilisée à différents stades du cycle DevOps
+pour automatiser la mise à disposition de l’infrastructure nécessaire à la sortie d’un logiciel.
+Les développeurs intègrent le code de l’infrastructure à l’aide de leurs outils de développement.
+Par exemple, ils peuvent créer un stockage à la demande au moyen de technologies, telles que :
+Docker, Kubernetes ou OpenShift. Cette pratique permet également aux équipes d’exploitation
+de surveiller les configurations de l’environnement, de suivre les changements et de simplifier
+la restauration.
+2.1.4
+Avantages de l’approche DevOps
+DevOps offre de nombreux avantages, tant sur le plan humain que professionnel.
+Parmi ces avantages, on peut citer [4] :
+11
+
+
+===== PAGE 24 =====
+
+Chapitre 2. État de l’art
+• Une meilleure collaboration : DevOps permet une collaboration directe entre les développeurs
+de logiciels et les équipes d’exploitation informatique. Cette approche repose sur des processus
+automatisés, la mise à disposition d’outils et la mise en œuvre de bonnes pratiques. Ainsi,
+les équipes peuvent communiquer de manière continue, afin de mieux comprendre les défis de
+chacun et de travailler ensemble pour la réussite des projets.
+• Un gain de temps et d’argent : En mettant en œuvre DevOps, les entreprises peuvent
+déployer très rapidement de nouveaux systèmes, processus et applications. Les opérations
+commerciales seront plus efficaces et nous conserverons un avantage concurrentiel sur le marché.
+La réduction du temps de cycle passé entraîne une réduction du coût de fabrication du produit.
+Cela nous permet d’économiser beaucoup de temps et d’argent.
+• Une amélioration de la satisfaction et de l’expérience des clients : Les relations
+avec les clients jouent un rôle important dans le succès et la longévité de toute entreprise.
+C’est pourquoi, elles accordent la priorité à cette dimension. DevOps intègre la satisfaction
+du client et l’amélioration de l’expérience client. De cette manière, nous pouvons augmenter
+nos opportunités de vente. Aujourd’hui, les entreprises qui ont adopté une approche DevOps
+enregistrent un taux de satisfaction client supérieur de 52%.
+• Rapidité de production et de livraison : L’adoption de DevOps nous a permis de simplifier
+les processus et d’automatiser la plupart de nos opérations. Grâce à cette approche, le rythme
+de production et de livraison est considérablement plus rapide, et la qualité des services offerts
+est supérieure.
+• Une capacité d’innovation : L’adoption de l’approche DevOps permet aux entreprises de
+consacrer plus de temps à l’innovation. Les produits étant créés et livrés rapidement, les équipes
+peuvent utiliser le temps gagné pour développer de nouvelles idées, expérimenter de nouvelles
+fonctionnalités ou améliorer celles qui existent déjà. Plus vous aurez de temps pour innover,
+plus notre entreprise se développera.
+• Une détection rapide des problèmes : Un problème qui n’est pas résolu rapidement en
+cours de production entraîne inévitablement un retard de livraison et une perte d’argent. En
+mettant en œuvre un processus DevOps, nous pouvons détecter rapidement les problèmes et les
+résoudre sans délai supplémentaire. Par conséquent, nous perdons moins de temps et d’argent.
+12
+
+
+===== PAGE 25 =====
+
+Chapitre 2. État de l’art
+Bien que les applications DevOps aient fait des progrès considérables en termes de vitesse,
+d’évolutivité et de fonctionnalité, elles manquent souvent de mesures de sécurité et de conformité
+adéquates.
+2.2
+Approche DevSecOps
+Le DevSecOps vise à intégrer la sécurité au cœur du DevOps.
+Dans le cadre du travail collaboratif du modèle DevOps, la sécurité est une responsabilité
+partagée, intégrée dès le début du projet et jusqu’à la fin, grâce à l’utilisation de bibliothèques de
+code sécurisées et à l’automatisation des tests de sécurité.
+L’objectif principal de DevSecOps consiste à maintenir la sécurité tout au long du cycle
+DevOps. L’intégration de la sécurité est automatisée à chaque étape du cycle de vie du développement
+logiciel (SDLC), de la conception initiale du logiciel à la livraison [5]. La figure 2.3 est un diagramme
+représentatif de l’approche DevSecOps [6].
+Figure 2.3 : Le cycle de vie DevSecOps
+2.2.1
+Intégration de la sécurité
+Traditionnellement, les tests de sécurité étaient effectués après les tests d’application au cours
+du cycle de développement. Les équipes de sécurité effectuaient de nombreux tests et analyses de
+sécurité, et en fonction des résultats, le programme était soit envoyé en production, soit renvoyé
+aux développeurs pour être corrigé. Il en résultait des retards de développement prolongés et une
+probabilité accrue de livraison de logiciels dépourvus de fonctions de sécurité essentielles.
+Le concept DevSecOps consiste à mettre en œuvre des mesures de sécurité à chaque étape
+du cycle de développement, et non seulement à la fin. L’objectif consiste à créer des logiciels qui
+intègrent les meilleures pratiques en matière de sécurité, et à identifier et résoudre les problèmes de
+sécurité et les vulnérabilités le plus tôt possible dans le processus de développement. Cette approche
+vise à rendre la résolution des problèmes de sécurité plus simple, plus rapide et plus rentable.
+13
+
+
+===== PAGE 26 =====
+
+Chapitre 2. État de l’art
+2.2.2
+Contrôles DevOps en temps réel
+Dans cette section, nous aborderons les différentes phases du cycle de développement durable
+et leurs processus de vérification respectifs, ainsi que leurs objectifs.
+• Vérifications de l’engagement : À ce stade, les développeurs sont chargés de vérifier
+que leur code peut être compilé et fusionné avec le code existant. Ce processus implique
+également l’utilisation d’analyseurs de code, qui inspectent le code afin de détecter les erreurs
+de compilation et de suggérer des optimisations du code.
+• Vérifications du temps de construction : Au cours de cette étape, une analyse statique
+est effectuée, en particulier des tests de sécurité des applications statiques (SAST). Les SAST
+consistent à inspecter le code source afin d’identifier les vulnérabilités potentielles et les
+problèmes de code. Ce type de test est également connu sous le nom de test en boîte blanche,
+car les outils d’analyse statique peuvent accéder à l’ensemble du code source sans qu’il soit
+nécessaire d’exécuter l’application.
+• Vérifications du temps de test : Lors de cette phase, tous les tests sont effectués, y compris
+les tests fonctionnels, d’intégration et de performance, ainsi que les tests dynamiques de sécurité
+des applications (DAST). Ces tests sont réalisés en boîte noire, car ils ne nécessitent pas d’accès
+au code source. Ils consistent plutôt à effectuer des attaques sur l’application afin d’identifier
+et de résoudre les vulnérabilités.
+• Vérifications du temps de déploiement : Cette approche implique la mise en place d’un
+processus qui lance régulièrement des tests de sécurité afin d’améliorer la qualité globale de la
+sécurité.
+2.3
+DevOps vs DevSecOps
+L’objectif principal de DevOps réside dans le raccourcissement des cycles de développement
+des logiciels, ce qui se traduit par des versions plus fréquentes et une réduction des délais de lancement
+sur le marché. DevSecOps est une approche qui intègre les pratiques de sécurité à chaque phase de
+DevOps. Cela peut ralentir le processus de livraison des applications à un certain niveau, mais
+lorsque la sécurité est mise de côté à la fin du projet, les entreprises qui adoptent l’approche DevOps
+peuvent se retrouver confrontées à de longs cycles de développement, ce qu’elles essayaient pourtant
+d’éviter [7].
+14
+
+
+===== PAGE 27 =====
+
+Chapitre 2. État de l’art
+Finalement, que la démarche soit nommée " DevOps " ou " DevSecOps ", elle a toujours été
+préférable pour faire en sorte que la sécurité fasse partie intégrante du cycle de vie de l’application.
+C’est pourquoi, nous avons décidé d’intégrer les étapes de sécurité dans notre cycle DevOps [8].
+2.4
+Virtualisation VS conteneurisation
+La virtualisation et la conteneurisation sont deux technologies distinctes utilisées pour gérer
+et déployer des opérations logicielles. Les machines virtuelles fonctionnent en virtualisant le matériel
+physique, créant ainsi un environnement virtuel complet qui simule un ordinateur. Cela permet
+au système d’exploitation de communiquer avec le matériel virtuel, offrant ainsi une isolation plus
+étroite. Un hyperviseur est ajouté au système d’exploitation pour permettre à plusieurs systèmes
+d’exploitation de fonctionner sur la même machine physique. La conteneurisation est une méthode
+de virtualisation plus avancée, qui consiste à envelopper une opération et ses dépendances dans un
+conteneur isolé pouvant être exécuté sur un système d’exploitation hôte. Les conteneurs offrent une
+isolation légère entre les opérations, tout en partageant les ressources du système hôte, ce qui les
+rend plus efficaces que les machines virtuelles. Les conteneurs sont connus pour leur capacité à être
+déployés rapidement et facilement, ce qui les rend très populaires pour les opérations modernes et
+les infrastructures de microservices.
+Figure 2.4 : Comparaison entre les conteneurs et les machines virtuelles
+15
+
+
+===== PAGE 28 =====
+
+Chapitre 2. État de l’art
+2.5
+Cloud Computing
+Les entreprises du monde entier sont de plus en plus nombreuses à adopter l’informatique
+dématérialisée comme solution privilégiée. Cette technologie offre un modèle commercial forfaitaire
+pour l’externalisation de l’infrastructure informatique.
+La notion de cloud computing est à l’opposé de celle de stockage local : les entreprises n’ont
+plus besoin de stocker toutes leurs données sur leurs propres équipements, mais les stockent et y
+accèdent via l’internet.
+Avec le cloud computing, les entreprises peuvent augmenter leurs capacités en un instant,
+sans avoir à investir dans de nouvelles infrastructures, à former de nouveaux employés ou à acquérir
+de nouveaux logiciels.
+En conclusion, le cloud computing peut être défini comme un modèle technologique qui
+fournit un accès omniprésent et à la demande à un ensemble de ressources configurables, y compris
+du matériel et/ou des logiciels, permettant aux utilisateurs de bénéficier d’un accès à distance via
+Internet. Les documents sont stockés en toute sécurité et peuvent être consultés sur le web après
+authentification de l’utilisateur.
+2.5.1
+Caractéristiques du Cloud Computing
+Le Cloud Computing possède cinq caractéristiques fondamentales à savoir :
+• Service à la demande : Les utilisateurs peuvent demander des services et les obtenir
+rapidement, sans avoir à interagir avec le fournisseur de services.
+• Accessibilité universelle via le réseau : Les capacités offertes par le Cloud Computing
+sont accessibles via l’internet.
+• Mise en commun des ressources : Le cloud computing utilise souvent un modèle multi-entités,
+où les ressources sont partagées dynamiquement entre les clients en fonction de leurs besoins.
+• Élasticité rapide : Les utilisateurs peuvent rapidement ajuster leur consommation de ressources
+en fonction de leurs besoins.
+• Service mesurable : Les ressources sont contrôlées en permanence et les utilisateurs ne paient
+que pour les ressources qu’ils consomment.
+16
+
+
+===== PAGE 29 =====
+
+Chapitre 2. État de l’art
+2.5.2
+Services du Cloud Computing
+• IaaS (Infrastructure as a Service) : Ce service fournit aux utilisateurs des ressources
+informatiques, de stockage et de réseau sur la base d’un paiement à l’utilisation via l’internet.
+L’utilisation de l’IaaS élimine la nécessité d’investir dans des équipements coûteux et permet
+de dimensionner les ressources de manière plus simple et plus automatisée.
+• PaaS (Plateform as a Service) : Grâce à ce service, les utilisateurs peuvent créer et
+déployer leurs propres applications dans le cloud, en utilisant une plateforme qui couvre un
+environnement de développement complet (langages de programmation, bibliothèques, services
+et outils).
+• SaaS (Software as a Service) : Il est défini comme la capacité des utilisateurs à accéder aux
+services déployés par leurs fournisseurs dans le cloud. Les utilisateurs accèdent à l’application
+via une interface sur leur appareil. Cependant, ils n’ont aucun contrôle sur l’infrastructure
+ci-dessous, y compris le stockage, les systèmes d’exploitation et les serveurs.
+La Figure 2.9 est une présentation des différents types de services cloud que le fournisseur
+offre au client.
+Figure 2.5 : Les services du Cloud Computing
+17
+
+
+===== PAGE 30 =====
+
+Chapitre 2. État de l’art
+2.5.3
+Modèles de déploiement
+• Le cloud public : Il s’agit du modèle classique, dans lequel l’infrastructure cloud partagée
+est détenue, entretenue et gérée par un fournisseur de services cloud. L’accès est accordé
+publiquement à tous les types d’utilisateurs.
+• Le cloud privé : Il s’agit de la fourniture de services informatiques à une seule organisation,
+qui y accède via l’internet ou un réseau interne privé. Elle n’autorise l’accès qu’à un ensemble
+fermé d’utilisateurs.
+• Le cloud hybride : Il s’agit d’une combinaison de déploiements de cloud public et de cloud
+privé. Ce type de déploiement est idéal pour répartir les ressources en fonction des bénéfices
+recherchés.
+Figure 2.6 : Les modèles de déploiement du Cloud Computing
+2.6
+Combinaison DevOps et Cloud
+DevOps est apparu en réponse à la nécessité d’améliorer et d’accélérer le processus de
+développement et de déploiement des applications pour répondre aux demandes croissantes des
+consommateurs. Il vise à automatiser toutes les phases de la création et de la maintenance des
+applications, jusqu’à leur exploitation.
+18
+
+
+===== PAGE 31 =====
+
+Chapitre 2. État de l’art
+Le cloud computing fournit des outils et des infrastructures aux équipes DevOps, afin de
+garantir la sécurité et de faciliter les processus d’intégration, d’automatisation et de déploiement.
+De plus, il offre une solution rentable, permettant de payer à la consommation réelle. Par conséquent,
+nous pouvons constater que ces deux technologies sont parfaitement adaptées l’une à l’autre, et que
+leur combinaison garantit un déploiement rapide, une meilleure qualité logicielle et une expérience
+client améliorée [9].
+2.7
+Analyse des choix techniques
+2.7.1
+Azure Devops
+Azure DevOps est une plateforme d’intégration continue de Microsoft qui fournit une gamme
+d’outils intégrés dans un environnement centralisé. Précédemment connu sous le nom de "Visual
+Studio Team Services", Azure DevOps est une suite d’outils DevOps hébergés dans le cloud pour le
+développement et le déploiement de logiciels. Cette plateforme de livraison continue est disponible
+via un produit SaaS basé sur le cloud ou un serveur sur site. Elle est compatible avec tous les
+langages et toutes les plateformes et propose des outils Agile pour la stratégie de projet, des plans
+de test sur le site web et un système CI/CD multiplateforme pour connecter les solutions. Grâce à
+Azure DevOps, les développeurs bénéficient d’une visibilité et d’une traçabilité totales des activités
+de développement [10].
+Figure 2.7 : Logo Azure Devops
+2.7.1.1
+Pourquoi Azure DevOps ?
+La culture DevOps est toujours plus importante dans le monde de l’entreprise, grâce à
+l’adoption croissante de l’intégration et du déploiement continus. Pour atteindre des niveaux de
+performance élevés, il est essentiel de disposer des outils appropriés.
+Bien que Jenkins [11] soit souvent le premier outil d’intégration continue qui vient à l’esprit, il
+19
+
+
+===== PAGE 32 =====
+
+Chapitre 2. État de l’art
+existe également Azure DevOps, anciennement connu sous le nom de Team Foundation Server. Alors
+que Jenkins est un outil open source d’intégration continue réputé pour ses nombreux "plug-ins"
+permettant de créer, tester et déployer des applications, Azure DevOps est souvent considéré comme
+une solution de gestion de projet plus complète, avec un référentiel Git hébergé pour une meilleure
+intégration du code et une solution agile complète.
+Si nous choisissons d’utiliser Jenkins, nous devrons intégrer d’autres outils DevOps, tels que :
+Trello [12] ou Jira [13] pour la planification et le suivi des tâches, Github [14] pour la gestion des
+versions de code, Ansible [15] pour la gestion de la configuration des serveurs, JFrog Artifactory
+[16] pour la gestion d’artefacts, et des plateformes de stockage à distance, telles que : Google Cloud
+Platform, Azure ou AWS, ...
+La Figure 2.8 est un exemple d’une Chaîne DevOps adoptant Jenkins comme orchestrateur
+et Ansible comme outil d’automatisation.
+Figure 2.8 : La chaîne DevOps avec Jenkins
+En contrepartie, la plateforme Azure DevOps contient des outils DevOps pour chaque phase
+du cycle de vie des applications, et fournit des fonctionnalités intégrées auxquelles nous pouvons
+accéder facilement via notre navigateur web. Elle offre des services de développement permettant aux
+équipes de planifier le travail, de collaborer au développement du code, d’automatiser la construction
+20
+
+
+===== PAGE 33 =====
+
+Chapitre 2. État de l’art
+et le déploiement des applications, d’exécuter des scénarios de test et de tracer les anomalies
+rencontrées au cours de ces processus. De plus, Azure DevOps est une plateforme ouverte, offrant la
+possibilité d’intégrer de nombreux outils industriels et communautaires. En d’autres termes, si nous
+avons besoin d’une fonctionnalité spécifique, nous avons toutes les chances de trouver une extension
+qui s’en charge. Nous avons donc décidé d’adopter Azure DevOps comme solution pour notre projet.
+2.7.1.2
+Les services Azure DevOps
+Azure DevOps, contient un ensemble intégré de services présentés dans la Figure 2.9.
+Figure 2.9 : Les services Azure DevOps
+• Azure Boards : Il permet de planifier et de suivre le travail. Il offre un ensemble complet de
+fonctionnalités, notamment la prise en charge native des processus Agile, Scrum et Kanban,
+des affichages de calendrier, des tableaux de bord configurables et des rapports intégrés.
+• Azure Repos : Il s’agit d’un ensemble d’outils de gestion des versions permettant le contrôle
+du code source, la collaboration et le suivi des modifications apportées à la base de code. Il
+offre deux types de gestion des versions :
+21
+
+
+===== PAGE 34 =====
+
+Chapitre 2. État de l’art
+— Git : Contrôle de version distribué.
+— Team Foundation Version Control (TFVC) : Contrôle de version centralisé.
+Dans notre cas, nous allons utiliser le système de gestion de versions décentralisé Git.
+• Azure Pipelines : Prend en charge l’intégration continue (CI) et la livraison continue (CD)
+pour tester, générer et déployer le code en continu. Les pipelines de construction contiennent des
+instructions de test et de construction. Les pipelines de mise en production sont chargés de gérer
+le déploiement de la construction dans des environnements intermédiaires ou de production.
+• Azure Test Plans : Fournit des outils riches et puissants permettant de stimuler la qualité
+et la collaboration tout au long du processus de développement.
+•
+Azure Artifacts : Permet aux développeurs de partager leur code et de gérer leurs packages
+à partir d’un seul endroit. Ils peuvent notamment publier des packages dans leurs flux et les
+partager au sein d’une équipe, entre organisations et même publiquement.
+2.8
+Architecture de la solution
+L’architecture de notre solution illustrée par la Figure 2.10 permet d’avoir une vue globale
+sur l’ensemble des interactions du système.
+Figure 2.10 : Architecture de la solution
+Afin de mieux comprendre le déroulement des étapes de notre système, nous présentons
+ci-dessous les différentes étapes réalisées :
+• Configuration des environnements de travail.
+22
+
+
+===== PAGE 35 =====
+
+Chapitre 2. État de l’art
+• Création du pipeline CI (Intégration Continue) pour automatiser les processus de build, de
+test et de déploiement.
+• Intégration des outils d’analyse de code source et de dépendances pour détecter les vulnérabilités
+et les erreurs de sécurité.
+• Récupération de l’artefact de build et déclenchement du pipeline de déploiement (Release
+pipeline).
+• Mise en place de tests de pénétration pour identifier les failles de sécurité dans notre application.
+• Enfin, si tout se passe bien, la dernière étape consiste à déployer la version finale de l’application
+dans l’environnement de production.
+Conclusion
+Dans ce chapitre, nous avons réalisé une étude théorique des concepts de base de notre projet.
+Nous avons ensuite réalisé une étude comparative entre Azure DevOps et Jenkins, avant d’adopter
+Azure DevOps comme solution pour notre projet.
+Dans le prochain chapitre, nous nous pencherons sur la sécurité de l’intégration continue.
+23
+
+
+===== PAGE 36 =====
+
+Chapitre 3
+Mise en place de la sécurité dans le
+pipeline CI
+Plan
+1
+Intégration continue . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2
+Sécurité de l’Intégration continue . . . . . . . . . . . . . . . . . . . . . . .
+26
+3
+Les outils exploités
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+4
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+
+
+===== PAGE 37 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+Introduction
+Dans ce chapitre, nous allons étudier l’intégration de la sécurité dans le pipeline de l’intégration
+continue (CI). Nous aborderons également les différentes étapes du processus d’intégration continue
+sécurisée et les outils disponibles pour mettre en œuvre ce processus.
+3.1
+Intégration continue
+L’intégration continue est une pratique essentielle pour assurer le bon fonctionnement d’une
+application en cours de développement.
+Avec la décomposition des applications modernes en petits services indépendants, également
+appelés microservices, chaque développeur travaille sur différentes parties de l’application. Cependant,
+lorsque des modifications sont apportées, elles peuvent entrer en conflit avec des modifications
+simultanées effectuées par d’autres développeurs. Pour résoudre ce problème, un outil de gestion
+du code source, tel que : Git ou GitLab, est utilisé pour centraliser les différentes modifications du
+code. Ensuite, le serveur d’intégration, qui est composé de plusieurs services, déclenche une série
+d’actions pour compiler et tester rapidement les modifications. Si des erreurs sont identifiées, la
+chaîne d’intégration s’arrête et les développeurs en sont informés. En revanche, si la série de tests
+automatisés est concluante, la nouvelle version est validée et archivée dans un référentiel d’artefacts,
+prête à être déployée.
+L’objectif de l’intégration continue consiste à prévenir et caractériser les bogues le plus
+rapidement possible, afin d’obtenir une vision allégée du logiciel et de gagner en réactivité face
+aux différents problèmes qui peuvent survenir à chaque phase du projet. Pour tirer le meilleur parti
+de cette pratique, il est essentiel de respecter quelques règles, telles que : le maintien d’un dépôt
+unique pour le code source visualisé, la réalisation de nombreux commits par jour et par développeur,
+l’automatisation de la compilation du code et la réduction des temps de compilation.
+La figure 3.1 schématise les différentes phases d’intégration continue.
+25
+
+
+===== PAGE 38 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+Figure 3.1 : Schéma représentatif de l’intégration continue
+3.2
+Sécurité de l’Intégration continue
+Pour assurer la sécurité de l’intégration continue, nous avons mis en place des outils d’analyse
+du code et des dépendances.
+3.2.1
+Analayse de la qualité du code
+3.2.1.1
+Présentation
+La qualité du code est un aspect essentiel du cycle de vie du développement logiciel. Elle
+désigne la mesure dans laquelle le code est fiable, facile à maintenir et conforme aux normes et
+standards de codage établis. Une bonne qualité de code peut contribuer à réduire les bogues et les
+problèmes de sécurité, à améliorer la stabilité du système et à faciliter la collaboration entre les
+développeurs. Diverses techniques et outils peuvent être utilisés pour améliorer la qualité du code.
+26
+
+
+===== PAGE 39 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+3.2.1.2
+Etude comparative
+Tableau 3.1 : Comparaison entre SonarQube et Veracode
+Caractéristiques
+SonarQube
+Veracode
+Fonctionnalités
+de sécurité
+Analyse statique du code, détection
+des vulnérabilités connues, gestion
+des défauts de sécurité.
+Analyse statique et dynamique du
+code, tests de pénétration, prise en
+charge de plusieurs langues.
+Intégration
+avec
+Azure
+DevOps
+Intégration
+native,
+exécution
+de
+l’analyse de code SonarQube dans
+les pipelines Azure DevOps.
+Intégration
+disponible,
+configuration
+des
+analyses
+de
+sécurité Veracode dans les pipelines
+Azure DevOps.
+Couverture des
+langages
+Prise
+en
+charge
+de
+nombreux
+langages de programmation.
+Prise
+en
+charge
+de
+langages
+populaires.
+Gestion
+des
+résultats
+Interface
+utilisateur
+conviviale,
+classement des problèmes de sécurité
+par priorité, recommandations.
+Interface
+utilisateur
+intuitive,
+informations
+détaillées
+sur
+les
+vulnérabilités.
+Modèle
+de
+tarification
+Open source (version Community)
+et licences commerciales.
+Tarification basée sur l’utilisation et
+les fonctionnalités requises.
+Support
+et
+documentation
+Communauté
+active
+et
+documentation complète disponible.
+Support
+client
+dédié
+et
+documentation complète.
+Coût
+Gratuit
+pour
+la
+version
+communautaire,
+payant
+pour
+les fonctionnalités supplémentaires
+et le support.
+Les prix ne sont pas publiquement
+disponibles
+et
+doivent
+être
+demandés à l’entreprise.
+D’après cette comparaison et en tenant compte de nos exigences, il semble que SonarQube
+reste une option favorable pour notre projet en raison de sa robustesse, de son intégration native
+avec Azure DevOps et de sa grande communauté de support.
+27
+
+
+===== PAGE 40 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+3.2.2
+Contrôle des dépendances
+3.2.2.1
+Présentation
+Le contrôle des dépendances consiste à identifier et à gérer les dépendances dans le code source
+d’une application ou d’un système. Il permet de s’assurer que les bibliothèques et les modules utilisés
+par le code sont à jour, compatibles et ne présentent pas de vulnérabilités connues. L’identification
+des dépendances du code permet de garantir la fiabilité et la sécurité du système et d’éviter les
+conflits et les erreurs liés à des versions obsolètes ou incompatibles des dépendances. La vérification
+des dépendances est une étape importante du processus de développement logiciel et peut être
+automatisée à l’aide d’outils dédiés.
+3.2.2.2
+Etude comparative
+Tableau 3.2 : Comparaison entre WhiteSource Bolt et Sonatype Nexus IQ
+Caractéristiques
+WhiteSource Bolt
+Sonatype Nexus IQ
+Type d’outil
+Léger
+Solution complète
+Analyse
+des
+composants
+open source
+Analyse de la sécurité et de
+la conformité des composants
+open source utilisés dans le
+code. Alertes en temps réel
+pour les vulnérabilités et les
+problèmes de licence.
+Analyse
+approfondie
+des
+composants
+open
+source
+utilisés dans les applications.
+Détection des vulnérabilités,
+des
+problèmes
+de
+licence
+et
+des
+informations
+sur
+la
+qualité et l’architecture des
+composants.
+Intégration
+avec
+Azure
+DevOps
+Intégration native avec Azure
+DevOps
+Intégration
+avec
+Azure
+DevOps
+Coût
+Gratuit
+Coût élevé pour les licences
+commerciales.
+Taille de l’entreprise
+Convient aux petites équipes
+de
+développement
+ou
+aux
+développeurs individuels.
+Plus
+approprié
+pour
+les
+grandes entreprises.
+28
+
+
+===== PAGE 41 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+Basé sur cette comparaison et sur nos besoins, nous avons décidé d’utiliser WhiteSource
+Bolt comme outil de contrôle des dépendances parce qu’il est léger, s’intègre nativement avec Azure
+DevOps et est gratuit.
+3.3
+Les outils exploités
+3.3.1
+Git
+Git est un système de contrôle de version distribué avec un référentiel distant stocké sur un
+serveur et un référentiel local sur l’ordinateur de chaque développeur. Contrairement à un système
+centralisé, Git permet de stocker sur chaque ordinateur le code source d’un projet et l’historique
+complet des modifications. Cette solution permet aux développeurs de collaborer plus efficacement
+en gérant les modifications simultanées potentielles de plusieurs développeurs. Git facilite ainsi la
+gestion des versions.
+Figure 3.2 : Logo Git
+3.3.2
+Yaml
+Yaml est un langage de sérialisation de données compréhensible qui est souvent utilisé pour
+créer des fichiers de configuration et qui fonctionne bien avec n’importe quel langage de programmation.
+Figure 3.3 : Logo Yaml
+29
+
+
+===== PAGE 42 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+3.3.3
+SonarQube
+SonarQube est une plateforme open source de vérification de la qualité du code source. Elle
+analyse automatiquement le code source pour identifier les problèmes de qualité, tels que : les bogues,
+les vulnérabilités, les défauts techniques, la duplication du code et les mauvaises pratiques de codage.
+SonarQube fournit des rapports détaillés sur la qualité du code source, ainsi que des mesures et des
+indicateurs permettant de surveiller et d’améliorer la qualité du code au fil du temps.
+Figure 3.4 : Logo SonarQube
+3.3.4
+WhiteSource Bolt
+WhiteSource Bolt est une solution de gestion et de sécurité open source. Elle permet de
+détecter et de corriger les composants open source vulnérables, d’assurer la conformité avec les
+licences open source, y compris les licences de dépendance, et d’identifier les bibliothèques open
+source obsolètes avec des recommandations de mise à niveau.
+Figure 3.5 : Logo WhiteSource Bolt
+3.3.5
+Azure CLI
+Azure CLI est une interface de ligne de commande utilisée pour se connecter à Azure et
+exécuter des commandes administratives sur les ressources Azure.
+30
+
+
+===== PAGE 43 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+3.4
+Réalisation
+Dans cette section, nous expliquerons comment installer et configurer les outils nécessaires à
+la mise en œuvre de notre solution.
+3.4.1
+Import du code sur Azure Devops et création du pipeline CI
+Pour pouvoir maîtriser notre pipeline, nous avons créé une organisation contenant notre
+projet appelée "Defensylab" comme indiqué par la Figure 3.6.
+Figure 3.6 : Imprimé du projet Azure DevOps
+Comme nous le savons déjà, le point de départ pour configurer l’intégration continue de
+notre application est de placer le code source dans un système de contrôle de version. Dans notre
+cas, nous allons utiliser Git comme système de contrôle de version et Azure Repos comme service
+d’hébergement du dépôt Git. Nous avons connecté notre dépôt Git déjà créé à Azure Repos et poussé
+notre code source pour assurer la collaboration entre les développeurs.
+31
+
+
+===== PAGE 44 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+Figure 3.7 : Publication du code sur Azure Repos
+Pour assurer une intégration continue, nous avons créé ce pipeline comme indiqué dans la
+Figure 3.8.
+Le code développé pour ce pipeline est présenté dans les figures de l’annexe.
+Figure 3.8 : Le pipeline d’intégration continue
+Ce pipeline est déclenché par une "pull request". Il est utilisé pour compiler notre application
+Angular, exécuter des tests unitaires, effectuer une analyse du code et tester les bibliothèques et les
+dépendances pour détecter les vulnérabilités.
+32
+
+
+===== PAGE 45 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+3.4.2
+Installation et configuration du SonarQube
+Nous allons maintenant poursuivre les étapes nécessaires à l’intégration de SonarQube dans
+notre projet Azure DevOps.
+Tout d’abord, nous avons créé le serveur SonarQube en utilisant l’instance de conteneur
+Azure. Pour ce faire, nous avons saisi les commandes suivantes :
+— "az login"
+Il s’agit d’une commande de l’interface de ligne de commande (CLI) d’Azure qui permet de
+s’authentifier avec un compte Azure en saisissant les informations d’identification. Cela nous permet
+d’accéder à notre abonnement Azure et d’effectuer des tâches, telles que : la création et la gestion
+de ressources.
+Figure 3.9 : Authentification Azure avec CLI
+— "az container create"
+C’est une commande de l’interface de ligne de commande Azure (CLI) qui nous permet de créer et
+de déployer rapidement des conteneurs à l’aide d’Azure Container Instances (ACI).
+33
+
+
+===== PAGE 46 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+Figure 3.10 : Création du conteneur
+Et voilà notre instance du conteneur :
+Figure 3.11 : L’instance du conteneur
+34
+
+
+===== PAGE 47 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+Nous avons ensuite installé l’extension SonarQube et généré un jeton d’accès personnel comme
+il est présenté par la Figure 3.12.
+Figure 3.12 : La génération du jeton d’accès personne
+Dans l’étape présentée dans la Figure 3.13, nous avons importé notre organisation dans
+l’interface de SonarQube, en ajoutant notre jeton d’accès.
+35
+
+
+===== PAGE 48 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+Figure 3.13 : L’importation de notre projet à l’interface SonarQube
+Nous avons ensuite généré un jeton global comme indiqué dans la Figure 3.14.
+Figure 3.14 : Généreration du jeton global
+La Figure 3.15 illustre l’ajout d’un nouveau service SonarQube à notre projet afin de
+l’implémenter dans notre pipeline.
+36
+
+
+===== PAGE 49 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+Figure 3.15 : Service de connexion SonarQube
+3.4.3
+Installation et configuration du WhiteSource Bolt
+Pour ajouter WhiteSource Bolt à notre projet Azure DevOps, il suffit d’installer l’extension
+depuis Azure Marketplace.
+37
+
+
+===== PAGE 50 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+Figure 3.16 : Installation de l’extension WhiteSource
+3.4.3.1
+Execution du pipeline et génération des rapports de sécurité
+La Figure 3.17 présente l’exécution du notre CI pipeline.
+Figure 3.17 : Imprimé de l’exécution du CI pipeline
+Le résultat de l’analyse de WhiteSource Bolt sera affiché sur la plateforme Azure DevOps
+comme indiqué sur la Figure 3.18.
+38
+
+
+===== PAGE 51 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+Figure 3.18 : Le résultat d’analyse de WhiteSource Bolt
+La Figure 3.19 et la la Figure 3.20 illustrent les détails des rapports générés par SonarQube.
+Figure 3.19 : Le rapport SonarQube avant l’analyse
+La Figure 3.19 montre la présence d’un "bogue" et de deux " code smells ", qui seront
+immédiatement résolus comme le présente la Figure 3.20.
+39
+
+
+===== PAGE 52 =====
+
+Chapitre 3. Mise en place de la sécurité dans le pipeline CI
+Figure 3.20 : Le rapport SonarQube après l’analyse
+Conclusion
+Dans ce chapitre, nous avons présenté les principaux concepts de la sécurité de l’intégration
+continue. Et nous avons mis en œuvre la réalisation en détaillant notre solution à l’aide de captures
+d’écran illustrant les différentes phases.
+Le prochain chapitre se concentrera sur la sécurité du pipeline de déploiement continu.
+40
+
+
+===== PAGE 53 =====
+
+Chapitre 4
+Mise en place de la sécurité dans le
+pipeline CD
+Plan
+1
+Déploiement continu
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+2
+Sécurité du déploiement continu
+. . . . . . . . . . . . . . . . . . . . . . .
+43
+3
+Les outils exploités
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4
+Etude détaillée du déploiement continue
+. . . . . . . . . . . . . . . . . .
+45
+5
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+
+
+===== PAGE 54 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+Introduction
+L’objectif de ce dernier chapitre consiste à intégrer la sécurité dans le pipeline de déploiement
+continu. Nous discuterons également des différentes étapes du processus de déploiement continu
+sécurisé et des outils disponibles pour mettre en œuvre ce processus.
+4.1
+Déploiement continu
+De nouveaux tests automatisés seront effectués chaque fois que l’application sera livrée sur
+les différents environnements jusqu’à la production. Pour chacun de ces tests, les nouvelles fonctions
+et la non-régression seront vérifiées. Dans ce cas, pour chaque type de test, les scénarios importants
+seront identifiés et revérifiés à chaque fois. En ce qui concerne le déploiement de l’application sur
+un environnement, il existe plusieurs possibilités. Soit l’application est déployée sur un serveur,
+physique ou virtuel, à l’aide d’un simple script ou d’un outil de déploiement automatisé. Soit,
+pour les applications plus modernes, le déploiement se fait via des conteneurs avec une image
+Docker pour effectuer des tests. Il est même possible d’utiliser l’infrastructure en tant que code
+pour délivrer un environnement créé à la volée, tout cela à partir de fichiers de configuration. En
+résumé, avec le déploiement continu, une évolution apportée par un développeur peut être rapidement
+mise en production grâce à ce processus automatisé, ce qui rend beaucoup plus simple et rapide le
+développement, le test et la mise en production d’une nouvelle fonctionnalité.
+Dans certains cas, le terme CD dans le pipeline CI/CD peut signifier "Continuous Distribution"
+(ou Continuous Delivery), qui est un concept très proche du déploiement continu. Il permet de
+développer et de livrer des améliorations de code à des environnements de test spécifiques. Le
+déploiement continu, quant à lui, va plus loin que la livraison continue en automatisant la mise
+en production de nouvelles fonctionnalités.
+La Figure 4.1 schématise les différentes phases du déploiement continu.
+42
+
+
+===== PAGE 55 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+Figure 4.1 : Schéma représentatif du déploiement continu
+4.2
+Sécurité du déploiement continu
+Pour garantir la sécurité du déploiement continu, nous avons intégré des tests de pénétration
+dans notre pipeline.
+4.2.1
+Insertion des tests de pénétration
+4.2.1.1
+Présentation
+Les tests de pénétration, également connus sous le nom de tests d’intrusion, sont une méthode
+de test de sécurité utilisée pour évaluer la sécurité d’un système informatique. Ces tests simulent
+une attaque en tentant de pénétrer le système afin d’identifier les vulnérabilités et les faiblesses qui
+pourraient être exploitées par un attaquant réel. Les tests de pénétration peuvent être effectués
+manuellement ou à l’aide d’outils automatisés, et peuvent être réalisés à différents niveaux du
+système, tels que : l’application, le réseau et le système d’exploitation. Les résultats de ces tests
+peuvent être utilisés pour identifier les risques potentiels pour le système et prendre des mesures
+pour les atténuer.
+43
+
+
+===== PAGE 56 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+4.2.1.2
+Etude comparative
+Tableau 4.1 : Comparaison entre OWASP ZAP et Invicti
+Caractéristiques
+OWASP ZAP
+Invicti
+Type d’outil
+Outil de test de sécurité
+Plateforme de sécurité web
+Licence
+Open Source
+Commercial
+Interface
+utilisateur
+Web-based
+Web-based
+Modes de scan
+Actif, passif, hybride
+Actif, passif
+Prise en charge
+des protocoles
+HTTP, HTTPS, SOAP, REST
+HTTP, HTTPS, SOAP, REST
+Automatisation
+API, intégration CI/CD
+API, intégration CI/CD
+Reporting
+Personnalisable
+Personnalisable
+Support
+communautaire
+Actif (forum, liste de diffusion)
+Support client dédié
+Base
+de
+données
+de
+vulnérabilités
+OWASP Top 10, CVE
+OWASP Top 10, CVE
+Fonctionnalités
+avancées
+Analyse
+de
+la
+sécurité
+du
+code
+source,
+test
+de
+pénétration
+automatisé
+Scripting, enregistrement de session,
+gestion des sessions
+Suite à cette étude comparative, et en tenant compte de nos besoins spécifiques, nous avons
+décidé d’utiliser l’outil OWASP ZAP. En tant qu’outil de test de sécurité open source, il offre la
+flexibilité et la transparence indispensables à notre environnement.
+4.3
+Les outils exploités
+4.3.1
+Owasp Zed Attack Proxy
+Owasp ZAP est un outil open source gratuit utilisé pour effectuer des tests de pénétration sur
+les applications web. Cet outil est multiplateforme, étant compatible avec les systèmes d’exploitation
+Windows, Linux, MacOS, et nous pouvons même télécharger une image Docker pour le faire fonctionner
+44
+
+
+===== PAGE 57 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+correctement.
+Owasp Zap est fourni en tant qu’extension d’Azure DevOps, déplaçant l’analyse et la création
+de rapports vers la plateforme pour permettre un retour d’information et une réponse rapides tout
+au long du cycle de vie du développement.
+Figure 4.2 : Logo Owasp Zed Attack Proxy
+4.3.2
+Docker
+Docker est un outil open source qui fournit une plateforme de création de conteneurs standardisés
+permettant d’isoler les applications de l’infrastructure.
+L’utilisation de ces conteneurs accélère le processus de livraison des logiciels. Dans notre
+étude, Docker sera utilisé pour exécuter l’image Owasp ZAP.
+Figure 4.3 : Logo Docker
+4.4
+Etude détaillée du déploiement continue
+Dès qu’un artefact de construction est disponible, le pipeline de diffusion est déclenché.
+Il contient trois étapes.
+• Le premier "stage" est le PRE-PROD, il déploiera l’artefact sur Azure App Service pour
+intégrer les tests de pénétration. Cela permet de vérifier la sécurité de l’application avant son
+déploiement final.
+45
+
+
+===== PAGE 58 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+• Le deuxième "stage" est le TEST, il exécutera une image Docker d’Owasp ZAP et effectuera
+des tests de pénétration.
+• Le dernier "stage" est le PROD, il est déclenché manuellement après les tests et la version
+finale. Cela garantit un contrôle manuel supplémentaire avant le déploiement de la production.
+Ces trois étapes du "Release pipeline" assurent une approche structurée pour valider la
+sécurité de l’application à chaque niveau avant sa mise en production.
+4.5
+Réalisation
+Dans cette section, nous décrivons les étapes que nous avons suivies pour mettre en place le
+déploiement continu et les tests de vulnérabilité.
+Tout d’abord, nous avons téléchargé le "build artifact" de notre pipeline CI comme il est
+montré dans la Figure 4.4.
+Figure 4.4 : Atrifact de build
+46
+
+
+===== PAGE 59 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+4.5.1
+PRE-PROD
+La tâche de préproduction consiste à préparer et à déployer notre application sur un environnement
+de préproduction dans Azure à l’aide du service "Azure App Service".
+Cette tâches implique la création d’un nouvel environnement dans Azure pour tester l’application
+avant sa mise en production.
+La Figure 4.5 montre notre ressource sur le portail azure.
+Figure 4.5 : Azure App Service
+Nous avons ensuite mis en œuvre l’étape illustrée dans la Figure 4.6 et ajouté les conditions
+nécessaires, principalement la condition de pré-déploiement qui bloque l’exécution du "stage" PRE-PROD
+jusqu’à son approbation.
+47
+
+
+===== PAGE 60 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+Figure 4.6 : Attente de la confirmation
+La Figure 4.7 illustre le succès de la tâche PRE-PROD.
+Figure 4.7 : Approbation de l’étape PRE-PROD
+Nous avons maintenant atteint un point où notre application web est déployée avec succès et
+accessible.
+48
+
+
+===== PAGE 61 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+Figure 4.8 : La réussite de l’hébergement de l’application sur Azure App Service
+4.5.2
+TEST
+Maintenant que nous avons terminé l’étape de pré-déploiement, il est temps de procéder aux
+tests de pénétration.
+Nous avons d’abord installé l’extension Owasp ZAP et ajouté l’étape de test.
+La Figure 4.9 présente l’ajout de la nouvelle étape dans notre "Release pipeline".
+Figure 4.9 : Ajout de TEST
+L’étape TEST comprend 4 tâches illustrées dans la Figure 4.10.
+49
+
+
+===== PAGE 62 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+Figure 4.10 : Les différentes tâches de TEST
+— La première tâche "ZAP Scanner" implique la création d’un conteneur Docker ZAP sur
+notre infrastructure Azure. Lorsque la tâche "ZAP Scanner" est exécutée, elle commence à
+scanner l’application web à l’aide de ZAP, qui effectue une série de tests automatisés pour
+détecter les vulnérabilités, telles que : les injections SQL, les failles XSS (Cross-Site Scripting),
+les vulnérabilités de configuration et autres.
+Figure 4.11 : ZAP Scanner
+— La deuxième tâche "owasp nunit template" : Le template illustré dans la figure 5.2 génère
+50
+
+
+===== PAGE 63 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+une structure XML basée sur les données fournies par un modèle Handlebars pour générer un
+rapport de test au format NUnit.
+Figure 4.12 : OWASP NUnit template
+— La troisième tâche "generate NUnit type file" : En utilisant les modèles Handlebars, nous
+avons la possibilité de convertir les résultats XML en un rapport de format NUnit.
+Figure 4.13 : Generate NUnit type file
+51
+
+
+===== PAGE 64 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+— La quatrième tâche "Publish Test Results" : Cette tâche permet de publier les résultats des
+tests sur Azure DevOps.
+Figure 4.14 : Publish Test Results
+— La dernière tâche "Universal Packages" est utilisé pour publier les résultats au format
+HTML dans Azure Artifacts.
+Cette tâche implique plusieurs étapes :
+Comme première étape, nous avons créé le "feed" illustré par la Figure 4.15.
+Figure 4.15 : Création du feed
+Après avoir générer un jeton d’authentification et se connecter à notre organisation avec la
+commande "az devops login –organization https ://dev.azure.com/rejebsarra13/",
+nous avons exécuté la commande “az artifacts universal publish” pour publier notre
+package dans le feed créé.
+52
+
+
+===== PAGE 65 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+Figure 4.16 : Publication du package
+Maintenant que le "Release pipeline" est exécuté, nous pouvons visualiser les résultats de test.
+La figure 4.17 montre l’exécution du pipeline.
+Figure 4.17 : Exécution du TEST
+Pour télécharger le format HTML des tests, nous avons exécuté la commande suivante :
+Figure 4.18 : Téléchargement des résultats de test
+53
+
+
+===== PAGE 66 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+La Figure 4.19 montre le rapport généré par Owasp ZAP.
+Figure 4.19 : Le rapport généré par Owasp ZAP
+4.5.3
+PROD
+Enfin, nous pouvons livrer la version finale, en ajoutant la tâche PROD, qui déploiera la
+version sécurisée de notre application.
+La Figure 4.20 illustre l’ajout de la tâche PROD.
+54
+
+
+===== PAGE 67 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+Figure 4.20 : Ajout de la tâche PROD
+Pour garantir davantage la sécurité de notre application, nous avons effectué la livraison finale
+avec "Azure App Service deployment with continuons monitoring".
+Le déploiement sur Azure App Service, avec surveillance continue, fait référence au processus
+de déploiement d’une application sur "Azure App Service" tout en activant les fonctionnalités de
+surveillance continue. Cela permet de s’assurer que l’application est surveillée en permanence pour
+des mesures, telles que : la performance, la disponibilité et d’autres paramètres, même après son
+déploiement.
+Cette étape comprend 3 tâches illustrées dans la Figure 4.21.
+Figure 4.21 : Les différentes tâches de PROD
+55
+
+
+===== PAGE 68 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+— La tâche "Enable Continuous Monitoring" : L’activation de la surveillance continue
+nous permet de surveiller de manière proactive les performances, la disponibilité et d’autres
+paramètres de notre application sur une base continue. Cela nous permet de détecter rapidement
+les problèmes potentiels et de prendre des mesures correctives pour assurer le bon fonctionnement
+de l’application.
+— La tâche "Configure Application Insights Alerts" : Le script illustré dans la figure 4.22
+utilise l’outil de ligne de commande Azure pour créer une alerte métrique dans Azure Monitor,
+spécifiquement pour la disponibilité des ressources surveillées par "Azure Monitor Application
+Insights". L’alerte sera basée sur la métrique " availability Percentage " et sera déclenchée si
+la moyenne de cette métrique est inférieure à 99%.
+Figure 4.22 : Configure Application Insights Alerts
+— La tâche "Azure App Service Deploy" : Notre application est désormais prête à être mise
+en production de manière contrôlée et sécurisée.
+La tâche PROD illustrée dans la Figure 4.23 ne doit être exécuté qu’après avoir été approuvé
+par les équipes de développement et de sécurité, et après avoir corrigé les bogues indiqués dans le
+rapport généré par OWASP ZAP.
+56
+
+
+===== PAGE 69 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+Figure 4.23 : Attente de l’approbation
+La Figure 4.24 montre le succès de notre Release pipeline.
+Figure 4.24 : Exécution du Release pipeline
+La Figure 4.25 illustre les ressources ajoutées à notre application suite à l’utilisation de la
+tâche "Azure App Service deployment with continuons monitoring".
+57
+
+
+===== PAGE 70 =====
+
+Chapitre 4. Mise en place de la sécurité dans le pipeline CD
+Figure 4.25 : Les ressources ajoutées
+conclusion
+Dans ce dernier chapitre, nous avons évoqué les différentes étapes de la mise en place d’un
+déploiement continu sécurisé. Finalement, nous avons pu mettre en place notre solution de manière
+flexible, tout en garantissant une protection optimale de notre application.
+58
+
+
+===== PAGE 71 =====
+
+Conclusion générale
+Ce travail a été réalisé dans le cadre de mon projet de fin d’études. Il est le résultat d’un stage
+de 4 mois effectué au sein de DefensyLab. Nous avons conçu et implémenté notre solution DevSecOps,
+un pipeline sécurisé d’intégration et de livraison continue pour une application Angular. Ce rapport
+détaille toutes les phases qui ont permis d’atteindre le résultat attendu.
+Pour mener à bien notre projet, nous avons commencé par une phase de documentation et de
+recherche. Celle-ci nous a permis de mettre en contexte l’objet de notre travail. Nous avons ensuite
+étudié le système existant et en avons extrait les limites, ce qui nous a amenés à proposer la solution
+adéquate.
+Nous avons commencé par la préparation des environnements de travail nécessaires à la mise
+en œuvre de notre solution. Ensuite, nous avons mis en place un pipeline d’intégration continue et
+implémenté des outils d’analyse du code et des dépendances. Enfin, nous avons mis en place un
+pipeline de livraison continue, intégrant des tests de pénétration pour anticiper les problèmes de
+sécurité que nous pourrions rencontrer.
+Toutes ces phases ont abouti à un projet qui répond parfaitement aux besoins identifiés lors
+de l’analyse. Ce projet a été l’occasion de découvrir de nouvelles technologies comme Azure DevOps,
+et d’enrichir mes connaissances dans le domaine du DevOps et bien sûr du DevSecOps. D’un point
+de vue personnel, ce stage a été l’occasion de m’intégrer dans une équipe et d’apprendre à gérer les
+différentes contraintes et risques de la vie professionnelle.
+En termes de perspectives, même si nous avons réussi à atteindre nos objectifs, il est toujours
+possible de faire mieux. En effet, nous proposerons de réaliser la conteneurisation de notre application
+et de mettre en place une solution d’orchestration.
+59
+
+
+===== PAGE 72 =====
+
+Bibliographie
+[1]
+« Plongez dans les différentes phases du cycle de vie devops. » [Accès le 24-mars-2023]. (),
+adresse : https://software.af.mil/training/devops/.
+[2]
+« Expert devops : automatisation des déploiements. » [Accès le 25-mars-2023]. (), adresse :
+https://www.syloe.com/expert-devops-automatisation-deploiements/.
+[3]
+« Pratique DevOps. » [Accès le 27-mars-2023]. (), adresse : https://www.netapp.com/fr/
+devops-solutions/what-is-devops/.
+[4]
+« Quels sont les avantages de l’approche devops ? » [Accès le 31-mars-2023]. (), adresse : https:
+//www.oo2.fr/actualites/quels-sont-les-avantages-de-l-approche-devops.
+[5]
+« c’est quoi Devsecops. » [Accès le 26-avril-2023]. (), adresse : https://www.journaldunet.
+fr/web-tech/guide-de-l-entreprise-digitale/1498739-devsecops-l-union-du-dev-
+de-la-securite-et-l-administration-informatique/.
+[6]
+« Une introduction à devsecops pour les débutants. » [Accès le 26-avril-2023]. (), adresse :
+https://geekflare.com/fr/devsecops-introduction/.
+[7]
+« DevOps ou DevSecOps. » [Accès le 27-avril-2023]. (), adresse : https://www.journaldunet.
+com/solutions/dsi/1498661-devops-ou-devsecops-pourquoi-sont-ils-importants-
+aujourd-hui-et-comment-s-integrent-ils-ensemble/.
+[8]
+« C’est quoi devsecops ? » [Accès le 27-avril-2023]. (), adresse : https://www.redhat.com/fr/
+topics/devops/what-is-devsecops.
+[9]
+B. Coyne, Utilisation du Cloud comme facilitateur pour DevOps, https://ibmcloud.developpez.
+com/cours/devops-pour-nuls/, [Accès le 1-mai-2023], 2015.
+[10]
+« Azure devops. » [Accès le 3-mai-2023]. (), adresse : https://mobiskill.fr/blog/conseils-
+emploi-tech/azure-devops-vs-github-quelles-differences/.
+[11]
+« Jenkins. » [Accès le 30-mai-2023]. (), adresse : https://www.jenkins.io/doc/.
+[12]
+« Trello. » [Accès le 30-mai-2023]. (), adresse : https://blog.trello.com/fr/trello-c-
+est-quoi.
+60
+
+
+===== PAGE 73 =====
+
+Bibliographie
+[13]
+« Jira. » [Accès le 30-mai-2023]. (), adresse : https://www.cadremploi.fr/editorial/
+conseils/conseils-carriere/detail/article/jose-pas-demander-mais-quest-ce-
+que-jira.html.
+[14]
+« Github. » [Accès le 30-mai-2023]. (), adresse : https : / / kinsta . com / fr / base - de -
+connaissances/base-de-connaissances-github/.
+[15]
+« Ansible. » [Accès le 30-mai-2023]. (), adresse : https://www.redhat.com/fr/technologies/
+management/ansible/what-is-ansible.
+[16]
+« JFrog Artifactory. » [Accès le 30-mai-2023]. (), adresse : https://jfrog.com/fr/artifactory/
+#:~:text=Artifactory%2C%20le%20gestionnaire%20universel%20de,%C3%A0%20votre%
+20workflow%20CI%2FCD..
+61
+
+
+===== PAGE 74 =====
+
+Annexes
+Annexe 1 : CI pipeline
+Figure 5.1 : Script du CI pipeline
+62
+
+
+===== PAGE 75 =====
+
+Annexes
+Figure 5.2 : Suite script du CI pipeline
+63
+
+
+===== PAGE 76 =====
+
+ 
+ 
+Résumé  
+Ce travail s’inscrit dans le cadre de notre projet de fin d’études à l’Institut Supérieur  
+d’Informatique de Mahdia pour l’année universitaire 2022-2023. Nous avons effectué un stage de  
+fin d’études de quatre mois au sein de la société DefensyLab, dans le but de mettre en place une  
+solution DevSecOps sur une architecture cloud. Ce projet a été réalisé en utilisant les technologies  
+Azure DevOps, SonarQube, WhiteSource Bolt et Owasp ZAP.  
+Mots clés : DevSecOps, DevOps, Intégration continue, Déploiement continu.  
+ 
+Abstract  
+This work is part of our final year project at the Higher Institute of Computer Science of Mahdia  
+for the university year 2022-2023. We carried out a four-month end-of-studies internship at  
+DefensyLab, with the aim of implementing a DevSecOps solution on a cloud architecture. The  
+project was carried out using Azure DevOps, SonarQube, WhiteSource Bolt and Owasp ZAP  
+technologies.  
+Keywords : DevSecOps, DevOps, Continuous Integration, Continuous Deployment. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Adresse : BP 05 ,Sidi Massoud 5100, Mahdia, Tunisie - Téléphone : (216) 79 32 67 63 ; (216) 79 32 67 90 
+; (216) 79 32 67 91 ; (216)73 68 31 00 – Fax : (216) 73 68 31 20 - Site web : www.isima.rnu.tn 
+PROJET DE FIN D’ÉTUDES  
+MISE EN PLACE D'UNE SOLUTION DEVSECOPS SUR UNE 
+ARCHITECTURE CLOUD

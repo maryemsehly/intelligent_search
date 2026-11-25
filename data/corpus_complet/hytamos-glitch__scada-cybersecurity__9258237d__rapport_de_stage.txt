@@ -1,0 +1,2728 @@
+===== PAGE 1 =====
+
+Université Ibn Zohr
+Ecole Supérieure de Technologie
+Ouarzazate
+Rapport de stage
+Filière : Gestion des réseaux et sécurité (GRS)
+Conception et mise en œuvre d’une architecture de cybersécurité pour
+la protection des systèmes SCADA et du réseau industriel d’une
+centrale
+Présenté par :
+TOUILE Haytam
+Soutenu le 09 juin 2026 devant le jury composé de :
+Mme. TOUYA Khadija
+Encadrante, EST Ouarzazate
+M. OUKHATAR Ayoub
+Examinateur, EST Ouarzazate
+Année Universitaire 2025/2026
+
+
+===== PAGE 2 =====
+
+Remerciements
+Nous exprimons en premier lieu notre gratitude envers le Tout-Puissant de nous
+avoir accordé la volonté et la persévérance nécessaires à l’accomplissement de ce travail.
+Nous adressons nos plus vifs remerciements à Mme. TOUYA Khadija, en-
+cadrante pédagogique à l’École Supérieure de Technologie d’Ouarzazate, pour son ac-
+compagnement rigoureux, sa disponibilité constante et la pertinence de ses orientations
+tout au long de ce projet. Ses conseils avisés ont contribué de manière déterminante à
+la qualité de ce rapport.
+Nous remercions vivement notre encadrant industriel, M. AMARA Fidae,
+Oﬃcier informatique au sein de l’entreprise NOMAC, pour son accueil professionnel, le
+temps qu’il nous a consacré et la richesse des échanges techniques qui ont jalonné notre
+stage. Son expertise du terrain a été d’une valeur inestimable pour l’ancrage concret
+de ce projet.
+Nos remerciements s’adressent également au responsable de la ﬁlière Gestion des
+Réseaux et Sécurité de l’EST Ouarzazate, pour le suivi pédagogique assuré tout au
+long de notre cursus, ainsi qu’à l’ensemble du corps enseignant pour la qualité de la
+formation dispensée.
+Nous témoignons enﬁn notre reconnaissance à l’ensemble du personnel technique
+et administratif de NOMAC et du site Nour 1, pour leur accueil bienveillant, leur esprit
+collaboratif et les ressources mises à notre disposition durant toute la durée du stage.
+Rapport de stage
+1
+2025-2026
+
+
+===== PAGE 3 =====
+
+Résumé
+Ce rapport présente les travaux réalisés dans le cadre d’un stage eﬀectué au
+sein de NOMAC, société opératrice de la centrale solaire à concentration Nour 1 à
+Ouarzazate. Le projet porte sur la conception et la mise en œuvre d’une ar-
+chitecture de cybersécurité destinée à protéger les systèmes SCADA (Supervisory
+Control and Data Acquisition) et l’ensemble du réseau industriel de la centrale contre
+les cybermenaces contemporaines.
+Face à l’accroissement des attaques ciblant les infrastructures critiques notam-
+ment les menaces persistantes avancées (APT),les rançongiciels industriels, tels qu’In-
+dustroyer, et les tentatives de sabotage de processus physiques , la convergence des
+environnements IT et OT impose une refonte profonde des approches sécuritaires ap-
+pliquées aux systèmes industriels. La problématique centrale réside dans la vulnérabilité
+structurelle des réseaux OT, historiquement conçus pour la disponibilité et non pour
+la sécurité, et désormais exposés aux vecteurs d’attaque des réseaux informatiques
+conventionnels.
+La démarche adoptée repose sur trois phases complémentaires : un audit de
+l’infrastructure existante, la conception d’une architecture multicouches fondée sur le
+principe de défense en profondeur, et sa validation par simulation en environnement
+virtuel. La solution déployée intègre une segmentation réseau par zones et DMZ
+assurée par le pare-feu de nouvelle génération FortiGate v7.2.13, un tunnel VPN IP-
+sec Site-to-Site, un système IPS/IDS à signatures industrielles, un SIEM Splunk
+Enterprise v10.2.2 pour la centralisation et l’analyse des événements de sécurité, ainsi
+qu’un environnement SCADA simulé reposant sur ScadaBR et le protocole Modbus
+TCP.
+Les tests de pénétration conduits depuis Kali Linux ont permis de valider l’eﬃca-
+cité des contrôles de sécurité mis en place : l’intégralité des scénarios d’attaque simulés
+reconnaissance réseau, inondation ICMP, attaque par force brute SSH a été détectée
+et neutralisée par les mécanismes de protection déployés.
+Rapport de stage
+2
+2025-2026
+
+
+===== PAGE 4 =====
+
+Abstract
+This report presents the work carried out during an internship at NOMAC, the
+operating company of the Nour 1 concentrated solar power plant in Ouarzazate, Mo-
+rocco. The project addresses the design and implementation of a cybersecurity
+architecture aimed at protecting SCADA (Supervisory Control and Data Acquisition)
+systems and the plant’s industrial network against contemporary cyber threats.
+The increasing convergence of IT and OT environments has signiﬁcantly expan-
+ded the attack surface of industrial control systems, which were historically designed for
+reliability and availability rather than security. The project methodology encompasses
+three phases : an infrastructure audit, the design of a defense-in-depth architecture,
+and its validation through virtual environment simulation.
+The implemented solution integrates VLAN/DMZ network segmentation
+enforced by a FortiGate NGFW v7.2.13, an IPsec Site-to-Site VPN, an IPS/IDS
+engine with industrial-speciﬁc signatures, a Splunk Enterprise v10.2.2 SIEM for
+real-time security event management, and a simulated SCADA environment based on
+ScadaBR and the Modbus TCP protocol.
+Penetration tests conducted from a Kali Linux machine conﬁrmed the eﬀecti-
+veness of the deployed controls : all simulated attack scenarios
+including network
+scanning, ICMP ﬂooding, and SSH brute force
+were successfully detected and blo-
+cked.
+Rapport de stage
+3
+2025-2026
+
+
+===== PAGE 5 =====
+
+Liste des abréviations
+Abréviation
+Signiﬁcation
+VLAN
+Virtual Local Area Network
+LAN
+Local Area Network
+WAN
+Wide Area Network
+NAT
+Network Address Translation
+IPS
+Intrusion Prevention System
+VPN
+Virtual Private Network
+IPsec
+Internet Protocol Security
+IKE
+Internet Key Exchange
+DNS
+Domain Name System
+DHCP
+Dynamic Host Conﬁguration Protocol
+SIEM
+Security Information and Event Management
+IDS
+Intrusion Detection System
+SSL
+Secure Sockets Layer
+NGFW
+Next-Generation Firewall
+ISO
+International Organization for Standardization
+CLI
+Command Line Interface
+GUI
+Graphical User Interface
+TCP
+Transmission Control Protocol
+UDP
+User Datagram Protocol
+ICMP
+Internet Control Message Protocol
+SSH
+Secure Shell
+FTP
+File Transfer Protocol
+SCADA
+Supervisory Control And Data Acquisition
+APT
+Advanced Persistent Threat
+URL
+Uniform Resource Locator
+ACL
+Access Control List
+RAM
+Random Access Memory
+CPU
+Central Processing Unit
+OS
+Operating System
+OT
+Operational Technology
+IT
+Information Technology
+ICS
+Industrial Control System
+PLC
+Programmable Logic Controller
+RTU
+Remote Terminal Unit
+HMI
+Human Machine Interface
+CSP
+Concentrated Solar Power
+NOMAC
+Operations & Maintenance Company
+MASEN
+Moroccan Agency for Sustainable Energy
+IACS
+Industrial Automation and Control Systems
+DMZ
+Demilitarized Zone
+OPC-UA
+Open Platform Communications UA
+Rapport de stage
+4
+2025-2026
+
+
+===== PAGE 6 =====
+
+Abréviation
+Signiﬁcation
+NIST
+National Institute of Standards and Technology
+VM
+Virtual Machine
+SPL
+Search Processing Language
+MFA
+Multi-Factor Authentication
+TLS
+Transport Layer Security
+IEC
+International Electrotechnical Commission
+Rapport de stage
+5
+2025-2026
+
+
+===== PAGE 7 =====
+
+Table des matières
+Liste des abréviations
+4
+Table des ﬁgures
+9
+Liste des tableaux
+10
+Introduction générale
+11
+Chapitre 1 : Présentation de l’organisme d’accueil et du site Nour 1
+13
+0.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+0.2
+Présentation de NOMAC . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+0.2.1
+Historique et positionnement . . . . . . . . . . . . . . . . . . . .
+13
+0.2.2
+Missions et périmètre d’intervention . . . . . . . . . . . . . . . .
+14
+0.3
+Description du site Nour 1 . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+0.3.1
+Caractéristiques techniques générales . . . . . . . . . . . . . . .
+14
+0.3.2
+Technologie CSP à capteurs cylindro-paraboliques . . . . . . . .
+14
+0.4
+Architecture SCADA et réseau industriel . . . . . . . . . . . . . . . . .
+15
+0.4.1
+Présentation du système de supervision . . . . . . . . . . . . . .
+15
+0.4.2
+Structure réseau selon le modèle de Purdue . . . . . . . . . . . .
+16
+0.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+Chapitre 2 : Gestion du projet et méthodologie
+18
+0.6
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+0.7
+Objectifs du projet de sécurisation . . . . . . . . . . . . . . . . . . . . .
+18
+0.8
+Méthodologie adoptée
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+0.8.1
+Audit de l’infrastructure existante . . . . . . . . . . . . . . . . .
+19
+0.8.2
+Conception de l’architecture sécurisée . . . . . . . . . . . . . . .
+19
+0.8.3
+Simulation et validation en environnement virtuel . . . . . . . .
+19
+0.9
+Planiﬁcation des travaux . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+0.9.1
+Diagramme de Gantt . . . . . . . . . . . . . . . . . . . . . . . .
+20
+0.10 Analyse des contraintes . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+0.11 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+6
+
+
+===== PAGE 8 =====
+
+Chapitre 3 : Généralités sur la cybersécurité industrielle
+22
+0.12 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+0.13 Convergence IT/OT : diﬀérences et enjeux . . . . . . . . . . . . . . . .
+22
+0.13.1 Les environnements IT et leurs caractéristiques
+. . . . . . . . .
+22
+0.13.2 Les environnements OT et leurs spéciﬁcités . . . . . . . . . . . .
+22
+0.13.3 Tableau comparatif IT/OT . . . . . . . . . . . . . . . . . . . . .
+23
+0.14 Protocoles de communication industriels
+. . . . . . . . . . . . . . . . .
+23
+0.14.1 Modbus TCP/IP . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+0.14.2 OPC-UA (Open Platform Communications Uniﬁed Architecture)
+24
+0.15 Taxonomie des menaces ciblant les environnements industriels
+. . . . .
+24
+0.15.1 Menaces persistantes avancées (APT) . . . . . . . . . . . . . . .
+24
+0.15.2 Rançongiciels industriels . . . . . . . . . . . . . . . . . . . . . .
+24
+0.15.3 Attaques sur les protocoles industriels . . . . . . . . . . . . . . .
+25
+0.16 Normes et standards de référence . . . . . . . . . . . . . . . . . . . . .
+25
+0.16.1 IEC 62443 Cybersécurité des systèmes IACS
+. . . . . . . . . .
+25
+0.16.2 ISO/IEC 27001 Management de la sécurité de l’information . .
+25
+0.17 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+Chapitre 4 : Conception de l’architecture de cybersécurité
+26
+0.18 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+0.19 Présentation et justiﬁcation du choix de FortiGate . . . . . . . . . . . .
+26
+0.19.1 Qu’est-ce que le FortiGate ? . . . . . . . . . . . . . . . . . . . .
+26
+0.19.2 Comparaison avec les alternatives NGFW
+. . . . . . . . . . . .
+26
+0.19.3 Justiﬁcation du choix . . . . . . . . . . . . . . . . . . . . . . . .
+27
+0.20 Segmentation réseau par zones de sécurité
+. . . . . . . . . . . . . . . .
+27
+0.20.1 Principe de zonage et VLANs . . . . . . . . . . . . . . . . . . .
+27
+0.20.2 Zone Démilitarisée (DMZ) . . . . . . . . . . . . . . . . . . . . .
+28
+0.21 Politique de ﬁltrage et contrôle des ﬂux . . . . . . . . . . . . . . . . . .
+28
+0.22 VPN IPsec Site-to-Site . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+0.23 Système de détection et prévention d’intrusions (IPS/IDS) . . . . . . .
+29
+0.24 Architecture globale : défense en profondeur . . . . . . . . . . . . . . .
+30
+0.25 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+Chapitre 5 : Implémentation, simulation et validation
+31
+0.26 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+0.27 Environnement de simulation
+. . . . . . . . . . . . . . . . . . . . . . .
+31
+0.27.1 Architecture de laboratoire virtualisé . . . . . . . . . . . . . . .
+31
+0.28 Conﬁguration du FortiGate
+. . . . . . . . . . . . . . . . . . . . . . . .
+33
+0.28.1 Interfaces réseau et adressage
+. . . . . . . . . . . . . . . . . . .
+33
+0.28.2 Politiques de sécurité Firewall . . . . . . . . . . . . . . . . . . .
+33
+Rapport de stage
+7
+2025-2026
+
+
+===== PAGE 9 =====
+
+0.28.3 Acheminement des journaux vers Splunk (Syslog) . . . . . . . .
+35
+0.29 Simulation d’attaques depuis Kali Linux
+. . . . . . . . . . . . . . . . .
+35
+0.29.1 Environnement et cadre des tests . . . . . . . . . . . . . . . . .
+35
+0.29.2 Test 1 Reconnaissance réseau par scan Nmap . . . . . . . . . .
+36
+0.29.3 Test 2 Attaque par inondation ICMP (hping3)
+. . . . . . . . .
+38
+0.29.4 Test 3 Attaque par force brute SSH (Hydra) . . . . . . . . . . .
+38
+0.29.5 Test 4 Analyse de vulnérabilités (scripts Nmap NSE) . . . . . .
+38
+0.30 Détection et réponse via le proﬁl IPS . . . . . . . . . . . . . . . . . . .
+39
+0.30.1 Conﬁguration du proﬁl IPS industriel . . . . . . . . . . . . . . .
+39
+0.30.2 Tableau de synthèse des scénarios de test . . . . . . . . . . . . .
+40
+0.31 SIEM Splunk Centralisation et analyse des événements . . . . . . . . .
+41
+0.31.1 Déploiement et conﬁguration . . . . . . . . . . . . . . . . . . . .
+41
+0.31.2 SCADA Security Dashboard Tableau de bord de supervision . .
+42
+0.32 Déploiement de l’environnement SCADA simulé . . . . . . . . . . . . .
+43
+0.32.1 Contexte et objectifs . . . . . . . . . . . . . . . . . . . . . . . .
+43
+0.32.2 Conﬁguration du réseau Ubuntu SCADA . . . . . . . . . . . . .
+43
+0.32.3 Installation et déploiement de ScadaBR . . . . . . . . . . . . . .
+44
+0.32.4 Simulateur Modbus TCP . . . . . . . . . . . . . . . . . . . . . .
+45
+0.32.5 Conﬁguration de la source de données Modbus dans ScadaBR .
+46
+0.33 Bilan global des réalisations . . . . . . . . . . . . . . . . . . . . . . . .
+48
+0.33.1 Tableau de synthèse des objectifs
+. . . . . . . . . . . . . . . . .
+48
+0.33.2 Recommandations pour le déploiement en production . . . . . .
+48
+0.34 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+Conclusion générale
+50
+Annexes
+51
+Bibliographie
+52
+Rapport de stage
+8
+2025-2026
+
+
+===== PAGE 10 =====
+
+Table des ﬁgures
+1
+Logo de NOMAC ACWA Power . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2
+Vue aérienne de la centrale solaire Nour 1 à Ouarzazate . . . . . . . . . . . . .
+15
+3
+Modèle de Purdue (ISA-95) appliqué au réseau industriel de Nour 1
+. . . . . .
+16
+4
+Diagramme de Gantt Planiﬁcation du projet de cybersécurité SCADA . . . . .
+20
+5
+Architecture de segmentation réseau par zones de sécurité (VLAN/DMZ) . . . .
+28
+6
+Architecture de défense en profondeur (Defense-in-Depth) . . . . . . . . . . . .
+30
+7
+Architecture de lenvironnement de simulation VMware Workstation topologie des
+4 machines virtuelles et leurs réseaux
+. . . . . . . . . . . . . . . . . . . . . .
+32
+8
+Interface graphique FortiGate
+Network > Interfaces, aﬃchant les trois ports
+conﬁgurés avec leurs zones et adresses IP
+. . . . . . . . . . . . . . . . . . . .
+34
+9
+Interface FortiGate Policy Objects > Firewall Policy, aﬃchant les trois règles
+de sécurité actives avec leurs paramètres . . . . . . . . . . . . . . . . . . . . .
+35
+10
+Interface FortiGate Log Report > Log Settings, conﬁrmant la conﬁguration du
+serveur Syslog vers Splunk . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+11
+Terminal Kali Linux Résultats du scan Nmap sur la zone WAN (192.168.28.0/24),
+aﬃchant les hôtes détectés et leurs services
+. . . . . . . . . . . . . . . . . . .
+37
+12
+Terminal Kali Linux
+Résultat du scan nmap 192.168.30.0/24 démontrant lab-
+sence de réponse des hôtes SCADA (traﬁc ﬁltré par FortiGate) . . . . . . . . .
+37
+13
+Interface FortiGate
+Security Proﬁles > Intrusion Prevention, aﬃchant les at-
+taques détectées, leur classiﬁcation et les actions automatiques appliquées
+. . .
+40
+14
+Interface principale de Splunk Enterprise Search Reporting montrant lingestion
+en temps réel des journaux FortiGate
+. . . . . . . . . . . . . . . . . . . . . .
+41
+15
+SCADA Security Dashboard dans Splunk les 4 panneaux de supervision aﬃchant
+les données des tests de sécurité réalisés . . . . . . . . . . . . . . . . . . . . .
+42
+16
+Interface ScadaBR . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+9
+
+
+===== PAGE 11 =====
+
+Liste des tableaux
+1
+Composants du système SCADA de Nour 1
+. . . . . . . . . . . . . . .
+16
+2
+Comparaison des environnements IT et OT . . . . . . . . . . . . . . . .
+23
+3
+Comparaison des solutions NGFW pour environnement industriel
+. . .
+27
+4
+Plan de zonage réseau de l’architecture . . . . . . . . . . . . . . . . . .
+28
+5
+Paramètres cryptographiques du tunnel VPN IPsec . . . . . . . . . . .
+29
+6
+Machines virtuelles de l’environnement de simulation
+. . . . . . . . . .
+31
+7
+Réseaux virtuels VMware et zones de sécurité associées . . . . . . . . .
+32
+8
+Interfaces réseau du FortiGate VM et zones associées . . . . . . . . . .
+33
+9
+Politiques de sécurité du pare-feu FortiGate
+. . . . . . . . . . . . . . .
+34
+10
+Résultats du test de reconnaissance réseau – Scan Nmap
+. . . . . . . .
+37
+11
+Tableau de synthèse des scénarios de tests de pénétration . . . . . . . .
+40
+12
+Paramètres de conﬁguration de Splunk Enterprise . . . . . . . . . . . .
+41
+13
+Panneaux du SCADA Security Dashboard – Splunk . . . . . . . . . . .
+42
+14
+Composants de l’environnement ScadaBR déployé . . . . . . . . . . . .
+45
+15
+Paramètres de conﬁguration de la source de données Modbus dans Sca-
+daBR . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+10
+
+
+===== PAGE 12 =====
+
+Introduction générale
+La numérisation croissante des infrastructures industrielles a profondément trans-
+formé le paysage des risques cybernétiques. Les systèmes de contrôle industriel, long-
+temps protégés par leur isolement physique des réseaux informatiques, se trouvent
+aujourd’hui exposés à des menaces d’une sophistication inédite. La convergence entre
+les technologies de l’information (IT) et les technologies opérationnelles (OT) a consi-
+dérablement élargi la surface d’attaque des systèmes de supervision industrielle, faisant
+de leur sécurisation un enjeu stratégique majeur pour les opérateurs d’infrastructures
+critiques.
+Les systèmes SCADA (Supervisory Control and Data Acquisition), qui assurent
+le contrôle et la supervision en temps réel des processus industriels, constituent des
+cibles privilégiées pour les acteurs malveillants. Les incidents marquants de ces der-
+nières années
+notamment les cyberattaques Stuxnet (2010), Industroyer (2016) et
+l’attaque contre Colonial Pipeline (2021) illustrent concrètement les conséquences po-
+tentiellement catastrophiques d’une compromission de ces systèmes : perturbation de
+la production, dommages physiques sur les équipements et risques pour la sécurité des
+personnes.
+C’est dans ce contexte que s’inscrit le présent stage, réalisé au sein de NOMAC,
+société opératrice de la centrale solaire à concentration Nour 1 à Ouarzazate. Le projet
+consiste en la conception et la mise en œuvre d’une architecture de cybersé-
+curité industrielle, répondant aux exigences des standards internationaux IEC 62443
+et ISO 27001, et validée par des scénarios d’attaque en environnement virtuel contrôlé.
+Rapport de stage
+11
+2025-2026
+
+
+===== PAGE 13 =====
+
+Ce rapport est organisé en cinq chapitres articulés comme suit :
+¨ Chapitre 1 : Présentation de l’organisme d’accueil NOMAC et description
+technique du site Nour 1, de sa technologie CSP et de son architecture
+SCADA.
+¨ Chapitre 2 : Gestion du projet objectifs, méthodologie adoptée, planiﬁca-
+tion des travaux et analyse des contraintes rencontrées.
+¨ Chapitre 3 : Fondements théoriques de la cybersécurité industrielle conver-
+gence IT/OT, protocoles industriels, taxonomie des menaces et normes de
+référence.
+¨ Chapitre 4 : Conception de l’architecture sécurisée segmentation réseau,
+déploiement du FortiGate, mise en place du VPN IPsec et conception du
+système de détection d’intrusions.
+¨ Chapitre 5 : Implémentation, simulation et validation
+mise en œuvre
+technique complète, tests de pénétration, analyse des résultats et bilan des
+objectifs atteints.
+Rapport de stage
+12
+2025-2026
+
+
+===== PAGE 14 =====
+
+Chapitre 1 : Présentation de l’orga-
+nisme d’accueil et du site Nour 1
+0.1. Introduction
+Ce chapitre présente le cadre institutionnel et technique dans lequel s’inscrit ce
+projet de stage. Il introduit l’organisme d’accueil NOMAC, décrit le site de la centrale
+solaire Nour 1 ainsi que son infrastructure SCADA, et pose les bases de compréhension
+des enjeux de sécurité qui motivent l’ensemble du projet.
+0.2. Présentation de NOMAC
+0.2.1 Historique et positionnement
+NOMAC (Operations & Maintenance Company) est une ﬁliale du groupe saou-
+dien ACWA Power, spécialisée dans l’exploitation et la maintenance de centrales de
+production d’énergie à l’échelle internationale. Au Maroc, NOMAC intervient en qua-
+lité d’opérateur des centrales du complexe solaire Nour à Ouarzazate, en partenariat
+avec MASEN (Moroccan Agency for Sustainable Energy), l’agence nationale chargée
+du développement des énergies renouvelables. Ce partenariat s’inscrit dans le cadre de
+la stratégie énergétique nationale visant à porter la part des énergies renouvelables à
+52 % du mix électrique marocain à l’horizon 2030.
+Figure 1. Logo de NOMAC ACWA Power
+Rapport de stage
+13
+2025-2026
+
+
+===== PAGE 15 =====
+
+0.2.2 Missions et périmètre d’intervention
+Les activités de NOMAC couvrent l’ensemble du cycle opérationnel des centrales
+solaires sous sa gestion. Ses missions principales sont les suivantes :
+— La supervision et le contrôle en temps réel des équipements de production
+via des systèmes SCADA dédiés ;
+— La maintenance préventive, prédictive et corrective des installations électro-
+mécaniques et de l’instrumentation industrielle ;
+— L’optimisation des performances de production et la gestion des bilans éner-
+gétiques ;
+— La garantie de la conformité aux normes de sécurité industrielle, aux exi-
+gences environnementales et aux engagements contractuels envers MASEN.
+0.3. Description du site Nour 1
+0.3.1 Caractéristiques techniques générales
+La centrale solaire Nour 1, située à environ 10 kilomètres au nord d’Ouarza-
+zate, est l’une des plus grandes centrales solaires à concentration (CSP) à technologie
+cylindro-parabolique au monde. Elle couvre une superﬁcie de 480 hectares, dispose
+d’une puissance installée de 160 MW et est équipée d’un système de stockage ther-
+mique à sels fondus d’une capacité de 3 heures, permettant la production d’électricité
+après le coucher du soleil. La centrale est raccordée au réseau national haute tension
+de l’ONEE et participe de manière signiﬁcative à l’approvisionnement énergétique de
+la région.
+0.3.2 Technologie CSP à capteurs cylindro-paraboliques
+La technologie CSP (Concentrated Solar Power) mise en œuvre à Nour 1 repose
+sur le principe de la concentration du rayonnement solaire par des miroirs paraboliques
+pour produire de la chaleur à haute température, ultérieurement convertie en énergie
+électrique. Le processus de conversion énergétique s’articule en trois étapes distinctes
+et séquentielles :
+— Collecte et concentration : les collecteurs cylindro-paraboliques, orientés
+selon un axe nord-sud à suivi solaire, concentrent le rayonnement incident
+sur un tube absorbeur situé au foyer de chaque miroir ;
+— Transfert thermique : le ﬂuide caloporteur une huile thermique synthé-
+tique circule dans les tubes absorbeurs, se réchauﬀant jusqu’à une tempéra-
+ture de l’ordre de 390 řC avant d’être acheminé vers l’échangeur de chaleur ;
+— Production électrique : la chaleur extraite du ﬂuide caloporteur génère
+de la vapeur qui entraîne une turbine à vapeur couplée à un alternateur
+produisant l’électricité injectée sur le réseau.
+Rapport de stage
+14
+2025-2026
+
+
+===== PAGE 16 =====
+
+Figure 2. Vue aérienne de la centrale solaire Nour 1 à Ouarzazate
+0.4. Architecture SCADA et réseau industriel
+0.4.1 Présentation du système de supervision
+Le système SCADA de Nour 1 assure la supervision et le contrôle automatisé de
+l’ensemble des processus industriels de la centrale. Il constitue la couche d’intelligence
+opérationnelle du site et s’articule autour des composants suivants :
+— Capteurs et actionneurs de terrain : ils mesurent en continu les pa-
+ramètres physiques critiques : température du ﬂuide caloporteur, pression,
+débit position des miroirs
+et commandent les actionneurs en réponse aux
+consignes du système de contrôle ;
+— Automates programmables industriels (PLC/RTU) : positionnés au
+plus proche des équipements de terrain, ils exécutent les boucles de contrôle-
+commande avec des contraintes temporelles strictes ;
+— Interface Homme-Machine (HMI) : elle oﬀre aux opérateurs une repré-
+sentation graphique synoptique de l’état de la centrale et constitue le point
+d’interaction humaine avec le système ;
+— Serveur SCADA central : il agrège l’ensemble des données de terrain, gère
+l’historisation, les alarmes et la communication avec les couches supérieures
+du système d’information.
+Rapport de stage
+15
+2025-2026
+
+
+===== PAGE 17 =====
+
+Composant
+Rôle
+Capteurs / actionneurs
+Mesure des paramètres physiques (température,
+pression, débit)
+PLC / RTU
+Exécution des boucles de contrôle-commande
+HMI
+Interface opérateur – représentation synoptique de
+la centrale
+Serveur SCADA
+Agrégation des données, alarmes, historisation
+Table 1. Composants du système SCADA de Nour 1
+0.4.2 Structure réseau selon le modèle de Purdue
+Le réseau industriel de Nour 1 est organisé en niveaux hiérarchiques conformément
+au modèle de référence de Purdue (ISA-95), qui déﬁnit une séparation logique
+entre les couches de contrôle et les couches de gestion :
+— Niveau 0 : équipements de terrain capteurs, actionneurs, vannes ;
+— Niveau 1 : contrôleurs logiques programmables (PLC/RTU) ;
+— Niveau 2 : systèmes de supervision et interfaces HMI ;
+— Niveau 3 : serveurs SCADA, historiens de données, gestion de production ;
+— Niveau 4 : réseau bureautique et système d’information de l’entreprise.
+L’interconnexion entre les niveaux 3 et 4 représente la principale zone de risque
+cybernétique : c’est précisément à cette interface IT/OT que les vecteurs d’attaque
+modernes cherchent à s’introduire pour atteindre les systèmes de contrôle industriel.
+Niveau 4 – Réseau bureautique / SI entreprise
+⇐⇒Zone de risque IT/OT – Interface critique ⇐⇒
+Niveau 3 – Serveur SCADA, Historien, Gestion de production
+Niveau 2 – Systèmes de supervision et HMI
+Niveau 1 – Automates PLC / RTU
+Niveau 0 – Capteurs, actionneurs, vannes, miroirs
+IT
+OT
+OT
+OT
+OT
+Figure 3. Modèle de Purdue (ISA-95) appliqué au réseau industriel de Nour 1
+Rapport de stage
+16
+2025-2026
+
+
+===== PAGE 18 =====
+
+L’interconnexion entre les niveaux 3 et 4 représente la principale zone de risque
+cybernétique. C’est à cette interface IT/OT que les vecteurs d’attaque modernes
+cherchent à s’introduire pour atteindre les systèmes de contrôle industriel.
+0.5. Conclusion
+Ce chapitre a permis de situer le cadre institutionnel du projet et de décrire les
+caractéristiques techniques du site Nour 1. L’analyse de l’architecture SCADA et de sa
+structuration réseau met en évidence la criticité des enjeux de cybersécurité et justiﬁe
+pleinement la conception d’une solution de protection dédiée. Ces éléments de contexte
+constituent le fondement sur lequel repose l’ensemble de la démarche développée dans
+les chapitres suivants.
+Rapport de stage
+17
+2025-2026
+
+
+===== PAGE 19 =====
+
+Chapitre 2 : Gestion du projet et mé-
+thodologie
+0.6. Introduction
+Ce chapitre présente la démarche structurée adoptée pour la conduite du projet.
+Il déﬁnit les objectifs opérationnels ﬁxés, expose la méthodologie de travail retenue, dé-
+taille la planiﬁcation des activités via un diagramme de Gantt et analyse les contraintes
+qui ont inﬂuencé le déroulement des travaux.
+0.7. Objectifs du projet de sécurisation
+L’objectif principal de ce projet est de concevoir, implémenter et valider une
+architecture de cybersécurité adaptée à la protection des systèmes SCADA et du réseau
+industriel de la centrale Nour 1, en s’appuyant sur des technologies et des standards
+reconnus dans le domaine. De manière plus spéciﬁque, les objectifs opérationnels sont
+les suivants :
+— Conduire un audit de l’infrastructure réseau existante aﬁn d’identiﬁer les
+vulnérabilités et les lacunes sécuritaires ;
+— Concevoir une architecture réseau segmentée en zones de sécurité distinctes
+à l’aide de VLANs et d’une zone démilitarisée (DMZ) ;
+— Déployer et conﬁgurer un pare-feu de nouvelle génération FortiGate avec
+des politiques de ﬁltrage strictes fondées sur le principe du moindre privilège ;
+— Mettre en place un tunnel VPN IPsec Site-to-Site pour sécuriser les com-
+munications entre les diﬀérents segments du réseau ;
+— Conﬁgurer un proﬁl IPS/IDS intégrant des signatures spéciﬁques aux pro-
+tocoles industriels pour la détection des menaces en temps réel ;
+— Déployer un SIEM Splunk Enterprise pour la collecte, la corrélation et
+la visualisation centralisée des événements de sécurité ;
+— Valider l’eﬃcacité de l’architecture par des scénarios de tests de pénétration
+réalistes conduits depuis une machine Kali Linux.
+Rapport de stage
+18
+2025-2026
+
+
+===== PAGE 20 =====
+
+0.8. Méthodologie adoptée
+0.8.1 Audit de l’infrastructure existante
+La première phase du projet a consisté en un audit approfondi du réseau in-
+dustriel de Nour 1. Cet audit a permis d’identiﬁer plusieurs insuﬃsances structurelles
+constituant des risques sécuritaires avérés :
+— L’absence de segmentation réseau entre la zone industrielle SCADA et le
+réseau bureautique, permettant une propagation latérale sans entrave en cas
+de compromission ;
+— L’inexistence de mécanismes de ﬁltrage et de contrôle d’accès au niveau ré-
+seau, laissant les équipements industriels accessibles depuis n’importe quel
+hôte du réseau interne ;
+— L’absence d’un système de supervision et de journalisation des événements de
+sécurité, rendant impossible toute détection d’incidents et toute investigation
+forensique a posteriori ;
+— La vulnérabilité inhérente aux protocoles industriels utilisés
+notamment
+Modbus TCP, qui ne dispose d’aucun mécanisme natif d’authentiﬁcation
+ni de chiﬀrement.
+0.8.2 Conception de l’architecture sécurisée
+Sur la base des résultats de l’audit, une architecture de cybersécurité multicouches
+a été conçue en application des principes directeurs de l’IEC 62443 et de l’ISO 27001.
+Cette architecture repose sur quatre principes fondamentaux :
+— Défense en profondeur (Defense-in-Depth) : multiplication des couches
+de contrôle indépendantes aﬁn de garantir qu’une défaillance ou une compro-
+mission d’un mécanisme isolé ne compromette pas l’ensemble du système ;
+— Moindre privilège : restriction des ﬂux de communication au strict néces-
+saire, en interdisant par défaut tout traﬁc non explicitement autorisé ;
+— Segmentation des zones : isolation logique des environnements industriels,
+bureautiques et de service par des frontières de sécurité contrôlées ;
+— Surveillance continue : centralisation de l’ensemble des événements ré-
+seau dans un SIEM permettant la détection proactive des comportements
+anormaux.
+0.8.3 Simulation et validation en environnement virtuel
+Compte tenu de l’impossibilité d’intervenir directement sur l’infrastructure de pro-
+duction de Nour 1, l’ensemble de l’architecture a été reproduit dans un environnement
+de simulation virtualisé sous VMware Workstation Pro. Des scénarios d’attaques
+réalistes ont ensuite été simulés depuis une machine Kali Linux pour valider l’eﬃcacité
+des contrôles de sécurité déployés.
+Rapport de stage
+19
+2025-2026
+
+
+===== PAGE 21 =====
+
+0.9. Planiﬁcation des travaux
+0.9.1 Diagramme de Gantt
+La conduite du projet s’est structurée sur huit semaines, réparties en cinq phases
+séquentielles :
+Aujourd’hui
+Planiﬁcation du projet de cybersécurité SCADA
+S1
+S2
+S3
+S4
+S5
+S6
+S7
+S8
+Phase 1 : Préparation et audit
+Prise en main de l’environnement
+Audit de l’infrastructure existante
+Étude bibliographique et veille technologique
+Phase 2 : Conception
+Conception de l’architecture sécurisée
+Déﬁnition des zones et VLANs
+Phase 3 : Implémentation
+Conﬁguration FortiGate et ﬁrewall
+VPN IPsec, IPS/IDS et SIEM Splunk
+Déploiement ScadaBR et Modbus
+Phase 4 : Tests et validation
+Simulation des scénarios d’attaque
+Analyse des résultats et validation
+Phase 5 : Documentation
+Rédaction du rapport de stage
+Préparation de la soutenance
+Figure 4. Diagramme de Gantt Planiﬁcation du projet de cybersécurité SCADA
+Rapport de stage
+20
+2025-2026
+
+
+===== PAGE 22 =====
+
+0.10. Analyse des contraintes
+La réalisation du projet a été confrontée à plusieurs contraintes qui ont nécessité
+des adaptations méthodologiques :
+— Contraintes techniques : la maîtrise simultanée de multiples technologies
+hétérogènes FortiOS, Splunk SPL, protocoles OT, environnements Linux a
+requis un investissement important en montée en compétence ;
+— Contraintes d’accès : l’impossibilité d’intervenir sur l’infrastructure réelle
+de Nour 1 pour des raisons de sécurité opérationnelle a imposé le recours à
+un environnement de simulation complet sous VMware ;
+— Contraintes temporelles : la durée limitée du stage a imposé une priori-
+sation rigoureuse des tâches et une gestion optimale du temps disponible ;
+— Contraintes de conﬁdentialité : certaines informations relatives à l’archi-
+tecture réseau réelle de Nour 1 étant soumises à des obligations de discrétion,
+les données présentées dans ce rapport sont partiellement anonymisées ou
+adaptées.
+0.11. Conclusion
+La démarche méthodologique structurée adoptée audit, conception, implémenta-
+tion, validation a permis d’organiser eﬃcacement les travaux et d’assurer la cohérence
+de l’ensemble du projet. L’identiﬁcation précoce des contraintes a contribué à anticiper
+les risques et à déﬁnir des solutions de contournement appropriées. Le chapitre suivant
+présente les fondements théoriques nécessaires à la compréhension des enjeux et des
+solutions mises en œuvre.
+Rapport de stage
+21
+2025-2026
+
+
+===== PAGE 23 =====
+
+Chapitre 3 : Généralités sur la cyber-
+sécurité industrielle
+0.12. Introduction
+Ce chapitre établit le socle théorique indispensable à la compréhension des enjeux
+de sécurité des systèmes industriels. Il examine les diﬀérences fondamentales entre
+les environnements IT et OT, présente les protocoles de communication industriels
+pertinents, analyse la taxonomie des menaces spéciﬁques aux systèmes SCADA et
+décrit les normes internationales qui encadrent leur sécurisation.
+0.13. Convergence IT/OT : diﬀérences et enjeux
+0.13.1 Les environnements IT et leurs caractéristiques
+Les réseaux de technologies de l’information (IT) désignent l’ensemble des sys-
+tèmes informatiques dédiés au traitement, au stockage et à la transmission de l’infor-
+mation au sein des organisations. Ils répondent à la triade de sécurité CIA Conﬁden-
+tialité, Intégrité, Disponibilité en accordant la priorité à la conﬁdentialité des données
+et en tolérant des interruptions de service ponctuelles. Leurs cycles de vie relativement
+courts (3 à 5 ans) facilitent l’application régulière de correctifs de sécurité et l’adoption
+de nouvelles technologies.
+0.13.2 Les environnements OT et leurs spéciﬁcités
+Les technologies opérationnelles (OT) regroupent l’ensemble des systèmes ma-
+tériels et logiciels qui assurent le contrôle et la supervision des équipements et des
+processus physiques industriels. Contrairement aux environnements IT, les priorités
+y sont inversées : la disponibilité est primordiale, toute interruption
+même brève
+pouvant engendrer des conséquences graves sur la sécurité des personnes, des équipe-
+ments et de l’environnement. Les équipements OT sont caractérisés par des cycles de
+vie très longs (15 à 25 ans), des contraintes de temps réel strictes et une sensibilité aux
+interruptions qui rend l’application de correctifs particulièrement délicate.
+Rapport de stage
+22
+2025-2026
+
+
+===== PAGE 24 =====
+
+0.13.3 Tableau comparatif IT/OT
+Critère de compa-
+raison
+Environnement IT
+Environnement OT
+Priorité de sécurité
+Conﬁdentialité (CIA)
+Disponibilité (AIC)
+Cycle de vie
+3 à 5 ans
+15 à 25 ans
+Mises à jour
+Fréquentes
+et
+automati-
+sables
+Rares, planiﬁées, risquées
+Protocoles utilisés
+TCP/IP, HTTP, TLS
+Modbus, OPC-UA, DNP3
+Tolérance
+aux
+pannes
+Modérée (redondance)
+Très faible (processus cri-
+tique)
+Impact
+d’une
+at-
+taque
+Perte ou fuite de données
+Dommages
+physiques,
+risque humain
+Authentiﬁcation Gé-
+néralement
+absente
+(ex. Modbus)
+Table 2. Comparaison des environnements IT et OT
+La convergence de ces deux mondes crée une zone de friction sécuritaire : des
+protocoles IT (Ethernet, TCP/IP) sont désormais utilisés pour transporter des com-
+munications OT, exposant des systèmes conçus sans modèle de menace informatique
+aux attaques du monde cyber.
+Exemple concret : Un serveur web (IT) peut être redémarré en quelques se-
+condes pour appliquer un correctif de sécurité, sans conséquence opérationnelle.
+En revanche, un automate PLC contrôlant les pompes à huile thermique de Nour
+1 ne peut pas être interrompu sans risquer une surchauﬀe du ﬂuide caloporteur à
+390 řC. Cet exemple illustre concrètement pourquoi la disponibilité prime sur la
+conﬁdentialité en environnement OT.
+0.14. Protocoles de communication industriels
+0.14.1 Modbus TCP/IP
+Développé en 1979 par Modicon, Modbus est le protocole de communication
+industrielle le plus largement déployé à l’échelle mondiale. Sa version TCP/IP Modbus
+TCP adapte le protocole originel aux réseaux Ethernet, permettant son intégration
+dans les architectures réseau modernes sur le port standard 502. Modbus fonctionne
+Rapport de stage
+23
+2025-2026
+
+
+===== PAGE 25 =====
+
+sur un modèle maître-esclave : le maître (SCADA/HMI) envoie des requêtes de lecture
+ou d’écriture de registres à un ou plusieurs esclaves (PLC/capteurs).
+Malgré sa prévalence, Modbus présente des lacunes sécuritaires fondamentales
+qui en font un vecteur d’attaque privilégié dans les environnements industriels :
+— Absence totale d’authentiﬁcation : tout hôte réseau peut envoyer des
+commandes Modbus sans présenter d’identité ni de credentials ;
+— Absence de chiﬀrement : les données transitent en clair sur le réseau,
+exposant les valeurs de capteurs et les commandes à l’interception ;
+— Absence de contrôle d’intégrité : aucun mécanisme ne garantit que les
+messages reçus n’ont pas été altérés en transit.
+0.14.2 OPC-UA (Open Platform Communications Uniﬁed Architecture)
+Développé par la fondation OPC, OPC-UA représente l’évolution moderne des
+protocoles de communication industrielle. Contrairement à Modbus, il intègre native-
+ment un ensemble complet de mécanismes de sécurité : authentiﬁcation mutuelle par
+certiﬁcats X.509, chiﬀrement des communications par TLS, signature cryptographique
+des messages garantissant leur intégrité, et un modèle d’information sémantique riche
+permettant l’interopérabilité entre systèmes hétérogènes. OPC-UA constitue ainsi le
+protocole recommandé pour les nouvelles infrastructures industrielles nécessitant une
+intégration IT/OT sécurisée.
+0.15. Taxonomie des menaces ciblant les environnements in-
+dustriels
+0.15.1 Menaces persistantes avancées (APT)
+Les APT (Advanced Persistent Threats) constituent la catégorie de menaces la
+plus sophistiquée et la plus dangereuse pour les infrastructures critiques. Elles se ca-
+ractérisent par une préparation longue et méthodique, une intrusion discrète, une per-
+sistance prolongée dans le système compromis et un objectif ﬁnal ciblé généralement
+l’espionnage industriel ou le sabotage physique. L’exemple le plus emblématique reste
+Stuxnet (2010), qui a démontré la capacité d’une cyberattaque à provoquer des des-
+tructions physiques réelles en manipulant les consignes de vitesse de centrifugeuses
+industrielles.
+0.15.2 Rançongiciels industriels
+Les rançongiciels (ransomwares) représentent une menace croissante pour les
+environnements OT. Des incidents majeurs comme NotPetya (2017) et les attaques
+contre le réseau électrique ukrainien via Industroyer (2016) ont démontré leur capacité
+Rapport de stage
+24
+2025-2026
+
+
+===== PAGE 26 =====
+
+à paralyser des infrastructures critiques entières. Dans un contexte industriel, au-delà
+de la perte de données, un rançongiciel peut provoquer l’arrêt complet des processus
+de production, des dommages matériels irréversibles et des risques pour la sécurité des
+opérateurs.
+0.15.3 Attaques sur les protocoles industriels
+L’exploitation des failles inhérentes aux protocoles industriels notamment l’ab-
+sence d’authentiﬁcation de Modbus constitue un vecteur d’attaque directement appli-
+cable aux systèmes SCADA. Une attaque de type attaque de l’intercepteur (man-in-
+the-middle) sur un réseau Modbus non protégé permet à un attaquant de lire les valeurs
+de capteurs, d’injecter de fausses commandes vers les actionneurs ou de provoquer un
+déni de service sur les automates programmables, sans nécessiter de compromission
+préalable des systèmes informatiques.
+0.16. Normes et standards de référence
+0.16.1 IEC 62443 Cybersécurité des systèmes IACS
+La norme IEC 62443 est le standard international de référence pour la cybersé-
+curité des systèmes d’automatisation et de contrôle industriels (IACS). Organisée en
+quatre séries Général, Politiques & Procédures, Systèmes, Composants , elle déﬁnit
+un cadre complet couvrant les exigences applicables aux opérateurs, aux intégrateurs
+et aux fabricants de composants. Elle introduit le concept de niveaux de sécurité
+(SL1 à SL4), permettant de calibrer les mesures de protection en fonction du niveau
+de risque de chaque zone du réseau industriel et de la capacité de l’adversaire ciblé.
+0.16.2 ISO/IEC 27001 Management de la sécurité de l’information
+La norme ISO/IEC 27001 déﬁnit les exigences pour l’établissement, la mise en
+œuvre, la surveillance et l’amélioration continue d’un Système de Management de la
+Sécurité de l’Information (SMSI). Fondée sur une approche par les risques et le cycle
+PDCA (Plan-Do-Check-Act), elle fournit un cadre organisationnel et technique complé-
+mentaire à l’IEC 62443 pour structurer la gouvernance de la sécurité en environnement
+OT/IT convergent.
+0.17. Conclusion
+Ce chapitre a établi les fondements conceptuels et théoriques qui guident la
+conception de l’architecture de sécurité de ce projet. La compréhension des spéciﬁcités
+OT, des vulnérabilités des protocoles industriels et des exigences normatives constitue
+le préalable indispensable à toute démarche de sécurisation des systèmes SCADA. Le
+chapitre suivant transpose ces fondements en choix de conception concrets.
+Rapport de stage
+25
+2025-2026
+
+
+===== PAGE 27 =====
+
+Chapitre 4 : Conception de l’archi-
+tecture de cybersécurité
+0.18. Introduction
+Ce chapitre présente les choix de conception retenus pour l’architecture de cy-
+bersécurité industrielle. Il décrit le dimensionnement de la solution en termes de seg-
+mentation réseau, de contrôle des ﬂux inter-zones, de sécurisation des accès distants
+et de détection des intrusions, en justiﬁant chaque décision technique par rapport aux
+exigences de sécurité identiﬁées.
+0.19. Présentation et justiﬁcation du choix de FortiGate
+0.19.1 Qu’est-ce que le FortiGate ?
+FortiGate est un pare-feu de nouvelle génération (NGFW) édité par Fortinet.
+Il intègre au sein d’une plateforme uniﬁée l’ensemble des fonctions de sécurité réseau
+requises pour une architecture industrielle robuste : inspection stateful des paquets,
+prévention des intrusions (IPS), VPN IPsec et SSL, ﬁltrage applicatif (URL, ﬁchiers),
+antivirus intégré et gestion des identités. Les modèles physiques et virtuels disposent
+de processeurs de sécurité dédiés (SPU) qui assurent le traitement à haute performance
+sans dégradation de la latence réseau, critère déterminant en environnement OT.
+0.19.2 Comparaison avec les alternatives NGFW
+Le tableau 3 présente une comparaison objective du FortiGate avec ses principaux
+concurrents, justiﬁant le choix retenu dans ce projet.
+Le choix du FortiGate repose sur sa richesse fonctionnelle intégrée, son support
+natif des protocoles OT dans les proﬁls IPS et la disponibilité d’une version machine
+virtuelle adaptée à l’environnement VMware utilisé dans ce projet.
+Rapport de stage
+26
+2025-2026
+
+
+===== PAGE 28 =====
+
+Critère
+FortiGate
+Cisco Firepower
+Palo Alto
+Support protocoles OT
+Natif (Modbus,
+DNP3)
+Limité
+Via plugin
+Version VM disponible
+Signatures ICS/SCADA
+FortiGuard OT
+Snort (limité)
+Coût licence
+Modéré
+Élevé
+Très élevé
+Intégration SIEM
+Native Syslog
+Native
+Native
+Magic Quadrant Gartner
+Leader 2023
+Challenger
+Leader 2023
+Simulation VMware
+Table 3. Comparaison des solutions NGFW pour environnement industriel
+0.19.3 Justiﬁcation du choix
+Le choix du FortiGate comme équipement central de l’architecture repose sur
+plusieurs critères complémentaires :
+— Sa richesse fonctionnelle intégrée, évitant la multiplication des équipe-
+ments de sécurité et la complexité d’administration associée ;
+— Son support natif des protocoles industriels OT (Modbus, DNP3, IEC 104)
+dans les proﬁls IPS, permettant la détection d’anomalies protocolaires spéci-
+ﬁques aux systèmes SCADA ;
+— Sa position de leader dans le Magic Quadrant de Gartner pour les pare-
+feux réseau d’entreprise, attestant de sa maturité et de sa ﬁabilité ;
+— La disponibilité d’une version machine virtuelle (FortiGate VM) adap-
+tée à l’environnement de simulation VMware utilisé dans ce projet.
+0.20. Segmentation réseau par zones de sécurité
+0.20.1 Principe de zonage et VLANs
+La segmentation réseau constitue la première ligne de défense de l’architecture.
+Elle repose sur la création de zones de sécurité logiquement isolées à l’aide de VLANs
+(Virtual Local Area Networks), chaque zone regroupant des systèmes présentant un ni-
+veau de conﬁance et un proﬁl de risque homogènes. L’ensemble du traﬁc inter-zones est
+forcé à transiter par le FortiGate, garantissant l’application systématique des politiques
+de sécurité.
+Rapport de stage
+27
+2025-2026
+
+
+===== PAGE 29 =====
+
+Zone
+Désignation
+Adressage
+Périmètre fonctionnel
+VLAN 10
+SCADA
+192.168.10.0/24
+Serveurs SCADA, HMI, his-
+toriens de données
+VLAN 20
+Industriel
+192.168.20.0/24
+Automates PLC, RTU, équi-
+pements de terrain
+VLAN 30
+Bureautique
+192.168.30.0/24
+Postes de travail administra-
+tifs
+VLAN 40
+DMZ
+192.168.40.0/24
+Serveurs exposés, passerelle
+IT/OT
+VLAN 50
+Management
+192.168.50.0/24
+Administration réseau et sé-
+curité
+Table 4. Plan de zonage réseau de l’architecture
+Zone WAN
+192.168.28.0/24
+(Kali Linux)
+FortiGate
+NGFW
+v7.2.13
+Zone DMZ
+192.168.20.0/24
+(Splunk, passerelle)
+Zone SCADA
+192.168.30.0/24
+(ScadaBR, PLC)
+Allow vers DMZ
+BLOQUÉ
+— Flux bloqué
+→Flux autorisé
+Figure 5. Architecture de segmentation réseau par zones de sécurité (VLAN/DMZ)
+0.20.2 Zone Démilitarisée (DMZ)
+La DMZ est positionnée comme zone tampon entre le réseau bureautique et le
+réseau industriel. Elle héberge les services nécessitant une accessibilité depuis les deux
+côtés sans permettre de communication directe entre eux : le serveur de journalisation
+centralisée, la passerelle de données IT/OT assurant la médiation protocolaire et le
+serveur SIEM Splunk.
+0.21. Politique de ﬁltrage et contrôle des ﬂux
+L’ensemble des règles de ﬁltrage est conçu selon la politique par défaut deny all :
+tout traﬁc non explicitement autorisé est bloqué et journalisé. Les politiques autorisées
+sont déﬁnies au minimum nécessaire pour le fonctionnement opérationnel, conformé-
+ment au principe du moindre privilège. Les ﬂux autorisés entre zones sont déﬁnis selon
+la matrice de communication opérationnelle du site.
+Rapport de stage
+28
+2025-2026
+
+
+===== PAGE 30 =====
+
+0.22. VPN IPsec Site-to-Site
+Le tunnel VPN IPsec sécurise les communications entre le réseau industriel et
+le réseau bureautique, en garantissant la conﬁdentialité, l’intégrité et l’authentiﬁcation
+des échanges. Les paramètres cryptographiques retenus sont conformes aux recomman-
+dations de l’ANSSI pour les systèmes critiques :
+Paramètre
+Valeur retenue
+Version IKE
+IKEv2
+Algorithme de chiﬀrement
+AES-256-GCM
+Algorithme d’intégrité
+SHA-256
+Groupe Diﬃe-Hellman
+Group 14 (2048 bits)
+Méthode d’authentiﬁcation
+Clé prépartagée (PSK)
+Durée de vie de la SA
+86 400 secondes (24 h)
+Mode de fonctionnement
+Tunnel (encapsulation complète)
+Table 5. Paramètres cryptographiques du tunnel VPN IPsec
+0.23. Système de détection et prévention d’intrusions (IPS/IDS)
+Un proﬁl IPS industriel dédié est conﬁguré sur le FortiGate. Ce proﬁl intègre
+des signatures de détection couvrant quatre catégories d’attaques : les attaques réseau
+volumétriques (ﬂood ICMP et SYN), les attaques applicatives (brute force SSH et
+FTP), les attaques spéciﬁques aux protocoles industriels Modbus et OPC-UA (injection
+de commandes, manipulation de registres), ainsi que les exploits référencés dans la base
+de signatures FortiGuard, mise à jour en temps réel.
+Rapport de stage
+29
+2025-2026
+
+
+===== PAGE 31 =====
+
+0.24. Architecture globale : défense en profondeur
+L’architecture ﬁnale s’organise en cinq couches de protection complémentaires et
+indépendantes, conformément au modèle de défense en profondeur (Defense-in-Depth) :
+Couche 1 Contrôle périmétrique : FortiGate avec politiques de ﬁltrage
+strictes et règle de refus implicite ;
+Couche 2 Isolation réseau : segmentation par VLANs et DMZ interdisant
+toute communication directe inter-zones non autorisée ;
+Couche 3 Chiﬀrement des ﬂux : VPN IPsec protégeant la conﬁdentialité
+et l’intégrité des communications inter-sites ;
+Couche 4 Détection en temps réel : IPS/IDS identiﬁant et neutralisant
+les tentatives d’intrusion au niveau applicatif et protocolaire ;
+Couche 5
+Supervision centralisée : SIEM Splunk corrélant l’ensemble
+des événements de sécurité pour une détection proactive des incidents.
+Couche 1 : Contrôle périmétrique – FortiGate, règle deny-all
+Couche 2 : Isolation réseau – VLANs et DMZ
+Couche 3 : Chiﬀrement des ﬂux – VPN IPsec AES-256
+Couche 4 : Détection en temps réel – IPS/IDS industriel
+Couche 5 : Supervision centralisée – SIEM Splunk
+Zone SCADA Nour 1 – Protégée
+Figure 6. Architecture de défense en profondeur (Defense-in-Depth)
+0.25. Conclusion
+L’architecture conçue oﬀre une protection multicouche cohérente et graduée, ali-
+gnée sur les exigences des normes IEC 62443 et ISO/IEC 27001. Chaque composant
+remplit un rôle complémentaire dans la chaîne de défense, de sorte qu’une défaillance
+ponctuelle ne compromette pas l’ensemble du dispositif. Le chapitre suivant détaille
+la mise en œuvre pratique de cette architecture et présente les résultats des tests de
+validation conduits.
+Rapport de stage
+30
+2025-2026
+
+
+===== PAGE 32 =====
+
+Chapitre 5 : Implémentation, simu-
+lation et validation
+0.26. Introduction
+Ce chapitre constitue le cœur opérationnel du projet. Il présente de manière dé-
+taillée et séquentielle la mise en œuvre technique de l’architecture de cybersécurité
+conçue au chapitre précédent, les conﬁgurations appliquées à chaque composant, les
+scénarios d’attaque simulés pour valider les contrôles de sécurité, et l’analyse critique
+des résultats obtenus. L’ensemble des travaux a été réalisé dans un environnement vir-
+tualisé sous VMware Workstation Pro, reproduisant ﬁdèlement la topologie réseau
+industrielle de la centrale Nour 1.
+0.27. Environnement de simulation
+0.27.1 Architecture de laboratoire virtualisé
+L’environnement de simulation repose sur quatre machines virtuelles interconnec-
+tées via des réseaux hôtes dédiés (VMnets), chacun correspondant à une zone de sécurité
+distincte. Le FortiGate VM, positionné en coupure entre les trois zones, constitue le
+point de contrôle central de tous les ﬂux réseau.
+Machine
+vir-
+tuelle
+Système / Appli-
+cation
+Réseau
+Adresse IP
+FortiGate VM
+FortiOS v7.2.13
+VMnet1/3/4
+Cf. tableau interfaces
+Kali Linux
+Kali Linux 2025
+VMnet1
+192.168.28.50/24
+Windows 10
+Windows
+10
++
+Splunk
+VMnet1
+192.168.28.x/24
+Ubuntu SCADA
+Ubuntu 22.04 LTS
+VMnet4
++
+NAT
+192.168.30.10/24
+Table 6. Machines virtuelles de l’environnement de simulation
+Rapport de stage
+31
+2025-2026
+
+
+===== PAGE 33 =====
+
+Réseau
+vir-
+tuel
+Mode
+Sous-réseau
+Zone de sécurité
+VMnet1
+Host-only
+192.168.28.0/24
+Zone WAN (accès ex-
+terne)
+VMnet3
+Host-only
+192.168.20.0/24
+Zone DMZ
+VMnet4
+Host-only
+192.168.30.0/24
+Zone
+SCADA
+indus-
+trielle
+Table 7. Réseaux virtuels VMware et zones de sécurité associées
+Kali Linux 2025
+192.168.28.50
+Windows 10
+Splunk v10.2.2
+Zone WAN – VMnet1
+FortiGate VM
+v7.2.13
+port1 : WAN
+port2 : DMZ
+port3 : SCADA
+DMZ
+192.168.20.0/24
+Ubuntu SCADA
+192.168.30.10
+ScadaBR + Modbus
+Figure 7. Architecture de lenvironnement de simulation VMware Workstation topologie des
+4 machines virtuelles et leurs réseaux
+®
+Principe d’isolation des zones
+Chaque VMnet est conﬁguré en mode Host-only, ce qui garantit qu’aucun ﬂux ne
+peut transiter d’une zone à une autre sans traverser le FortiGate. Cette disposition
+reproduit ﬁdèlement le principe de segmentation physique d’un réseau industriel
+Rapport de stage
+32
+2025-2026
+
+
+===== PAGE 34 =====
+
+en zones de conﬁance distinctes.
+0.28. Conﬁguration du FortiGate
+0.28.1 Interfaces réseau et adressage
+FortiGate VM v7.2.13 est conﬁguré avec trois interfaces physiques, chacune asso-
+ciée à une zone de sécurité. L’accès à l’interface d’administration graphique (HTTPS)
+et à la CLI (SSH) est restreint à l’interface WAN (port1).
+Interface
+Zone assignée
+Adresse
+IP/-
+Masque
+Réseau virtuel
+port1
+Zone WAN
+192.168.28.2/24
+VMnet1
+port2
+Zone DMZ
+192.168.20.1/24
+VMnet3
+port3
+Zone
+SCADA-
+LAN
+192.168.30.1/24
+VMnet4
+Table 8. Interfaces réseau du FortiGate VM et zones associées
+La conﬁguration de l’interface port3 notamment l’activation de l’accès ICMP
+nécessaire au diagnostic réseau est eﬀectuée via la CLI FortiOS :
+1
+config
+system
+interface
+2
+edit
+port3
+3
+set
+allowaccess
+ping
+https ssh
+4
+set ip 192.168.30.1
+255.255.255.0
+5
+set
+description "Zone␣SCADA -LAN␣Nour1"
+6
+set role lan
+7
+next
+8
+end
+Listing 1. Conﬁguration de l’interface port3 Zone SCADA-LAN
+0.28.2 Politiques de sécurité Firewall
+Trois politiques de ﬁltrage constituent le cœur du contrôle d’accès inter-zones.
+Elles implémentent le principe du moindre privilège : seuls les ﬂux strictement né-
+cessaires au fonctionnement opérationnel sont autorisés, et l’intégralité du traﬁc est
+journalisée pour analyse dans le SIEM.
+Rapport de stage
+33
+2025-2026
+
+
+===== PAGE 35 =====
+
+Figure 8. Interface graphique FortiGate Network > Interfaces, aﬃchant les trois ports
+conﬁgurés avec leurs zones et adresses IP
+Politique
+Interface
+source
+Interface
+dest.
+Action
+Journalisation
+Allow-SCADA-to-DMZ
+port3
+(SCADA)
+port2 (DMZ)
+ALLOW
+Activée
+Allow-WAN-to-DMZ
+port1 (WAN)
+port2 (DMZ)
+ALLOW
+Activée
+Block-WAN-to-SCADA
+port1 (WAN)
+port3
+(SCADA)
+DENY
+Activée
+Table 9. Politiques de sécurité du pare-feu FortiGate
+La politique Block-WAN-to-SCADA est la règle de protection centrale de
+l’architecture : elle interdit toute tentative d’accès direct depuis le réseau WAN vers la
+zone industrielle, quelle qu’en soit la source ou la destination. Sa conﬁguration CLI est
+la suivante :
+1
+config
+firewall
+policy
+2
+edit 3
+3
+set name "Block -WAN -to -SCADA"
+4
+set
+srcintf "port1"
+5
+set
+dstintf "port3"
+6
+set
+srcaddr "all"
+7
+set
+dstaddr "all"
+8
+set action
+deny
+9
+set
+logtraffic
+all
+10
+set
+comments "Protection␣de␣la␣zone␣SCADA␣industrielle"
+11
+next
+12
+end
+Listing 2. Conﬁguration CLI de la politique Block-WAN-to-SCADA
+Rapport de stage
+34
+2025-2026
+
+
+===== PAGE 36 =====
+
+Figure 9. Interface FortiGate Policy Objects > Firewall Policy, aﬃchant les trois règles
+de sécurité actives avec leurs paramètres
+0.28.3 Acheminement des journaux vers Splunk (Syslog)
+FortiGate est conﬁguré pour transmettre en temps réel l’intégralité de ses jour-
+naux traﬁc, événements système, blocages IPS vers le SIEM Splunk via le protocole
+Syslog UDP sur le port 514. Ce ﬂux de journalisation centralisée constitue la source
+principale de données pour la surveillance de sécurité.
+1
+config log syslogd
+setting
+2
+set status
+enable
+3
+set server "192.168.28.x"
+# Adresse IP du serveur
+Splunk
+4
+set port 514
+5
+set
+facility
+local7
+6
+set format
+default
+7
+set
+reliable
+disable
+# Transport
+UDP pour
+minimiser la
+latence
+8
+end
+9
+10
+# Vérification de l’état de la configuration
+11
+show log syslogd
+setting
+Listing 3. Conﬁguration de la journalisation Syslog FortiGate vers Splunk
+La réception des journaux FortiGate dans Splunk est vériﬁable immédiatement
+après conﬁguration via la requête SPL : index=fortigate | head 20. Les événe-
+ments de traﬁc, de blocage et les alarmes IPS apparaissent en temps réel.
+0.29. Simulation d’attaques depuis Kali Linux
+0.29.1 Environnement et cadre des tests
+Kali Linux 2025 est déployé dans la zone WAN (VMnet1, adresse IP 192.168.28.50),
+simulant la position d’un attaquant externe ayant obtenu un accès au réseau WAN et
+cherchant à compromettre la zone SCADA industrielle. Les outils mobilisés sont Nmap
+pour la phase de reconnaissance, hping3 pour les attaques par inondation et Hydra
+pour les attaques par force brute.
+Rapport de stage
+35
+2025-2026
+
+
+===== PAGE 37 =====
+
+Figure 10. Interface FortiGate Log Report > Log Settings, conﬁrmant la conﬁguration du
+serveur Syslog vers Splunk
+L’intégralité des tests de pénétration décrits dans ce chapitre est conduite dans
+un environnement de simulation isolé, opéré sous VMware Workstation Pro. Ces
+tests sont réalisés exclusivement à des ﬁns académiques et de validation technique,
+sans interaction avec des infrastructures réelles ou des systèmes tiers.
+0.29.2 Test 1 Reconnaissance réseau par scan Nmap
+La phase de reconnaissance consiste à cartographier le réseau accessible depuis la
+zone WAN et à tenter d’atteindre la zone SCADA protégée.
+1
+# Découverte
+des hôtes
+actifs
+dans la zone WAN
+2
+nmap -sn 192.168.28.0/24
+3
+4
+# Identification
+des
+services et versions
+sur le FortiGate
+5
+nmap -sV -p 22 ,443 ,80
+192.168.28.2
+6
+7
+# Tentative de scan de la zone
+SCADA
+protégée (attendu : bloqué)
+8
+nmap -sV 192.168.30.0/24
+9
+10
+# Détection de vulnérabilités
+connues
+sur le FortiGate
+11
+nmap --script
+vuln
+192.168.28.2
+Listing 4. Scénarios de scan Nmap depuis Kali Linux
+Rapport de stage
+36
+2025-2026
+
+
+===== PAGE 38 =====
+
+Figure 11. Terminal Kali Linux Résultats du scan Nmap sur la zone WAN
+(192.168.28.0/24), aﬃchant les hôtes détectés et leurs services
+Test réalisé
+Cible
+Résultat attendu
+Résultat
+réel
+Scan hôtes WAN
+192.168.28.0/24
+Détection normale
+Conforme
+Scan services FG
+192.168.28.2
+Ports 443, 22 visibles
+Conforme
+Scan zone SCADA
+192.168.30.0/24
+Traﬁc bloqué
+Conforme
+Scan vulnérabilités
+192.168.28.2
+Journalisé
+dans
+Splunk
+Conforme
+Table 10. Résultats du test de reconnaissance réseau – Scan Nmap
+Figure 12. Terminal Kali Linux Résultat du scan nmap 192.168.30.0/24 démontrant
+labsence de réponse des hôtes SCADA (traﬁc ﬁltré par FortiGate)
+Rapport de stage
+37
+2025-2026
+
+
+===== PAGE 39 =====
+
+Résultat clé : La politique Block-WAN-to-SCADA est validée. Aucun hôte de la
+zone 192.168.30.0/24 n’est joignable depuis la zone WAN. L’événement de blocage
+est immédiatement journalisé dans Splunk avec l’horodatage, l’adresse source, la
+destination et la politique appliquée.
+0.29.3 Test 2 Attaque par inondation ICMP (hping3)
+Ce test vise à saturer la pile réseau du FortiGate par un ﬂux massif de paquets
+ICMP, aﬁn d’évaluer la capacité du proﬁl IPS à détecter et contenir une attaque de
+déni de service volumétrique.
+1
+# Inondation
+ICMP vers l’interface
+WAN du FortiGate
+2
+sudo
+hping3
+-1 --flood -V 192.168.28.2
+3
+4
+# Inondation
+avec
+paquets de taille
+augmentée
+(1000
+octets)
+5
+sudo
+hping3
+-1 --flood
+--data 1000
+192.168.28.2
+6
+7
+# Inondation
+SYN sur le port
+HTTPS
+(443)
+8
+sudo
+hping3 -S --flood -p 443
+192.168.28.2
+Listing 5. Simulation d’une attaque par inondation ICMP depuis Kali Linux
+Le proﬁl IPS FortiGate détecte le dépassement du seuil de paquets ICMP par
+seconde conﬁguré et applique automatiquement une règle de blocage temporaire de
+l’adresse IP source, tout en générant une alerte de niveau Critical dans le journal de
+sécurité. Cette alerte est transmise instantanément au SIEM Splunk par Syslog.
+0.29.4 Test 3 Attaque par force brute SSH (Hydra)
+Ce test évalue la résistance du FortiGate aux attaques d’authentiﬁcation par
+force brute sur le service d’administration SSH, qui constitue un vecteur d’attaque
+fréquemment exploité pour obtenir un accès privilégié aux équipements de sécurité.
+1
+# Attaque
+force
+brute SSH sur le FortiGate (interface
+WAN)
+2
+hydra -l admin -P /usr/share/wordlists/rockyou.txt \
+3
+ssh ://192.168.28.2 -t 4 -V -f
+4
+5
+# Résultat
+attendu : verrouillage du compte
+après N tentatives
+6
+# et blocage de l’adresse IP source par la politique
+IPS
+Listing 6. Attaque par force brute SSH avec Hydra
+La politique de protection contre les attaques par force brute du FortiGate dé-
+clenche un verrouillage de compte et le blocage de l’adresse IP attaquante après un
+nombre conﬁgurable de tentatives d’authentiﬁcation échouées consécutives. Ce méca-
+nisme est complémentaire du proﬁl IPS et constitue une seconde ligne de défense contre
+ce vecteur d’attaque.
+0.29.5 Test 4 Analyse de vulnérabilités (scripts Nmap NSE)
+Rapport de stage
+38
+2025-2026
+
+
+===== PAGE 40 =====
+
+1
+# Détection de vulnérabilités
+connues
+sur le FortiGate
+2
+nmap --script
+vuln -p 22 ,443
+192.168.28.2
+3
+4
+# Empreinte
+système et services
+détaillés
+5
+nmap -A -sV -sC -p- 192.168.28.2
+6
+7
+# Tentative de détection d’équipements
+Modbus
+dans la zone
+SCADA
+8
+# (depuis un poste de la zone DMZ
+scénario d’attaque
+interne)
+9
+nmap --script modbus -discover -p 502
+192.168.30.10
+Listing 7. Analyse de vulnérabilités par scripts NSE Nmap
+0.30. Détection et réponse via le proﬁl IPS
+0.30.1 Conﬁguration du proﬁl IPS industriel
+Un proﬁl IPS dédié, nommé SCADA-IPS-Profile, est créé et appliqué sur les poli-
+tiques de ﬁltrage concernées. Ce proﬁl intègre des signatures de détection organisées en
+quatre familles : attaques réseau volumétriques, tentatives d’authentiﬁcation par force
+brute, exploitation de vulnérabilités connues et anomalies sur les protocoles industriels.
+1
+config ips sensor
+2
+edit "SCADA -IPS -Profile"
+3
+set
+comment "Profil␣IPS␣dedie␣a␣la␣protection␣SCADA␣Nour1"
+4
+config
+entries
+5
+edit 1
+6
+set rule 1001
+# Detection
+inondation
+ICMP
+7
+set action
+block
+8
+set log enable
+9
+set
+severity
+high
+10
+next
+11
+edit 2
+12
+set rule 1002
+# Detection
+inondation
+SYN
+13
+set action
+block
+14
+set log enable
+15
+set
+severity
+high
+16
+next
+17
+edit 3
+18
+set rule 2001
+# Force
+brute SSH
+19
+set action
+block
+20
+set log enable
+21
+set
+severity
+critical
+22
+next
+23
+edit 4
+24
+set rule 5001
+# Anomalie
+protocole
+Modbus
+25
+set action
+block
+26
+set log enable
+27
+set
+severity
+high
+28
+next
+29
+end
+Rapport de stage
+39
+2025-2026
+
+
+===== PAGE 41 =====
+
+30
+next
+31
+end
+Listing 8. Conﬁguration du proﬁl IPS SCADA-IPS-Proﬁle sur FortiGate
+Figure 13. Interface FortiGate Security Proﬁles > Intrusion Prevention, aﬃchant les
+attaques détectées, leur classiﬁcation et les actions automatiques appliquées
+0.30.2 Tableau de synthèse des scénarios de test
+Scénario
+d’at-
+taque
+Outil
+Cible
+Détecté
+Bloqué
+Journalisé
+Scan de reconnais-
+sance WAN
+Nmap
+192.168.28.0/24 Oui
+Partiel
+Oui
+Accès zone SCADA
+depuis WAN
+Nmap
+192.168.30.0/24 Oui
+Oui
+Oui
+Inondation ICMP
+hping3
+192.168.28.2
+Oui
+Oui
+Oui
+Inondation
+SYN
+(port 443)
+hping3
+192.168.28.2
+Oui
+Oui
+Oui
+Force brute SSH
+Hydra
+192.168.28.2
+Oui
+Oui
+Oui
+Scan de vulnérabili-
+tés
+Nmap
+NSE
+192.168.28.2
+Oui
+Journalisé
+Oui
+Table 11. Tableau de synthèse des scénarios de tests de pénétration
+¬
+Bilan des tests de pénétration
+Sur 6 scénarios d’attaque simulés, 5 ont été détectés et bloqués automatique-
+ment par les mécanismes de protection déployés (politiques ﬁrewall et proﬁl IPS).
+La totalité des événements a été journalisée et transmise au SIEM Splunk pour
+analyse. Le seul scénario non bloqué (scan réseau WAN) est intentionnel : les scans
+Rapport de stage
+40
+2025-2026
+
+
+===== PAGE 42 =====
+
+dans la zone WAN ne constituent pas une menace directe et leur journalisation
+seule est suﬃsante.
+0.31. SIEM Splunk Centralisation et analyse des événements
+0.31.1 Déploiement et conﬁguration
+Splunk Enterprise v10.2.2 est installé sur la machine Windows 10 déployée
+dans la zone WAN. Il est conﬁguré pour recevoir les journaux FortiGate via une entrée
+de données Syslog UDP sur le port 514, et pour les indexer dans un index dédié
+nommé fortigate, permettant leur interrogation par requêtes SPL (Search Processing
+Language).
+Paramètre de conﬁgu-
+ration
+Valeur
+Version déployée
+Splunk Enterprise 10.2.2
+Interface
+d’administra-
+tion
+http ://localhost :8000
+Index des journaux Forti-
+Gate
+fortigate
+Réception des journaux
+Syslog UDP, port 514
+Type de source
+fortigate_traffic
+Table 12. Paramètres de conﬁguration de Splunk Enterprise
+Figure 14. Interface principale de Splunk Enterprise Search Reporting montrant
+lingestion en temps réel des journaux FortiGate
+Rapport de stage
+41
+2025-2026
+
+
+===== PAGE 43 =====
+
+0.31.2 SCADA Security Dashboard Tableau de bord de supervision
+Un tableau de bord dédié, intitulé SCADA Security Dashboard, est développé
+dans Splunk. Il agrège en une vue unique les indicateurs de sécurité les plus pertinents
+pour la supervision du réseau industriel.
+Panel
+Type de visuali-
+sation
+Indicateur
+Requête SPL princi-
+pale
+Panel 1
+Graphique tempo-
+rel
+Événements de sécu-
+rité / heure
+index=fortigate |
+timechart count
+Panel 2
+Valeur unique
+Nombre total d’événe-
+ments (24h)
+index=fortigate |
+stats count
+Panel 3
+Graphique
+circu-
+laire
+Distribution par type
+d’événement
+index=fortigate |
+stats count by type
+Panel 4
+Histogramme
+Top 10 des adresses IP
+sources
+index=fortigate |
+top limit=10 src_ip
+Table 13. Panneaux du SCADA Security Dashboard – Splunk
+Figure 15. SCADA Security Dashboard dans Splunk les 4 panneaux de supervision
+aﬃchant les données des tests de sécurité réalisés
+¬
+Données observées lors des tests
+n 34 événements reçus sur la période de 24 heures, avec un pic détecté durant
+les phases de test à 02h00 ;
+n Principale adresse source : 192.168.28.50 (Kali Linux) avec plus de 20
+événements de blocage associés ;
+Rapport de stage
+42
+2025-2026
+
+
+===== PAGE 44 =====
+
+n Distribution : 70 % de traﬁc autorisé normal, 30 % d’événements de sécurité
+(blocages et alertes IPS).
+0.32. Déploiement de l’environnement SCADA simulé
+0.32.1 Contexte et objectifs
+Aﬁn de reproduire un environnement industriel authentique dans la zone SCADA,
+un serveur SCADA ScadaBR est déployé sur la machine virtuelle Ubuntu 22.04
+(192.168.30.10) et un simulateur Modbus TCP génère des données de capteurs re-
+présentatives des équipements de la centrale solaire Nour 1. Cet environnement permet
+de simuler des communications industrielles réelles sur le port 502 et de valider que la
+zone SCADA est correctement isolée et supervisée.
+0.32.2 Conﬁguration du réseau Ubuntu SCADA
+La machine virtuelle Ubuntu dispose de deux interfaces réseau : ens33 sur VM-
+net4 (zone SCADA, IP statique 192.168.30.10/24) et ens37 en mode NAT (accès in-
+ternet temporaire pour l’installation des paquets logiciels). Cette conﬁguration duale
+a généré un conﬂit de routage initial nécessitant une correction explicite de la table
+de routage : la passerelle par défaut pointait vers l’interface FortiGate (192.168.30.1),
+dont la politique de sécurité bloquait tout traﬁc vers internet.
+Problème : La route par défaut initiale default via 192.168.30.1 dev ens33
+orientait tout le traﬁc internet vers le FortiGate, qui l’interceptait et le bloquait
+conformément à la politique Block-WAN-to-SCADA.
+Cause additionnelle : La passerelle VMware NAT est assignée à l’adresse
+192.168.112.2 (et non 192.168.112.1 comme attendu par défaut).
+1
+# Suppression de la route par défaut
+erronée (via
+FortiGate)
+2
+sudo ip route del default via
+192.168.30.1
+dev ens33
+3
+4
+# Ajout de la route par défaut
+correcte (via la gateway
+NAT VMware)
+5
+sudo ip route add default via
+192.168.112.2
+dev ens37
+6
+7
+# Maintien de la route
+spécifique
+vers la zone
+SCADA via
+FortiGate
+8
+sudo ip route add
+192.168.30.0/24
+via
+192.168.30.1
+dev ens33
+9
+10
+# Validation de la connectivité
+11
+ping -c 3 192.168.30.1
+# FortiGate : 0% perte , ~1ms
+12
+ping -c 3 8.8.8.8
+# Internet
+: 0% perte , ~36ms
+Listing 9. Correction de la table de routage Ubuntu 22.04 SCADA
+Rapport de stage
+43
+2025-2026
+
+
+===== PAGE 45 =====
+
+La conﬁguration est ensuite rendue permanente via Netplan, le gestionnaire de réseau
+d’Ubuntu 22.04 :
+1
+network:
+2
+version: 2
+3
+ethernets:
+4
+ens33:
+5
+addresses:
+6
+- 192.168.30.10/24
+7
+ens37:
+8
+dhcp4: true
+9
+routes:
+10
+- to: default
+11
+via: 192.168.112.2
+Listing 10. Conﬁguration Netplan permanente /etc/netplan/00-installer-conﬁg.yaml
+1
+# Application de la configuration
+avec
+permissions
+restrictives
+2
+sudo
+chmod 600 /etc/netplan /00- installer -config.yaml
+3
+sudo
+netplan
+apply
+0.32.3 Installation et déploiement de ScadaBR
+ScadaBR est une application SCADA open-source basée sur Java/Tomcat, sup-
+portant nativement les protocoles industriels Modbus TCP/IP, DNP3, OPC, BACnet
+et IEC 101. Elle fournit une interface HMI web complète permettant la visualisation et
+le contrôle des points de données industriels. L’installation est réalisée depuis le dépôt
+oﬃciel GitHub :
+1
+# Clonage de l’installateur
+officiel
+2
+git clone
+https :// github.com/thiagoralves/ ScadaBR_Installer .git
+3
+cd
+ScadaBR_Installer
+4
+5
+# Exécution du script d’installation
+automatisée
+6
+# (installe
+Java JRE 6, Apache
+Tomcat 6 et ScadaBR
+environ 5
+minutes)
+7
+sudo ./ install_scadabr .sh
+Listing 11. Procédure d’installation de ScadaBR sur Ubuntu 22.04
+Le démarrage de Tomcat a nécessité la résolution d’un conﬂit de port sur le port
+de contrôle 8005, résultant d’une instance résiduelle d’une exécution précédente :
+1
+# Arrêt des
+processus
+Tomcat et Java en cours
+2
+sudo
+pkill -f tomcat && sudo
+pkill -f java
+3
+sudo
+fuser -k 8005/ tcp
+# Libération du port de contrôle
+Tomcat
+4
+5
+# Démarrage du service
+Tomcat
+6
+sudo /opt/tomcat6/apache -tomcat -6.0.53/ bin/startup.sh
+7
+8
+# Vérification
+que
+ScadaBR
+répond (réponse
+attendue : HTTP /1.1 302)
+9
+curl -I http :// localhost :9090/ ScadaBR
+Listing 12. Résolution des conﬂits de port et démarrage de Tomcat
+Rapport de stage
+44
+2025-2026
+
+
+===== PAGE 46 =====
+
+Un problème de localisation a également été résolu : ScadaBR ne disposant pas de
+ﬁchier de ressources pour la locale fr_MA (français marocain) utilisée par le navigateur
+Windows, une exception Java était générée. La résolution consiste à créer un alias du
+ﬁchier de traduction français existant :
+1
+cd /opt/tomcat6/apache -tomcat -6.0.53/ webapps/ScadaBR/WEB -INF/
+classes/
+2
+sudo cp messages_fr.properties
+messages_fr_MA.properties
+Listing 13. Résolution de l’erreur MissingResourceException locale fr_MA
+Composant
+Version
+Port
+Statut
+Java JRE
+1.6.0_45
+—
+Opérationnel
+Apache Tomcat
+6.0.53
+9090
+Opérationnel
+ScadaBR
+1.0CE
+9090/ScadaBR Déployé
+et
+acces-
+sible
+Derby Database
+Intégrée
+—
+Active
+Table 14. Composants de l’environnement ScadaBR déployé
+L’interface
+ScadaBR
+est
+accessible
+depuis
+le
+poste
+Windows
+via
+l’URL
+http://192.168.30.10:9090/ScadaBR. Les identiﬁants par défaut sont admin
+/ admin. La zone SCADA demeure protégée par le FortiGate : l’accès direct
+depuis la zone WAN est impossible.
+0.32.4 Simulateur Modbus TCP
+Un simulateur Modbus TCP est développé en Python à l’aide de la bibliothèque
+pymodbus v3.13.0. Il implémente un serveur Modbus TCP émulant les registres de
+capteurs d’une centrale solaire à concentration : températures du ﬂuide caloporteur,
+niveaux d’irradiance solaire et états binaires des actionneurs.
+1
+sudo apt install
+python3 -pip -y
+2
+pip3
+install
+pymodbus
+# Version
+3.13.0
+installée
+Listing 14. Installation de la bibliothèque pymodbus
+1
+from
+pymodbus.server.sync
+import
+StartTcpServer
+2
+from
+pymodbus.datastore
+import (
+3
+ModbusSlaveContext , ModbusServerContext ,
+ModbusSequentialDataBlock
+4
+)
+5
+6
+# -------------------------------------------------------
+7
+# Simulation
+des
+registres de capteurs
+Centrale
+Nour 1
+8
+# HR (Holding
+Registers) : températures
+fluide (řC)
+9
+# IR (Input
+Registers)
+: irradiance
+solaire (W/mš)
+10
+# CO (Coils)
+: état des
+actionneurs
+Rapport de stage
+45
+2025-2026
+
+
+===== PAGE 47 =====
+
+11
+# DI (Discrete
+Inputs)
+: état des
+capteurs
+logiques
+12
+# -------------------------------------------------------
+13
+14
+store = ModbusSlaveContext (
+15
+hr= ModbusSequentialDataBlock (0,
+16
+[25, 38, 52, 67, 80, 45, 30] * 15),
+# Températures (řC)
+17
+ir= ModbusSequentialDataBlock (0,
+18
+[100, 250, 450, 600, 800, 950] * 16),
+# Irradiance (W/mš
+)
+19
+co= ModbusSequentialDataBlock (0, [1] * 100) ,
+# Actionneurs
+20
+di= ModbusSequentialDataBlock (0, [1] * 100)
+# Capteurs
+logiques
+21
+)
+22
+23
+context = ModbusServerContext (slaves=store , single=True)
+24
+print("[NOMAC -SCADA]␣Serveur␣Modbus␣TCP␣actif␣sur␣0.0.0.0:502")
+25
+StartTcpServer (context , address =("0.0.0.0", 502))
+Listing 15. Simulateur Modbus TCP modbus_simulator.py
+1
+sudo
+python3 ~/ modbus_simulator .py
+2
+# Sortie : [NOMAC -SCADA] Serveur
+Modbus TCP actif sur
+0.0.0.0:502
+Listing 16. Démarrage du simulateur Modbus TCP (port 502 nécessite des privilèges)
+0.32.5 Conﬁguration de la source de données Modbus dans ScadaBR
+Dans l’interface d’administration ScadaBR, une source de données de type Mod-
+bus IP est créée pour établir la connexion avec le simulateur Modbus et acquérir les
+valeurs de registres en temps réel :
+Paramètre
+Valeur conﬁgurée
+Nom de la source
+NOMAC-SCADA-Simulateur
+Type de protocole
+Modbus IP (TCP)
+Adresse de l’esclave
+192.168.30.10
+Port TCP
+502
+Période de mise à jour
+5 secondes
+Identiﬁant esclave (Slave
+ID)
+1
+Type de transport
+TCP
+Table 15. Paramètres de conﬁguration de la source de données Modbus dans ScadaBR
+Rapport de stage
+46
+2025-2026
+
+
+===== PAGE 48 =====
+
+Figure 16. Interface ScadaBR
+n Le simulateur Modbus TCP écoute sur 192.168.30.10 :502 ;
+n ScadaBR interroge les registres toutes les 5 secondes et aﬃche les valeurs de
+capteurs en temps réel ;
+n La zone SCADA est isolée par le FortiGate : aucun accès non autorisé depuis
+le WAN n’est possible ;
+n Tout événement réseau vers la zone SCADA est journalisé dans Splunk.
+Rapport de stage
+47
+2025-2026
+
+
+===== PAGE 49 =====
+
+0.33. Bilan global des réalisations
+0.33.1 Tableau de synthèse des objectifs
+Objectif opérationnel
+Réalisation technique
+Statut
+Déployer un pare-feu industriel
+NGFW
+FortiGate VM v7.2.13
+✓Atteint
+Segmenter le réseau en zones iso-
+lées
+3 zones : WAN / DMZ /
+SCADA
+✓Atteint
+Implémenter des politiques de ﬁl-
+trage
+3 règles avec journalisation
+complète
+✓Atteint
+Protéger la zone SCADA contre le
+WAN
+Blocage
+validé
+par
+tests
+Nmap
+✓Atteint
+Déployer un SIEM de supervision
+Splunk Enterprise v10.2.2
+✓Atteint
+Centraliser la journalisation
+Syslog
+UDP
+Forti-
+Gate →Splunk
+✓Atteint
+Valider par tests de pénétration
+6 scénarios
+Nmap, ﬂood,
+brute force
+✓Atteint
+Créer un tableau de bord de sécu-
+rité
+SCADA
+Security
+Dash-
+board 4 panels
+✓Atteint
+Déployer un serveur SCADA
+ScadaBR
++
+Tomcat
+sur
+Ubuntu 22.04
+✓Atteint
+Simuler un protocole industriel
+Simulateur
+Modbus
+TCP
+sur port 502
+✓Atteint
+10 objectifs sur 10 atteints
+L’architecture de cybersécurité SCADA a été intégralement mise en œuvre et
+validée dans l’environnement de simulation.
+0.33.2 Recommandations pour le déploiement en production
+Sur la base des observations issues de l’implémentation et des tests réalisés, les
+recommandations suivantes sont formulées pour le déploiement en environnement de
+production à NOMAC :
+Á
+Recommandations techniques prioritaires
+1. Mise à jour de FortiOS vers la dernière version stable supportée (priorité
+haute correction des CVEs connus sur la version v7.2.13) ;
+2. Restriction de l’accès SSH à l’interface de management du FortiGate
+aux seules adresses IP de la zone d’administration via une ACL dédiée ;
+Rapport de stage
+48
+2025-2026
+
+
+===== PAGE 50 =====
+
+3. Activation de la licence IPS FortiGuard OT pour bénéﬁcier des signa-
+tures industrielles mises à jour en temps réel ;
+4. Migration vers ScadaBR v1.2 ou vers une alternative moderne (Scada-
+LTS) intégrant les correctifs de sécurité récents ;
+5. Chiﬀrement des communications Modbus par encapsulation dans un
+tunnel TLS ou par migration vers OPC-UA pour les équipements le suppor-
+tant ;
+6. Activation de l’authentiﬁcation multifacteur (MFA) pour tous les
+accès d’administration aux équipements critiques.
+0.34. Conclusion
+L’implémentation de l’architecture de cybersécurité industrielle décrite dans ce
+chapitre démontre la faisabilité et l’eﬃcacité d’une approche Defense-in-Depth ap-
+pliquée à la protection des systèmes SCADA. Les résultats des tests de pénétration
+conﬁrment que les contrôles déployés répondent aux objectifs de sécurité ﬁxés : isolation
+totale de la zone industrielle vis-à-vis du WAN, détection et neutralisation automatique
+des tentatives d’intrusion, et supervision centralisée de l’ensemble des événements de sé-
+curité. L’environnement SCADA simulé (ScadaBR + Modbus TCP) valide par ailleurs
+la compatibilité de l’architecture avec les exigences opérationnelles des protocoles in-
+dustriels. Ces résultats constituent une base solide pour l’extension et le déploiement
+progressif de la solution en environnement de production.
+Rapport de stage
+49
+2025-2026
+
+
+===== PAGE 51 =====
+
+Conclusion générale
+Ce stage au sein de NOMAC nous a permis de mener à bien un projet d’en-
+vergure dans le domaine de la cybersécurité industrielle, alliant travail de conception
+architectural, mise en œuvre technique et validation par l’expérimentation. Partant
+d’un audit de l’infrastructure existante révélant des vulnérabilités structurelles signi-
+ﬁcatives, nous avons progressivement construit et validé une solution de protection
+complète, conforme aux exigences des standards IEC 62443 et ISO/IEC 27001.
+L’approche Defense-in-Depth mise en œuvre s’articule sur cinq couches de
+protection complémentaires et indépendantes : contrôle périmétrique par FortiGate,
+isolation réseau par zones et DMZ, chiﬀrement des communications par VPN IPsec,
+détection d’intrusions par proﬁl IPS industriel, et supervision centralisée par SIEM
+Splunk. La complémentarité de ces mécanismes garantit qu’aucun vecteur d’attaque
+unique ne permet de compromettre l’intégrité de la zone industrielle.
+Les tests de pénétration conduits depuis Kali Linux ont validé l’eﬃcacité de la
+solution : sur six scénarios d’attaque simulés, cinq ont été détectés et bloqués automa-
+tiquement, et l’intégralité des événements a été correctement journalisée et visualisée
+dans le tableau de bord Splunk. Le déploiement de ScadaBR et du simulateur Mod-
+bus TCP a en outre permis de reproduire un environnement industriel fonctionnel et
+d’éprouver la cohérence de l’architecture avec les contraintes des protocoles OT.
+Sur le plan de la formation professionnelle, ce projet a constitué une opportu-
+nité exceptionnelle d’approfondissement des compétences en administration de pare-feu
+industriel, en analyse forensique de journaux réseau, en virtualisation d’architectures
+complexes et en débogage de systèmes distribués. La résolution des problèmes tech-
+niques rencontrés notamment le conﬂit de routage dual-NIC sur Ubuntu, la gestion
+des dépendances de ScadaBR ou le débogage des politiques de ﬁltrage FortiGate
+a
+renforcé notre capacité à diagnostiquer et résoudre des incidents en environnement
+professionnel.
+Rapport de stage
+50
+2025-2026
+
+
+===== PAGE 52 =====
+
+Annexes
+Annexe A Plan d’adressage IP de l’environnement de simulation
+Équipement
+Interface
+Adresse IP
+Zone
+FortiGate VM
+port1
+192.168.28.2/24
+Zone WAN
+FortiGate VM
+port2
+192.168.20.1/24
+Zone DMZ
+FortiGate VM
+port3
+192.168.30.1/24
+Zone SCADA
+Kali Linux
+eth0
+192.168.28.50/24
+Zone WAN
+Windows
+10
++
+Splunk
+eth0
+192.168.28.x/24
+Zone WAN
+Ubuntu SCADA
+ens33
+192.168.30.10/24
+Zone SCADA
+Ubuntu SCADA
+ens37
+DHCP
+NAT
+VMware
+Accès internet
+Annexe B Inventaire de la pile technologique déployée
+Technologie
+Version
+Rôle dans l’architecture
+VMware
+Worksta-
+tion
+Pro
+Hyperviseur de virtualisation
+FortiGate VM
+v7.2.13
+NGFW Firewall, IPS, VPN, Syslog
+Kali Linux
+2025
+Plateforme de test de pénétration
+Ubuntu LTS
+22.04
+Serveur hôte SCADA (zone indus-
+trielle)
+Splunk Enterprise
+v10.2.2
+SIEM Collecte, corrélation, visuali-
+sation
+ScadaBR
+1.0CE
+Serveur SCADA HMI (interface in-
+dustrielle)
+Apache Tomcat
+6.0.53
+Conteneur applicatif Java pour Sca-
+daBR
+pymodbus
+3.13.0
+Bibliothèque Python
+Simulateur
+Modbus TCP
+Nmap
+Dernière stable
+Outil de reconnaissance et d’audit ré-
+seau
+hping3
+Dernière stable
+Outil de génération de traﬁc et ﬂood
+réseau
+Hydra
+Dernière stable
+Outil de test d’authentiﬁcation par
+force brute
+Rapport de stage
+51
+2025-2026
+
+
+===== PAGE 53 =====
+
+Bibliographie
+[1] IEC 62443, Industrial Automation and Control Systems Security Parts 1-4,
+International Electrotechnical Commission, 2018–2020.
+[2] ISO/IEC 27001 :2022, Information Security, Cybersecurity and Privacy Pro-
+tection
+Information Security Management Systems, International Organiza-
+tion for Standardization, 2022.
+[3] NIST, Guide to Industrial Control Systems (ICS) Security, Special Publica-
+tion 800-82 Rev. 3, National Institute of Standards and Technology, 2023. Dis-
+ponible sur : https://nvlpubs.nist.gov
+[4] Fortinet, FortiGate Administration Guide FortiOS 7.2, Fortinet Documenta-
+tion Library, 2023. Disponible sur : https://docs.fortinet.com
+[5] Splunk Inc., Splunk Enterprise Administration Manual v10.2, Splunk Docu-
+mentation, 2024. Disponible sur : https://docs.splunk.com
+[6] R. Langner, Stuxnet : Dissecting a Cyberwarfare Weapon, IEEE Security &
+Privacy, vol. 9, nř3, pp. 49–51, 2011.
+[7] M. Cherepanov, WIN32/INDUSTROYER : A New Threat for Industrial Control
+Systems, ESET Research, 2017.
+[8] P. Huitsing et al., Attack Taxonomies for the Modbus Protocols, International
+Journal of Critical Infrastructure Protection, vol. 1, pp. 37–44, 2008.
+[9] MASEN, Complexe Solaire Noor Ouarzazate, Moroccan Agency for Sustai-
+nable Energy, 2023. Disponible sur : https://www.masen.ma
+[10] ScadaBR Project, ScadaBR Installation and Conﬁguration Guide, GitHub Re-
+pository, 2023. Disponible sur : https://github.com/thiagoralves/ScadaBR_
+Installer
+Rapport de stage
+52
+2025-2026

@@ -1,0 +1,4011 @@
+===== PAGE 1 =====
+
+République Tunisienne
+Université de Monastir
+Institut Supérieur d’Informatique de Mahdia -
+Faculté des Sciences Economiques et de
+gestion de Mahdia
+N° d’ordre: LBC-BI-3-2026-034
+Ministère de l’Enseignement Supérieur
+et de la Recherche Scientifique
+MÉMOIRE
+Présenté à
+Institut Supérieur d’Informatique de Mahdia
+Effectué à
+STE Flesk
+En vue de l’obtention du diplôme de
+De la Licence en Business Computing
+(Business Intelligence)
+Elaboré par :
+Louhichi Youssef & Youssef Ameur
+AgroVision est une application web et mobile agricole utilisant l’IA pour détecter les
+maladies des plantes et aider les agriculteurs.
+Soutenu le : 15 juin 2026
+devant le jury composé de :
+President
+: Abdehafidh Marwa
+Rapporteur
+: Hamdi Aloulou
+Encadrant Académique
+: Imen Toumia
+Encadrant
+Professionnel
+: Baha Eddine Majdoub
+Année universitaire : 2025-2026
+
+
+===== PAGE 2 =====
+
+Dédicaces
+Je dédie ce modeste travail qui est le fruit de plusieurs années d’études :
+À ma mère,
+qui m’a soutenu durant ces années d’études. Tu es ma source d’inspiration constante,
+ma force inébranlable et mon roc solide tout au long de ce parcours académique.
+À mon cher père,
+Cette dédicace est une marque de profonde gratitude envers toi, mon modèle, mon
+mentor et mon pilier tout au long de ma vie.
+À mon grand frère à l’étranger,
+Cette dédicace est dédiée à toi pour être un exemple vivant de courage, de détermi-
+nation et de force.
+À mon binôme, Ameur Youssef,
+Cette dédicace est une marque de gratitude pour ton soutien et ton encouragement
+tout au long de notre collaboration.
+À tous mes amis,
+en témoignage de l’amitié sincère qui nous a liés et des bons moments passés en-
+semble.
+Youssef Louhichi
+
+
+===== PAGE 3 =====
+
+Dédicaces
+Je dédie ce modeste travail qui est le fruit de plusieurs années d’études :
+À l’être le plus cher de ma vie, ma mère,
+Tu es ma source d’inspiration infinie, mon pilier de force et ma plus grande admi-
+ratrice.
+À mon cher père (Paix à son âme),
+Tu es le meilleur père du monde, et je te suis éternellement reconnaissant pour
+tout ce que tu as fait pour moi.
+À ma soeur,
+Tu es la fleur de notre famille et je te souhaite le succès au baccalauréat pour une
+totale joie pour notre famille cette année.
+À mon petit frère,
+Ta présence m’a toujours donné la force de persévérer et d’aller de l’avant.
+À mon binôme, Youssef Louhichi,
+Merci pour ton soutien, avec une profonde reconnaissance pour notre collaboration
+fructueuse et pour les précieux souvenirs que nous avons créés.
+À tous mes amis,
+qui m’ont toujours encouragé durant mes études.
+Ameur Youssef
+
+
+===== PAGE 4 =====
+
+Remerciements
+Nous tenons tout d’abord à exprimer notre profonde gratitude à notre enca-
+drante académique, Mme Imen Toumia, pour ses conseils précieux, son suivi
+régulier, sa patience et son soutien tout au long de ce projet de fin d’études.
+Nous exprimons également nos vifs remerciements à notre encadrant profession-
+nel, M. Baha Eddine Majdoub, ainsi qu’à toute l’équipe de la société Flesk,
+pour son encadrement, sa disponibilité, et pour avoir partagé avec nous son exper-
+tise technique qui a grandement contribué à la réussite de ce travail.
+Nos remerciements s’adressent également aux membres du jury qui nous feront
+l’honneur d’évaluer ce travail.
+Nous tenons à remercier l’ensemble du corps enseignant et administratif de
+l’Institut Supérieur d’Informatique de Mahdia (ISIMa) ainsi que la Fa-
+culté des Sciences Economiques et Gestion de Mahdia pour la qualité de
+la formation que nous avons reçue.
+Enfin, un grand merci à tous ceux qui nous ont soutenus, de près ou de loin,
+moralement ou matériellement, tout au long de notre parcours universitaire.
+
+
+===== PAGE 5 =====
+
+Liste des Abréviations
+Abréviation
+Signification
+IA
+Intelligence Artificielle
+API
+Application Programming Interface
+CNN
+Convolutional Neural Network
+EXPO
+Expo Go - React Native Development Platform
+FastAPI
+Fast Application Programming Interface (Python)
+FSEG
+Faculté des Sciences Économiques et de Gestion
+ISIMA
+Institut Supérieur d’Informatique de Mahdia
+JSON
+JavaScript Object Notation
+JWT
+JSON Web Token
+ML
+Machine Learning
+PFE
+Projet de Fin d’Études
+UI
+User Interface
+UML
+Unified Modeling Language
+UX
+User Experience
+
+
+===== PAGE 6 =====
+
+AGROVISION
+TABLE DES MATIÈRES
+Table des matières
+Dédicaces
+2
+Remerciements
+4
+Liste des Abréviations
+5
+Table des Matières
+6
+Liste des Tableaux
+10
+Liste des Figures
+12
+Introduction Générale
+15
+1
+Cadre Général du Projet
+16
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.2
+Présentation de l’Organisme d’Accueil
+. . . . . . . . . . . . . . . .
+16
+1.3
+Contexte et Problématique . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.3.1
+État de l’agriculture en Tunisie
+. . . . . . . . . . . . . . . .
+16
+1.3.2
+Les maladies des plantes : un défi majeur . . . . . . . . . . .
+17
+1.3.3
+Limites des solutions existantes . . . . . . . . . . . . . . . .
+17
+1.3.4
+Problématique posée . . . . . . . . . . . . . . . . . . . . . .
+17
+1.4
+Étude de l’Existant . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+1.4.1
+Solutions existantes sur le marché . . . . . . . . . . . . . . .
+18
+1.4.2
+Tableau comparatif des solutions existantes
+. . . . . . . . .
+18
+1.4.3
+Critique de l’existant . . . . . . . . . . . . . . . . . . . . . .
+18
+1.4.4
+Notre solution proposée
+. . . . . . . . . . . . . . . . . . . .
+19
+1.5
+Présentation du Projet AgroVision
+. . . . . . . . . . . . . . . . . .
+19
+1.5.1
+Description générale
+. . . . . . . . . . . . . . . . . . . . . .
+19
+1.5.2
+Fonctionnalités principales . . . . . . . . . . . . . . . . . . .
+19
+1.5.3
+Architecture globale
+. . . . . . . . . . . . . . . . . . . . . .
+20
+1.6
+Objectifs du Projet . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+1.6.1
+Objectifs fonctionnels . . . . . . . . . . . . . . . . . . . . . .
+20
+1.6.2
+Objectifs techniques
+. . . . . . . . . . . . . . . . . . . . . .
+21
+1.6.3
+Objectifs non fonctionnels . . . . . . . . . . . . . . . . . . .
+21
+1.7
+Méthodologie de Gestion de Projet
+. . . . . . . . . . . . . . . . . .
+21
+6
+
+
+===== PAGE 7 =====
+
+AGROVISION
+TABLE DES MATIÈRES
+1.7.1
+Présentation de la méthode Agile/Scrum . . . . . . . . . . .
+21
+1.7.2
+Les rôles Scrum dans notre projet . . . . . . . . . . . . . . .
+22
+1.7.3
+Les artefacts Scrum . . . . . . . . . . . . . . . . . . . . . . .
+22
+1.7.4
+Comparaison des méthodologies . . . . . . . . . . . . . . . .
+22
+1.7.5
+Justification du choix de Scrum . . . . . . . . . . . . . . . .
+23
+1.7.6
+Découpage en Sprints . . . . . . . . . . . . . . . . . . . . . .
+23
+1.8
+Environnement de Travail
+. . . . . . . . . . . . . . . . . . . . . . .
+23
+1.8.1
+Environnement matériel
+. . . . . . . . . . . . . . . . . . . .
+23
+1.8.2
+Environnement logiciel . . . . . . . . . . . . . . . . . . . . .
+24
+1.8.3
+Outils de développement . . . . . . . . . . . . . . . . . . . .
+24
+1.9
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2
+Préparation du Projet
+25
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.2
+Capture du Besoin
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.2.1
+Spécification des Besoins . . . . . . . . . . . . . . . . . . . .
+25
+2.2.2
+Modélisation du Besoin . . . . . . . . . . . . . . . . . . . . .
+26
+2.2.3
+Diagramme de cas d’utilisation globale . . . . . . . . . . . .
+27
+2.2.4
+Diagramme de classe globale . . . . . . . . . . . . . . . . . .
+28
+2.3
+Pilotage du Projet avec Scrum . . . . . . . . . . . . . . . . . . . . .
+29
+2.3.1
+Équipe et rôle . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+2.3.2
+Le Backlog du produit . . . . . . . . . . . . . . . . . . . . .
+30
+2.3.3
+Planification des Sprints . . . . . . . . . . . . . . . . . . . .
+31
+2.3.4
+Diagramme de Gantt . . . . . . . . . . . . . . . . . . . . . .
+32
+2.4
+Environnement de Travail
+. . . . . . . . . . . . . . . . . . . . . . .
+32
+2.4.1
+Environnement Matériel . . . . . . . . . . . . . . . . . . . .
+32
+2.4.2
+Environnement Logiciel . . . . . . . . . . . . . . . . . . . . .
+32
+2.5
+Architecture Générale d’AgroVision . . . . . . . . . . . . . . . . . .
+33
+2.5.1
+Définition de l’architecture client-serveur . . . . . . . . . . .
+33
+2.5.2
+Définition de l’architecture MVC
+. . . . . . . . . . . . . . .
+34
+2.5.3
+Architecture adoptée dans AgroVision
+. . . . . . . . . . . .
+35
+2.5.4
+Architecture logicielle . . . . . . . . . . . . . . . . . . . . . .
+36
+2.5.5
+Architecture physique
+. . . . . . . . . . . . . . . . . . . . .
+36
+2.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+3
+Étude et Réalisation du Sprint 1 - Authentification
+38
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.2
+Objectifs du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+7
+
+
+===== PAGE 8 =====
+
+AGROVISION
+TABLE DES MATIÈRES
+3.3
+Analyse du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.3.1
+Diagramme de cas d’utilisation du Sprint 1 . . . . . . . . . .
+39
+3.3.2
+Descriptions textuelles des cas d’utilisation . . . . . . . . . .
+39
+3.4
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+3.4.1
+Diagrammes de séquence du Sprint 1 . . . . . . . . . . . . .
+42
+3.4.2
+Diagramme d’activité du Sprint 1 . . . . . . . . . . . . . . .
+46
+3.4.3
+Diagramme de déploiement du Sprint 1 . . . . . . . . . . . .
+48
+3.4.4
+Conception technique du Sprint 1 . . . . . . . . . . . . . . .
+48
+3.5
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+3.5.1
+Structure technique du Sprint 1 . . . . . . . . . . . . . . . .
+49
+3.5.2
+Interfaces réalisées
+. . . . . . . . . . . . . . . . . . . . . . .
+50
+3.5.3
+Tests réalisés pendant le Sprint 1 . . . . . . . . . . . . . . .
+59
+3.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+4
+Étude et Réalisation du Sprint 2 - Services Intelligents
+60
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+4.2
+Objectifs du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+4.3
+Analyse du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+4.3.1
+Diagramme de cas d’utilisation du Sprint 2 . . . . . . . . . .
+61
+4.3.2
+Descriptions textuelles des cas d’utilisation . . . . . . . . . .
+61
+4.4
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+4.4.1
+Diagrammes de séquence du Sprint 2 . . . . . . . . . . . . .
+64
+4.4.2
+Diagramme d’activité du Sprint 2 . . . . . . . . . . . . . . .
+66
+4.4.3
+Diagramme de déploiement du Sprint 2 . . . . . . . . . . . .
+67
+4.4.4
+Conception technique du Sprint 2 . . . . . . . . . . . . . . .
+67
+4.5
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.5.1
+Structure technique du Sprint 2 . . . . . . . . . . . . . . . .
+69
+4.5.2
+Interfaces réalisées
+. . . . . . . . . . . . . . . . . . . . . . .
+73
+4.5.3
+Tests réalisés pendant le Sprint 2 . . . . . . . . . . . . . . .
+74
+4.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+5
+Étude et Réalisation du Sprint 3 - Marketplace et Administration 76
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+5.2
+Objectifs du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+5.3
+Analyse du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+5.3.1
+Diagramme de cas d’utilisation du Sprint 3 . . . . . . . . . .
+77
+5.3.2
+Descriptions textuelles des cas d’utilisation . . . . . . . . . .
+77
+5.4
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+8
+
+
+===== PAGE 9 =====
+
+AGROVISION
+TABLE DES MATIÈRES
+5.4.1
+Diagrammes de séquence du Sprint 3 . . . . . . . . . . . . .
+80
+5.4.2
+Diagramme d’activité du Sprint 3 . . . . . . . . . . . . . . .
+83
+5.4.3
+Diagramme de déploiement du Sprint 3 . . . . . . . . . . . .
+84
+5.4.4
+Conception technique du Sprint 3 . . . . . . . . . . . . . . .
+85
+5.5
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+86
+5.5.1
+Structure technique du Sprint 3 . . . . . . . . . . . . . . . .
+86
+5.5.2
+Interfaces réalisées
+. . . . . . . . . . . . . . . . . . . . . . .
+86
+5.5.3
+Tests réalisés pendant le Sprint 3 . . . . . . . . . . . . . . .
+90
+5.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+94
+6
+Tests et Validation — Sprint 4
+95
+6.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+95
+6.2
+Objectifs du Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . .
+95
+6.3
+Analyse du Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+95
+6.3.1
+Diagramme de cas d’utilisation du Sprint 4 . . . . . . . . . .
+95
+6.3.2
+Descriptions textuelles des cas d’utilisation . . . . . . . . . .
+96
+6.4
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+98
+6.4.1
+Diagramme de séquence « Test d’intégration globale »
+. . .
+98
+6.4.2
+Diagramme de séquence « Test de sécurité » . . . . . . . . .
+98
+6.4.3
+Diagramme d’activité du Sprint 4 . . . . . . . . . . . . . . .
+98
+6.4.4
+Diagramme de déploiement du Sprint 4 . . . . . . . . . . . .
+99
+6.4.5
+Conception technique du Sprint 4 . . . . . . . . . . . . . . . 100
+6.5
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+6.5.1
+Structure technique du Sprint 4 . . . . . . . . . . . . . . . . 100
+6.5.2
+Interfaces réalisées
+. . . . . . . . . . . . . . . . . . . . . . . 100
+6.5.3
+Tests réalisés pendant le Sprint 4 . . . . . . . . . . . . . . . 102
+6.5.4
+Déploiement de l’application . . . . . . . . . . . . . . . . . . 108
+6.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 111
+Conclusion Générale
+112
+Webographie
+113
+9
+
+
+===== PAGE 10 =====
+
+AGROVISION
+LISTE DES TABLEAUX
+Liste des tableaux
+1.1
+Tableau comparatif des solutions de diagnostic agricole existantes .
+18
+1.2
+Répartition des rôles Scrum au sein de l’équipe projet . . . . . . . .
+22
+1.3
+Comparaison multicritères des méthodologies de développement . .
+22
+1.4
+Planification des sprints — AgroVision . . . . . . . . . . . . . . . .
+23
+1.5
+Spécifications de l’environnement matériel
+. . . . . . . . . . . . . .
+23
+1.6
+Outils logiciels utilisés dans le projet
+. . . . . . . . . . . . . . . . .
+24
+2.1
+Matrice des droits et privilèges par acteur
+. . . . . . . . . . . . . .
+27
+2.2
+Répartition des rôles Scrum du projet . . . . . . . . . . . . . . . . .
+30
+2.3
+Répartition des rôles Scrum du projet . . . . . . . . . . . . . . . . .
+31
+2.4
+Planification des sprints du projet AgroVision . . . . . . . . . . . .
+31
+2.5
+Environnement matériel utilisé . . . . . . . . . . . . . . . . . . . . .
+32
+2.6
+Environnement logiciel du projet
+. . . . . . . . . . . . . . . . . . .
+33
+3.1
+Backlog du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.2
+Backlog produit global d’AgroVision
+. . . . . . . . . . . . . . . . .
+40
+3.3
+Description détaillée du cas d’utilisation S’inscrire . . . . . . . . . .
+41
+3.4
+Description détaillée du cas d’utilisation S’authentifier
+. . . . . . .
+41
+3.5
+Description détaillée du cas d’utilisation Réinitialiser le mot de passe 42
+3.6
+Mécanismes de sécurité utilisés dans le backend
+. . . . . . . . . . .
+49
+3.7
+Structure technique réalisée pendant le Sprint 1 . . . . . . . . . . .
+50
+3.8
+Tests fonctionnels du Sprint 1 . . . . . . . . . . . . . . . . . . . . .
+59
+4.1
+Backlog du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+4.2
+Description textuelle du cas d’utilisation Scanner une plante . . . .
+62
+4.3
+Description détaillée du cas d’utilisation Consulter l’historique des
+scans . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+4.4
+Description détaillée du cas d’utilisation Discuter avec AgroBot
+. .
+63
+4.5
+Description détaillée du cas d’utilisation Consulter la météo
+. . . .
+64
+4.6
+Tests fonctionnels du Sprint 2 . . . . . . . . . . . . . . . . . . . . .
+75
+5.1
+Backlog du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+5.2
+Description détaillée du cas d’utilisation Passer une commande . . .
+78
+5.3
+Description détaillée du cas d’utilisation Ajouter un produit
+. . . .
+79
+5.4
+Fonctionnalités du tableau de bord administrateur . . . . . . . . . .
+80
+10
+
+
+===== PAGE 11 =====
+
+AGROVISION
+LISTE DES TABLEAUX
+5.5
+Collections MongoDB utilisées dans les modules du Sprint 3
+. . . .
+86
+5.6
+Organisation des routes API du backend . . . . . . . . . . . . . . .
+90
+5.7
+Synthèse des tests fonctionnels . . . . . . . . . . . . . . . . . . . . .
+91
+5.8
+Tests de sécurité et de contrôle d’accès . . . . . . . . . . . . . . . .
+94
+6.1
+Environnement utilisé pour les tests . . . . . . . . . . . . . . . . . .
+97
+6.2
+Stratégie de validation adoptée
+. . . . . . . . . . . . . . . . . . . .
+97
+6.3
+Tests backend du module authentification
+. . . . . . . . . . . . . . 103
+6.4
+Tests du module diagnostic . . . . . . . . . . . . . . . . . . . . . . . 104
+6.5
+Tests du module AgroBot
+. . . . . . . . . . . . . . . . . . . . . . . 105
+6.6
+Tests du module marketplace
+. . . . . . . . . . . . . . . . . . . . . 105
+6.7
+Tests de l’interface web . . . . . . . . . . . . . . . . . . . . . . . . . 106
+6.8
+Tests de l’application mobile . . . . . . . . . . . . . . . . . . . . . . 106
+6.9
+Scénario d’intégration globale du diagnostic
+. . . . . . . . . . . . . 108
+11
+
+
+===== PAGE 12 =====
+
+AGROVISION
+TABLE DES FIGURES
+Table des figures
+1.1
+Logo Flesk . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.2
+Logo AgroVision
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+1.3
+Architecture globale du système AgroVision
+. . . . . . . . . . . . .
+20
+2.1
+Diagramme de cas d’utilisation global du système AgroVision
+. . .
+28
+2.2
+Diagramme de classe global du système AgroVision . . . . . . . . .
+29
+2.3
+Diagramme de Gantt — planification temporelle du projet . . . . .
+32
+2.4
+Principe général de l’architecture client-serveur
+. . . . . . . . . . .
+34
+2.5
+Principe général de l’architecture MVC . . . . . . . . . . . . . . . .
+35
+2.6
+Architecture générale du système AgroVision . . . . . . . . . . . . .
+36
+3.1
+Diagramme de cas d’utilisation du Sprint1 . . . . . . . . . . . . . .
+39
+3.2
+Diagramme de séquence du cas d’utilisation « S’inscrire » . . . . . .
+43
+3.3
+Diagramme de séquence du cas d’utilisation « Vérifier Email » . . .
+43
+3.4
+Diagramme de séquence du cas d’utilisation « S’authentifier »
+. . .
+44
+3.5
+Diagramme de séquence du cas d’utilisation « Réinitialiser le mot
+de passe » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.6
+Diagramme de séquence du cas d’utilisation « Accéder au tableau
+de bord »
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+3.7
+Diagramme d’activité du Sprint 1 . . . . . . . . . . . . . . . . . . .
+47
+3.8
+Diagramme de déploiement du Sprint 1 . . . . . . . . . . . . . . . .
+48
+3.9
+Interface de la page d’inscription
+. . . . . . . . . . . . . . . . . . .
+51
+3.10 Interface de vérification de l’adresse email (écran 1) . . . . . . . . .
+52
+3.11 Interface de vérification de l’adresse email (écran 2) . . . . . . . . .
+52
+3.12 Interface de la page de connexion . . . . . . . . . . . . . . . . . . .
+53
+3.13 Interface de réinitialisation du mot de passe
+. . . . . . . . . . . . .
+54
+3.14 Interface de la page d’inscription - étape 1 . . . . . . . . . . . . . .
+55
+3.15 Interface de la page d’inscription - étape 2 . . . . . . . . . . . . . .
+56
+3.16 Interface de la page d’inscription - étape 3 . . . . . . . . . . . . . .
+56
+3.17 Interface de connexion sur l’application mobile . . . . . . . . . . . .
+57
+3.18 Interface du tableau de bord administrateur
+. . . . . . . . . . . . .
+58
+4.1
+Diagramme de cas d’utilisation du Sprint 2 . . . . . . . . . . . . . .
+61
+4.2
+Diagramme de séquence du cas d’utilisation « Diagnostiquer une
+plante » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+12
+
+
+===== PAGE 13 =====
+
+AGROVISION
+TABLE DES FIGURES
+4.3
+Diagramme de séquence du cas d’utilisation « Discuter avec AgroBot » 65
+4.4
+Diagramme de séquence du cas d’utilisation « Consulter la météo »
+66
+4.5
+Diagramme d’activité du module de diagnostic . . . . . . . . . . . .
+67
+4.6
+Diagramme de déploiement du Sprint 2 . . . . . . . . . . . . . . . .
+67
+4.7
+Classes prises en charge par le modèle de diagnostic . . . . . . . . .
+68
+4.8
+Construction du modèle de classification des maladies . . . . . . . .
+68
+4.9
+Extrait du processus d’entraînement du modèle
+. . . . . . . . . . .
+70
+4.10 évolution de la précision et de la perte du modèle . . . . . . . . . .
+71
+4.11 AgroBot . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+4.12 AgroBot . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+4.13 météo
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+4.14 météo
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+4.15 profil admin mobile . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+5.1
+Diagramme de cas d’utilisation du Sprint 3 . . . . . . . . . . . . . .
+77
+5.2
+Diagramme de séquence du cas d’utilisation « Passer une commande » 81
+5.3
+Diagramme de séquence du cas d’utilisation « Soumettre un produit
+vendeur » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+5.4
+Diagramme de séquence du cas d’utilisation « Accéder au dashboard
+admin » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+5.5
+Diagramme d’activité du Sprint 3 . . . . . . . . . . . . . . . . . . .
+84
+5.6
+Diagramme de déploiement du système AgroVision
+. . . . . . . . .
+85
+5.7
+Frontend web . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+5.8
+page d’acceuil mobile . . . . . . . . . . . . . . . . . . . . . . . . . .
+88
+5.9
+Interface Admin : Vue génerale
+. . . . . . . . . . . . . . . . . . . .
+89
+5.10 Interface Admin : demandes vente
+. . . . . . . . . . . . . . . . . .
+89
+5.11 Interface Admin : gestion des produits de marketplace . . . . . . . .
+89
+5.12 Premier test de prédiction sur une image de feuille . . . . . . . . . .
+92
+5.13 Affichage du résultat de diagnostic avec le taux de confiance . . . .
+93
+6.1
+Diagramme de cas d’utilisation du Sprint 4 . . . . . . . . . . . . . .
+96
+6.2
+Diagramme de cas d’utilisation du Sprint 4 . . . . . . . . . . . . . .
+98
+6.3
+Diagramme de cas d’utilisation du Sprint 4 . . . . . . . . . . . . . .
+98
+6.4
+Diagramme d’activité du Sprint 4 . . . . . . . . . . . . . . . . . . .
+99
+6.5
+Diagramme de déploiment du Sprint 4
+. . . . . . . . . . . . . . . . 100
+6.6
+Interface principale de la plateforme web . . . . . . . . . . . . . . . 101
+6.7
+Assistant conversationnel Agrobot . . . . . . . . . . . . . . . . . . . 101
+6.8
+Interface de diagnostic des maladies des plantes
+. . . . . . . . . . . 102
+6.9
+Tableau de bord administrateur . . . . . . . . . . . . . . . . . . . . 102
+13
+
+
+===== PAGE 14 =====
+
+AGROVISION
+TABLE DES FIGURES
+6.10 Deuxième test de diagnostic sur une feuille de pomme de terre . . . 104
+6.11 Paramètres et configuration utilisés pour le modèle IA . . . . . . . . 107
+6.12 Éléments utilisés dans le processus de développement IA
+. . . . . . 107
+6.13 Diagramme d’activité du Sprint 4 . . . . . . . . . . . . . . . . . . . 109
+6.14 Diagramme de déploiement du Sprint 4 . . . . . . . . . . . . . . . . 110
+14
+
+
+===== PAGE 15 =====
+
+AGROVISION
+TABLE DES FIGURES
+Introduction Générale
+L’agriculture tunisienne occupe une place importante dans l’économie nationale,
+mais surtout dans la vie quotidienne de nombreuses familles. Dans les zones rurales,
+la moindre baisse de rendement se ressent immédiatement. Or, depuis quelques
+années, les agriculteurs font face à un cumul de difficultés : pression climatique,
+disponibilité limitée de l’eau, et progression rapide de certaines maladies foliaires.
+Ce dernier point nous a particulièrement marqués pendant le stage. En discutant
+avec des utilisateurs et avec l’équipe technique, il est apparu qu’un diagnostic tardif
+coûte très cher, parfois en traitement inutile, parfois en perte de récolte. Il convient
+de noter que le problème n’est pas seulement technique ; il est aussi organisationnel,
+parce que l’information est souvent dispersée entre plusieurs outils.
+L’idée d’AgroVision est née de ce constat simple : un agriculteur ne devrait pas
+ouvrir trois ou quatre applications pour décider quoi faire le jour même. Il faut
+un outil unique, pratique, exploitable sur téléphone comme sur web. Force est de
+constater que les solutions existantes couvrent des besoins partiels, mais rarement
+l’ensemble du parcours.
+Notre proposition repose donc sur une plateforme intégrée. Le module central
+réalise un diagnostic à partir d’image via un modèle CNN, avec score de confiance.
+Autour de ce noyau, nous avons ajouté des briques réellement utiles dans l’usage
+quotidien : historique des scans, assistant conversationnel AgroBot, météo et mar-
+ketplace.
+Le développement n’a pas été linéaire. La deuxième partie du stage, notam-
+ment, a été marquée par plusieurs allers-retours sur l’intégration FastAPI/Express
+et sur les flux d’authentification mobile. Certaines erreurs paraissaient venir du
+modèle IA ; en réalité, elles provenaient de la chaîne de transfert de l’image ou de
+configuration OAuth. Ce type de difficulté a orienté notre manière de tester, mais
+aussi notre manière d’écrire ce mémoire.
+La suite du document présente ce chemin de travail, avec ses choix et ses limites.
+Nous commençons par le cadre général, puis la préparation détaillée du projet. Les
+chapitres suivants retracent les sprints de réalisation, les validations menées et les
+points qui restent à améliorer.
+15
+
+
+===== PAGE 16 =====
+
+AGROVISION
+Chapitre 1 : Cadre Général du Projet
+Chapitre 1 :
+Cadre Général du Projet
+1.1
+Introduction
+Dans ce chapitre, nous allons présenter le cadre général de notre projet AgroVi-
+sion. Nous commençons par l’organisme d’accueil, puis nous expliquons le contexte
+agricole, la problématique et les limites des solutions existantes. Ensuite, nous
+présentons notre solution, ses objectifs, la méthodologie Scrum adoptée et l’envi-
+ronnement de travail.
+1.2
+Présentation de l’Organisme d’Accueil
+Flesk est une agence digitale basée en Tunisie. Elle accompagne les entreprises
+dans leur transformation numérique — de la stratégie jusqu’au déploiement. Avec
+une équipe d’une cinquantaine de personnes, elle couvre notamment le développe-
+ment web et mobile, le design UX/UI, le digital marketing ainsi que le conseil en
+transformation numérique.
+Figure 1.1 : Logo Flesk
+C’est dans ce contexte qu’on a réalisé notre stage de fin d’études. Flesk nous a
+confié la conception et le développement d’AgroVision, une plateforme intelligente
+dédiée au diagnostic des maladies des plantes.
+1.3
+Contexte et Problématique
+1.3.1
+État de l’agriculture en Tunisie
+L’agriculture tunisienne joue un rôle important — pas seulement économique,
+mais aussi social. Dans beaucoup de régions rurales, c’est la principale source de
+revenus. Mais ce secteur est fragile : il dépend des conditions climatiques, de l’accès
+à l’eau, de la qualité des sols et de la capacité à réagir rapidement face aux maladies
+végétales.
+16
+
+
+===== PAGE 17 =====
+
+AGROVISION
+Chapitre 1 : Cadre Général du Projet
+Ce dernier point est souvent sous-estimé. Une maladie détectée trop tard peut
+détruire une récolte entière. Et dans beaucoup de cas, l’agriculteur n’a ni le temps
+ni les moyens de consulter un expert rapidement.
+1.3.2
+Les maladies des plantes : un défi majeur
+Les maladies végétales peuvent venir de champignons, de bactéries, de virus
+ou de conditions environnementales défavorables. Pour les cultures de pommes
+de terre — largement cultivées en Tunisie — des maladies comme le mildiou ou
+l’alternariose sont particulièrement problématiques.
+Le vrai problème, c’est l’identification. Reconnaître une maladie à l’œil nu de-
+mande de l’expérience. Quand les symptômes sont discrets ou proches d’une autre
+pathologie, même un agriculteur expérimenté peut se tromper. Et attendre l’inter-
+vention d’un technicien agricole, c’est souvent perdre des jours précieux.
+1.3.3
+Limites des solutions existantes
+Les agriculteurs utilisent aujourd’hui différentes approches pour gérer ce pro-
+blème — avec des résultats inégaux :
+• le diagnostic à l’œil nu reste subjectif et dépend du niveau d’expérience ;
+• consulter un technicien prend du temps et n’est pas toujours possible rapi-
+dement ;
+• chercher sur Internet donne des résultats généraux, rarement adaptés au cas
+précis ;
+• les applications mobiles existantes font souvent une seule chose bien, mais
+pas tout ;
+• aucune solution ne propose un accompagnement complet : diagnostic, conseil,
+météo et gestion de produits dans un même outil.
+1.3.4
+Problématique posée
+Tout ça nous a amenés à formuler la question centrale de notre projet :
+Comment concevoir une solution numérique intelligente, accessible via web et
+mobile, capable d’aider les agriculteurs à détecter rapidement les maladies des
+plantes et à mieux gérer certaines activités agricoles ?
+Répondre à cette question implique de construire quelque chose de simple à
+utiliser, rapide, fiable sur terrain, et capable d’évoluer avec le temps.
+17
+
+
+===== PAGE 18 =====
+
+AGROVISION
+Chapitre 1 : Cadre Général du Projet
+1.4
+Étude de l’Existant
+1.4.1
+Solutions existantes sur le marché
+Avant de concevoir AgroVision, on a regardé ce qui existe déjà. Plantix est
+probablement l’application la plus connue dans ce domaine — elle propose un
+diagnostic par image et des conseils agricoles. D’autres outils se concentrent sur la
+météo ou les informations de culture, mais sans aller plus loin.
+Le constat est simple : chaque outil fait une partie du travail. Aucun ne fait
+tout.
+1.4.2
+Tableau comparatif des solutions existantes
+Tableau comparatif des solutions existantes :
+Solution
+Diagnostic IA
+Mobile
+Assistant
+Limites principales
+Plantix
+✓
+✓
+–
+Orientée
+diagnostic,
+peu adaptable à notre
+contexte.
+Applications
+météo agricoles
+–
+✓
+–
+Utiles pour le climat,
+mais aucun diagnos-
+tic de maladies.
+Recherche web
+classique
+–
+✓
+–
+Résultats trop géné-
+raux, difficiles à inter-
+préter sur le terrain.
+Consultation
+d’un expert
+✓
+–
+✓
+Fiable, mais lente et
+pas
+toujours
+acces-
+sible.
+Table 1.1 : Tableau comparatif des solutions de diagnostic agricole existantes
+1.4.3
+Critique de l’existant
+Ce qu’on retient de cette analyse : les outils disponibles ne sont pas mauvais,
+mais ils sont fragmentés. L’agriculteur doit utiliser plusieurs applications différentes
+pour couvrir ses besoins. C’est peu pratique, surtout sur le terrain. Il manque une
+plateforme qui centralise tout — diagnostic, conseil, météo, produits — dans une
+interface simple et accessible.
+18
+
+
+===== PAGE 19 =====
+
+AGROVISION
+Chapitre 1 : Cadre Général du Projet
+1.4.4
+Notre solution proposée
+C’est exactement ce qu’AgroVision cherche à faire. La plateforme repose sur
+un modèle CNN capable d’analyser une image de feuille et de prédire la maladie
+détectée. Elle intègre aussi AgroBot, un assistant conversationnel pour répondre
+aux questions de l’utilisateur après le diagnostic.
+Figure 1.2 : Logo AgroVision
+AgroVision est disponible sur deux supports : une application web pour une
+utilisation depuis un ordinateur, et une application mobile pour le terrain, avec
+accès à la caméra directement depuis l’écran de diagnostic.
+1.5
+Présentation du Projet AgroVision
+1.5.1
+Description générale
+AgroVision, c’est quatre blocs qui travaillent ensemble : une application web,
+une application mobile, un backend sécurisé et un service IA. L’objectif : donner à
+l’agriculteur un diagnostic rapide et fiable à partir d’une simple photo de feuille.
+1.5.2
+Fonctionnalités principales
+• authentification sécurisée avec vérification email et connexion sociale ;
+• diagnostic des maladies par image avec score de confiance ;
+• AgroBot pour accompagner l’utilisateur après le résultat ;
+• consultation météo pour planifier les activités agricoles ;
+• marketplace pour acheter et vendre des produits agricoles ;
+• tableau de bord administrateur pour superviser la plateforme.
+19
+
+
+===== PAGE 20 =====
+
+AGROVISION
+Chapitre 1 : Cadre Général du Projet
+1.5.3
+Architecture globale
+L’architecture d’AgroVision sépare clairement les responsabilités. Le frontend
+— web et mobile — communique avec le backend Express.js via des APIs REST.
+Le backend gère les utilisateurs, les produits, les scans et les conversations. Le
+service FastAPI s’occupe uniquement du traitement IA : il reçoit l’image, l’analyse
+et retourne le résultat. MongoDB stocke toutes les données applicatives.
+Figure 1.3 : Architecture globale du système AgroVision
+1.6
+Objectifs du Projet
+1.6.1
+Objectifs fonctionnels
+• permettre à l’utilisateur de créer un compte et de s’authentifier de façon
+sécurisée ;
+• analyser une image de plante et afficher le diagnostic avec un taux de
+confiance ;
+• sauvegarder l’historique des diagnostics pour un suivi dans le temps ;
+• proposer AgroBot comme assistant après chaque diagnostic ;
+• afficher les données météo utiles à la planification agricole ;
+• gérer une marketplace de produits agricoles ;
+• donner à l’administrateur un espace de contrôle complet.
+20
+
+
+===== PAGE 21 =====
+
+AGROVISION
+Chapitre 1 : Cadre Général du Projet
+1.6.2
+Objectifs techniques
+• construire une architecture modulaire — chaque service peut évoluer indé-
+pendamment ;
+• intégrer un modèle CNN entraîné sur des images de feuilles de pomme de
+terre ;
+• exposer le modèle via FastAPI pour des prédictions rapides ;
+• sécuriser les accès avec JWT et middlewares ;
+• stocker les données dans MongoDB, localement ou via Atlas ;
+• prévoir une évolution vers d’autres cultures et maladies.
+1.6.3
+Objectifs non fonctionnels
+L’application doit être rapide, stable et simple à utiliser — même pour quelqu’un
+qui n’est pas à l’aise avec la technologie. Elle doit fonctionner correctement sur
+mobile comme sur ordinateur, et rester sécurisée sans complexifier l’expérience
+utilisateur.
+1.7
+Méthodologie de Gestion de Projet
+1.7.1
+Présentation de la méthode Agile/Scrum
+On avait plusieurs modules à développer en parallèle et un calendrier serré.
+Une méthode rigide comme le cycle en V n’était pas adaptée — trop linéaire, trop
+peu flexible. On a donc choisi Scrum, qui nous permettait de livrer par morceaux,
+de tester au fur et à mesure, et de corriger rapidement quand quelque chose ne
+fonctionnait pas comme prévu.
+21
+
+
+===== PAGE 22 =====
+
+AGROVISION
+Chapitre 1 : Cadre Général du Projet
+1.7.2
+Les rôles Scrum dans notre projet
+Le tableau suivant présente les différents rôles Scrum adoptés dans notre projet
+ainsi que leurs responsabilités respectives.
+Rôle
+Responsabilité dans le projet
+Product Owner
+Définir les priorités et valider ce qui est livré à
+chaque sprint.
+Scrum Master
+Suivre l’avancement, débloquer les situations
+critiques et ajuster le planning.
+Équipe de dévelop-
+pement
+Nous deux : conception, développement, tests
+et documentation.
+Encadrants
+Validation technique et suivi méthodologique
+tout au long du projet.
+Table 1.2 : Répartition des rôles Scrum au sein de l’équipe projet
+1.7.3
+Les artefacts Scrum
+• Product Backlog : la liste de tout ce qu’AgroVision doit faire, classée par
+priorité ;
+• Sprint Backlog : ce qu’on s’engage à livrer pendant le sprint en cours ;
+• Incrément : une version fonctionnelle et testable produite à chaque fin de
+sprint ;
+• Réunions de suivi : des points réguliers pour vérifier où on en est et ce
+qui bloque.
+1.7.4
+Comparaison des méthodologies
+Le tableau suivant compare les trois méthodologies de développement étudiées
+selon plusieurs critères afin de justifier le choix de Scrum pour notre projet.
+Critère
+Scrum
+Cycle en V
+RAD
+Flexibilité
+Élevée
+Faible
+Moyenne
+Gestion des chan-
+gements
+Continue
+Difficile
+Possible
+Livraisons
+Incrémentales
+En fin de projet
+Rapides
+Adaptation
+au
+projet
+Très adaptée
+Peu adaptée
+Partiellement
+adaptée
+Table 1.3 : Comparaison multicritères des méthodologies de développement
+22
+
+
+===== PAGE 23 =====
+
+AGROVISION
+Chapitre 1 : Cadre Général du Projet
+1.7.5
+Justification du choix de Scrum
+Scrum correspondait à notre situation pour trois raisons. D’abord, le projet
+comportait des modules interdépendants — impossible de tout livrer d’un coup.
+Ensuite, certains choix techniques, notamment pour le modèle IA, n’étaient pas
+fixés dès le départ et ont évolué. Enfin, travailler en sprints nous a forcés à prioriser,
+ce qui nous a évité de perdre du temps sur des fonctionnalités secondaires.
+1.7.6
+Découpage en Sprints
+Le tableau suivant présente la planification des quatre sprints du projet Agro-
+Vision, avec leurs périodes et objectifs principaux.
+Sprint
+Période
+Objectifs principaux
+Sprint 1
+01 fév. – 28 fév.
+Étude préliminaire, spécification des besoins
+et conception de l’architecture.
+Sprint 2
+01 mars – 31 mars
+Développement du socle technique et des
+fonctionnalités principales.
+Sprint 3
+01 avril – 30 avril
+Intégration du modèle IA, sécurisation et
+module Marketplace.
+Sprint 4
+01 mai – 31 mai
+Tests, optimisation, validation finale et ré-
+daction.
+Table 1.4 : Planification des sprints — AgroVision
+1.8
+Environnement de Travail
+1.8.1
+Environnement matériel
+Pour faire tourner tous les services en même temps — backend, frontend, Fas-
+tAPI, modèle IA et émulateur mobile — on avait besoin d’une machine perfor-
+mante. Voici la configuration utilisée :
+Composant
+Caractéristiques
+Processeur
+Intel Core i7 12th Gen / AMD Ryzen 7
+Mémoire RAM
+16 Go DDR4
+Disque Dur
+512 Go SSD NVMe
+Carte Graphique
+NVIDIA GeForce RTX 3050 (4Go)
+Système d’exploitation
+Windows 11 Pro 64-bits
+Table 1.5 : Spécifications de l’environnement matériel
+23
+
+
+===== PAGE 24 =====
+
+AGROVISION
+Chapitre 1 : Cadre Général du Projet
+1.8.2
+Environnement logiciel
+Le tableau suivant récapitule l’ensemble des outils et logiciels utilisés tout au
+long du développement du projet, classés par catégorie.
+Catégorie
+Outils / Logiciels
+Éditeur de code
+Visual Studio Code
+Versionnement
+Git & GitHub
+Environnement d’exécution
+Node.js v18+, Expo Go
+Bases de données
+MongoDB Atlas, MongoDB Compass
+Tests API
+Postman
+Conception UML
+draw.io / Lucidchart
+Machine Learning
+Python 3.10, TensorFlow, Keras
+Table 1.6 : Outils logiciels utilisés dans le projet
+1.8.3
+Outils de développement
+On a utilisé VS Code comme éditeur principal — léger, extensible et compatible
+avec toutes les technologies du projet. Git et GitHub ont assuré le versionnement
+et la sauvegarde du code. Postman a servi à tester les routes API au fur et à mesure
+du développement. Et MongoDB Compass nous a permis de visualiser les données
+directement dans la base.
+1.9
+Conclusion
+Dans ce chapitre, nous avons analysé le contexte du projet, présenté la problé-
+matique et justifié le choix de notre solution AgroVision. Nous avons aussi défini
+les objectifs, la méthodologie de travail et les moyens techniques retenus. Dans le
+chapitre suivant, nous passons à la préparation du projet avec la spécification des
+besoins, l’identification des acteurs et la modélisation du système.
+24
+
+
+===== PAGE 25 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+Chapitre 2 :
+Préparation du Projet
+2.1
+Introduction
+Dans ce chapitre, nous allons préparer le projet avant la réalisation. Nous trai-
+tons les besoins fonctionnels et non fonctionnels, les acteurs du système, les cas
+d’utilisation, la planification des sprints ainsi que l’architecture générale. L’objectif
+est d’établir une base claire et structurée pour pouvoir développer les modules du
+projet sans ambiguïté.
+2.2
+Capture du Besoin
+2.2.1
+Spécification des Besoins
+AgroVision s’adresse principalement aux agriculteurs, mais pas uniquement. La
+plateforme doit répondre à des besoins très différents selon le profil de l’utilisa-
+teur. On a donc distingué deux catégories : ce que le système doit faire (besoins
+fonctionnels), et comment il doit le faire (besoins non fonctionnels).
+Besoins Fonctionnels
+• Authentification : l’utilisateur doit pouvoir créer un compte, vérifier son
+email, se connecter et réinitialiser son mot de passe. On a aussi intégré la
+connexion via Google et Facebook pour simplifier l’accès.
+• Diagnostic des plantes : c’est la fonctionnalité centrale. L’utilisateur en-
+voie une photo de feuille — depuis le web ou le mobile — et reçoit en retour
+le nom de la maladie détectée avec un score de confiance.
+• AgroBot : un assistant conversationnel pour répondre aux questions agri-
+coles. Les conversations sont sauvegardées pour que l’utilisateur puisse y
+revenir plus tard.
+• Marketplace : les utilisateurs peuvent consulter des produits agricoles, les
+ajouter au panier et passer commande. Les vendeurs, eux, peuvent proposer
+leurs propres produits.
+• Météo : des données météorologiques affichées directement dans l’applica-
+tion pour aider à planifier les activités sur le terrain.
+• Administration : un tableau de bord complet pour gérer les utilisateurs, les
+produits, les commandes, les demandes vendeurs et les messages de contact.
+25
+
+
+===== PAGE 26 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+• Contact et support : un formulaire simple pour que les utilisateurs puissent
+contacter l’équipe en cas de besoin.
+• Application mobile : tout ce qui est disponible sur le web doit aussi être
+accessible depuis le téléphone — avec en plus l’onboarding, le profil ferme
+et la gestion des objectifs agricoles.
+Besoins Non Fonctionnels
+• Sécurité : les mots de passe sont hachés avec Bcrypt, les accès sont contrôlés
+via des tokens JWT, et deux middlewares distincts protègent les routes
+privées et administrateur.
+• Portabilité : l’application web tourne sur tous les navigateurs modernes. Le
+mobile cible Android et iOS via Expo, sans avoir à maintenir deux codebases
+séparées.
+• Maintenabilité : le code est organisé par modules — routes backend, mo-
+dèles MongoDB, composants React, écrans Expo et service FastAPI. Chaque
+partie peut évoluer sans tout casser.
+• Performance : le modèle TensorFlow est chargé une seule fois au démarrage
+de FastAPI. Les prédictions sont donc rapides, sans rechargement à chaque
+requête.
+• Évolutivité : l’architecture est pensée pour grandir. Ajouter une nouvelle
+culture au modèle IA ou un nouveau module à la plateforme ne nécessite
+pas de tout revoir.
+• Multilingue : l’application mobile supporte le français, l’anglais et l’arabe.
+Pour l’arabe, la gestion RTL a été intégrée pour que l’interface reste naturelle
+à lire.
+2.2.2
+Modélisation du Besoin
+Identification des acteurs
+Quatre types d’utilisateurs interagissent avec AgroVision, chacun avec un péri-
+mètre bien défini.
+• Visiteur : c’est l’utilisateur non connecté. Il peut consulter la page d’ac-
+cueil, parcourir la marketplace, voir la météo et envoyer un message de
+contact. Il peut aussi créer un compte, vérifier son email et se connecter
+— via email/mot de passe ou via Google et Facebook.
+• Agriculteur : une fois connecté, il accède aux fonctionnalités principales.
+Il peut scanner une plante, consulter l’historique de ses diagnostics, discuter
+26
+
+
+===== PAGE 27 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+avec AgroBot, suivre la météo, gérer son panier et passer des commandes. Il
+peut aussi demander à devenir vendeur sur la plateforme.
+• Vendeur : il soumet d’abord une demande pour accéder au statut vendeur.
+Une fois validé, il peut ajouter ses produits à la marketplace et gérer son
+catalogue directement depuis son espace.
+• Administrateur : il supervise tout. Depuis le tableau de bord, il gère les
+utilisateurs, valide ou rejette les demandes vendeurs, modifie le statut des
+commandes, traite les messages de contact et consulte les scans réalisés sur
+la plateforme.
+• Service IA : ce n’est pas un utilisateur humain. C’est le service FastAPI qui
+reçoit les images envoyées par le backend et retourne le résultat de prédiction.
+Le tableau suivant présente la matrice des droits d’accès aux fonctionnalités de
+l’application selon le rôle de chaque acteur.
+Fonctionnalité
+Visiteur
+Agriculteur
+Vendeur
+Admin
+Créer un compte / se
+connecter
+✓
+✓
+✓
+✓
+Scanner une plante
+X
+✓
+✓
+✓
+Utiliser AgroBot
+X
+✓
+✓
+✓
+Consulter la météo
+✓
+✓
+✓
+✓
+Acheter des produits
+X
+✓
+X
+✓
+Ajouter des produits
+X
+X
+✓
+✓
+Gérer la plateforme
+X
+X
+X
+✓
+Table 2.1 : Matrice des droits et privilèges par acteur
+2.2.3
+Diagramme de cas d’utilisation globale
+Le diagramme ci-dessous présente l’ensemble des fonctionnalités d’AgroVision
+et montre comment chaque acteur interagit avec le système. On y retrouve les six
+modules principaux : authentification, diagnostic, AgroBot, marketplace, météo et
+administration.
+27
+
+
+===== PAGE 28 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+Figure 2.1 : Diagramme de cas d’utilisation global du système AgroVision
+2.2.4
+Diagramme de classe globale
+Le diagramme de classes montre comment les données sont structurées dans
+AgroVision. Chaque entité correspond à une collection MongoDB réelle : utilisa-
+teurs, scans, conversations, produits, commandes et demandes vendeurs. Les re-
+lations entre ces entités reflètent directement la façon dont les modules commu-
+niquent entre eux dans le backend.
+28
+
+
+===== PAGE 29 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+Figure 2.2 : Diagramme de classe global du système AgroVision
+2.3
+Pilotage du Projet avec Scrum
+2.3.1
+Équipe et rôle
+On a adapté Scrum au contexte d’un projet de fin d’études — deux dévelop-
+peurs, un encadrant académique et un encadrant professionnel. Les rôles ont été
+répartis de façon pragmatique selon les responsabilités de chacun.
+29
+
+
+===== PAGE 30 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+Le tableau suivant détaille la répartition des rôles Scrum au sein de l’équipe
+projet AgroVision et les responsabilités associées à chacun.
+Rôle
+Responsabilité dans AgroVision
+Product Owner
+Définir ce qu’on devait construire et dans
+quel ordre — certaines fonctionnalités avant
+d’autres selon leur importance pour le projet.
+Scrum Master
+Suivre l’avancement, débloquer les situations
+qui ralentissaient l’équipe et ajuster le plan-
+ning quand c’était nécessaire.
+Équipe de dévelop-
+pement
+Nous deux : développement du backend Ex-
+press.js, du frontend React, de l’application
+mobile Expo, du service FastAPI et de l’in-
+tégration MongoDB.
+Encadrants
+Validation technique, retours méthodologiques
+et accompagnement tout au long du projet.
+Table 2.2 : Répartition des rôles Scrum du projet
+2.3.2
+Le Backlog du produit
+Le backlog produit, c’est simplement la liste de tout ce qu’AgroVision devait
+faire. On y mettait toutes les fonctionnalités identifiées, classées par ordre de prio-
+rité. Ce qui était critique passait en premier — l’authentification et le diagnostic
+avant la marketplace, par exemple.
+Ce qui est important avec le backlog, c’est que ce n’est pas une liste figée. Au
+fil des sprints, on y revenait pour ajuster les priorités, ajouter des tâches qu’on
+n’avait pas anticipées ou déplacer certaines fonctionnalités moins urgentes. C’est
+ça qui rend Scrum flexible : le backlog évolue avec le projet.
+Dans notre cas, on a regroupé toutes les tâches dans un seul outil — pas de liste
+séparée pour les bugs, les fonctionnalités et les corrections. Tout au même endroit,
+pour ne rien perdre et garder une vue claire sur ce qui restait à faire.
+30
+
+
+===== PAGE 31 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+Le tableau suivant détaille la répartition des rôles Scrum au sein de l’équipe
+projet AgroVision et les responsabilités associées à chacun.
+Rôle
+Responsabilité dans AgroVision
+Product Owner
+Définir ce qu’on devait construire et dans
+quel ordre — certaines fonctionnalités avant
+d’autres selon leur importance pour le projet.
+Scrum Master
+Suivre l’avancement, débloquer les situations
+qui ralentissaient l’équipe et ajuster le plan-
+ning quand c’était nécessaire.
+Équipe de dévelop-
+pement
+Nous deux : développement du backend Ex-
+press.js, du frontend React, de l’application
+mobile Expo, du service FastAPI et de l’in-
+tégration MongoDB.
+Encadrants
+Validation technique, retours méthodologiques
+et accompagnement tout au long du projet.
+Table 2.3 : Répartition des rôles Scrum du projet
+2.3.3
+Planification des Sprints
+On a découpé le projet en quatre sprints. Chaque sprint avait un objectif précis
+— pas juste "avancer", mais livrer quelque chose de concret et testable.
+Sprint
+Objectifs principaux
+Sprint 1
+Analyse des besoins, identification des acteurs,
+diagrammes de cas d’utilisation, backlog produit
+et préparation de l’architecture.
+Sprint 2
+Conception
+technique,
+architecture
+générale,
+choix technologiques, modèles MongoDB, dia-
+grammes de classes, séquences et activités.
+Sprint 3
+Réalisation du backend Express.js, du frontend
+React, de l’application mobile Expo, du service
+FastAPI et intégration du modèle TensorFlow.
+Sprint 4
+Tests fonctionnels, validation du diagnostic IA,
+correction des erreurs, optimisation et prépara-
+tion de la démonstration.
+Table 2.4 : Planification des sprints du projet AgroVision
+31
+
+
+===== PAGE 32 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+2.3.4
+Diagramme de Gantt
+Le diagramme ci-dessous montre la répartition des tâches dans le temps — de
+l’analyse jusqu’aux tests finaux.
+Figure 2.3 : Diagramme de Gantt — planification temporelle du projet
+2.4
+Environnement de Travail
+2.4.1
+Environnement Matériel
+Pour faire tourner tout en même temps — backend, frontend, FastAPI, modèle
+IA et application mobile — on avait besoin d’une machine qui tient la charge.
+Composant
+Caractéristiques
+Processeur
+Intel Core i7 12th Gen / AMD Ryzen 7
+Mémoire RAM
+16 Go
+Stockage
+SSD 512 Go
+Système d’exploitation
+Windows 11
+Smartphone de test
+Android/iOS avec Expo Go
+Table 2.5 : Environnement matériel utilisé
+2.4.2
+Environnement Logiciel
+Voici les technologies et outils qu’on a utilisés tout au long du projet :
+32
+
+
+===== PAGE 33 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+Catégorie
+Outils / Technologies
+Frontend web
+React.js, Vite, React Router, Tailwind CSS,
+Recharts
+Backend
+Node.js, Express.js, Mongoose, JWT, Pas-
+sport.js, Multer, Nodemailer
+Base de données
+MongoDB / MongoDB Atlas
+Application mobile
+Expo, React Native, Expo Router, AsyncSto-
+rage, i18next, Expo Camera, Expo Image Pi-
+cker, Expo Location
+Intelligence
+artifi-
+cielle
+Python, FastAPI, TensorFlow, Keras, NumPy,
+Pillow
+APIs externes
+Groq SDK, Google Generative AI, Open-
+Meteo, OAuth Google/Facebook
+Outils
+de
+test
+et
+suivi
+Postman, Git, GitHub, Visual Studio Code
+Modélisation
+UML, draw.io / Lucidchart
+Table 2.6 : Environnement logiciel du projet
+2.5
+Architecture Générale d’AgroVision
+2.5.1
+Définition de l’architecture client-serveur
+Le modèle client-serveur fait référence à un concept de base dans le domaine
+de la mise en réseau, où le client est un appareil ou un logiciel qui demande des
+informations ou des services, et où le serveur est la machine ou le logiciel qui
+fournit ces informations ou services. Ce modèle est fondamental pour comprendre
+comment les données sont échangées sur un réseau.
+33
+
+
+===== PAGE 34 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+Figure 2.4 : Principe général de l’architecture client-serveur
+2.5.2
+Définition de l’architecture MVC
+MVC (Modèle-Vue-Contrôleur) est un modèle de conception logicielle couram-
+ment utilisé pour implémenter les interfaces utilisateurs, les données et la logique
+de contrôle. Il met l’accent sur la séparation entre la logique métier du logiciel et
+l’affichage.
+34
+
+
+===== PAGE 35 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+Figure 2.5 : Principe général de l’architecture MVC
+2.5.3
+Architecture adoptée dans AgroVision
+AgroVision repose sur une architecture client-serveur. Le frontend web React et
+l’application mobile Expo communiquent avec le backend Express.js via des APIs
+REST. Le backend gère tout : authentification, utilisateurs, produits, commandes,
+scans, conversations et administration. MongoDB stocke les données. Et FastAPI
+s’occupe uniquement du diagnostic IA — isolé du reste pour rester indépendant.
+Côté organisation interne, le backend suit une logique proche de MVC. Le dos-
+sier models contient les schémas Mongoose — c’est la couche données. Le dossier
+routes joue le rôle de contrôleur — il reçoit les requêtes, applique la logique et
+retourne du JSON. Les vues, elles, sont dans le frontend. Ce n’est pas du MVC
+classique, mais l’idée est là.
+35
+
+
+===== PAGE 36 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+Figure 2.6 : Architecture générale du système AgroVision
+2.5.4
+Architecture logicielle
+Quatre blocs constituent la plateforme :
+• Frontend web : pages React pour l’accueil, l’authentification, le scanner,
+AgroBot, la marketplace, la météo, le profil, le contact et l’administration.
+• Backend Express.js : routes REST pour l’authentification, le chat, les pro-
+duits, les vendeurs, les utilisateurs, l’administration, la météo, les maladies,
+les scans et les contacts.
+• Application mobile Expo : écrans de démarrage, onboarding, authentifi-
+cation, profil ferme, objectifs, accueil, chat, marketplace, diagnostic, météo,
+panier et profil.
+• Service IA FastAPI : reçoit une image, la redimensionne, exécute le mo-
+dèle TensorFlow et retourne le diagnostic avec le score de confiance.
+2.5.5
+Architecture physique
+En développement, tout tourne en local. Le frontend est lancé avec Vite. Le
+backend Express.js écoute sur le port 5001. FastAPI tourne sur le port 8001. Le
+mobile se connecte au backend via l’IP locale de la machine. MongoDB est en local
+ou sur Atlas selon la configuration.
+36
+
+
+===== PAGE 37 =====
+
+AGROVISION
+Chapitre 2 : Préparation du Projet
+2.6
+Conclusion
+Dans ce chapitre, nous avons défini les besoins, identifié les acteurs et préparé la
+structure de pilotage du projet avec Scrum. Nous avons également fixé l’architecture
+client- serveur et les choix techniques à utiliser pendant le développement. Dans le
+chapitre suivant, nous entamons l’étude et la réalisation du Sprint 1.
+37
+
+
+===== PAGE 38 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Chapitre 3 :
+Étude et Réalisation du
+Sprint 1 - Authentification
+3.1
+Introduction
+Le Sprint 1 marque le début de la phase de réalisation du projet. Il est orga-
+nisé autour de trois parties principales : l’analyse, la conception et la réalisation.
+Durant cette première itération, le travail s’est concentré sur la mise en place d’un
+socle robuste pour la gestion des utilisateurs et des rôles, avec une authentification
+sécurisée et des routes protégées.
+3.2
+Objectifs du Sprint 1
+Pour cette première étape, il fallait rendre le projet exécutable et sécurisé dès
+les premières itérations. Le travail a commencé par l’organisation du serveur Ex-
+press.js, la définition des modèles MongoDB de base et la préparation des premières
+pages d’accès. Cette phase a aussi permis de fixer une méthode conservée par la
+suite : séparation des routes, utilisation des middlewares, stockage dans des collec-
+tions dédiées et communication avec le frontend en JSON.
+ID
+User Story
+Priorité
+US1.1
+En tant que visiteur, je veux créer un
+compte afin d’accéder aux fonctionnalités
+privées.
+Haute
+US1.2
+En tant qu’utilisateur, je veux vérifier
+mon email par un code de confirmation.
+Haute
+US1.3
+En tant qu’utilisateur, je veux me connec-
+ter avec email/mot de passe ou avec
+Google/Facebook.
+Haute
+US1.4
+En tant qu’utilisateur, je veux réinitiali-
+ser mon mot de passe en cas d’oubli.
+Moyenne
+US1.5
+En tant qu’administrateur, je veux accé-
+der à un espace protégé.
+Haute
+Table 3.1 : Backlog du Sprint 1
+38
+
+
+===== PAGE 39 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+3.3
+Analyse du Sprint 1
+3.3.1
+Diagramme de cas d’utilisation du Sprint 1
+La question centrale de ce sprint était simple : qui peut faire quoi dans le
+système ? Un visiteur peut s’inscrire, mais pas accéder au diagnostic. Un utilisateur
+connecté peut scanner une plante, mais pas gérer les autres comptes. L’admin, lui,
+a accès à tout. Ces limites ont été définies dès le départ, car modifier la sécurité en
+cours de développement aurait demandé beaucoup plus de temps.
+Figure 3.1 : Diagramme de cas d’utilisation du Sprint1
+3.3.2
+Descriptions textuelles des cas d’utilisation
+Le tableau suivant présente le backlog produit global d’AgroVision, regroupant
+l’ensemble des user stories identifiées et classées par ordre de priorité.
+39
+
+
+===== PAGE 40 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+ID
+User Story / Fonctionnalité
+Priorité
+US1
+En tant qu’utilisateur, je veux créer un
+compte, vérifier mon email et me connec-
+ter de manière sécurisée.
+Haute
+US2
+En tant qu’agriculteur, je veux scanner
+une plante pour obtenir un diagnostic IA.
+Haute
+US3
+En tant qu’utilisateur, je veux discuter
+avec AgroBot pour recevoir des conseils
+agricoles.
+Haute
+US4
+En tant qu’agriculteur, je veux consulter
+la météo pour planifier mes activités.
+Moyenne
+US5
+En tant qu’utilisateur, je veux parcourir
+la marketplace et passer commande.
+Haute
+US6
+En tant que vendeur, je veux ajouter des
+produits et demander la validation de
+mon profil vendeur.
+Haute
+US7
+En tant qu’administrateur, je veux gé-
+rer les utilisateurs, produits, commandes,
+scans et messages.
+Haute
+US8
+En tant qu’utilisateur mobile, je veux ac-
+céder aux mêmes services depuis une ap-
+plication Expo multilingue.
+Moyenne
+Table 3.2 : Backlog produit global d’AgroVision
+Description détaillée du cas d’utilisation S’inscrire
+L’inscription ne se limite pas à la création directe d’un compte. Une validation
+par email a été ajoutée afin d’éviter les adresses fausses ou mal saisies. En pra-
+tique, un code est envoyé juste après la création du compte. Celui-ci existe dans
+MongoDB, mais il reste inutilisable tant que l’adresse n’est pas confirmée.
+40
+
+
+===== PAGE 41 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Ce tableau est une représentation détaillée du cas d’utilisation s’inscrire :
+Élément
+Description
+Acteur principal
+Visiteur
+Objectif
+Créer un compte pour accéder aux services pri-
+vés de la plateforme.
+Précondition
+Le visiteur n’a pas encore de compte avec cette
+adresse email.
+Scénario nominal
+Le visiteur remplit le formulaire, le frontend
+vérifie les champs, le backend contrôle l’unicité
+de l’email, chiffre le mot de passe avec Bcrypt,
+crée le compte et envoie un code de vérification.
+Postcondition
+Le compte est créé mais non activé jusqu’à va-
+lidation du code.
+Exceptions
+Email déjà utilisé, mot de passe invalide,
+champ manquant ou erreur d’envoi du mail.
+Table 3.3 : Description détaillée du cas d’utilisation S’inscrire
+Description détaillée du cas d’utilisation S’authentifier
+La connexion, c’est plus qu’une simple vérification d’identifiants. Une fois les
+données validées, le backend génère un token JWT. Ce token, le client le garde
+et l’envoie avec chaque requête privée. Ça évite de redemander le mot de passe à
+chaque action — et ça permet au serveur de savoir qui fait quoi, à tout moment.
+Ce tableau est une représentation détaillée du cas d’utilisation s’authentifier :
+Élément
+Description
+Acteur principal
+Utilisateur, vendeur ou administrateur
+Objectif
+Accéder aux fonctionnalités selon le rôle du
+compte.
+Précondition
+L’utilisateur a un compte actif et non banni.
+Scénario nominal
+L’utilisateur saisit ses identifiants. Le backend
+trouve le compte, compare le mot de passe ha-
+ché, vérifie l’état du compte et retourne un to-
+ken JWT.
+Postcondition
+L’utilisateur est connecté et peut accéder aux
+pages autorisées.
+Exceptions
+Identifiants
+incorrects,
+email
+non
+vérifié,
+compte banni ou token invalide.
+Table 3.4 : Description détaillée du cas d’utilisation S’authentifier
+41
+
+
+===== PAGE 42 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Description détaillée du cas d’utilisation Réinitialiser le mot de passe
+La réinitialisation du mot de passe répond à un besoin courant dans une ap-
+plication avec authentification. Le mécanisme retenu reste classique mais fiable :
+l’utilisateur fournit son email, reçoit un lien avec un token temporaire, puis définit
+un nouveau mot de passe tant que ce token est encore valide.
+Ce tableau est une description détaillée du cas d’utilisation réinitialiser le mot
+de passe :
+Élément
+Description
+Acteur principal
+Utilisateur inscrit
+Objectif
+Définir un nouveau mot de passe quand l’an-
+cien est oublié.
+Précondition
+L’email fourni correspond à un compte exis-
+tant.
+Scénario nominal
+L’utilisateur saisit son email, le système génère
+un token temporaire, envoie l’email de récupé-
+ration, puis accepte un nouveau mot de passe
+si le token est encore valide.
+Postcondition
+Le mot de passe est remplacé après hachage et
+l’ancien token ne fonctionne plus.
+Exceptions
+Email inexistant, token expiré, token invalide
+ou nouveau mot de passe non conforme.
+Table 3.5 : Description détaillée du cas d’utilisation Réinitialiser le mot de passe
+3.4
+Conception
+3.4.1
+Diagrammes de séquence du Sprint 1
+Diagramme de séquence « S’inscrire »
+L’inscription est le premier point de contact entre le visiteur et le système. Ce
+diagramme montre comment le frontend communique avec le controller pour créer
+le compte, comment le model vérifie l’unicité de l’email dans MongoDB, et comment
+le service d’envoi d’email est déclenché automatiquement après la création.
+42
+
+
+===== PAGE 43 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Figure 3.2 : Diagramme de séquence du cas d’utilisation « S’inscrire »
+Diagramme de séquence « Vérifier Email »
+Une fois le compte créé, l’utilisateur reçoit un code par email. Ce diagramme
+illustre comment le controller vérifie ce code côté backend, comment le model met
+à jour l’état du compte dans MongoDB, et ce qui se passe si le code est invalide
+ou expiré.
+Figure 3.3 : Diagramme de séquence du cas d’utilisation « Vérifier Email »
+43
+
+
+===== PAGE 44 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Diagramme de séquence « S’authentifier »
+Ce diagramme montre le parcours complet de connexion. Le controller reçoit les
+identifiants, demande au model de rechercher l’utilisateur dans MongoDB, compare
+le mot de passe haché avec Bcrypt, puis génère un token JWT retourné au frontend.
+Les cas d’échec — mauvais mot de passe, compte banni, email non vérifié — sont
+aussi représentés.
+Figure 3.4 : Diagramme de séquence du cas d’utilisation « S’authentifier »
+Diagramme de séquence « Réinitialiser le mot de passe »
+Ce diagramme couvre deux étapes distinctes. La première — la demande de
+réinitialisation — où le controller génère un token temporaire et déclenche l’envoi
+d’email. La seconde — la définition du nouveau mot de passe — où le controller
+vérifie que le token est encore valide avant d’autoriser la mise à jour dans MongoDB.
+44
+
+
+===== PAGE 45 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Figure 3.5 : Diagramme de séquence du cas d’utilisation « Réinitialiser le mot de
+passe »
+Diagramme de séquence « Accéder au tableau de bord »
+L’accès au tableau de bord passe par deux filtres successifs. Le premier middle-
+ware vérifie que le token JWT est valide. Le second vérifie que le compte possède
+bien le rôle admin. Si les deux conditions sont remplies, le controller agrège les
+statistiques depuis MongoDB et les retourne au frontend pour affichage.
+45
+
+
+===== PAGE 46 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Figure 3.6 : Diagramme de séquence du cas d’utilisation « Accéder au tableau de
+bord »
+3.4.2
+Diagramme d’activité du Sprint 1
+Ce diagramme d’activité résume le flux d’authentification du sprint 1 : inscrip-
+tion, vérification email, connexion et contrôle des rôles.
+46
+
+
+===== PAGE 47 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Figure 3.7 : Diagramme d’activité du Sprint 1
+47
+
+
+===== PAGE 48 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+3.4.3
+Diagramme de déploiement du Sprint 1
+Ce diagramme présente les composants du sprint 1 et leurs interactions : clients
+web/mobile, backend Express.js, base MongoDB et services d’authentification.
+Figure 3.8 : Diagramme de déploiement du Sprint 1
+3.4.4
+Conception technique du Sprint 1
+Afficher ou masquer un bouton côté frontend ne suffit pas à sécuriser l’accès. Si
+la route backend n’est pas protégée, elle peut être appelée directement. Pour cette
+raison, deux middlewares ont été mis en place.
+Le premier intercepte chaque requête sur une route privée. Il lit le token JWT
+dans l’en-tête, vérifie sa signature et récupère l’identité de l’utilisateur. Pas de
+token, ou token modifié — la requête est stoppée là. C’est ce mécanisme qui protège
+le diagnostic, le chat, les commandes et le profil.
+Le second va plus loin : il vérifie que le compte a le rôle admin. Être connecté ne
+suffit pas pour accéder au tableau de bord. Ce filtre s’applique à toutes les routes de
+gestion — statistiques, validation vendeurs, suppression de produits, modification
+des commandes.
+48
+
+
+===== PAGE 49 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Afin de renforcer la sécurité de la plateforme AgroVision, nous avons intégré
+plusieurs mécanismes complémentaires au niveau du backend, résumés dans le ta-
+bleau suivant :
+Mécanisme
+Rôle dans AgroVision
+Bcrypt
+Chiffre les mots de passe avant leur stockage
+dans MongoDB.
+JWT
+Transporte l’identité de l’utilisateur connecté
+entre le client et le backend.
+authMiddleware
+Bloque les routes privées si aucun token valide
+n’est fourni.
+adminMiddleware
+Vérifie que le compte a le rôle administrateur
+avant d’autoriser l’accès.
+CORS
+Autorise les échanges entre le backend et les
+clients web/mobile en développement.
+Multer
+Gère la réception des images envoyées au diag-
+nostic ou à la marketplace.
+Table 3.6 : Mécanismes de sécurité utilisés dans le backend
+3.5
+Réalisation
+3.5.1
+Structure technique du Sprint 1
+Le backend a été organisé de manière à donner un rôle clair à chaque fichier.
+Les routes, les modèles et les middlewares sont séparés dans des dossiers dédiés.
+Cette organisation a facilité la lecture du code lorsque les modules ont commencé
+à devenir plus nombreux.
+49
+
+
+===== PAGE 50 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+ce tableau résume la structure technique réalisée pendant le Sprint 1 :
+Fichier / dossier
+Rôle
+index.js
+Lance le serveur Express, connecte MongoDB
+et déclare les routes API.
+authRoutes.js
+Gère l’inscription, la connexion, la vérification
+email, OAuth et la réinitialisation.
+authMiddleware.js
+Bloque les routes privées si le token JWT est
+absent ou invalide.
+adminMiddleware.js Réserve certaines routes aux comptes avec le
+rôle administrateur.
+User.js
+Définit le schéma utilisateur : compte, rôle, pa-
+nier, favoris et bannissement.
+Table 3.7 : Structure technique réalisée pendant le Sprint 1
+3.5.2
+Interfaces réalisées
+À la fin de ce sprint, les premiers écrans fonctionnels étaient disponibles. Côté
+web, ils couvrent l’inscription, la connexion, la vérification email, la récupération
+du mot de passe et l’accès admin. Côté mobile, le parcours commence par un écran
+de démarrage et un onboarding, puis continue vers les écrans de connexion et de
+création de compte.
+Chaque écran communique avec le backend. L’inscription redirige vers la véri-
+fication. La connexion récupère le token JWT et le stocke pour les requêtes sui-
+vantes. Sur mobile, l’onboarding a été ajouté pour que l’utilisateur comprenne ce
+qu’est AgroVision avant même de se connecter — surtout utile pour quelqu’un qui
+découvre l’application pour la première fois.
+50
+
+
+===== PAGE 51 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Page d’inscription
+La page d’inscription permet au visiteur de créer un compte en renseignant
+son nom, son email et son mot de passe. Une fois le formulaire soumis, un code de
+vérification est automatiquement envoyé par email. L’interface a été gardée simple :
+aucun champ inutile, seulement les informations nécessaires pour créer un compte
+rapidement.
+Figure 3.9 : Interface de la page d’inscription
+Cette interface met l’accent sur un parcours d’inscription direct avec les informa-
+tions essentielles. Le formulaire reste lisible et guide l’utilisateur vers la création
+rapide du compte, sans surcharge visuelle.
+51
+
+
+===== PAGE 52 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Page de vérification email
+Après l’inscription, l’utilisateur est redirigé vers cette page. Il doit saisir le code
+à 6 chiffres reçu par email pour activer son compte. Tant que cette étape n’est pas
+complétée, l’accès aux fonctionnalités privées reste bloqué.
+Figure 3.10 : Interface de vérification
+de l’adresse email (écran 1)
+Figure 3.11 : Interface de vérification
+de l’adresse email (écran 2)
+La vérification par code ajoute un contrôle simple mais important pour confirmer
+l’identité du compte. Cette étape améliore la fiabilité des inscriptions et bloque
+l’accès privé tant que l’email n’est pas validé.
+52
+
+
+===== PAGE 53 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Page de connexion
+La page de connexion propose deux options : se connecter avec email et mot de
+passe, ou passer par Google et Facebook. Le token JWT généré après connexion
+est stocké localement et réutilisé pour toutes les requêtes privées suivantes.
+Figure 3.12 : Interface de la page de connexion
+L’écran de connexion offre plusieurs choix d’authentification pour réduire les aban-
+dons. La récupération du token JWT permet ensuite de sécuriser les échanges avec
+les routes privées.
+53
+
+
+===== PAGE 54 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Page de réinitialisation du mot de passe
+Cette page s’affiche quand l’utilisateur a oublié son mot de passe. Il saisit son
+adresse email et reçoit un lien de récupération. Le formulaire de définition du
+nouveau mot de passe n’apparaît que si le token fourni dans le lien est encore
+valide.
+Figure 3.13 : Interface de réinitialisation du mot de passe
+Ce flux traite un besoin fréquent sans complexifier l’expérience utilisateur. Le lien
+temporaire envoyé par email permet de restaurer l’accès en conservant un niveau
+de sécurité correct.
+54
+
+
+===== PAGE 55 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Onboarding mobile
+Sur mobile, l’utilisateur passe d’abord par trois écrans d’onboarding avant d’ar-
+river à la connexion. Ces écrans présentent rapidement ce qu’AgroVision peut faire
+— diagnostic, assistance et marketplace. C’est un choix délibéré : on voulait que
+l’utilisateur comprenne la valeur de l’application avant même de créer un compte.
+Figure 3.14 : Interface de la page d’inscription - étape 1
+55
+
+
+===== PAGE 56 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Figure 3.15 : Interface de la page
+d’inscription - étape 2
+Figure 3.16 : Interface de la page
+d’inscription - étape 3
+L’onboarding introduit les fonctionnalités clés avant la connexion, ce qui aide l’uti-
+lisateur à comprendre la valeur pratique de l’application dès la première ouverture
+sur mobile.
+56
+
+
+===== PAGE 57 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Connexion mobile
+L’écran de connexion mobile reprend les mêmes fonctionnalités que la version
+web — email/mot de passe et OAuth — mais dans une interface adaptée au tactile.
+Le token JWT récupéré est stocké dans AsyncStorage pour persister entre les
+sessions.
+Figure 3.17 : Interface de connexion sur l’application mobile
+La version mobile conserve la même logique de connexion que le web, avec une
+ergonomie adaptée au tactile. Le stockage du token dans AsyncStorage évite une
+reconnexion répétée et rend l’utilisation plus fluide.
+57
+
+
+===== PAGE 58 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+Tableau de bord administrateur
+Le tableau de bord est accessible uniquement aux comptes avec le rôle admin.
+Il affiche les statistiques globales de la plateforme : nombre d’utilisateurs, de scans
+effectués, de produits et de commandes. C’est le point d’entrée de toutes les actions
+de gestion.
+Figure 3.18 : Interface du tableau de bord administrateur
+Le dashboard centralise les indicateurs essentiels pour le pilotage de la plateforme.
+Il facilite le suivi global et accélère les actions de contrôle côté administrateur.
+58
+
+
+===== PAGE 59 =====
+
+AGROVISION
+Chapitre 3 : Étude et Réalisation du Sprint 1 - Authentification
+3.5.3
+Tests réalisés pendant le Sprint 1
+La validation a été menée de manière progressive. Les scénarios normaux ont
+d’abord été vérifiés : créer un compte, vérifier l’email, se connecter et récupérer
+un mot de passe oublié. Ensuite, les cas limites ont été testés : appeler une route
+privée sans token ou essayer d’accéder au tableau de bord avec un compte normal.
+Dans ces situations, le backend devait bloquer l’accès, ce qui a été confirmé.
+Test
+Action vérifiée
+Résultat
+Inscription
+Création
+d’un
+compte
+avec
+email unique et mot de passe
+valide.
+Conforme
+Vérification email
+Validation du code reçu et ac-
+tivation du compte.
+Conforme
+Connexion
+Génération d’un token JWT
+après saisie des identifiants.
+Conforme
+Token absent
+Appel d’une route privée sans
+autorisation.
+Refusé
+Accès admin
+Tentative d’accès au tableau de
+bord avec un compte non ad-
+min.
+Refusé
+Table 3.8 : Tests fonctionnels du Sprint 1
+3.6
+Conclusion
+Ce premier sprint a permis d’analyser, concevoir et réaliser le module d’authen-
+tification avec gestion des rôles. Les middlewares de sécurité, la génération JWT et
+l’organisation technique du backend constituent une base stable pour la suite. Le
+chapitre suivant poursuit cette réalisation avec le Sprint 2, consacré au diagnostic
+IA, à AgroBot et à la météo.
+59
+
+
+===== PAGE 60 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Chapitre 4 :
+Étude et Réalisation du
+Sprint 2 - Services Intelligents
+4.1
+Introduction
+Le Sprint 2 introduit les fonctionnalités intelligentes de la solution AgroVision. Il
+est structuré autour de l’analyse, de la conception et de la réalisation du diagnostic
+par image, du module AgroBot et du service météo. Une attention particulière
+est accordée à l’intégration entre le frontend, le backend Express.js et le service
+FastAPI.
+4.2
+Objectifs du Sprint 2
+Le sprint 2 vise à réaliser les fonctionnalités intelligentes attendues par l’utili-
+sateur final : diagnostic IA, assistant AgroBot, météo et sauvegarde de l’historique
+des scans.
+Le backlog du Sprint 2 est présenté dans le tableau suivant :
+ID
+User Story
+Priorité
+US2.1
+En tant qu’agriculteur, je veux en-
+voyer une image de plante afin d’ob-
+tenir un diagnostic.
+Haute
+US2.2
+En tant qu’utilisateur, je veux en-
+registrer mes scans pour consulter
+mon historique.
+Moyenne
+US2.3
+En tant qu’utilisateur, je veux poser
+des questions à AgroBot et conser-
+ver mes conversations.
+Haute
+US2.4
+En
+tant
+qu’agriculteur,
+je
+veux
+consulter la météo afin de planifier
+mes tâches agricoles.
+Moyenne
+US2.5
+En tant qu’utilisateur mobile, je
+veux renseigner mon profil ferme et
+mes objectifs.
+Moyenne
+Table 4.1 : Backlog du Sprint 2
+60
+
+
+===== PAGE 61 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+4.3
+Analyse du Sprint 2
+4.3.1
+Diagramme de cas d’utilisation du Sprint 2
+Le diagnostic commence par un geste simple côté utilisateur : choisir ou prendre
+une image de feuille. Derrière cette action, plusieurs traitements sont déclenchés.
+L’image passe d’abord par l’interface web ou mobile, puis par le backend Express.js,
+avant d’être transmise au service FastAPI. Ce découpage a été retenu pour garder
+le modèle IA séparé du reste de l’application.
+Figure 4.1 : Diagramme de cas d’utilisation du Sprint 2
+4.3.2
+Descriptions textuelles des cas d’utilisation
+Description du cas d’utilisation Scanner une plante
+Ce cas d’utilisation est présenté ici avec un format plus direct, parce qu’il cor-
+respond à une action très concrète côté agriculteur : prendre une photo, lancer
+l’analyse et comprendre rapidement le résultat.
+61
+
+
+===== PAGE 62 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Élément
+Description
+Acteur principal
+Agriculteur / utilisateur authentifié
+Précondition
+L’utilisateur doit être connecté et disposer
+d’une image de plante.
+Scénario nominal
+L’utilisateur choisit une image, l’application
+l’envoie au backend, le backend appelle Fas-
+tAPI, puis le résultat est affiché.
+Postcondition
+Le diagnostic peut être enregistré dans l’histo-
+rique des scans.
+Exception
+Si l’image est absente ou si le service IA ne
+répond pas, un message d’erreur est affiché.
+Table 4.2 : Description textuelle du cas d’utilisation Scanner une plante
+Description détaillée du cas d’utilisation Consulter l’historique des scans
+L’historique des scans ne correspond pas seulement à une liste de résultats.
+Dans une utilisation agricole réelle, l’utilisateur peut avoir besoin de revenir sur un
+diagnostic effectué quelques jours plus tôt, de comparer l’état d’une plante ou de
+retrouver le traitement conseillé. Pour répondre à ce besoin, les informations utiles
+sont sauvegardées : maladie détectée, confiance, image, date et traitement associé.
+Élément
+Description
+Acteur principal
+Utilisateur authentifié
+Objectif
+Consulter les diagnostics précédemment effec-
+tués.
+Précondition
+L’utilisateur doit être connecté et avoir enre-
+gistré au moins un scan.
+Scénario nominal
+L’utilisateur ouvre son profil ou la zone d’his-
+torique. Le frontend demande les scans asso-
+ciés à son identifiant. Le backend retourne la
+liste triée avec maladie, confiance, date, image
+et traitement.
+Postcondition
+L’utilisateur visualise son historique et peut
+s’en servir pour le suivi agricole.
+Exception
+Aucun scan n’est trouvé ou la requête est re-
+fusée si l’utilisateur n’est pas authentifié.
+Table 4.3 : Description détaillée du cas d’utilisation Consulter l’historique des
+scans
+62
+
+
+===== PAGE 63 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Description détaillée du cas d’utilisation Discuter avec AgroBot
+AgroBot a été ajouté pour couvrir les questions qui ne passent pas forcément
+par une image. Un agriculteur peut vouloir comprendre un résultat, demander
+un conseil général ou obtenir une orientation rapide. Le scanner répond à un cas
+précis, tandis qu’AgroBot donne une forme d’accompagnement plus souple. C’est
+cette complémentarité qui rend le module utile dans la plateforme.
+Élément
+Description
+Acteur principal
+Utilisateur authentifié
+Objectif
+Recevoir une réponse ou un conseil agricole à
+travers une conversation.
+Précondition
+L’utilisateur doit être connecté et le service
+conversationnel doit être disponible.
+Scénario nominal
+L’utilisateur écrit une question. Le backend re-
+çoit le message, appelle le service IA conversa-
+tionnel, récupère la réponse, l’affiche à l’utilisa-
+teur et sauvegarde l’échange dans MongoDB.
+Postcondition
+La conversation est enregistrée et peut être
+consultée plus tard.
+Exceptions
+Clé API manquante, indisponibilité du service
+IA, message vide ou token invalide.
+Table 4.4 : Description détaillée du cas d’utilisation Discuter avec AgroBot
+Description détaillée du cas d’utilisation Consulter la météo
+La météo a été intégrée parce qu’elle influence directement plusieurs décisions
+agricoles. Un traitement peut être reporté à cause de la pluie, l’irrigation dépend
+de la température et certaines maladies se développent plus facilement dans des
+conditions humides. Dans AgroVision, ce module apporte donc un contexte sup-
+plémentaire autour du diagnostic.
+63
+
+
+===== PAGE 64 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Élément
+Description
+Acteur principal
+Visiteur ou utilisateur authentifié
+Objectif
+Obtenir les informations météorologiques ac-
+tuelles et prévisionnelles.
+Précondition
+L’utilisateur autorise la localisation ou saisit
+une ville.
+Scénario nominal
+L’application récupère les coordonnées, appelle
+le service météo, reçoit les données et affiche la
+température, l’humidité, le vent, les précipita-
+tions et les prévisions.
+Postcondition
+L’utilisateur dispose d’informations utiles pour
+organiser ses activités agricoles.
+Exception
+Localisation refusée, ville introuvable, indispo-
+nibilité de l’API météo.
+Table 4.5 : Description détaillée du cas d’utilisation Consulter la météo
+4.4
+Conception
+4.4.1
+Diagrammes de séquence du Sprint 2
+Diagramme de séquence « Diagnostiquer une plante »
+Ce diagramme décrit l’échange entre le client, le backend Express.js et le service
+FastAPI pour produire un diagnostic.
+Figure 4.2 : Diagramme de séquence du cas d’utilisation « Diagnostiquer une
+plante »
+64
+
+
+===== PAGE 65 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Diagramme de séquence « Discuter avec AgroBot »
+Ce diagramme montre le flux conversationnel entre l’utilisateur, la route chat
+et le service IA.
+Figure 4.3 : Diagramme de séquence du cas d’utilisation « Discuter avec AgroBot
+»
+Diagramme de séquence « Consulter la météo »
+Ce diagramme présente la récupération des données météo depuis l’interface
+jusqu’au service externe via le backend.
+65
+
+
+===== PAGE 66 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Figure 4.4 : Diagramme de séquence du cas d’utilisation « Consulter la météo »
+4.4.2
+Diagramme d’activité du Sprint 2
+Le diagramme d’activité détaille le chemin suivi depuis la sélection de l’image
+jusqu’à l’affichage du résultat. Il met en évidence les traitements successifs : va-
+lidation de l’image, appel API, prédiction du modèle et retour du diagnostic à
+l’utilisateur.
+66
+
+
+===== PAGE 67 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Figure 4.5 : Diagramme d’activité du module de diagnostic
+4.4.3
+Diagramme de déploiement du Sprint 2
+Ce diagramme présente les composants techniques du sprint 2 et leurs échanges
+(web/mobile, backend Express.js, service FastAPI et services externes).
+Figure 4.6 : Diagramme de déploiement du Sprint 2
+4.4.4
+Conception technique du Sprint 2
+Chaîne de traitement IA
+Le modèle retenu dans cette version reste volontairement ciblé sur la pomme de
+terre. Il prédit trois classes : Early Blight, Late Blight et Healthy. Sur le papier, la
+chaîne paraît simple. En pratique, plusieurs essais ont été ralentis par des images
+envoyées depuis téléphone : orientation EXIF différente, tailles variables, parfois
+67
+
+
+===== PAGE 68 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+des fichiers compressés de façon inattendue. Pour stabiliser les résultats, un pré-
+traitement fixe a été imposé (RGB + redimensionnement 256x256 + conversion
+numérique) avant l’inférence.
+Figure 4.7 : Classes prises en charge par le modèle de diagnostic
+Figure 4.8 : Construction du modèle de classification des maladies
+68
+
+
+===== PAGE 69 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Séquence du diagnostic
+Le diagnostic traverse plusieurs couches, ce qui a rendu les bugs d’intégration
+plus visibles. Le client envoie l’image à /api/disease, Express la reçoit via Mul-
+ter, puis transfère le fichier vers FastAPI (/predict). FastAPI applique le modèle
+TensorFlow, retourne le JSON, puis le backend renvoie la réponse finale au client.
+Cette séparation a facilité l’isolement des erreurs : il devenait plus simple de savoir
+si le blocage venait du frontend, du transfert Node/FastAPI ou du modèle.
+Conception du module AgroBot
+Pour AgroBot, une logique de messagerie classique a été conservée afin d’éviter
+un comportement "one shot". Une conversation est liée à un utilisateur et contient
+des messages horodatés avec un rôle (user/assistant). Ce choix a été utile pen-
+dant les tests : il était possible de rouvrir une ancienne discussion et de vérifier la
+continuité, au lieu de repartir à zéro à chaque fois.
+Lorsqu’un message part, le backend valide le JWT, récupère (ou crée) la conver-
+sation, envoie le prompt au service IA puis sauvegarde la réponse. Ce point nous
+semblait secondaire au départ, mais il est vite devenu important : sans persistance,
+les tests d’usage réel perdaient beaucoup de sens.
+Conception du module mobile
+La partie mobile a été pensée pour un usage terrain, et non comme une simple
+reproduction du web. L’utilisateur doit pouvoir ouvrir l’application, lancer rapide-
+ment un scan et comprendre le résultat sans navigation excessive. C’est pour cela
+que les onglets principaux et les écrans secondaires restent simples (diagnostic,
+météo, panier, paramètres, notifications).
+AsyncStorage a servi à garder les préférences locales (langue, onboarding).
+i18next a aussi été intégré pour FR/EN/AR. La partie arabe (RTL) a demandé
+quelques ajustements UI, surtout sur l’alignement des blocs texte.
+4.5
+Réalisation
+4.5.1
+Structure technique du Sprint 2
+Service FastAPI
+FastAPI a été gardé comme service IA séparé. Il expose /ping pour vérifier la
+disponibilité et /predict pour l’inférence. Cette séparation a simplifié le debug :
+l’API IA pouvait être testée seule avant d’être rebranchée sur Express.
+69
+
+
+===== PAGE 70 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Le traitement démarre par la lecture du fichier, puis Pillow corrige l’orientation
+EXIF, convertit en RGB et redimensionne. Ce détail a vraiment compté : durant
+une période, les prédictions semblaient incohérentes, alors que le vrai problème
+venait de l’orientation des photos mobiles. Une fois ce point corrigé, les résultats
+sont devenus plus stables.
+Le modèle retourne un vecteur de probabilités. Le service sélectionne la pro-
+babilité la plus élevée, l’associe au nom de la classe correspondante et renvoie le
+résultat sous forme JSON. L’interface peut ainsi afficher non seulement la maladie
+détectée, mais aussi le niveau de confiance.
+Figure 4.9 : Extrait du processus d’entraînement du modèle
+70
+
+
+===== PAGE 71 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Figure 4.10 : évolution de la précision et de la perte du modèle
+Module AgroBot
+AgroBot est disponible sur le web et sur le mobile. Les routes du backend
+permettent de créer une conversation, consulter l’historique, ouvrir une ancienne
+discussion et la supprimer. Les messages sont sauvegardés dans MongoDB afin
+que l’utilisateur puisse retrouver ses échanges au lieu de repartir de zéro à chaque
+ouverture.
+Dans l’interface web, AgroBot est accessible depuis la navigation principale.
+Sur mobile, il est placé dans l’onglet de chat, ce qui le rend plus rapide à ouvrir
+pendant l’utilisation. Cette différence de placement respecte la logique de chaque
+support.
+Ce module a été conçu pour compléter le diagnostic automatique. En effet, le
+scanner donne une réponse précise sur une image, tandis qu’AgroBot permet de po-
+ser des questions plus générales : conseils de traitement, prévention, interprétation
+du résultat ou bonnes pratiques agricoles.
+71
+
+
+===== PAGE 72 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Figure 4.11 : AgroBot
+Figure 4.12 : AgroBot
+Module météo
+Le module météo prend les données soit via géolocalisation, soit via recherche
+par ville. Sur le web, on lit directement Open-Meteo ; sur mobile, on passe par le
+backend pour garder la même logique d’API que les autres modules.
+Sur le web, l’utilisateur peut rechercher une ville ou autoriser la géolocalisation.
+Sur mobile, Expo Location récupère les coordonnées du téléphone lorsque l’auto-
+risation est accordée. L’affichage a donc été pensé différemment selon le support,
+tout en gardant le même objectif : donner rapidement les données météo utiles.
+72
+
+
+===== PAGE 73 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Figure 4.13 : météo
+Figure 4.14 : météo
+4.5.2
+Interfaces réalisées
+Profil mobile
+L’application mobile ajoute un parcours plus orienté terrain. L’utilisateur peut
+passer par l’onboarding, choisir sa langue, renseigner son profil ferme et indiquer
+ses objectifs. Ces écrans ne sont pas seulement décoratifs : ils préparent l’idée d’une
+application qui pourra être personnalisée selon le type d’exploitation.
+Le profil ferme permet de collecter quelques informations utiles sur l’activité
+agricole. Les objectifs orientent l’expérience vers les besoins principaux : surveillance
+des maladies, amélioration du rendement, gestion des achats ou suivi météo. Cette
+partie reste évolutive, mais elle donne une base pour personnaliser davantage l’ap-
+plication.
+73
+
+
+===== PAGE 74 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+Figure 4.15 : profil admin mobile
+4.5.3
+Tests réalisés pendant le Sprint 2
+Les tests du Sprint 2 ont été plus délicats que prévu, principalement à cause des
+échanges entre services. La validation s’est donc faite par étapes : FastAPI seul,
+Express vers FastAPI, puis scénario complet depuis l’interface. Ce découpage a
+permis de localiser plus rapidement les pannes. Un exemple concret : pendant une
+séance de test, on pensait que le modèle donnait de mauvaises classes. En réalité,
+l’image n’arrivait pas dans le bon format après upload côté backend. Le problème
+74
+
+
+===== PAGE 75 =====
+
+AGROVISION
+Chapitre 4 : Étude et Réalisation du Sprint 2 - Services Intelligents
+venait donc de l’intégration, pas de l’entraînement du modèle.
+Module testé
+Scénario
+Résultat
+FastAPI
+Appel de /ping pour vérifier
+que le service IA répond.
+Conforme
+Prédiction IA
+Envoi d’une image de feuille au
+endpoint /predict.
+Conforme
+Backend disease
+Transmission d’une image du
+backend vers FastAPI.
+Conforme
+Scanner web
+Sélection d’image, affichage du
+résultat et sauvegarde du scan.
+Conforme
+AgroBot
+Envoi d’un message, récupéra-
+tion de la réponse et sauve-
+garde de la conversation.
+Conforme
+Météo
+Récupération des informations
+météo selon les coordonnées.
+Conforme
+Table 4.6 : Tests fonctionnels du Sprint 2
+4.6
+Conclusion
+Le Sprint 2 a permis de développer les fonctionnalités centrales liées au diagnos-
+tic IA, à l’historique des scans, à AgroBot et à la météo. L’architecture d’intégration
+entre Express.js et FastAPI a également été validée. Cette étape a montré que la
+précision technique ne suffit pas seule : la robustesse dépend aussi de la qualité des
+tests d’intégration entre services. Le chapitre suivant aborde le Sprint 3, consacré
+à la marketplace, aux commandes et au module d’administration.
+75
+
+
+===== PAGE 76 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Chapitre 5 :
+Étude et Réalisation du
+Sprint 3 - Marketplace et Administration
+5.1
+Introduction
+Le Sprint 3 porte sur la couche métier avancée du projet. Il regroupe l’analyse,
+la conception, la réalisation et la validation de la marketplace, du parcours de
+commande, du rôle vendeur et du tableau de bord administrateur. Le contrôle
+d’accès par rôles reste un point central, car ces modules manipulent des actions
+sensibles côté utilisateur et côté administration.
+5.2
+Objectifs du Sprint 3
+Ce sprint est orienté vers la mise en place de la couche métier complète : gestion
+des produits, parcours de commande, demandes vendeurs et supervision adminis-
+trateur.
+Le backlog du Sprint 3 est présenté dans le tableau suivant :
+ID
+User Story
+Priorité
+US3.1
+En
+tant
+qu’utilisateur,
+je
+veux
+consulter les produits disponibles
+dans la marketplace.
+Haute
+US3.2
+En tant qu’utilisateur, je veux ajou-
+ter des produits au panier et passer
+une commande.
+Haute
+US3.3
+En tant que vendeur, je veux propo-
+ser un produit agricole.
+Haute
+US3.4
+En tant qu’administrateur, je veux
+gérer les utilisateurs, produits, com-
+mandes et demandes vendeurs.
+Haute
+US3.5
+En tant qu’administrateur, je veux
+consulter les messages de contact et
+les scans réalisés.
+Moyenne
+US3.6
+En tant qu’équipe projet, je veux va-
+lider le fonctionnement global de la
+solution.
+Haute
+Table 5.1 : Backlog du Sprint 3
+76
+
+
+===== PAGE 77 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+5.3
+Analyse du Sprint 3
+5.3.1
+Diagramme de cas d’utilisation du Sprint 3
+Les cas d’utilisation du Sprint 3 couvrent les parcours liés à la marketplace, aux
+commandes, au rôle vendeur et au tableau de bord administrateur.
+Figure 5.1 : Diagramme de cas d’utilisation du Sprint 3
+5.3.2
+Descriptions textuelles des cas d’utilisation
+Marketplace et commandes
+La marketplace a été pensée comme un service complémentaire au diagnostic.
+Après avoir identifié un problème ou reçu un conseil, l’utilisateur peut consulter
+des produits agricoles utiles. Le panier et les commandes rendent ce module plus
+concret qu’une simple liste de produits. Chaque commande garde les articles, les
+quantités, le montant total, l’adresse de livraison et le statut.
+77
+
+
+===== PAGE 78 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Élément
+Description
+Acteur principal
+Utilisateur authentifié
+Objectif
+Acheter des produits agricoles à partir de la
+marketplace.
+Précondition
+L’utilisateur doit être connecté et le produit
+doit être disponible.
+Scénario nominal
+L’utilisateur consulte les produits, sélectionne
+un article, l’ajoute au panier, renseigne les
+informations nécessaires et confirme la com-
+mande. Le backend enregistre la commande
+avec le statut initial.
+Postcondition
+Une nouvelle commande est créée et visible
+dans le système d’administration.
+Exceptions
+Produit indisponible, panier vide, utilisateur
+non authentifié ou erreur d’enregistrement.
+Table 5.2 : Description détaillée du cas d’utilisation Passer une commande
+Gestion vendeur
+La partie vendeur a été ajoutée pour éviter que la marketplace soit alimentée
+uniquement par l’administrateur. Un utilisateur peut demander à devenir vendeur
+ou proposer un produit selon le parcours utilisé. Les informations demandées per-
+mettent de vérifier le sérieux de l’offre : nom de société, téléphone, type de produit,
+description, prix, stock et image. L’administrateur garde ensuite la possibilité d’ap-
+prouver ou de rejeter.
+78
+
+
+===== PAGE 79 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Élément
+Description
+Acteur principal
+Vendeur
+Objectif
+Proposer un produit agricole dans la market-
+place.
+Précondition
+L’utilisateur doit être connecté et disposer des
+informations du produit.
+Scénario nominal
+Le vendeur remplit le formulaire, ajoute une
+image, indique le prix, la catégorie et le stock.
+Le système enregistre la demande ou le produit
+selon le parcours utilisé.
+Postcondition
+Le produit est enregistré ou une demande ven-
+deur est créée avec l’état en attente.
+Exceptions
+Image absente, prix invalide, stock incorrect ou
+utilisateur non autorisé.
+Table 5.3 : Description détaillée du cas d’utilisation Ajouter un produit
+Administration
+L’administration représente la partie de contrôle de la plateforme. Sans tableau
+de bord, il serait difficile de surveiller les comptes, les produits ajoutés, les com-
+mandes ou les messages de contact. Ces opérations ont donc été regroupées dans
+une interface protégée par le rôle administrateur.
+79
+
+
+===== PAGE 80 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Cas d’administra-
+tion
+Description
+Consulter
+le
+dash-
+board
+Afficher les statistiques générales : utilisateurs,
+produits, commandes, scans et activité globale.
+Gérer les utilisateurs
+Consulter la liste des comptes, bannir un uti-
+lisateur ou supprimer un compte.
+Gérer les produits
+Consulter les produits présents dans la market-
+place et supprimer les produits non conformes.
+Gérer
+les
+com-
+mandes
+Consulter les commandes et modifier leur sta-
+tut selon l’avancement du traitement.
+Gérer les demandes
+vendeurs
+Approuver ou rejeter les demandes déposées
+par les utilisateurs souhaitant vendre des pro-
+duits.
+Gérer les messages
+Consulter les messages de contact, les marquer
+comme lus ou les supprimer.
+Consulter les scans
+Visualiser les diagnostics réalisés afin d’avoir
+une vue sur l’utilisation du module IA.
+Table 5.4 : Fonctionnalités du tableau de bord administrateur
+5.4
+Conception
+5.4.1
+Diagrammes de séquence du Sprint 3
+Diagramme de séquence « Passer une commande »
+Ce diagramme décrit le scénario principal de la marketplace, depuis le panier
+jusqu’à la création de la commande.
+80
+
+
+===== PAGE 81 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Figure 5.2 : Diagramme de séquence du cas d’utilisation « Passer une commande
+»
+Diagramme de séquence « Soumettre un produit vendeur »
+Ce diagramme illustre la soumission d’un produit vendeur et son passage à l’état
+en attente.
+81
+
+
+===== PAGE 82 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Figure 5.3 : Diagramme de séquence du cas d’utilisation « Soumettre un produit
+vendeur »
+Diagramme de séquence « Accéder au dashboard admin »
+Ce diagramme présente le contrôle d’accès administrateur et la récupération des
+données de supervision.
+82
+
+
+===== PAGE 83 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Figure 5.4 : Diagramme de séquence du cas d’utilisation « Accéder au dashboard
+admin »
+5.4.2
+Diagramme d’activité du Sprint 3
+Ce diagramme résume le flux global de la marketplace, des commandes, du rôle
+vendeur et du contrôle administrateur.
+83
+
+
+===== PAGE 84 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Figure 5.5 : Diagramme d’activité du Sprint 3
+5.4.3
+Diagramme de déploiement du Sprint 3
+La même séparation qu’en développement a été conservée : web, mobile, ba-
+ckend Express, service FastAPI et MongoDB. Ce choix reste pratique pour la suite,
+car chaque brique peut évoluer sans modifier toute l’architecture. Par exemple, le
+service IA pourra être déplacé sur une machine plus puissante sans toucher au
+frontend.
+84
+
+
+===== PAGE 85 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Figure 5.6 : Diagramme de déploiement du système AgroVision
+5.4.4
+Conception technique du Sprint 3
+Modèle de données marketplace
+Les collections Product, Order et SellerRequest structurent la marketplace.
+Un produit contient son nom, sa catégorie, son prix, son image, son stock et le ven-
+deur associé. Une commande regroupe plusieurs lignes de produits avec quantité
+et prix. Une demande vendeur garde son statut afin d’assurer un contrôle adminis-
+tratif avant validation.
+La collection Product sert à afficher les articles disponibles. Chaque produit
+possède une image, une description, une catégorie, un prix, un indicateur d’offre et
+une quantité en stock. Order conserve l’historique des achats et relie l’utilisateur
+aux articles commandés. SellerRequest joue un rôle de filtre avant d’autoriser un
+utilisateur à publier des produits, ce qui protège la marketplace contre les ajouts
+non contrôlés.
+85
+
+
+===== PAGE 86 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Collection
+Principaux champs
+User
+fullName,
+email,
+password,
+role,
+profilePic,
+phone, location, cart, favorites, isBanned.
+Product
+name, category, price, image, tag, desc, isOffer,
+discount, stock, seller.
+Order
+user, items, totalAmount, status, shippingAd-
+dress, paymentMethod.
+SellerRequest
+user, companyName, phone, productType, des-
+cription, price, stock, status, productImage.
+Contact
+name, email, subject, message, status.
+Scan
+user, plantName, disease, confidence, treatment,
+imageUrl.
+Table 5.5 : Collections MongoDB utilisées dans les modules du Sprint 3
+5.5
+Réalisation
+5.5.1
+Structure technique du Sprint 3
+Les éléments techniques du Sprint 3 reposent sur les routes API, les collec-
+tions MongoDB et les composants web/mobile nécessaires à la marketplace et à
+l’administration.
+5.5.2
+Interfaces réalisées
+Frontend web
+Le frontend web a été construit avec React + Vite. Les pages sont organisées
+avec React Router (accueil, scanner, météo, marketplace, AgroBot, profil, adminis-
+tration). Des composants communs ont été conservés afin d’éviter la duplication
+du code d’interface et de garder un rendu homogène.
+La page marketplace consomme directement l’API backend et affiche les infor-
+mations utiles (nom, prix, stock, image, description). Depuis cette page, l’utilisa-
+teur ajoute au panier puis valide sa commande.
+La page profil regroupe aussi l’historique des scans et quelques statistiques.
+Ce point a été apprécié pendant les tests, car l’utilisateur pouvait revenir sur ses
+anciens diagnostics sans refaire un scan.
+86
+
+
+===== PAGE 87 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Figure 5.7 : Frontend web
+Application mobile
+L’application mobile est réalisée avec Expo Router. Elle propose des onglets
+principaux (accueil, chat, marketplace, profil) et des écrans complémentaires (diag-
+nostic, météo, panier, paramètres, support, etc.).
+Le mobile reprend les fonctions importantes du web mais avec une logique ter-
+rain : prise d’image rapide, météo immédiate, accès au chat et à la marketplace
+depuis le téléphone.
+L’organisation du dossier app suit le principe d’Expo Router. Les écrans diagnosis.tsx,
+weather.tsx, cart.tsx, settings.tsx, support.tsx et les onglets principaux
+correspondent aux parcours mobiles. Les composants d’onboarding, de connexion
+et de profil ferme accompagnent l’utilisateur avant l’accès complet à l’application.
+87
+
+
+===== PAGE 88 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Figure 5.8 : page d’acceuil mobile
+Tableau de bord administrateur
+Le tableau de bord consomme les routes protégées du backend. Il récupère les
+statistiques, les utilisateurs, les produits, les commandes, les demandes vendeurs,
+les scans et les messages de contact. Les opérations sensibles sont contrôlées par le
+middleware administrateur.
+Le dashboard administrateur sert de poste de contrôle. Il permet de mainte-
+nir la qualité de la marketplace, surveiller les comptes problématiques, suivre les
+commandes et traiter les messages reçus depuis le formulaire de contact. Dans une
+application multi-utilisateur, cette partie est indispensable, car certaines données
+ne peuvent pas être laissées sans supervision.
+88
+
+
+===== PAGE 89 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Figure 5.9 : Interface Admin : Vue gé-
+nerale
+Figure 5.10 : Interface Admin : de-
+mandes vente
+Figure 5.11 : Interface Admin : gestion des produits de
+marketplace
+Gestion des routes API
+Les routes backend ont été regroupées par domaine (auth, chat, produits, sel-
+ler, user, admin, météo, disease, scans, contact). Cette organisation a simplifié le
+debug : lorsqu’une erreur apparaît, le fichier concerné est plus facile à identifier.
+Dans le sprint 3, ce découpage a notamment évité une confusion fréquente entre
+les routes /api/seller/* et /api/admin/* lors de la validation des demandes
+vendeurs.
+89
+
+
+===== PAGE 90 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Route
+Responsabilité
+/api/auth
+Inscription,
+connexion,
+vérification
+email,
+OAuth et réinitialisation du mot de passe.
+/api/chat
+Création,
+consultation
+et
+suppression
+des
+conversations AgroBot.
+/api/products
+Consultation des produits disponibles dans la
+marketplace.
+/api/seller
+Demandes vendeurs et ajout de produits par
+les vendeurs.
+/api/user
+Gestion du profil, panier, favoris et commandes
+utilisateur.
+/api/admin
+Statistiques,
+utilisateurs,
+produits,
+com-
+mandes, scans et demandes vendeurs.
+/api/disease
+Réception de l’image et appel du service IA de
+diagnostic.
+/api/contact
+Envoi et traitement des messages de contact.
+Table 5.6 : Organisation des routes API du backend
+5.5.3
+Tests réalisés pendant le Sprint 3
+La validation a été organisée de manière progressive afin de vérifier les modules
+métier, les interfaces et les accès protégés.
+Stratégie de test
+La validation a été menée en local, module par module, puis en scénario complet.
+Postman a servi à contrôler les routes API avant de rejouer les parcours côté web
+et mobile.
+90
+
+
+===== PAGE 91 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Module testé
+Scénario
+Résultat
+Authentification
+Inscription,
+vérification,
+connexion et récupération du
+mot de passe.
+Conforme
+Diagnostic IA
+Envoi d’une image de feuille et
+récupération de la classe pré-
+dite.
+Conforme
+AgroBot
+Envoi d’une question, affichage
+de la réponse et sauvegarde de
+l’historique.
+Conforme
+Marketplace
+Consultation des produits, pa-
+nier et création de commande.
+Conforme
+Administration
+Gestion des utilisateurs, pro-
+duits, commandes, demandes
+vendeurs et messages.
+Conforme
+Mobile
+Onboarding,
+authentification,
+diagnostic, chat, marketplace,
+météo et profil.
+Conforme
+Table 5.7 : Synthèse des tests fonctionnels
+Validation du diagnostic IA
+Pour le diagnostic, plusieurs images de feuilles ont été utilisées afin de vérifier le
+comportement du service. La réponse retournée par FastAPI contient la classe pré-
+dite ainsi que le pourcentage de confiance. Les figures suivantes montrent quelques
+essais réalisés pendant cette phase.
+91
+
+
+===== PAGE 92 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Figure 5.12 : Premier test de prédiction sur une image de feuille
+92
+
+
+===== PAGE 93 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Figure 5.13 : Affichage du résultat de diagnostic avec le taux de confiance
+Tests d’intégration
+Les tests d’intégration ont vérifié la communication entre les différents blocs.
+Le scénario le plus important reste le diagnostic : l’image part du client web ou
+mobile, passe par le backend Express.js, est transmise au service FastAPI, puis le
+résultat revient à l’interface. Ce test est représentatif, car il traverse presque toute
+l’architecture.
+Tests de sécurité
+Les tests de sécurité ont porté sur les accès protégés. Les routes privées ont été
+appelées avec un token valide, sans token et avec un token incorrect. Les routes
+administrateur ont aussi été testées avec un compte simple, afin de vérifier qu’un
+utilisateur connecté ne reçoit pas automatiquement des privilèges de gestion.
+93
+
+
+===== PAGE 94 =====
+
+AGROVISION Chapitre 5 : Étude et Réalisation du Sprint 3 - Marketplace et Administration
+Test
+Comportement attendu
+Résultat
+Route
+privée
+sans
+token
+Refuser l’accès avec une ré-
+ponse d’erreur.
+Conforme
+Route
+privée
+avec
+token valide
+Autoriser la requête et retour-
+ner les données.
+Conforme
+Route
+admin
+avec
+compte simple
+Refuser l’accès au tableau de
+bord.
+Conforme
+Bannissement utili-
+sateur
+Empêcher l’utilisation normale
+d’un compte banni.
+Conforme
+Suppression produit
+Autoriser uniquement l’admi-
+nistrateur à supprimer un pro-
+duit.
+Conforme
+Table 5.8 : Tests de sécurité et de contrôle d’accès
+Bilan du Sprint 3
+À la fin du troisième sprint, les principaux modules étaient reliés entre eux.
+L’utilisateur pouvait s’authentifier, lancer un diagnostic, discuter avec AgroBot,
+consulter la météo, parcourir la marketplace et passer commande. Le vendeur pou-
+vait proposer des produits, tandis que l’administrateur disposait d’un tableau de
+bord pour contrôler l’activité.
+Ce sprint a aussi permis de vérifier la cohérence entre les interfaces web et mo-
+bile. Certaines fonctions sont plus développées côté web et d’autres plus adaptées
+au mobile, mais l’ensemble repose sur le même backend et sur les mêmes collections
+MongoDB. Cette cohérence facilitera les évolutions futures.
+5.6
+Conclusion
+À travers ce sprint, les modules commerce et administration ont été construits
+puis validés : produits, panier, commandes, demandes vendeurs et supervision glo-
+bale. La plateforme devient ainsi plus complète et plus cohérente. Cette étape a
+aussi mis en évidence une limite importante : plus les rôles métier se multiplient,
+plus le contrôle d’accès doit être vérifié de manière stricte à chaque évolution. Le
+chapitre suivant présente les tests finaux, la validation globale et les aspects de
+déploiement.
+94
+
+
+===== PAGE 95 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Chapitre 6 :
+Tests et Validation — Sprint
+4
+6.1
+Introduction
+Le Sprint 4 constitue la phase finale du projet AgroVision. Après trois sprints
+consacrés à la conception, au développement et à l’intégration, ce dernier sprint
+se concentre sur la validation globale de la solution. Il couvre l’environnement de
+test mis en place, la stratégie de test adoptée, les tests unitaires et fonctionnels
+du backend, du frontend web et de l’application mobile, ainsi que les tests d’inté-
+gration et de sécurité. L’objectif est de s’assurer que l’ensemble des fonctionnalités
+développées répondent aux exigences définies dans le backlog et fonctionnent de
+manière fiable avant la livraison finale.
+6.2
+Objectifs du Sprint 4
+Le Sprint 4 vise à atteindre les objectifs suivants :
+— Valider le fonctionnement global de la solution à travers des tests systéma-
+tiques couvrant toutes les couches de l’application.
+— Vérifier la cohérence et la fiabilité des échanges entre les différents services
+(backend Express.js, service FastAPI, application mobile Expo).
+— Contrôler la sécurité des accès et la robustesse de l’authentification JWT
+face aux tentatives d’intrusion.
+— Identifier et corriger les anomalies restantes avant la livraison finale.
+— Préparer l’environnement de déploiement et documenter les résultats obte-
+nus.
+6.3
+Analyse du Sprint 4
+6.3.1
+Diagramme de cas d’utilisation du Sprint 4
+Le Sprint 4 se distingue des sprints précédents par sa nature transversale : il ne
+s’agit plus de développer de nouvelles fonctionnalités, mais de valider celles déjà
+implémentées. Les cas d’utilisation de ce sprint couvrent l’exécution des campagnes
+de tests, le contrôle des droits d’accès par rôle, la vérification de l’intégration entre
+les services, et la préparation au déploiement. L’ensemble de ces scénarios garantit
+95
+
+
+===== PAGE 96 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+que la solution livrée est stable, sécurisée et conforme aux attentes définies en début
+de projet.
+Figure 6.1 : Diagramme de cas d’utilisation du Sprint 4
+6.3.2
+Descriptions textuelles des cas d’utilisation
+Environnement de test
+L’environnement de test reprend l’architecture réelle du projet : frontend web
+(Vite), backend Node/Express, service IA FastAPI et mobile Expo. Cette configu-
+ration locale nous a permis de suivre les logs en direct et de corriger rapidement
+les erreurs d’intégration.
+96
+
+
+===== PAGE 97 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Composant
+Configuration de test
+Frontend web
+Application React lancée avec Vite sur un na-
+vigateur moderne.
+Backend
+Serveur Express.js lancé sur le port 5001.
+Service IA
+API FastAPI exécutée localement sur le port
+8001.
+Base de données
+MongoDB local ou MongoDB Atlas selon la
+configuration disponible.
+Application mobile
+Application Expo testée avec Expo Go ou ému-
+lateur.
+Outils
+complémen-
+taires
+Postman pour les routes API, navigateur pour
+l’interface web, terminal pour les logs.
+Table 6.1 : Environnement utilisé pour les tests
+Stratégie de validation
+La validation s’est déroulée par étapes. Chaque service a d’abord été testé sé-
+parément, puis les parcours complets ont été rejoués, avant de passer aux cas de
+sécurité (token manquant, mauvais rôle, accès admin). Cette méthode a évité de
+mélanger plusieurs causes d’erreur au même moment.
+Type de test
+Objectif
+Test fonctionnel
+Vérifier que chaque fonctionnalité répond au
+besoin défini.
+Test API
+Contrôler les routes backend, les statuts HTTP
+et le format JSON retourné.
+Test d’intégration
+Vérifier la communication entre les différents
+composants du système.
+Test de sécurité
+Vérifier que les routes privées et administra-
+teur sont correctement protégées.
+Test d’interface
+Vérifier la navigation, l’affichage, les formu-
+laires et les messages d’erreur.
+Test IA
+Contrôler l’acceptation des images et la cohé-
+rence du résultat de prédiction.
+Table 6.2 : Stratégie de validation adoptée
+97
+
+
+===== PAGE 98 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+6.4
+Conception
+6.4.1
+Diagramme de séquence « Test d’intégration globale »
+Ce diagramme représente le scénario complet du diagnostic traversant les com-
+posants principaux.
+Figure 6.2 : Diagramme de cas d’utilisation du Sprint 4
+6.4.2
+Diagramme de séquence « Test de sécurité »
+Ce diagramme décrit le test d’accès aux routes protégées et au périmètre admi-
+nistrateur.
+Figure 6.3 : Diagramme de cas d’utilisation du Sprint 4
+6.4.3
+Diagramme d’activité du Sprint 4
+Ce diagramme présente la séquence de validation finale : exécution des tests,
+correction des anomalies et vérification d’intégration avant mise en production.
+98
+
+
+===== PAGE 99 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Figure 6.4 : Diagramme d’activité du Sprint 4
+6.4.4
+Diagramme de déploiement du Sprint 4
+Ce diagramme illustre l’architecture cible de déploiement, composée des clients,
+du backend, du service IA et de la base de données.
+99
+
+
+===== PAGE 100 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Figure 6.5 : Diagramme de déploiment du Sprint 4
+6.4.5
+Conception technique du Sprint 4
+La conception technique du Sprint 4 s’appuie sur l’environnement de test, les
+scénarios d’intégration, les contrôles de sécurité et les choix de déploiement pro-
+gressif.
+6.5
+Réalisation
+6.5.1
+Structure technique du Sprint 4
+La structure technique validée pendant ce sprint reprend les composants princi-
+paux : frontend web, backend Express.js, service FastAPI, MongoDB et application
+mobile Expo.
+6.5.2
+Interfaces réalisées
+Les interfaces web et mobile ont été vérifiées à travers les parcours utilisateur
+principaux : authentification, diagnostic, AgroBot, marketplace, météo et adminis-
+tration.
+100
+
+
+===== PAGE 101 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Figure 6.6 : Interface principale de la plateforme web
+Figure 6.7 : Assistant conversationnel
+Agrobot
+101
+
+
+===== PAGE 102 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Figure 6.8 : Interface de diagnostic des maladies des plantes
+Figure 6.9 : Tableau de bord administrateur
+6.5.3
+Tests réalisés pendant le Sprint 4
+Tests Backend
+Tests du module authentification
+L’authentification a été testée en premier, car elle constitue le point d’entrée de
+toute la plateforme. Les vérifications ont porté sur l’inscription, la validation du
+code, la connexion, le reset mot de passe et la route /me.
+102
+
+
+===== PAGE 103 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Route testée
+Scénario
+Résultat
+at-
+tendu
+/register
+Création
+d’un
+nouveau
+compte avec des données
+valides.
+Compte
+créé
+et
+code envoyé.
+/verify-code
+Validation du code reçu par
+email.
+Email
+marqué
+comme vérifié.
+/login
+Connexion avec email et mot
+de passe valides.
+Token
+JWT
+re-
+tourné.
+/forgot-password Demande
+de
+récupération
+d’un compte existant.
+Token temporaire
+généré.
+/me
+Consultation du profil avec
+token valide.
+Données
+utilisa-
+teur retournées.
+Table 6.3 : Tests backend du module authentification
+Tests du module diagnostic
+Le diagnostic a été testé sur deux couches : réception du fichier côté backend,
+puis inférence côté FastAPI. Ce découpage a aidé à isoler rapidement les problèmes
+possibles, qu’ils viennent de l’upload, du transfert ou de la prédiction.
+103
+
+
+===== PAGE 104 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Figure 6.10 : Deuxième test de diagnostic sur une feuille de pomme de terre
+Scénario
+Description
+Résultat
+Image valide
+Envoi d’une image de feuille au
+backend.
+Diagnostic
+re-
+tourné.
+Image absente
+Appel de la route sans fichier.
+Erreur contrô-
+lée.
+FastAPI
+indispo-
+nible
+Backend lancé sans service IA
+actif.
+Message
+d’er-
+reur affiché.
+Format image télé-
+phone
+Image prise depuis mobile avec
+orientation EXIF.
+Image corrigée
+et traitée.
+Table 6.4 : Tests du module diagnostic
+Tests du module AgroBot
+Pour AgroBot, la validation a couvert un cycle complet : envoi de message,
+réponse, sauvegarde et relecture de l’historique. Les cas d’erreur ont aussi été testés,
+104
+
+
+===== PAGE 105 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+notamment le token absent, le message vide et l’indisponibilité du service IA.
+Scénario
+Description
+Résultat
+Envoyer message
+L’utilisateur pose une question
+agricole.
+Réponse
+re-
+tournée.
+Historique
+L’utilisateur consulte les an-
+ciennes conversations.
+Liste affichée.
+Suppression
+L’utilisateur
+supprime
+une
+conversation.
+Conversation
+retirée.
+Token absent
+Appel de la route chat sans au-
+thentification.
+Accès refusé.
+Table 6.5 : Tests du module AgroBot
+Tests du module marketplace
+La marketplace a été testée selon trois points de vue. L’utilisateur consulte les
+produits et passe commande. Le vendeur propose des produits. L’administrateur
+intervient pour contrôler la qualité des données. Cette séparation aide à vérifier
+que chaque rôle dispose bien des actions prévues, sans dépasser son périmètre.
+Scénario
+Description
+Résultat
+Consulter produits
+Récupérer la liste des produits
+depuis l’API.
+Produits
+affi-
+chés.
+Ajouter panier
+Ajouter un produit au panier
+utilisateur.
+Panier
+mis
+à
+jour.
+Passer commande
+Transformer le panier en com-
+mande.
+Commande
+créée.
+Ajouter produit ven-
+deur
+Soumettre
+un
+produit
+avec
+image et prix.
+Produit
+enre-
+gistré.
+Supprimer
+produit
+admin
+Supprimer un produit depuis le
+dashboard.
+Produit
+sup-
+primé.
+Table 6.6 : Tests du module marketplace
+Tests Frontend Web
+Côté web, les vérifications ont surtout porté sur la navigation réelle utilisateur :
+formulaires, messages, redirections et appels API. Les pages clés (auth, scanner,
+chat, marketplace, admin) ont été rejouées plusieurs fois afin de confirmer leur
+stabilité.
+105
+
+
+===== PAGE 106 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Page
+Éléments testés
+Résultat
+Accueil
+Navigation, présentation, accès
+aux modules.
+Conforme
+Authentification
+Formulaires, validation, mes-
+sages d’erreur.
+Conforme
+Scanner
+Upload image, affichage résul-
+tat, sauvegarde.
+Conforme
+AgroBot
+Conversation, historique, sup-
+pression.
+Conforme
+Marketplace
+Affichage
+produits,
+panier,
+commande.
+Conforme
+Administration
+Chargement des données et ac-
+tions de gestion.
+Conforme
+Table 6.7 : Tests de l’interface web
+Tests Mobile
+Sur mobile, les tests ont pris en compte des contraintes plus proches de l’utili-
+sation réelle : écran réduit, permissions, réseau local et stockage AsyncStorage. Les
+parcours onboarding, login, diagnostic, chat, météo et marketplace ont été vérifiés
+sur plusieurs sessions.
+Écran mobile
+Scénario testé
+Résultat
+Onboarding
+Passage entre les écrans de pré-
+sentation.
+Conforme
+Langue
+Changement français, anglais
+et arabe.
+Conforme
+Diagnostic
+Sélection d’une image et appel
+du backend.
+Conforme
+Chat
+Envoi de message à AgroBot.
+Conforme
+Marketplace
+Consultation et ajout de pro-
+duits.
+Conforme
+Météo
+Récupération des coordonnées
+et affichage météo.
+Conforme
+Table 6.8 : Tests de l’application mobile
+Validation du modèle IA
+Pour l’IA, trois points concrets ont été contrôlés : chargement du modèle Keras,
+prétraitement image et cohérence du résultat retourné. Les tests ont confirmé que
+106
+
+
+===== PAGE 107 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+le pipeline applique bien les étapes de préparation avant la prédiction.
+Figure 6.11 : Paramètres et configuration utilisés pour le modèle IA
+Figure 6.12 : Éléments utilisés dans le processus de développement IA
+Le résultat de prédiction contient une classe et un score de confiance. Ce score
+est important, car il évite de présenter le résultat comme une certitude absolue.
+Dans un contexte agricole, cette nuance est utile : l’application donne une orienta-
+tion, mais l’utilisateur doit toujours interpréter le résultat avec prudence.
+Tests d’intégration globale
+Le scénario d’intégration le plus parlant reste le diagnostic complet, car il tra-
+verse presque toute l’architecture (auth, client, backend, FastAPI, base de don-
+nées). C’est ce test qui nous a donné la meilleure vision de la solidité globale.
+107
+
+
+===== PAGE 108 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Étape
+Action
+Résultat
+1
+Connexion de l’utilisateur et récupération
+du token JWT.
+Réussie
+2
+Sélection d’une image depuis le client web
+ou mobile.
+Réussie
+3
+Envoi du fichier vers le backend Ex-
+press.js.
+Réussie
+4
+Transmission de l’image vers FastAPI.
+Réussie
+5
+Exécution du modèle TensorFlow.
+Réussie
+6
+Affichage du résultat et sauvegarde du
+scan.
+Réussie
+Table 6.9 : Scénario d’intégration globale du diagnostic
+6.5.4
+Déploiement de l’application
+La phase de déploiement représente une étape importante du Sprint 4, car elle
+permet de rendre l’application accessible dans un environnement de production
+réel. Cette étape a consisté à publier le frontend, le backend ainsi que les différents
+services associés afin de garantir le bon fonctionnement global du système.
+Durant cette phase, plusieurs difficultés techniques ont été rencontrées. Les prin-
+cipaux problèmes concernaient la communication entre le frontend et le backend
+après la mise en production. En effet, certaines requêtes API ne fonctionnaient pas
+correctement à cause des différences entre l’environnement local de développement
+et l’environnement de production.
+Des problèmes liés à la configuration des variables d’environnement ont égale-
+ment été observés, notamment pour les clés d’accès, les URLs des services et les
+paramètres de connexion à la base de données. Par ailleurs, certaines contraintes
+de sécurité telles que les politiques CORS ont nécessité des ajustements supplé-
+mentaires afin d’autoriser les échanges entre les différentes parties de l’application.
+Afin de résoudre ces difficultés, plusieurs modifications ont été effectuées au
+niveau de la configuration du serveur, des routes API et des paramètres de déploie-
+ment. Des tests complémentaires ont ensuite été réalisés pour vérifier la stabilité,
+les performances et l’accessibilité de l’application après sa mise en production.
+Cette phase a permis de valider le bon fonctionnement de la plateforme dans un
+contexte réel d’utilisation et d’assurer une meilleure fiabilité du système développé.
+108
+
+
+===== PAGE 109 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Diagramme d’activité du Sprint 4
+Ce diagramme montre la séquence de
+validation finale : exécution des tests, correction des anomalies et vérification d’in-
+tégration avant mise en production.
+Figure 6.13 : Diagramme d’activité du Sprint 4
+Diagramme de déploiement du Sprint 4
+Ce diagramme illustre l’architecture
+cible de déploiement (clients, backend, service IA et base de données).
+109
+
+
+===== PAGE 110 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Figure 6.14 : Diagramme de déploiement du Sprint 4
+Limites constatées
+Même si les modules principaux sont fonctionnels, certaines limites restent pré-
+sentes. Le modèle IA ne couvre pour l’instant que les maladies de la pomme de
+terre. La marketplace ne contient pas encore de système de paiement complet. Le
+déploiement cloud n’est pas totalement automatisé. Enfin, les tests restent majo-
+ritairement manuels et pourraient être renforcés par des tests automatisés.
+Difficultés réelles rencontrées pendant le développement
+Pour garder une
+trace fidèle du projet, nous mentionnons ici trois problèmes concrets qui ont pris
+du temps :
+• Intégration FastAPI/Node.js : pendant plusieurs essais, la route /api/disease
+recevait bien l’image, mais FastAPI renvoyait une erreur selon le format du
+fichier ou l’orientation EXIF des images prises sur téléphone. Le bug ne
+venait pas du modèle lui-même, mais du transfert et du prétraitement de
+l’image.
+• Connexion Google sur mobile : la connexion échouait quand l’ID client
+utilisé dans l’application ne correspondait pas à la plateforme (web/android/ios).
+Le backend recevait un token, mais la vérification de l’audience pouvait le
+refuser. Cette correction nous a obligé à revoir la configuration OAuth et à
+tester séparément chaque plateforme.
+• Connexion Facebook : un autre blocage est apparu sur l’URL de redi-
+rection OAuth. Tant que le schéma de redirection n’était pas aligné entre
+l’application mobile, la console Facebook et le backend, l’authentification ne
+se terminait pas correctement. Ce point a été corrigé après plusieurs tests
+de redirection.
+110
+
+
+===== PAGE 111 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Ces difficultés ne sont pas des détails secondaires : elles ont influencé nos choix
+techniques et notre stratégie de test, surtout sur les scénarios d’intégration.
+6.6
+Conclusion
+Cette phase finale a permis de valider les principaux parcours fonctionnels et
+de confirmer l’intégration entre les composants web, mobile, backend et IA. Elle
+a aussi mis en évidence des limites techniques à améliorer, notamment autour de
+l’intégration et des configurations OAuth. Les tests réalisés sécurisent la version
+actuelle, mais une industrialisation complète demandera des tests automatisés plus
+systématiques. Le chapitre suivant présente la conclusion générale du projet et les
+perspectives d’évolution d’AgroVision.
+111
+
+
+===== PAGE 112 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Conclusion Générale
+Au terme de ce projet de fin d’études, une première version exploitable d’Agro-
+Vision a été obtenue. Elle regroupe les composants attendus : une interface web,
+une interface mobile, un backend Express.js, un service IA sous FastAPI et une
+base MongoDB. Le besoin initial — proposer un outil unique pour le diagnostic et
+l’accompagnement agricole — est ainsi couvert de manière concrète.
+Le parcours de réalisation n’a pas été parfaitement linéaire, et c’est justement
+ce qui nous a appris le plus. Certaines difficultés n’étaient pas visibles au début,
+notamment l’intégration mobile OAuth et la stabilité des flux d’image vers Fas-
+tAPI. Dans plusieurs cas, une erreur interprétée comme "problème IA" s’est révélée
+être un problème d’interface API ou de format de données. Ce recul critique est, à
+notre sens, l’un des apports majeurs du projet.
+Sur le plan méthodologique, Scrum a aidé à livrer progressivement, mais aussi à
+revenir sur certains choix techniques lorsqu’ils ne tenaient pas en test réel. La valeur
+du projet ne se limite donc pas au modèle de prédiction : elle repose surtout sur
+l’intégration de modules complémentaires (historique, chat, météo, marketplace,
+administration) dans une architecture cohérente.
+En perspective, plusieurs améliorations sont envisagées : extension du modèle à
+d’autres cultures, automatisation plus large des tests, renforcement du déploiement
+cloud, et ajout d’un paiement en ligne fiable pour la marketplace. Autrement dit,
+le projet est fonctionnel aujourd’hui, mais il est aussi pensé pour évoluer, ce qui
+était un objectif important dès le départ.
+112
+
+
+===== PAGE 113 =====
+
+AGROVISION
+Chapitre 6 : Tests et Validation — Sprint 4
+Webographie
+1. Akamai Technologies. Qu’est-ce que le modèle client-serveur ? https://
+www.akamai.com/fr/glossary/what-is-the-client-server-model (Consulté
+le 29/05/2026).
+2. Mozilla Developer Network (MDN). MVC (Modèle-Vue-Contrôleur). https:
+//developer.mozilla.org/fr/docs/Glossary/MVC (Consulté le 29/05/2026).
+113
+
+
+===== PAGE 114 =====
+
+
+
+===== PAGE 115 =====

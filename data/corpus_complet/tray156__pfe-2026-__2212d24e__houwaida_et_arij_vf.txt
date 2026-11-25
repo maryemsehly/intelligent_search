@@ -1,0 +1,5963 @@
+===== PAGE 1 =====
+
+République Tunisienne
+Ministère de l’Enseignement Supérieur
+et de la Recherche Scientifique
+Université de Monastir
+Institut Supérieur d’Informatique
+de Mahdia
+RAPPORT DE PFE
+No : LCE-IOT-3-2026-042
+MEMOIRE
+Présenté à
+Institut Supérieur d’Informatique de Mahdia
+Effectué à
+En vue de l’obtention du diplôme de
+Licence Appliquée en Computer Engineering :
+Systèmes Embarqués et Internet des Objets
+Élaboré par :
+Boudebsa Arij et Tray Houwaida
+Un Système Automatisé de Test
+d’Étanchéité et d’Isolation Haute Tension des Gaines Thermorétractables
+pour Câblage Automobile — SALIS
+Soutenu le : 12 Juin 2026
+devant le jury composé de :
+Président
+: Ammar Manel
+Rapporteur
+: Fnaish Nader
+Encadreur Académique
+: Hsairi Walid
+Encadreur Professionnel
+: Jlassi Fathi
+Année universitaire
+2025 – 2026
+
+
+===== PAGE 2 =====
+
+SALIS
+Dédicace
+À mes parents
+À mes très chers parents, MOHSEN BOUDEBSA et RABAA SASSI, pour votre amour
+inconditionnel, vos sacrifices et votre confiance sans faille. Ce travail est le fruit de vos
+efforts autant que des miens.
+À ma chère tante Sameh
+Pour ton affection sincère et ton soutien constant, tu as toujours été pour moi une
+seconde maman.
+À mes sœurs
+À HIDEYA, SARA ET RANYA, pour votre présence bienveillante et votre soutien quoti-
+dien qui ont illuminé ce parcours.
+À mon ami Brahim et mon amie Safee
+Pour votre amitié sincère, votre soutien inestimable et votre confiance dans les moments
+de doute comme de réussite.
+À ma binôme Houwaida
+Pour cette collaboration enrichissante marquée par la rigueur, la persévérance et l’esprit
+d’équipe. Je suis fière du chemin parcouru ensemble.
+À tous mes professeurs
+Pour votre dévouement et la qualité de votre enseignement qui m’ont permis de con-
+struire les bases nécessaires à mon avenir professionnel.
+« La reconnaissance donne une âme à nos mémoires. »
+— Arij Boudebsa
+
+
+===== PAGE 3 =====
+
+SALIS
+Dédicace
+À Allah Tout-Puissant
+Je rends grâce à Allah pour Sa miséricorde et la force qu’Il m’a accordée tout au long de
+ce parcours.
+À mes parents
+À ma maman, pour ton amour inconditionnel et tes sacrifices silencieux. À mon papa,
+pour ton soutien indéfectible et ton exemple de rigueur et d’intégrité. Ce travail vous
+est entièrement dédié.
+À mes frères
+Pour votre présence joyeuse et votre énergie qui ont rendu ce parcours plus léger et
+plus beau.
+À ma famille
+Pour votre amour, vos prières et votre soutien constant qui m’ont aidée à avancer avec
+confiance.
+À mes amies et à Sahar
+Pour votre écoute sincère, votre bienveillance et tous les moments de partage qui ont
+rendu cette expérience inoubliable.
+À ma binôme Arij
+Pour cette belle collaboration, ton sérieux et ton engagement sans faille. Travailler à tes
+côtés a été une expérience enrichissante dont je suis fière.
+« La gratitude est la mémoire du cœur. »
+— Houwaida Tray
+2
+
+
+===== PAGE 4 =====
+
+SALIS
+Remerciements
+A
+vant de vous présenter le fruit de plusieurs mois de travail, nous souhaitons
+exprimer notre profonde gratitude envers toutes celles et ceux qui ont contribué,
+de près ou de loin, à la réussite de ce projet.
+N
+os remerciements les plus sincères vont à Monsieur Walid Hsairi, notre encadrant
+académique, pour sa disponibilité, son exigence constructive et ses conseils avisés
+tout au long de ce projet. Ses remarques pertinentes et ses retours toujours justes ont
+enrichi notre démarche et amélioré la qualité de notre travail.
+N
+ous remercions également Monsieur Jlassi Fathi, notre encadrant professionnel au
+sein de l’entreprise Leoni, pour sa confiance, son accompagnement constant et ses
+conseils éclairés. Il nous a permis d’évoluer dans un environnement stimulant tout en
+nous transmettant une rigueur et une exigence de qualité précieuses.
+N
+ous tenons à remercier les membres du jury pour le temps qu’ils consacreront à
+l’évaluation de notre travail. Leur regard critique et leurs observations seront
+pour nous des sources précieuses d’amélioration.
+E
+nfin, un immense merci à nos familles, amis et camarades pour leur soutien constant,
+leur patience et leurs encouragements tout au long de cette aventure. Chaque mot
+réconfortant a été un moteur précieux dans les moments de doute comme dans les
+instants de réussite.
+3
+
+
+===== PAGE 5 =====
+
+Table des Matières
+Liste des Abréviations
+x
+Introduction Générale
+1
+1
+Étude de Projet
+3
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.1
+Présentation de l’Entreprise . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.1.1
+LEONI : Présentation Générale . . . . . . . . . . . . . . . . . . . .
+3
+1.1.2
+LEONI en Tunisie . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Contexte Industriel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+Problématique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.4
+Analyse de L’éxistant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4.1
+Le premier test d’étanchéité de l’histoire : le Bubble Test
+. . . . .
+6
+1.4.2
+Spark Test : Test à étincelles (Câbles en extrusion)
+. . . . . . . . .
+8
+1.4.3
+HiPot Test : Test diélectrique haute tension . . . . . . . . . . . . .
+10
+1.4.4
+Dry Air Pressure Test : Test pression air sec . . . . . . . . . . . . .
+12
+1.4.5
+Helium Leak Test : Test fuite hélium . . . . . . . . . . . . . . . . .
+14
+1.4.6
+Ultrasonic Leak Test : Test fuite par ultrasons . . . . . . . . . . . .
+16
+1.4.7
+Le premier bain d’étanchéité industriel pour câbles automobiles .
+18
+1.4.8
+Machines de test des splices et tubes thermorétractables . . . . . .
+20
+Schleuniger WireTest 3400 / 3500 . . . . . . . . . . . . . . . . . . .
+20
+Komax Zeta 640 / Alpha 355
+. . . . . . . . . . . . . . . . . . . . .
+21
+MECALBI STCS BLTTS : Solution utilisée chez Leoni
+. . . . . . .
+23
+1.5
+Critiques de l’Existant
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+1.6
+Solution Proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+1.7
+Méthodologie et Langage de Conception . . . . . . . . . . . . . . . . . . .
+28
+1.7.1
+Langage de Conception
+. . . . . . . . . . . . . . . . . . . . . . . .
+29
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+2
+Analyse des Besoins et Planification
+31
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+2.1
+Spécification des Besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+2.1.1
+Identification des Acteurs . . . . . . . . . . . . . . . . . . . . . . .
+32
+2.1.2
+Besoins Fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+2.1.3
+Besoins Non Fonctionnels . . . . . . . . . . . . . . . . . . . . . . .
+33
+2.2
+Gestion de Projet avec Scrum
+. . . . . . . . . . . . . . . . . . . . . . . . .
+34
+2.2.1
+Présentation de la Méthodologie Scrum . . . . . . . . . . . . . . .
+34
+i
+
+
+===== PAGE 6 =====
+
+2.2.2
+Les Rôles Scrum . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+2.2.3
+Les Artéfacts Scrum . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+2.2.4
+Les Cérémonies Scrum . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+2.3
+Backlog Produit . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+2.4
+Planification des Sprints
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+2.5
+Environnements de Travail . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+2.5.1
+Environnement Logiciel . . . . . . . . . . . . . . . . . . . . . . . .
+39
+2.5.2
+Environnement Matériel . . . . . . . . . . . . . . . . . . . . . . . .
+43
+2.6
+Architecture de la Solution . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3
+Sprint 1 : Initialisation
+46
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+3.1
+Découpage des Fonctionnalités . . . . . . . . . . . . . . . . . . . . . . . .
+47
+3.2
+Spécification Fonctionnelles et Conception . . . . . . . . . . . . . . . . . .
+48
+3.2.1
+Classification des Cas d’Utilisation par Acteur . . . . . . . . . . .
+48
+3.2.2
+Diagramme de Cas d’Utilisation du Sprint 1
+. . . . . . . . . . . .
+49
+3.2.3
+Spécifications et Conception du Cas d’Utilisation « S’authentifier » 50
+Description Textuelle . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+Diagramme de Séquence . . . . . . . . . . . . . . . . . . . . . . . .
+51
+3.2.4
+Spécifications et Conception du Cas d’Utilisation « Consulter Don-
+nées Temps Réel » . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+Description Textuelle . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+Diagramme de Séquence . . . . . . . . . . . . . . . . . . . . . . . .
+52
+3.2.5
+Diagramme de Classe du Sprint 1 . . . . . . . . . . . . . . . . . . .
+53
+3.3
+Test
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+3.3.1
+Partie Application Mobile . . . . . . . . . . . . . . . . . . . . . . .
+54
+3.3.2
+Partie Communication IoT . . . . . . . . . . . . . . . . . . . . . . .
+55
+Architecture de Communication
+. . . . . . . . . . . . . . . . . . .
+56
+Génération du Token JWT . . . . . . . . . . . . . . . . . . . . . . .
+56
+Dashboard HMI : Données Temps Réel
+. . . . . . . . . . . . . . .
+57
+3.3.3
+Conception 3D avec OpenSCAD . . . . . . . . . . . . . . . . . . .
+57
+3.4
+Rétrospective du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+4
+Sprint 2 : Dry Test
+61
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+4.1
+Découpage des Fonctionnalités . . . . . . . . . . . . . . . . . . . . . . . .
+62
+4.2
+Spécification Fonctionnelles et Conception . . . . . . . . . . . . . . . . . .
+63
+4.2.1
+Classification des Cas d’Utilisation par Acteur . . . . . . . . . . .
+63
+4.2.2
+Diagramme de Cas d’Utilisation du Sprint 2
+. . . . . . . . . . . .
+64
+4.2.3
+Spécifications et Conception du Cas d’Utilisation « Lancer Test de
+Chute de Pression » . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+Description Textuelle . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+Diagramme de Séquence . . . . . . . . . . . . . . . . . . . . . . . .
+66
+4.2.4
+Spécifications et Conception du Cas d’Utilisation « Consulter Ré-
+sultats Dry Test » . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+ii
+
+
+===== PAGE 7 =====
+
+Description Textuelle . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+Diagramme de Séquence . . . . . . . . . . . . . . . . . . . . . . . .
+68
+4.2.5
+Diagramme de Classe du Sprint 2 . . . . . . . . . . . . . . . . . . .
+68
+4.3
+Test
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.3.1
+Partie Matérielle . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+Capteurs de Pression : SMC PSE540 R04 et R06 . . . . . . . . . . .
+69
+Régulateur de Pression : SMC ITV2050 . . . . . . . . . . . . . . . .
+70
+Électrovannes Festo . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+Microcontrôleur STM32L476
+. . . . . . . . . . . . . . . . . . . . .
+73
+4.3.2
+Partie Firmware STM32
+. . . . . . . . . . . . . . . . . . . . . . . .
+74
+Principe du Test de Chute de Pression . . . . . . . . . . . . . . . .
+74
+Algorithme Dry Test . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+Implémentation Firmware : STM32CubeIDE . . . . . . . . . . . .
+77
+Configuration Communication Série — PuTTY . . . . . . . . . . .
+77
+Tension de Commande Régulateur SMC ITV2050
+. . . . . . . . .
+78
+Terminal Node.js : Réception Données STM32
+. . . . . . . . . . .
+78
+4.3.3
+Partie Dashboard . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+4.4
+Rétrospective du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+5
+Sprint 3 : HV Test
+81
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+5.1
+Découpage des Fonctionnalités . . . . . . . . . . . . . . . . . . . . . . . .
+82
+Importance de la rampe de tension : . . . . . . . . . . . . . . . . .
+83
+5.2
+Spécification Fonctionnelles et Conception . . . . . . . . . . . . . . . . . .
+83
+5.2.1
+Classification des Cas d’Utilisation par Acteur . . . . . . . . . . .
+84
+5.2.2
+Diagramme de Cas d’Utilisation du Sprint 3
+. . . . . . . . . . . .
+84
+5.2.3
+Spécifications et Conception du Cas d’Utilisation « Lancer HV Test » 85
+Description Textuelle . . . . . . . . . . . . . . . . . . . . . . . . . .
+85
+Diagramme de Séquence . . . . . . . . . . . . . . . . . . . . . . . .
+86
+5.2.4
+Spécifications et Conception du Cas d’Utilisation « Contrôle Inter-
+lock Sécurité » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+Description Textuelle . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+Diagramme de Séquence . . . . . . . . . . . . . . . . . . . . . . . .
+88
+5.2.5
+Diagramme de Classe du Sprint 3 . . . . . . . . . . . . . . . . . . .
+88
+5.3
+Test
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+5.3.1
+Partie Matérielle . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+Hipot Tester : Chroma 19073 . . . . . . . . . . . . . . . . . . . . . .
+89
+Principe de Fonctionnement du Chroma 19073 . . . . . . . . . . .
+90
+Interface RS 232 : Acquisition STM32L476 . . . . . . . . . . . . . .
+91
+Système Interlock : Micro switch de Porte . . . . . . . . . . . . . .
+92
+5.3.2
+Partie Firmware STM32
+. . . . . . . . . . . . . . . . . . . . . . . .
+92
+Principe Physique du HV Test . . . . . . . . . . . . . . . . . . . . .
+92
+Features Physiques Calculées . . . . . . . . . . . . . . . . . . . . .
+92
+Algorithme HV Test
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+93
+5.3.3
+Partie Intelligence Artificielle . . . . . . . . . . . . . . . . . . . . .
+95
+iii
+
+
+===== PAGE 8 =====
+
+Présentation du Dataset
+. . . . . . . . . . . . . . . . . . . . . . . .
+95
+Modèle Random Forest . . . . . . . . . . . . . . . . . . . . . . . . .
+95
+Résultats du Modèle . . . . . . . . . . . . . . . . . . . . . . . . . .
+95
+Justification de la Fiabilité du Modèle
+. . . . . . . . . . . . . . . .
+97
+Décision IA en Temps Réel : Terminal Node.js
+. . . . . . . . . . .
+97
+Comparaison Méthode Classique vs IA
+. . . . . . . . . . . . . . .
+99
+5.3.4
+Partie Dashboard . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+99
+5.4
+Rétrospective du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+6
+Sprint 4 : Supervision et Administration
+102
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 102
+6.1
+Découpage des Fonctionnalités . . . . . . . . . . . . . . . . . . . . . . . . 103
+6.2
+Spécification Fonctionnelles et Conception . . . . . . . . . . . . . . . . . . 106
+6.2.1
+Classification des Cas d’Utilisation par Acteur . . . . . . . . . . . 106
+6.2.2
+Diagramme de Cas d’Utilisation du Sprint 4
+. . . . . . . . . . . . 107
+6.2.3
+Spécifications et Conception du Cas d’Utilisation « Superviser
+Production Dashboard » . . . . . . . . . . . . . . . . . . . . . . . . 108
+Description Textuelle . . . . . . . . . . . . . . . . . . . . . . . . . . 108
+Diagramme de Séquence . . . . . . . . . . . . . . . . . . . . . . . . 109
+6.2.4
+Spécifications et Conception du Cas d’Utilisation « Gérer Utilisa-
+teurs »
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 110
+Description Textuelle . . . . . . . . . . . . . . . . . . . . . . . . . . 110
+Diagramme de Séquence . . . . . . . . . . . . . . . . . . . . . . . . 111
+6.2.5
+Diagramme de Classe du Sprint 4 . . . . . . . . . . . . . . . . . . . 111
+6.3
+Test
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 112
+6.3.1
+Partie Dashboard HMI . . . . . . . . . . . . . . . . . . . . . . . . . 112
+Interface de Connexion et d’Inscription
+. . . . . . . . . . . . . . . 112
+Interface d’Accueil : Supervision Temps Réel . . . . . . . . . . . . 113
+Interface Historique et Statistiques . . . . . . . . . . . . . . . . . . 114
+Interface Alertes et Notifications
+. . . . . . . . . . . . . . . . . . . 115
+Base de Données SQLite : Traçabilité et Sécurité
+. . . . . . . . . . 115
+6.3.2
+Partie Application Mobile Flutter . . . . . . . . . . . . . . . . . . . 116
+6.3.3
+Partie Administration
+. . . . . . . . . . . . . . . . . . . . . . . . . 118
+Interface Gestion Utilisateurs . . . . . . . . . . . . . . . . . . . . . 118
+Interface Configuration Paramètres . . . . . . . . . . . . . . . . . . 119
+6.3.4
+Partie Traçabilité : Code Barres . . . . . . . . . . . . . . . . . . . . 119
+Génération du Ticket . . . . . . . . . . . . . . . . . . . . . . . . . . 120
+Implémentation Technique du Code Barres . . . . . . . . . . . . . 120
+6.4
+Rétrospective du Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . 121
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 122
+7
+Tests, Validation et Perspectives
+123
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 123
+7.1
+Tests Unitaires . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 124
+7.2
+Tests Fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 125
+7.2.1
+Dry Test
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 125
+iv
+
+
+===== PAGE 9 =====
+
+7.2.2
+HV Test . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 126
+7.3
+Tests d’Intégration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 126
+7.4
+Limites du Prototype . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 127
+7.5
+Perspectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 128
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 128
+Conclusion Générale
+132
+Résumé
+135
+Abstract
+136
+v
+
+
+===== PAGE 10 =====
+
+Liste des Figures
+1.1
+Logo LEONI . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Stand LEONI : Cable solutions for high power charging . . . . . . . . . .
+5
+1.3
+Principe du Bubble Test . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.4
+sikora Sparktester 6000 : Test en ligne sur extrudeuse
+. . . . . . . . . . .
+10
+1.5
+chleuniger HiPoT 3600 — Test diélectrique haute tension . . . . . . . . .
+12
+1.6
+ATEQ F620 : Testeur de fuite à air sec ] . . . . . . . . . . . . . . . . . . . .
+14
+1.7
+nficon Contura S400 — Test fuite hélium . . . . . . . . . . . . . . . . . . .
+16
+1.8
+UE Systems Ultraprobe 15000 — Détecteur ultrasonore
+. . . . . . . . . .
+18
+1.9
+Bain d’étanchéité pour jonctions câblage automobile . . . . . . . . . . . .
+19
+1.10 Schleuniger WireTest 3500 : Banc de test câblage automobile . . . . . . .
+21
+1.11 Komax Zeta 640 : Ligne complète avec module test étanchéité
+. . . . . .
+23
+1.12 MECALBI STCS-BLTTS — Machine utilisée chez Leoni
+. . . . . . . . . .
+26
+1.13 La méthodologie Scrum
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+1.14 Logo UML . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+2.1
+Cycle itératif de la méthodologie Scrum . . . . . . . . . . . . . . . . . . .
+35
+2.2
+Logo STM32CubeIDE . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+2.3
+Logo Visual Studio Code . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+2.4
+Logo Flutter . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+2.5
+Logo Android Studio . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+2.6
+Logo SQLite . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+2.7
+Logo Figma
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+2.8
+Logo GitHub . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+2.9
+Logo PlantUML . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+2.10 Logo Draw.io . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+2.11 Logo OpenSCAD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+2.12 Logo Express.js
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+2.13 Architecture générale du système SALIS . . . . . . . . . . . . . . . . . . .
+44
+3.1
+Diagramme de cas d’utilisation du Sprint 1 . . . . . . . . . . . . . . . . .
+49
+3.2
+Diagramme de séquence : cas d’utilisation « S’authentifier »
+. . . . . . .
+51
+3.3
+Diagramme de séquence : cas d’utilisation « Consulter données temps
+réel »
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+3.4
+Diagramme de classe du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . .
+54
+3.5
+Interfaces de l’application mobile SALIS . . . . . . . . . . . . . . . . . . .
+55
+3.6
+Architecture de communication IoT : Sprint 1 . . . . . . . . . . . . . . . .
+56
+3.7
+Génération token JWT — API REST Backend Node.js
+. . . . . . . . . . .
+56
+3.8
+Dashboard HMI : Données temps réel
+. . . . . . . . . . . . . . . . . . . .
+57
+vi
+
+
+===== PAGE 11 =====
+
+3.9
+Conception 3D du prototype SALIS et modele OpenSCAD . . . . . . . .
+58
+4.1
+Diagramme de cas d’utilisation du Sprint 2 . . . . . . . . . . . . . . . . .
+64
+4.2
+Diagramme de séquence : cas d’utilisation « Lancer test de chute de
+pression » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+4.3
+Diagramme de séquence : cas d’utilisation « Consulter résultats Dry Test » 68
+4.4
+Diagramme de classe du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.5
+Régulateur de pression SMC ITV2050
+. . . . . . . . . . . . . . . . . . . .
+71
+4.6
+Microcontrôleur STM32L476 . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+4.7
+Algorithme complet du Dry Test : Firmware STM32L476
+. . . . . . . . .
+76
+4.8
+Firmware STM32CubeIDE . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+4.9
+Configuration communication série — PuTTY + STM32L476 . . . . . . .
+77
+4.10 Tension DAC STM32L476 — Commande régulateur SMC ITV2050
+. . .
+78
+4.11 Terminal Node.js : Réception données STM32 via SerialPort COM3
+. . .
+78
+4.12 Dashboard HMI : Résultats du Dry Test
+. . . . . . . . . . . . . . . . . . .
+79
+5.1
+Diagramme de cas d’utilisation du Sprint 3 . . . . . . . . . . . . . . . . .
+84
+5.2
+Diagramme de séquence : cas d’utilisation « Lancer HV Test » . . . . . .
+86
+5.3
+Diagramme de séquence : cas d’utilisation « Contrôle interlock sécurité »
+88
+5.4
+Diagramme de classe du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . .
+89
+5.5
+Hipot Tester : Chroma 19073 . . . . . . . . . . . . . . . . . . . . . . . . . .
+90
+5.6
+Architecture HV Test : Chroma 19073 + STM32L476 + IA
+. . . . . . . . .
+91
+5.7
+Algorithme complet du HV Test . . . . . . . . . . . . . . . . . . . . . . . .
+94
+5.8
+Résultats Random Forest : Accuracy, Matrice de confusion
+. . . . . . . .
+96
+5.9
+Résultats Random Forest :Feature Importance
+. . . . . . . . . . . . . . .
+97
+5.10 Terminal Node.js : Décision IA Random Forest lors du HV Test . . . . . .
+98
+5.11 Terminal Node.js : Décision IA Random Forest lors du HV Test . . . . . .
+98
+5.12 Dashboard HMI : Résultats du HV Test
+. . . . . . . . . . . . . . . . . . .
+99
+6.1
+Diagramme de cas d’utilisation du Sprint 4 . . . . . . . . . . . . . . . . . 107
+6.2
+Diagramme de séquence : cas d’utilisation « Superviser production dash-
+board » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 109
+6.3
+Diagramme de séquence : cas d’utilisation « Gérer utilisateurs » . . . . . 111
+6.4
+Diagramme de classe du Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . 112
+6.5
+Interface connexion : Dashboard SALIS
+. . . . . . . . . . . . . . . . . . . 113
+6.6
+Interface d’accueil : Supervision temps réel . . . . . . . . . . . . . . . . . 113
+6.7
+Interface historique et statistiques : Dashboard SALIS . . . . . . . . . . . 114
+6.8
+Interface historique et Tests : Dashboard SALIS . . . . . . . . . . . . . . . 114
+6.9
+Interface Journal De audit : Dashboard SALIS . . . . . . . . . . . . . . . . 115
+6.10 Interface alertes et notifications : Dashboard SALIS . . . . . . . . . . . . . 115
+6.11 Base de données SQLite — Traçabilité système SALIS . . . . . . . . . . . 116
+6.12 Application mobile Flutter : Système SALIS . . . . . . . . . . . . . . . . . 117
+6.13 Interface gestion utilisateurs : Module administration SALIS . . . . . . . 118
+6.14 Interface configuration paramètres : Module administration SALIS
+. . . 119
+6.15 Ticket de traçabilité avec code barres — Système SALIS . . . . . . . . . . 120
+vii
+
+
+===== PAGE 12 =====
+
+Liste des Tableaux
+1.1
+Présentation générale du test par immersion
+. . . . . . . . . . . . . . . .
+7
+1.2
+Présentation générale du test haute tension . . . . . . . . . . . . . . . . .
+9
+1.3
+Présentation générale du test diélectrique . . . . . . . . . . . . . . . . . .
+11
+1.4
+Présentation générale du test d’étanchéité pneumatique . . . . . . . . . .
+13
+1.5
+Présentation générale du test à l’hélium . . . . . . . . . . . . . . . . . . .
+15
+1.6
+Présentation générale du test ultrasonique . . . . . . . . . . . . . . . . . .
+17
+1.7
+Présentation générale du test des splices étanches
+. . . . . . . . . . . . .
+19
+1.8
+Présentation du système Schleuniger WireTest
+. . . . . . . . . . . . . . .
+20
+1.9
+Présentation du système Komax . . . . . . . . . . . . . . . . . . . . . . . .
+22
+1.10 Présentation du système MECALBI STCS BLTTS . . . . . . . . . . . . . .
+24
+1.11 Tableau comparatif des solutions de test : Positionnement du système
+SALIS . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.1
+Synthèse des acteurs du système SALIS
+. . . . . . . . . . . . . . . . . . .
+32
+2.2
+Besoins fonctionnels du système SALIS
+. . . . . . . . . . . . . . . . . . .
+33
+2.3
+Besoins non fonctionnels du système SALIS . . . . . . . . . . . . . . . . .
+34
+2.4
+Rôles Scrum dans le projet SALIS . . . . . . . . . . . . . . . . . . . . . . .
+36
+2.5
+Product Backlog du projet SALIS . . . . . . . . . . . . . . . . . . . . . . .
+38
+2.6
+Planification SALIS : 4 Sprints sur 4 mois
+. . . . . . . . . . . . . . . . . .
+39
+2.7
+Environnement matériel de développement . . . . . . . . . . . . . . . . .
+43
+3.1
+Backlog du Sprint 1 : Initialisation
+. . . . . . . . . . . . . . . . . . . . . .
+47
+3.2
+Classification des cas d’utilisation par acteur : Sprint 1 . . . . . . . . . . .
+48
+3.3
+Description textuelle du cas d’utilisation « S’authentifier »
+. . . . . . . .
+50
+3.4
+Description textuelle du cas d’utilisation « Consulter données temps réel » 52
+3.5
+Description des interfaces de l’application mobile SALIS
+. . . . . . . . .
+55
+3.6
+Rétrospective du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+4.1
+Backlog du Sprint 2 : Dry Test . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+4.2
+Classification des cas d’utilisation par acteur : Sprint 2 . . . . . . . . . . .
+63
+4.3
+Description textuelle du cas d’utilisation « Lancer test de chute de pression » 65
+4.4
+Description textuelle du cas d’utilisation « Consulter résultats Dry Test »
+67
+4.5
+Comparatif capteurs de pression : Justification du choix SMC PSE540 . .
+70
+4.6
+Caractéristiques du régulateur SMC ITV2050 . . . . . . . . . . . . . . . .
+71
+4.7
+Comparatif régulateurs : Justification du choix SMC ITV2050 . . . . . . .
+72
+4.8
+Électrovannes Festo : Prototype SALIS . . . . . . . . . . . . . . . . . . . .
+72
+4.9
+Comparatif électrovannes Justification du choix Festo . . . . . . . . . . .
+73
+4.10 Séquence de commande des électrovannes Festo : Dry Test . . . . . . . .
+73
+4.11 Comparaison plateformes embarquées : Système SALIS . . . . . . . . . .
+74
+viii
+
+
+===== PAGE 13 =====
+
+4.12 Rétrospective du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+5.1
+Backlog du Sprint 3 : HV Test . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+5.2
+Classification des cas d’utilisation par acteur : Sprint 3 . . . . . . . . . . .
+84
+5.3
+Description textuelle du cas d’utilisation « Lancer HV Test »
+. . . . . . .
+85
+5.4
+Description textuelle du cas d’utilisation « Contrôle interlock sécurité » .
+87
+5.5
+Comparatif Hipot Testers . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+90
+5.6
+Composants du sous-système HV Test . . . . . . . . . . . . . . . . . . . .
+91
+5.7
+États du système interlock . . . . . . . . . . . . . . . . . . . . . . . . . . .
+92
+5.8
+Caractéristiques du dataset IA . . . . . . . . . . . . . . . . . . . . . . . . .
+95
+5.9
+Hyperparamètres du modèle Random Forest . . . . . . . . . . . . . . . .
+95
+5.10 Résultats du modèle Random Forest . . . . . . . . . . . . . . . . . . . . .
+96
+5.11 Comparaison méthode classique vs IA . . . . . . . . . . . . . . . . . . . .
+99
+5.12 Rétrospective du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+6.1
+Backlog du Sprint 4 : Supervision et Administration . . . . . . . . . . . . 106
+6.2
+Classification des cas d’utilisation par acteur : Sprint 4 . . . . . . . . . . . 106
+6.3
+Description textuelle du cas d’utilisation « Superviser production dash-
+board » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 108
+6.4
+Description textuelle du cas d’utilisation « Gérer utilisateurs » . . . . . . 110
+6.5
+Description des interfaces — Application mobile Flutter SALIS . . . . . . 118
+6.6
+Rétrospective du Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . 121
+7.1
+Tests unitaires du système SALIS – état conception . . . . . . . . . . . . . 125
+7.2
+Spécification du test fonctionnel – Dry Test (à valider sur prototype) . . . 125
+7.3
+Spécification du test fonctionnel – HV Test (à valider sur prototype) . . . 126
+7.4
+Tests d’intégration du système SALIS – état d’avancement
+. . . . . . . . 126
+7.5
+Limites du prototype SALIS (version actuelle) . . . . . . . . . . . . . . . . 127
+7.6
+Perspectives d’amélioration pour le système SALIS
+. . . . . . . . . . . . 128
+ix
+
+
+===== PAGE 14 =====
+
+Liste des Abréviations
+SALIS
+Smart Automated Leak and Isolation System
+HV
+High Voltage (Haute Tension)
+IoT
+Internet of Things (Internet des Objets)
+HMI
+Human Machine Interface
+STM32
+Microcontrôleur STMicroelectronics 32 bits
+UART
+Universal Asynchronous Receiver Transmitter
+ADC
+Analog to Digital Converter
+DAC
+Digital to Analog Converter
+FSM
+Finite State Machine
+JWT
+JSON Web Token
+RBAC
+Role Based Access Control
+API
+Application Programming Interface
+REST
+Representational State Transfer
+SQLite
+Base de données locale légère
+IA
+Intelligence Artificielle
+NOK
+Non OK — Non Conforme
+IP
+Ingress Protection
+PFE
+Projet de Fin d’Études
+IATF
+International Automotive Task Force
+PDF
+Portable Document Format
+QR
+Quick Response (code)
+IDE
+Integrated Development Environment
+UML
+Unified Modeling Language
+CRUD
+Create, Read, Update, Delete
+SQL
+Structured Query Language
+CSS
+Cascading Style Sheets
+HTML
+HyperText Markup Language
+JS
+JavaScript
+ML
+Machine Learning
+x
+
+
+===== PAGE 15 =====
+
+RF
+Random Forest
+DB
+Database
+UI
+User Interface
+UX
+User Experience
+xi
+
+
+===== PAGE 16 =====
+
+Introduction Générale
+Dans un secteur automobile en pleine transformation, où l’électrification des véhicules,
+la conduite autonome et les architectures électriques avancées redéfinissent chaque
+année les exigences de fiabilité, la qualité des connexions électriques n’est plus une
+option , c’est une condition de survie industrielle. Un véhicule moderne embarque
+entre 1 500 et 4 000 jonctions de câblage, chacune devant résister à l’humidité, aux
+vibrations et aux cycles thermiques extrêmes propres à l’environnement automobile,
+tout en garantissant une continuité électrique parfaite et une étanchéité conforme aux
+normes IP67 et IP68.
+C’est dans ce contexte exigeant que s’inscrit notre projet de fin d’études, réalisé au
+sein de Leoni Tunisie , le plus grand employeur privé du pays avec plus de 27 000
+collaborateurs répartis sur 10 sites industriels, spécialisé dans la fabrication de systèmes
+de câblage automobile pour les plus grands constructeurs mondiaux. Face aux limites
+techniques et organisationnelles de la machine de test existante : la MECALBI STCS
+BLTTS , dont la décision de conformité repose sur une observation visuelle subjective et
+une tension d’isolation de 100V DC, insuffisante pour révéler les micro défauts latents,
+nous avons conçu et réalisé le système SALIS.
+Par rapport aux solutions existantes, le système SALIS apporte trois contributions
+originales :
+• Double test automatisé : combinaison du Pressure Decay Test et du HV Test en
+un seul cycle automatique, éliminant toute intervention humaine dans la décision
+de conformité.
+• Intelligence artificielle : intégration d’un modèle Random Forest pour la détection
+des défauts d’isolation, offrant une analyse plus fine que les méthodes classiques
+à seuil fixe.
+• Supervision connectée : dashboard temps réel et application mobile Flutter
+permettant une traçabilité numérique complète conforme à l’IATF 16949.
+SALIS : Smart Automated Leak and Isolation System , est une machine de test en-
+tièrement automatisée, spécifiquement conçue pour le contrôle qualité des jonctions
+de câblage automobile protégées par tubes thermorétractables. Elle combine trois
+technologies complémentaires :
+• Un test d’étanchéité par air sec (Dry Test), reposant sur la mesure automatique de
+la chute de pression et du débit massique, capables de détecter de manière fiable
+la majorité des défauts
+• Un test d’isolation haute tension (HV Test), appliquant une rampe de tension
+progressive afin d’analyser l’évolution du courant de fuite et de détecter les défauts
+d’isolation latents, invisibles à basse tension.
+• Une décision intelligente basée sur un modèle d’intelligence artif
+1
+
+
+===== PAGE 17 =====
+
+SALIS
+L’ensemble du système est supervisé en temps réel via un dashboard HMI et
+une application mobile Flutter, avec une traçabilité industrielle complète par
+codes-barres et une gestion sécurisée des utilisateurs conforme aux exigences de
+l’industrie automobile.
+Ce rapport est structuré en sept chapitres, chacun correspondant à une étape
+précise du développement du système SALIS :
+◦Chapitre 1 : Étude de Projet : présentation de Leoni Tunisie, analyse du
+contexte industriel, étude de l’existant et définition de la solution proposée.
+◦Chapitre 2 : Analyse des Besoins et Planification : spécification des besoins
+fonctionnels et non fonctionnels, méthodologie Scrum, Product Backlog et
+architecture générale du système.
+◦Chapitre 3 : Sprint 1 : initialisation du système, mise en place de l’authentification,
+de la communication IoT et de la conception 3D du prototype.
+◦Chapitre 4 : Sprint 2 : conception et réalisation du Dry Test complet (test de
+chute de pression ).
+◦Chapitre 5 : Sprint 3 : conception et réalisation du HV Test avec rampe de
+tension progressive et intégration du modèle d’intelligence artificielle.
+◦Chapitre 6 : Sprint 4 : développement de la supervision complète, de
+l’application mobile Flutter et du système de traçabilité industrielle.
+◦Chapitre 7 : Tests et Validation : validation du système, limites rencontrées
+et perspectives d’amélioration pour une intégration industrielle complète.
+2
+
+
+===== PAGE 18 =====
+
+1
+Chapitre
+Étude de Projet
+Introduction
+Ce chapitre constitue le point de départ de notre projet. Nous présentons, dans
+un premier temps, l’entreprise d’accueil Leoni Tunisie, puis nous exposons le con-
+texte industriel ayant motivé ce travail. Nous analysons ensuite la problématique
+identifiée, suivie d’une étude de l’existant, avant de présenter la solution proposée
+et la méthodologie adoptée pour mener à bien ce projet.
+1.1
+Présentation de l’Entreprise
+1.1.1
+LEONI : Présentation Générale
+LEONI est un acteur industriel de référence dans le domaine des systèmes
+de câblage automobile et de la gestion de l’énergie et des données automobile.
+Présent dans plus de 20 pays et comptant environ 86 000 collaborateurs, le groupe
+a réalisé un chiffre d’affaires de 3,9 milliards d’euros en 2025 [19]. Spécialisée dans
+la conception et la fabrication de systèmes complexes de câblage et de faisceaux
+électriques sur mesure, LEONI accompagne les constructeurs automobiles et les
+équipementiers dans le développement de solutions innovantes, adaptées aux
+évolutions du secteur automobile, telles que la mobilité électrique, la conduite
+autonome et les architectures électriques avancées.
+1.1.2
+LEONI en Tunisie
+LEONI figure parmi les plus grands employeurs privés du pays, avec plus
+de 27 000 employés répartis sur 10 sites industriels. [20]. Présente depuis 1977,
+l’entreprise occupe une position stratégique dans l’industrie automobile nationale,
+en combinant expertise technique, innovation et engagement en matière de qualité
+et de responsabilité sociétale.
+3
+
+
+===== PAGE 19 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+Figure 1.1: Logo LEONI
+1.2
+Contexte Industriel
+Le secteur automobile mondial connaît une mutation profonde marquée par
+l’électrification des véhicules, l’augmentation des exigences en matière de qualité
+et l’intégration des concepts de l’Industrie 4.0. Dans ce contexte, les équipemen-
+tiers de rang 1 et 2, tels que LEONI, doivent répondre à des exigences accrues en
+matière de qualité, de réduction des coûts de non qualité et de digitalisation des
+processus industriels.
+Le câblage électrique constitue l’un des composants les plus critiques d’un
+véhicule moderne. Un véhicule standard comporte aujourd’hui entre 1 500 et
+4 000 jonctions électriques. Chacune d’elles doit assurer une continuité électrique
+parfaite et une étanchéité conforme aux normes IP67 et IP68 exigées par les
+constructeurs automobiles (Volkswagen, BMW, Renault, Stellantis.. .) [15]. Toute
+défaillance sur une jonction exposée à l’humidité ou à la corrosion peut provoquer
+des pannes électroniques, des rappels de véhicules et des risques pour la sécurité
+des occupants.
+C’est dans cet environnement exigeant que se situe le site de production Leoni
+Tunisie, où chaque jour des milliers de jonctions soudées protégées par tubes
+thermorétractables sont fabriquées et soumises à des procédures de contrôle
+qualité rigoureuses. La fiabilité, la reproductibilité et la traçabilité de ces tests
+constituent des enjeux industriels majeurs autour desquels s’articule notre projet
+de fin d’études.
+Dans ce cadre, et afin d’assurer le contrôle qualité des jonctions, Leoni utilise
+actuellement la machine de test MECALBI STCS BLTTS [22], installée en 2018,
+qui combine un test d’étanchéité par immersion (Bubble Test) et un test d’isolation
+à 100V DC fixe. Bien que cet équipement assure un premier niveau de contrôle
+qualité, plusieurs limitations techniques ont été identifiées :
+◦une tension de test insuffisante pour détecter certains micro défauts latents,
+◦une prise de décision visuelle et subjective dépendante de l’opérateur,
+4
+
+
+===== PAGE 20 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+◦une absence totale de connectivité et de traçabilité numérique.
+Ces limitations ont motivé le développement du système SALIS, un système
+de test automatisé haute tension avec supervision IoT.
+Figure 1.2: Stand LEONI : Cable solutions for high power charging
+1.3
+Problématique
+Face à ces limites techniques et organisationnelles, il devient nécessaire de
+repenser les méthodes de contrôle qualité actuellement utilisées.
+La voiture moderne n’est plus seulement un objet mécanique, mais un système
+électronique embarqué complexe dont la fiabilité repose en grande partie sur
+l’intégrité des connexions électriques. Avec plusieurs kilomètres de câbles et
+des milliers de jonctions par véhicule, le câblage électrique est devenu l’un
+des systèmes les plus critiques de l’industrie automobile. Une seule jonction
+défectueuse peut suffire à paralyser un système de sécurité actif, déclencher un
+rappel massif de véhicules ou engager la responsabilité juridique et commerciale
+d’un équipementier vis à vis de ses clients constructeurs.
+Dans ce contexte, le contrôle qualité des jonctions de câblage représente un
+véritable enjeu industriel. Ces jonctions, protégées par des tubes thermorétracta-
+bles étanches, doivent satisfaire des exigences d’isolation électrique et d’étanchéité
+conformément aux normes internationales ISO 6722 [14] et ISO 20653 [15]. Or, il
+existe une catégorie de défauts qui échappe systématiquement aux méthodes de
+contrôle classiques.
+Les micro défauts latents , porosités invisibles dans la colle d’étanchéité, micro
+fissures dans la gaine isolante, défauts d’adhésion imperceptibles à l’œil nu ne
+se manifestent pas sous de faibles contraintes électriques. Ils survivent aux tests,
+franchissent les barrières qualité et ne révèlent leur présence qu’en conditions
+réelles d’utilisation, sous l’effet conjugué de l’humidité, des vibrations et des
+cycles thermiques propres à l’environnement automobile.
+À cette insuffisance technique s’ajoute une fragilité organisationnelle : la prise
+5
+
+
+===== PAGE 21 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+de décision de conformité repose sur la perception visuelle de l’opérateur, soumis
+à la fatigue, aux conditions d’éclairage et à la subjectivité humaine. Dans une
+production à grande cadence, ce mode de contrôle ne peut offrir ni la constance, ni
+la reproductibilité, ni la traçabilité requises par les standards qualité de l’industrie
+automobile contemporaine. L’absence de données numériques en temps réel
+prive les responsables qualité de toute capacité d’anticipation face aux dérives de
+production.
+Ces limitations mettent en évidence la nécessité d’une solution plus fiable,
+automatisée et adaptée aux exigences de l’industrie 4.0.
+Face à l’ensemble de ces constats, la problématique suivante se pose :
+Comment concevoir et réaliser un système de test intelligent et automatisé,
+fondé sur un contrôle d’étanchéité par air sec et un test d’isolation haute
+tension, capables de détecter de manière fiable l’ensemble des défauts critiques
+des jonctions de câblage automobile y compris les plus latents sans laisser place
+à la subjectivité humaine, garantissant une traçabilité numérique rigoureuse
+et une supervision industrielle en temps réel, afin de faire du contrôle qualité
+un véritable avantage compétitif ?
+1.4
+Analyse de L’éxistant
+Dans le domaine du contrôle qualité industriel, plusieurs technologies de
+test d’étanchéité et d’isolation ont été développées et perfectionnées au cours
+des décennies pour satisfaire de plus en plus les besoins de différents secteurs
+d’activité. Cette section donnera une vue d’ensemble exhaustive de ces technolo-
+gies, de leurs principes physiques, de leurs machines représentatives, de leurs
+dates d’apparition, ainsi que de leurs domaines d’utilisation, pour disposer d’une
+vision globale et objective de ce qui existe aujourd’hui sur le marché industriel.
+1.4.1
+Le premier test d’étanchéité de l’histoire : le Bubble Test
+Le Le Bubble Test, ou test à bulles, est la plus ancienne technique de test
+d’étanchéité connue dans l’industrie. Le principe de ce test est connu depuis
+l’Antiquité, mais c’est au XIXe siècle [2], avec l’apparition des câbles télégraphiques
+sous marins et des tuyauteries industrielles sous pression, que ce test est systéma-
+tiquement mis en application.
+6
+
+
+===== PAGE 22 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+La pièce est immergée dans un bain d’eau. De l’air comprimé est injecté à
+l’intérieur de la pièce. En cas de fuites, celles ci se traduisent par l’apparition
+de bulles d’air à la surface de l’eau, au niveau de la fuite. Le test est réalisé
+visuellement et la décision est prise manuellement (OK / NOK) .
+Paramètre
+Détail
+Date d’apparition
+XIXe siècle utilisation industrielle dès 1850 (câbles sous marins
+transmanche)
+Principe physique
+Pression d’air + détection visuelle de bulles dans l’eau
+Pression utilisée
+0,1 à 5 Bar selon application
+Pièces testées
+Câbles, tuyaux, réservoirs, jonctions soudées, bouteilles de gaz
+Secteurs d’application
+Automobile, plomberie, médical, aéronautique, câblage
+Décision
+Manuelle : jugement visuel de l’opérateur
+Table 1.1: Présentation générale du test par immersion
+◦Principe simple, pas d’équipement complexe nécessaire
+◦Faible coût de mise en œuvre
+◦Très large gamme d’applicabilité sur les pièces
+◦Possibilité visuelle directe de localisation du fuit
+◦Décision de conformité 100% subjective : dépend entièrement de
+l’opérateur
+◦Nécessite de l’eau : source de contamination, de maintenance et de
+corrosion
+◦Pas d’évaluation quantifiée du fuit (pas de valeur chiffrée)
+◦Non applicable aux pièces électroniques sensibles à l’eau
+◦Impossible à automatiser dans sa forme originale
+7
+
+
+===== PAGE 23 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+Figure 1.3: Principe du Bubble Test
+1.4.2
+Spark Test : Test à étincelles (Câbles en extrusion)
+Le Spark Test a été développé dans les années 1950, à l’occasion du développe-
+ment industriel massif des lignes d’extrusion des câbles électriques. Le Spark Test
+a été le premier test d’étanchéité entièrement automatique de l’histoire, intégré en
+ligne de production.
+Le câble électrique circule en continu à travers l’anneau électrode soumis
+à une tension électrique élevée (1 à 40 kV DC). Tout défaut existant dans
+la gaine d’isolation, trou, fissure, porosité, amincissement, provoque une
+décharge électrique (étincelle) instantanément détectée. Une alarme est alors
+déclenchée, et la position du défaut est enregistrée.
+8
+
+
+===== PAGE 24 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+Paramètre
+Détail
+Date d’apparition
+Années 1950 : généralisé dans les années 1960–1970
+Principe physique
+Décharge électrique à haute tension sur défaut de gaine
+Tension de test
+0,5 à 40 kV DC selon épaisseur de gaine
+Vitesse de test
+Jusqu’à 3000 m/min en continu
+Pièces testées
+Câbles simples PVC, XLPE, PE, PTFE, silicone en extrusion
+Secteurs
+Automobile, énergie, aéronautique, télécommunications
+Décision
+Automatique : alarme instantanée
+Table 1.2: Présentation générale du test haute tension
+Nom machine
+Sikora Sparktester 6000 [33]
+Fabricant
+Sikora AG — Brême, Allemagne (fondée en 1973)
+Autres modèles
+Sparktester 2000, Sparktester 4000, Sparktester 6000S
+Tension max
+40 kV DC
+Vitesse max
+4000 m/min
+Diamètre câble
+0,5 à 80 mm selon modèle
+◦Test 100% des pièces en continu sans ralentir la production
+◦Détection instantanée et automatique : zéro subjectivité humaine
+◦Très haute sensibilité (défauts > 0,05 mm détectés)
+◦Vitesse de test compatible avec les lignes d’extrusion industrielles
+◦Se limite uniquement aux câbles simples en mouvement continu
+◦Ne peut pas être utilisée avec les jonctions, les connecteurs, les pièces
+découpées
+◦Haute tension, risque d’électrocution si non installée correctement
+◦Ne permet pas le test de l’isolation électrique d’une jonction assemblée
+9
+
+
+===== PAGE 25 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+Figure 1.4: sikora Sparktester 6000 : Test en ligne sur extrudeuse
+1.4.3
+HiPot Test : Test diélectrique haute tension
+Le HiPot Test, appelé aussi « High Potential Test », est apparu au début du XXe
+siècle avec l’apparition des réseaux électriques urbains. Il consiste à appliquer à
+un câble une tension très supérieure à la tension nominale pour forcer les défauts
+d’isolation cachés à se faire connaître avant la mise en service.
+Une haute tension DC ou AC est appliquée entre le conducteur central et la
+gaine externe. Si l’isolation est défectueuse, un courant de fuite supérieur
+au seuil programmé se produit entre les deux électrodes, ce qui déclenche
+automatiquement l’alarme NOK. Le courant de fuite est mesuré pour définir
+précisément l’état d’isolation.
+10
+
+
+===== PAGE 26 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+Paramètre
+Détail
+Date d’apparition
+Début 1900s — industrialisé dans les années 1950 (Associated
+Research Inc., USA)
+Principe physique
+Stress diélectrique + mesure courant de fuite
+Tension de test
+0,1 à 20 kV DC ou AC selon application
+Courant
+min
+dé-
+tectable
+0,01 µA (appareils de précision)
+Pièces testées
+Câbles bobiné, jonctions, appareils électriques, équipements médi-
+caux
+Secteurs
+Automobile, médical, aéronautique, électroménager
+Décision
+Automatique : seuil programmable
+Table 1.3: Présentation générale du test diélectrique
+Nom machine
+Schleuniger HiPoT 3600 [31]
+Fabricant
+Schleuniger Group — Thun, Suisse (fondé en 1975)
+Autres modèles
+HiPoT 2600, HiPoT 60 (portable)
+Tension max
+5 kV AC / DC
+Courant
+min
+détectable
+0,1 µA
+Pièces testées
+Câbles auto PVC/XLPE 0,35 à 35 mm2, jonctions, câbles aéronautique
+◦Détecte les micro défauts latents invisibles à basse tension
+◦Décision automatique et reproductible : aucune subjectivité
+◦Tension configurable selon le type de câble et la norme applicable
+◦Mesure quantitative précise du courant de fuite
+11
+
+
+===== PAGE 27 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+◦Test statique uniquement — câble à l’arrêt, pas en ligne d’extrusion
+◦Ne teste pas l’étanchéité physique à l’eau ou à l’air
+◦Peut endommager l’isolation si la tension n’est pas correctement calibrée
+◦Chaque section doit être testée séparément
+Figure 1.5: chleuniger HiPoT 3600 — Test diélectrique haute tension
+1.4.4
+Dry Air Pressure Test : Test pression air sec
+Le Dry Air Pressure Test est né en 1975 d’une vision de l’ingénieur français
+Jacques Mouchet, fondateur d’ATEQ à Vitry sur Seine. Cet ingénieur avait l’idée
+de remplacer définitivement le Bubble Test par une méthode automatique, propre,
+précise et quantitative, sans l’utilisation d’eau.
+La pièce à tester est placée dans une fixture hermétique. De l’air sec est
+injecté à l’intérieur à une pression définie. Après une phase de stabilisation,
+le système mesure automatiquement soit la chute de pression (méthode
+différentielle)(méthode différentielle), soit le débit de fuite . La décision
+OK/NOK est prise automatiquement par comparaison avec un seuil pro-
+grammé, sans intervention humaine.
+12
+
+
+===== PAGE 28 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+Paramètre
+Détail
+Date d’apparition
+1975 ATEQ fondée par Jacques Mouchet (France)
+Principe physique
+Mesure de la chute de pression ou du débit de fuite d’air sec
+Pression de test
+5 mbar jusqu’à 10 Bar selon l’application
+Précision
+± 0,05% (modèles de haute précision)
+Temps de cycle
+3 à 10 secondes
+Pièces testées
+Connecteurs IP67/IP68, boîtiers électroniques, jonctions câbles,
+vannes
+Secteurs
+Automobile, Medical, Aerospace, Electronique
+Décision
+Automatique , numérique, traçable
+Table 1.4: Présentation générale du test d’étanchéité pneumatique
+Nom du machine :
+ATEQ F620 [1]
+Fabricant :
+ATEQ Vitry sur Seine, France (créé en 1975)
+Autres modèles :
+ATEQ F520, ATEQ V500, ATEQ F630 (IoT Industrie 4.0)
+Pression Max :
+10 Bar
+Précision :
+± 0,1 %
+Pièces testées :
+Connecteurs Delphi/Aptiv GT150, Yazaki 090/250/312
+◦Sans eau – propre et sans risque de contamination ni entretien liée à
+l’eau.
+◦Entièrement automatique et reproduisible.
+◦Quantification précise, mesurable numériquement.
+◦Cycle ultra rapide : 3 à 10 secondes.
+◦Compatibilité Industrie 4.0 (F630 avec connectivité IoT)
+13
+
+
+===== PAGE 29 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+◦Nécessite une chambre fermée : chose impossible à réaliser sur un
+simple câble non équipé d’un connecteur.
+◦Une fixture spécifique (gabarit) est nécessaire à chaque référence de
+pièce.
+◦Les tests ne vérifient que l’étanchéité physique et ne testent pas
+l’étanchéité électrique.
+◦Le coût d’une fixture peut varier entre 500 et 3000 EUR en fonction
+d’une référence de connecteur
+Figure 1.6: ATEQ F620 : Testeur de fuite à air sec ]
+1.4.5
+Helium Leak Test : Test fuite hélium
+Le test de fuite à l’hélium est apparu dans les années 1940 dans le cadre du
+programme spatial américain. Il représente la méthode de détection de fuite la
+plus sensible disponible à ce jour dans l’industrie.
+14
+
+
+===== PAGE 30 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+L’hélium est injecté dans la pièce à tester ou dans son environnement. En
+raison de la très petite taille de ses atomes, ce gaz peut pénétrer dans les fuites
+les plus fines. Un spectromètre de masse, utilisé comme détecteur de fuites
+à l’hélium, analyse l’air autour de la pièce et détecte toute trace d’hélium
+s’échappant. Cette méthode permet de détecter des fuites extrêmement
+faibles, pouvant atteindre 10−12 mbar.L/s.
+Paramètre
+Détail
+Date d’apparition
+Années 1940 — lié au programme spatial de la NASA (USA)
+Principe physique
+Spectrométrie de masse détectant des atomes d’hélium
+Sensibilité
+10−12 mbar.L/s — la plus élevée du marché
+Pièces testées
+Connecteurs HT EV, composants spatiaux, implants médicaux,
+réacteurs nucléaires
+Secteurs
+Spatial, nucléaire, médical, aéronautique
+Décision
+Automatique : mesure quantitative
+Table 1.5: Présentation générale du test à l’hélium
+Nom machine
+Inficon Contura S400 [12]
+Fabricant
+Inficon — Bad Ragaz, Suisse (fondée en 2000, ex Leybold)
+Autres modèles
+Inficon PLT500, Inficon UL3000 Fab
+Sensibilité
+10−9 mbar.L/s (air) — 10−12 mbar.L/s (hélium)
+Pression max
+25 Bar
+Application
+Connecteurs HT véhicules électriques (CCS Combo, Type 2)
+15
+
+
+===== PAGE 31 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+◦Sensibilité exceptionnelle :
+capable d’identifier même les pertes
+d’énergie minimales
+◦Mesure quantifiable à l’unité absolue
+◦Très approprié pour les applications à haute demande nécessitant une
+étanchéité exceptionnelle
+◦Coût élevé : 30 000 à 100 000 EUR l’hélium, un gaz rare et coûteux, dont
+la chaîne d’approvisionnement est complexe
+◦Matériel technique et coûteux à exploiter
+◦Surdimensionné pour les applications classiques de câblage automobile
+Figure 1.7: nficon Contura S400 — Test fuite hélium
+1.4.6
+Ultrasonic Leak Test : Test fuite par ultrasons
+Le test de fuite à l’aide d’ultrason est apparu dans les années 1970. Il s’agit
+d’un procédé non destructif sans contact, qui s’est rapidement imposé en matière
+d’entretien industriel.
+16
+
+
+===== PAGE 32 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+En effet, si un fluide, (l’air ou les gaz), s’échappe à travers une fuite, il crée des
+turbulences qui produisent des ondes ultrasonores à grande fréquence (40
+kHz). Un détecteur d’ultrason détecte les ondes produites, les transformant
+en un signal audio ou visuel, visible et audible à l’opérateur. Plus la fuite est
+importante, plus plus le signal est fort.
+Paramètre
+Détail
+Date d’apparition
+Années 1970 : développé pour la maintenance industrielle
+Principe physique
+Détection ondes ultrasonores émises par turbulence de fuite
+Fréquence détection
+35 à 45 kHz
+Pièces testées
+Canalisations, réservoirs, climatisation, compresseurs, vannes
+Secteurs
+Maintenance industrielle, automobile, bâtiment, agroalimentaire
+Décision
+Semi automatique : signal visuel + audio
+Table 1.6: Présentation générale du test ultrasonique
+Nom machine
+UE Systems Ultraprobe 15000
+Fabricant
+UE Systems — Elmsford, USA (fondée en 1973)
+Autres modèles
+Fluke ii900, SDT270 (SDT International, Belgique)
+Fréquence
+40 kHz
+Portée détection
+Jusqu’à 50 mètres
+Application
+Maintenance préventive, détection fuite gaz, air comprimé
+◦Test sans contact et à distance
+◦Non destructif : aucune perturbation de la pièce
+◦Rapide à mettre en œuvre pour la maintenance
+◦Portable et facile à l’utiliser sur le terrain
+17
+
+
+===== PAGE 33 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+◦Très sensible aux bruits ambiants : difficile dans le bruit
+◦Pas adapté à la production en série : outil de maintenance
+◦Non quantifiable, pas de valeur précise pour le débit de fuit .
+◦Ne teste pas l’isolation électrique
+Figure 1.8: UE Systems Ultraprobe 15000 — Détecteur ultrasonore
+1.4.7
+Le premier bain d’étanchéité industriel pour câbles automo-
+biles
+L’utilisation de l’application du Bubble Test sur les jonctions de câblage auto-
+mobile en bain d’étanchéité industriale s’est développée depuis les années 2000,
+avec la généralisation de l’exigence IP67 sur les faisceaux automobiles soumis
+à l’eau. Les câblistes ont alors adapté le principe ancestral du test à bulles en
+fonction de leurs contraintes de production spécifiques.
+La jonction soudée, protégée par son tube thermorétractable, est immergée
+dans un réservoir d’eau. Un air comprimé est injecté dans le câble depuis
+une extrémité. L’opérateur constate au bout d’un temps fixé si des bulles
+apparaissent sur la jonction, ce qui signifie la présence de fuites sur le tube
+thermorétractable ou sur la colle hot melt. La pression est comprise entre 0,5
+et 2 Bar selon la spécification.
+18
+
+
+===== PAGE 34 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+Paramètre
+Détail
+Date d’apparition
+Années 2000 : généralisation IP67 faisceaux auto
+Pression utilisée
+0,5 à 2 Bar
+Pièces testées
+Jonctions soudées + tube thermorétractable étanche (splices)
+Sections câble
+0,35 à 6 mm2
+Décision
+Manuelle : visuelle opérateur
+Table 1.7: Présentation générale du test des splices étanches
+◦Décision entièrement subjective : dépend de la vigilance de l’opérateur
+◦Maintenance régulière du bain d’eau (contamination, microbes)
+◦Test par échantillonnage uniquement : pas 100% des pièces
+◦Aucune traçabilité numérique des résultats
+Figure 1.9: Bain d’étanchéité pour jonctions câblage automobile
+19
+
+
+===== PAGE 35 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+1.4.8
+Machines de test des splices et tubes thermorétractables
+Parmi toutes les solutions de tests mentionnées ci dessus, seules quelques
+unes ont été conçues pour testerles jonctions soudées avec protection tubulaire
+thermorétractable étanche. Ce sont les seules solutions qui concrétisent concrète-
+ment le domaine d’application de notre projet SALIS, puisqu’elles s’intéressent à
+la même pièce fabriquée par la société Leoni, à savoir la splice automobile avec
+protection tubulaire thermorétractable IP67.
+Schleuniger WireTest 3400 / 3500
+Le banc de tests complet Schleuniger WireTest est une création du groupe
+suisse Schleuniger, leader mondial des solutions d’équipement pour le traitement
+du câble. Le module de tests d’étanchéité des splices a été intégré à une ligne
+complète de traitement du câblage automobile.
+La jonction soudée avec tube thermorétractable est mise dans une chambre de
+test étanche. De l’air comprimé est injecté dans le câble. La machine mesure
+automatiquement la chute de pression et détecte toute fuite au niveau du tube
+thermorétractable. Le test d’étanchéité est combiné avec un test de continuité
+électrique et un test d’isolation dans le même cycle.
+Paramètre
+Détail
+Fabricant
+Schleuniger Group — Thun, Suisse (fondé en 1975)
+Modèles
+WireTest 3400, WireTest 3500
+Pression test
+0,5 à 3 Bar
+Pièces testées
+Splices + tube thermorétractable — câbles 0,35 à 10 mm2
+Tests combinés
+Étanchéité + continuité électrique + isolation
+Faisceaux
+Jusqu’à 100 fils simultanément
+Décision
+Automatique
+Coût estimé
+135 600 TND à 508 500 TND (banc complet)
+Connectivité
+Partielle — interface locale
+Table 1.8: Présentation du système Schleuniger WireTest
+20
+
+
+===== PAGE 36 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+◦Test combiné en un seul cycle, couvrant à la fois l’étanchéité et
+l’électrique
+◦Décision automatique et reproductible
+◦Compatible avec les grands faisceaux automobiles
+◦Conformité VW et Ford
+◦Coût extrêmement élevé — – entre 40 000 et 150 000 EUR, pas accessible
+pour un poste de contrôle
+◦Intégré dans une ligne complète plutôt que comme une machine de test
+splice
+◦Pas de connectivité IoT complète ni supervision en temps réel
+◦Installation et maintenance relativement complexes
+Figure 1.10: Schleuniger WireTest 3500 : Banc de test câblage automobile
+Komax Zeta 640 / Alpha 355
+Komax est un fabricant suisse leader mondial des machines de traitement du
+câble. Ses séries Zeta et Alpha intègrent un module optionnel de test d’étanchéité
+21
+
+
+===== PAGE 37 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+des splices directement sur la ligne de production, après l’étape de sertissage et
+de pose du tube thermorétractable.
+Après avoir posé et rétreint le tube thermorétractable sur la jonction soudée, le
+câble reste aligné sur la ligne et est dirigé automatiquement vers le module de
+test. Une chambre de test se ferme sur la jonction, de l’air sec y est introduit, et
+la machine contrôle l’étanchéité en mesurant la différence de pression. Cette
+décision est prise en continu sur la ligne globale de production.
+Paramètre
+Détail
+Fabricant
+Komax Group — Dierikon, Suisse (fondé en 1975)
+Modèles
+Komax Zeta 640 [18], Komax Alpha 355, Komax Kappa 310
+Pression test
+0,5 à 2,5 Bar
+Pièces testées
+Splices + tube thermorétractable — câbles 0,35 à 6 mm2
+Intégration
+Ligne complète : coupe + dénudage + sertissage + splice + test
+étanchéité
+Décision
+Automatique — intégrée dans le flux ligne
+Coût estimé
+> 200 000 EUR (> 678 000 TND)
+Connectivité
+Interface Komax propriétaire
+Table 1.9: Présentation du système Komax
+◦Intégration complète dans la chaîne de production avec zéro manuten-
+tion
+◦Inspection automatique des pièces produites à 100
+◦Fréquence de production extrêmement élevée
+22
+
+
+===== PAGE 38 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+◦Coût élevé — plus de 200.000 EUR pour la ligne entière
+◦Module d’étanchéité optionnel — non inclus par défaut
+◦Pas compatible avec le déploiement en poste de contrôle autonome
+◦Pas de supervision IoT, pas de traçabilité numérique
+◦Dépendance totale à l’écosystème propriétaire Komax
+Figure 1.11: Komax Zeta 640 : Ligne complète avec module test étanchéité
+MECALBI STCS BLTTS : Solution utilisée chez Leoni
+Contrairement aux solutions Schleuniger et Komax dans lesquelles la détec-
+tion d’étanchéité intègre des lignes complètes coûteuses, la machine MECALBI
+STCS BLTTS [22] se présente comme la seule solution existant sur le marché
+spécifiquement dédiée et indépendante au test des jonctions soudées avec tube
+thermorétractable. Conçue et fabriquée par MECALBI Engineering Solutions,
+Lda. au Portugal, la machine a été mise en place chez Leoni en 2018 pour assurer
+le contrôle qualité des splices en poste de travail autonome. C’est précisément
+cette machine que le système SALIS vise à remplacer directement.
+23
+
+
+===== PAGE 39 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+Paramètre
+Détail
+Fabricant
+MECALBI Engineering Solutions, Lda. — Castelo Branco, Portu-
+gal
+Modèle complet
+STCS-BLTTS (Shrinking Tube Control System — Bubble & Leakage
+Test System)
+Référence modèle
+14-03-0010
+Référence document
+166616-76-002-R01 — Version 1.0 — 10 Août 2018
+Poids / Dimensions
+30 kg — 557 × 660 × 370 mm
+Alimentation
+24 VDC / 24W (adaptateur 90–264 VAC)
+Nombre de fixtures
+8 chambres (40 × 30 × 10 mm chacune)
+Diamètre câble max
+6,5 mm
+Raccord air
+Raccord rapide Ø 8 mm — air sec, propre, sans huile
+Pression test
+0,5 à 2 Bar
+Tension test isolation
+100V DC fixe (non modifiable)
+Décision étanchéité
+Manuelle : observation visuelle des bulles
+Décision isolation
+Automatique : seuil résistance configurable
+Connectivité IoT
+Aucune
+Table 1.10: Présentation du système MECALBI STCS BLTTS
+La machine réalise deux tests successifs sur chaque jonction :
+Test 1 : Water Sealing Test (Bubble Test) : La jonction est immergée dans le
+réservoir d’eau de la machine. De l’air à une pression entre 0,5 et 2 Bar est injecté
+dans le câble. Pendant la durée programmée (0 à 60 secondes), l’opérateur vérifie
+la présence d’une bulle sur le tube thermorétractable. La décision OK ou NOK est
+saisie manuellement par l’opérateur.
+Test 2 : Leakage Test : Une tension fixe de 100V DC est appliquée sur la
+jonction immergée dans l’eau via trois probes. La machine mesure automatique-
+ment la résistance d’isolation ou le courant de fuite et compare la valeur au seuil
+programmé. La décision est automatique (LED verte = OK / LED rouge + buzzer
+= NOK).
+24
+
+
+===== PAGE 40 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+Limites du système de test d’étanchéité MECALBI
+Malgré son utilisation dans le processus de contrôle qualité, l’analyse du
+système MECALBI STCS-BLTTS a permis d’identifier plusieurs limites techniques
+et opérationnelles qui justifient le développement du système SALIS.
+1. Tension d’isolation insuffisante
+La machine applique une tension fixe de 100V DC, insuffisante pour détecter
+certains micro-défauts latents dans l’isolation des câbles. Les normes industrielles
+recommandent une tension minimale de 500V DC [14] pour une détection plus
+fiable.
+2. Dépendance à une inspection visuelle (Bubble Test)
+Le système repose sur l’observation visuelle des bulles dans le bain d’eau, ce qui
+entraîne :
+◦une forte dépendance à la vigilance de l’opérateur
+◦une subjectivité dans l’interprétation des résultats
+◦une variabilité selon l’expérience de l’utilisateur
+◦un risque de faux positifs et de faux négatifs
+3. Pression de test limitée
+La pression maximale de 2 Bar est insuffisante pour détecter certaines micro-fuites
+à faible débit, difficilement détectables à faible pression.
+4. Absence de connectivité industrielle
+La machine ne dispose d’aucune connectivité IoT, ce qui entraîne :
+◦l’absence de supervision à distance
+◦l’absence de traçabilité numérique
+◦l’impossibilité d’intégration dans un environnement Industrie 4.0
+5. Test par échantillonnage
+Le contrôle n’étant pas exhaustif, certaines pièces défectueuses peuvent passer
+inaperçues, compromettant la fiabilité globale du contrôle qualité et augmentant
+le risque de défauts en production.
+6. Absence d’analyse avancée des données
+La machine ne réalise aucune analyse de la courbe du courant de fuite dans
+25
+
+
+===== PAGE 41 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+le temps, ce qui empêche la détection des dérives progressives et l’exploitation
+intelligente des données de test.
+Contraintes opérationnelles et de maintenance
+En plus des limitations techniques, le système MECALBI présente des con-
+traintes opérationnelles impactant la continuité et l’efficacité de la production :
+la contamination progressive du bain d’eau par les huiles et résidus de câbles,
+l’oxydation des fixtures métalliques due au contact permanent avec l’eau, la
+nécessité d’un temps de séchage des pièces après test, ainsi qu’une calibration
+périodique tous les six mois sans système automatique de détection de dérive.
+Ces limitations techniques et contraintes opérationnelles justifient le développe-
+ment du système SALIS, basé sur une approche entièrement sèche (Dry Test par
+air), automatisée et connectée. Ce système permet d’éliminer les problèmes liés
+à l’eau, de réduire les besoins de maintenance, de supprimer la subjectivité du
+test et d’assurer une traçabilité numérique complète conforme aux exigences de
+l’Industrie 4.0.
+Figure 1.12: MECALBI STCS-BLTTS — Machine utilisée chez Leoni
+26
+
+
+===== PAGE 42 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+1.5
+Critiques de l’Existant
+Afin de synthétiser l’ensemble des solutions analysées et de justifier objective-
+ment la conception du système SALIS, le tableau comparatif suivant confronte
+toutes les technologies étudiées selon les critères les plus déterminants pour le
+contexte industriel de Leoni.
+Solution
+Test
+splice
+Décision
+auto
+Sans
+eau
+IoT
+/
+Traçab.
+HV
+>500V
+100%
+pièces
+Mass
+Flow
+Analyse
+HV
+Coût
+es-
+timé
+Bubble
+Test
+manuel
+Oui
+Non
+Non
+Non
+Non
+Non
+Non
+Non
+<1 700
+TND
+Spark
+Tester
+(Sikora)
+Non
+Oui
+Oui
+Oui
+Oui
+Oui
+Non
+Non
+51 000–
+170 000
+TND
+HiPot Test (Schle-
+uniger)
+Non
+Oui
+Oui
+Partiel
+Oui
+Non
+Non
+Non
+10 000–
+51 000 TND
+Dry
+Air
+Test
+(ATEQ F620)
+Non
+Oui
+Oui
+Partiel
+Non
+Oui
+Partiel
+Non
+27 000–
+85 000 TND
+Hélium (Inficon)
+Non
+Oui
+Oui
+Oui
+Non
+Oui
+Non
+Non
+102 000–
+340 000
+TND
+Ultrasons
+Non
+Partiel
+Oui
+Non
+Non
+Non
+Non
+Non
+6 800–
+27 000 TND
+Hydrostatique
+Non
+Non
+Non
+Non
+Non
+Non
+Non
+Non
+17 000–
+68 000 TND
+Schleuniger
+WireTest
+Oui
+Oui
+Oui
+Partiel
+Non
+Oui
+Non
+Non
+136 000–
+510 000
+TND
+Komax Zeta 640
+Oui
+Oui
+Oui
+Partiel
+Non
+Oui
+Non
+Non
+>680 000
+TND
+MECALBI
+STCS-BLTTS
+Oui
+Partiel
+Non
+Non
+Non
+Non
+Non
+Non
+17 000–
+51 000 TND
+SALIS (proposé)
+Oui
+Oui
+Oui
+Oui
+Oui
+Oui
+—
+Oui
+Prototype
+Table 1.11: Tableau comparatif des solutions de test : Positionnement du système SALIS
+Le capteur de débit massique SFM3000 était prévu dans la conception initiale
+mais n’a pu être intégré dans le prototype faute de disponibilité locale et de
+délais d’importation. Son ajout est prévu en perspective à court terme (voir
+Chapitre 7).
+27
+
+
+===== PAGE 43 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+1.6
+Solution Proposée
+Fort des insuffisances clairement identifiées dans l’analyse de l’existant, et face
+à l’absence sur le marché d’une solution combinant simultanément l’ensemble
+des critères techniques et industriels requis, nous proposons la conception et la
+réalisation du système SALIS : Smart Automated Leak and Isolation System
+, une machine de test intelligente et entièrement automatisée, spécifiquement
+conçue pour le contrôle qualité des jonctions de câblage automobile protégées par
+tubes thermorétractables étanches chez Leoni.
+SALIS s’inscrit dans la continuité directe de la MECALBI STCS BLTTS en
+conservant le même domaine d’application et le même poste de travail, tout en
+opérant une rupture technologique fondamentale sur chacun de ses points de
+faiblesse. Là où la MECALBI repose sur un test visuel subjectif et une tension
+d’isolation insuffisante de 100V DC, SALIS substitue un test d’étanchéité automa-
+tisé par air sec mesuré par un capteur Mass Flow Controller : le plus précis
+disponible sur le marché et un test d’isolation haute tension configurable entre
+100 et 1000V DC, conforme aux exigences de la norme ISO 6722. La décision
+de conformité, jusqu’ici tributaire de la vigilance humaine, devient entièrement
+automatique et objective, fondée sur l’analyse algorithmique de la courbe de
+dégradation du courant de fuite en fonction de la tension appliquée , une ap-
+proche qui permet non seulement de détecter les défauts avérés, mais également
+d’identifier les jonctions en limite de conformité avant qu’elles ne deviennent
+défaillantes en service.
+Au delà de la performance technique, SALIS intègre nativement une architec-
+ture IoT complète permettant la supervision en temps réel de la production, la
+traçabilité numérique de chaque test réalisé, et l’émission d’alertes automatiques
+en cas de dérive qualité répondant ainsi aux exigences croissantes de l’Industrie
+4.0 dans le secteur automobile. Capable de tester cinq jonctions simultanément,
+sans eau, sans intervention humaine et sans les contraintes de maintenance liées à
+la contamination du bain, SALIS représente une solution complète, maîtrisée et
+directement déployable sur la ligne de production de Leoni Tunisie.
+1.7
+Méthodologie et Langage de Conception
+Dans cette section, nous présentons la méthodologie Scrum [32], un cadre
+Agile structurant le développement en cycles courts appelés Sprints, favorisant la
+28
+
+
+===== PAGE 44 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+livraison continue et l’adaptation aux contraintes du projet.
+Figure 1.13: La méthodologie Scrum
+1.7.1
+Langage de Conception
+Dans le cadre du projet SALIS, nous avons opté pour UML (Unified Model-
+ing Language) [25], un langage visuel de modélisation utilisé pour concevoir les
+diagrammes de cas d’utilisation, de séquence et de classes du système.
+Figure 1.14: Logo UML
+29
+
+
+===== PAGE 45 =====
+
+CHAPTER 1. ÉTUDE DE PROJET
+SALIS
+Conclusion
+Ce premier chapitre a permis de poser les bases solides du projet SALIS.
+L’analyse du contexte industriel de Leoni Tunisie a mis en évidence les limites
+réelles de la machine existante MECALBI STCS-BLTTS et a justifié la nécessité de
+concevoir un nouveau système de test automatisé, plus fiable et mieux adapté aux
+exigences de production actuelles.
+La solution SALIS, combinant test d’étanchéité par air sec et test d’isolation
+haute tension avec supervision IoT, a été clairement définie et sa méthodologie de
+réalisation établie. Le chapitre suivant sera consacré à la conception détaillée du
+système.
+30
+
+
+===== PAGE 46 =====
+
+2
+Chapitre
+Analyse des Besoins et Planification
+Introduction
+Avant d’entamer toute réalisation technique, il est indispensable de poser
+des bases solides : comprendre précisément ce que le système doit accomplir,
+identifier les acteurs qui interagiront avec lui, choisir une méthodologie de travail
+adaptée et définir une architecture cohérente. Ce chapitre, qui constitue la phase
+de planification du projet SALIS, est consacré à cette phase fondatrice.
+Nous y définissons les besoins fonctionnels et non fonctionnels du système,
+présentons la méthodologie Scrum adoptée pour piloter le projet, établissons le
+Product Backlog et la planification des Sprints, et décrivons les environnements
+de travail et l’architecture technique retenue.
+31
+
+
+===== PAGE 47 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+2.1
+Spécification des Besoins
+La spécification des besoins est l’étape qui transforme une intention floue
+en un ensemble d’exigences précises, vérifiables et priorisées. Dans un environ-
+nement industriel comme celui de SALIS, cette étape est d’autant plus critique
+que les erreurs de conception ont des conséquences directes sur la sécurité et la
+productivité.
+2.1.1
+Identification des Acteurs
+Le système SALIS implique 3 acteurs distincts dont les rôles, les attentes et les
+niveaux d’accès diffèrent fondamentalement.
+Acteur
+Rôle principal
+Niveau d’accès
+Opérateur
+Utilisateur terrain
+Opérationnel (lancement tests, consulta-
+tion résultats HMI)
+Ingénieur
+Concepteur & ana-
+lyste
+Technique avancé (architecture système,
+analyse données, optimisation)
+Administrateur
+Gestionnaire plate-
+forme
+Total (gestion utilisateurs, sécurité, config-
+uration globale)
+Table 2.1: Synthèse des acteurs du système SALIS
+L’Opérateur : utilisateur terrain de la ligne de production, il insère les jonctions
+dans la chambre de test, lance le cycle depuis l’interface HMI et consulte le résultat
+(OK / NON CONFORME). La décision de conformité est entièrement automatisée
+par le système SALIS.
+L’Ingénieur : intervient à un niveau technique avancé. Il analyse les données de
+production, évalue les performances du système et propose des optimisations des
+seuils de conformité et de l’architecture logicielle.
+L’Administrateur : dispose d’un accès total à la plateforme. Il gère les comptes util-
+isateurs, définit les droits d’accès via le système RBAC et assure la configuration
+globale du système SALIS.
+2.1.2
+Besoins Fonctionnels
+Les besoins fonctionnels décrivent ce que le système doit faire.
+32
+
+
+===== PAGE 48 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+ID
+Fonctionnalité
+Description
+BF1
+Dry
+Test
+automa-
+tique
+Injection d’air sec (0.5–2 Bar), mesure de la chute de pres-
+sion (SMC PSE540) et décision automatique de confor-
+mité en étanchéité.
+BF2
+HV
+Test
+automa-
+tique
+Application d’une tension haute progressive via le
+Chroma 19073, mesure du courant de fuite et décision
+automatique de conformité en isolation électrique, con-
+formément à la norme ISO 6722 [14].
+BF3
+Décision
+automa-
+tique OK/NOK
+Le firmware STM32L476 génère la décision sans interven-
+tion humaine, avec affichage LED (vert/rouge) et alerte
+buzzer.
+BF4
+Supervision
+temps
+réel
+Transmission des données vers le dashboard (WebSocket)
+et l’application mobile Flutter (REST API) via réseau WiFi
+local.
+BF5
+Traçabilité
+et
+his-
+torique
+Enregistrement automatique dans SQLite : horodatage,
+référence jonction, valeurs mesurées, décision et code
+barres.
+BF6
+Alertes
+automa-
+tiques
+Alerte sonore et visuelle immédiate à la détection d’une
+non conformité ou d’une défaillance système.
+BF7
+Interlock sécurité
+Blocage du HV Test si la porte de la chambre n’est pas
+correctement fermée via micro switch interlock.
+BF8
+Génération de rap-
+ports
+Export PDF depuis l’application mobile, filtrable par date,
+référence et type de défaut.
+Table 2.2: Besoins fonctionnels du système SALIS
+2.1.3
+Besoins Non Fonctionnels
+Critère
+Exigence détaillée
+Performance
+Temps de cycle complet (Dry Test + HV Test + décision + enreg-
+istrement) : <= 35 secondes. Rafraîchissement dashboard : < 2
+secondes.
+33
+
+
+===== PAGE 49 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+Critère
+Exigence détaillée
+Sécurité
+opéra-
+teur
+Protection de l’opérateur via le système interlock micro switch et la
+décharge automatique intégrée du Chroma 19073, conformément
+à la norme IEC 61010-1 [13].
+Fiabilité
+Fonctionnement stable sur des shifts de 8 heures. Aucune perte
+de données en cas de coupure réseau grâce à SQLite.
+Ergonomie
+Interface HMI utilisable sans formation. Prise en main inférieure
+à 30 minutes.
+Traçabilité
+Conformité aux exigences de IATF 16949 [11] pour la documenta-
+tion des contrôles qualité dans le secteur automobile.
+Sécurité applica-
+tive
+Authentification JWT [3], hashage bcrypt [30], contrôle d’accès
+RBAC [24] et journalisation des actions.
+Évolutivité
+Architecture Node.js permettant l’ajout de nouveaux modules de
+test sans refonte majeure.
+Table 2.3: Besoins non fonctionnels du système SALIS
+2.2
+Gestion de Projet avec Scrum
+Nous avons adopté la méthodologie Scrum [32], un cadre Agile structurant le développe-
+ment en cycles courts appelés Sprints, favorisant la livraison continue et l’adaptation aux
+contraintes du projet.
+2.2.1
+Présentation de la Méthodologie Scrum
+Scrum [32] est un cadre de travail Agile qui organise le développement en itérations
+courtes et fixes appelées Sprints, d’une durée de quatre semaines, à l’issue desquelles
+un incrément fonctionnel est livré et validé. Contrairement aux méthodes classiques en
+cascade, Scrum permet de détecter les problèmes tôt, de s’adapter aux imprévus et de
+garantir une progression mesurable du projet à chaque étape.
+Scrum repose sur trois piliers fondamentaux :
+◦Transparence : l’avancement du projet est visible par tous les membres de l’équipe
+et les parties prenantes à tout moment, grâce aux artéfacts Scrum (Product Backlog,
+Sprint Backlog).
+34
+
+
+===== PAGE 50 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+◦Inspection : à la fin de chaque Sprint, les livrables sont présentés et évalués lors
+de la Sprint Review, permettant de vérifier que le développement est conforme aux
+attentes.
+◦Adaptation : si des écarts sont détectés lors de l’inspection, l’équipe ajuste ses
+priorités et son plan d’action pour le Sprint suivant sans attendre la fin du projet.
+Figure 2.1: Cycle itératif de la méthodologie Scrum
+35
+
+
+===== PAGE 51 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+2.2.2
+Les Rôles Scrum
+Trois rôles sont définis dans la méthodologie Scrum, chacun avec des responsabilités
+précises et complémentaires :
+Rôle
+Responsable
+Responsabilités
+Product Owner
+Jlassi Fathi
+(Encadreur Pro)
+Définit et priorise les fonctionnalités du
+Product Backlog, valide les livrables de
+chaque Sprint et s’assure que le système
+répond aux besoins industriels de Leoni
+Tunisie.
+Scrum Master
+Hsairi Walid
+(Encadreur Acad)
+Facilite les cérémonies Scrum, lève les ob-
+stacles rencontrés par l’équipe et veille au
+respect du cadre méthodologique tout au
+long du projet.
+Équipe
+de
+développement
+Boudebsa Arij
+Tray Houwaida
+Conçoit, développe et teste les incréments
+du système SALIS à chaque Sprint, en as-
+surant la qualité technique des livrables
+produits.
+Table 2.4: Rôles Scrum dans le projet SALIS
+2.2.3
+Les Artéfacts Scrum
+Trois artéfacts assurent la transparence et la traçabilité du projet SALIS :
+◦Product Backlog : liste priorisée de toutes les fonctionnalités, maintenue par le
+Product Owner.
+◦Sprint Backlog : sous-ensemble sélectionné pour le Sprint en cours avec tâches
+détaillées.
+◦Incrément : résultat fonctionnel livré et validé à la fin de chaque Sprint.
+2.2.4
+Les Cérémonies Scrum
+Quatre cérémonies structurent chaque Sprint du projet SALIS :
+◦Sprint Planning : sélection des User Stories et découpage en tâches concrètes.
+◦Sprint Review : démonstration et validation des livrables par les encadrants.
+◦Rétrospective : identification des axes d’amélioration pour le Sprint suivant.
+◦Daily Standup : synchronisation quotidienne et identification des blocages.
+36
+
+
+===== PAGE 52 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+2.3
+Backlog Produit
+Le tableau suivant présente le Product Backlog complet du projet SALIS, avec l’ensemble
+des User Stories priorisées et affectées aux Sprints correspondants.
+ID
+Sprint
+User Story
+Critères d’acceptation
+Priorité
+US01
+Sprint 1
+En tant qu’utilisateur, je peux
+créer un compte et m’authentifier
+pour accéder au dashboard et à
+l’application mobile
+Login / Register fonction-
+nels, accès sécurisé validé
+Forte
+US02
+Sprint 1
+En tant qu’ingénieur, je consulte
+les données du système en temps
+réel via le dashboard IoT
+Dashboard connecté, don-
+nées rafraîchies < 2s
+Forte
+US03
+Sprint 1
+En tant qu’équipe, nous con-
+cevons les chambres de test en
+PETG en 3D avec OpenSCAD
+Modèle 3D validé par en-
+cadrants
+Forte
+US04
+Sprint 2
+En tant que système, je mesure
+la chute de pression via SMC
+PSE540 et génère une décision au-
+tomatique OK/NOK
+Décision affichée HMI +
+LED + buzzer
+Forte
+US05
+Sprint 2
+En tant qu’ingénieur, je consulte
+les résultats du Dry Test en
+temps réel sur le dashboard
+Courbes pression et débit
+affichées
+Forte
+US06
+Sprint 3
+En tant que système, j’applique
+une rampe de tension progres-
+sive via le Chroma 19073 et
+récupère la décision PASS/FAIL
+pour analyse par le modèle IA
+Rampe exécutée, décision
+PASS/FAIL
+récupérée,
+décharge
+automatique
+activée
+Forte
+US07
+Sprint 3
+En tant que système, je bloque
+le HV Test si la porte n’est pas
+fermée (interlock), avec arrêt au-
+tomatique et décharge sécurisée
+HV impossible porte ou-
+verte, arrêt + décharge con-
+firmés
+Forte
+37
+
+
+===== PAGE 53 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+ID
+Sprint
+User Story
+Critères d’acceptation
+Priorité
+US08
+Sprint 3
+En tant que système, j’analyse la
+relation tension courant et la non
+linéarité du courant de fuite via
+méthode classique (seuil) et mod-
+èle IA (Random Forest)
+Comparaison seuil vs IA,
+accuracy IA > 95%, déci-
+sion affichée dashboard
+Forte
+US09
+Sprint 4
+En tant qu’ingénieur, je supervise
+tous les tests depuis le dashboard
+complet et l’application mobile
+Flutter
+Dashboard + app mobile
+connectés, données < 2s
+Forte
+US10
+Sprint 4
+En tant qu’ingénieur, je consulte
+l’historique et les statistiques de
+production depuis l’app mobile
+Historique filtrable, statis-
+tiques affichées
+Forte
+US11
+Sprint 4
+En tant qu’administrateur, je
+peux ajouter et gérer les comptes
+utilisateurs du système SALIS
+Comptes créés, rôles at-
+tribués
+Moyenne
+US12
+Sprint 4
+En
+tant
+qu’ingénieur,
+je
+génère un rapport PDF depuis
+l’application mobile
+Rapport PDF exporté avec
+statistiques
+Moyenne
+US13
+Sprint 4
+En tant qu’opérateur, je génère
+un ticket avec code barres pour
+chaque test afin d’assurer la
+traçabilité industrielle
+Ticket généré avec code
+barres,
+scan
+historique
+fonctionnel
+Forte
+US14
+Sprint 4
+En tant que système, je garantis
+la sécurité et la robustesse contre
+les défaillances et erreurs
+Timeout, watchdog et arrêt
+d’urgence validés
+Forte
+US15
+Sprint 4
+En tant qu’administrateur, je
+configure dynamiquement les
+paramètres du système sans redé-
+marrage
+Paramètres modifiés et ap-
+pliqués en temps réel
+Moyenne
+Table 2.5: Product Backlog du projet SALIS
+2.4
+Planification des Sprints
+38
+
+
+===== PAGE 54 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+Sprint
+Durée
+Activités principales
+Livrables
+Sprint 1
+Initialisation
+4
+semaines
+Authentification (Login,
+Reg-
+ister),
+communication
+IoT
+STM32L476
+→
+Node.js
+→
+Dashboard,
+conception
+3D
+OpenScad
+App mobile auth, Dash-
+board IoT, Modèle 3D
+validé
+Sprint 2
+Dry Test
+4
+semaines
+Pressure
+Decay
+Test
+(SMC
+PSE540),
+régulateur
+SMC
+ITV2050,
+électrovannes Festo,
+firmware
+STM32,
+décision
+OK/NOK
+Dry Test opérationnel,
+Firmware validé, Dash-
+board Dry Test
+Sprint 3
+HV Test
+4
+semaines
+Hipot Tester Chroma 19073, in-
+terlock sécurité micro switch,
+rampe tension programmable,
+modèle IA Random Forest
+HV Test opérationnel,
+Interlock validé, IA ac-
+curacy >95%
+Sprint 4
+Supervision
+4
+semaines
+Dashboard HMI complet, app
+mobile Flutter, traçabilité codes
+barres, module administration
+RBAC
+Dashboard
+complet,
+App
+mobile
+Flutter,
+Système SALIS validé
+Table 2.6: Planification SALIS : 4 Sprints sur 4 mois
+2.5
+Environnements de Travail
+2.5.1
+Environnement Logiciel
+STM32CubeIDE
+STM32CubeIDE [38] est l’environnement de développement intégré officiel de STMi-
+croelectronics. Il est utilisé pour développer, compiler et déboguer le firmware du micro-
+contrôleur STM32L476.
+39
+
+
+===== PAGE 55 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+Figure 2.2: Logo STM32CubeIDE
+Visual Studio Code + Node.js
+Visual Studio Code est utilisé pour le développement du backend Node.js et du
+dashboard HMI. Node.js [27] avec la bibliothèque SerialPort assure la communication
+entre le STM32L476 et le PC via USB/UART. Il expose les données vers le dashboard via
+WebSocket et vers l’application mobile via REST API HTTP.
+Figure 2.3: Logo Visual Studio Code
+Flutter / Dart
+Flutter [10] est le framework utilisé pour développer l’application mobile de supervi-
+sion SALIS sur Android. L’application communique avec le backend Node.js via REST
+API HTTP et WebSocket.
+Figure 2.4: Logo Flutter
+Android Studio
+Android Studio [9] est l’environnement officiel pour Android. Il centralise le débogage
+et la gestion des SDK Android nécessaires au déploiement de l’application SALIS sur les
+appareils réels de l’atelier.
+40
+
+
+===== PAGE 56 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+Figure 2.5: Logo Android Studio
+SQLite
+SQLite [36] assure la persistance locale et structurée des données de test. Légère, sans
+serveur et intégrée directement dans le backend Node.js, SQLite offre une solution fiable
+pour le stockage en contexte industriel.
+Figure 2.6: Logo SQLite
+Figma
+Figma [7] est utilisé pour prototyper les interfaces du dashboard HMI et de l’application
+mobile avant leur implémentation.
+Figure 2.7: Logo Figma
+GitHub
+GitHub [8] centralise le code source du projet SALIS : firmware STM32, backend
+Node.js, dashboard HMI et application Flutter.
+41
+
+
+===== PAGE 57 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+Figure 2.8: Logo GitHub
+PlantUML
+PlantUML [29] est utilisé pour générer les diagrammes UML du projet SALIS : dia-
+grammes de cas d’utilisation, de séquence et de classes. Sa syntaxe textuelle permet une
+intégration facile dans le workflow de développement.
+Figure 2.9: Logo PlantUML
+Draw.io
+Draw.io [16] est utilisé pour concevoir les diagrammes d’architecture, les schémas de
+flux et les diagrammes de déploiement du système SALIS.
+Figure 2.10: Logo Draw.io
+OpenSCAD
+OpenSCAD [21] est le logiciel utilisé pour la modélisation 3D du prototype physique
+SALIS. Contrairement aux logiciels de CAO classiques, OpenSCAD utilise un langage de
+script permettant de décrire les objets 3D de manière paramétrique. Il a été utilisé pour
+modéliser les deux chambres de test et l’assemblage complet du prototype SALIS.
+42
+
+
+===== PAGE 58 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+Figure 2.11: Logo OpenSCAD
+Express.js
+Express.js [26] est le framework backend utilisé avec Node.js pour exposer les routes
+de l’API REST du système SALIS, gérant l’authentification JWT, les données de test et la
+communication avec l’application mobile Flutter.
+Figure 2.12: Logo Express.js
+2.5.2
+Environnement Matériel
+Les travaux de développement et de simulation ont été réalisés sur les postes de travail
+suivants :
+Composant
+PC 1
+PC 2
+Processeur
+ASUS TUF F15 — Intel
+Core i7 11e Gén.
+Intel Core i5 10e Gén.
+RAM
+32 Go
+8 Go
+Stockage
+SSD 512 Go
+SSD 256 Go
+Système
+d’exploitation
+Windows 11
+Windows 11
+Table 2.7: Environnement matériel de développement
+2.6
+Architecture de la Solution
+Le système SALIS repose sur une architecture en quatre couches clairement séparées,
+garantissant modularité, maintenabilité et évolutivité.
+43
+
+
+===== PAGE 59 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+Figure 2.13: Architecture générale du système SALIS
+44
+
+
+===== PAGE 60 =====
+
+CHAPTER 2. ANALYSE DES BESOINS ET PLANIFICATION
+SALIS
+Conclusion
+Ce chapitre a posé les bases fondamentales du projet SALIS : spécification des besoins,
+méthodologie Scrum et architecture technique.
+L’architecture en quatre couches — Perception, Réseau, Traitement et Application —
+garantit une séparation claire des responsabilités, une traçabilité complète des données et
+une supervision en temps réel. L’intégration d’un modèle d’intelligence artificielle au sein
+de la couche de traitement renforce les capacités d’analyse et de détection des défauts du
+système.
+Le système SALIS se positionne ainsi comme une solution industrielle moderne
+combinant automatisation, intelligence artificielle et connectivité IoT pour le contrôle
+qualité des jonctions de câblage automobile.
+Ces éléments constituent le socle technique nécessaire à la réalisation du Sprint 1,
+présenté dans le chapitre suivant.
+45
+
+
+===== PAGE 61 =====
+
+3
+Chapitre
+Sprint 1 : Initialisation
+Introduction
+Dans le chapitre précédent, nous avons posé les bases théoriques et organisationnelles
+du projet SALIS. Nous avons défini les besoins, planifié les sprints et décrit l’architecture
+globale du système. Il est maintenant temps de passer à la réalisation concrète.
+Ce premier sprint marque le point de départ du développement. Avant de con-
+cevoir les algorithmes de test ou de câbler les circuits haute tension, nous avons fait
+le choix de commencer par ce qui rend le système utilisable et traçable : une interface
+d’authentification sécurisée, une communication IoT fiable entre la machine et le super-
+viseur, et une conception mécanique solide du prototype physique.
+Trois questions ont guidé ce sprint :
+◦Comment l’opérateur et l’ingénieur vont ils accéder au système de manière sécurisée
+?
+◦Comment les données mesurées par le STM32L476 vont elles atteindre le dashboard
+et l’application mobile en temps réel ?
+◦À quoi ressemblera physiquement la machine SALIS, et comment ses composants
+seront ils organisés dans le boîtier ?
+Ce chapitre présente les réponses apportées à ces questions à travers la spécification
+fonctionnelle, la conception UML et la réalisation concrète des fonctionnalités de ce sprint.
+46
+
+
+===== PAGE 62 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+3.1
+Découpage des Fonctionnalités
+ID
+US
+User Story
+ID
+Tâche
+US01
+En tant qu’utilisateur, je peux
+créer un compte et m’authentifier
+pour accéder au dashboard et à
+l’application mobile.
+T01.1
+Développer l’interface de Login
+T01.2
+Développer l’interface de Regis-
+ter
+T01.3
+Développer l’interface Home
+T01.4
+Mettre en place la gestion des ses-
+sions utilisateur
+US02
+En tant qu’ingénieur, je consulte
+les données du système en temps
+réel via le dashboard IoT.
+T02.1
+Configurer la communication
+STM32L476 →UART →Node.js
+(SerialPort)
+T02.2
+Développer le backend Node.js
+(réception + traitement données)
+T02.3
+Développer le dashboard HMI
+(WebSocket temps réel)
+T02.4
+Connecter l’application mobile
+Flutter via REST API + WiFi LAN
+US03
+En tant qu’équipe, nous con-
+cevons le prototype SALIS en im-
+pression 3D PETG avec Open-
+SCAD.
+T03.1
+Modélisation 3D chambre Dry
+Test et chambre HV (OpenSCAD)
+T03.3
+Vue assemblage complet du pro-
+totype SALIS (OpenSCAD)
+Table 3.1: Backlog du Sprint 1 : Initialisation
+47
+
+
+===== PAGE 63 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+3.2
+Spécification Fonctionnelles et Conception
+Dans cette section, nous décrivons et détaillons les fonctionnalités du Sprint 1. Nous
+classons les cas par acteur, élaborons un diagramme de cas d’utilisation, rédigeons une
+description complète de chaque cas d’utilisation et modélisons les interactions à l’aide de
+diagrammes de séquence. Pour conclure cette phase, nous établissons le diagramme de
+classe du Sprint 1.
+3.2.1
+Classification des Cas d’Utilisation par Acteur
+Le tableau suivant présente la classification des fonctionnalités du Sprint 1 par acteur.
+Acteur
+Rôles
+Opérateur
+S’authentifier, Consulter données temps réel
+Ingénieur
+S’authentifier, Consulter données temps réel, Analyser don-
+nées production
+Administrateur
+S’authentifier, Gérer les utilisateurs, Configurer le système
+Table 3.2: Classification des cas d’utilisation par acteur : Sprint 1
+48
+
+
+===== PAGE 64 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+3.2.2
+Diagramme de Cas d’Utilisation du Sprint 1
+La figure suivante illustre le diagramme de cas d’utilisation du Sprint 1.
+Figure 3.1: Diagramme de cas d’utilisation du Sprint 1
+49
+
+
+===== PAGE 65 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+3.2.3
+Spécifications et Conception du Cas d’Utilisation « S’authentifier »
+Description Textuelle
+Champ
+Description
+Nom
+du
+cas
+d’utilisation
+S’authentifier
+Acteur
+Opérateur, Ingénieur, Administrateur
+Pré condition
+L’acteur doit disposer d’un compte créé par l’administrateur.
+Post condition
+L’acteur est authentifié et accède à l’interface correspondant
+à son rôle.
+Scénario principal
+1. L’acteur ouvre l’application mobile ou le dashboard web.
+2. Le système affiche le formulaire d’authentification (ID +
+mot de passe / code pin ).
+3. L’acteur saisit ses identifiants.
+4. Le système vérifie les identifiants via le backend Node.js.
+5. Le système ouvre l’interface correspondant au rôle de
+l’acteur.
+Scénario alternatif
+Si les identifiants sont incorrects, le système affiche un mes-
+sage d’erreur et invite l’acteur à réessayer. Après 3 tentatives
+échouées, le compte est temporairement bloqué pour des
+raisons de sécurité.
+Table 3.3: Description textuelle du cas d’utilisation « S’authentifier »
+50
+
+
+===== PAGE 66 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+Diagramme de Séquence
+La figure suivante présente le diagramme de séquence du cas d’utilisation « S’authentifier ».
+Figure 3.2: Diagramme de séquence : cas d’utilisation « S’authentifier »
+51
+
+
+===== PAGE 67 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+3.2.4
+Spécifications et Conception du Cas d’Utilisation « Consul-
+ter Données Temps Réel »
+Description Textuelle
+Champ
+Description
+Nom
+du
+cas
+d’utilisation
+Consulter données temps réel
+Acteur
+Opérateur, Ingénieur
+Pré condition
+L’acteur doit être authentifié. Le STM32L476 doit être con-
+necté via USB/UART au backend Node.js.
+Post condition
+Les données mesurées par le STM32L476 sont affichées en
+temps réel sur le dashboard et l’application mobile.
+Scénario principal
+1. L’acteur accède à l’interface de supervision.
+2. Le STM32L476 envoie les données via UART vers le back-
+end Node.js.
+3. Le backend traite les données et les distribue via Web-
+Socket vers le dashboard et via REST API vers l’application
+mobile.
+4. Le système affiche les données en temps réel (pression,
+tension, courant, décision OK/NOK).
+Scénario alternatif
+En cas de perte de connexion, le backend stocke les don-
+nées dans SQLite et les synchronise dès que la connexion est
+rétablie.
+Table 3.4: Description textuelle du cas d’utilisation « Consulter données temps réel »
+Diagramme de Séquence
+La figure suivante présente le diagramme de séquence du cas d’utilisation « Consulter
+données temps réel ».
+52
+
+
+===== PAGE 68 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+Figure 3.3: Diagramme de séquence : cas d’utilisation « Consulter données temps réel »
+3.2.5
+Diagramme de Classe du Sprint 1
+Le diagramme de classe du Sprint 1 introduit deux classes principales : Utilisateur et
+Données.
+53
+
+
+===== PAGE 69 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+Figure 3.4: Diagramme de classe du Sprint 1
+3.3
+Test
+Les pratiques de test constituent la phase finale du cycle de développement d’un sprint.
+Elles ont pour objectif de vérifier les résultats obtenus lors de l’étape de développement
+afin de garantir une version de qualité. Pour illustrer cette phase, nous présentons des
+captures d’écran des fonctionnalités développées.
+3.3.1
+Partie Application Mobile
+Cette section présente les interfaces de l’application mobile SALIS.
+54
+
+
+===== PAGE 70 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+Connexion
+Biométrie
+Profil utilisateur
+Figure 3.5: Interfaces de l’application mobile SALIS
+Interface
+Description
+Connexion
+Accès sécurisé via matricule et code PIN chiffré en AES-256 [23].
+Redirection vers l’interface correspondant au rôle de l’utilisateur.
+Biométrie
+Authentification par empreinte digitale via l’API Android native. Bas-
+culement automatique vers le code PIN en cas d’échec, avec contrôle
+d’accès RBAC [24].
+Profil
+Gestion du profil utilisateur : modification du nom, du mot de passe,
+attribution d’accès et sélection de la langue (FR/EN/AR). Déconnex-
+ion sécurisée avec effacement de la session.
+Table 3.5: Description des interfaces de l’application mobile SALIS
+3.3.2
+Partie Communication IoT
+Cette section présente la communication IoT entre le STM32L476 et le backend, ainsi
+que la transmission vers le dashboard et l’application mobile.
+55
+
+
+===== PAGE 71 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+Architecture de Communication
+La communication repose sur une architecture en trois couches, illustrée dans la figure
+suivante :
+STM32L476
+Firmware embarqué
+Backend Node.js
+SerialPort + SQLite
+Dashboard HMI
+WebSocket
+App Mobile
+REST API + WiFi
+USB / UART
+WebSocket
+REST API
+Figure 3.6: Architecture de communication IoT : Sprint 1
+Génération du Token JWT
+La figure suivante présente la génération du token JWT lors de l’authentification via
+l’API REST du backend Node.js.
+Figure 3.7: Génération token JWT — API REST Backend Node.js
+56
+
+
+===== PAGE 72 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+Dashboard HMI : Données Temps Réel
+Le dashboard HMI affiche les données transmises par le STM32L476 en temps réel via
+WebSocket. Il présente les valeurs de pression, tension, courant de fuite et la décision de
+conformité OK / NOK.
+Figure 3.8: Dashboard HMI : Données temps réel
+3.3.3
+Conception 3D avec OpenSCAD
+Le Sprint 1 a permis de poser les premières bases fonctionnelles du système SALIS :
+authentification sécurisée, communication IoT et conception 3D du prototype.
+57
+
+
+===== PAGE 73 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+Schéma vue de face
+Schéma vue latérale
+Modèle OpenSCAD vue 3D
+Premier sketch du SALIS
+Figure 3.9: Conception 3D du prototype SALIS et modele OpenSCAD
+58
+
+
+===== PAGE 74 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+3.4
+Rétrospective du Sprint 1
+Aspect
+Bilan
+Ce qui a bien fonc-
+tionné
+La communication IoT entre le STM32L476 et le backend
+Node.js a été établie rapidement et de manière stable, avec
+une latence inférieure à 2 secondes. L’authentification JWT
+est fonctionnelle et sécurisée sur les deux plateformes (dash-
+board + application mobile Flutter). La modélisation 3D du
+prototype sous OpenSCAD a permis d’anticiper les contraintes
+mécaniques et de valider les dimensions avant impression.
+Ce
+qui
+n’a
+pas
+fonctionné
+La gestion des erreurs de connexion UART nécessite un ren-
+forcement pour garantir la robustesse du système en conditions
+industrielles réelles.
+Problèmes rencon-
+trés
+L’intégration des capteurs industriels dans les sprints suivants
+nécessitera une attention particulière à la calibration, au bruit de
+mesure et à la précision de la conversion analogique numérique
+de l’ADC du STM32L476.
+Limites du sprint
+Ce sprint ne couvre pas encore les tests physiques (Dry Test
+et HV Test). Le système est fonctionnel sur le plan logiciel et
+mécanique, mais les capteurs industriels ne sont pas encore
+intégrés. La validation du prototype reste théorique à ce stade.
+Perspectives
+Préparer les schémas de câblage du capteur SMC PSE540 et du
+régulateur SMC ITV2050. Valider les algorithmes de Pressure
+Decay Test sur données simulées avant l’intégration matérielle
+du Sprint 2.
+Table 3.6: Rétrospective du Sprint 1
+Conclusion
+Le Sprint 1 a permis de poser les premières bases fonctionnelles du système SALIS. En
+partant d’une architecture sur papier, nous avons réussi à mettre en place trois éléments
+essentiels qui conditionneront le bon déroulement de tous les sprints suivants.
+L’authentification sécurisée est désormais opérationnelle, avec gestion des rôles utilisa-
+teurs via JWT [3] et RBAC [24]. La communication entre le STM32L476 [37] et le backend
+Node.js [27] est établie et assure une transmission des données en temps réel avec une
+latence inférieure à 2 secondes.
+Sur le plan mécanique, la conception 3D du prototype sous OpenSCAD [21] a permis
+59
+
+
+===== PAGE 75 =====
+
+CHAPTER 3. SPRINT 1 : INITIALISATION
+SALIS
+de valider l’architecture physique et les dimensions des chambres de test Dry Test et HV
+Test, anticipant ainsi les contraintes d’intégration des composants industriels.
+Le Sprint suivant sera consacré au Dry Test avec l’intégration du régulateur SMC
+ITV2050, du capteur SMC PSE540 et des électrovannes Festo.
+60
+
+
+===== PAGE 76 =====
+
+4
+Chapitre
+Sprint 2 : Dry Test
+Introduction
+Le sprint précédent nous a permis de construire l’infrastructure de base du système
+SALIS : authentification sécurisée, communication IoT fiable et conception mécanique
+du prototype. Nous disposons maintenant d’un système capable de recevoir, transmettre
+et afficher des données en temps réel. Il est temps de lui donner sa première mission
+industrielle : tester l’étanchéité des jonctions de câblage.
+Ce sprint est consacré à la conception et à l’implémentation du sous système de test
+d’étanchéité (Dry Test), basé sur la méthode de chute de pression (Pressure Decay Test).
+Il couvre l’intégration du capteur SMC PSE540, du régulateur SMC ITV2050 et des
+électrovannes Festo, ainsi que le développement du firmware STM32L476 et l’affichage
+des résultats en temps réel sur le dashboard HMI.
+Dans la phase de conception, deux approches complémentaires avaient été envisagées
+pour maximiser la couverture des défauts :
+◦Le test de chute de pression (Pressure Decay Test) : méthode directe et rapide, elle
+détecte les fuites significatives en mesurant la variation de pression dans la chambre
+après isolement.
+◦Le test de débit massique via le capteur Sensirion SFM3000 : méthode plus précise,
+elle mesure le flux d’air résiduel et permet de détecter les micro fuites invisibles à la
+simple mesure de pression.
+Lors de la phase de réalisation, le capteur de débit massique Sensirion SFM3000
+n’était pas disponible. Le prototype repose donc sur la méthode de chute de pression
+uniquement, implémentée à l’aide des composants industriels SMC et Festo sélectionnés
+pour leur fiabilité et leur précision en environnement de production.
+61
+
+
+===== PAGE 77 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+4.1
+Découpage des Fonctionnalités
+Le tableau suivant présente le backlog du Sprint 2, regroupant l’ensemble des fonc-
+tionnalités réalisées au cours de ce sprint.
+ID
+US
+User Story
+ID
+Tâche
+US04
+En tant que système, je mesure la
+chute de pression via le capteur
+SMC PSE540 et génère une déci-
+sion automatique OK / NOK.
+T04.1
+Étude et sélection du capteur
+SMC PSE540
+T04.2
+Conception chaîne acquisition
+signal PSE540 →STM32L476
+T04.3
+Développement algorithme Pres-
+sure Decay Test (FSM)
+T04.4
+Configuration
+STM32L476
+(GPIO électrovannes, UART)
+T04.5
+Intégration résultats pression sur
+dashboard
+US05
+En tant que système, je con-
+trôle le circuit pneumatique via
+le régulateur SMC ITV2050 et
+les électrovannes Festo pour exé-
+cuter la séquence de test.
+T05.1
+Configurer
+régulateur
+SMC
+ITV2050
+(signal
+analogique
+STM32)
+T05.2
+Configurer électrovanne Festo
+PR259826 (remplissage)
+T05.3
+Configurer électrovanne Festo
+VN05 (isolement + purge)
+T05.4
+Développement séquence FSM
+(injection
+→
+stabilisation
+→
+mesure →purge)
+62
+
+
+===== PAGE 78 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+ID
+US
+User Story
+ID
+Tâche
+US06
+En tant qu’ingénieur, je consulte
+les résultats du Dry Test en
+temps réel sur le dashboard et
+l’application mobile.
+T06.1
+Affichage courbe pression vs
+temps sur dashboard
+T06.2
+Affichage décision OK / NOK +
+LED + buzzer
+T06.3
+Enregistrement résultats dans
+SQLite avec horodatage
+Table 4.1: Backlog du Sprint 2 : Dry Test
+4.2
+Spécification Fonctionnelles et Conception
+Dans cette section, nous décrivons et détaillons les fonctionnalités du Sprint 2. Nous
+classons les cas par acteur, élaborons un diagramme de cas d’utilisation, rédigeons une
+description complète de chaque cas d’utilisation et modélisons les interactions à l’aide de
+diagrammes de séquence. Pour conclure cette phase, nous établissons le diagramme de
+classe du Sprint 2.
+4.2.1
+Classification des Cas d’Utilisation par Acteur
+Acteur
+Rôles
+Opérateur
+Lancer test de pression, Consulter résultat HMI, Recevoir
+alerte non conformité
+Ingénieur
+Consulter résultats Dry Test temps réel, Analyser courbe
+pression, Recevoir notifications push
+Table 4.2: Classification des cas d’utilisation par acteur : Sprint 2
+63
+
+
+===== PAGE 79 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+4.2.2
+Diagramme de Cas d’Utilisation du Sprint 2
+Figure 4.1: Diagramme de cas d’utilisation du Sprint 2
+64
+
+
+===== PAGE 80 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+4.2.3
+Spécifications et Conception du Cas d’Utilisation « Lancer
+Test de Chute de Pression »
+Description Textuelle
+Champ
+Description
+Nom
+du
+cas
+d’utilisation
+Lancer test de chute de pression
+Acteur
+Opérateur
+Pré condition
+La jonction de câblage est insérée dans la chambre de test et
+la porte est correctement fermée.
+Post condition
+La décision de conformité (OK / NOK) est affichée sur le
+HMI avec activation LED et buzzer. Le résultat est enregistré
+dans SQLite avec horodatage.
+Scénario principal
+1. L’opérateur insère la jonction et ferme la porte de la cham-
+bre.
+2. L’opérateur lance le test depuis l’interface HMI.
+3. Le STM32L476 commande le régulateur SMC ITV2050 et
+ouvre l’électrovanne Festo PR259826 pour injecter l’air sec
+jusqu’à la pression cible.
+4. Le STM32L476 ferme l’électrovanne et attend la stabilisa-
+tion (2 secondes).
+5. Le capteur SMC PSE540 R04 mesure P0 puis P1 après 5
+secondes.
+6. Le firmware calcule ∆P = P0 −P1 et génère la décision
+OK / NOK.
+7. L’électrovanne Festo VN05 s’ouvre pour purger la cham-
+bre.
+8. Le résultat est transmis au backend et affiché sur le dash-
+board.
+Scénario alternatif
+Si la porte s’ouvre pendant le test, le système arrête immédi-
+atement l’injection et émet une alerte de sécurité.
+Table 4.3: Description textuelle du cas d’utilisation « Lancer test de chute de pression »
+65
+
+
+===== PAGE 81 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+Diagramme de Séquence
+Figure 4.2: Diagramme de séquence : cas d’utilisation « Lancer test de chute de pres-
+sion »
+66
+
+
+===== PAGE 82 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+4.2.4
+Spécifications et Conception du Cas d’Utilisation « Consul-
+ter Résultats Dry Test »
+Description Textuelle
+Champ
+Description
+Nom
+du
+cas
+d’utilisation
+Consulter résultats Dry Test
+Acteur
+Ingénieur
+Pré condition
+L’ingénieur est authentifié. Au moins un test Dry Test a été
+réalisé.
+Post condition
+La courbe de pression, la valeur ∆P et la décision de confor-
+mité sont affichées sur le dashboard et l’application mobile.
+Scénario principal
+1. L’ingénieur accède à l’interface de supervision depuis le
+dashboard ou l’application mobile.
+2. Le système affiche en temps réel la courbe de pression vs
+temps.
+3. La décision OK / NOK est affichée avec la valeur ∆P et
+l’horodatage du test.
+Scénario alternatif
+En cas de non conformité, une notification push est envoyée
+automatiquement sur l’application mobile de l’ingénieur.
+Table 4.4: Description textuelle du cas d’utilisation « Consulter résultats Dry Test »
+67
+
+
+===== PAGE 83 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+Diagramme de Séquence
+Figure 4.3: Diagramme de séquence : cas d’utilisation « Consulter résultats Dry Test »
+4.2.5
+Diagramme de Classe du Sprint 2
+Le diagramme de classe du Sprint 2 introduit trois classes principales : DryTest,
+PressionTest et Resultat.
+68
+
+
+===== PAGE 84 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+Figure 4.4: Diagramme de classe du Sprint 2
+4.3
+Test
+Cette section présente le sous-système Dry Test : composants matériels, firmware et
+résultats dashboard.
+4.3.1
+Partie Matérielle
+Capteurs de Pression : SMC PSE540 R04 et R06
+Le système SALIS repose sur l’utilisation de capteurs de pression industriels SMC
+PSE540 [35], chacun assurant une fonction spécifique dans le circuit pneumatique :
+◦PSE540 R04 : installé directement sur la chambre de test, il mesure la pression interne
+et permet le calcul de la chute de pression ∆P, paramètre clé de la méthode Pressure
+Decay Test.
+69
+
+
+===== PAGE 85 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+◦PSE540 R06 : positionné en amont, au niveau du régulateur, il permet de contrôler la
+pression d’alimentation et de garantir la stabilité de l’injection d’air dans le système.
+Critère
+SMC PSE540 R04
+(chambre)
+SMC PSE540 R06
+(régulateur)
+Honeywell
+MI-
+PAN
+Signal sortie
+Numérique
+Numérique
+Analogique
+Précision
+±1%
+±1%
+±1.5%
+Plage mesure
+0–1 MPa
+0–1 MPa
+0–0.6 MPa
+Protection
+IP 65
+IP 65
+IP 54
+Affichage intégré
+Oui
+Oui
+Non
+Compatibilité
+STM32
+Excellente
+Excellente
+Bonne
+Fiabilité
+indus-
+trielle
+Très élevée
+Très élevée
+Bonne
+Rôle dans SALIS
+Mesure chute ∆P
+Surveillance
+ali-
+mentation
+—
+Table 4.5: Comparatif capteurs de pression : Justification du choix SMC PSE540
+Les capteurs SMC PSE540 ont été retenus pour leur compatibilité avec le STM32L476,
+leur robustesse industrielle et leur cohérence avec le régulateur ITV2050. La combinaison
+des deux modèles (R04 + R06) offre une couverture complète du circuit pneumatique.
+Régulateur de Pression : SMC ITV2050
+Le régulateur électropneumatique SMC ITV2050 [34] constitue l’élément de régulation
+du circuit pneumatique. Il contrôle avec précision la pression d’air injectée dans la
+chambre, piloté par un signal analogique issu du DAC du STM32L476.
+70
+
+
+===== PAGE 86 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+Figure 4.5: Régulateur de pression SMC ITV2050
+Caractéristique
+Valeur
+Modèle
+SMC ITV2050
+Plage de pression
+0.005 – 0.9 MPa (0.05 – 9 Bar)
+Signal de commande
+0 – 10V DC / 4 – 20 mA
+Alimentation
+24V DC
+Précision
+±0.5% pleine échelle
+Temps de réponse
+< 0.1s
+Rôle dans SALIS
+Régulation précise pression d’injection (0.5 – 2
+Bar)
+Table 4.6: Caractéristiques du régulateur SMC ITV2050
+Le tableau suivant justifie le choix du régulateur SMC ITV2050 par rapport aux
+alternatives disponibles sur le marché.
+71
+
+
+===== PAGE 87 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+Critère
+SMC
+ITV2050
+(choisi)
+Festo VPPM
+Parker ITV
+Plage pression
+0.05 – 9 Bar
+0.1 – 6 Bar
+0.1 – 8 Bar
+Signal commande
+0–10V / 4–20 mA
+0–10V DC
+4–20 mA
+Précision
+±0.5%
+±0.5%
+±1%
+Affichage intégré
+Oui
+Oui
+Non
+Fiabilité
+Très élevée
+Très élevée
+Bonne
+Compatibilité
+STM32
+Excellente
+Bonne
+Bonne
+Coût
+Moyen
+Élevé
+Élevé
+Table 4.7: Comparatif régulateurs : Justification du choix SMC ITV2050
+La pression de sortie suit une relation affine avec la tension de commande :
+Psortie = k · Vcommande + b
+(4.1)
+où k est le coefficient de proportionnalité et b l’offset, déterminés expérimentalement
+lors de la calibration du prototype.
+Électrovannes Festo
+Deux électrovannes Festo [6] assurent le contrôle automatique des flux d’air dans le
+circuit pneumatique. Elles ont été retenues pour leur fiabilité industrielle, leur rapidité de
+commutation et leur faible consommation énergétique.
+Fonction
+Référence
+Type
+Alimentation
+Rôle dans SALIS
+Remplissage
+Festo PR259826
+2/2 voies
+24V
+DC
+±10%
+Injection air comprimé
+dans la chambre
+Isolement
+/
+Purge
+Festo VN05
+3/2 voies
+24V DC
+Isolation
+chambre
++
+évacuation pression
+Table 4.8: Électrovannes Festo : Prototype SALIS
+Le tableau suivant justifie le choix des électrovannes Festo par rapport aux alternatives
+du marché.
+72
+
+
+===== PAGE 88 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+Critère
+Festo PR259826 +
+VN05 (choisi)
+SMC VX
+Parker Série 9
+Tension bobine
+24V DC ±10%
+24V DC
+24V DC
+Consommation
+1–1.5W
+2W
+2.5W
+Temps
+commuta-
+tion
+< 10–15ms
+< 20ms
+< 25ms
+Pression max
+8–10 Bar
+8 Bar
+8 Bar
+Fiabilité
+Très élevée
+Très élevée
+Bonne
+Protection
+IP 65
+IP 65
+IP 54
+Disponibilité
+Bonne
+Difficile
+Difficile
+Coût
+Moyen
+Moyen
+Élevé
+Table 4.9: Comparatif électrovannes Justification du choix Festo
+Phase du test
+Festo PR259826
+(Remplissage)
+Festo VN05
+(Isolement / Purge)
+Attente (IDLE)
+FERMÉE
+FERMÉE
+Phase 1 : Injection
+OUVERTE
+FERMÉE
+Phase 2 : Stabilisa-
+tion
+FERMÉE
+FERMÉE
+Phase 3 : Mesure
+∆P
+FERMÉE
+FERMÉE
+Phase 4 : Purge
+FERMÉE
+OUVERTE
+Table 4.10: Séquence de commande des électrovannes Festo : Dry Test
+Microcontrôleur STM32L476
+Le microcontrôleur STM32L476 [37] orchestre l’ensemble de la séquence Dry Test
+: pilotage des électrovannes Festo, commande du régulateur SMC ITV2050, lecture du
+capteur PSE540, calcul de la décision et transmission des résultats au backend Node.js.
+73
+
+
+===== PAGE 89 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+Figure 4.6: Microcontrôleur STM32L476
+Critère
+STM32L476
+Arduino Mega
+Raspberry Pi 4
+ESP32
+FPGA (Artix 7)
+Architecture
+ARM Cortex M4
+AVR 8 bits
+ARM Cortex A72
+Xtensa Dual Core
+Logique
+pro-
+grammable
+Fréquence CPU
+80 MHz
+16 MHz
+1.5 GHz
+240 MHz
+Parallélisme
+ADC intégré
+12 bits (3 ADC)
+10 bits
+Absent
+12 bits
+Absent
+DAC intégré
+2 × 12 bits
+Absent
+Absent
+2 × 8 bits
+Absent
+Temps réel
+Déterministe
+Limité
+Non TR
+Bon
+Excellent
+Démarrage
+< 1 ms
+Instantané
+> 30 s
+∼100 ms
+< 1 ms
+Connectivité
+UART, SPI, I2C
+UART, SPI, I2C
+Ethernet, USB
+WiFi + BT
+Dépend design
+Consommation
+Très faible
+Moyenne
+Élevée
+Faible
+Élevée
+Fiabilité
+Élevée
+Faible
+Faible
+Moyenne
+Très élevée
+Prix (TND)
+30–50 TND
+50–80 TND
+250–400 TND
+30–60 TND
+200–600 TND
+Adéquation
+SALIS
+Idéal
+Limité
+Non adapté
+Possible
+Surdimensionné
+Table 4.11: Comparaison plateformes embarquées : Système SALIS
+Le STM32L476 a été retenu comme compromis optimal entre précision analogique, temps
+réel déterministe, coût maîtrisé et complexité de mise en œuvre, face à des alternatives
+jugées soit insuffisantes (Arduino), soit inadaptées aux contraintes temps réel (Raspberry
+Pi), soit surdimensionnées (FPGA).
+4.3.2
+Partie Firmware STM32
+Principe du Test de Chute de Pression
+Toute fuite d’étanchéité se traduit par une diminution progressive de la pression
+interne de la chambre. Cette variation est quantifiée par la chute de pression ∆P, définie
+par le firmware STM32L476 comme suit :
+74
+
+
+===== PAGE 90 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+∆P = P0 −P1
+(4.2)
+Décision =
+
+
+
+OK
+si ∆P ≤∆Pseuil
+NOK
+si ∆P > ∆Pseuil
+(4.3)
+où P0 est la pression initiale après stabilisation et P1 la pression mesurée après le
+temps de test.
+Algorithme Dry Test
+L’algorithme du Dry Test est implémenté sous forme d’une machine à états finis (FSM)
+dans le firmware STM32L476. Le cycle de test est structuré en quatre phases séquentielles
+:
+◦Phase 1 : Remplissage : le régulateur SMC ITV2050 ajuste la pression d’air, tandis
+que l’électrovanne Festo PR259826 s’ouvre afin d’injecter l’air sec dans la chambre
+jusqu’à la pression cible.
+◦Phase 2 : Stabilisation : toutes les électrovannes sont fermées. Un temps d’attente
+est appliqué afin de stabiliser la pression et d’éliminer les perturbations transitoires.
+◦Phase 3 : Mesure : le capteur PSE540 R04 enregistre la pression initiale P0 puis la
+pression P1 après un intervalle défini. Le microcontrôleur calcule ∆P et compare au
+seuil de décision.
+◦Phase 4 : Purge : l’électrovanne Festo VN05 est activée afin d’évacuer l’air résiduel
+et de réinitialiser la chambre pour le cycle suivant.
+75
+
+
+===== PAGE 91 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+Figure 4.7: Algorithme complet du Dry Test : Firmware STM32L476
+76
+
+
+===== PAGE 92 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+Implémentation Firmware : STM32CubeIDE
+La figure suivante présente le code firmware STM32CubeIDE gérant la transmission
+UART des données vers le backend Node.js. Selon le mode actif (D pour Dry Test ou H
+pour HV Test), le firmware formate et envoie les mesures (pression, tension, courant) via
+HAL_UART_Transmit.
+Figure 4.8: Firmware STM32CubeIDE
+Configuration Communication Série — PuTTY
+La figure suivante présente la configuration de la communication série entre le
+STM32L476 et le PC via PuTTY, confirmant la réception des données UART en temps réel.
+Figure 4.9: Configuration communication série — PuTTY + STM32L476
+77
+
+
+===== PAGE 93 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+Tension de Commande Régulateur SMC ITV2050
+La figure suivante présente la tension de commande générée par le STM32L476 via son
+DAC pour piloter le régulateur SMC ITV2050. La tension mesurée de 1.1V correspond
+à une pression de sortie , confirmant la relation affine entre tension de commande et
+pression régulée.
+Figure 4.10: Tension DAC STM32L476 — Commande régulateur SMC ITV2050
+Terminal Node.js : Réception Données STM32
+La figure suivante présente le terminal Node.js affichant la réception des données du
+STM32L476 via SerialPort (COM3) et la décision générée automatiquement.
+Figure 4.11: Terminal Node.js : Réception données STM32 via SerialPort COM3
+78
+
+
+===== PAGE 94 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+4.3.3
+Partie Dashboard
+Les données du Dry Test sont transmises en temps réel depuis le STM32L476 vers
+le backend Node.js via une liaison USB/UART, puis diffusées vers le dashboard via
+WebSocket. Cette architecture assure une latence inférieure à 2 secondes, répondant aux
+exigences de supervision industrielle en temps réel.
+Le dashboard affiche la courbe de pression, la valeur ∆P et la décision OK/NOK
+avec horodatage, garantissant une supervision en temps réel et une traçabilité conforme à
+l’IATF 16949 [11].
+Figure 4.12: Dashboard HMI : Résultats du Dry Test
+79
+
+
+===== PAGE 95 =====
+
+CHAPTER 4. SPRINT 2 : DRY TEST
+SALIS
+4.4
+Rétrospective du Sprint 2
+Aspect
+Bilan
+Ce qui a bien fonc-
+tionné
+La méthode Pressure Decay Test a été implémentée avec succès,
+avec une orchestration fiable des différentes phases via une ma-
+chine à états finis (FSM). Le régulateur SMC ITV2050 assure une
+pression stable et reproductible, tandis que le dashboard permet
+une visualisation en temps réel avec une latence maîtrisée.
+Ce
+qui
+n’a
+pas
+fonctionné
+L’indisponibilité du capteur de débit massique SFM3000 a limité
+l’évaluation expérimentale des micro fuites, réduisant ainsi la
+sensibilité globale du système par rapport aux objectifs initiaux.
+Problèmes rencon-
+trés
+Cette contrainte impose l’utilisation d’une seule méthode de
+détection (chute de pression), sans validation croisée par mesure
+de débit, ce qui peut affecter la précision pour les défauts de
+faible amplitude.
+Limites du sprint
+Le système présente actuellement une sensibilité limitée aux
+micro fuites, et les seuils ∆P utilisés restent à valider expérimen-
+talement sur des jonctions réelles, afin d’éviter les faux positifs
+et faux négatifs en conditions industrielles.
+Perspectives
+Les perspectives incluent l’intégration du capteur SFM3000, la
+calibration des seuils sur données réelles, ainsi que la prépara-
+tion du sous système HV Test pour le sprint suivant.
+Table 4.12: Rétrospective du Sprint 2
+Conclusion
+Ce sprint a permis de valider le principe du test d’étanchéité basé sur la méthode
+de chute de pression. L’intégration cohérente du hardware industriel (SMC, Festo), du
+firmware embarqué et du système de supervision démontre la faisabilité technique du
+sous système Dry Test.
+Néanmoins, l’absence de mesure directe du débit massique constitue une limitation
+en termes de sensibilité, ouvrant la voie à des améliorations futures visant à rapprocher le
+système des standards industriels avancés.
+Le sprint suivant introduira le sous système haute tension (HV Test), permettant de
+compléter le cycle de test automatique du système SALIS.
+80
+
+
+===== PAGE 96 =====
+
+5
+Chapitre
+Sprint 3 : HV Test
+Introduction
+Le Dry Test, réalisé lors du sprint précédent, nous a permis de vérifier l’étanchéité
+des jonctions de câblage. Mais l’étanchéité ne suffit pas. Dans l’industrie automobile, un
+câble peut être parfaitement étanche et pourtant défaillant électriquement , une isolation
+dégradée, une fissure microscopique dans la gaine, une humidité piégée à l’intérieur. Ces
+défauts sont invisibles à l’air, mais ils se révèlent sous tension.
+C’est précisément l’objectif du HV Test : le test d’isolation haute tension. Ce troisième
+sprint est entièrement consacré à sa conception et à sa réalisation. Plutôt que d’appliquer
+brutalement une haute tension sur le câble, nous avons adopté une approche progressive
+et intelligente : une rampe de tension programmable, qui monte par paliers successifs en
+mesurant le courant de fuite à chaque étape, mise en œuvre à l’aide du Chroma 19073, un
+Hipot Tester industriel certifié (UL, TÜV, CE).
+Cette méthode protège la jonction et l’opérateur tout en générant une courbe tension–
+courant exploitée par le modèle d’intelligence artificielle Random Forest pour détecter les
+anomalies d’isolation.
+Ce chapitre présente la conception, la réalisation et les résultats de ce sprint, qui
+constitue l’élément le plus avancé techniquement du système SALIS.
+81
+
+
+===== PAGE 97 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+5.1
+Découpage des Fonctionnalités
+Le tableau suivant présente le backlog du Sprint 3, regroupant l’ensemble des fonc-
+tionnalités réalisées au cours de ce sprint.
+ID
+US
+User Story
+ID
+Tâche
+US07
+En tant que système, j’applique
+une rampe de tension progres-
+sive via le Chroma 19073 et
+récupère la décision PASS/FAIL
+pour analyse par le modèle IA.
+T07.1
+Étude et intégration du Hipot
+Tester Chroma 19073
+T07.2
+Conception interface isolée (opto-
+coupleur PC817 →STM32L476)
+T07.3
+Développement firmware lecture
+PASS/FAIL + extraction features
+physiques
+T07.4
+Calcul features physiques (Riso,
+dI/dV , non-linéarité)
+US08
+En tant que système, je bloque
+le HV Test si la porte n’est pas
+fermée (interlock), avec arrêt au-
+tomatique et décharge sécurisée.
+T08.1
+Intégration micro switch inter-
+lock
+T08.2
+Développement firmware inter-
+lock (blocage HV + arrêt)
+T08.3
+Implémentation
+décharge
+au-
+tomatique
+intégrée
+Chroma
+19073
+US09
+En tant que système, j’analyse la
+relation tension courant et la non
+linéarité du courant de fuite via
+méthode classique (seuil) et mod-
+èle IA (Random Forest).
+T09.1
+Entraînement modèle Random
+Forest sur dataset défauts élec-
+triques
+82
+
+
+===== PAGE 98 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+ID
+US
+User Story
+ID
+Tâche
+T09.2
+Intégration modèle IA dans back-
+end Node.js (predict.py)
+T09.3
+Comparaison méthode seuil clas-
+sique vs approche IA
+T09.4
+Affichage courbe HV + décision
+IA sur dashboard
+Table 5.1: Backlog du Sprint 3 : HV Test
+Importance de la rampe de tension :
+Le Chroma 19073 implémente une rampe de tension progressive programmable,
+constituant un élément essentiel du HV Test. Contrairement à une application directe de
+la tension maximale, cette approche permet :
+◦d’éviter des courants brusques pouvant endommager la jonction de câblage testée
+◦d’observer l’évolution progressive du courant de fuite à chaque palier
+◦de construire une courbe V-I complète et exploitable par le modèle IA
+Cette méthode améliore à la fois la précision du diagnostic et la sécurité du système.
+5.2
+Spécification Fonctionnelles et Conception
+Dans cette section, nous décrivons et détaillons les fonctionnalités du Sprint 3. Nous
+classons les cas par acteur, élaborons un diagramme de cas d’utilisation, rédigeons une
+description complète de chaque cas d’utilisation et modélisons les interactions à l’aide de
+diagrammes de séquence. Pour conclure cette phase, nous établissons le diagramme de
+classe du Sprint 3.
+83
+
+
+===== PAGE 99 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+5.2.1
+Classification des Cas d’Utilisation par Acteur
+Acteur
+Rôles
+Opérateur
+Lancer HV Test, Consulter résultat HMI
+Ingénieur
+Consulter courbe dégradation HV, Consulter décision IA,
+Recevoir alertes non conformité
+Table 5.2: Classification des cas d’utilisation par acteur : Sprint 3
+5.2.2
+Diagramme de Cas d’Utilisation du Sprint 3
+Figure 5.1: Diagramme de cas d’utilisation du Sprint 3
+84
+
+
+===== PAGE 100 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+5.2.3
+Spécifications et Conception du Cas d’Utilisation « Lancer
+HV Test »
+Description Textuelle
+Champ
+Description
+Nom
+du
+cas
+d’utilisation
+Lancer HV Test
+Acteur
+Opérateur
+Pré condition
+Le Dry Test a été réalisé avec succès. La jonction est insérée
+dans la chambre. La porte est fermée et l’interlock est validé.
+Post-condition
+La courbe tension courant est affichée sur le dashboard. La
+décision de conformité (OK / NOK) est générée par la méth-
+ode classique et confirmée par le modèle IA. Le résultat est
+enregistré dans SQLite.
+Scénario principal
+1. L’opérateur vérifie la fermeture de la porte et lance le HV
+Test depuis l’interface HMI.
+2. Le STM32L476 vérifie l’état du micro switch interlock.
+3. Le Chroma 19073 applique la rampe de tension progressive
+par paliers successifs.
+4. À chaque palier, le Chroma 19073 mesure le courant de
+fuite et génère un résultat PASS/FAIL.
+5. Le STM32L476 récupère le résultat via l’interface isolée
+(optocoupleur PC817) et calcule les features : Riso, dI/dV ,
+non linéarité.
+6. Le backend Node.js appelle le modèle IA (predict.py) et
+génère la décision OK / NOK.
+7. La courbe V-I et la décision sont affichées sur le dashboard.
+La décharge automatique du Chroma 19073 est activée.
+Scénario alternatif
+Si le courant de fuite dépasse le seuil critique en cours de test,
+le Chroma 19073 coupe immédiatement la tension (coupure
+< 0.4 ms), active la décharge et émet une alerte.
+Table 5.3: Description textuelle du cas d’utilisation « Lancer HV Test »
+85
+
+
+===== PAGE 101 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+Diagramme de Séquence
+Figure 5.2: Diagramme de séquence : cas d’utilisation « Lancer HV Test »
+86
+
+
+===== PAGE 102 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+5.2.4
+Spécifications et Conception du Cas d’Utilisation « Contrôle
+Interlock Sécurité »
+Description Textuelle
+Champ
+Description
+Nom
+du
+cas
+d’utilisation
+Contrôle interlock sécurité
+Acteur
+Système (STM32L476)
+Pré condition
+Le HV Test est en cours d’exécution.
+Post condition
+Si la porte est ouverte : tension coupée, décharge activée,
+alerte émise. Si la porte est fermée : test continue normale-
+ment.
+Scénario principal
+1. Le STM32L476 surveille en permanence l’état du micro
+switch de porte via une entrée GPIO.
+2. Tant que la porte est fermée, le test HV se poursuit nor-
+malement.
+3. Si la porte s’ouvre pendant le test, le STM32L476 envoie
+un signal d’arrêt au Chroma 19073 via l’interface de contrôle
+à distance.
+4. Le Chroma 19073 coupe la tension et active la décharge
+automatique intégrée.
+5. Une alerte sonore (buzzer) et visuelle (LED rouge) est
+activée sur le HMI.
+Scénario alternatif
+Si le micro switch est défaillant, le système refuse de lancer
+le HV Test et affiche un message d’erreur.
+Table 5.4: Description textuelle du cas d’utilisation « Contrôle interlock sécurité »
+87
+
+
+===== PAGE 103 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+Diagramme de Séquence
+Figure 5.3: Diagramme de séquence : cas d’utilisation « Contrôle interlock sécurité »
+5.2.5
+Diagramme de Classe du Sprint 3
+Le diagramme de classe du Sprint 3 introduit trois classes principales : HVTest,
+InterlockManager et IAModel.
+88
+
+
+===== PAGE 104 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+Figure 5.4: Diagramme de classe du Sprint 3
+5.3
+Test
+Cette section présente le sous système de test d’isolation haute tension (HV Test) du
+système SALIS. Elle décrit les composants matériels utilisés, le principe de fonctionnement
+physique, l’implémentation du modèle d’intelligence artificielle, ainsi que les résultats
+visualisés via le dashboard de supervision.
+5.3.1
+Partie Matérielle
+Hipot Tester : Chroma 19073
+Le Chroma 19073 [5] est un équipement industriel de test d’isolation électrique
+89
+
+
+===== PAGE 105 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+Figure 5.5: Hipot Tester : Chroma 19073
+Le tableau suivant justifie le choix du Chroma 19073 par rapport aux alternatives
+disponibles sur le marché.
+Critère
+Chroma
+19073
+(choisi)
+Hioki ST5520
+Kikusui TOS9300
+Modes test
+AC / DC / IR
+AC / DC
+AC / DC / IR
+Tension max DC
+6 kV
+4 kV
+5 kV
+Résolution courant
+0.1 µA
+1 µA
+0.1 µA
+Détection ARC
+Oui
+Non
+Oui
+Décharge rapide
+Oui
+Oui
+Oui
+Interface
+RS 232 standard
+Option
+Standard
+Certification
+UL + TÜV + CE
+CE
+UL + CE
+GFI intégré
+Oui
+Non
+Oui
+Table 5.5: Comparatif Hipot Testers
+Le Chroma 19073 a été retenu pour sa combinaison unique de trois modes de test
+(AC/DC/IR), sa haute résolution de mesure du courant de fuite (0.1 µA), sa détection de
+flashover intégrée et sa certification industrielle complète (UL, TÜV, CE).
+Principe de Fonctionnement du Chroma 19073
+Le Chroma 19073 repose sur trois étapes séquentielles pour chaque test :
+◦Vérification Open/Short (OSC) : avant tout test, l’équipement vérifie l’intégrité de
+la connexion avec la jonction de câblage, évitant ainsi tout faux résultat lié à une
+mauvaise connexion.
+◦Application rampe de tension : la tension est appliquée progressivement selon un
+profil programmable (ramp time : 0.1 à 999 s), évitant les pics de courant brutaux
+90
+
+
+===== PAGE 106 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+susceptibles d’endommager la jonction.
+◦Mesure et décision : le courant de fuite est mesuré à chaque palier avec une ré-
+solution de 0.1 µA. Si le courant dépasse le seuil programmé, le système coupe
+automatiquement la tension (< 0.4 ms) et génère un résultat FAIL. Sinon, le résultat
+PASS est émis.
+Interface RS 232 : Acquisition STM32L476
+Le résultat du test (PASS / FAIL) est transmis au STM32L476 via deux niveaux
+d’interface complémentaires :
+◦Sortie logique isolée : le signal PASS/FAIL du Chroma 19073 est récupéré via un
+optocoupleur PC817, assurant l’isolation galvanique totale entre le circuit haute
+tension et le microcontrôleur. Le STM32L476 lit ce signal via une entrée GPIO.
+◦Interface RS 232 : pour une acquisition plus complète (valeurs de tension et courant
+mesurées), la communication série RS 232 du Chroma 19073 est exploitée via un
+convertisseur MAX3232, permettant de récupérer les données brutes pour le calcul
+des features physiques (Riso, dI/dV , non linéarité).
+Chroma 19073
+OSC +
+Rampe HV
+Optocoupleur
+PC817
+STM32L476
+GPIO + UART
+Random Forest
+predict.py
+Dashboard
+OK / NOK
+PASS/FAIL
+Signal isolé
+Features
+Décision
+Figure 5.6: Architecture HV Test : Chroma 19073 + STM32L476 + IA
+Composant
+Rôle
+Chroma 19073
+Génération tension + mesure courant de fuite +
+décision PASS/FAIL
+Optocoupleur PC817
+Isolation galvanique HV →STM32 (sécurité
+opérateur)
+STM32L476
+Lecture signal PASS/FAIL + extraction features +
+transmission backend
+Random Forest
+Analyse comportement électrique + décision in-
+telligente OK/NOK
+Dashboard HMI
+Visualisation courbe + décision + traçabilité
+SQLite
+Table 5.6: Composants du sous-système HV Test
+91
+
+
+===== PAGE 107 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+Système Interlock : Micro switch de Porte
+Le micro switch de porte constitue le premier niveau de sécurité du HV Test. Il est
+connecté directement à une entrée GPIO du STM32L476 et surveille en permanence l’état
+de la porte de la chambre de test. Aucun test haute tension ne peut démarrer ou se
+poursuivre si la porte est ouverte.
+État porte
+Signal GPIO
+Action système
+Fermée
+HIGH
+Test HV autorisé — système normal
+Ouverte
+LOW
+Signal arrêt envoyé au Chroma 19073
++ décharge automatique + alerte LED
++ buzzer
+Défaillante
+Indéfini
+Refus de lancer le HV Test + message
+d’erreur HMI
+Table 5.7: États du système interlock
+5.3.2
+Partie Firmware STM32
+Principe Physique du HV Test
+La relation fondamentale V/I = Riso est universelle et s’applique directement aux
+jonctions de câblage automobile testées par SALIS. Les plages de tension du dataset
+(jusqu’à 400V) et les niveaux de courant de fuite mesurés (ordre du milliampère) sont
+cohérents avec les paramètres du HV Test SALIS (100V – 500V DC, résolution 0.1 µA via
+Chroma 19073), ce qui renforce la pertinence du transfert d’apprentissage entre les deux
+systèmes.
+Riso =
+V
+Ifuite
+= constante
+⇒
+I ∝V
+(câble sain)
+(5.1)
+En présence d’un défaut d’isolation, la relation devient non linéaire , le courant
+augmente plus vite que la tension :
+Riso(V ) ↓
+⇒
+I ↑↑
+(câble défectueux)
+(5.2)
+Features Physiques Calculées
+Les données brutes (tension V et courant Ifuite) sont reçues par le STM32L476 depuis
+le Chroma 19073 via l’interface RS 232. Le firmware calcule ensuite les features physiques
+suivantes, qui sont transmises au backend Node.js pour inférence par le modèle IA :
+92
+
+
+===== PAGE 108 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+Riso =
+V
+Ifuite + ε
+(5.3)
+dI
+dV ≈∆I
+∆V = Ipalier+1 −Ipalier
+Vpalier+1 −Vpalier
+(pente courbe V-I)
+(5.4)
+Non-linéarité = |Riso,V 1 −Riso,V 2| + |Riso,V 2 −Riso,V 3|
+(5.5)
+Algorithme HV Test
+L’algorithme du HV Test est implémenté sous forme d’une machine à états finis (FSM)
+dans le firmware STM32L476. Le cycle de test se déroule en cinq phases séquentielles :
+◦Phase 1 : Vérification interlock : le STM32L476 vérifie l’état du micro switch de
+porte. Si la porte est ouverte, le test est bloqué et une alerte est émise.
+◦Phase 2 : Initialisation : le Chroma 19073 est configuré avec les paramètres de test
+(tension cible, rampe, seuil courant). La vérification OSC (Open/Short Check) est
+effectuée.
+◦Phase 3 : Rampe de tension : la tension est appliquée progressivement par paliers.
+À chaque palier, le résultat PASS/FAIL est récupéré via l’optocoupleur PC817 et les
+features physiques sont calculées par le STM32L476.
+◦Phase 4 : Analyse IA : les features calculées sont transmises au backend Node.js
+qui appelle le modèle Random Forest (predict.py). La décision finale OK/NOK est
+générée.
+◦Phase 5 : Décharge et purge : le Chroma 19073 active la décharge automatique. Le
+résultat est enregistré dans SQLite et affiché sur le dashboard.
+93
+
+
+===== PAGE 109 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+Figure 5.7: Algorithme complet du HV Test
+94
+
+
+===== PAGE 110 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+5.3.3
+Partie Intelligence Artificielle
+Présentation du Dataset
+Le modèle IA est entraîné sur un dataset de 7861 échantillons [17] de mesures tension–
+courant. La relation fondamentale V/I = Riso le rend applicable au système monophasé
+SALIS.
+Paramètre
+Valeur
+Nombre
+d’échantillons
+7861
+Classes
+Normal (OK) : 2365 / Défaut (NOK) : 5496
+Features utilisées
+14 (V, I, Riso, dI/dV , non linéarité)
+Label
+0 = Normal, 1 = Défaut
+Table 5.8: Caractéristiques du dataset IA
+Modèle Random Forest
+Le modèle Random Forest [4] a été retenu pour sa robustesse, sa capacité à gérer des
+données non linéaires et la facilité d’interprétation de ses résultats (feature importance).
+Les hyperparamètres optimaux ont été déterminés par GridSearchCV [28] :
+Hyperparamètre
+Valeur optimale
+n_estimators
+50 arbres
+max_depth
+15
+Optimisation
+GridSearchCV (3 folds)
+Normalisation
+StandardScaler
+Split
+80% train / 20% test
+Table 5.9: Hyperparamètres du modèle Random Forest
+Résultats du Modèle
+Le pipeline complet d’inférence fonctionne de la manière suivante : les données
+brutes sont acquises via le Chroma 19073, prétraitées et transformées en features par le
+STM32L476, puis envoyées au backend Node.js pour inférence en temps réel par le modèle
+Random Forest. La décision finale est renvoyée au dashboard en moins de 2 secondes.
+95
+
+
+===== PAGE 111 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+Condition
+Accuracy
+F1-Score
+Precision
+Sans bruit (données
+simulées)
+99.98%
+99.97%
+99.96%
+Avec bruit industriel
+(5%)
+99.49%
+99.64%
+99.73%
+Cross-validation
+(5
+folds)
+97.75%
+—
+± 2.73%
+Table 5.10: Résultats du modèle Random Forest
+Le modèle Random Forest a été entraîné sur un dataset public (Electrical Fault
+Detection, 7861 échantillons) car la collecte de données réelles sur les jonctions
+de câblage automobile nécessite un prototype opérationnel installé sur la ligne de
+production. Ce dataset générique a été choisi pour sa pertinence physique : la relation
+V/I = Riso est universelle. Les performances annoncées (97.75% en cross-validation)
+sont donc une preuve de concept sur données simulées. La validation sur données
+industrielles réelles est la première action du plan de déploiement (perspectives
+court terme).
+Figure 5.8: Résultats Random Forest : Accuracy, Matrice de confusion
+96
+
+
+===== PAGE 112 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+Figure 5.9: Résultats Random Forest :Feature Importance
+Justification de la Fiabilité du Modèle
+Bien que le modèle ait été entraîné sur un dataset simulé, plusieurs éléments justifient
+la confiance accordée à ses résultats :
+◦Pertinence physique du dataset : le dataset Electrical Fault Detection [17] contient
+des mesures réelles de tension et courant issues d’un système électrique. La relation
+fondamentale V/I = Riso est universelle et s’applique directement aux jonctions de
+câblage automobile testées par SALIS.
+◦Validation croisée à 5 folds : le dataset est divisé en 5 sous-ensembles égaux. À
+chaque itération, 4 folds servent à l’entraînement et 1 fold à la validation, garantissant
+que chaque échantillon est testé exactement une fois et limitant le risque d’overfitting.
+◦Robustesse au bruit : le modèle atteint 99.49% d’accuracy avec une simulation de
+bruit industriel à 5%, reproduisant les variations typiques d’un environnement réel
+(parasites électromagnétiques, variations de température).
+◦Interprétabilité : le Random Forest fournit une analyse de l’importance des variables
+confirmant que Riso et dI/dV sont les features les plus discriminantes, ce qui est
+cohérent avec la physique du système.
+Ces éléments constituent une base solide pour la confiance dans le modèle en con-
+ditions de prototype. Une validation sur données industrielles réelles reste néanmoins
+indispensable avant tout déploiement en production.
+Décision IA en Temps Réel : Terminal Node.js
+La figure suivante présente la décision générée par le modèle Random Forest en temps
+réel lors de l’exécution du HV Test, affichée dans le terminal Node.js.
+97
+
+
+===== PAGE 113 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+Figure 5.10: Terminal Node.js : Décision IA Random Forest lors du HV Test
+Figure 5.11: Terminal Node.js : Décision IA Random Forest lors du HV Test
+98
+
+
+===== PAGE 114 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+Comparaison Méthode Classique vs IA
+Critère
+Méthode
+Classique
+(seuil
+fixe)
+Méthode IA (Random Forest)
+Principe
+I > Iseuil →NOK
+Pattern (V, I, Riso, dI/dV ) →
+décision
+Flexibilité
+Faible (seuil fixe)
+Élevée
+Détection micro dé-
+fauts
+Limitée
+Oui
+Explicabilité
+Simple
+Feature importance
+Dépendance données
+Non
+Oui (dataset requis)
+Accuracy
+Dépend du seuil
+97.75%
+Table 5.11: Comparaison méthode classique vs IA
+5.3.4
+Partie Dashboard
+Les résultats du HV Test sont transmis en temps réel via WebSocket. Le dashboard
+affiche la courbe V-I, la décision IA et le score de confiance du modèle Random Forest.
+Figure 5.12: Dashboard HMI : Résultats du HV Test
+99
+
+
+===== PAGE 115 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+5.4
+Rétrospective du Sprint 3
+Aspect
+Bilan
+Ce qui a bien fonc-
+tionné
+La rampe de tension progressive a permis d’obtenir une courbe
+V-I exploitable et cohérente avec la physique du système. Le
+système interlock fonctionne de manière fiable et la décharge
+automatique garantit la sécurité de l’opérateur à chaque fin de
+test. Le modèle Random Forest atteint une accuracy de 97.75%
+en cross validation, confirmant la pertinence de l’approche IA
+pour la détection des défauts d’isolation.
+Ce qui peut être
+amélioré
+Le dataset utilisé provient d’un système électrique simulé et non
+de câbles automobiles réels. Une validation sur des données
+industrielles réelles de Leoni permettrait d’affiner les seuils de
+décision et d’améliorer la robustesse du modèle en conditions
+réelles de production.
+Actions
+pour
+le
+sprint suivant
+Finaliser le dashboard HMI complet avec l’historique des
+tests, les statistiques de production et les alertes push.
+Développer l’application mobile Flutter complète et le mod-
+ule d’administration pour la gestion des utilisateurs.
+Limites du sprint
+Le système dépend actuellement du Chroma 19073 comme
+équipement externe. Une évolution vers une architecture en-
+tièrement embarquée , combinant un module boost XY HV DC,
+un amplificateur INA180A1 [39] et un relais Omron G2R 1 E
+permettrait de supprimer cette dépendance et de rendre le sys-
+tème SALIS pleinement autonome. Par ailleurs, le modèle IA
+reste expérimental : entraîné sur un dataset simulé, il n’a pas en-
+core été confronté aux variabilités réelles (vieillissement câbles,
+température, parasites électromagnétiques).
+Table 5.12: Rétrospective du Sprint 3
+Conclusion
+Ce troisième sprint représente l’élément le plus avancé techniquement du système
+SALIS. En s’appuyant sur le Chroma 19073 pour la génération et la mesure haute tension,
+combiné à un modèle Random Forest, nous avons construit un sous système capable de
+détecter les défauts d’isolation de manière automatique, fiable et traçable.
+La certification industrielle de l’équipement (UL, TÜV, CE) garantit un niveau de
+sécurité conforme aux standards de l’industrie automobile. Sa détection de flashover
+100
+
+
+===== PAGE 116 =====
+
+CHAPTER 5. SPRINT 3 : HV TEST
+SALIS
+intégrée ainsi que sa coupure automatique en moins de 0.4 ms renforcent la robustesse du
+système face aux situations critiques.
+Ce qui rend ce sprint particulièrement solide, c’est la cohérence entre trois niveaux
+complémentaires : le hardware (Chroma 19073, optocoupleur PC817, interlock micro
+switch), le firmware (STM32L476, calcul des features physiques Riso, dI/dV , non linéarité
+à partir des mesures de courant et de tension issues du Hipot Tester) et l’intelligence
+(Random Forest, 97.75% de précision en cross validation sur un dataset simulé). Chaque
+niveau renforce les deux autres.
+La décision de s’appuyer sur un équipement industriel certifié dans ce prototype n’est
+pas un raccourci , c’est un choix d’ingénieur. Les algorithmes de traitement, les chaînes
+d’acquisition et la logique de décision sont conçus pour être directement transposables à
+un environnement haute tension industriel réel.
+Toutefois, le modèle IA reste expérimental. Les résultats obtenus confirment la per-
+tinence de l’approche proposée, tout en nécessitant une validation sur des données
+industrielles réelles avant tout déploiement en production.
+Le sprint suivant clôturera le développement du système SALIS en apportant la
+dimension supervision et administration : un dashboard complet, une application mobile
+Flutter et un module d’administration pour la gestion des utilisateurs.
+101
+
+
+===== PAGE 117 =====
+
+6
+Chapitre
+Sprint 4 : Supervision et Administra-
+tion
+Introduction
+Les trois sprints précédents ont permis de construire le cœur technique du système
+SALIS : une infrastructure IoT fiable, un test d’étanchéité complet et un test d’isolation
+haute tension intelligent. Le système sait désormais tester, mesurer et décider. Il lui
+manque encore une dimension essentielle : être supervisé, piloté et administré par les
+équipes de Leoni Tunisie.
+Ce quatrième et dernier sprint de développement est entièrement consacré à cette
+dimension. Il répond à une question simple mais fondamentale : comment les ingénieurs,
+les opérateurs et les administrateurs de Leoni vont ils interagir avec le système SALIS au
+quotidien ?
+Trois réponses concrètes ont été apportées :
+◦Un dashboard HMI complet accessible depuis n’importe quel navigateur sur le
+réseau local de l’usine, affichant en temps réel les résultats des tests, l’historique de
+production, les statistiques de conformité et les alertes.
+◦Une application mobile Flutter permettant aux ingénieurs de superviser la produc-
+tion à distance, de consulter l’historique des tests, de recevoir des notifications push
+et de générer des rapports PDF.
+◦Un module d’administration permettant au responsable de gérer les comptes util-
+isateurs, d’attribuer les rôles et de configurer les paramètres du système.
+Ce sprint clôture le développement du système SALIS et marque le passage d’un
+prototype fonctionnel à un outil industriel complet, prêt à être déployé sur la ligne de
+production de Leoni Tunisie.
+102
+
+
+===== PAGE 118 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+6.1
+Découpage des Fonctionnalités
+Le Sprint 4 ne se limite pas à une simple interface utilisateur. Il introduit des fonc-
+tionnalités avancées inspirées des systèmes industriels réels : supervision temps réel,
+traçabilité des tests via codesb arres, sécurité applicative complète et configuration dy-
+namique des paramètres. Ces éléments transforment le système SALIS en une plateforme
+industrielle complète, exploitable directement sur la ligne de production de Leoni Tunisie.
+ID
+US
+User Story
+ID
+Tâche
+US10
+En tant qu’ingénieur, je super-
+vise tous les tests depuis un dash-
+board complet et une application
+mobile Flutter.
+T10.1
+Implémenter
+interface
+dash-
+board résultats temps réel (Dry +
+HV)
+T10.2
+Affichage courbes dynamiques
+(pression, débit, V-I) via Web-
+Socket
+T10.3
+Implémenter interface historique
+avec filtres avancés (date, type
+test, résultat)
+T10.4
+Implémenter
+interface
+statis-
+tiques (taux NOK, production,
+tendances)
+T10.5
+Implémenter alertes visuelles +
+sonores + notifications
+T10.6
+Connecter application mobile
+Flutter (WebSocket + REST API)
+T10.7
+Affichage décision IA + score de
+confiance sur dashboard
+US11
+En tant qu’ingénieur, je consulte
+l’historique et les statistiques via
+l’application mobile.
+T11.1
+Implémenter interface historique
+sur application mobile Flutter
+T11.2
+Implémenter
+interface
+statis-
+tiques (graphes, KPI)
+103
+
+
+===== PAGE 119 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+ID
+US
+User Story
+ID
+Tâche
+T11.3
+Implémenter notifications push
+(non-conformité, alertes)
+T11.4
+Visualisation détaillée d’un test
+(courbes + décision IA)
+T11.5
+Synchronisation temps réel dash-
+board ↔app mobile
+T11.6
+Implémenter génération rapport
+PDF (résultats + statistiques +
+courbes + décision)
+US12
+En tant qu’administrateur, je gère
+les comptes utilisateurs et la sécu-
+rité du système SALIS.
+T12.1
+Implémenter interface gestion
+comptes (CRUD utilisateurs)
+T12.2
+Implémenter attribution rôles
+(Opérateur / Ingénieur / Ad-
+min)
+T12.3
+Implémenter
+authentification
+sécurisée (JWT token, expiration
+24h)
+T12.4
+Implémenter hashage mots de
+passe (bcrypt)
+T12.5
+Implémenter contrôle accès par
+rôle (RBAC)
+T12.6
+Implémenter
+blocage
+compte
+après 3 tentatives échouées
+T12.7
+Implémenter journalisation ac-
+tions (logs accès, modifications)
+US13
+En
+tant
+qu’ingénieur,
+je
+génère un rapport PDF depuis
+l’application mobile contenant
+les résultats complets.
+T13.1
+Développer module génération
+rapport PDF (résultats + courbes
++ décision IA + statistiques)
+104
+
+
+===== PAGE 120 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+ID
+US
+User Story
+ID
+Tâche
+T13.2
+Ajouter identité test dans rapport
+(ID, date, opérateur, type)
+T13.3
+Intégrer export PDF dans appli-
+cation Flutter
+US14
+En tant qu’opérateur, je génère
+un ticket avec code barres pour
+chaque test afin d’assurer la
+traçabilité industrielle.
+T14.1
+Générer
+ID
+unique
+par
+test
+(timestamp + numéro séquentiel)
+T14.2
+Générer code barres / QR code
+associé à chaque test
+T14.3
+Associer code ↔résultat (Dry +
+HV) + opérateur + date + jonc-
+tion testée
+T14.4
+Afficher
+et
+imprimer
+ticket
+depuis dashboard
+T14.5
+Scanner code pour retrouver his-
+torique du test
+US15
+En tant que système, je garan-
+tis la sécurité et la robustesse du
+système SALIS contre les défail-
+lances et les erreurs.
+T15.1
+Implémenter timeout test (anti
+blocage, max 30s)
+T15.2
+Implémenter détection erreurs
+capteurs (capteur hors plage, dé-
+connexion)
+T15.3
+Implémenter
+arrêt
+d’urgence
+logiciel depuis dashboard
+T15.4
+Implémenter validation données
+entrantes backend (anti injection,
+anti bug)
+105
+
+
+===== PAGE 121 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+ID
+US
+User Story
+ID
+Tâche
+T15.5
+Implémenter
+watchdog
+firmware
+STM32L476
+(redé-
+marrage automatique)
+US16
+En tant qu’administrateur, je
+configure dynamiquement les
+paramètres du système SALIS
+sans redémarrage.
+T16.1
+Implémenter interface configura-
+tion seuils (pression, débit, ten-
+sion HV, durée test)
+T16.2
+Persister paramètres dans SQLite
+T16.3
+Appliquer paramètres en temps
+réel (sans redémarrage)
+Table 6.1: Backlog du Sprint 4 : Supervision et Administration
+6.2
+Spécification Fonctionnelles et Conception
+Dans cette section, nous décrivons et détaillons les fonctionnalités du Sprint 4. Nous
+classons les cas par acteur, élaborons un diagramme de cas d’utilisation, rédigeons une
+description complète de chaque cas d’utilisation et modélisons les interactions à l’aide de
+diagrammes de séquence. Pour conclure cette phase, nous établissons le diagramme de
+classe du Sprint 4.
+6.2.1
+Classification des Cas d’Utilisation par Acteur
+Acteur
+Rôles
+Opérateur
+Consulter résultats temps réel, Générer ticket code barres,
+Recevoir alertes non conformité
+Ingénieur
+Superviser production dashboard, Consulter historique et
+statistiques, Visualiser courbes détaillées, Générer rapport
+PDF, Recevoir notifications push
+Administrateur
+Gérer comptes utilisateurs (CRUD), Attribuer rôles (RBAC),
+Configurer paramètres système, Consulter logs sécurité
+Table 6.2: Classification des cas d’utilisation par acteur : Sprint 4
+106
+
+
+===== PAGE 122 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+6.2.2
+Diagramme de Cas d’Utilisation du Sprint 4
+Figure 6.1: Diagramme de cas d’utilisation du Sprint 4
+107
+
+
+===== PAGE 123 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+6.2.3
+Spécifications et Conception du Cas d’Utilisation « Super-
+viser Production Dashboard »
+Description Textuelle
+Champ
+Description
+Nom
+du
+cas
+d’utilisation
+Superviser production dashboard
+Acteur
+Ingénieur
+Pré condition
+L’ingénieur est authentifié. Le système SALIS est connecté
+au backend Node.js.
+Post condition
+Les résultats de tous les tests (Dry Test + HV Test) sont af-
+fichés en temps réel sur le dashboard. La décision IA et le
+score de confiance sont visibles.
+Scénario principal
+1. L’ingénieur accède au dashboard depuis un navigateur
+sur le réseau local de l’usine.
+2. Le dashboard affiche en temps réel les résultats du dernier
+test : pression, débit, tension, courant, décision OK / NON
+CONFORME.
+3. Les courbes de mesure (pression vs temps, débit vs temps,
+V-I) sont affichées dynamiquement via WebSocket.
+4. La décision IA et le score de confiance du modèle Random
+Forest sont affichés.
+5. En cas de non conformité, une alerte visuelle (rouge) et
+sonore s’affiche automatiquement.
+Scénario alternatif
+En cas de perte de connexion réseau, le dashboard affiche
+le dernier état connu et une indication de déconnexion en
+temps réel.
+Table 6.3: Description textuelle du cas d’utilisation « Superviser production dashboard »
+108
+
+
+===== PAGE 124 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Diagramme de Séquence
+Figure 6.2: Diagramme de séquence : cas d’utilisation « Superviser production dash-
+board »
+109
+
+
+===== PAGE 125 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+6.2.4
+Spécifications et Conception du Cas d’Utilisation « Gérer
+Utilisateurs »
+Description Textuelle
+Champ
+Description
+Nom
+du
+cas
+d’utilisation
+Gérer utilisateurs
+Acteur
+Administrateur
+Pré condition
+L’administrateur est authentifié avec son compte administra-
+teur. Son token JWT est valide.
+Post condition
+Les comptes utilisateurs sont créés, modifiés ou supprimés.
+Les rôles sont correctement attribués (RBAC). Les actions
+sont enregistrées dans les logs système.
+Scénario principal
+1.
+L’administrateur accède au module d’administration
+depuis le dashboard.
+2. Le système vérifie le token JWT et le rôle administrateur
+(middleware RBAC).
+3. Le système affiche la liste des comptes utilisateurs avec
+leurs rôles et leur statut.
+4. L’administrateur peut : créer un compte (ID + mot de passe
+hashé bcrypt + rôle), modifier un compte existant, supprimer
+un compte, attribuer ou modifier un rôle.
+5. Toutes les actions sont enregistrées dans les logs de sécu-
+rité (journal système).
+Scénario alternatif
+L’administrateur ne peut pas supprimer son propre compte
+ni modifier le rôle du dernier administrateur. Après 3 tenta-
+tives de connexion échouées, le compte est temporairement
+bloqué.
+Table 6.4: Description textuelle du cas d’utilisation « Gérer utilisateurs »
+110
+
+
+===== PAGE 126 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Diagramme de Séquence
+Figure 6.3: Diagramme de séquence : cas d’utilisation « Gérer utilisateurs »
+6.2.5
+Diagramme de Classe du Sprint 4
+Le diagramme de classe du Sprint 4 complète l’architecture logicielle globale du
+système SALIS. Il introduit les entités liées à la supervision, à la traçabilité et à la sécurité
+: Dashboard, qui gère l’affichage temps réel et les alertes, MobileApp, qui encapsule
+les fonctionnalités Flutter, Admin, qui gère les comptes et les rôles via RBAC, Ticket,
+qui assure la traçabilité via les codes barres, et RapportPDF, qui génère les rapports de
+production.
+111
+
+
+===== PAGE 127 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Figure 6.4: Diagramme de classe du Sprint 4
+6.3
+Test
+Cette section présente la réalisation concrète du Sprint 4 : les interfaces du dashboard
+HMI, l’application mobile Flutter, le module d’administration et le système de traçabilité
+par codes barres. Chaque fonctionnalité est illustrée par des captures d’écran réelles du
+système SALIS.
+6.3.1
+Partie Dashboard HMI
+Le dashboard HMI constitue l’interface centrale de supervision du système SALIS.
+Accessible depuis n’importe quel navigateur sur le réseau local de l’usine, il offre une vue
+complète et en temps réel de l’état de la production.
+Interface de Connexion et d’Inscription
+Le dashboard propose deux interfaces d’accès sécurisé : une interface de connexion
+pour les utilisateurs existants et une interface d’inscription pour les nouveaux comptes.
+L’authentification repose sur un système de tokens JWT [3] avec expiration automatique
+après 24 heures, garantissant la sécurité des accès.
+112
+
+
+===== PAGE 128 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Figure 6.5: Interface connexion : Dashboard SALIS
+Interface d’Accueil : Supervision Temps Réel
+L’interface d’accueil affiche en temps réel les résultats du dernier test réalisé : courbes
+de pression, de débit et de tension courant, décision de conformité OK / NOK, décision
+IA avec score de confiance et alertes en cas d’anomalie.Le système utilise WebSocket pour
+garantir une communication temps réel bidirectionnelle avec faible latence. Les données
+se mettent à jour automatiquement avec une latence inférieure à 2 secondes.
+Figure 6.6: Interface d’accueil : Supervision temps réel
+113
+
+
+===== PAGE 129 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Interface Historique et Statistiques
+L’interface historique permet à l’ingénieur de consulter l’ensemble des tests réalisés,
+filtrables par date, type de test (Dry / HV) et résultat (OK / NOK). Les statistiques de
+production sont calculées automatiquement : taux de conformité, nombre de tests par
+jour, tendances de production.
+Figure 6.7: Interface historique et statistiques : Dashboard SALIS
+Figure 6.8: Interface historique et Tests : Dashboard SALIS
+114
+
+
+===== PAGE 130 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Figure 6.9: Interface Journal De audit : Dashboard SALIS
+Interface Alertes et Notifications
+Le dashboard intègre un système d’alertes automatiques. Dès qu’une non confor-
+mité est détectée, une alerte visuelle (rouge) et sonore est déclenchée. Les alertes sont
+enregistrées dans le journal système et consultables depuis cette interface.
+Figure 6.10: Interface alertes et notifications : Dashboard SALIS
+Base de Données SQLite : Traçabilité et Sécurité
+La base de données SQLite du système SALIS enregistre automatiquement l’ensemble
+des résultats de tests, des actions utilisateurs et des événements de sécurité, garantissant
+une traçabilité complète conforme aux exigences de l’IATF 16949 [11].
+115
+
+
+===== PAGE 131 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Table test_results : Historique des tests
+Table audit_log : Journal des actions utilisateurs
+Figure 6.11: Base de données SQLite — Traçabilité système SALIS
+6.3.2
+Partie Application Mobile Flutter
+L’application mobile Flutter permet aux ingénieurs de superviser la production à
+distance via WebSocket et REST API.
+116
+
+
+===== PAGE 132 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Supervision
+Statistiques
+Rapport PDF
+Contrôle
+Réclamations
+Alertes
+Figure 6.12: Application mobile Flutter : Système SALIS
+117
+
+
+===== PAGE 133 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Interface
+Description
+Supervision
+Affichage en temps réel des résultats, courbes et décision OK/NOK
+via WebSocket avec latence < 2 secondes.
+Statistiques
+Indicateurs clés : taux de conformité, répartition DRY/HV et ten-
+dances sous forme de graphiques.
+Rapport PDF
+Génération d’un PDF complet contenant résultats, courbes et déci-
+sion IA.
+Contrôle
+Pilotage machine : démarrage, arrêt, lancement DRY ou HV, réglage
+paramètres avec contrôle d’accès IoT sécurisé.
+Réclamations
+Suivi des tickets par priorité (Critique, Haut, Moyen) et statut (Ou-
+vert, En cours, Résolu).
+Alertes
+Alertes temps réel : non-conformités, dépassements de seuil et événe-
+ments système avec horodatage.
+Table 6.5: Description des interfaces — Application mobile Flutter SALIS
+6.3.3
+Partie Administration
+Le module d’administration permet au responsable Leoni de gérer les comptes utilisa-
+teurs, d’attribuer les rôles et de configurer les paramètres du système SALIS.
+Interface Gestion Utilisateurs
+L’interface de gestion des comptes permet de créer, modifier et supprimer les comptes
+utilisateurs. Chaque compte est associé à un rôle précis (Opérateur / Ingénieur / Admin-
+istrateur) via le système RBAC [24]. Les mots de passe sont hashés avec bcrypt [30] avant
+stockage dans SQLite.
+Figure 6.13: Interface gestion utilisateurs : Module administration SALIS
+118
+
+
+===== PAGE 134 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Interface Configuration Paramètres
+L’interface de configuration permet à l’administrateur de modifier dynamiquement
+les paramètres du système : seuils de pression, débit, tension HV et durée de test sans
+nécessiter de redémarrage. Les paramètres sont persistés dans SQLite et appliqués immé-
+diatement.
+Figure 6.14: Interface configuration paramètres : Module administration SALIS
+6.3.4
+Partie Traçabilité : Code Barres
+Le système de traçabilité constitue l’un des éléments les plus importants du Sprint
+4 d’un point de vue industriel. À la fin de chaque test complet, un identifiant unique
+est généré automatiquement et associé à un code barres imprimable contenant toutes les
+informations de traçabilité industrielle (référence, date, opérateur, verdict, résultats câble
+par câble).
+119
+
+
+===== PAGE 135 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Génération du Ticket
+Figure 6.15: Ticket de traçabilité avec code barres — Système SALIS
+Implémentation Technique du Code Barres
+Le code barres est généré côté dashboard via la bibliothèque JsBarcode au format
+CODE 128, standard industriel universel supportant lettres, chiffres et symboles spéciaux.
+Le flux complet de génération est le suivant :
+◦Collecte des données : à la fin de chaque test, le dashboard collecte la référence, la
+date, l’identifiant opérateur et les résultats câble par câble.
+120
+
+
+===== PAGE 136 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+◦Construction de la chaîne : les données sont concaténées en une chaîne unique sé-
+parée par le caractère | : TYPE-B-5C|01-05-2026|OP-0001 |ADMIN|OK|2/2|C1:OK/OK.
+◦Génération CODE 128 : JsBarcode convertit la chaîne en image CODE 128, compacte
+et scannable par tout lecteur industriel.
+◦Affichage et impression : le ticket est affiché sur le dashboard et disponible pour
+impression immédiate.
+Le code barres peut être étendu en QR Code pour stocker davantage d’informations
+et faciliter l’intégration avec les systèmes de supervision industriels, ouvrant ainsi la voie
+à une traçabilité encore plus complète.
+6.4
+Rétrospective du Sprint 4
+Aspect
+Bilan
+Ce qui a bien fonc-
+tionné
+Le dashboard HMI et l’application mobile Flutter commu-
+niquent de manière fluide via WebSocket et REST API, avec
+une latence inférieure à 2 secondes. Le système de traçabilité
+par codes barres répond aux exigences industrielles de Leoni
+Tunisie. La sécurité applicative (JWT, bcrypt, RBAC) garantit un
+contrôle d’accès fiable et robuste. La configuration dynamique
+des paramètres permet une adaptation du système sans inter-
+ruption de la production.
+Ce qui peut être
+amélioré
+Un mécanisme de timeout a été ajouté afin d’éviter le blocage
+du test HV, garantissant la robustesse du système en cas de
+défaillance de communication ou de capteur.
+Améliorations fu-
+tures
+L’interface mobile pourrait bénéficier d’une synchronisation
+hors ligne pour permettre la consultation de l’historique sans
+connexion réseau. Le module de génération de rapports PDF
+pourrait être enrichi avec des graphiques statistiques avancés
+(tendances, taux de conformité par lot).
+Actions
+pour
+la
+suite
+Réaliser les tests d’intégration complets du système SALIS
+(Chapitre 7) : tests unitaires, tests fonctionnels, tests sur jonc-
+tions Leoni réelles et comparaison des performances avec le
+système MECALBI existant.
+Table 6.6: Rétrospective du Sprint 4
+121
+
+
+===== PAGE 137 =====
+
+CHAPTER 6. SPRINT 4 : SUPERVISION ET ADMINISTRATION
+SALIS
+Conclusion
+Ce quatrième sprint marque l’aboutissement du développement du système SALIS. En
+construisant une plateforme de supervision complète : dashboard temps réel, application
+mobile Flutter, module d’administration sécurisé et système de traçabilité industrielle ,
+nous avons transformé un prototype technique en un outil industriel exploitable directe-
+ment sur la ligne de production de Leoni Tunisie.
+Ce qui distingue ce sprint des précédents, c’est la dimension humaine qu’il apporte au
+système. Les sprints 1, 2 et 3 ont construit la machine : le capteur, le test, l’algorithme. Ce
+sprint 4 construit le pont entre la machine et les hommes qui vont l’utiliser : l’opérateur
+qui lance le test, l’ingénieur qui supervise la production à distance, et l’administrateur qui
+gère les accès et configure le système.
+Le système de traçabilité par codes barres mérite une mention particulière. Dans
+l’industrie automobile, chaque composant doit être traçable tout au long de sa vie [11].
+Le fait que chaque test SALIS génère automatiquement un identifiant unique et un code
+barres associé au résultat place le système au niveau des exigences industrielles réelles de
+Leoni Tunisie.
+Le développement est désormais terminé. Le chapitre suivant sera consacré à la
+validation complète du système : tests unitaires, tests d’intégration et confrontation aux
+conditions réelles de la ligne de production.
+122
+
+
+===== PAGE 138 =====
+
+7
+Chapitre
+Tests, Validation et Perspectives
+Introduction
+Après la conception et le développement des différents sous-systèmes du projet SALIS,
+il est essentiel de vérifier que l’ensemble de la solution répond aux objectifs fonctionnels,
+techniques et industriels fixés au début du projet. La phase de validation constitue une
+étape déterminante permettant d’évaluer non seulement le bon fonctionnement de chaque
+composant individuellement, mais également la cohérence du système dans son ensemble.
+État d’avancement : À la date de rédaction de ce rapport, le prototype physique n’est
+pas encore assemblé dans sa version définitive. Les tests présentés dans ce chapitre sont
+des spécifications de conception et des validations unitaires sur composants isolés
+(simulations, documentation constructeur, bancs de test partiels). Les résultats quantitatifs
+complets (taux de succès, sensibilité, comparaison avec la machine MECALBI) seront
+obtenus lors de la phase d’intégration finale, après la soutenance. Ce chapitre décrit donc
+l’architecture de validation et les résultats attendus.
+Ce chapitre présente les différentes campagnes de tests prévues sur le prototype SALIS.
+Les tests unitaires permettent de valider chaque module matériel et logiciel indépendam-
+ment, tandis que les tests fonctionnels vérifient le comportement attendu du Dry Test,
+du HV Test et des interfaces de supervision. Enfin, les tests d’intégration évaluent les
+échanges entre les différents sous-systèmes afin de garantir la continuité du flux de don-
+nées, depuis l’acquisition des mesures jusqu’à la prise de décision et à l’affichage des
+résultats.
+Au-delà des résultats obtenus, ce chapitre propose également une analyse critique des
+limites actuelles du prototype ainsi que les principales perspectives d’évolution. Cette
+démarche permet d’identifier les améliorations nécessaires pour faire évoluer SALIS d’un
+prototype académique vers une solution industrielle complète, fiable et adaptée aux
+exigences du secteur automobile.
+123
+
+
+===== PAGE 139 =====
+
+CHAPTER 7. TESTS, VALIDATION ET PERSPECTIVES
+SALIS
+7.1
+Tests Unitaires
+Les résultats présentés dans ce tableau correspondent aux comportements attendus
+sur la base de la conception et des simulations. La validation complète sur matériel
+réel sera effectuée lors de l’intégration du prototype final.
+Composant
+Test réalisé (conception)
+Statut
+STM32L476
+Initialisation GPIO, UART, ADC
+Validé en simula-
+tion
+SMC PSE540 R04
+Lecture pression chambre
+Spécification – à
+valider sur proto-
+type
+SMC PSE540 R06
+Surveillance pression alimenta-
+tion
+Spécification – à
+valider sur proto-
+type
+SMC ITV2050
+Commande pression via DAC
+Spécification – à
+valider sur proto-
+type
+Festo PR259826
+Ouverture / fermeture
+Spécification – à
+valider sur proto-
+type
+Festo VN05
+Purge chambre
+Spécification – à
+valider sur proto-
+type
+Chroma 19073
+OSC + rampe tension
+Validé
+sur
+équipement
+de laboratoire
+Optocoupleur PC817
+Isolation signal PASS/FAIL
+Conception
+validée
+–
+test
+isolation à faire
+Micro switch interlock
+Détection état porte
+Validé sur banc
+de test
+124
+
+
+===== PAGE 140 =====
+
+CHAPTER 7. TESTS, VALIDATION ET PERSPECTIVES
+SALIS
+Composant
+Test réalisé (conception)
+Statut
+Backend Node.js
+Réception UART + SQLite
+Validé en intégra-
+tion continue
+Dashboard HMI
+Affichage WebSocket
+Validé sur don-
+nées simulées
+Application mobile
+REST API + affichage
+Validé sur émula-
+teur
+Modèle Random Forest
+Prédiction sur dataset
+Validé en cross-
+validation
+(97.75%)
+Table 7.1: Tests unitaires du système SALIS – état conception
+7.2
+Tests Fonctionnels
+7.2.1
+Dry Test
+Paramètre
+Description (comportement attendu)
+Séquence
+Remplissage →Stabilisation (2s) →Mesure ∆P (5s) →Purge
+→Décision
+Jonction étanche
+∆P < seuil →OK — LED verte
+Jonction percée
+∆P > seuil →NOK — LED rouge + buzzer
+Temps de cycle
+< 15 secondes (objectif)
+Table 7.2: Spécification du test fonctionnel – Dry Test (à valider sur prototype)
+125
+
+
+===== PAGE 141 =====
+
+CHAPTER 7. TESTS, VALIDATION ET PERSPECTIVES
+SALIS
+7.2.2
+HV Test
+Paramètre
+Description (comportement attendu)
+Séquence
+Interlock →OSC Check →Rampe de tension →Acquisition
+mesures →Analyse IA →Décision OK/NOK →Décharge
+Isolation intacte
+PASS + IA OK →OK — LED verte
+Isolation dégradée
+FAIL + IA NOK →NOK — LED rouge + buzzer
+Interlock
+Coupure automatique Chroma 19073 confirmée (< 0.4 ms)
+Temps de cycle
+< 20 secondes (objectif)
+Table 7.3: Spécification du test fonctionnel – HV Test (à valider sur prototype)
+7.3
+Tests d’Intégration
+Test
+Résultat attendu
+Statut
+STM32 →Backend
+Données reçues dans SQLite
+Simulé
+–
+à
+valider
+sur
+prototype
+Dashboard temps réel
+Courbes mises à jour
+Validé
+sur
+données
+fictives
+Application mobile
+Données affichées sur Android
+Validé
+sur
+émulateur
+Pipeline IA
+Décision générée en temps réel
+Validé
+hors
+ligne – test
+réel à venir
+Traçabilité complète
+Test enregistré avec horodatage et code-
+barres
+Fonctionnel
+sur maquette
+logicielle
+Cycle complet SALIS
+Dry Test + HV Test + Dashboard
+Intégration à
+réaliser
+sur
+prototype
+Table 7.4: Tests d’intégration du système SALIS – état d’avancement
+126
+
+
+===== PAGE 142 =====
+
+CHAPTER 7. TESTS, VALIDATION ET PERSPECTIVES
+SALIS
+7.4
+Limites du Prototype
+Les seuils de décision du Dry Test ont été définis à partir des spécifications industrielles
+de la ligne de production et ne constituent donc pas une limitation du prototype. Les
+limites réelles identifiées sont présentées ci-dessous.
+Limite
+Impact
+Solution
+envis-
+agée
+Absence du capteur
+SFM3000
+La détection repose uniquement sur la
+méthode Pressure Decay. Les micro-
+fuites de très faible amplitude peuvent
+ne pas être détectées.
+Intégrer un capteur
+de débit massique
+pour améliorer la
+sensibilité.
+Architecture
+HV
+basée
+sur
+un
+équipement dédié
+Le
+sous-système
+HV
+nécessite
+l’utilisation
+d’un
+Hipot
+Tester
+in-
+dustriel externe (Chroma 19073).
+Étudier une solu-
+tion
+HV
+embar-
+quée pour accroître
+l’autonomie
+du
+système.
+Dataset IA non spé-
+cifique aux jonctions
+Leoni
+Le modèle a été entraîné sur le dataset
+Electrical Fault Detection (7861 échan-
+tillons), issu d’un système électrique
+générique.
+Ce choix est justifié par
+le fait que la relation physique fonda-
+mentale V/I = Riso est universelle et
+commune à tout système d’isolation
+électrique.
+La validation croisée à 5
+folds (97.75%) confirme la robustesse
+du modèle sur ce type de données.
+La collecte de données spécifiques aux
+jonctions Leoni nécessite un prototype
+opérationnel sur la ligne de produc-
+tion – ce qui constitue précisément la
+prochaine étape industrielle du projet
+SALIS.
+Déployer le proto-
+type sur la ligne
+de production, col-
+lecter les données
+HV réelles et ré-
+entraîner le mod-
+èle sur un dataset
+Leoni spécifique.
+Table 7.5: Limites du prototype SALIS (version actuelle)
+127
+
+
+===== PAGE 143 =====
+
+CHAPTER 7. TESTS, VALIDATION ET PERSPECTIVES
+SALIS
+7.5
+Perspectives
+Horizon
+Actions
+Court terme (0 –
+3 mois)
+◦Intégrer le capteur SFM3000 pour la détection des micro-fuites
+◦Collecter des données HV réelles issues de la production
+◦Valider le modèle IA sur données industrielles réelles
+Moyen terme (3
+– 6 mois)
+◦Ré-entraîner le modèle Random Forest sur données réelles
+◦Synchronisation hors ligne de l’application mobile
+◦Architecture multi-postes de test
+Long terme (6 –
+12 mois)
+◦Architecture HV embarquée autonome
+◦Certification IEC 61010
+◦Extension vers plusieurs lignes de production
+Table 7.6: Perspectives d’amélioration pour le système SALIS
+Conclusion
+Ce chapitre a décrit la stratégie de validation du système SALIS à travers trois niveaux
+de tests complémentaires. L’analyse critique des limites révèle des axes d’amélioration
+concrets : l’intégration du SFM3000, le développement d’un circuit HV embarqué au-
+tonome et la validation du modèle IA sur données industrielles réelles constituent les
+priorités à court terme.
+Ces limites, documentées et assumées, témoignent de la rigueur de la démarche
+adoptée et constituent la base d’une trajectoire claire vers un déploiement industriel du
+système SALIS. Les résultats quantitatifs seront mesurés dès l’assemblage du prototype
+complet et pourront être présentés lors de la soutenance ou en annexe finale.
+128
+
+
+===== PAGE 144 =====
+
+Bibliographie
+[1] ATEQ. F620 — leak tester dry air pressure. https://www.ateq-leaktesting.
+com, 2023. Consulté le 10 mars 2026.
+[2] ATEQ.
+Histoire
+du
+test
+d’étanchéité
+par
+bulles.
+https://www.
+ateq-leaktesting.com, 2023. Consulté le 10 mars 2026.
+[3] Auth0. Json web tokens — introduction to jwt. https://jwt.io/introduction,
+2023. Consulté le 15 mars 2026.
+[4] Leo Breiman. Random forests. https://link.springer.com/article/10.
+1023/A:1010933404324, 2001. Machine Learning, Vol. 45, pp. 5–32. Consulté le
+10 mars 2026.
+[5] Chroma ATE Inc. Model 19073 ac/dc/ir hipot tester. https://www.chromaate.
+com, 2024. Consulté le 15 mars 2026.
+[6] Festo SE & Co. KG. Festo solenoid valve pr259826 + vn05. https://www.festo.
+com, 2024. Consulté le 15 mars 2026.
+[7] Figma Inc. Figma — collaborative interface design tool. https://www.figma.com,
+2024. Consulté le 15 mars 2026.
+[8] GitHub Inc. Github — where the world builds software. https://github.com,
+2024. Consulté le 15 mars 2026.
+[9] Google. Android studio — the official ide for android. https://developer.
+android.com/studio, 2024. Consulté le 15 mars 2026.
+[10] Google. Flutter — build apps for any screen. https://flutter.dev, 2024. Con-
+sulté le 15 mars 2026.
+[11] IATF. Quality management system requirements for automotive production — iatf
+16949:2016. https://en.wikipedia.org/wiki/IATF_16949, 2016. Consulté
+le 10 mars 2026.
+[12] Inficon. Contura s400 — helium leak detector. https://www.inficon.com, 2023.
+Consulté le 10 mars 2026.
+[13] International Electrotechnical Commission. Safety requirements for electrical equip-
+ment — iec 61010-1:2010. https://www.iec.ch/homepage, 2010. Consulté le 10
+mars 2026.
+[14] ISO. Iso 6722:2006 – road vehicles – 60 v and 600 v single-core cables. https:
+129
+
+
+===== PAGE 145 =====
+
+BIBLIOGRAPHIE
+SALIS
+//www.iso.org/standard/39550.html, 2006. Consulté le 10 mars 2026.
+[15] ISO.
+Iso 20653:2023 – road vehicles – degrees of protection (ip code).
+https:
+//www.iso.org/standard/83830.html, 2023. Consulté le 10 mars 2026.
+[16] JGraph Ltd. Draw.io — diagrams.net free online diagram software. https://www.
+diagrams.net, 2024. Consulté le 15 mars 2026.
+[17] Kaggle. Electrical fault detection and classification dataset. https://www.kaggle.
+com/search?q=electrical+fault, 2021. Consulté le 15 mars 2026.
+[18] Komax Group. Zeta 640 — wire processing machine. https://www.komaxgroup.
+com, 2023. Consulté le 10 mars 2026.
+[19] Leoni AG. Leoni – wire & cable solutions. https://www.leoni.com, 2025. Con-
+sulté le 5 mars 2026.
+[20] Leoni Tunisie. Leoni tunisie – présentation du groupe. https://www.leoni.com/
+en/locations/tunisia, 2025. Consulté le 5 mars 2026.
+[21] Marius Kintel and others. Openscad — the programmers solid 3d cad modeller.
+https://openscad.org, 2024. Consulté le 15 mars 2026.
+[22] MECALBI Engineering Solutions, Lda.
+Stcs-bltts — shrinking tube control
+system bubble and leakage test system. https://unitek-elektrik.com/en/
+products/129/mecalbi-stcs-blt-shrinking-tube-control-system,
+2018. Reference: 166616-76-002-R01, Version 1.0. Consulté le 10 mars 2026.
+[23] NIST.
+Advanced encryption standard (aes).
+https://csrc.nist.gov/
+publications/detail/fips/197/final, 2001. Consulté le 15 mars 2026.
+[24] NIST. Role based access control — nist standard. https://csrc.nist.gov/
+projects/role-based-access-control, 2020. Consulté le 15 mars 2026.
+[25] Object Management Group. Unified modeling language (uml) — specification.
+https://www.omg.org/spec/UML, 2017. Version 2.5.1. Consulté le 10 mars 2026.
+[26] OpenJS Foundation.
+Express.js — fast web framework for node.js.
+https://
+expressjs.com, 2024. Consulté le 15 mars 2026.
+[27] OpenJS Foundation. Node.js — javascript runtime. https://nodejs.org, 2024.
+Consulté le 15 mars 2026.
+[28] Fabian Pedregosa et al.
+Scikit-learn: Machine learning in python.
+https://
+scikit-learn.org, 2011. Consulté le 20 mars 2026.
+[29] PlantUML.
+Plantuml — open-source tool to draw uml diagrams.
+https://
+plantuml.com, 2024. Consulté le 15 mars 2026.
+[30] Niels Provos and David Mazieres. A future-adaptable password scheme. https:
+130
+
+
+===== PAGE 146 =====
+
+BIBLIOGRAPHIE
+SALIS
+//www.usenix.org/legacy/events/usenix99/provos/provos.pdf, 1999.
+USENIX Annual Technical Conference.
+[31] Schleuniger Group.
+Hipot 3600 — high voltage test system.
+https://www.
+schleuniger.com, 2023. Consulté le 10 mars 2026.
+[32] Ken Schwaber and Jeff Sutherland. The scrum guide. https://www.scrum.org/
+resources/scrum-guide, 2020. Scrum.org. Consulté le 10 mars 2026.
+[33] Sikora AG. Sparktester 6000 — high voltage spark tester. https://www.sikora.
+net, 2023. Consulté le 10 mars 2026.
+[34] SMC Corporation. Itv2050 series — electro-pneumatic regulator. https://www.
+smcworld.com, 2024. Consulté le 15 mars 2026.
+[35] SMC Corporation.
+Pse540 series — digital pressure sensor.
+https://www.
+smcworld.com, 2024. Consulté le 15 mars 2026.
+[36] SQLite Consortium. Sqlite — small, fast, reliable. https://www.sqlite.org,
+2024. Consulté le 15 mars 2026.
+[37] STMicroelectronics.
+Stm32l476 — ultra-low-power arm cortex-m4 32-bit mcu
+datasheet. https://www.st.com/resource/en/datasheet/stm32l476rg.
+pdf, 2023. DocID027108, Rev. 7. Consulté le 10 mars 2026.
+[38] STMicroelectronics. Stm32cubeide — integrated development environment. https:
+//www.st.com/en/development-tools/stm32cubeide.html, 2024.
+Con-
+sulté le 10 mars 2026.
+[39] Texas Instruments. Ina180 current-sense amplifier datasheet. https://www.ti.
+com/product/INA180, 2023. SBOS886C. Consulté le 10 mars 2026.
+131
+
+
+===== PAGE 147 =====
+
+Conclusion Générale
+Ce projet de fin d’études avait pour ambition de concevoir et de réaliser un système
+automatisé de test d’étanchéité et d’isolation haute tension pour jonctions de câblage
+automobile : le système SALIS. Développé dans le cadre industriel de l’entreprise Leoni
+Tunisie, ce projet a mobilisé des compétences pluridisciplinaires couvrant l’électronique
+embarquée, le développement logiciel, la conception mécanique et l’intelligence artificielle.
+Ce que nous avons construit
+Le système SALIS est organisé autour de quatre sprints complémentaires, chacun
+apportant une brique fonctionnelle au système global.
+Le Sprint 1 a posé les fondations du système : une authentification sécurisée basée sur
+JWT et RBAC, une communication IoT fiable entre le STM32L476 et le backend Node.js
+avec une latence inférieure à 2 secondes, et une conception 3D du prototype par impression
+FDM en matériau PETG sous OpenSCAD.
+Le Sprint 2 a implémenté le Dry Test, le test d’étanchéité par air sec. En s’appuyant sur
+le capteur SMC PSE540, le régulateur SMC ITV2050 et les électrovannes Festo, le système
+réalise automatiquement un Pressure Decay Test et génère une décision de conformité
+OK/NOK sans intervention humaine.
+Le Sprint 3 a introduit le HV Test, le test d’isolation haute tension. L’intégration
+du Chroma 19073 — Hipot Tester industriel certifié UL, TÜV, CE — combinée à un
+modèle d’intelligence artificielle Random Forest atteignant 97.75% de précision en cross-
+validation, constitue l’élément le plus avancé techniquement du projet SALIS.
+Le Sprint 4 a complété le système avec un dashboard HMI en temps réel, une applica-
+tion mobile Flutter, un module d’administration RBAC et un système de traçabilité par
+codes-barres, répondant aux exigences de l’IATF 16949.
+Ce que nous avons appris
+Au-delà de la réalisation technique, ce projet nous a appris que la valeur d’un ingénieur
+ne réside pas uniquement dans sa capacité à construire, mais dans sa capacité à s’adapter.
+Les contraintes de disponibilité des composants — l’absence du capteur SFM3000, le
+remplacement des électrovannes Airtac par les électrovannes Festo, l’adoption du Chroma
+19073 — nous ont contraints à prendre des décisions d’ingénierie réelles, à justifier nos
+choix et à documenter nos compromis. C’est précisément cette démarche qui distingue un
+132
+
+
+===== PAGE 148 =====
+
+Conclusion Générale
+SALIS
+projet académique d’un projet industriel crédible.
+Les limites assumées
+Le prototype SALIS présente des limites connues et documentées : l’absence de mesure
+de débit massique réduit la sensibilité aux micro-fuites, le modèle IA n’a pas encore été
+validé sur des données industrielles réelles, et la dépendance au Chroma 19073 limite
+l’autonomie du système. Ces limites ne sont pas des échecs — elles sont le reflet d’une
+démarche rigoureuse qui évalue honnêtement la distance entre ce qui a été réalisé et ce
+qui reste à accomplir.
+La valeur ajoutée de SALIS
+Par rapport au système de référence MECALBI STCS-BLTTS actuellement utilisé
+sur la ligne de production, le système SALIS apporte trois dimensions supplémentaires
+significatives :
+◦L’intelligence artificielle : là où la machine MECALBI se limite à un simple seuil
+de courant, SALIS analyse le comportement électrique complet de la jonction —
+non-linéarité, évolution de Riso, pente dI/dV — pour une détection plus fine des
+défauts d’isolation naissants.
+◦La supervision connectée : un dashboard temps réel accessible depuis n’importe
+quel poste et une application mobile permettant à l’ingénieur de suivre la production
+depuis le terrain, sans être physiquement présent devant la machine.
+◦La traçabilité numérique : chaque test est enregistré avec son horodatage, ses valeurs
+mesurées et sa décision de conformité, répondant aux exigences de traçabilité de
+l’IATF 16949 et ouvrant la voie à une analyse statistique de la qualité de production.
+Perspectives
+Le déploiement industriel du système SALIS présente un impact concret et mesurable
+:
+◦Gain de temps : un cycle complet Dry Test + HV Test en moins de 35 secondes,
+contre plusieurs minutes avec les méthodes manuelles actuelles.
+◦Réduction des erreurs : la décision automatique élimine les erreurs humaines de
+lecture et d’interprétation des résultats.
+◦Amélioration de la sécurité : le système interlock et la décharge automatique du
+Chroma 19073 protègent l’opérateur à chaque test HV.
+◦Traçabilité renforcée : chaque test est enregistré avec son horodatage, garantissant
+133
+
+
+===== PAGE 149 =====
+
+Conclusion Générale
+SALIS
+une traçabilité conforme aux exigences de l’IATF 16949 et réduisant les risques de
+non-conformité en audit qualité.
+Le système SALIS démontre qu’il est possible, dans le cadre d’un projet de fin d’études,
+de concevoir une solution qui dépasse le cadre purement académique pour répondre à un
+besoin industriel réel. En combinant automatisation, intelligence artificielle et connectivité
+IoT, SALIS pose les bases d’une nouvelle génération d’équipements de contrôle qualité
+pour l’industrie du câblage automobile — plus rapides, plus intelligents et plus traçables.
+Ce n’est pas une fin en soi. C’est un point de départ.
+134
+
+
+===== PAGE 150 =====
+
+Résumé
+Titre : Système Automatisé de Test d’Étanchéité et d’Isolation Haute Tension pour Jonc-
+tions de Câblage Automobile — SALIS
+Mots-clés : Test d’étanchéité, Isolation haute tension, Pressure Decay Test, Hipot Tester,
+Random Forest, Intelligence Artificielle, IoT, IATF 16949.
+Ce projet de fin d’études présente SALIS (Smart Automated Leak and Isolation Sys-
+tem), un système automatisé de contrôle qualité destiné au test des jonctions de câblage
+automobile, développé dans le cadre industriel de Leoni Tunisie.
+Le système combine un test d’étanchéité basé sur la méthode Pressure Decay Test et
+un test d’isolation haute tension réalisé à l’aide d’un Hipot Tester industriel certifié. Les
+données acquises sont analysées par un modèle d’intelligence artificielle de type Random
+Forest atteignant une précision de 97.75% en validation croisée.
+L’architecture repose sur un microcontrôleur STM32L476, un backend Node.js, une
+base de données SQLite, un dashboard de supervision et une application mobile Flutter.
+Elle assure la supervision en temps réel avec une latence inférieure à 2 secondes, la
+traçabilité des tests et un contrôle d’accès sécurisé, conformément aux exigences de l’IATF
+16949.
+Développé selon la méthodologie Scrum, le système démontre la faisabilité d’une
+solution intelligente de contrôle qualité pour les jonctions de câblage automobile.
+135
+
+
+===== PAGE 151 =====
+
+Abstract
+Title: Automated Leak and High Voltage Isolation Testing System for Automotive Wiring
+Harness Connectors — SALIS
+Keywords: Leak testing, High voltage isolation, Pressure Decay Test, Hipot Tester, Ran-
+dom Forest, Artificial Intelligence, IoT, IATF 16949.
+This final-year project presents SALIS (Smart Automated Leak and Isolation System),
+an automated quality control system dedicated to testing automotive wiring harness
+connectors, developed within the industrial framework of Leoni Tunisia.
+The system combines a seal integrity test based on the Pressure Decay Test method
+and a high voltage isolation test performed using a certified industrial Hipot Tester. The
+acquired data is analysed by a Random Forest artificial intelligence model achieving
+97.75% accuracy in cross-validation.
+The architecture relies on an STM32L476 microcontroller, a Node.js backend, a SQLite
+database, a supervision dashboard and a Flutter mobile application. It provides real-time
+supervision with latency below 2 seconds, complete test traceability and secure access
+control, in compliance with IATF 16949 requirements.
+Developed using the Scrum methodology, the system demonstrates the feasibility of
+an intelligent quality control solution for automotive wiring harness connectors.
+136
+
+
+===== PAGE 152 =====

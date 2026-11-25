@@ -1,0 +1,2660 @@
+===== PAGE 1 =====
+
+ 
+ 
+Tunisian Republic 
+ 
+ 
+ 
+University of Monastir 
+Higher Institute of Computer 
+Science  
+of Mahdia 
+ 
+THESIS 
+Order Number:  
+MP-SD-2-2025-003 
+Ministry of Higher Education and Scientific 
+Research 
+ 
+ 
+ 
+DISSERTATION OF GRADUATION 
+                                                 
+Presented at 
+ 
+Higher Institute of Computer Science of Mahdia 
+                                                 
+ Carried out at 
+ 
+Key's agency 
+ 
+ 
+In view of obtaining the diploma of 
+ 
+National Professional Master’s in Data Science 
+ 
+Prepared by: 
+Hafedh Manchoul 
+ 
+     
+Development of Computer Vision Models 
+for Football Highlight Generation 
+ 
+ 
+ 
+Defended on: December 13, 2025 
+before the jury composed of: 
+ 
+ 
+President 
+ : Walid Hassairi 
+Reviewer 
+ : Wiem Chebil 
+Academic Supervisor 
+ : Hamdi Aloulou 
+Industrial Supervisor 
+: Kais Chaieb 
+ 
+ 
+ 
+Academic Year:   2024-2025 
+
+
+===== PAGE 2 =====
+
+Dedication
+With big love and sincere gratitude
+I dedicate my final graduation project to:
+To the soul of my father Nadhem,
+may God have mercy on him.
+My beloved mother Hajer,
+for her love and support, and for being the reason I am here today.
+And of course, to all my family and friends who believed in me.
+Finally, to everyone who contributed in making this project a reality.
+With love,
+Hafedh
+
+
+===== PAGE 3 =====
+
+Acknowledgement
+First of all, I thank God, the Almighty, for His favors and graces, for having given us the
+courage and the patience to carry out this work.
+After God, and before all other people, I thank each other for the effort we have pro-
+vided and the time I have spent on this work.
+I would like, before presenting our work, to express our great gratitude to the people
+who have, from near or far, provided their support, that they find here collectively and
+individually the expression of our gratitude.
+I would like to especially thank and express our gratitude to Mr. Kais Chaieb for the
+enriching and interesting experience he gave us during the internship period and for all
+the advice and information he provided.
+I express our perfect recognition and our thanks to our End of Studies Project super-
+visor, Mr.
+Hamdi ALOULOU, for the time he was kind enough to devote to the
+supervision and follow-up of this work. The discussions I held allowed us to guide this
+work in a safe and appropriate way. I warmly thank him for his effort, his availability,
+and above all his advice, which have greatly contributed to enhancing the value of this
+work.
+May the members of the jury find here the expression of our thanks for the honor they
+have given us by accepting to judge this work. Thanks also to all those I forgot.
+1
+
+
+===== PAGE 4 =====
+
+Contents
+Acknowledgement
+1
+Abbreviations and acronyms . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+General Introduction
+9
+1
+General Context
+11
+1.1
+Host Company
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.1.1
+About Key’s Agency . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.1.2
+Existing Solution Review . . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.1.3
+Problem Statement . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.1.4
+Proposed Solution
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+1.2
+Adopting a Project Management Methodology . . . . . . . . . . . . . . . .
+14
+1.2.1
+Knowledge Discovery in Databases (KDD) . . . . . . . . . . . . . .
+15
+1.2.2
+SEMMA Methodology . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+1.2.3
+CRISP-DM Methodology . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.2.4
+Comparison of Methodologies . . . . . . . . . . . . . . . . . . . . .
+17
+1.2.5
+Methodology Selection . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2
+Technical Background and Domain Understanding
+19
+Technical Background and Domain Understanding
+20
+Technical Background and Domain Understanding
+20
+2.1
+Computer Vision . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.1.1
+Definition of Computer Vision . . . . . . . . . . . . . . . . . . . . .
+20
+2.1.2
+Computer Vision Tasks . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.1.3
+Applications of Computer Vision
+. . . . . . . . . . . . . . . . . . .
+21
+2.2
+Machine Learning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+2.2.1
+Importance of Machine Learning
+. . . . . . . . . . . . . . . . . . .
+22
+2.2.2
+Definition and Functioning of Machine Learning . . . . . . . . . . .
+22
+2.2.3
+Fundamental Concepts in Supervised Learning . . . . . . . . . . . .
+24
+2
+
+
+===== PAGE 5 =====
+
+CONTENTS
+2.3
+Deep Learning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.3.1
+Introduction to Deep Learning . . . . . . . . . . . . . . . . . . . . .
+25
+2.3.2
+Artificial Neurons . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.3.3
+Perceptron and Multi-layer Perceptron (MLP) . . . . . . . . . . . .
+26
+2.4
+Object Detection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.4.1
+Overview
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.4.2
+YOLO Family . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.4.3
+Evolution of the YOLO Series . . . . . . . . . . . . . . . . . . . . .
+29
+2.4.4
+YOLOv10: Real-Time End-to-End Object Detection
+. . . . . . . .
+30
+2.4.5
+Model Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+2.4.6
+Challenges in Model Training
+. . . . . . . . . . . . . . . . . . . . .
+32
+3
+Data Collection and Preprocessing Strategies
+35
+3.1
+Tools and Environment . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.1.1
+Hardware
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.1.2
+Software Tools
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.2
+Data Collection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+3.2.1
+Data Collection Setup
+. . . . . . . . . . . . . . . . . . . . . . . . .
+37
+3.2.2
+Data Collection Methodology
+. . . . . . . . . . . . . . . . . . . . .
+37
+3.3
+Data Preprocessing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.3.1
+Data Cleaning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.3.2
+Annotation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.4
+Data Splitting . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.5
+Dataset Download and Structuring
+. . . . . . . . . . . . . . . . . . . . . .
+44
+3.6
+Data Augmentation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+3.7
+Implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+3.8
+Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4
+Modeling and Evaluation Techniques for Object Detection
+50
+4.1
+Modeling Tools and Computational Environment
+. . . . . . . . . . . . . .
+51
+4.1.1
+Software Tools
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.1.2
+Programming Language
+. . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.1.3
+Libraries . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.2
+Model Selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.3
+Training the Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.3.1
+Training Setup
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.3.2
+Optimizer Comparison . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.4
+Model Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+3
+
+
+===== PAGE 6 =====
+
+CONTENTS
+4.4.1
+Training and Validation Metrics Plot . . . . . . . . . . . . . . . . .
+56
+4.4.2
+Key Performance Metrics (P, R, mAP, mAP50-95)
+. . . . . . . . .
+57
+4.4.3
+Confusion Matrix . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+5
+Deployment and Interface Integration
+59
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.1
+Deployment Tools and Local Development Setup . . . . . . . . . . . . . . .
+60
+5.2
+Objective of the Interface
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.2.1
+System Architecture
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.2.2
+Interface Modeling
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+5.3
+Application Workflow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+5.4
+Database and Data Management
+. . . . . . . . . . . . . . . . . . . . . . .
+66
+5.5
+Creating a User-Friendly Interface . . . . . . . . . . . . . . . . . . . . . . .
+66
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+General Conclusion and Perspectives
+70
+Webography
+72
+4
+
+
+===== PAGE 7 =====
+
+List of Figures
+1.1
+KEY’S Agency Logo [1]
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.2
+IBM Watson Logo [2] . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.3
+KDD process [3].
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+1.4
+SEMMA process [4].
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.5
+CRISP-DM process [5]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.1
+Relationship between AI, ML, Deep Learning, CNN, and CV [6]. . . . . . .
+20
+2.2
+Computer vision tasks
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.3
+Diagram of a biological neuron [7].
+. . . . . . . . . . . . . . . . . . . . . .
+26
+2.4
+Diagram of an artificial neuron [8].
+. . . . . . . . . . . . . . . . . . . . . .
+26
+2.5
+Architecture of a Multi-layer Perceptron [9]. . . . . . . . . . . . . . . . . .
+27
+2.6
+Object Detection Process . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+2.7
+YOLO Evolution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+2.8
+Confusion Matrix and Metric Formulas . . . . . . . . . . . . . . . . . . . .
+32
+2.9
+Model Fitting Scenarios
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+2.10 Learning Curves for Underfitting and Overfitting
+. . . . . . . . . . . . . .
+33
+3.1
+Roboflow logo [10]
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.2
+Annotated pitch image showing pitch and 32 keypoints . . . . . . . . . . .
+38
+3.3
+Annotated image showing the bounding box applied to a player, used for
+training the object detection model. . . . . . . . . . . . . . . . . . . . . . .
+40
+3.4
+Annotated frame illustrating the bounding box around the goalkeeper to
+distinguish them from other players. . . . . . . . . . . . . . . . . . . . . . .
+40
+3.5
+Example of referee annotation labeled with a bounding box to assist in
+role-specific detection.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.6
+Another example of referee annotation under a different context, reinforcing
+detection consistency. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.7
+Annotation showing the ball detected within the frame, enabling event-
+based filtering during highlight generation. . . . . . . . . . . . . . . . . . .
+42
+5
+
+
+===== PAGE 8 =====
+
+LIST OF FIGURES
+3.8
+Fully annotated football scene with bounding boxes for players, referees,
+goalkeepers, and the ball, demonstrating multi-class labeling. . . . . . . . .
+43
+3.9
+Annotated image from the pitch keypoint detection dataset, showing the
+football field and its 32 keypoints used for spatial awareness. . . . . . . . .
+43
+3.10 Dataset Splitting in Roboflow . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.11 Downloading YOLOv8 Dataset from Roboflow . . . . . . . . . . . . . . . .
+45
+3.12 Screenshot of Data Augmentation Settings in Roboflow . . . . . . . . . . .
+47
+3.13 Original Image
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+3.14 Brightness Augmented Image
+. . . . . . . . . . . . . . . . . . . . . . . . .
+48
+3.15 Blur Augmented Image . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.1
+Google Colab logo [11] . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.2
+Python logo [12] . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.3
+Ultralytics logo [13] . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.4
+YOLOv10 Player Detection Model Training Code . . . . . . . . . . . . . .
+54
+4.5
+YOLOv10 Pitch and Keypoints Detection Model Training Code . . . . . .
+55
+4.6
+Training and Validation Metrics Plot. . . . . . . . . . . . . . . . . . . . . .
+57
+4.7
+Key Performance Metrics.
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+4.8
+Confusion Matrix. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+5.1
+Visual Studio Code logo [14].
+. . . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.2
+NextJS logo [15].
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.3
+FastAPI logo [16]. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+5.4
+OpenCV logo [17].
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.5
+System Architecture for Highlight Generation Interface. . . . . . . . . . . .
+64
+5.6
+General use case diagram.
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+5.7
+Select The Match Video. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.8
+Upload Process Button Active. . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.9
+Processing The Video.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+5.10 Download Highlight Video After Processing Done. . . . . . . . . . . . . . .
+68
+6
+
+
+===== PAGE 9 =====
+
+List of Tables
+2.1
+Types of Learning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.2
+Types of Unsupervised Learning . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.3
+Types of Reinforcement Learning . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.4
+Summary of Activation Functions and Their Properties . . . . . . . . . . .
+28
+4.1
+Comparison of YOLOv10 Model Variants . . . . . . . . . . . . . . . . . . .
+53
+4.2
+Comparison of Optimizers: Precision, Recall, mAP, and Training Time
+. .
+55
+5.1
+Comparison of Backend Frameworks
+. . . . . . . . . . . . . . . . . . . . .
+61
+7
+
+
+===== PAGE 10 =====
+
+Abbreviations and acronyms
+KDD
+Knowledge Discovery in Databases
+SEMMA
+Sample, Explore, Modify, Model, Assess
+CRISP-DM
+CRoss-Industry Standard Process for Data Mining
+CV
+Computer Vision
+AI
+Artificial Intelligence
+ML
+Machine Learning
+CNN
+Convolutional Neural Network
+YOLO
+You Only Look Once
+MSE
+Mean Square Error
+DL
+Deep Learning
+API
+Application Programming Interface
+MLP
+Multi-Layer Perceptron
+ReLU
+Rectified Linear Unit
+CSPNet
+Cross Stage Partial Network
+PAN
+Path Aggregation Network
+NMS
+Non-Maximum Suppression
+GPU
+Graphics Processing Unit
+mAP
+mean Average Precision
+8
+
+
+===== PAGE 11 =====
+
+General Introduction
+In today’s rapidly evolving digital landscape, advanced technologies like machine learning
+and computer vision are transforming industries, making them more efficient, accurate,
+and scalable. The sports media industry is no exception. With the growing demand for
+real-time sports content, particularly football highlights, content creation workflows have
+faced significant pressure to meet high expectations for speed and quality.
+Traditionally, the process of generating football match highlights has been manual,
+requiring editors to sift through hours of footage to identify key moments. This process
+is not only time-consuming but also prone to human bias and subjectivity, leading to
+inconsistencies in the final content.
+Additionally, with the increasing demand for on-
+demand and live sports highlights, traditional methods have become insufficient.
+This project proposes an automated football highlight generation system based on
+deep learning and computer vision.
+By leveraging advanced object detection models
+such as YOLOv10 and YOLOv8, this system is capable of analyzing full-match videos
+and automatically extracting the most relevant moments, including goals, fouls, and key
+plays. The system also utilizes a spatial understanding of the pitch for accurate detection
+of critical events like shots inside the penalty area.
+The proposed solution aims to significantly speed up the highlight production process,
+ensuring consistency and scalability, while reducing the reliance on manual intervention.
+This system will be integrated into a user-friendly web interface, allowing users to upload
+match videos and receive automatically generated highlights in a seamless and efficient
+manner.
+This dissertation is organized as follows:
+• Chapter 1 - General Context: Introduces the project, the host company (KEY’S
+Agency), the problem statement, and the proposed solution, followed by the method-
+ology used.
+• Chapter 2 - Technical Background and Domain Understanding: Discusses the key
+technologies behind the project, including computer vision, machine learning, and
+deep learning, with a focus on YOLO models.
+9
+
+
+===== PAGE 12 =====
+
+General Introduction
+• Chapter 3 - Data Collection and Preprocessing Strategies: Describes the data collec-
+tion process, including the challenges faced and the preprocessing steps to prepare
+the data for training.
+• Chapter 4 - Modeling and Evaluation Techniques for Object Detection: Details
+the selection, training, and evaluation of the YOLOv10 and YOLOv8 models for
+football highlight generation.
+• Chapter 5 - Deployment and Interface Integration: Covers the deployment of the
+model and the development of the user interface, followed by the system architecture
+and user interaction flow.
+• General Conclusion: Summarizes the findings, implications for future work, and
+potential improvements to the system.
+10
+
+
+===== PAGE 13 =====
+
+Chapter 1
+General Context
+11
+
+
+===== PAGE 14 =====
+
+CHAPTER 1. GENERAL CONTEXT
+Introduction
+This section contains detailed information about our project. We first describe the prob-
+lem we are solving and describe the subject and goals of the project. Then we describe
+the methodology used throughout the project.
+1.1
+Host Company
+1.1.1
+About Key’s Agency
+Founded in 2021, KEY’S Agency is a dynamic and innovative creative agency based in
+Ksibet el Mediouni, Tunisia. The agency specializes in digital communication, branding,
+visual content creation, and software development. With a strong commitment to excel-
+lence and creativity, KEY’S Agency offers tailored solutions in digital marketing, graphic
+design, photography, and custom web and mobile application development.
+KEY’S Agency distinguishes itself through its deep understanding of client needs, agile
+methodologies, and a modern approach to design and storytelling. Its multidisciplinary
+team works collaboratively to deliver high-impact results, aligning business objectives
+with cutting-edge creative strategies.
+As part of its growth vision, KEY’S Agency continues to invest in technology and
+talent, reinforcing its position as a trusted partner for startups, SMEs, and corporate
+clients. Its portfolio includes a wide range of successful campaigns and digital solutions
+that reflect the agency’s core values of innovation, quality, and client satisfaction.
+Figure 1.1: KEY’S Agency Logo [1]
+12
+
+
+===== PAGE 15 =====
+
+CHAPTER 1. GENERAL CONTEXT
+1.1.2
+Existing Solution Review
+IBM Watson Media – Sports Highlights Generator: IBM Watson Media provides an AI-
+powered tool for automatically generating sports highlights. Using computer vision and
+deep learning, it analyzes live or recorded video to detect key events like goals, fouls,
+player reactions, and crowd noise. By combining visual cues, audio spikes, and metadata,
+it identifies highlight-worthy moments and compiles them into engaging summaries. This
+technology streamlines post-game editing, reduces manual effort, and enables fast content
+delivery, revolutionizing sports broadcasting.
+Figure 1.2: IBM Watson Logo [2]
+1.1.3
+Problem Statement
+In the current football content production workflow, the process of generating match
+highlights is largely manual and labor-intensive.
+Editors must review the full-length
+match footage, identify significant moments such as goals, fouls, and key plays, and then
+extract and assemble these into a coherent highlight reel. This process is time-consuming,
+subject to human bias, and often lacks consistency in what is deemed "highlight-worthy."
+Furthermore, as demand for real-time sports content increases, especially on digital
+platforms, traditional manual methods struggle to meet the need for rapid turnaround.
+The delay in delivering highlights can reduce viewer engagement, limit monetization op-
+portunities, and create a competitive disadvantage in media and broadcasting.
+These challenges highlight the growing need for an intelligent, automated solution that
+can accurately and efficiently generate football highlights, ensuring consistency, speed, and
+scalability in modern sports media production.
+13
+
+
+===== PAGE 16 =====
+
+CHAPTER 1. GENERAL CONTEXT
+1.1.4
+Proposed Solution
+To automate the process of generating football match highlights, we propose developing
+a smart video analysis system that processes full-length match videos and extracts the
+most relevant moments based on ball position and player presence.
+The highlight generation is done in two main stages, each using a distinct model
+and logic.
+The first step is to process the original match video at a rate of 1 frame per
+second. For each frame, the system checks whether there are at least five players
+detected and whether the football pitch is visible. Only the seconds (frames) that
+satisfy both conditions are retained. These selected frames are then assembled into a
+temporary intermediate video, which significantly reduces irrelevant portions of the match
+and narrows the analysis to meaningful game moments.
+In the second step, the intermediate video is further analyzed to detect events where
+the ball is inside the penalty area. For each detected event, the system automatically
+extracts a short clip that includes 5 seconds before and 5 seconds after the event.
+This ensures enough context is preserved around each key moment. These short clips are
+then concatenated chronologically to form the final highlight video.
+This pipeline is powered by two specialized object detection models:
+• A YOLOv10-based model to detect players, referees, goalkeepers, and the ball.
+• A YOLOv8-based model to detect the pitch and its 32 keypoints, enabling spatial
+awareness for penalty zone detection.
+The final result is a condensed, context-rich highlight video that captures important
+moments of the match without requiring manual intervention.
+The entire process is accessible through a user-friendly interface, where users can
+upload a full match video and download the automatically generated highlight clip directly
+from the web application. This makes the system fast, efficient, and practical for a wide
+range of users.
+1.2
+Adopting a Project Management Methodology
+Project management methodologies[18] are essential to the successful execution and anal-
+ysis of data science projects. They provide a structured approach and guide the processes,
+tools, and techniques required to effectively manage a project. In the following sections,
+we will examine and compare several widely used data science methodologies and ulti-
+mately choose the one that is best suited for our project. We will then take a closer look
+at the selected methodology and its applications.
+14
+
+
+===== PAGE 17 =====
+
+CHAPTER 1. GENERAL CONTEXT
+1.2.1
+Knowledge Discovery in Databases (KDD)
+KDD[3], as shown in Figure 1.3, is a systematic methodology for extracting actionable
+knowledge from raw data through an iterative refinement process. The core workflow
+consists of five sequential phases:
+1. Data Selection: Identification of relevant data sources and target subsets.
+2. Data Preprocessing: Data cleaning (missing value imputation, outlier handling)
+and quality enhancement.
+3. Data Transformation: Feature engineering and dimensionality reduction (nor-
+malization, discretization).
+4. Data Mining: Application of pattern discovery algorithms (classification, cluster-
+ing, association analysis).
+5. Pattern Evaluation: Validation of discovered patterns for statistical significance
+and business relevance.
+This structured approach ensures the transformation of low-level data into high-value
+knowledge while maintaining methodological rigor. The iterative nature allows refinement
+at each stage based on domain feedback and validation metrics.
+Figure 1.3: KDD process [3].
+1.2.2
+SEMMA Methodology
+The SEMMA[4] methodology, shown in Figure 1.4 developed by SAS Institute Inc. Pro-
+vides a structured workflow for data mining projects. This five-phase approach guides
+analysts from data preparation to model deployment:
+1. Sample: Extract representative data subsets for efficient processing
+2. Explore: Conduct exploratory analysis to identify patterns and relationships
+3. Modify: Engineer features and transform variables for modeling
+15
+
+
+===== PAGE 18 =====
+
+CHAPTER 1. GENERAL CONTEXT
+4. Model: Develop and train predictive algorithms
+5. Assess: Evaluate model performance against business objectives
+This sequential framework optimizes resource allocation while maintaining method-
+ological rigor.
+Figure 1.4: SEMMA process [4].
+1.2.3
+CRISP-DM Methodology
+CRISP-DM (Cross-Industry Standard Process for Data Mining) [5], represented in Fig-
+ure1.5 is the industry-standard framework for data science projects. Its six-phase structure
+covers the full project lifecycle:
+1. Business Understanding: Define project objectives and success criteria
+2. Data Understanding: Explore and assess data quality
+3. Data Preparation: Clean, transform, and integrate datasets
+4. Modeling: Develop and validate analytical models
+5. Evaluation: Assess model business value and deployment readiness
+6. Deployment: Implement models into production systems
+16
+
+
+===== PAGE 19 =====
+
+CHAPTER 1. GENERAL CONTEXT
+The methodology’s iterative nature and business focus make it adaptable to diverse
+domains.
+Figure 1.5: CRISP-DM process [5].
+1.2.4
+Comparison of Methodologies
+Iterative Nature: KDD, SEMMA, and CRISP-DM all adopt an iterative approach, en-
+abling continuous refinement throughout projects. KDD emphasizes iteration in knowl-
+edge discovery cycles, SEMMA structures iterations around data exploration and model
+validation, while CRISP-DM ensures iterative refinement across all phases from business
+understanding to deployment.
+Areas of Focus: KDD concentrates on data mining and pattern discovery, SEMMA
+specializes in statistical sampling and analytical workflows, whereas CRISP-DM provides
+comprehensive coverage including business understanding, application integration, and
+deployment alignment with organizational objectives.
+Flexibility: CRISP-DM offers exceptional adaptability across diverse projects and toolchains.
+SEMMA demonstrates effectiveness but remains constrained by SAS tool dependencies,
+while KDD requires substantial customization for project-specific implementations de-
+spite its robustness.
+End Goal: While all methodologies aim to extract value from data, CRISP-DM dis-
+17
+
+
+===== PAGE 20 =====
+
+CHAPTER 1. GENERAL CONTEXT
+tinguishes itself through strong business-process alignment and seamless implementation
+transition. This holistic approach contrasts with KDD and SEMMA’s primarily technical
+focus on data mining operations.
+1.2.5
+Methodology Selection
+After evaluating the three methodologies—KDD, SEMMA, and CRISP-DM—we chose
+to adopt the CRISP-DM approach for our project. Its structured, straightforward, and
+well-documented framework, along with its strong emphasis on understanding both the
+operational context and data-related aspects of the problem, make it particularly well-
+suited to our needs. Additionally, the iterative nature of CRISP-DM supports continuous
+development and refinement, ensuring that our model performs reliably throughout every
+stage of the project.
+Conclusion
+In this chapter, we provided an overview of our project, starting with an introduction
+to the host company and a review of existing solutions. We then discussed the problem
+and presented our proposed solution. Finally, we discussed the adoption of a project
+management methodology, choosing the most suitable approach for our needs.
+18
+
+
+===== PAGE 21 =====
+
+Chapter 2
+Technical Background and Domain
+Understanding
+19
+
+
+===== PAGE 22 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+Introduction
+In this chapter, we present the technical foundations that support the development of our
+football highlight generation system. The focus is on computer vision, machine learning,
+and deep learning—key technologies behind our ability to detect players, ball movement,
+and match dynamics. These components enable the training of two YOLO models to
+accurately detect in-game elements.
+This chapter provides the essential concepts and
+techniques used throughout the project.
+2.1
+Computer Vision
+2.1.1
+Definition of Computer Vision
+Computer Vision (CV)[6] is a branch of artificial intelligence (AI) that enables computers
+to interpret and understand the physical world through digital images and videos. By
+processing and analyzing these visual inputs, CV systems can extract meaningful infor-
+mation, make decisions, and generate insights. This technology aims to replicate human
+vision but often surpasses it in precision and complexity, making it highly valuable across
+various industries.
+Figure 6 presents a layered diagram illustrating the interconnections among CV, AI,
+Machine Learning (ML), Deep Learning, and Convolutional Neural Networks (CNNs). It
+demonstrates how CV intersects with both AI and ML, emphasizing the crucial role of
+deep learning in advancing these fields.
+Figure 2.1: Relationship between AI, ML, Deep Learning, CNN, and CV [6].
+20
+
+
+===== PAGE 23 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+2.1.2
+Computer Vision Tasks
+Computer vision comprises a variety of key tasks, each contributing uniquely to how vi-
+sual data is processed and interpreted:
+Image Classification: This task focuses on categorizing an entire image by assign-
+ing it a single label that best represents its overall content.
+Object Detection: Expanding on image classification, object detection not only iden-
+tifies the objects present in an image but also pinpoints their locations. A widely used
+method for this task is the YOLO (You Only Look Once) framework, renowned for its
+speed and accuracy.
+Semantic Segmentation: This involves breaking down an image into multiple regions
+and assigning a class label to each region, providing pixel-level classification.
+Instance Segmentation: Similar to semantic segmentation, but with the added com-
+plexity of distinguishing between individual instances of the same object category within
+a scene.
+Image Generation and Synthesis: This task involves producing new images or al-
+tering existing ones by leveraging learned data patterns, often through generative models.
+Figure 2.2: Computer vision tasks
+2.1.3
+Applications of Computer Vision
+Computer vision plays a critical role across numerous industries, showcasing its flexibility
+and impact in real-world scenarios:
+Facial Recognition: Commonly implemented in security systems, mobile devices, and
+21
+
+
+===== PAGE 24 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+social media platforms, facial recognition technology identifies individuals by analyzing
+distinct facial features. It relies on advanced algorithms to detect and compare facial
+patterns with high accuracy.
+Autonomous Vehicles: Self-driving cars depend extensively on computer vision to
+interpret their surroundings. This enables them to recognize and respond to various ele-
+ments such as road signs, obstacles, pedestrians, and other vehicles, ultimately supporting
+safe and intelligent navigation.
+Inspection and Security: In surveillance and safety systems, computer vision is used
+to detect abnormal activities or potential threats in real time.
+Such applications are
+vital in environments like airports, shopping centers, and public spaces, where constant
+monitoring enhances public safety.
+2.2
+Machine Learning
+2.2.1
+Importance of Machine Learning
+Machine learning (ML)[19] is a field within artificial intelligence that enables systems
+to automatically learn from experience and enhance their performance without being
+explicitly programmed. Its value comes from the ability to process large volumes of data,
+detect hidden patterns, and make intelligent, data-driven decisions. ML is revolutionizing
+many industries by enabling smarter automation, improving prediction accuracy, and
+uncovering insights that were once beyond reach.
+2.2.2
+Definition and Functioning of Machine Learning
+Machine learning can be categorized into different types of learning approaches, each
+designed to handle specific kinds of tasks and data.
+2.2.2.1
+Supervised Learning
+Definition: Supervised learning refers to a machine learning approach where the model
+is trained on labeled data. This means the input data is paired with the correct output,
+allowing the system to learn to predict outcomes based on the input features.
+22
+
+
+===== PAGE 25 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+Table 2.1: Types of Learning
+Task Type
+Description
+Regression
+Predicting a continuous output, such as house prices or
+temperature.
+Classification
+Assigning inputs into predefined categories, such as
+spam or non-spam emails.
+2.2.2.2
+Unsupervised Learning
+Definition: Unsupervised learning involves using data that does not include labels. The
+goal is for the system to analyze the input and identify hidden patterns or groupings
+within the dataset.
+Table 2.2: Types of Unsupervised Learning
+Task Type
+Description
+Clustering
+Grouping similar data points together, such as customer
+segmentation.
+Anomaly Detection
+Identifying data points that differ significantly from the
+rest, useful in fraud detection.
+Dimensionality Reduction
+Reducing the number of input variables to simplify the
+model and enhance performance.
+2.2.2.3
+Reinforcement Learning
+Principle: Reinforcement learning is a learning paradigm where an agent interacts with
+an environment and learns to make decisions that maximize cumulative reward.
+The
+agent improves its behavior through feedback received from previous actions.
+Table 2.3: Types of Reinforcement Learning
+Task Type
+Description
+Model-Based
+The agent constructs a model of the environment and
+uses it to plan actions.
+Model-Free
+The agent learns optimal behavior through experience
+without building a model.
+23
+
+
+===== PAGE 26 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+2.2.3
+Fundamental Concepts in Supervised Learning
+Supervised learning builds upon several foundational concepts that are critical for training
+robust and accurate models.
+2.2.3.1
+Dataset
+A dataset [20] refers to a structured collection of data used for training and evaluating
+machine learning models. It consists of input features along with corresponding labels
+or outcomes. The dataset’s quality and diversity significantly influence the model’s per-
+formance, as it provides the learning examples. In the context of supervised learning,
+datasets are typically divided into training, validation, and testing subsets—each serving
+a specific purpose in the model development process.
+2.2.3.2
+Model
+In the field of machine learning, a model [21] is a mathematical representation that cap-
+tures patterns and relationships within data. It is built by applying a learning algorithm
+to a dataset, allowing the model to adjust its internal parameters in a way that minimizes
+prediction errors. Once trained, the model can generate predictions on previously unseen
+data by leveraging the learned relationships.
+2.2.3.3
+Cost Function
+The cost function [22] plays a vital role in evaluating how well the model’s predictions
+align with actual outcomes. It quantifies the error between predicted and actual values,
+guiding the optimization process. Common cost functions include Mean Squared Error
+(MSE) for regression tasks and cross-entropy loss for classification. Minimizing this error
+function is essential for improving model accuracy and overall performance.
+2.2.3.4
+Optimization Algorithm
+Optimization algorithms are used to fine-tune the model’s parameters to reduce the cost
+function. Several techniques exist, including:
+Least Squares Method: A basic optimization method primarily used in regression,
+where the goal is to minimize the squared difference between predicted and actual val-
+ues [23].:
+Gradient Descent: A widely-used iterative method that adjusts parameters in the
+24
+
+
+===== PAGE 27 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+direction of the negative gradient of the cost function [24]. This process continues until
+the algorithm converges to a local or global minimum.:
+Adam Optimizer: The Adaptive Moment Estimation (Adam) optimizer [25] is a more
+advanced algorithm that combines the strengths of gradient descent with adaptive learn-
+ing rates. It adjusts learning rates for each parameter individually based on estimates of
+first and second moments of the gradients, offering faster and more stable convergence,
+especially in complex models.
+2.3
+Deep Learning
+2.3.1
+Introduction to Deep Learning
+Deep learning (DL) is a specialized area within machine learning that focuses on training
+artificial neural networks composed of multiple layers—often referred to as deep neural
+networks—to solve complex problems using large volumes of data. Unlike traditional ma-
+chine learning methods, deep learning is highly effective at processing unstructured data
+such as images, audio, and text. Its success is largely due to its ability to automatically
+extract hierarchical features, making it indispensable for tasks like image classification,
+speech recognition, natural language processing, and autonomous systems.
+2.3.2
+Artificial Neurons
+2.3.2.1
+Biological Neuron
+Biological neurons [7] are the basic operational units of the human brain and central ner-
+vous system. They are responsible for processing and transmitting information through
+electrical and chemical signals. A typical biological neuron consists of a cell body, den-
+drites that receive incoming signals, and an axon that transmits the signal to other neu-
+rons. This natural mechanism has inspired the design of artificial neurons used in deep
+learning systems.
+25
+
+
+===== PAGE 28 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+Figure 2.3: Diagram of a biological neuron [7].
+2.3.2.2
+Artificial Neuron
+An artificial neuron [8] is a mathematical model developed to simulate the functionality of
+its biological counterpart. Rather than relying on dendrites and axons, artificial neurons
+use numerical inputs, weights, and activation functions to process information. Each input
+is multiplied by a corresponding weight, summed, and then passed through an activation
+function to produce an output. This mechanism allows the network to learn from data
+and make predictions.
+Figure 2.4: Diagram of an artificial neuron [8].
+2.3.3
+Perceptron and Multi-layer Perceptron (MLP)
+2.3.3.1
+Perceptron
+The perceptron [26] is a fundamental building block of neural networks. It represents a
+simple, single-layer network where input nodes are connected to an output node through
+weighted links.
+A linear activation function is used to determine the output.
+While
+perceptrons can only handle linearly separable problems, they serve as the foundation for
+26
+
+
+===== PAGE 29 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+more advanced neural network architectures.
+2.3.3.2
+Multi-layer Perceptron (MLP)
+A Multi-layer Perceptron (MLP) [9] extends the basic perceptron by introducing multiple
+layers of neurons: an input layer, one or more hidden layers, and an output layer. This
+architecture enables MLPs to model complex, nonlinear relationships in data by learning
+hierarchical representations.
+Architecture: The MLP structure consists of three main components:
+• Input layer – receives the raw data.
+• Hidden layers – process information through weighted connections and activation
+functions.
+• Output layer – generates the final prediction.
+Training Process:
+• Forward propagation – data moves from the input layer through the hidden layers
+to the output, generating a prediction.
+• Cost function – measures the discrepancy between predicted and actual outcomes
+to quantify error.
+• Backward propagation – adjusts model weights by computing gradients from the
+cost function and applying optimization algorithms to minimize error.
+Optimization: Algorithms such as Gradient Descent and Adam Optimizer [25] are
+commonly used to minimize the cost function efficiently. These methods play a crucial
+role in fine-tuning the model and improving predictive performance.
+Figure 2.5: Architecture of a Multi-layer Perceptron [9].
+27
+
+
+===== PAGE 30 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+Table 2.4: Summary of Activation Functions and Their Properties
+Activation
+Function
+Mathematical
+Expression
+Properties
+ReLU (Rectified
+Linear Unit)
+f(x) = max(0, x)
+- Simple and computationally efficient
+- Helps mitigate the vanishing gradient
+problem
+- Non-linear and allows for complex
+modeling
+- Can lead to dying ReLUs (inactive
+neurons)
+Sigmoid
+f(x) =
+1
+1+e−x
+- Smooth, differentiable function
+- Output range between 0 and 1
+- Causes vanishing gradient problem
+- Used primarily in binary classification
+Tanh
+(Hyper-
+bolic Tangent)
+f(x) = tanh(x) =
+ex−e−x
+ex+e−x
+- Smooth, differentiable function
+- Output range between -1 and 1
+- Helps center the data around zero
+- Can also cause vanishing gradient
+problem
+2.4
+Object Detection
+2.4.1
+Overview
+Object detection[27] is a vital task in computer vision that goes beyond merely recognizing
+the presence of objects in images or videos, it also pinpoints their exact locations. Unlike
+image classification, which only determines whether a specific object is present, object
+detection provides precise coordinates for each identified object. This dual capability of
+recognition and localization makes object detection indispensable in applications where
+knowing the exact position of objects is just as crucial as identifying them.
+The Figure 2.6 illustrates the object detection process, depicting how the model processes
+an input image to generate bounding boxes along with class labels.
+2.4.2
+YOLO Family
+The YOLO series[28] is renowned for being one of the most popular and effective object
+detection algorithms, thanks to its impressive speed and accuracy. Unlike older methods
+28
+
+
+===== PAGE 31 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+Figure 2.6: Object Detection Process
+that rely on a sliding window to detect objects, YOLO takes a different approach by
+treating object detection as a single regression problem. It analyzes the entire image in
+one go, simultaneously predicting bounding boxes and class probabilities, which allows it
+to deliver fast and accurate results.
+2.4.3
+Evolution of the YOLO Series
+• YOLOv1: Launched in 2015 by Joseph Redmon, YOLOv1 was a game-changer in
+object detection. It achieved real-time performance without compromising much on
+accuracy by using a single neural network to simultaneously predict bounding boxes
+and class probabilities.
+• YOLOv2 (YOLO9000): Released in 2016, YOLOv2 built on the original version
+by incorporating batch normalization, anchor boxes, and a revamped network archi-
+tecture called Darknet-19. These updates made it both faster and more accurate.
+• YOLOv3: Introduced in 2018, YOLOv3 took things further by improving detection
+accuracy, particularly for smaller objects. It achieved this through a multi-scale
+approach and a deeper network architecture known as Darknet-53.
+• YOLOv4 and YOLOv5: These versions continued to enhance the algorithm with
+various optimizations aimed at boosting speed and accuracy. YOLOv5, while not
+officially part of the original YOLO series, has become well-liked for its simplicity
+and efficiency.
+• YOLOv6: Released in 2021, YOLOv6 focused on further improvements in detec-
+tion speed and precision, particularly for industrial applications. Its optimization
+for edge devices brought YOLO into real-time production systems.
+29
+
+
+===== PAGE 32 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+• YOLOv8: Released in 2022, YOLOv8 fine-tuned performance, especially in han-
+dling complex real-world environments, and improved precision in detection tasks
+involving diverse object categories.
+Figure 2.7: YOLO Evolution
+2.4.4
+YOLOv10: Real-Time End-to-End Object Detection
+The YOLO series has been a cornerstone in real-time object detection, evolving through
+various iterations to enhance accuracy and efficiency.
+YOLOv10, introduced in 2024,
+represents a significant advancement in this lineage, addressing key challenges such as
+inference latency and computational redundancy.
+2.4.4.1
+Key Innovations in YOLOv10
+• Dual-Head Architecture: YOLOv10 employs a dual-head design comprising a
+one-to-many head for training and a one-to-one head for inference. This approach
+eliminates the need for Non-Maximum Suppression (NMS) during inference, thereby
+reducing latency and enhancing real-time performance.
+• Consistent Matching Metric: A novel matching metric aligns the predictions
+from both heads, ensuring consistent supervision and improving the quality of de-
+tections.
+• Holistic Model Design: The model integrates several efficiency-driven compo-
+nents, including:
+30
+
+
+===== PAGE 33 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+– Lightweight Classification Head: Utilizes depthwise separable convolutions to
+reduce computational load.
+– Spatial-Channel Decoupled Downsampling: Separates pointwise and depthwise
+convolutions to optimize downsampling operations.
+– Rank-Guided Block Design: Allocates computational resources based on the
+intrinsic rank of each stage to balance performance and efficiency.
+– Large-Kernel Convolutions: Applies large-kernel convolutions in deeper stages
+to enhance model capability without significantly increasing latency.
+• Enhanced Backbone and Neck: YOLOv10 incorporates an enhanced version
+of CSPNet for feature extraction and employs Path Aggregation Network (PAN)
+layers in the neck for effective multiscale feature fusion.
+2.4.4.2
+Performance and Efficiency
+YOLOv10 demonstrates state-of-the-art performance across various model scales. For in-
+stance, YOLOv10-S achieves 1.8× faster inference speed than RT-DETR-R18 with 2.8×
+fewer parameters and floating-point operations (FLOPs), while maintaining similar aver-
+age precision on the COCO dataset.
+2.4.5
+Model Evaluation
+2.4.5.1
+Performance Metrics
+Performance metrics[29] are crucial for evaluating the effectiveness of a machine learning
+model. These metrics help evaluate the model’s performance on different tasks, especially
+in distinguishing classes in classification problems.
+Precision: Precision[30] is the ratio of correctly predicted positive observations to
+the total predicted positive observations. It measures the accuracy of positive predictions,
+making it important in situations where false positives are costly.
+Recall: Recall[31] is the ratio of correctly predicted positive observations to all actual
+positives. This indicates how well the model can identify all positive instances in the data,
+which is crucial in scenarios where the absence of positive cases is undesirable.
+F1 Score: The F1 score[32] is the harmonic mean of precision and recall. It provides
+a balanced measure of model performance, especially when there is an uneven distribution
+of classes or when precision and recall are important.
+31
+
+
+===== PAGE 34 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+Figure 2.8: Confusion Matrix and Metric Formulas
+2.4.6
+Challenges in Model Training
+Training machine learning models often involves challenges such as underfitting and over-
+fitting, which can significantly impact model performance.
+2.4.6.1
+Underfitting
+Underfitting[33] occurs when the model is too simple to capture the underlying patterns
+in the data, resulting in poor performance on the training and testing sets. This usually
+happens when the model does not have the complexity to learn from the data.
+2.4.6.2
+Overfitting
+Overfitting[34] occurs when the model becomes too complex, learning not only the un-
+derlying patterns but also the noise present in the training data. As a result, the model
+performs well on the training set but poorly on the new unseen data.
+Figure 2.9: Model Fitting Scenarios
+2.4.6.3
+Improvement Techniques
+To avoid both underfitting and overfitting, several improvement techniques can be applied
+during the model training phase:
+32
+
+
+===== PAGE 35 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+Data Augmentation:
+Data augmentation[35] is a technique used to increase the size of
+the training dataset by generating altered versions of the existing data. These alterations
+can include operations such as flipping, rotating, or changing the color of images. This
+technique helps the model become more adaptable by exposing it to a wider range of
+variations, thereby enhancing its ability to generalize to new, unseen data.
+Regularization:
+Regularization[36] techniques such as L1 and L2 regularization in-
+troduce a penalty to the model’s cost function to discourage overfitting. By penalizing
+overly complex models, regularization encourages simpler models that perform better on
+new data. This technique is essential for preventing the model from memorizing the noise
+in the training set.
+Dropout:
+Dropout[37] is a regularization method in which a random subset of neurons
+are "dropped" or ignored during training. This prevents the model from becoming overly
+reliant on specific neurons, thus reducing the likelihood of overfitting. Dropout encourages
+the network to learn more robust features that are not dependent on any particular set
+of neurons.
+Early Stopping:
+Early stopping[38] is a technique used to halt training once the
+model’s performance on the validation set stops improving after a certain number of
+iterations. This method prevents overfitting by stopping training before the model begins
+to memorize the noise in the training data. Early stopping is often used in conjunction
+with dropout to help balance the trade-off between underfitting and overfitting.
+Figure 2.10: Learning Curves for Underfitting and Overfitting
+33
+
+
+===== PAGE 36 =====
+
+CHAPTER 2. TECHNICAL BACKGROUND AND DOMAIN UNDERSTANDING
+Conclusion
+This chapter has provided a comprehensive overview of the fundamental concepts in com-
+puter vision, machine learning, and deep learning, forming the foundation for understand-
+ing and applying these technologies effectively.
+34
+
+
+===== PAGE 37 =====
+
+Chapter 3
+Data Collection and Preprocessing
+Strategies
+35
+
+
+===== PAGE 38 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+Introduction
+In this chapter, we outline the data collection and preprocessing strategies employed
+for the development of the football match highlight generation system. This includes
+a detailed description of the tools used, the collection process for the football match
+videos, and the preprocessing steps applied to ensure that the data is suitable for model
+training. We also describe how we handle two distinct datasets for different aspects of our
+model: one for detecting football elements (players, referees, goalkeepers, and the ball),
+and another for detecting the pitch and key points.
+3.1
+Tools and Environment
+3.1.1
+Hardware
+The data collection process did not involve any custom hardware. Instead, we utilized
+existing football match videos from various sources, which were downloaded and stored
+in Google Drive. These videos were in MP4 format and captured in different lighting
+conditions, including both daytime and nighttime matches, to ensure a variety of scenarios
+for model training.
+3.1.2
+Software Tools
+Roboflow [10] is a comprehensive platform designed to simplify the process of creating,
+training, and deploying computer vision models. It provides tools for image annotation,
+dataset management, and data augmentation, making it easier for users to prepare data for
+machine learning tasks. Roboflow supports a variety of annotation formats and integrates
+seamlessly with popular machine learning frameworks.
+Its user-friendly interface and
+powerful features enable beginners and experts alike to efficiently create high-quality
+datasets and improve model performance.
+Figure 3.1: Roboflow logo [10]
+36
+
+
+===== PAGE 39 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+3.2
+Data Collection
+The primary source of data for this project was pre-recorded football match videos, which
+were collected from various websites. These videos included different segments such as
+first and second halves of full matches and highlight videos. To ensure diversity, matches
+were selected from both daytime and nighttime settings.
+3.2.1
+Data Collection Setup
+Once the videos were downloaded, we used Google Colab to manage the video files, where
+they were stored in a Google Drive folder. A script was employed to extract 35 frames from
+each video. These frames were systematically collected from different video sources and
+stored in Google Drive. The frames captured a variety of scenes to provide comprehensive
+training data for both of our datasets.
+3.2.2
+Data Collection Methodology
+3.2.2.1
+Sampling Strategy
+To build a reliable dataset for training the football highlight generation system, we
+adopted a systematic sampling approach. The goal was to extract representative frames
+from different match scenarios that reflect real-world variations. We sourced full-match
+videos from soccerfullmatch.com and highlight videos from YouTube. These videos
+covered a range of lighting conditions (day and night matches) and included various in-
+game situations.
+For each video, we extracted 35 frames at regular intervals to ensure a balanced represen-
+tation of gameplay elements. Our focus was on capturing frames containing essential com-
+ponents such as players, referees, goalkeepers, the ball, and the pitch. This strategy was
+key to ensuring that the dataset included a variety of perspectives and events—offensive
+plays, defensive formations, goal attempts, and referee interventions.
+By deliberately including footage with different camera angles, speeds, and motion pat-
+terns, we aimed to create a dataset robust enough to train models for both object detection
+and keypoint estimation tasks.
+3.2.2.2
+Number of Samples
+The collected dataset consists of 595 images extracted from 17 football videos, with
+a total size of approximately 300 MB. Each video contributed 35 frames, offering a
+diverse sample from both full matches and curated highlights. The dataset was curated
+37
+
+
+===== PAGE 40 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+to ensure the inclusion of visually and contextually relevant frames necessary for training
+and evaluating object detection and pose estimation models.
+3.2.2.3
+Second Dataset: Pitch and Keypoints Detection
+To complement the main object detection dataset, we incorporated a second, pre-annotated
+dataset focused on football pitch detection and its 32 keypoints. This dataset, which we
+did not annotate ourselves, was used to train a YOLOv8 pose model for identifying the
+layout of the field, such as goal areas, sidelines, and center circles. Integrating this dataset
+allowed the system to understand spatial context, which is essential for recognizing events
+like shots inside the penalty area.
+Figure 3.2: Annotated pitch image showing pitch and 32 keypoints
+3.2.2.4
+Challenges Faced
+Inconsistent Lighting: Matches recorded under varying lighting conditions—especially
+during evening games—resulted in inconsistent brightness and contrast levels across frames,
+impacting model generalization.
+Frame Contamination with Transitions or Ads: Some extracted frames included
+visual transitions, broadcast overlays, or advertisements, which introduced noise and ir-
+relevant elements into the dataset.
+Motion Blur: Fast-paced movements of players or the ball during critical moments,
+such as shots or saves, often caused motion blur, affecting the sharpness and clarity of
+important visual cues.
+38
+
+
+===== PAGE 41 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+Camera Angle Variations: Differences in camera zoom levels and positions (e.g., wide-
+angle views vs. close-ups) introduced challenges in maintaining consistent object scale and
+perspective across samples.
+3.3
+Data Preprocessing
+3.3.1
+Data Cleaning
+Data cleaning was essential to ensure the quality of the frames used for training. Irrele-
+vant or low-quality frames—those that were blurred or unclear—were removed from the
+dataset. Additionally, frames were resized to a uniform resolution of 640x640 pixels to
+maintain consistency in input dimensions. The resized images ensured that all inputs to
+the model were standardized, improving the efficiency of the training process.
+3.3.2
+Annotation
+For the first dataset, the annotation process involved labeling frames with bounding boxes
+to highlight the following classes:
+• Player
+• Referee
+• Goalkeeper
+• Ball
+Each object was manually annotated in every frame where it appeared, ensuring that the
+model could accurately detect these elements. In total, 500 frames were annotated, each
+containing all of the above classes, ensuring that the model could learn to detect multiple
+objects within a single frame.
+For the second dataset, the annotation focused on marking the football pitch and its
+32 key points. These key points corresponded to specific locations on the pitch, and
+a bounding box was drawn around the pitch itself. The key points were annotated to
+provide a spatial understanding of the pitch’s layout. These annotations were consistent
+across all frames to help the model learn the geometry of the pitch and its boundaries.
+Here are examples of the images demonstrating how each class is annotated. The following
+figure illustrates how the annotation process is performed in our dataset. Each player
+39
+
+
+===== PAGE 42 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+detected in the video frames is surrounded by a bounding box that specifies the exact
+region of interest. This annotation is essential for training the object detection model, as
+it provides the ground-truth data the algorithm learns from.
+Figure 3.3: Annotated image showing the bounding box applied to a player, used for
+training the object detection model.
+To differentiate the goalkeeper from the outfield players, a specific annotation process
+was carried out. In each relevant frame, the goalkeeper was manually labeled with a
+dedicated bounding box. This distinction is crucial because goalkeepers often perform
+unique movements and actions that need to be recognized separately by the model.
+Figure 3.4: Annotated frame illustrating the bounding box around the goalkeeper to
+distinguish them from other players.
+In addition to players and goalkeepers, referees also needed to be correctly identified in
+the dataset. Since referees have distinct movement patterns and typically wear different
+40
+
+
+===== PAGE 43 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+clothing, they were manually annotated in each frame using bounding boxes. This step
+helps the detection model avoid confusing referees with players and ensures more accurate
+role-based recognition.
+Figure 3.5: Example of referee annotation labeled with a bounding box to assist in role-
+specific detection.
+The assistant referee, commonly positioned along the sideline, plays a crucial role in
+signaling offsides and other boundary-related decisions.
+To ensure that the detection
+model can correctly recognize this role as distinct from the main referee and the players,
+the assistant referee was also manually annotated in multiple frames. Including these
+annotations improves the model’s understanding of different officiating roles within the
+match.
+Figure 3.6: Another example of referee annotation under a different context, reinforcing
+detection consistency.
+In addition to annotating players and referees, the ball itself was also labeled throughout
+41
+
+
+===== PAGE 44 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+the dataset. Ball detection is essential because many key events—such as passes, shots,
+and saves—are defined by the ball’s position and movement. By accurately annotating
+the ball in each frame, the model gains the ability to understand event dynamics and
+contributes to more precise highlight extraction.
+Figure 3.7: Annotation showing the ball detected within the frame, enabling event-based
+filtering during highlight generation.
+To represent the complete structure of our dataset, all classes were annotated simultane-
+ously within the same frame. This includes players, goalkeepers, referees, assistant refer-
+ees, and the ball. Displaying all annotated elements together provides a clear overview
+of the multi-class labeling strategy used in the project. Such comprehensive annotation
+helps the model learn to differentiate between multiple types of objects in realistic match
+conditions, improving overall detection accuracy.
+42
+
+
+===== PAGE 45 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+Figure 3.8: Fully annotated football scene with bounding boxes for players, referees,
+goalkeepers, and the ball, demonstrating multi-class labeling.
+Figure 3.9: Annotated image from the pitch keypoint detection dataset, showing the
+football field and its 32 keypoints used for spatial awareness.
+43
+
+
+===== PAGE 46 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+3.4
+Data Splitting
+To create a balanced training, validation, and test set, the dataset was split into three
+subsets:
+Training Set (70%): The majority of the data (70%) was allocated to the training
+set, providing sufficient samples for the model to learn from.
+Validation Set (20%): The validation set (20%) was used to evaluate the model’s
+performance during training and fine-tune its parameters.
+Testing Set (10%): The testing set (10%) was reserved for the final performance eval-
+uation, ensuring an unbiased assessment of the model’s generalization ability.
+This splitting process was done randomly to maintain the integrity and diversity of the
+data across all sets, avoiding any potential biases that could arise from a non-random
+split.
+Figure 3.10: Dataset Splitting in Roboflow
+3.5
+Dataset Download and Structuring
+Once the images were annotated, I downloaded the dataset from Roboflow using the
+code option, which provides a Python snippet compatible with Jupyter environments.
+This integration made it straightforward to incorporate the dataset into my workspace.
+Although my intention was to train a YOLOv10 model, I selected the YOLOv8 format
+when downloading the dataset. This is because, at the time of this work, Roboflow did
+not offer a direct YOLOv10 download format.
+44
+
+
+===== PAGE 47 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+However, since YOLOv10 is designed to be backward-compatible with YOLOv8 data
+formatting, this did not pose a limitation.
+The YOLOv8-formatted dataset includes
+annotated images and their corresponding label files, structured for seamless integration
+into both YOLOv8 and YOLOv10 training pipelines.
+The following figure 3.11 shows the process of selecting the YOLOv8 format and choosing
+the code option for downloading the dataset.
+Figure 3.11: Downloading YOLOv8 Dataset from Roboflow
+45
+
+
+===== PAGE 48 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+3.6
+Data Augmentation
+To improve the generalization ability of the model and increase dataset diversity, data
+augmentation techniques were applied.
+This process artificially expands the training
+dataset by generating modified versions of the original images, making the model more
+robust to variations in lighting and image quality commonly found in football match
+footage.
+The following data augmentation techniques were implemented using the Roboflow plat-
+form:
+Brightness Adjustment: The brightness of the images was randomly altered within a
+range of −22% to +22%, simulating various lighting conditions such as day/night matches
+and stadium lighting variability.
+Blur: A Gaussian blur of up to 1.1 pixels was applied to replicate motion blur or lower-
+resolution video frames, making the model more robust to suboptimal visual quality.
+Each training image was used to generate three augmented outputs, which effectively
+increased the dataset size and variety, aiding in model generalization.
+3.7
+Implementation
+The augmentation process was carried out using Roboflow, a computer vision platform
+that allows for efficient dataset preprocessing and augmentation. The augmentation set-
+tings were configured via its graphical interface, and the resulting dataset was exported
+in the YOLOv8 format, which is also compatible with YOLOv10 used in this project.
+46
+
+
+===== PAGE 49 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+Figure 3.12: Screenshot of Data Augmentation Settings in Roboflow
+3.8
+Results
+After applying data augmentation exclusively to the training data, the total number of
+images increased to 1305. This expanded dataset provides a greater variety of examples,
+which is crucial for training a more effective model.
+Below, we demonstrate the impact of each augmentation technique:
+The original football match image before any augmentation is applied. This serves as a
+reference for observing the effects of the applied transformations.
+47
+
+
+===== PAGE 50 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+Figure 3.13: Original Image
+The image after brightness augmentation. The brightness has been randomly altered to
+simulate different lighting conditions commonly encountered during football matches.
+Figure 3.14: Brightness Augmented Image
+The image after applying Gaussian blur. This simulates motion blur or low-resolution
+48
+
+
+===== PAGE 51 =====
+
+CHAPTER 3. DATA COLLECTION AND PREPROCESSING STRATEGIES
+frames, helping the model become more robust to variations in video quality.
+Figure 3.15: Blur Augmented Image
+Conclusion
+In this chapter, we meticulously covered the essential steps in preparing our data for mod-
+eling. Beginning with an overview of the working environment and proceeding through the
+detailed processes of data collection, cleaning, annotation, splitting, and augmentation,
+we have laid a solid foundation for the development of our machine learning model.
+49
+
+
+===== PAGE 52 =====
+
+Chapter 4
+Modeling and Evaluation Techniques
+for Object Detection
+50
+
+
+===== PAGE 53 =====
+
+CHAPTER 4. MODELING AND EVALUATION TECHNIQUES FOR OBJECT
+DETECTION
+Introduction
+In this chapter, we explore the selection, training, and evaluation of two models used
+for football highlight generation. The first model, based on YOLOv10, detects players,
+referees, goalkeepers, and the ball in football match frames. The second model, based on
+YOLOv8, focuses on detecting the pitch and its 32 key points for pose estimation. Both
+models were trained separately with distinct configurations tailored to each task. This
+chapter will detail the configuration, training setup, and evaluation techniques for both
+models, along with challenges faced during the process.
+4.1
+Modeling Tools and Computational Environment
+4.1.1
+Software Tools
+Google Colab [11] or Google Colaboratory is a cloud-based platform for creating and
+sharing interactive Jupyter Notebook documents. It provides free access to computing
+resources such as CPUs and GPUs, making it popular for data analysis and machine
+learning. Multiple users can collaborate on the same laptop in real time. It also inte-
+grates seamlessly with Google Drive, making it easy to store and share notebooks and
+data files.
+We used Google Colab because it provided the necessary computational power with
+Graphics Processing Unit (GPU) to handle deep learning models efficiently, allowing for
+faster experimentation and iteration.
+Figure 4.1: Google Colab logo [11]
+4.1.2
+Programming Language
+For our project, we have opted for the use of the Python language.
+Python [12] is a well-interpreted, high-level and widely used programming tool.
+Its
+popularity is based on its simplicity and readability, as well as its clear and concise
+syntax, making it a perfect choice for fast application development. Data science, artificial
+intelligence and web development are areas where Python is widely used, thanks to its
+many libraries and frameworks.
+51
+
+
+===== PAGE 54 =====
+
+CHAPTER 4. MODELING AND EVALUATION TECHNIQUES FOR OBJECT
+DETECTION
+Figure 4.2: Python logo [12]
+4.1.3
+Libraries
+Ultralytics [13] is known for its simplicity and efficiency, providing essential functionality
+to simplify the training and evaluation processes. We used it to facilitate the implemen-
+tation of our YOLOv8 model. This way we were able to quickly set up the model and
+focus on improving its performance.
+Figure 4.3: Ultralytics logo [13]
+4.2
+Model Selection
+We chose YOLOv10 for this task because it excels in real-time object detection, combining
+high accuracy with efficiency. YOLO models are well-known for being fast and precise,
+which is exactly what we need to accurately detect players, referees, goalkeepers, and the
+ball in football match footage.
+What makes YOLOv10 stand out for our project is its advanced architecture that
+strikes an excellent balance between speed and accuracy. It is versatile enough to handle
+a wide range of object scales, from large players to small, fast-moving objects like the
+ball—making it ideal for our highlight generation goals.
+YOLOv10 is available in several configurations: Nano, Small, Medium, Balanced,
+Large, and X-Large. Each variant is designed to suit different levels of computational
+resources and application requirements. These versions vary in size, parameter count, and
+processing latency, allowing us to choose the best model according to our performance
+needs and hardware constraints.
+52
+
+
+===== PAGE 55 =====
+
+CHAPTER 4. MODELING AND EVALUATION TECHNIQUES FOR OBJECT
+DETECTION
+Table 4.1 illustrates how different YOLOv10 configurations vary in terms of parameter
+size, inference speed, detection accuracy, and memory usage. These differences allow us
+to select the most appropriate model variant for our football highlight generation system,
+depending on the performance requirements and hardware constraints of the deployment
+environment. This comparative overview ensures that we strike the right balance between
+speed and precision while maintaining efficiency across various computing platforms.
+Model
+Variant
+Size
+(Parame-
+ters)
+Speed
+(La-
+tency)
+Accuracy
+(COCO
+AP)
+Resource
+Usage
+(Mem-
+ory)
+Best Use Case
+YOLOv10
+Nano
+Very Small
+Fastest
+(1.84 ms)
+Lower
+(38.5%)
+Minimal
+Edge devices with ex-
+treme resource limita-
+tions
+YOLOv10
+Small
+Small
+Fast
+(2.49
+ms)
+Balanced
+(46.3%)
+Low-
+Moderate
+Real-time
+detection
+with efficient process-
+ing
+YOLOv10
+Medium
+Medium
+Moderate
+(4.74 ms)
+Higher
+(51.1%)
+Moderate
+General-purpose
+sys-
+tems with decent re-
+sources
+YOLOv10
+Balanced
+Medium-
+Large
+Moderate
+(5.74 ms)
+Even
+Higher
+(52.5%)
+Moderate-
+High
+High-accuracy
+tasks
+under
+reasonable
+constraints
+YOLOv10
+Large
+Large
+Slower
+(7.28 ms)
+Very High
+(53.2%)
+High
+Demanding
+systems
+prioritizing accuracy
+YOLOv10
+X
+Extra
+Large
+Slowest
+(10.70 ms)
+Highest
+(54.4%)
+Very High
+Maximum
+precision
+where
+resources
+are
+not a concern
+Table 4.1: Comparison of YOLOv10 Model Variants
+53
+
+
+===== PAGE 56 =====
+
+CHAPTER 4. MODELING AND EVALUATION TECHNIQUES FOR OBJECT
+DETECTION
+4.3
+Training the Model
+4.3.1
+Training Setup
+4.3.1.1
+YOLOv10 Training Setup (player, referee, ball and goalkeeper)
+We chose the medium variant of YOLOv10 for our project, as it is the highest variant we
+can effectively use given our available memory. The YOLOv10 Medium model provides
+a robust balance between accuracy and resource utilization, making it well-suited for de-
+tecting player, referee, ball and goalkeeper in our dataset. We trained the model for 50
+epochs with a batch size of 16. To optimize the training process, we utilized the SGD
+(Stochastic Gradient Descent) optimizer, known for its effectiveness in balancing speed
+and accuracy. Additionally, we tested AdamW and Adam optimizers to compare their
+performance against SGD.
+To help prevent overfitting and make sure the model performs well on new data, we
+set the dropout rate to 0.1.
+The following image, Figure 4.4, displays a screenshot of the code used to configure and
+train the YOLOv10 Medium model.
+Figure 4.4: YOLOv10 Player Detection Model Training Code
+54
+
+
+===== PAGE 57 =====
+
+CHAPTER 4. MODELING AND EVALUATION TECHNIQUES FOR OBJECT
+DETECTION
+4.3.1.2
+YOLOv8 Training Setup (Pitch and Keypoints Detection)
+The YOLOv8 model for detecting the football pitch and key points was trained with the
+following configuration:
+The following image, Figure 4.5, displays a screenshot of the code used to configure
+and train the YOLOv8 extra large pose model.
+Figure 4.5: YOLOv10 Pitch and Keypoints Detection Model Training Code
+This model was trained for 500 epochs with a batch size of 50, and the image size was
+set to 640x640 pixels. The mosaic augmentation was disabled (set to 0.0) to ensure that
+each image was processed independently.
+4.3.2
+Optimizer Comparison
+he impact of different optimizers on the model’s performance was explored. Table 4.2
+presents a summary of the results obtained from training with SGD, AdamW and Adam
+for the player detection model.
+Table 4.2: Comparison of Optimizers: Precision, Recall, mAP, and Training Time
+Optimizer
+Precision
+Recall
+mAP
+(50)
+mAP
+(50:95)
+Training
+Time
+SGD
+0.81
+0.8
+0.838
+0.6
+47 minutes
+AdamW
+0.8
+0.78
+0.83
+0.59
+41 minutes
+Adam
+0.78
+0.79
+0.828
+0.57
+42 minutes
+55
+
+
+===== PAGE 58 =====
+
+CHAPTER 4. MODELING AND EVALUATION TECHNIQUES FOR OBJECT
+DETECTION
+4.4
+Model Evaluation
+To assess the performance of the YOLOv10 and YOLOv8 models, we conducted a series
+of experiments to evaluate their ability to detect football-specific elements such as players,
+referees, goalkeepers, the ball, and the pitch. Various metrics were used to quantify the
+models’ effectiveness, including precision, recall, and mean Average Precision (mAP).
+Among the tested optimizers, Stochastic Gradient Descent (SGD) yielded the best results
+for YOLOv10, while YOLOv8 showed strong performance with default settings. Below,
+we present the key evaluation metrics alongside the confusion matrix and performance
+curves to highlight the strengths and areas of improvement in both models.
+4.4.1
+Training and Validation Metrics Plot
+The training and validation metrics plot provides a comprehensive visualization of key
+performance indicators during the model’s training phase. This figure displays trends
+in loss values, precision, and recall, illustrating the model’s learning progression over
+epochs. By comparing these metrics, we can assess how well the model generalizes to
+unseen data, complementing the detailed performance metrics outlined in the subsequent
+Key Performance Metrics table.
+56
+
+
+===== PAGE 59 =====
+
+CHAPTER 4. MODELING AND EVALUATION TECHNIQUES FOR OBJECT
+DETECTION
+Figure 4.6: Training and Validation Metrics Plot.
+4.4.2
+Key Performance Metrics (P, R, mAP, mAP50-95)
+The following screenshot presents the key performance metrics, including precision, recall,
+mean Average Precision (mAP), and mAP50-95. These metrics offer a detailed view of
+the model’s performance in detecting defect traces across all classes, giving us a clear
+understanding of its overall accuracy and effectiveness.
+Figure 4.7: Key Performance Metrics.
+4.4.3
+Confusion Matrix
+The confusion matrix provides a visual representation of the model’s classification perfor-
+mance, showing how accurately it predicted each defect class. The normalized confusion
+matrix offers an even clearer comparison, allowing us to see the model’s prediction accu-
+racy across different classes in a more balanced way.
+57
+
+
+===== PAGE 60 =====
+
+CHAPTER 4. MODELING AND EVALUATION TECHNIQUES FOR OBJECT
+DETECTION
+Figure 4.8: Confusion Matrix.
+Conclusion
+In this chapter, we discussed the training, evaluation, and performance of two distinct
+YOLO models for football highlight generation. The YOLOv10 model excelled at de-
+tecting football elements, while YOLOv8 proved to be highly effective for detecting the
+pitch and its key points. The careful selection of model architectures, training setups,
+and evaluation metrics helped us achieve strong results, making these models suitable for
+real-time applications in football highlight generation.
+58
+
+
+===== PAGE 61 =====
+
+Chapter 5
+Deployment and Interface Integration
+59
+
+
+===== PAGE 62 =====
+
+CHAPTER 5. DEPLOYMENT AND INTERFACE INTEGRATION
+Introduction
+In this chapter, we will cover the deployment phase of our football highlight generation
+system. Our focus will be on creating a user-friendly interface that allows users to upload
+a football match video, generate a highlight reel, and download the final output. We’ll
+discuss the technologies and software tools we selected, outline the system architecture,
+and walk through the implementation of the key features.
+5.1
+Deployment Tools and Local Development Setup
+In building the interface, we carefully selected tools and technologies that align with our
+project needs.
+Visual Studio Code: We used Visual Studio Code[14], a versatile code editor that
+supports a wide range of programming languages and tools. It provided an efficient envi-
+ronment for coding, testing, and debugging.
+Figure 5.1: Visual Studio Code logo [14].
+Next.js: The front-end framework was built using Next.js. Its hybrid static and server-
+side rendering capabilities enabled fast, SEO-friendly pages and efficient routing for a
+seamless user experience.
+Figure 5.2: NextJS logo [15].
+FastAPI: We chose FastAPI[16] for its asynchronous capabilities and excellent perfor-
+mance, which are crucial for handling real-time video processing and API calls.
+To make our backend framework decision, we compared three leading Python frameworks,
+60
+
+
+===== PAGE 63 =====
+
+CHAPTER 5. DEPLOYMENT AND INTERFACE INTEGRATION
+Django, Flask, and FastAPI. After evaluating their features, performance, and suitability
+for real-time applications, we decided FastAPI was the best fit for this project.
+Table 5.1 shows a comparison of these three frameworks using different criteria.
+Feature
+Django
+Flask
+FastAPI
+Type
+of
+Framework
+Full-stack
+web
+framework
+Micro web frame-
+work
+Asynchronous web
+framework
+Project Size &
+Complexity
+Well-suited
+for
+larger
+projects
+with
+complex
+re-
+quirements.
+Ideal
+for
+small
+to
+medium-sized
+projects with spe-
+cific needs.
+Excellent for build-
+ing APIs and real-
+time applications.
+Built-in
+Fea-
+tures
+Provides
+a
+wide
+range
+of
+built-in
+features and tools.
+Offers
+minimal
+built-in
+features,
+allowing developers
+to choose compo-
+nents.
+Provides
+essential
+features and sup-
+ports
+third-party
+extensions.
+Performance
+Strong
+perfor-
+mance
+and
+scala-
+bility with features
+like caching.
+Excellent
+perfor-
+mance
+with
+low
+overhead.
+Exceptional perfor-
+mance with asyn-
+chronous support.
+Developer
+Productivity
+Enhances
+produc-
+tivity with an auto-
+matic admin panel
+and other tools.
+Promotes rapid de-
+velopment and pro-
+totyping.
+Offers
+automatic
+API
+documenta-
+tion generation.
+Security
+Built-in
+security
+features
+protect
+against
+common
+web vulnerabilities.
+Requires
+develop-
+ers
+to
+implement
+security
+measures
+but allows flexibil-
+ity.
+Provides
+some
+built-in
+security
+features and sup-
+ports
+third-party
+security libraries.
+Community
+Support
+Large
+and
+active
+community
+with
+extensive
+docu-
+mentation
+and
+third-party
+pack-
+ages.
+Active
+community
+with a good selec-
+tion of extensions
+and libraries.
+Growing
+commu-
+nity with support
+from
+the
+Python
+ecosystem.
+Table 5.1: Comparison of Backend Frameworks
+61
+
+
+===== PAGE 64 =====
+
+CHAPTER 5. DEPLOYMENT AND INTERFACE INTEGRATION
+Figure 5.3: FastAPI logo [16].
+62
+
+
+===== PAGE 65 =====
+
+CHAPTER 5. DEPLOYMENT AND INTERFACE INTEGRATION
+Python: Python appears again in this chapter for its backend capabilities, where
+the combination with FastAPI allows for efficient handling of API requests for real-time
+processing.
+OpenCV: OpenCV’s[17] extensive library of computer vision functions made it ideal
+for integrating vision-related operations within the deployed system. we used for handle
+image processing tasks. It enabled efficient real-time manipulation and analysis of images.
+Figure 5.4: OpenCV logo [17].
+5.2
+Objective of the Interface
+The interface allows users to upload a football match video, initiate the highlight gener-
+ation process with a single click, and download the final highlight video once processing
+is complete.
+5.2.1
+System Architecture
+Our system architecture facilitates the generation of football match highlights by lever-
+aging deep learning models for video analysis. The system workflow follows these steps:
+Frontend: Developed using Next.js, the interface allows users to upload full-length foot-
+ball match videos and initiate the highlight generation process. Once processing is com-
+plete, the resulting highlight video is made available for viewing or download.
+Backend: Implemented with FastAPI, the backend handles video upload requests, com-
+municates with the processing script, and manages the flow of data between the frontend
+and the model. It is responsible for orchestrating the processing pipeline and returning
+the output to the user.
+Model: The core processing is done using a Python script that integrates two object
+detection models—YOLOv8 and YOLOv10. These models analyze the uploaded football
+video to detect key events where the ball is positioned inside the penalty area and extract
+63
+
+
+===== PAGE 66 =====
+
+CHAPTER 5. DEPLOYMENT AND INTERFACE INTEGRATION
+the corresponding highlight segments.
+Processing Script: The script serves as the intermediary between the backend and the
+models. It takes in the video, runs inference through both YOLO models, and assembles
+the detected events into a coherent highlight video.
+User Interaction: The user uploads a football video via the web interface. After click-
+ing Process Video, the backend forwards the video to the processing module. Once the
+highlight video is generated, it is returned to the frontend for download it.
+Figure 5.5: System Architecture for Highlight Generation Interface.
+5.2.2
+Interface Modeling
+This section outlines the interface’s functionalities and how they interact. Currently, the
+only user is the viewer, who can upload a full-length football match video through the
+web interface and initiate the highlight generation process. The frontend, developed with
+Next.js, provides a user-friendly and responsive environment for video submission and
+interaction.
+Once the video is uploaded and the user clicks on the Process Video button, the request
+is sent to the backend, where it is processed using YOLOv8 and YOLOv10 models. After
+processing is complete, the generated highlight video becomes available for download.
+The interface does not support direct playback of the result; instead, the user is provided
+with a download link to retrieve the final highlight video file.
+These functionalities are organized into a general use case diagram shown in Figure 5.6.
+64
+
+
+===== PAGE 67 =====
+
+CHAPTER 5. DEPLOYMENT AND INTERFACE INTEGRATION
+Figure 5.6: General use case diagram.
+5.3
+Application Workflow
+The application workflow outlines how the uploaded football match video is analyzed and
+transformed into a condensed highlight video using a multi-stage processing pipeline. The
+steps are as follows:
+Video Upload Input: The user initiates the process by uploading a full-length football
+match video through the Next.js-based web interface. The video is then transferred to
+the backend for processing.
+Initial Frame-Based Filtering: The backend invokes a Python script that processes
+the video at a rate of one frame per second. For each frame, the script checks for the
+presence of at least five players and the football pitch. If both conditions are met, the
+corresponding second is marked for inclusion, and its frames are retained for further anal-
+ysis.
+Event Detection and Refinement: The filtered video segments are then analyzed for
+specific key events, particularly instances where the ball is detected inside the penalty
+area. When such an event is found, the script extracts a short clip consisting of five
+seconds before and five seconds after the event timestamp.
+Highlight Compilation: All extracted short clips are concatenated into a single high-
+light video. This compilation forms a coherent summary of the most significant moments
+in the match, based on predefined detection criteria.
+Result Delivery to Frontend: Once the highlight video is generated, it is sent back
+to the frontend. The user interface then provides a download link, allowing the user to
+65
+
+
+===== PAGE 68 =====
+
+CHAPTER 5. DEPLOYMENT AND INTERFACE INTEGRATION
+retrieve the final result.
+Offline Processing Pipeline: This workflow operates in an offline, batch-processing
+mode rather than real-time. It prioritizes accuracy in detecting relevant events and en-
+sures that the final highlight video reflects key moments from the full match.
+5.4
+Database and Data Management
+Metadata Storage: The system stores metadata related to each processed video, includ-
+ing event timestamps, player and pitch detection counts, and instances of ball presence
+in the penalty area. This information is stored to facilitate analysis and debugging.
+Highlight Record Keeping: For every generated highlight video, the system maintains
+a record containing the source video ID, event time ranges, and model detection results.
+This data enables traceability and reproducibility of the highlight output.
+Support for Future Features: Although the current version only allows users to
+download highlight videos, the structured storage of processing metadata lays the ground-
+work for potential future features, such as video reprocessing, detailed event logs, or
+dashboard visualizations.
+5.5
+Creating a User-Friendly Interface
+Our football highlight generation interface, built with Next.js, is designed to provide a
+seamless and intuitive user experience that integrates advanced video processing technol-
+ogy. The goal was to simplify the user interaction process while maintaining functionality
+and responsiveness across devices.
+The interface allows users to easily upload full-length football match videos and initiate
+the highlight generation process with a single click. Once the processing is complete, the
+user is presented with a direct download link to retrieve the generated highlight video. The
+design emphasizes clarity and usability, ensuring that users of all technical backgrounds
+can interact with the system without difficulty.
+The layout is clean and minimal, focusing the user’s attention on the essential actions:
+uploading a video, tracking progress, and downloading the result. Visual cues and respon-
+sive components guide the user through each step, enhancing accessibility and reducing
+the chance of confusion or error. This user-centered design approach supports an efficient
+workflow and ensures that the system remains practical for real-world use cases such as
+coaching, analysis, and sports review.
+This screenshot shows the interface for selecting the match video to process.
+66
+
+
+===== PAGE 69 =====
+
+CHAPTER 5. DEPLOYMENT AND INTERFACE INTEGRATION
+Figure 5.7: Select The Match Video.
+This screenshot shows the interface when the Upload Process button becomes active.
+Figure 5.8: Upload Process Button Active.
+This screenshot shows the video being processed in the application.
+67
+
+
+===== PAGE 70 =====
+
+CHAPTER 5. DEPLOYMENT AND INTERFACE INTEGRATION
+Figure 5.9: Processing The Video.
+This screenshot shows the option to download the highlight video after processing is
+complete.
+Figure 5.10: Download Highlight Video After Processing Done.
+68
+
+
+===== PAGE 71 =====
+
+CHAPTER 5. DEPLOYMENT AND INTERFACE INTEGRATION
+Conclusion
+This chapter discussed how we deployed and integrated our model into a real-time mon-
+itoring interface. We covered our software choices, system architecture, interface design,
+and how the application works. This setup not only boosts the efficiency of defect detec-
+tion but also provides a solid foundation for future upgrades.
+69
+
+
+===== PAGE 72 =====
+
+General Conclusion and Perspectives
+Conclusion
+This project set out to address the challenge of automating football highlight generation
+by developing and deploying a deep learning-based computer vision system. The manual
+editing of football match highlights is traditionally time-consuming, subjective, and not
+scalable for real-time demand. Our solution tackled this problem by implementing two
+specialized object detection models—YOLOv10 for player, referee, goalkeeper, and ball
+detection, and YOLOv8 for pitch and keypoint detection.
+The project covered the full machine learning pipeline—from data collection, annota-
+tion, and preprocessing to model training, evaluation, and deployment. Using annotated
+datasets and data augmentation techniques, the models were trained and evaluated on
+precision, recall, and mean Average Precision (mAP). The results confirmed the effective-
+ness of our approach, achieving strong detection performance across relevant classes.
+The final system was deployed within a user-friendly web application, where users can
+upload match videos and receive automatically generated highlight reels. This end-to-end
+pipeline demonstrated how modern AI techniques can streamline sports content creation
+and reduce human effort without sacrificing quality or accuracy.
+Perspectives
+While the system has proven its capability, several improvements and extensions can be
+pursued in the future:
+• Real-Time Processing: Currently, the system operates offline. A real-time or
+near-real-time version could be developed, enabling immediate highlight generation
+during live broadcasts.
+• Event Type Classification: Future versions could integrate action recognition
+models to classify detected events more precisely—distinguishing goals, fouls, saves,
+offsides, or red cards.
+70
+
+
+===== PAGE 73 =====
+
+CHAPTER 5. DEPLOYMENT AND INTERFACE INTEGRATION
+• Multilingual Audio Commentary Integration: The system could be enhanced
+with dynamic or AI-generated audio commentary, in multiple languages, using text-
+to-speech and NLP techniques.
+• Support for Other Sports: The framework can be adapted to other sports like
+basketball, hockey, or rugby by retraining the detection models.
+• Crowd and Audio Analysis: Incorporating crowd noise and audio patterns can
+improve the detection accuracy of key match events.
+• Cloud Deployment and Scalability: Deploying on cloud platforms (e.g., AWS,
+Azure) can ensure better scalability and wider accessibility for broadcasters and
+sports institutions.
+• User Analytics Dashboard: A monitoring dashboard could help track system
+usage, processing times, and user interactions, offering valuable operational insights.
+This project has laid a strong foundation for intelligent sports content generation
+using deep learning and computer vision. With continued development, this system has
+the potential to significantly transform the future of automated sports media production.
+71
+
+
+===== PAGE 74 =====
+
+Webography
+[1] KEY’S Agency. Official logo of key’s agency. https://www.keysagency.com/, 2024.
+Accessed: 2025-04-16.
+[2] IBM. Ibm watson media sports highlights generator. 2023. https://www.ibm.com/
+watson-media.
+[3] “What is kdd”, Last visited on April 2025. [Online]. Available:
+https://www.
+datascience-pm.com/kdd-and-data-mining/.
+[4] “What is semma”, Last visited on April 2025. [Online]. Available: https://www.
+datascience-pm.com/semma/.
+[5] “What is crisp-dm”, Last visited on April 2025. [Online]. Available: https://www.
+datascience-pm.com/crisp-dm-2/.
+[6] “What is computer vision”, Last visited on April 2025. [Online]. Available: https:
+//www.ibm.com/topics/computer-vision.
+[7] IBM Research.
+What is biological neurons.
+https://research.ibm.com/
+publications/deep-learning-incorporating-biologicallyinspired-neural-dynamics,
+2024. Last visited: April 2025.
+[8] Nature.
+What
+is
+artificial
+neuron.
+https://www.nature.com/articles/
+s41534-019-0140-4, 2024. Last visited: April 2025.
+[9] IBM.
+What
+is
+multilayer
+perceptron.
+https://www.ibm.com/docs/hr/
+spss-statistics/saas?topic=networks-multilayerperceptron, 2024. Last vis-
+ited: April 2025.
+[10] Roboflow. Roboflow official website. https://roboflow.com/. Last visited on April
+2025.
+[11] Google Colab. Google colab official website. https://colab.research.google.
+com/. Last visited on April 2025.
+72
+
+
+===== PAGE 75 =====
+
+WEBOGRAPHY
+[12] Python. Python official website. https://www.python.org/. Last visited on April
+2025.
+[13] Ultralytics. Ultralytics official website. https://www.ultralytics.com/fr. Last
+visited on April 2025.
+[14] vscode. Visual studio code official website. https://code.visualstudio.com/. Last
+visited on April 2025.
+[15] nextjs. nextjs official website. https://nextjs.org/. Last visited on April 2025.
+[16] FastAPI. Fastapi official website. https://fastapi.tiangolo.com/. Last visited
+on April 2025.
+[17] opencv. opencv official website. https://opencv.org/. Last visited on April 2025.
+[18] “What is project management methodology”, Last visited on April 2025. [Online].
+Available: https://www.datascience-pm.com/data-science-methodologies/.
+[19] IBM.
+What
+is
+machine
+learning.
+https://www.ibm.com/topics/
+machine-learning, 2024. Last visited: April 2025.
+[20] IBM.
+What is dataset.
+https://www.ibm.com/docs/en/zos-basic-skills?
+topic=more-what-is-data-set, 2024. Last visited: April 2025.
+[21] IBM. What is model. https://www.ibm.com/topics/ai-model#:~:text=An%20AI%
+20model%20is%20a,%20theyâĂŹve%20been%20programmed%20for., 2024. Last vis-
+ited: April 2025.
+[22] Simplilearn. What is cost function. https://www.simplilearn.com/tutorials/
+machine-learning-tutorial/cost-functionin-machine-learning, 2024.
+Last
+visited: April 2025.
+[23] IBM.
+What
+is
+least
+squares
+method.
+https://www.ibm.com/docs/en/
+spss-statistics/29.0.0?topic=regressiontwo-stage-least-squares,
+2024.
+Last visited: April 2025.
+[24] IBM. What is gradient descent. https://www.ibm.com/topics/gradient-descent,
+2024. Last visited: April 2025.
+[25] IBM Quantum. What is adam optimizer. https://docs.quantum.ibm.com/api/
+qiskit/0.28/qiskit.algorithms.optimizers.ADAM, 2024.
+Last visited:
+April
+2025.
+73
+
+
+===== PAGE 76 =====
+
+WEBOGRAPHY
+[26] Daniel Banales.
+What is perceptron.
+https://medium.com/@danielbanales/
+perceptron-the-bases-of-modern-ai-settled-60-years-ago-a7218ae75af2,
+2024. Last visited: April 2025.
+[27] IBM. What is object detection. https://www.ibm.com/topics/object-detection,
+2024. Last visited: April 2025.
+[28] Zakhtar.
+What
+is
+YOLO
+series.
+https://medium.com/@zakhtar2020/
+yolo-series-detailed-overview-b41b023487c1, 2024. Last visited: April 2025.
+[29] IBM.
+What
+is
+performance
+metrics.
+https://www.ibm.com/docs/hu/
+storage-insights?topic=views-performance-metrics, 2024. Last visited: April
+2025.
+[30] IBM Research.
+What is precision.
+https://research.ibm.com/projects/
+precision-diagnostics, 2024. Last visited: April 2025.
+[31] IBM.
+What
+is
+recall.
+https://www.ibm.com/docs/en/zos/3.1.0?topic=
+reference-recall-command-recallingspecific-migrated-data-set,
+2024.
+Last visited: April 2025.
+[32] IBM Cloud.
+What is f1-score.
+https://dataplatform.cloud.ibm.com/docs/
+content/wsj/model/wos-quality-f1-measure.html?context=analytics,
+2024.
+Last visited: April 2025.
+[33] IBM.
+What is underfitting.
+https://www.ibm.com/topics/underfitting#:~:
+text=IBM,training%20set%20and%20unseen%20data.., 2024. Last visited: April
+2025.
+[34] IBM. What is overfitting. https://www.ibm.com/topics/overfitting, 2024. Last
+visited: April 2025.
+[35] IBM.
+What
+is
+data
+augmentation.
+https://www.ibm.com/topics/
+data-augmentation#:~:text=Data%20augmentation%20uses%20pre%
+2Dexisting,to%20increase%20the%20datasetâĂŹs%20analyzability.
+Last
+visited on April 2025.
+[36] IBM. What is regularization. https://www.ibm.com/topics/regularization#:
+~:text=Regularization%20is%20a%20set%20of,overfitting%20in%20machine%
+20learning%20models. Last visited on April 2025.
+[37] TechTarget.
+What
+is
+dropout.
+https://www.techtarget.com/
+searchenterpriseai/definition/dropout#:~:text=Dropout%20refers%20to%
+74
+
+
+===== PAGE 77 =====
+
+WEBOGRAPHY
+20data%2C%20or,actions%20of%20the%20human%20brain.
+Last visited on April
+2025.
+[38] CyborgCodes.
+What is early stopping in deep learning.
+https://cyborgcodes.
+medium.com/what-is-early-stopping-in-deep-learning-eeb1e710a3cf.
+Last
+visited on April 2025.
+75
+
+
+===== PAGE 78 =====
+
+18%
+INDICE DE SIMILITUDE 12%
+SOURCES INTERNET
+11%
+PUBLICATIONS
+10%
+COPIES DE L'ÉTUDIANT
+1
+1%
+2
+1%
+3
+1%
+4
+1%
+5
+1%
+6
+1%
+7
+<1%
+8
+<1%
+9
+<1%
+Hafedh Manchoul
+RAPPORT DE SIMILITUDE
+SOURCES PRINCIPALES
+www.capitalnumbers.com
+Source Internet
+Submitted to Université Virtuelle de Tunis
+Copie de l'étudiant
+Submitted to University of Monastir
+Copie de l'étudiant
+eitca.org
+Source Internet
+Submitted to University of Carthage
+Copie de l'étudiant
+www.mdpi.com
+Source Internet
+R. N. V. Jagan Mohan, B. H. V. S. Rama
+Krishnam Raju, V. Chandra Sekhar, T. V. K. P.
+Prasad. "Algorithms in Advanced Artificial
+Intelligence - Proceedings of International
+Conference on Algorithms in Advanced
+Artificial Intelligence (ICAAAI-2024)", CRC
+Press, 2025
+Publication
+dspace.estin.dz
+Source Internet
+Submitted to University of Manouba
+Copie de l'étudiant

@@ -1,0 +1,2920 @@
+===== PAGE 1 =====
+
+République Tunisienne
+Ministère de l’Enseignement
+Supérieur et de la Recherche
+Scientifique
+Université de Monastir
+Institut Supérieur d’Informatique de Mahdia
+MÉMOIRE
+N° d’ordre : LCE-IOT-3-2026-035
+Mémoire
+Présenté à
+Institut Supérieur d’Informatique de Mahdia (ISIMA)
+Effectué à
+Sagemcom Tunisie
+En vue de l’obtention du diplôme de
+Bachelor in Computer Engineering : Embedded Systems and Internet of Things
+Élaboré par :
+Gharbi Rayen
+Système intelligent de gestion et d’optimisation des stocks
+Soutenu le : 12 juin 2026
+devant le jury composé de :
+Président
+Pr. Zahra Raddaoui
+Rapporteur
+Pr. Mohamed Amine Belhadj
+Encadrant Académique
+Pr. Behij Ben Amor
+Encadrant Professionnel
+M. Jazi Abdelhamid
+Année universitaire 2025–2026
+
+
+===== PAGE 2 =====
+
+Dédicace
+À ma mère Hadia,
+qui a fait de ses mains un foyer et de son silence une prière.
+Chaque ligne de ce travail porte quelque chose de ta lumière.
+À mon père Khaled,
+qui m’a enseigné, bien avant les livres et les cours,
+que la dignité se construit dans l’effort et nulle part ailleurs.
+Tu es la première rigueur que j’aie jamais connue.
+À mes sœurs Chaima et Gofrane,
+complices de l’enfance et gardiens de mes racines,
+pour chaque rire partagé et chaque dispute oubliée.
+Vous avez fait de moi ce que je suis.
+À Elisa, ma femme,
+pour avoir choisi de marcher à mes côtés,
+pour ta patience dans les nuits de travail tardives,
+et pour ce regard qui me rappelle, toujours,
+que ce qui compte vraiment n’est pas dans les pages d’un mémoire.
+
+
+===== PAGE 3 =====
+
+Gharbi RAYEN
+À Dalel, ma tante,
+pour avoir été une deuxième mère sans jamais en porter le titre,
+pour ta générosité discrète et ta présence dans les moments
+où la famille se révèle dans ce qu’elle a de plus sincère.
+À Eya, sa fille,
+pour la joie simple et franche qu’elle apporte
+à chaque réunion de famille,
+et pour ce sourire qui rappelle que la vie
+mérite toujours d’être célébrée.
+À mon oncle Saif,
+qui n’a jamais laissé la distance entre les rôles
+empêcher la chaleur entre les âmes.
+Tu as été à la fois l’oncle qui veille et le frère qui comprend,
+deux présences en une seule, et c’est un don rare.
+À Amine, mon frère de cœur,
+pour les conversations qui s’étirent jusqu’à l’aube,
+pour ta franchise qui ne ménage jamais,
+et pour cette amitié rare qui résiste à tout.
+Les meilleurs amis sont ceux qui vous connaissent sans masque.
+Ce travail est le fruit de votre confiance,
+de vos sacrifices silencieux,
+et de tout ce que vous m’avez donné sans jamais compter.
+Il est vôtre, bien plus qu’il n’est mien.
+Gharbi Rayen
+Page ii
+
+
+===== PAGE 4 =====
+
+Remerciements
+Ce mémoire n’aurait pas pu voir le jour sans le soutien et la générosité de nombreuses
+personnes, auxquelles je tiens à exprimer ma sincère et profonde gratitude.
+Je remercie en premier lieu mon encadrant académique pour son suivi attentif, ses
+orientations bibliographiques et ses retours constructifs tout au long de ce projet. Sa
+disponibilité et sa rigueur ont été une aide précieuse, particulièrement dans les phases de
+conception et de validation des résultats.
+Ma reconnaissance va également à mon encadrant professionnel au sein de Sagemcom
+Tunisie pour m’avoir guidé sur le terrain avec bienveillance et exigence. Les échanges
+enrichissants avec les équipes logistiques ont été déterminants pour cerner les véritables
+besoins du système et concevoir une solution ancrée dans la réalité opérationnelle.
+Je remercie les membres du jury pour l’intérêt qu’ils portent à ce travail et pour le temps
+précieux qu’ils lui consacrent.
+Ma gratitude va également à l’ensemble des enseignants de l’Institut Supérieur
+d’Informatique de Mahdia (ISIMA) pour la qualité de la formation dispensée au fil de
+ces années. Chaque cours, chaque correction et chaque conseil ont contribué, pierre après
+pierre, à bâtir les compétences qui ont rendu ce projet possible.
+Enfin, les mots les plus sincères de ces remerciements — et non les moindres — vont à ceux
+sans qui rien de tout cela n’aurait eu de sens.
+À ma mère Hadia, pour ses prières silencieuses et sa tendresse sans condition, qui m’ont
+accompagné bien au-delà des murs de l’université.
+À mon père Khaled, pour m’avoir inculqué le goût de l’effort et la valeur du travail bien
+fait, bien avant que je sache ce qu’était un mémoire.
+À mes sœurs Chaima et Gofrane, pour leur affection constante et leur manière unique de
+rendre les moments difficiles plus légers.
+À Elisa, ma femme, pour sa patience durant les longues nuits de rédaction, son soutien
+indéfectible et cette confiance qu’elle ne m’a jamais retirée.
+À ma tante Dalel et sa fille Eya, pour leur chaleur familiale et leur présence bienveillante,
+toujours source de réconfort.
+À mon oncle Saif, pour un soutien qui a largement dépassé le simple lien familial, et pour
+avoir été à la fois un oncle attentif et un frère de confiance.
+
+
+===== PAGE 5 =====
+
+Gharbi RAYEN
+À Amine, mon meilleur ami, pour sa franchise, sa loyauté à toute épreuve et pour chaque
+conversation qui m’a aidé à y voir plus clair dans les moments de doute.
+À vous tous, merci.
+Page iv
+
+
+===== PAGE 6 =====
+
+Résumé
+Ce mémoire de Licence, réalisé à l’Institut Supérieur d’Informatique de Mahdia (ISIMA)
+dans le cadre d’un stage chez Sagemcom Tunisie, porte sur la conception et l’implémentation
+d’un système intelligent de gestion des stocks en temps réel.
+Le point de départ est un constat terrain : les équipes logistiques travaillaient encore
+avec des fichiers Excel mis à jour manuellement, ce qui entraînait des erreurs de saisie, des
+désynchronisations entre postes et une absence totale de visibilité en temps réel.
+La solution développée repose sur une architecture modulaire en quatre couches. La couche
+IoT, basée sur un microcontrôleur ESP32 couplé à un scanner de codes-barres et une caméra,
+assure la collecte automatique des données sur le terrain. La couche applicative comprend une
+interface Streamlit accessible sans formation particulière et une API REST développée avec
+FastAPI. La couche données combine une base transactionnelle SQL Server et un entrepôt de
+données organisé en schéma en étoile. Enfin, la couche décisionnelle s’appuie sur des tableaux
+de bord Tableau pour le reporting et l’analyse des tendances.
+Une contribution originale du projet est l’intégration d’un module de détection visuelle basé
+sur YOLOv8, entraîné sur le dataset SKU110K (11 689 images de rayons réels). Le modèle
+classifie l’état de chaque rayon en quatre catégories : vide, stock normal, surstock et mal placé,
+en combinant analyse de densité et découpage par zones horizontales. Il atteint un mAP@50 de
+90,29 % sur le set de test.
+Le pipeline ETL développé en Python automatise le transfert des données vers l’entrepôt
+analytique. Le temps de traitement de bout en bout reste inférieur à 2 secondes, conformément
+au cahier des charges. En raison du retard de livraison du matériel, la partie IoT a d’abord été
+validée dans un environnement de simulation. Une fois les composants disponibles, la solution
+a été déployée et testée sur le matériel réel (ESP32, lecteur de codes-barres et webcam USB),
+permettant de confirmer le bon fonctionnement de l’ensemble du système.
+Mots-clés : gestion des stocks, IoT, ESP32, YOLOv8, ETL, Business Intelligence, Streamlit,
+FastAPI, SQL Server, Tableau, détection d’objets, temps réel.
+
+
+===== PAGE 7 =====
+
+TABLE DES MATIÈRES
+Gharbi RAYEN
+Table des matières
+Dédicace
+i
+Remerciements
+iii
+Résumé
+v
+Table des matières
+ix
+Liste des figures
+xi
+Liste des tableaux
+xii
+Liste des acronymes
+xiii
+Introduction générale
+1
+1
+Cadre général du projet
+3
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.1
+Présentation de l’organisme d’accueil
+. . . . . . . . . . . . . . . . . . . . . .
+3
+1.1.1
+Présentation de Sagemcom . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.1.2
+Implantation en Tunisie
+. . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.1.3
+Secteur d’activités
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Cahier des charges du projet
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2.1
+Problématique
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2.2
+Besoins fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2.3
+Besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3
+Méthode de développement . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.3.1
+Méthode adoptée . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.3.2
+Planning du projet
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+Page vi
+
+
+===== PAGE 8 =====
+
+TABLE DES MATIÈRES
+Gharbi RAYEN
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+2
+Analyse de l’existant
+8
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.1
+Problématique générale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.2
+Systèmes de gestion de stock traditionnels . . . . . . . . . . . . . . . . . . . .
+9
+2.3
+Limites des approches traditionnelles . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.4
+Solutions basées sur l’IoT . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.5
+Solutions basées sur l’intelligence artificielle . . . . . . . . . . . . . . . . . . .
+10
+2.6
+Solutions de Business Intelligence . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.7
+Critères d’évaluation des solutions . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.8
+Comparaison des solutions existantes
+. . . . . . . . . . . . . . . . . . . . . .
+11
+2.9
+Applications de gestion des stocks et comparaison . . . . . . . . . . . . . . . .
+11
+2.9.1
+Analyse comparative . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.9.2
+Positionnement de la solution proposée . . . . . . . . . . . . . . . . .
+12
+2.10 Synthèse de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.11 Justification des choix technologiques . . . . . . . . . . . . . . . . . . . . . .
+12
+2.11.1 Pourquoi FastAPI plutôt que Flask ou Django? . . . . . . . . . . . . .
+13
+2.11.2 Pourquoi SQL Server plutôt que PostgreSQL ou MySQL? . . . . . . .
+13
+2.11.3 Pourquoi YOLOv8s plutôt que d’autres variantes? . . . . . . . . . . .
+13
+2.11.4 Pourquoi Streamlit plutôt qu’une interface web classique? . . . . . . .
+14
+2.12 Analyse SWOT de la solution proposée
+. . . . . . . . . . . . . . . . . . . . .
+14
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+3
+Conception du système
+17
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.1
+Technologies utilisées . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.2
+Architecture globale du système . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.3
+Correspondance entre besoins et conception . . . . . . . . . . . . . . . . . . .
+19
+3.4
+Modélisation UML . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.4.1
+Diagramme de cas d’utilisation
+. . . . . . . . . . . . . . . . . . . . .
+20
+3.4.2
+Diagramme de classes
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4.3
+Diagramme de séquence . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4.4
+Diagramme d’activité . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.5
+Sécurité de l’architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.5.1
+Authentification et gestion des rôles . . . . . . . . . . . . . . . . . . .
+24
+3.5.2
+Sécurisation des communications ESP32
+. . . . . . . . . . . . . . . .
+24
+3.6
+Conception de la base de données
+. . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.6.1
+Modèle relationnel . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+Page vii
+
+
+===== PAGE 9 =====
+
+TABLE DES MATIÈRES
+Gharbi RAYEN
+3.6.2
+Schéma en étoile . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.7
+Conception du pipeline ETL . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.8
+Flux de données . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.9
+Conception du module IA (YOLO) . . . . . . . . . . . . . . . . . . . . . . . .
+27
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+4
+Réalisation et Implémentation
+29
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+4.1
+Environnement de développement . . . . . . . . . . . . . . . . . . . . . . . .
+29
+4.2
+Implémentation de la partie IoT
+. . . . . . . . . . . . . . . . . . . . . . . . .
+30
+4.2.1
+Difficultés rencontrées et contraintes rencontrées . . . . . . . . . . . .
+30
+4.2.2
+Configuration de l’ESP32
+. . . . . . . . . . . . . . . . . . . . . . . .
+31
+4.2.3
+Lecture des codes-barres . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.2.4
+Affichage LCD et LEDs . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.2.5
+Communication des données . . . . . . . . . . . . . . . . . . . . . . .
+34
+4.3
+Implémentation de la base de données SQL Server
+. . . . . . . . . . . . . . .
+35
+4.4
+Développement du pipeline ETL en Python . . . . . . . . . . . . . . . . . . .
+36
+4.5
+Développement de l’API Backend . . . . . . . . . . . . . . . . . . . . . . . .
+37
+4.6
+Développement de l’interface Streamlit
+. . . . . . . . . . . . . . . . . . . . .
+38
+4.7
+Création du tableau de bord Tableau . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.7.1
+Modèle de données . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.7.2
+Indicateurs KPI . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.7.3
+Structure du dashboard . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.8
+Intégration du module YOLO . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.8.1
+Choix de YOLOv8 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.8.2
+Dataset d’entraînement : SKU110K . . . . . . . . . . . . . . . . . . .
+45
+4.8.3
+Entraînement sur Google Colab
+. . . . . . . . . . . . . . . . . . . . .
+47
+4.8.4
+Stratégie de classification : cinq états du rayon
+. . . . . . . . . . . . .
+48
+4.8.5
+Exemples de détection sur images de validation . . . . . . . . . . . . .
+50
+4.8.6
+Export et déploiement
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+5
+Tests et Résultats
+52
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+5.1
+Stratégie de test . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+5.2
+Tests unitaires et d’intégration
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+5.2.1
+Tests de l’API FastAPI . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+5.2.2
+Tests du pipeline ETL
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+5.2.3
+Tests de la communication ESP32 . . . . . . . . . . . . . . . . . . . .
+54
+Page viii
+
+
+===== PAGE 10 =====
+
+TABLE DES MATIÈRES
+Gharbi RAYEN
+5.3
+Résultats du modèle YOLO . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+5.3.1
+Courbes d’entraînement
+. . . . . . . . . . . . . . . . . . . . . . . . .
+54
+5.3.2
+Courbes Précision, Rappel et F1 . . . . . . . . . . . . . . . . . . . . .
+55
+5.3.3
+Métriques de performance sur le set de test
+. . . . . . . . . . . . . . .
+56
+5.3.4
+Matrice de confusion . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+5.4
+Tests de performance du système . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+5.5
+Tests de fiabilité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+5.6
+Analyse des résultats . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.7
+Limites et perspectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.7.1
+Limites identifiées
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.7.2
+Perspectives d’évolution . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+Conclusion Générale
+61
+Annexes
+66
+Annexe A — Extrait du code ETL Python . . . . . . . . . . . . . . . . . . . . . . .
+66
+Annexe B — Extrait du code API FastAPI . . . . . . . . . . . . . . . . . . . . . . .
+67
+Annexe C — Configuration d’entraînement YOLOv8 . . . . . . . . . . . . . . . . .
+68
+Webographie
+70
+Bibliographie
+70
+Page ix
+
+
+===== PAGE 11 =====
+
+TABLE DES FIGURES
+Gharbi RAYEN
+Table des figures
+Chapitre 1 — Cadre général du projet
+1.1
+Logo de Sagemcom . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Diagramme de Gant : Planning du projet . . . . . . . . . . . . . . . . . . . . .
+7
+Chapitre 2 — Analyse de l’existant
+Chapitre 3 — Conception du système
+3.1
+Diagramme global du système . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.2
+Diagramme de cas d’utilisation . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.4
+Diagramme de séquence
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.5
+Diagramme d’activité — Gestion intelligente du stock . . . . . . . . . . . . . .
+23
+3.6
+Modèle relationnel (OLTP) . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.7
+Schéma en étoile (OLAP) . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.8
+Pipeline ETL
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.9
+Module IA (YOLO) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+Chapitre 4 — Réalisation et Implémentation
+4.1
+Configuration et câblage de l’ESP32 . . . . . . . . . . . . . . . . . . . . . . .
+31
+4.2
+Lecture d’un code-barres . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.3
+Affichage LCD du produit scanné
+. . . . . . . . . . . . . . . . . . . . . . . .
+33
+4.4
+Signalisation par LEDs du système de scan
+. . . . . . . . . . . . . . . . . . .
+34
+4.5
+Flux de communication des données IoT . . . . . . . . . . . . . . . . . . . . .
+34
+4.6
+Structure des tables de la base de données SQL Server
+. . . . . . . . . . . . .
+35
+4.7
+Exemple de données enregistrées dans SQL Server
+. . . . . . . . . . . . . . .
+35
+Page x
+
+
+===== PAGE 12 =====
+
+TABLE DES FIGURES
+Gharbi RAYEN
+4.8
+Extrait du code Python du pipeline ETL . . . . . . . . . . . . . . . . . . . . .
+36
+4.9
+Résultat du chargement ETL dans le Data Warehouse . . . . . . . . . . . . . .
+37
+4.10 Interface Swagger de l’API FastAPI . . . . . . . . . . . . . . . . . . . . . . .
+38
+4.11 Page principale de l’interface Streamlit . . . . . . . . . . . . . . . . . . . . . .
+39
+4.12 Interface de gestion des produits dans Streamlit . . . . . . . . . . . . . . . . .
+39
+4.13 Visualisation des alertes dans Streamlit . . . . . . . . . . . . . . . . . . . . . .
+40
+4.14 Interface de Gestion du produit . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.15 Dashboard principal Tableau . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.16 Indicateurs KPI . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.17 Page Executive Dashboard présentant les indicateurs globaux du système
+. . .
+42
+4.18 Page Product Analysis dédiée à l’analyse des produits et des stocks . . . . . . .
+43
+4.19 Page Time Analysis illustrant l’évolution temporelle des données . . . . . . . .
+43
+4.20 Page User Analysis présentant l’activité et les statistiques utilisateurs . . . . . .
+44
+4.21 Distribution des annotations dans le dataset SKU110K
+. . . . . . . . . . . . .
+46
+4.22 Exemples de batches d’entraînement avec augmentation mosaïque . . . . . . .
+47
+4.23 Prédictions YOLOv8 sur le batch de validation 0
+. . . . . . . . . . . . . . . .
+50
+4.24 Prédictions YOLOv8 sur le batch de validation 1
+. . . . . . . . . . . . . . . .
+51
+Chapitre 5 — Tests et Résultats
+5.1
+Performances et pertes du modèle YOLOv8 au cours de l’entraînement . . . . .
+55
+5.2
+Courbe de Précision en fonction du seuil de confiance . . . . . . . . . . . . . .
+55
+5.3
+Courbe de Rappel en fonction du seuil de confiance . . . . . . . . . . . . . . .
+55
+5.4
+Courbe F1-score en fonction du seuil de confiance . . . . . . . . . . . . . . . .
+56
+5.5
+Courbe Précision-Rappel (PR curve) . . . . . . . . . . . . . . . . . . . . . . .
+56
+5.6
+Matrice de confusion normalisée . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+5.7
+Résultats des tests de performance du système . . . . . . . . . . . . . . . . . .
+58
+Page xi
+
+
+===== PAGE 13 =====
+
+LISTE DES TABLEAUX
+Gharbi RAYEN
+Liste des tableaux
+Chapitre 1 — Cadre général du projet
+Chapitre 2 — Analyse de l’existant
+2.1
+Comparaison des solutions de gestion de stock . . . . . . . . . . . . . . . . . .
+11
+2.2
+Analyse des performances des applications de gestion de stock existantes
+. . .
+11
+2.3
+Récapitulatif des choix technologiques . . . . . . . . . . . . . . . . . . . . . .
+14
+2.4
+Analyse SWOT de la solution proposée
+. . . . . . . . . . . . . . . . . . . . .
+15
+Chapitre 3 — Conception du système
+3.1
+Hiérarchie des utilisateurs et leurs rôles
+. . . . . . . . . . . . . . . . . . . . .
+20
+3.2
+Matrice des droits d’accès par rôle . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.3
+Les cinq états du module YOLO définis lors de la conception . . . . . . . . . .
+28
+Chapitre 4 — Réalisation et Implémentation
+4.1
+Environnement de développement et matériel utilisé . . . . . . . . . . . . . . .
+30
+4.2
+Endpoints principaux de l’API FastAPI
+. . . . . . . . . . . . . . . . . . . . .
+37
+4.3
+Composition du dataset SKU110K . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.4
+Hyperparamètres d’entraînement YOLOv8 . . . . . . . . . . . . . . . . . . . .
+48
+4.5
+Les cinq états détectés par le module YOLO et les alertes associées . . . . . . .
+49
+Chapitre 5 — Tests et Résultats
+5.1
+Résultats des tests unitaires de l’API . . . . . . . . . . . . . . . . . . . . . . .
+53
+5.2
+Métriques de performance sur le set de test SKU110K . . . . . . . . . . . . . .
+56
+5.3
+Comparaison avant/après l’implémentation du système . . . . . . . . . . . . .
+59
+5.4
+Bilan des objectifs du projet
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+Page xii
+
+
+===== PAGE 14 =====
+
+LISTE DES ACRONYMES
+Gharbi RAYEN
+Liste des acronymes
+API Application Programming Interface
+BI Business Intelligence
+DW Data Warehouse (entrepôt de données)
+ERP Enterprise Resource Planning
+ETL Extract
+GPU Graphics Processing Unit
+HTTP HyperText Transfer Protocol
+IoT Internet of Things (Internet des objets)
+ISIMA Institut Supérieur d’Informatique de Mahdia
+KPI Key Performance Indicator
+LCD Liquid Crystal Display
+mAP mean Average Precision
+MQTT Message Queuing Telemetry Transport
+OLAP Online Analytical Processing
+OLTP Online Transaction Processing
+PME Petite et Moyenne Entreprise
+REST Representational State Transfer
+RFID Radio Frequency Identification
+SDLC Software Development Life Cycle
+SKU Stock Keeping Unit
+UM Université de Monastir
+UML Unified Modeling Language
+YOLO You Only Look Once
+Page xiii
+
+
+===== PAGE 15 =====
+
+INTRODUCTION GÉNÉRALE
+Gharbi RAYEN
+Introduction générale
+Lors de notre arrivée chez Sagemcom Tunisie, nous avons tout de suite été marqués par
+une situation assez révélatrice. Nous avons vu un opérateur assis devant deux écrans en train
+de recopier manuellement des quantités d’un fichier Excel vers un autre. En discutant avec
+lui, nous avons rapidement compris que c’était son quotidien. Deux fichiers différents, deux
+équipes différentes, et surtout aucune synchronisation entre les données. Résultat : des erreurs
+qui revenaient régulièrement.
+C’est vraiment à partir de ce constat que l’idée de ce projet a commencé à germer dans notre
+esprit. Nous ne voulions pas révolutionner tout le système existant, mais plutôt supprimer cette
+tâche répétitive et source d’erreurs.
+La solution que nous avons proposée repose sur plusieurs technologies qui se complètent
+bien : l’IoT pour automatiser la collecte des données directement sur le terrain, l’intelligence
+artificielle pour analyser l’état des rayonnages, et la Business Intelligence pour donner une
+vision claire et en temps réel des stocks. Nous avons fait en sorte que l’ensemble reste simple à
+utiliser, même pour un opérateur qui n’a pas de profil technique.
+Ce mémoire retrace tout le travail que nous avons réalisé pendant ce projet, depuis les
+premières analyses jusqu’à l’implémentation finale. Nous y parlons aussi bien des choix
+techniques que des difficultés que nous avons rencontrées en cours de route.
+Il est organisé en cinq chapitres :
+Page 1
+
+
+===== PAGE 16 =====
+
+INTRODUCTION GÉNÉRALE
+Gharbi RAYEN
+— Le premier chapitre présente Sagemcom Tunisie, le contexte général du projet et la
+problématique observée sur le terrain.
+— Le deuxième chapitre fait une étude des solutions existantes (ERP, IoT industriel,
+intelligence artificielle et Business Intelligence) et explique pourquoi elles ne
+correspondent pas exactement à notre besoin.
+— Le troisième chapitre détaille la conception du système, notamment son architecture,
+les diagrammes UML, ainsi que la structure de la base de données et de l’entrepôt de
+données.
+— Le quatrième chapitre est consacré à l’implémentation des différentes parties du projet :
+les capteurs ESP32, la base de données, l’API, l’interface utilisateur et les modèles
+d’intelligence artificielle.
+— Le cinquième chapitre présente les tests effectués, les résultats obtenus, ainsi que les
+limites du système et les perspectives d’amélioration.
+Page 2
+
+
+===== PAGE 17 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+Gharbi RAYEN
+Chapitre
+1
+Cadre général du projet
+Introduction
+Ce chapitre présente le contexte dans lequel nous avons réalisé notre projet de fin d’études
+chez Sagemcom Tunisie. Nous commençons par donner un aperçu de l’entreprise et de son
+environnement de travail en Tunisie. Ensuite, nous expliquons le problème concret que nous
+avons observé sur le terrain et qui a motivé tout ce travail. Enfin, nous décrivons la méthode que
+nous avons suivie tout au long du projet.
+1.1 Présentation de l’organisme d’accueil
+1.1.1
+Présentation de Sagemcom
+Sagemcom est une entreprise industrielle française qui opère à l’international. Elle se
+spécialise principalement dans les équipements haut débit, les solutions audiovisuelles comme
+les décodeurs TV, et les solutions énergétiques intelligentes telles que les compteurs connectés
+[1]. L’entreprise met vraiment l’accent sur l’innovation et cherche à développer des technologies
+qui répondent aux besoins des opérateurs et des utilisateurs finaux.
+Page 3
+
+
+===== PAGE 18 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+Gharbi RAYEN
+FIGURE 1.1. Logo de Sagemcom
+1.1.2
+Implantation en Tunisie
+En Tunisie, Sagemcom est principalement implantée sur les sites de la Nouvelle Médina
+(Ben Arous) et d’Ezzahra [2]. Ces sites concentrent des activités industrielles importantes :
+l’assemblage de cartes électroniques, la production de compteurs intelligents et de décodeurs.
+On y trouve également des équipes dédiées au développement et aux tests de nouvelles solutions
+techniques.
+1.1.3
+Secteur d’activités
+Les activités de l’entreprise sont organisées autour de trois grands domaines : le haut débit
+(Broadband), la vidéo (Video) et l’énergie et télécom (Energy & Telecom). Cette diversité
+permet de répondre à différents besoins industriels et de travailler sur des produits utilisés à
+grande échelle.
+Page 4
+
+
+===== PAGE 19 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+Gharbi RAYEN
+1.2 Cahier des charges du projet
+1.2.1
+Problématique
+Pendant notre stage chez Sagemcom Tunisie, nous avons étudié de près le suivi des stocks
+sur les lignes de production. Nous avons rapidement remarqué que le travail reposait encore
+beaucoup sur des fichiers Excel partagés entre plusieurs équipes. Ces fichiers étaient mis à jour
+manuellement, ce qui provoquait souvent des décalages entre les données et entraînait pas mal
+d’erreurs de saisie.
+Le vrai problème était donc le manque de synchronisation et l’absence de visibilité en
+temps réel sur l’état des stocks. C’est à partir de ce constat que nous avons décidé de proposer
+une solution pour centraliser les informations et réduire au maximum les tâches manuelles
+répétitives.
+1.2.2
+Besoins fonctionnels
+Le système que nous avons proposé vise à réduire au maximum les opérations manuelles
+liées à la gestion des stocks. Il intègre un module de vision par ordinateur basé sur YOLO [3]
+qui permet de classer l’état des rayonnages en cinq catégories : vide, stock bas, normal, surstock
+et critique.
+Les données doivent être accessibles via une interface simple développée avec Streamlit,
+pour que les opérateurs sur le terrain puissent l’utiliser facilement. Toutes les informations sont
+ensuite stockées et analysées dans un entrepôt de données afin de générer des tableaux de bord
+et des indicateurs de performance (KPI) avec Tableau.
+1.2.3
+Besoins non fonctionnels
+Le système doit être rapide : le temps de traitement des opérations principales ne doit pas
+dépasser deux secondes pour rester utilisable en conditions réelles.
+Page 5
+
+
+===== PAGE 20 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+Gharbi RAYEN
+La fiabilité est également très importante. Chaque partie du système (IoT, API, traitement
+des données) doit bien gérer les erreurs pour éviter toute perte d’informations. La sécurité est
+assurée par un système d’authentification avec une gestion des rôles des utilisateurs.
+Enfin, nous avons veillé à ce que l’architecture reste flexible, pour pouvoir ajouter de
+nouveaux capteurs ou de nouvelles fonctionnalités sans tout refaire.
+1.3 Méthode de développement
+1.3.1
+Méthode adoptée
+Pour réaliser ce projet, nous avons suivi une approche inspirée du cycle de vie du
+développement logiciel (SDLC) [4], tout en intégrant une démarche itérative proche des
+méthodes agiles [5].
+Cette façon de travailler nous a permis d’avancer étape par étape, en développant et en
+testant chaque partie du système séparément. Cela nous a aussi aidés à corriger certains choix
+techniques au fur et à mesure.
+Le projet s’est déroulé en plusieurs étapes principales :
+1. Analyse des besoins et compréhension du problème sur le terrain.
+2. Conception du système et modélisation avec UML [6].
+3. Développement des différentes parties (IoT, API, base de données, IA).
+4. Tests et validation des performances du système [7].
+1.3.2
+Planning du projet
+Pour mener ce projet de manière organisée, nous avons établi dès le départ un planning
+réaliste qui nous a servi de fil conducteur tout au long du stage. Ce planning a bien sûr connu
+quelques ajustements en cours de route, notamment à cause du retard dans la livraison du
+matériel IoT, mais il nous a permis de garder une vue d’ensemble claire sur l’avancement du
+travail.
+Page 6
+
+
+===== PAGE 21 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+Gharbi RAYEN
+Semaines
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+Analyse des besoins
+Étude de l’existant
+Conception UML
+Implémentation IoT (simulation)
+Développement API FastAPI
+Base de données SQL Server
+Interface Streamlit
+Pipeline ETL
+Intégration module YOLO
+Dashboard Tableau
+Déploiement matériel réel
+Tests et validation
+Rédaction du rapport
+FIGURE 1.2. Diagramme de Gant : Planning du projet
+Conclusion
+Ce chapitre nous a permis de bien cerner les besoins de Sagemcom Tunisie et le contexte
+général du projet. Il est clair que pour améliorer la gestion des stocks, le système doit
+combiner plusieurs technologies : l’intelligence artificielle, l’Internet des objets et les outils
+de visualisation de données.
+Dans le chapitre suivant, nous allons étudier les solutions existantes sur le marché afin de
+mieux positionner notre propre proposition.
+Page 7
+
+
+===== PAGE 22 =====
+
+CHAPITRE 2. ANALYSE DE L’EXISTANT
+Gharbi RAYEN
+Chapitre
+2
+Analyse de l’existant
+Introduction
+Dans le monde industriel d’aujourd’hui, bien gérer ses stocks et optimiser les flux
+logistiques est devenu un vrai facteur de compétitivité. Une simple erreur de traçabilité peut
+vite arrêter une ligne de production ou bloquer énormément d’argent dans des surstocks [8].
+Dans ce chapitre, nous présentons les différentes solutions de gestion de stocks qui existent
+actuellement, leurs points forts, mais surtout leurs limites par rapport à ce que nous avons
+observé concrètement chez Sagemcom Tunisie.
+2.1 Problématique générale
+Même si les outils de gestion de stocks ont beaucoup progressé ces dernières années, les
+usines continuent de rencontrer plusieurs problèmes concrets au quotidien. On voit souvent
+un manque d’automatisation des inventaires physiques, des mises à jour tardives des données
+terrain, et une dépendance forte à des systèmes lourds et parfois très coûteux [9].
+C’est exactement pour ces raisons que nous avons voulu concevoir une solution plus simple,
+plus automatique et surtout bien adaptée à une entreprise industrielle de taille intermédiaire
+comme Sagemcom.
+Page 8
+
+
+===== PAGE 23 =====
+
+CHAPITRE 2. ANALYSE DE L’EXISTANT
+Gharbi RAYEN
+2.2 Systèmes de gestion de stock traditionnels
+La plupart des entreprises utilisent encore des méthodes classiques : des saisies manuelles
+dans des fichiers Excel ou des systèmes ERP comme SAP. Chez Sagemcom, l’ERP sert à
+centraliser les informations liées à la production, à la logistique et à la finance.
+Ces systèmes sont puissants, c’est certain, mais ils dépendent énormément de la rigueur des
+utilisateurs. Si les données ne sont pas saisies correctement ou en temps voulu, tout le système
+perd en fiabilité. En plus, ils nécessitent souvent une formation assez longue et sont complexes
+à maintenir sur le long terme.
+2.3 Limites des approches traditionnelles
+Sur le terrain, les faiblesses sont assez visibles. D’abord, la saisie manuelle prend beaucoup
+de temps et provoque pas mal d’erreurs. Ensuite, il manque vraiment une synchronisation en
+temps réel entre ce qui se passe physiquement sur les lignes de production et ce qui est enregistré
+dans le système.
+Du coup, les équipes sont souvent obligées de réaliser des inventaires physiques qui viennent
+perturber le travail normal.
+2.4 Solutions basées sur l’IoT
+Les technologies IoT permettent d’automatiser la collecte des données grâce à des capteurs,
+des lecteurs de codes-barres ou des balances connectées.
+Chez Sagemcom Tunisie, on utilise déjà quelques dispositifs de lecture automatique sur
+certaines lignes, et ça a clairement amélioré le suivi des produits. Cependant, déployer l’IoT à
+grande échelle reste assez cher et pas toujours facile à intégrer avec les systèmes déjà en place.
+Page 9
+
+
+===== PAGE 24 =====
+
+CHAPITRE 2. ANALYSE DE L’EXISTANT
+Gharbi RAYEN
+2.5 Solutions basées sur l’intelligence artificielle
+L’intelligence artificielle est de plus en plus présente en logistique, surtout pour prévoir la
+demande ou détecter les anomalies [3]. Elle peut aussi aider à mieux optimiser les niveaux de
+stock.
+Par contre, ces modèles ont besoin d’énormément de données pour bien fonctionner et ils
+coûtent souvent cher, particulièrement quand ils tournent sur le Cloud.
+2.6 Solutions de Business Intelligence
+Les outils de Business Intelligence, comme Tableau, servent à transformer les données
+brutes en tableaux de bord et en indicateurs utiles pour aider à la prise de décision.
+Chez Sagemcom, Tableau est déjà utilisé. Le gros problème, c’est que ces outils ne
+collectent pas les données eux-mêmes. Leur qualité dépend entièrement de ce qu’on leur fournit
+en entrée.
+2.7 Critères d’évaluation des solutions
+Pour comparer les solutions de façon objective, nous avons retenu plusieurs critères
+principaux tirés de la littérature spécialisée [8]. Parmi eux : le degré d’automatisation,
+l’intégration avec l’IoT, l’utilisation de l’intelligence artificielle, la disponibilité des données
+en temps réel, le coût d’implémentation et la complexité globale du système.
+Ces critères nous ont aidés à mieux situer notre solution par rapport à ce qui existe déjà et à
+faire ressortir ses avantages.
+Page 10
+
+
+===== PAGE 25 =====
+
+CHAPITRE 2. ANALYSE DE L’EXISTANT
+Gharbi RAYEN
+2.8 Comparaison des solutions existantes
+Solution
+IoT
+IA
+Temps Réel
+Coût
+Complexité
+ERP Industriel (Sagemcom, SAP)
+Partielle
+Partielle
+Oui
+Élevé
+Élevée
+RFID Industriel
+Oui
+Non
+Oui
+Élevé
+Moyenne
+BI (Tableau)
+Non
+Partielle
+Non
+Moyen
+Moyenne
+Solutions Manuelles
+Non
+Non
+Non
+Faible
+Faible
+Solution Proposée
+Oui
+Oui
+Oui
+Réduit
+Modérée
+TABLE 2.1. Comparaison des solutions de gestion de stock
+2.9 Applications de gestion des stocks et comparaison
+Application
+Temps réel
+Intégration IoT
+Prévision IA
+Cloud
+Adapté PME
+Coût
+Complexité
+Odoo Inventory
+Oui
+Limitée
+Non
+Oui
+Oui
+Moyen
+Moyenne
+Zoho Inventory
+Oui
+Non
+Non
+Oui
+Oui
+Moyen
+Moyenne
+Lightspeed Retail
+Oui
+Partielle
+Non
+Oui
+Oui
+Moyen
+Moyenne
+Cin7
+Oui
+Partielle
+Partielle
+Oui
+Oui
+Élevé
+Élevée
+Sagemcom StockApp
+Oui
+Partielle
+Non
+Oui
+Moyenne
+Élevé
+Moyenne
+Solution Proposée
+Oui
+Oui
+Oui
+Optionnel
+Très adaptée
+Réduit
+Modérée
+TABLE 2.2. Analyse des performances des applications de gestion de stock existantes
+2.9.1
+Analyse comparative
+Globalement, les ERP et les applications existantes proposent un bon suivi en temps réel.
+Mais la plupart manquent d’intégration native avec l’IoT et l’IA qui tourne en local. Elles
+reposent souvent sur le Cloud et des licences chères, ce qui ne convient pas forcément à tous les
+contextes industriels.
+Page 11
+
+
+===== PAGE 26 =====
+
+CHAPITRE 2. ANALYSE DE L’EXISTANT
+Gharbi RAYEN
+2.9.2
+Positionnement de la solution proposée
+Notre solution se distingue par une approche plus intégrée. Elle combine des
+microcontrôleurs ESP32 pour la collecte des données, un modèle YOLOv8 pour l’analyse
+visuelle des rayonnages, et un système de visualisation simple.
+L’objectif était d’avoir une solution à la fois puissante, peu coûteuse et surtout facile à
+déployer sur le terrain.
+2.10 Synthèse de l’existant
+Après avoir étudié toutes ces solutions, nous nous sommes rendu compte qu’aucune ne
+répondait parfaitement à nos besoins. Les ERP sont complets mais trop complexes, les solutions
+IoT sont efficaces mais chères, et les outils de Business Intelligence dépendent complètement
+de la qualité des données qu’on leur donne.
+Il y a donc un vrai créneau pour une solution plus simple qui combine plusieurs technologies
+de façon cohérente.
+2.11 Justification des choix technologiques
+Avant de passer à la conception, il nous semblait important d’expliquer pourquoi nous
+avons retenu ces technologies précises plutôt que d’autres. Ces choix n’ont pas été faits au
+hasard : ils résultent d’une réflexion sur les contraintes du projet, les ressources disponibles
+chez Sagemcom, et nos propres expériences pendant le stage.
+Page 12
+
+
+===== PAGE 27 =====
+
+CHAPITRE 2. ANALYSE DE L’EXISTANT
+Gharbi RAYEN
+2.11.1
+Pourquoi FastAPI plutôt que Flask ou Django?
+Nous avons hésité entre ces trois frameworks Python avant de choisir FastAPI. Flask
+est plus simple mais manque de fonctionnalités natives pour les projets IoT nécessitant des
+performances élevées. Django est très complet mais clairement surdimensionné pour notre
+besoin : on n’avait pas besoin d’un ORM complet ni d’un système de templates HTML.
+FastAPI s’est imposé pour trois raisons concrètes : il gère nativement l’asynchronisme ce
+qui est idéal pour traiter plusieurs scans simultanément, il génère automatiquement une
+documentation Swagger interactive très utile pendant le développement, et ses performances
+sont significativement meilleures que Flask sur des endpoints appelés fréquemment.
+2.11.2
+Pourquoi SQL Server plutôt que PostgreSQL ou MySQL?
+Ce choix a été en grande partie dicté par le contexte de Sagemcom. SQL Server était déjà
+présent dans l’infrastructure de l’entreprise, ce qui simplifiait l’intégration et évitait d’introduire
+une nouvelle technologie à maintenir. PostgreSQL aurait été une alternative solide sur le plan
+purement technique, mais le choix pragmatique était SQL Server pour faciliter la collaboration
+avec les équipes IT en place.
+2.11.3
+Pourquoi YOLOv8s plutôt que d’autres variantes?
+La famille YOLOv8 propose plusieurs tailles de modèles : nano (n), small (s), medium (m),
+large (l) et extra-large (x). Nous avons testé les variantes nano et small avant de fixer notre choix.
+YOLOv8n était légèrement trop imprécis sur les rayonnages très chargés du dataset SKU110K.
+YOLOv8m donnait de meilleurs résultats mais dépassait le seuil des 2 secondes de traitement
+sur la machine disponible. YOLOv8s offrait le meilleur compromis : une précision suffisante
+(90,29% en mAP@50) tout en restant sous la barre des 2 secondes.
+Page 13
+
+
+===== PAGE 28 =====
+
+CHAPITRE 2. ANALYSE DE L’EXISTANT
+Gharbi RAYEN
+2.11.4
+Pourquoi Streamlit plutôt qu’une interface web classique?
+Développer une interface web complète avec React ou Vue.js aurait demandé bien plus de
+temps sans apporter de valeur ajoutée réelle dans notre contexte. Streamlit permet de créer
+rapidement une interface fonctionnelle en Python pur, sans avoir à gérer un frontend séparé.
+Pour des opérateurs qui ont besoin d’un outil simple et fiable, c’était clairement la meilleure
+option.
+Choix retenu
+Alternatives
+Raison principale
+FastAPI
+Flask, Django
+Performances async, Swagger auto,
+légèreté
+SQL Server
+PostgreSQL,
+MySQL
+Déjà en place chez Sagemcom
+YOLOv8s
+YOLOv8n,
+YOLOv8m
+Meilleur
+compromis
+vitesse/précision
+Streamlit
+React, Vue.js
+Développement rapide en Python
+pur
+Tableau
+Power BI, Grafana
+Déjà licencié chez Sagemcom
+MQTT/HTTP
+WebSocket, gRPC
+Compatibilité native ESP32
+TABLE 2.3. Récapitulatif des choix technologiques
+2.12 Analyse SWOT de la solution proposée
+Pour mieux positionner notre solution par rapport aux approches existantes, nous avons
+réalisé une analyse SWOT. Cet exercice nous a été utile non seulement pour structurer notre
+réflexion, mais aussi pour identifier dès la conception les points de vigilance à surveiller pendant
+le développement.
+Page 14
+
+
+===== PAGE 29 =====
+
+CHAPITRE 2. ANALYSE DE L’EXISTANT
+Gharbi RAYEN
+Forces
+Faiblesses
+- Solution intégrée IoT + IA + BI en
+un seul système
+- Faible coût par rapport aux ERP
+industriels
+- Temps de traitement < 2 secondes
+-
+Interface
+simple
+adaptée
+aux
+opérateurs terrain
+- Architecture modulaire et extensible
+-
+Fonctionne
+partiellement
+sans
+connexion Cloud
+- Modèle YOLO entraîné sur dataset
+générique (SKU110K)
+- Sensible aux conditions d’éclairage
+- Déployé sur une seule ligne de
+production
+- Règle heuristique pour "mal placé"
+perfectible
+- Nécessite une formation minimale
+des opérateurs
+Opportunités
+Menaces
+- Extension à toutes les lignes de
+production
+- Ajout d’un module de prévision de la
+demande
+- Développement d’une application
+mobile
+- Réentraînement YOLO sur les vrais
+produits Sagemcom
+- Intégration possible avec l’ERP SAP
+existant
+-
+Résistance
+au
+changement
+des
+opérateurs
+- Dépendance à la qualité du réseau
+Wi-Fi en usine
+- Évolution rapide des technologies
+IoT
+-
+Risque
+de
+pannes
+matérielles
+(ESP32, webcam)
+TABLE 2.4. Analyse SWOT de la solution proposée
+Page 15
+
+
+===== PAGE 30 =====
+
+CHAPITRE 2. ANALYSE DE L’EXISTANT
+Gharbi RAYEN
+Conclusion
+Ce chapitre a bien mis en évidence les limites des approches actuelles de gestion des stocks.
+Dans le chapitre suivant, nous présenterons en détail la conception de notre solution et les choix
+techniques que nous avons faits pour dépasser ces contraintes.
+Page 16
+
+
+===== PAGE 31 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+Chapitre
+3
+Conception du système
+Introduction
+Une fois les besoins bien identifiés et les contraintes clairement définies, la grande question
+était : comment organiser tout le système pour que les différentes parties fonctionnent ensemble
+de façon cohérente et stable?
+Dans ce chapitre, nous présentons les choix techniques que nous avons faits pendant la
+phase de conception. Nous revenons aussi sur quelques adaptations que nous avons dû réaliser
+en cours de projet, surtout au niveau de la base de données et du pipeline ETL. Nous détaillons
+la modélisation UML [6], le pipeline ETL inspiré des recommandations de Kimball [10], ainsi
+que l’intégration du module YOLO [3] dans l’architecture globale.
+3.1 Technologies utilisées
+L’architecture du système repose sur plusieurs technologies qui interagissent entre elles.
+Nous avons utilisé Python [11] comme langage principal, notamment pour développer
+l’API avec FastAPI et pour faire tourner le modèle d’intelligence artificielle. Pour l’interface
+utilisateur, nous avons choisi Streamlit [12] car il permet de créer rapidement une interface
+simple et accessible pour les opérateurs sur le terrain.
+Page 17
+
+
+===== PAGE 32 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+Les données transactionnelles sont stockées dans une base SQL Server [13]. Pour la partie
+analyse, nous avons utilisé Tableau [14] afin de créer des tableaux de bord clairs. Le module de
+vision par ordinateur est basé sur YOLO [3], et la partie matérielle repose sur les cartes ESP32
+et une webcam USB.
+3.2 Architecture globale du système
+Nous avons structuré le système en quatre couches principales pour bien séparer les
+responsabilités :
+— Couche IoT : elle correspond aux composants matériels ESP32 qui collectent les données
+directement sur le terrain via le scan de codes-barres et la capture d’images avec la
+webcam USB.
+— Couche applicative : elle regroupe les services logiciels comme l’API FastAPI,
+l’interface Streamlit, le module YOLO et les scripts ETL.
+— Couche de données : elle contient la base SQL Server (OLTP) pour les opérations
+transactionnelles et l’entrepôt de données (OLAP) pour l’analyse.
+— Couche décisionnelle : elle permet aux responsables de consulter les tableaux de bord et
+de suivre les indicateurs.
+Page 18
+
+
+===== PAGE 33 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+FIGURE 3.1. Diagramme global du système
+3.3 Correspondance entre besoins et conception
+Chaque besoin fonctionnel a été relié à un composant précis du système. La collecte
+automatique est assurée par la partie IoT avec l’ESP32 et la webcam USB. Les opérations de
+gestion se font via l’interface Streamlit et l’API Python. Les données sont stockées dans SQL
+Server pour garantir leur cohérence et leur traçabilité.
+L’analyse des rayonnages est réalisée par le modèle YOLO, tandis que les résultats sont
+affichés sous forme d’indicateurs via Tableau.
+Page 19
+
+
+===== PAGE 34 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+3.4 Modélisation UML
+3.4.1
+Diagramme de cas d’utilisation
+Le diagramme de cas d’utilisation (Figure 3.2) représente les interactions entre les
+utilisateurs et le système [6]. Il permet de bien distinguer les rôles de l’employé et de
+l’administrateur.
+FIGURE 3.2. Diagramme de cas d’utilisation
+Acteur
+Rôle dans le système
+Utilisateur (classe mère)
+Représente
+la
+base
+commune
+des
+utilisateurs
+avec
+l’authentification et la gestion de session.
+Employé
+Utilise le système pour scanner les produits, enregistrer les
+mouvements et consulter les stocks.
+Administrateur
+Gère les utilisateurs, supervise le système et consulte les
+rapports et analyses.
+TABLE 3.1. Hiérarchie des utilisateurs et leurs rôles
+Page 20
+
+
+===== PAGE 35 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+3.4.2
+Diagramme de classes
+Le diagramme de classes (Figure 3.3) décrit la structure du système [6]. Il contient les
+principales entités comme Produit, Stock et MouvementStock ainsi que leurs relations.
+FIGURE 3.3. Diagramme de classes
+3.4.3
+Diagramme de séquence
+Le diagramme de séquence (Figure 3.4) montre le déroulement d’une opération de mise à
+jour de stock. Les données passent du scan IoT vers l’interface, puis vers l’API et enfin vers la
+base SQL Server.
+Page 21
+
+
+===== PAGE 36 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+FIGURE 3.4. Diagramme de séquence
+3.4.4
+Diagramme d’activité
+Le diagramme d’activité (Figure 3.5) représente le flux global du système, depuis la capture
+des données jusqu’au traitement, en incluant la détection d’anomalies via le modèle YOLO.
+Page 22
+
+
+===== PAGE 37 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+FIGURE 3.5. Diagramme d’activité — Gestion intelligente du stock
+Page 23
+
+
+===== PAGE 38 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+3.5 Sécurité de l’architecture
+La question de la sécurité n’est pas le premier réflexe quand on développe un prototype, mais
+nous avons voulu quand même poser des bases solides sur ce point, d’autant que le système gère
+des données de production sensibles.
+3.5.1
+Authentification et gestion des rôles
+L’authentification est gérée via des tokens JWT (JSON Web Token). Concrètement, quand
+un utilisateur se connecte via l’interface Streamlit, il reçoit un token signé avec une clé secrète
+côté serveur. Ce token est ensuite joint à chaque requête vers l’API. Si le token est absent, expiré
+ou invalide, l’API renvoie une erreur 401 et la requête est rejetée.
+La gestion des rôles distingue deux profils. L’employé peut scanner des produits, enregistrer
+des mouvements de stock et consulter l’état des rayonnages. L’administrateur dispose en plus
+de la gestion des utilisateurs, de la configuration des seuils d’alerte et de l’accès aux rapports
+analytiques complets. Cette séparation évite qu’un opérateur puisse modifier accidentellement
+des paramètres critiques du système.
+3.5.2
+Sécurisation des communications ESP32
+Les données envoyées par l’ESP32 vers l’API transitent via HTTP POST sur le réseau Wi-Fi
+local de l’usine. Dans l’état actuel du prototype, ces communications ne sont pas chiffrées
+en HTTPS. C’est une limite que nous avons identifiée et qui devra être corrigée avant tout
+déploiement en production réelle, notamment en activant TLS sur le serveur FastAPI et en
+configurant l’ESP32 pour gérer les certificats SSL.
+Page 24
+
+
+===== PAGE 39 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+Fonctionnalité
+Employé
+Administrateur
+Scanner un produit
+✓
+✓
+Consulter le stock
+✓
+✓
+Recevoir des alertes
+✓
+✓
+Résoudre une alerte
+✓
+✓
+Gérer les utilisateurs
+×
+✓
+Configurer les seuils
+×
+✓
+Consulter les rapports
+×
+✓
+Accéder au dashboard
+×
+✓
+TABLE 3.2. Matrice des droits d’accès par rôle
+3.6 Conception de la base de données
+3.6.1
+Modèle relationnel
+Nous avons utilisé SQL Server [13] pour stocker les données transactionnelles du système.
+La base contient les tables principales : Produit, Stock, MouvementStock, Utilisateur, Alerte,
+etc. Les relations entre les tables permettent de garder un historique complet tout en assurant la
+cohérence des données.
+FIGURE 3.6. Modèle relationnel (OLTP)
+Page 25
+
+
+===== PAGE 40 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+3.6.2
+Schéma en étoile
+Du côté analytique, nous avons décidé d’adopter un schéma en étoile [10] pour améliorer
+les performances des requêtes. La table de faits principale (Fact_Mouvement) est reliée aux
+dimensions Produit, Date et Utilisateur.
+FIGURE 3.7. Schéma en étoile (OLAP)
+3.7 Conception du pipeline ETL
+Le pipeline ETL [10] permet de transférer les données de la base transactionnelle vers
+l’entrepôt de données. Il est composé de trois étapes classiques : l’extraction, la transformation
+(nettoyage et préparation) et le chargement dans le schéma en étoile.
+Page 26
+
+
+===== PAGE 41 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+FIGURE 3.8. Pipeline ETL
+3.8 Flux de données
+Les données circulent depuis les dispositifs IoT vers l’API, puis sont stockées dans SQL
+Server. Elles sont ensuite traitées par le pipeline ETL pour alimenter l’entrepôt de données et
+les tableaux de bord. Ce flux permet de suivre les informations depuis leur source jusqu’à leur
+exploitation en analyse.
+3.9 Conception du module IA (YOLO)
+Le module YOLO [3] est utilisé pour analyser les images des rayonnages capturées par
+la webcam USB. Les images sont traitées pour détecter les objets et leur position, puis les
+résultats sont comparés aux données attendues dans la base. En cas d’anomalie, une alerte est
+automatiquement enregistrée et envoyée.
+Le système classe l’état de chaque rayonnage en cinq catégories distinctes, définies par des
+seuils de densité et un suivi temporel des trames consécutives. Le tableau 3.3 résume ces cinq
+états et leurs caractéristiques.
+Page 27
+
+
+===== PAGE 42 =====
+
+CHAPITRE 3. CONCEPTION DU SYSTÈME
+Gharbi RAYEN
+État
+Densité
+Condition
+Couleur
+Résultat API
+vide
+< 6%
+Zone vide
+Rouge
+ABSENT
+stock_bas
+6–20%
+Stock faible mais
+non vide
+Jaune-orange
+STOCK_BAS
+stock_normal
+20–50%
+Stock sain
+Vert
+CONFORME
+surstock
+> 50%
+Surcharge
+Orange
+CONFORME
+critique
+< 6%, ≥30 trames
+Vide prolongé
+Rouge foncé
+ABSENT
+TABLE 3.3. Les cinq états du module YOLO définis lors de la conception
+FIGURE 3.9. Module IA (YOLO)
+Conclusion
+La phase de conception nous a permis de bien structurer le système et de relier chaque
+besoin à une solution technique précise. L’architecture en couches et la séparation entre OLTP
+et OLAP rendent le tout plus clair, plus stable et plus facile à maintenir à long terme.
+Le chapitre suivant présente l’implémentation réelle du système et les résultats obtenus.
+Page 28
+
+
+===== PAGE 43 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+Chapitre
+4
+Réalisation et Implémentation
+Introduction
+Ce chapitre décrit la phase de réalisation du projet dans son intégralité. Avant d’entrer dans
+les détails techniques, nous tenons à préciser un point important : au début, nous ne disposions
+pas de tout le matériel physique nécessaire. Nous avons donc dû simuler la partie IoT (ESP32
+et webcam USB) dans un environnement logiciel. Cette simulation nous a permis de valider
+l’architecture complète et toute la chaîne de traitement. Une fois le matériel arrivé, nous avons
+pu déployer la solution sur les composants réels et confirmer que tout fonctionnait bien en
+conditions opérationnelles.
+Hormis cette phase de simulation initiale, tous les autres composants (base de données SQL
+Server, pipeline ETL, interface Streamlit et module YOLO) ont été implémentés et testés en
+conditions réelles.
+4.1 Environnement de développement
+Avant de détailler les différentes parties du système, voici l’environnement dans lequel tout
+le développement a été réalisé. Ces informations sont importantes pour quiconque voudrait
+reproduire ou faire évoluer le projet.
+Page 29
+
+
+===== PAGE 44 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+Composant
+Détail
+Système d’exploitation
+Windows 11 Pro / macOS Sequoia
+Langage principal
+Python 3.11
+Framework API
+FastAPI 0.104
+Interface utilisateur
+Streamlit 1.28
+Base de données
+SQL Server 2019
+Vision par ordinateur
+Ultralytics YOLOv8 8.0.196
+Pipeline ETL
+Python (pandas 2.1, sqlalchemy 2.0)
+Visualisation
+Tableau Desktop 2023.3
+IDE
+VS Code 1.84
+Microcontrôleur
+ESP32 DevKit V1 (Espressif)
+Scanner codes-barres
+GM67 (UART Serial)
+Caméra
+Webcam USB 1080p
+TABLE 4.1. Environnement de développement et matériel utilisé
+4.2 Implémentation de la partie IoT
+La partie IoT représente le point d’entrée des données dans le système. Son développement
+s’est déroulé en deux phases : d’abord une simulation logicielle pour valider l’architecture
+globale, puis un déploiement sur le matériel réel dès que les composants ont été disponibles.
+4.2.1
+Difficultés rencontrées et contraintes rencontrées
+Ce projet n’a pas été sans difficultés. La plus importante fut le retard dans la livraison du
+matériel (ESP32 et webcam USB). Nous avons donc dû passer une grande partie du temps en
+simulation logicielle avant de pouvoir tester sur le matériel réel.
+Par ailleurs, nous n’avons pas pu obtenir de dataset interne de Sagemcom contenant les
+vrais produits de l’entreprise. Faute de données propres à l’usine, nous avons utilisé le dataset
+public SKU110K. Le modèle YOLOv8 que nous avons développé reste donc un modèle de
+Page 30
+
+
+===== PAGE 45 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+démonstration. Il fonctionne correctement sur des rayonnages génériques, mais il n’a pas été
+entraîné sur les produits réels de Sagemcom. Cela limite sa précision dans un contexte industriel
+réel.
+4.2.2
+Configuration de l’ESP32
+L’ESP32 [15] sert d’unité centrale pour collecter et transmettre les données en temps réel via
+Wi-Fi. Sa configuration inclut l’initialisation des entrées/sorties, la gestion de la communication
+série, la logique de scan et la connectivité vers le système central. Lors du déploiement réel, nous
+avons flashé le programme sur la carte physique et testé le tout en conditions opérationnelles.
+Le comportement était conforme à ce que nous avions observé pendant la simulation.
+FIGURE 4.1. Configuration et câblage de l’ESP32
+Page 31
+
+
+===== PAGE 46 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+4.2.3
+Lecture des codes-barres
+Un scanner de codes-barres permet d’identifier automatiquement les produits lors de
+leur entrée ou sortie de stock. Chaque produit possède un identifiant unique qui déclenche
+immédiatement la mise à jour du stock dans la base de données. Cela élimine presque
+complètement les erreurs liées à la saisie manuelle.
+FIGURE 4.2. Lecture d’un code-barres
+4.2.4
+Affichage LCD et LEDs
+Un écran LCD affiche en temps réel les informations du produit en cours de traitement. Les
+LEDs donnent un retour visuel immédiat sur l’état du stock du produit scanné, comme illustré
+dans la figure 4.3.
+Page 32
+
+
+===== PAGE 47 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.3. Affichage LCD du produit scanné
+Le système utilise trois LEDs de signalisation, dont le comportement est défini comme suit :
+— LED Verte (GPIO 25) : s’allume lorsque le stock du produit scanné est supérieur au
+seuil minimum configuré. Cela indique que le niveau de stock est suffisant et qu’aucune
+action n’est requise.
+— LED Jaune (GPIO 26) : s’allume lorsque le stock est inférieur ou égal au seuil
+minimum, mais reste supérieur à zéro. Elle signale que le stock est en zone critique et
+qu’un réapprovisionnement doit être planifié.
+— LED Rouge (GPIO 27) : s’allume dans trois cas distincts :
+— le stock du produit est épuisé (quantité ≤0),
+— le code-barres scanné est introuvable dans la base de données (erreur HTTP 404),
+— une erreur de communication avec l’API ou un problème d’analyse JSON est
+détecté.
+Page 33
+
+
+===== PAGE 48 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+Vert
+Stock suffisant
+Jaune
+Stock sous
+le seuil
+Rouge
+Stock épuisé
+ou erreur
+FIGURE 4.4. Signalisation par LEDs du système de scan
+4.2.5
+Communication des données
+La transmission des données vers la plateforme centrale se fait via HTTP ou MQTT selon
+le réseau disponible. Ce choix permet une mise à jour en temps réel de la base de données et un
+accès distant aux informations de stock depuis n’importe quel poste autorisé.
+FIGURE 4.5. Flux de communication des données IoT
+Page 34
+
+
+===== PAGE 49 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+4.3 Implémentation de la base de données SQL Server
+La base de données SQL Server [13] constitue le cœur du stockage transactionnel du
+système. Elle regroupe six tables principales : Produit, Stock, MouvementStock, Utilisateur,
+Alerte et DetectionPlacement. Ces tables couvrent l’ensemble des besoins métier pour le suivi
+des stocks, la gestion des utilisateurs et la traçabilité des détections.
+FIGURE 4.6. Structure des tables de la base de données SQL Server
+FIGURE 4.7. Exemple de données enregistrées dans SQL Server
+Page 35
+
+
+===== PAGE 50 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+4.4 Développement du pipeline ETL en Python
+Le pipeline ETL [10] automatise le transfert et la préparation des données entre la base
+transactionnelle et le Data Warehouse. Il se déroule en trois étapes :
+— Extraction : récupération des données de SQL Server et des sources IoT sans
+modification des enregistrements sources.
+— Transformation : nettoyage des incohérences, recalcul des indicateurs et préparation des
+clés de jointure pour le schéma en étoile.
+— Chargement : insertion des données transformées dans le Data Warehouse.
+FIGURE 4.8. Extrait du code Python du pipeline ETL
+Page 36
+
+
+===== PAGE 51 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.9. Résultat du chargement ETL dans le Data Warehouse
+4.5 Développement de l’API Backend
+Pour assurer la communication entre l’ESP32 et le reste du système, nous avons développé
+une API REST avec FastAPI. Son rôle principal est de recevoir les scans envoyés par l’ESP32,
+de mettre à jour le stock dans la base de données et de transmettre les résultats de détection
+YOLO. Elle expose également des endpoints pour la gestion des alertes, ce qui permet à
+Streamlit de les consulter et de les résoudre en temps réel.
+Groupe
+Endpoint
+Rôle
+Produits
+/product/{barcode}
+Consultation et création de produits
+Stock
+/stock/update
+Mise à jour des quantités et enregistrement des mouvements
+Scan IoT
+/scan, /last-scan
+Communication temps réel avec l’ESP32
+Détections
+/scan-batch
+Réception des résultats YOLO
+/detections/stats
+Synthèse et statistiques
+Alertes
+/alerts
+Consultation des alertes
+/alerts/{id}/resolve
+Résolution des alertes
+TABLE 4.2. Endpoints principaux de l’API FastAPI
+Page 37
+
+
+===== PAGE 52 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.10. Interface Swagger de l’API FastAPI
+4.6 Développement de l’interface Streamlit
+Nous avons conçu l’interface Streamlit [12] pour qu’elle soit facile à utiliser par les
+opérateurs sur le terrain, même sans compétences techniques particulières. Elle contient huit
+pages qui couvrent tous les besoins : suivi du stock en temps réel, gestion des produits et
+utilisateurs, supervision des appareils IoT, consultation des détections YOLO et gestion des
+alertes.
+Page 38
+
+
+===== PAGE 53 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.11. Page principale de l’interface Streamlit
+FIGURE 4.12. Interface de gestion des produits dans Streamlit
+Page 39
+
+
+===== PAGE 54 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.13. Visualisation des alertes dans Streamlit
+FIGURE 4.14. Interface de Gestion du produit
+4.7 Création du tableau de bord Tableau
+Nous avons choisi Tableau [14] pour l’analyse des données issues du Data Warehouse. Le
+tableau de bord permet de suivre les niveaux de stock, d’analyser les tendances et de recevoir
+des alertes visuelles dès qu’un seuil critique est franchi.
+Page 40
+
+
+===== PAGE 55 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.15. Dashboard principal Tableau
+4.7.1
+Modèle de données
+Le tableau de bord s’appuie sur le schéma en étoile. La table de faits Fact_Mouvement
+enregistre chaque transaction avec la quantité, la date, le produit et l’utilisateur concerné. Les
+dimensions associées sont Dim_Date, Dim_Produit et Dim_Utilisateur.
+4.7.2
+Indicateurs KPI
+Quatre indicateurs clés ont été définis :
+— Nombre total de mouvements : COUNT(Fact_Mouvement[idFact]).
+— Quantité totale déplacée : SUM(Fact_Mouvement[quantite]).
+— Nombre d’utilisateurs actifs : COUNTD(Dim_Utilisateur[utilisateur_id]).
+— Nombre total de produits : COUNTD(Dim_Produit[produit_id]).
+Page 41
+
+
+===== PAGE 56 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.16. Indicateurs KPI
+4.7.3
+Structure du dashboard
+Le tableau de bord est organisé en quatre pages : Executive Dashboard, Product Analysis,
+Time Analysis et User Analysis. Des filtres dynamiques permettent à chaque utilisateur de
+segmenter les données selon ses besoins.
+FIGURE 4.17. Page Executive Dashboard présentant les indicateurs globaux du système
+Page 42
+
+
+===== PAGE 57 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.18. Page Product Analysis dédiée à l’analyse des produits et des stocks
+FIGURE 4.19. Page Time Analysis illustrant l’évolution temporelle des données
+Page 43
+
+
+===== PAGE 58 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.20. Page User Analysis présentant l’activité et les statistiques utilisateurs
+4.8 Intégration du module YOLO
+Le module YOLO constitue la partie intelligence artificielle du système. La webcam USB
+capture une image du rayon, YOLOv8 détecte les produits, puis le système classe l’état du rayon
+en cinq catégories et déclenche les alertes correspondantes dans Streamlit.
+Nous avons utilisé la version small de YOLOv8 (yolov8s.pt) car elle offre un bon compromis
+entre rapidité (moins de 2 secondes) et précision. Le modèle a été entraîné sur le dataset
+SKU110K.
+4.8.1
+Choix de YOLOv8
+Nous avons retenu YOLOv8 dans sa variante small (yolov8s.pt) pour trois raisons
+principales : sa latence inférieure à 2 secondes (conforme au cahier des charges), sa précision
+sur les scènes très denses comme les rayons de supermarché, et sa compatibilité native avec
+Python et Streamlit sans dépendances supplémentaires.
+Page 44
+
+
+===== PAGE 59 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+4.8.2
+Dataset d’entraînement : SKU110K
+Le modèle a été entraîné sur SKU110K [16], un jeu de données de référence pour la
+détection de produits en grande distribution. Il contient 11 689 images haute résolution de
+rayons réels répartis comme suit :
+Split
+Images
+Labels
+Train
+8 185
+8 185
+Validation
+584
+584
+Test
+2 920
+2 920
+Total
+11 689
+11 689
+TABLE 4.3. Composition du dataset SKU110K
+Les annotations sont au format YOLO natif : une ligne par produit dans chaque fichier .txt,
+avec les coordonnées normalisées du centre et les dimensions de la boîte englobante. La figure
+suivante illustre la distribution des annotations dans le dataset.
+Page 45
+
+
+===== PAGE 60 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.21. Distribution des annotations dans le dataset SKU110K
+La figure (4.22)montre des exemples d’images d’entraînement avec l’augmentation par
+mosaïque activée (chaque image combine quatre scènes de rayons différentes) :
+Page 46
+
+
+===== PAGE 61 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.22. Exemples de batches d’entraînement avec augmentation mosaïque
+4.8.3
+Entraînement sur Google Colab
+L’entraînement a été réalisé sur Google Colaboratory avec un GPU NVIDIA Tesla T4. Le
+modèle de base yolov8s.pt, pré-entraîné sur COCO, a été fine-tuné sur SKU110K avec la
+configuration suivante :
+Page 47
+
+
+===== PAGE 62 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+Paramètre
+Valeur
+Justification
+epochs
+50
+Convergence observée avant 50 epochs
+imgsz
+640
+Résolution standard YOLOv8
+batch
+16
+Adapté à la mémoire GPU T4
+lr0
+0,01
+Taux d’apprentissage initial
+patience
+10
+Arrêt anticipé si pas d’amélioration
+mosaic
+1,0
+Augmentation par mosaïque
+fliplr
+0,5
+Retournement horizontal aléatoire
+TABLE 4.4. Hyperparamètres d’entraînement YOLOv8
+4.8.4
+Stratégie de classification : cinq états du rayon
+SKU110K ne fournit pas directement les labels d’état du rayon. Le système détermine l’état
+en deux étapes successives.
+4.8.4.1
+Étape 1 — Détection des produits par YOLOv8
+Le modèle détecte l’ensemble des produits présents dans l’image et retourne leurs boîtes
+englobantes (x1, y1, x2, y2) avec les scores de confiance associés.
+4.8.4.2
+Étape 2 — Analyse par densité
+Le système calcule le taux de densité pour déterminer le niveau de remplissage global.
+a)
+Calcul du taux de densité.
+Le taux de densité δ est le rapport entre la surface couverte par tous les produits détectés et
+la surface totale de l’image :
+δ =
+N
+X
+i=1
+(x2,i −x1,i) × (y2,i −y1,i)
+W × H
+(4.1)
+Page 48
+
+
+===== PAGE 63 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+où N est le nombre de produits détectés, et W × H la résolution de l’image.
+b)
+Classification finale.
+La classification repose sur cinq états, en combinant le taux de densité δ et un suivi temporel
+sur les trames consécutives F :
+État =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+critique
+si δ < τvide ∧F ≥30
+vide
+si N = 0 ∨δ < τvide
+stock_bas
+si τvide ≤δ < τbas
+surstock
+si δ ≥τsurstock
+stock_normal
+sinon
+(4.2)
+avec les seuils suivants :
+— τvide = 0,06
+(seuil de vide, 6 %)
+— τbas = 0,20
+(seuil de stock bas, 20 %)
+— τsurstock = 0,50
+(seuil de surstock, 50 %)
+— F ≥30 trames consécutives en état vide pour déclencher l’état critique
+L’état critique est une extension temporelle de l’état vide : il signale qu’un rayon est
+resté vide pendant au moins 30 trames consécutives, indiquant une rupture de stock prolongée
+nécessitant une intervention urgente.
+État
+Densité
+Condition
+Couleur
+Résultat API
+vide
+< 6%
+Zone vide
+Rouge
+ABSENT
+stock_bas
+6–20%
+Stock
+faible
+mais non vide
+Jaune-orange
+STOCK_BAS
+stock_normal
+20–50%
+Stock sain
+Vert
+CONFORME
+surstock
+> 50%
+Surcharge
+Orange
+CONFORME
+critique
+< 6%, ≥30 trames
+Vide prolongé
+Rouge foncé
+ABSENT
+TABLE 4.5. Les cinq états détectés par le module YOLO et les alertes associées
+Page 49
+
+
+===== PAGE 64 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+4.8.5
+Exemples de détection sur images de validation
+Les figures suivantes illustrent les prédictions du modèle sur des images issues du set de
+validation, avec les boîtes englobantes des produits détectés et le statut de stock calculé en
+temps réel.
+FIGURE 4.23. Prédictions YOLOv8 sur le batch de validation 0
+Page 50
+
+
+===== PAGE 65 =====
+
+CHAPITRE 4. RÉALISATION ET IMPLÉMENTATION
+Gharbi RAYEN
+FIGURE 4.24. Prédictions YOLOv8 sur le batch de validation 1
+4.8.6
+Export et déploiement
+Le modèle final a été exporté au format PyTorch (.pt) pour l’intégration directe dans
+Streamlit.
+Conclusion
+Ce chapitre a présenté la réalisation concrète de tous les composants du système. Le pipeline
+ETL, l’API FastAPI, l’interface Streamlit, le module YOLO et les tableaux de bord Tableau ont
+été implémentés, intégrés et testés de façon cohérente. La simulation initiale de l’IoT nous a
+beaucoup aidés à valider l’architecture avant le passage sur matériel réel. L’ensemble constitue
+une base solide pour les tests présentés dans le chapitre suivant.
+Page 51
+
+
+===== PAGE 66 =====
+
+CHAPITRE 5. TESTS ET RÉSULTATS
+Gharbi RAYEN
+Chapitre
+5
+Tests et Résultats
+Introduction
+Ce chapitre présente la stratégie de test que nous avons adoptée, les résultats obtenus après
+l’entraînement du modèle YOLOv8 sur le dataset SKU110K, ainsi qu’une analyse globale des
+performances du système complet.
+5.1 Stratégie de test
+Nous avons organisé les tests de manière à couvrir tous les composants du système. Chaque
+module a d’abord été testé séparément avant d’être intégré dans le flux complet. Les principaux
+points vérifiés étaient :
+— Le fonctionnement bout en bout : de la lecture du code-barres jusqu’à l’affichage dans
+Streamlit.
+— La communication IoT entre l’ESP32 et la plateforme centrale.
+— La précision du modèle YOLO sur les images de rayonnages.
+— L’intégrité des données dans SQL Server.
+— Les performances globales, notamment le temps de réponse.
+Page 52
+
+
+===== PAGE 67 =====
+
+CHAPITRE 5. TESTS ET RÉSULTATS
+Gharbi RAYEN
+5.2 Tests unitaires et d’intégration
+Avant de tester le système dans son ensemble, nous avons vérifié chaque composant
+séparément. C’est une approche que nous avons adoptée dès le début pour éviter de perdre
+du temps à chercher l’origine d’un bug dans un système entièrement intégré.
+5.2.1
+Tests de l’API FastAPI
+Nous avons utilisé Postman pour tester manuellement tous les endpoints de l’API, ainsi
+que pytest pour automatiser les tests des fonctions critiques. Le tableau ci-dessous résume les
+principaux cas testés.
+Cas de test
+Entrée
+Résultat attendu
+Statut
+Scan produit existant
+Code-barres
+valide
+Stock mis à jour,
+HTTP 200
+✓Passé
+Scan produit inexistant
+Code-barres
+inconnu
+Message
+d’erreur,
+HTTP
+404
+✓Passé
+Mise
+à
+jour
+stock
+négatif
+Quantité = -5
+Rejet, HTTP 422
+✓Passé
+Accès sans token JWT
+Requête
+non
+authentifiée
+Rejet, HTTP 401
+✓Passé
+Alerte seuil minimum
+Stock < seuilMin
+Alerte créée en
+base
+✓Passé
+TABLE 5.1. Résultats des tests unitaires de l’API
+Page 53
+
+
+===== PAGE 68 =====
+
+CHAPITRE 5. TESTS ET RÉSULTATS
+Gharbi RAYEN
+5.2.2
+Tests du pipeline ETL
+Pour valider le pipeline ETL, nous avons vérifié trois points essentiels. D’abord l’intégrité
+des données : le nombre d’enregistrements chargés dans le Data Warehouse correspond bien
+au nombre extrait de la base transactionnelle (zéro perte de données). Ensuite la cohérence
+des transformations : les KPIs recalculés correspondent aux calculs manuels effectués sur un
+échantillon de contrôle. Enfin la gestion des erreurs : en cas de connexion perdue à mi-pipeline,
+le système reprend là où il s’était arrêté sans dupliquer les données.
+5.2.3
+Tests de la communication ESP32
+Nous avons testé la communication IoT dans trois conditions différentes : réseau Wi-Fi
+stable, réseau instable avec pertes de paquets simulées, et coupure complète de la connexion.
+Dans les deux premiers cas, les données arrivent correctement à l’API. Dans le troisième cas,
+l’ESP32 stocke les scans en mémoire locale et les retransmet automatiquement dès que la
+connexion revient, sans aucune perte d’information.
+5.3 Résultats du modèle YOLO
+5.3.1
+Courbes d’entraînement
+La figure 5.1 montre l’évolution des pertes et des métriques pendant l’entraînement. On
+observe une convergence stable du modèle sans signe évident de surapprentissage, ce qui est
+plutôt rassurant.
+Page 54
+
+
+===== PAGE 69 =====
+
+CHAPITRE 5. TESTS ET RÉSULTATS
+Gharbi RAYEN
+FIGURE 5.1. Performances et pertes du modèle YOLOv8 au cours de l’entraînement
+Les trois fonctions de perte d’entraînement (box_loss, cls_loss et dfl_loss) convergent
+rapidement
+dès
+les
+premières
+époques
+(environ
+epoch
+10–15),
+puis
+se
+stabilisent
+progressivement.
+Les
+courbes
+de
+validation
+suivent
+la
+même
+tendance
+que
+celles
+d’entraînement, ce qui confirme l’absence de surapprentissage (overfitting). Une légère
+instabilité est observée sur la courbe val/dfl_loss vers la fin de l’entraînement, mais elle reste
+négligeable et n’affecte pas la qualité globale du modèle.
+5.3.2
+Courbes Précision, Rappel et F1
+FIGURE 5.2. Courbe de Précision en
+fonction du seuil de confiance
+FIGURE 5.3. Courbe de Rappel en fonction
+du seuil de confiance
+Page 55
+
+
+===== PAGE 70 =====
+
+CHAPITRE 5. TESTS ET RÉSULTATS
+Gharbi RAYEN
+FIGURE 5.4. Courbe F1-score en fonction
+du seuil de confiance
+FIGURE 5.5. Courbe Précision-Rappel (PR
+curve)
+La précision (precision) atteint une valeur finale d’environ 0.91, tandis que le rappel (recall)
+se stabilise autour de 0.84. La chute brutale observée sur la courbe du rappel lors des premières
+époques est un comportement normal durant la phase d’exploration initiale du modèle, avant
+qu’il ne commence à discriminer correctement les classes.
+5.3.3
+Métriques de performance sur le set de test
+Le mAP50 atteint une valeur d’environ 0.902, indiquant que le modèle détecte correctement
+la majorité des produits avec un seuil d’intersection sur union (IoU) de 50%. Le mAP50-95,
+métrique plus stricte évaluant la détection sur plusieurs seuils d’IoU, se stabilise autour
+de 0.5551, ce qui constitue un résultat satisfaisant pour un modèle entraîné sur un dataset
+personnalisé de produits industriels.
+Métrique
+Valeur
+Description
+mAP@50
+0.9029
+Précision moyenne à IoU ≥0,50
+mAP@50-95
+0.5551
+Précision moyenne sur IoU ∈[0,50; 0,95]
+Précision (P)
+0.9060
+V P / (V P + FP)
+Rappel (R)
+0.8455
+V P / (V P + FN)
+TABLE 5.2. Métriques de performance sur le set de test SKU110K
+Page 56
+
+
+===== PAGE 71 =====
+
+CHAPITRE 5. TESTS ET RÉSULTATS
+Gharbi RAYEN
+5.3.4
+Matrice de confusion
+Le modèle arrive à bien classer la grande majorité des produits détectés. La matrice de
+confusion montre qu’il distingue efficacement les produits du fond (background), avec un taux
+de faux positifs bien maîtrisé.
+FIGURE 5.6. Matrice de confusion normalisée
+5.4 Tests de performance du système
+L’objectif principal était d’obtenir un temps de traitement inférieur à deux secondes pour
+l’ensemble du flux (du scan jusqu’à la mise à jour visible dans Streamlit), conformément aux
+exigences définies au début du projet.
+Page 57
+
+
+===== PAGE 72 =====
+
+CHAPITRE 5. TESTS ET RÉSULTATS
+Gharbi RAYEN
+FIGURE 5.7. Résultats des tests de performance du système
+5.5 Tests de fiabilité
+Nous avons également testé le comportement du système face à des erreurs courantes en
+conditions réelles :
+— Erreur de lecture de code-barres : le système rejette proprement la lecture et demande
+un nouveau scan.
+— Perte de connexion IoT : les données sont mises en attente localement et se
+synchronisent automatiquement dès que la connexion revient.
+— Faux positif YOLO : nous avons mis un seuil de confiance minimum (0,25) pour éviter
+de déclencher des alertes inutiles.
+— Détection état critique : le compteur de trames consécutives est réinitialisé correctement
+après chaque réapprovisionnement, évitant les faux positifs sur l’état critique
+(déclenchement uniquement après 30 trames vides continues).
+Page 58
+
+
+===== PAGE 73 =====
+
+CHAPITRE 5. TESTS ET RÉSULTATS
+Gharbi RAYEN
+5.6 Analyse des résultats
+Globalement, les tests montrent que le système fonctionne de manière stable et cohérente. Le
+module YOLO s’est révélé efficace pour détecter les produits même sur des rayons très chargés.
+La classification en cinq états (vide, stock bas, normal, surstock, critique) apporte une vraie
+valeur ajoutée par rapport à une simple détection binaire, en offrant une granularité suffisante
+pour déclencher des actions adaptées à chaque situation.
+Avant
+Après
+Gestion manuelle sur Excel
+Automatisation complète
+Erreurs de saisie fréquentes
+Réduction significative des erreurs
+Aucun suivi en temps réel
+Suivi en temps réel via Streamlit
+Données non structurées
+Pipeline ETL structuré
+Aucune détection visuelle des rayons
+YOLO intégré : 5 états détectés
+TABLE 5.3. Comparaison avant/après l’implémentation du système
+5.7 Limites et perspectives
+5.7.1
+Limites identifiées
+La principale limite concerne le module YOLO : ses performances sont sensibles aux
+conditions d’éclairage. Un mauvais éclairage ou un mauvais angle de la webcam USB peut
+réduire la précision. De plus, les seuils de densité utilisés pour la classification des cinq états
+(τvide = 6%, τbas = 20%, τsurstock = 50%) ont été définis de façon empirique sur le dataset
+SKU110K et pourraient nécessiter un recalibrage sur les rayonnages réels de Sagemcom.
+Page 59
+
+
+===== PAGE 74 =====
+
+CHAPITRE 5. TESTS ET RÉSULTATS
+Gharbi RAYEN
+5.7.2
+Perspectives d’évolution
+— Déployer plusieurs ESP32 et webcams USB sur les lignes de production réelles.
+— Développer une application mobile pour les opérateurs terrain.
+— Ajouter un module de prévision de la demande pour anticiper les ruptures de stock.
+— Recalibrer les seuils de densité YOLO sur des images réelles de l’usine pour affiner la
+classification des cinq états.
+— Optimiser YOLO pour mieux gérer les variations d’éclairage.
+Conclusion
+Ce chapitre a présenté les tests réalisés et les résultats obtenus sur l’ensemble du système.
+Les objectifs fixés ont été globalement atteints : fiabilité du flux, bonne précision du modèle
+YOLO et performances conformes aux exigences temps réel. La classification en cinq états du
+rayon constitue une contribution intéressante et utile pour la gestion intelligente des stocks en
+milieu industriel.
+Page 60
+
+
+===== PAGE 75 =====
+
+CONCLUSION GÉNÉRALE
+Gharbi RAYEN
+Conclusion Générale
+Ce projet réalisé chez Sagemcom Tunisie nous a permis de découvrir de nombreuses réalités
+du monde industriel. L’expérience a été à la fois enrichissante et challengeante et honnêtement,
+bien plus complexe que ce que nous imaginions au départ quand nous avons vu cet opérateur
+recopier des chiffres d’un fichier Excel à l’autre.
+Globalement, les objectifs techniques que nous nous étions fixés ont été atteints.
+L’architecture globale fonctionne correctement : l’API FastAPI gère bien la collecte des
+données en temps réel via les ESP32 et la webcam USB, et met à jour la base SQL Server
+en moins de deux secondes. Grâce au pipeline ETL, les données sont ensuite bien exploitées
+dans les tableaux de bord Tableau, offrant aux responsables une vision claire et utile là où il n’y
+avait avant que des fichiers Excel désynchronisés.
+Le module de vision par ordinateur (YOLOv8) représente l’un des points forts du projet.
+Entraîné sur le dataset public SKU110K, il a atteint une précision de 90,29% en mAP@50,
+ce qui dépasse nos estimations initiales nous espérions honnêtement atteindre 85% et nous
+avons été agréablement surpris du résultat. La capacité à classer l’état des rayonnages en cinq
+catégories (vide, stock bas, normal, surstock et critique) apporte une vraie valeur ajoutée par
+rapport aux solutions classiques qui se contentent d’une simple détection binaire.
+Cependant, plusieurs défis restent à relever pour passer d’un prototype à un déploiement à
+grande échelle. Le modèle YOLOv8 est encore sensible aux variations d’éclairage et à la qualité
+des images capturées par la webcam USB. De plus, les seuils de densité utilisés pour classer les
+Page 61
+
+
+===== PAGE 76 =====
+
+CONCLUSION GÉNÉRALE
+Gharbi RAYEN
+cinq états (τvide = 6%, τbas = 20%, τsurstock = 50%) ont été calibrés sur SKU110K et devront
+être ajustés sur les rayonnages réels de Sagemcom avant un déploiement en production.
+Bilan des objectifs
+Plutôt que de simplement dire que tout s’est bien passé, voici un bilan honnête de ce qui a
+été atteint, ce qui est resté partiel, et ce qui reste à faire :
+Objectif
+Statut
+Commentaire
+Temps
+de
+traitement
+<
+2
+secondes
+Atteint
+1,8s mesuré en conditions
+réelles
+Détection YOLO en 5 états
+Atteint
+mAP@50
+=
+90,29%
+sur
+SKU110K
+Interface opérateur simple
+Atteint
+Streamlit,
+8
+pages
+fonctionnelles
+Pipeline ETL automatisé
+Atteint
+ETL Python en 0,04s pour 6
+lignes
+Authentification et rôles
+Atteint
+JWT, 2 rôles distincts
+Dataset interne Sagemcom
+Partiel
+SKU110K utilisé faute de
+données internes disponibles
+Communications
+ESP32
+sécurisées
+Partiel
+HTTP
+local
+fonctionnel,
+HTTPS prévu pour la version
+production
+Déploiement multi-lignes
+Non atteint
+Hors scope du stage, prévu en
+perspective
+TABLE 5.4. Bilan des objectifs du projet
+Ce tableau reflète assez bien la réalité du projet : les objectifs cœur ont tous été atteints,
+mais deux contraintes extérieures le retard du matériel et l’absence de dataset interne ont laissé
+des marges de progression réelles pour la suite.
+Page 62
+
+
+===== PAGE 77 =====
+
+CONCLUSION GÉNÉRALE
+Gharbi RAYEN
+Perspectives
+La prochaine étape importante sera de déployer plusieurs ESP32 et webcams USB
+directement sur les lignes de production réelles de Sagemcom, afin de tester le système dans
+un environnement industriel complet pendant plusieurs semaines. Ce déploiement permettra
+surtout de collecter des images réelles des produits Sagemcom pour réentraîner YOLO sur
+des données propres à l’entreprise ce qui devrait significativement améliorer la précision en
+conditions industrielles réelles et permettre un recalibrage précis des seuils de densité pour les
+cinq états.
+À plus long terme, trois évolutions nous semblent particulièrement pertinentes :
+— Un module de prévision de la demande basé sur l’historique des mouvements stockés
+dans le Data Warehouse, pour anticiper les ruptures avant qu’elles ne surviennent.
+— Une application mobile pour les opérateurs terrain, qui permettrait de consulter l’état
+des stocks et de recevoir des alertes sans être devant un poste fixe.
+— Une intégration avec l’ERP SAP existant chez Sagemcom, pour que les deux systèmes
+se parlent directement plutôt que de fonctionner en parallèle.
+Apports personnels et leçons apprises
+Ce stage nous a beaucoup appris, tant sur le plan technique que personnel. Nous avons
+compris que passer d’une idée à une solution fonctionnelle demande beaucoup plus de temps et
+de persévérance que ce qu’on imagine au départ et que les vraies difficultés viennent rarement
+de là où on les attend.
+Les retards dans la livraison du matériel et surtout l’absence de dataset interne de Sagemcom
+nous ont forcés à être créatifs et à trouver des solutions alternatives. Travailler avec SKU110K
+plutôt qu’avec de vraies images de l’usine, c’est une limite que nous assumons complètement :
+le modèle reste une preuve de concept solide, mais pas encore un système parfaitement calibré
+pour les produits réels de l’entreprise. Cette expérience nous a surtout appris l’importance de
+Page 63
+
+
+===== PAGE 78 =====
+
+CONCLUSION GÉNÉRALE
+Gharbi RAYEN
+cadrer très tôt avec l’entreprise d’accueil quelles ressources seront disponibles une conversation
+que nous aurions dû avoir dès la première semaine plutôt que de la découvrir en cours de route.
+Au final, ce projet de fin d’études nous a permis de développer des compétences techniques
+solides sur des technologies que nous ne maîtrisions pas toutes au départ ESP32, FastAPI,
+YOLOv8, ETL, Tableau mais aussi une meilleure compréhension de ce que signifie vraiment
+livrer quelque chose qui fonctionne dans un contexte industriel. Documenter ses choix, évaluer
+objectivement les limites de son propre travail, valider chaque composant avant de l’intégrer :
+ce sont des réflexes que nous n’avions pas vraiment au début du stage et que nous emportons
+avec nous pour la suite.
+Page 64
+
+
+===== PAGE 79 =====
+
+CONCLUSION GÉNÉRALE
+Gharbi RAYEN
+Page 65
+
+
+===== PAGE 80 =====
+
+ANNEXES
+Gharbi RAYEN
+Annexes
+Les annexes regroupent les éléments techniques complémentaires référencés dans le corps
+du mémoire. Elles sont organisées en trois sections distinctes.
+Annexe A — Extrait du code ETL Python
+L’extrait suivant illustre la phase de transformation du pipeline ETL, notamment le calcul
+des indicateurs de stock et la préparation des clés de jointure pour le schéma en étoile.
+1
+import pyodbc
+2
+import pandas as pd
+3
+from datetime import datetime
+4
+5
+# Connexion SQL Server (OLTP -> DW)
+6
+conn_oltp = pyodbc.connect("DSN=StockOLTP;Trusted_Connection=yes")
+7
+conn_dw
+= pyodbc.connect("DSN=StockDW;Trusted_Connection=yes")
+8
+9
+def extract_mouvements():
+10
+query = """
+11
+SELECT m.idMouvement, m.quantite, m.dateMouvement,
+12
+m.type, p.codeProduit, p.nomProduit,
+13
+u.utilisateur_id
+14
+FROM MouvementStock m
+15
+JOIN Produit p ON m.produit_id = p.produit_id
+16
+JOIN Utilisateur u ON m.utilisateur_id = u.utilisateur_id
+17
+WHERE m.dateMouvement >= CAST(GETDATE() AS DATE)
+18
+"""
+19
+return pd.read_sql(query, conn_oltp)
+20
+21
+def transform(df):
+Page 66
+
+
+===== PAGE 81 =====
+
+ANNEXES
+Gharbi RAYEN
+22
+# Normalisation des dates -> Dim_Date
+23
+df["date_id"] = df["dateMouvement"].dt.strftime("%Y%m%d").astype(int)
+24
+# Calcul de la quantité nette par mouvement
+25
+df["quantite_nette"] = df.apply(
+26
+lambda r: r["quantite"] if r["type"] == "entree" else -r["quantite"],
+27
+axis=1
+28
+)
+29
+return df[["date_id", "produit_id", "utilisateur_id",
+30
+"quantite_nette", "idMouvement"]]
+31
+32
+def load(df):
+33
+cursor = conn_dw.cursor()
+34
+for _, row in df.iterrows():
+35
+cursor.execute("""
+36
+INSERT INTO Fact_Mouvement
+37
+(date_id, produit_id, utilisateur_id, quantite, idFact_src)
+38
+VALUES (?, ?, ?, ?, ?)
+39
+""", row["date_id"], row["produit_id"],
+40
+row["utilisateur_id"], row["quantite_nette"],
+41
+row["idMouvement"])
+42
+conn_dw.commit()
+43
+44
+if __name__ == "__main__":
+45
+df = extract_mouvements()
+46
+df = transform(df)
+47
+load(df)
+48
+print(f"[ETL] {len(df)} lignes chargées — {datetime.now()}")
+Annexe B — Extrait du code API FastAPI
+L’extrait suivant montre l’endpoint principal de réception des scans de codes-barres
+provenant de l’ESP32.
+1
+from fastapi import FastAPI, HTTPException
+2
+from pydantic import BaseModel
+3
+import pyodbc, datetime
+4
+5
+app = FastAPI(title="StockAPI", version="1.0")
+6
+7
+class ScanEvent(BaseModel):
+8
+barcode: str
+9
+type_mouvement: str
+# "entree" ou "sortie"
+10
+quantite: int
+11
+utilisateur_id: int
+12
+13
+@app.post("/scan")
+14
+def handle_scan(event: ScanEvent):
+Page 67
+
+
+===== PAGE 82 =====
+
+ANNEXES
+Gharbi RAYEN
+15
+conn = pyodbc.connect("DSN=StockOLTP;Trusted_Connection=yes")
+16
+cursor = conn.cursor()
+17
+18
+# Vérifier existence du produit
+19
+cursor.execute("SELECT produit_id, stock_actuel FROM Produit "
+20
+"WHERE codeProduit = ?", event.barcode)
+21
+row = cursor.fetchone()
+22
+if not row:
+23
+raise HTTPException(status_code=404,
+24
+detail="Produit inconnu")
+25
+26
+produit_id, stock_actuel = row
+27
+28
+# Mettre à jour le stock
+29
+delta = event.quantite if event.type_mouvement == "entree" \
+30
+else -event.quantite
+31
+nouveau_stock = stock_actuel + delta
+32
+33
+cursor.execute("UPDATE Produit SET stock_actuel = ? "
+34
+"WHERE produit_id = ?", nouveau_stock, produit_id)
+35
+36
+# Enregistrer le mouvement
+37
+cursor.execute("""
+38
+INSERT INTO MouvementStock
+39
+(produit_id, quantite, type, dateMouvement, utilisateur_id)
+40
+VALUES (?, ?, ?, ?, ?)
+41
+""", produit_id, event.quantite, event.type_mouvement,
+42
+datetime.datetime.now(), event.utilisateur_id)
+43
+44
+conn.commit()
+45
+return {"status": "ok", "nouveau_stock": nouveau_stock}
+Annexe C — Configuration d’entraînement YOLOv8
+Le fichier de configuration sku110k.yaml utilisé pour l’entraînement sur Google Colab est
+reproduit ci-dessous.
+1
+# sku110k.yaml — Configuration dataset YOLOv8
+2
+path: /content/drive/MyDrive/SKU110K
+3
+train: images/train
+4
+val:
+images/val
+5
+test:
+images/test
+6
+7
+nc: 1
+8
+names: ["produit"]
+Page 68
+
+
+===== PAGE 83 =====
+
+ANNEXES
+Gharbi RAYEN
+La commande d’entraînement exécutée sur Colab était la suivante :
+1
+yolo detect train \
+2
+model=yolov8s.pt \
+3
+data=sku110k.yaml \
+4
+epochs=50 \
+5
+imgsz=640 \
+6
+batch=16 \
+7
+lr0=0.01 \
+8
+patience=10 \
+9
+mosaic=1.0 \
+10
+fliplr=0.5 \
+11
+project=runs \
+12
+name=sku110k_train
+Page 69
+
+
+===== PAGE 84 =====
+
+BIBLIOGRAPHIE
+Gharbi RAYEN
+Bibliographie
+[1]
+SAGEMCOM. Official Website. 2024. URL : https : / / www. sagemcom . com (visité le
+20/02/2026).
+[2]
+SAGEMCOM TUNISIE. Internal Documentation and Field Observation. Fév. 2026.
+[3]
+Joseph REDMON et al. “You Only Look Once : Unified, Real-Time Object Detection”.
+In : Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition
+(CVPR). 2016, p. 779-788. DOI : 10.1109/CVPR.2016.91.
+[4]
+Ian SOMMERVILLE. Software Engineering. Pearson, 2016.
+[5]
+Craig
+LARMAN.
+Agile
+and
+Iterative
+Development
+:
+A
+Manager’s
+Guide.
+Addison-Wesley, 2004.
+[6]
+Grady BOOCH, James RUMBAUGH et Ivar JACOBSON. The Unified Modeling Language
+User Guide. Addison-Wesley, 2005.
+[7]
+Roger S. PRESSMAN. Software Engineering : A Practitioner’s Approach. McGraw-Hill,
+2014.
+[8]
+Sunil CHOPRA et Peter MEINDL. Supply Chain Management : Strategy, Planning, and
+Operation. 6e éd. Pearson, 2015.
+[9]
+Klaus SCHWAB. The Fourth Industrial Revolution. World Economic Forum, 2016.
+[10]
+Ralph KIMBALL et Margy ROSS. The Data Warehouse Toolkit. 3e éd. Wiley, 2013.
+Page 70
+
+
+===== PAGE 85 =====
+
+BIBLIOGRAPHIE
+Gharbi RAYEN
+[11]
+Python Programming Language. 2024. URL : https : / / www . python . org/ (visité le
+20/02/2026).
+[12]
+STREAMLIT INC. Streamlit Documentation. 2023. URL : https://docs.streamlit.io (visité
+le 20/02/2026).
+[13]
+MICROSOFT. SQL Server Technical Documentation. 2023. URL : https://learn.microsoft.
+com/en-us/sql/sql-server (visité le 20/02/2026).
+[14]
+TABLEAU SOFTWARE. Tableau Desktop Help. 2023. URL : https://help.tableau.com
+(visité le 20/02/2026).
+[15]
+ESPRESSIF SYSTEMS. ESP32 Technical Reference Manual. 2023. URL : https://www.
+espressif.com (visité le 20/02/2026).
+[16]
+Eran GOLDMAN et al. “Precise Detection in Densely Packed Scenes”. In : Proceedings of
+the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). 2019,
+p. 5227-5236. DOI : 10.1109/CVPR.2019.00537.
+Page 71

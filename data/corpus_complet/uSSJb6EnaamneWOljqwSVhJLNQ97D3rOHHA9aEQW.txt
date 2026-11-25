@@ -1,0 +1,3801 @@
+===== PAGE 1 =====
+
+ 
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de 
+Mahdia 
+ 
+MEMOIRE 
+ 
+N° d’ordre : MP-EXR-2-
+2026-014  
+Ministère de l’Enseignement Supérieur et 
+de la Recherche Scientifique  
+ 
+ 
+ 
+MEMOIRE  
+                                                 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+                                                 
+ Effectué à 
+ 
+Path To Secure 
+ 
+ 
+En vue de l’obtention du diplôme de 
+ 
+Master Professionnel Computer Engineering : Expert Réseaux 
+ 
+Elaboré par : 
+ 
+Abir Farhat 
+ 
+     
+Implémentation d’un SOC pour la Surveillance et la Réponse Automatisée aux 
+Incidents 
+ 
+ 
+ 
+Soutenu le :  14 octobre 2026  
+devant le jury composé de : 
+ 
+ 
+Président 
+  : Soufien Boutaib 
+Rapporteur 
+  : Riadh Hadj M'tir 
+Encadrant Académique 
+  : Sana Ghannay 
+Co-encadrant 
+: Bessem Zaabar 
+Encadrant Professionnel 
+: Rached Salah 
+ 
+Année universitaire  2026-2027 
+
+
+===== PAGE 2 =====
+
+Dédicace
+Avant tout, je tiens à rendre grâce à Dieu, le tout puissant, le très miséricordieux
+À ma chère mère Yasmina,
+Bien que tu nous aies quittés il y a de nombreuses années, ton amour et tes enseignements continuent de
+guider mes pas. Ce travail est un hommage à ta mémoire, à ta force et à ta sagesse. Ton absence laisse
+un vide immense, mais tes valeurs et ton inspiration vivent en moi. Merci pour tout ce que tu as été et
+pour tout ce que tu m’as apporté. Que ton âme repose en paix.
+À mes chers parents,
+Mon cher père Mohammed, mon héros, l’homme que je considère comme un exemple vital, parfait et
+que j’ai le plus grand respect et appréciation pour lui. Je suis plus que reconnaissante à ma chère mère
+Dalila, la courageuse, qui m’a offert le souffle de continuer jusqu’au bout. La femme qui a tout fait pour
+me rendre heureuse et forte. Aucune dédicace ne peut exprimer ce que je leur dois, pour leur soutien,
+leur bienveillance. Sans eux et leurs sacrifices je ne serais arrivée là où j’en suis.
+Mon frère Khaled, mes sœurs Imen, Nada et Zayneb,
+Mes amours qui m’avaient encouragée durant toute cette période, je les souhaite le succès et
+l’excellence dans leurs vies et leurs études. Que Dieu les garde et les bénisse.
+À ma chère amie Ghofrane Zemni,
+Merci pour ton soutien sincère, ta présence fidèle et tes encouragements dans les moments où j’en avais
+le plus besoin. Ton amitié a rendu ce parcours plus léger et plus beau. Ce travail porte aussi un peu de
+toi. Que Dieu te garde et te comble de réussite et de bonheur.
+Mes chers amis,
+Je ne peux pas trouver les mots pour vous remercier, pour votre support, votre soutien et vos conseils
+qui n’ont cessé de me prodiguer. Je suis vraiment reconnaissante à tous.
+
+
+===== PAGE 3 =====
+
+Remerciements
+Avant d’entamer ce mémoire, je tiens à exprimer ma profonde gratitude envers Dieu, pour
+m’avoir donné la force, la patience et la capacité nécessaires pour mener à bien ce travail.
+Je souhaite exprimer ma profonde reconnaissance à l’ensemble de l’équipe pédagogique de
+l’Institut Supérieur d’Informatique de Mahdia pour leur accompagnement tout au long de mon
+parcours universitaire. Leur disponibilité, leur rigueur et leur engagement constant ont
+grandement contribué à ma formation et au développement de mes compétences
+professionnelles.
+Je tiens à adresser mes sincères remerciements à Madame Ghannney Sana et à Monsieur
+Bessem Zaabar pour leur accompagnement, leur disponibilité et leurs précieux conseils tout
+au long de la réalisation de ce travail. Leurs orientations et leurs remarques constructives ont
+grandement contribué à l’amélioration de ce mémoire et à la réussite de ce projet.
+Je remercie également Monsieur Salah Rached, mon encadrant professionnel, pour son
+accompagnement, son expertise et ses conseils précieux durant la réalisation de ce projet. Son
+soutien, sa disponibilité et ses orientations ont contribué au bon déroulement de ce travail.
+Je tiens également à exprimer ma reconnaissance à Monsieur Soufien Boutaib, Président du
+jury, et à Monsieur Riadh Hadj M’tir, Rapporteur, pour le temps consacré à l’évaluation de
+ce mémoire, ainsi que pour leurs remarques et suggestions constructives qui ont contribué à sa
+valorisation.
+Enfin, je souhaite exprimer ma reconnaissance à toutes les personnes qui, de près ou de loin,
+ont contribué à la réussite de ce stage et à l’aboutissement de ce mémoire. Chaque conseil,
+chaque encouragement et chaque geste de soutien ont été essentiels et ont fait de cette
+expérience un moment enrichissant et mémorable.
+ii
+
+
+===== PAGE 4 =====
+
+Table des matières
+Remerciements
+ii
+Liste des acronymes
+xii
+Introduction Générale
+1
+Chapitre 1 : Cadre général du projet
+3
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Présentation de l’organisme d’accueil . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2.1
+Présentation de l’entreprise
+. . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2.2
+Domaines d’activités . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+Étude de l’existant
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.1
+Présentation de l’existant
+. . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.2
+Critique de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4
+Analyse des besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.4.1
+Besoins fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.4.2
+Besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.5
+Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.6
+Démarche adoptée
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.7
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+Chapitre 2 : État de l’art
+12
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.2
+Fondements de la cybersécurité opérationnelle . . . . . . . . . . . . . . . . . .
+13
+2.2.1
+Concepts fondamentaux
+. . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.2.2
+Principes de sécurité : modèle CIA . . . . . . . . . . . . . . . . . . . .
+13
+2.2.3
+Menaces en cybersécurité
+. . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.2.4
+Cadres normatifs et réglementaires . . . . . . . . . . . . . . . . . . .
+15
+2.3
+Centre Opérationnel de Sécurité SOC
+. . . . . . . . . . . . . . . . . . . . . .
+17
+2.3.1
+Définition de SOC . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.3.2
+Les objectifs d’un SOC
+. . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.3.3
+Les composants d’un SOC . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.4
+Système de gestion d’information et des événements de sécurité (SIEM) . . . .
+19
+2.4.1
+Principes fondamentaux du SIEM . . . . . . . . . . . . . . . . . . . .
+19
+2.4.2
+Les objectifs du SIEM . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.4.3
+Mode de fonctionnement du SIEM . . . . . . . . . . . . . . . . . . . .
+21
+2.5
+Système d’Orchestration, d’Automatisation et de Réponse en Sécurité (SOAR)
+22
+2.5.1
+Les objectifs de SOAR . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+iii
+
+
+===== PAGE 5 =====
+
+2.5.2
+Mode de fonctionnement de SOAR
+. . . . . . . . . . . . . . . . . . .
+23
+2.6
+Comparaison SIEM et SOAR . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.7
+Intégration SIEM et SOAR . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.8
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+Chapitre 3 : Conception de l’architecture de la solution SOC
+26
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.2
+Choix et spécification des outils de la solution SOC . . . . . . . . . . . . . . .
+27
+3.2.1
+Spécification de la solution SIEM : Wazuh
+. . . . . . . . . . . . . . .
+27
+3.2.2
+Présentation de Wazuh . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.2.3
+Les composants de Wazuh . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.2.4
+Spécification de la solution SOAR : Shuffle et TheHive . . . . . . . . .
+29
+3.2.5
+Présentation de Shuffle . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.2.6
+Avantages de Shuffle . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.2.7
+Présentation de Thehive
+. . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.2.8
+Avantages de TheHive . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.2.9
+Intégration de Shuffle et TheHive
+. . . . . . . . . . . . . . . . . . . .
+34
+3.3
+Sécurité réseau et pare-feu : pfSense . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.3.1
+Étude comparative des pare-feu
+. . . . . . . . . . . . . . . . . . . . .
+34
+3.3.2
+Présentation de pfSense
+. . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.4
+Spécification de la solution de gestion des vulnérabilités : OpenVAS et OWASP
+ZAP . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.4.1
+Étude comparative des scanners de vulnérabilités . . . . . . . . . . . .
+36
+3.4.2
+Présentation d’OpenVAS . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.4.3
+Fonctionnement de Greenbone Vulnerability Management (GVM) . . .
+38
+3.4.4
+Présentation d’OWASP ZAP . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.4.5
+Avantages de ZAP . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.4.6
+Notions de CVE et de CVSS . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.5
+Architecture globale du système . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+3.6
+Description de l’Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+Chapitre 4 : Mise en œuvre de la solution SOC
+43
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.2
+Préparation de l’environnement de déploiement . . . . . . . . . . . . . . . . .
+44
+4.2.1
+Environnement matériel
+. . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.2.2
+Environnement logiciel
+. . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.3
+Installation et configuration des composants . . . . . . . . . . . . . . . . . . .
+45
+4.3.1
+Installation de Wazuh . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.3.2
+Installation de Shuffle
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+
+
+===== PAGE 6 =====
+
+4.3.3
+Installation de TheHive, Cortex et MISP . . . . . . . . . . . . . . . . .
+55
+4.3.4
+Installation d’OpenVAS
+. . . . . . . . . . . . . . . . . . . . . . . . .
+59
+4.3.5
+Installation de pfSense . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+4.4
+Integration des composants . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+4.4.1
+Intégration Wazuh – Shuffle . . . . . . . . . . . . . . . . . . . . . . .
+65
+4.4.2
+Intégration TheHive – Shuffle . . . . . . . . . . . . . . . . . . . . . .
+66
+4.4.3
+Intégration TheHive – Cortex – MISP . . . . . . . . . . . . . . . . . .
+71
+4.4.4
+Intégration Shuffle – pfSense . . . . . . . . . . . . . . . . . . . . . . .
+76
+4.5
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+Chapitre 5 : Validation de la solution
+81
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+5.2
+Validation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+5.3
+Scénarios d’attaque . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+84
+5.3.1
+Scénario 1 – Force brute RDP . . . . . . . . . . . . . . . . . . . . . .
+84
+5.3.2
+Scénario 2 – Injection SQL sur DVWA
+. . . . . . . . . . . . . . . . .
+89
+5.4
+Analyse des vulnérabilités avec OpenVAS et OWASP ZAP . . . . . . . . . . .
+94
+5.4.1
+Scan OpenVAS . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+94
+5.4.2
+Scan OWASP ZAP . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+96
+5.5
+Évaluation des performances . . . . . . . . . . . . . . . . . . . . . . . . . . .
+99
+5.5.1
+Critères d’évaluation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+99
+5.5.2
+Résultats de l’évaluation . . . . . . . . . . . . . . . . . . . . . . . . . 100
+5.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+Conclusion générale
+101
+Webographie
+102
+
+
+===== PAGE 7 =====
+
+Table des figures
+1.1
+logo Path To Secure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2.1
+La norme 27001 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.2
+La norme 27035 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.3
+Les principales fonctions du NIST . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.4
+Les fonctions d’un SOC . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.5
+Les composants d’un SOC . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.6
+Les composants du SIEM . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.7
+Mode de fonctionnement d’un système SIEM . . . . . . . . . . . . . . . . . .
+22
+2.8
+SIEM et SOAR . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.1
+Logo de Wazuh . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.2
+Principaux composants de Wazuh
+. . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.3
+Intégration de TheHive, MISP et Cortex . . . . . . . . . . . . . . . . . . . . .
+32
+3.4
+Logo de la plateforme Shuffle
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.5
+logo de thehive
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.6
+Logo de pfSense
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.7
+Logo d’OpenVAS . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.8
+Logo d’OWASP ZAP . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.9
+Architecture globale de la solution . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.1
+Installation de Wazuh indexer . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.2
+Fixation de l’adresse IP pour Wazuh indexer . . . . . . . . . . . . . . . . . . .
+47
+4.3
+Vérification de l’état de service . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.4
+Installation de Wazuh Manager . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.5
+Lancement et vérification de l’état de Wazuh Manager
+. . . . . . . . . . . . .
+48
+4.6
+installation wazuh dashboard . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.7
+Vérification de l’état de Dashboard . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.8
+Interface Web du Wazuh
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.9
+Configuration de l’agent Wazuh sous Ubuntu
+. . . . . . . . . . . . . . . . . .
+50
+4.10 Commandes d’installation de l’agent Wazuh sous Ubuntu . . . . . . . . . . . .
+50
+4.11 Installation de l’agent Wazuh sur la machine Linux . . . . . . . . . . . . . . .
+51
+4.12 Démarrage de l’agent Wazuh sur la machine Admin . . . . . . . . . . . . . . .
+51
+4.13 Statut des agents Wazuh
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.14 Configuration de l’agent Wazuh sous Windows
+. . . . . . . . . . . . . . . . .
+52
+4.15 Commandes d’installation de l’agent Wazuh sous Windows . . . . . . . . . . .
+53
+4.16 Installation de l’agent Wazuh sur Windows Server . . . . . . . . . . . . . . . .
+53
+4.17 Statut des agents Wazuh dans le dashboard . . . . . . . . . . . . . . . . . . . .
+53
+4.18 Mise en place de Shuffle
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.19 Téléchargement de Docker Compose
+. . . . . . . . . . . . . . . . . . . . . .
+54
+vi
+
+
+===== PAGE 8 =====
+
+4.20 Lancement de Docker-compose . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.21 Interface Web de Shuffle . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.22 Clonage du dépôt Docker-Templates . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.23 Création des dossiers et attribution des permissions . . . . . . . . . . . . . . .
+56
+4.24 Lancement des services via Docker Compose . . . . . . . . . . . . . . . . . .
+56
+4.25 Téléchargement de l’image Docker TheHive 4 . . . . . . . . . . . . . . . . . .
+56
+4.26 Téléchargement de l’image Docker MISP . . . . . . . . . . . . . . . . . . . .
+57
+4.27 Démarrage des services . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+4.28 Accès à l’interface web de TheHive
+. . . . . . . . . . . . . . . . . . . . . . .
+58
+4.29 Accès à l’interface web de cortex . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+4.30 Interface Web de MISP . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+4.31 Installation de Docker et Docker Compose . . . . . . . . . . . . . . . . . . . .
+59
+4.32 Téléchargement du fichier compose.yaml
+. . . . . . . . . . . . . . . . . . . .
+60
+4.33 Téléchargement des images Docker
+. . . . . . . . . . . . . . . . . . . . . . .
+60
+4.34 Lancement des conteneurs OpenVAS
+. . . . . . . . . . . . . . . . . . . . . .
+61
+4.35 Page de connexion à l’interface OpenVAS . . . . . . . . . . . . . . . . . . . .
+62
+4.36 Installation d’OWASP ZAP
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+4.37 Lancement d’OWASP ZAP . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+4.38 configuration réseau initiale de pfSense (WAN et Administration, SOC, pentest)
+63
+4.39 Interface Web de pfSense . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+4.40 Règle de pare-feu autorisant le trafic sortant depuis le LAN . . . . . . . . . . .
+64
+4.41 Configuration de la passerelle réseau dans pfSense
+. . . . . . . . . . . . . . .
+65
+4.42 Ajout de Webhook
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+4.43 Configuration de l’URL . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+4.44 Création d’une organisation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+4.45 Création de nouvel utilisateur . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+4.46 Réinitialisation de mot de passe
+. . . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.47 Obtention de la clé API . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.48 Configuration de URL et l’API pour l’alerte . . . . . . . . . . . . . . . . . . .
+70
+4.49 Modification de Body pour l’alerte. . . . . . . . . . . . . . . . . . . . . . . . .
+70
+4.50 Alerte réussite . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+71
+4.51 Affichage du résultat de l’alerte dans TheHive . . . . . . . . . . . . . . . . . .
+71
+4.52 Génération de la clé API dans MISP . . . . . . . . . . . . . . . . . . . . . . .
+72
+4.53 Configuration du serveur MISP THP dans TheHive . . . . . . . . . . . . . . .
+73
+4.54 Synchronisation réussie du serveur MISP avec TheHive . . . . . . . . . . . . .
+74
+4.55 Création de l’utilisateur de service dans Cortex
+. . . . . . . . . . . . . . . . .
+74
+4.56 Génération de la clé API Cortex
+. . . . . . . . . . . . . . . . . . . . . . . . .
+75
+4.57 Test de connexion de Cortex avec TheHive . . . . . . . . . . . . . . . . . . . .
+75
+4.58 Statut des intégrations Cortex et MISP dans TheHive . . . . . . . . . . . . . .
+76
+
+
+===== PAGE 9 =====
+
+4.59 Alias Malicious_IPs créé dans pfSense . . . . . . . . . . . . . . . . . . . . . .
+76
+4.60
+: Génération de la clé API pfSense . . . . . . . . . . . . . . . . . . . . . . . .
+77
+4.61 Configuration du nœud HTTP 1 pour la communication avec pfSense. . . . . .
+78
+4.62 Vérification du résultat de l’exécution du nœud http 1 . . . . . . . . . . . . . .
+79
+4.63 Vérification de l’alias MaliciousIPs
+. . . . . . . . . . . . . . . . . . . . . . .
+80
+5.1
+Détection et corrélation des événements avec Wazuh
+. . . . . . . . . . . . . .
+82
+5.2
+Réception de l’alerte Wazuh dans Shuffle
+. . . . . . . . . . . . . . . . . . . .
+83
+5.3
+Création d’une alerte dans TheHive
+. . . . . . . . . . . . . . . . . . . . . . .
+83
+5.4
+Analyse de l’observable avec Cortex et VirusTotal . . . . . . . . . . . . . . . .
+83
+5.5
+Vérification de l’alias Malicious_IPs dans pfSense . . . . . . . . . . . . . . . .
+84
+5.6
+Lancement de l’attaque par force brute RDP avec Hydra
+. . . . . . . . . . . .
+84
+5.7
+Détection des tentatives RDP
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+85
+5.8
+Réception de l’alerte dans Shuffle
+. . . . . . . . . . . . . . . . . . . . . . . .
+85
+5.9
+Création de l’alerte dans TheHive
+. . . . . . . . . . . . . . . . . . . . . . . .
+86
+5.10 Affichage de l’alerte RDP dans TheHive . . . . . . . . . . . . . . . . . . . . .
+86
+5.11 Création du cas dans TheHive
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+5.12 Affichage du cas RDP dans TheHive . . . . . . . . . . . . . . . . . . . . . . .
+87
+5.13 Analyses Cortex de l’IP RDP (VirusTotal et MISP) . . . . . . . . . . . . . . .
+87
+5.14 Réponse de l’API pfSense après le blocage
+. . . . . . . . . . . . . . . . . . .
+88
+5.15 Vérification de l’adresse IP dans l’alias Malicious_IPs
+. . . . . . . . . . . . .
+88
+5.16 Réalisation de l’injection SQL sur DVWA . . . . . . . . . . . . . . . . . . . .
+89
+5.17 Détection de l’injection SQL par Wazuh . . . . . . . . . . . . . . . . . . . . .
+89
+5.18 Payload de l’alerte SQL reçu dans Shuffle . . . . . . . . . . . . . . . . . . . .
+90
+5.19 Création de l’alerte SQL Injection dans TheHive (nœud TheHive 1)
+. . . . . .
+91
+5.20 Alerte SQL Injection dans TheHive
+. . . . . . . . . . . . . . . . . . . . . . .
+91
+5.21 Création du cas SQL Injection dans TheHive (nœud TheHive 2)
+. . . . . . . .
+92
+5.22 Cas SQL Injection dans TheHive . . . . . . . . . . . . . . . . . . . . . . . . .
+92
+5.23 Analyses Cortex de l’IP SQL Injection (VirusTotal et MISP) . . . . . . . . . .
+92
+5.24 Réponse de l’API pfSense pour le scénario SQL . . . . . . . . . . . . . . . . .
+93
+5.25 Vérification de l’adresse IP dans pfSense . . . . . . . . . . . . . . . . . . . . .
+93
+5.26 Création de la cible 192.168.20.105 dans GVM . . . . . . . . . . . . . . . . .
+94
+5.27 Création et exécution de la tâche de scan OpenVAS . . . . . . . . . . . . . . .
+94
+5.28 Résultat du scan OpenVAS terminé . . . . . . . . . . . . . . . . . . . . . . . .
+95
+5.29 Résultats du scan OpenVAS et scores CVSS . . . . . . . . . . . . . . . . . . .
+95
+5.30 Configuration du proxy Firefox vers OWASP ZAP
+. . . . . . . . . . . . . . .
+96
+5.31 Configuration du niveau de sécurité de DVWA . . . . . . . . . . . . . . . . . .
+97
+5.32 Lancement du scan actif avec OWASP ZAP . . . . . . . . . . . . . . . . . . .
+97
+5.33 Détection de la vulnérabilité XSS par OWASP ZAP . . . . . . . . . . . . . . .
+98
+5.34 Détection de la vulnérabilité d’injection SQL par OWASP ZAP . . . . . . . . .
+98
+
+
+===== PAGE 10 =====
+
+5.35 Détection du cookie de session sans attribut HttpOnly . . . . . . . . . . . . . .
+99
+
+
+===== PAGE 11 =====
+
+Liste des tableaux
+1.1
+Catégories et actifs critiques
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.2
+Analyse des risques liés à l’absence de SOC . . . . . . . . . . . . . . . . . . .
+7
+1.3
+Catégorisation des enjeux . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.4
+Démarche adoptée pour la réalisation du projet
+. . . . . . . . . . . . . . . . .
+11
+2.1
+Comparaison des technologies SIEM et SOAR
+. . . . . . . . . . . . . . . . .
+24
+3.1
+Comparaison synthétique des principales solutions SIEM . . . . . . . . . . . .
+27
+3.2
+Comparaison de Shuffle avec d’autres solutions SOAR . . . . . . . . . . . . .
+30
+3.3
+Comparaison de TheHive avec d’autres solutions de gestion des incidents
+. . .
+31
+3.4
+Synthèse comparative des pare-feu . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.5
+Comparaison synthétique des scanners de vulnérabilités open source et com-
+merciaux
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+3.6
+Échelle de sévérité CVSS . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.1
+Caractéristiques de la machine hôte
+. . . . . . . . . . . . . . . . . . . . . . .
+44
+4.2
+Liste des machines virtuelles et leurs caractéristiques . . . . . . . . . . . . . .
+45
+5.1
+Vulnérabilités détectées par OpenVAS . . . . . . . . . . . . . . . . . . . . . .
+96
+5.2
+Évaluation de la solution selon les critères retenus . . . . . . . . . . . . . . . . 100
+x
+
+
+===== PAGE 12 =====
+
+xi
+
+
+===== PAGE 13 =====
+
+Liste des acronymes
+API
+Interface de Programmation d’Application
+RGPD
+Règlement Général sur la Protection des Données
+CIA
+Confidentiality, Integrity, Availability
+CPU
+Central Processing Unit
+CVE
+Common Vulnerabilities and Exposures
+CVSS
+Common Vulnerability Scoring System
+DVWA
+Damn Vulnerable Web Application
+EBIOS
+Expression des Besoins et Identification des Objectifs de Sécurité
+EDR
+Endpoint Detection and Response
+ELK
+Elasticsearch, Logstash, Kibana
+HTTP(S)
+HyperText Transfer Protocol (Secure)
+IDS
+Intrusion Detection System
+IP
+Internet Protocol
+IPS
+Intrusion Prevention System
+ISO/IEC
+International Organization for Standardization / International
+Electrotechnical Commission
+JSON
+JavaScript Object Notation
+LAN
+Local Area Network
+LTS
+Long Term Support
+MEHARI
+Méthode Harmonisée d’Analyse de Risques
+NAT
+Network Address Translation
+NDR
+Network Detection and Response
+NIST
+National Institute of Standards and Technology
+PME
+Petite et Moyenne Entreprise
+RDP
+Remote Desktop Protocol
+SEM
+Security Event Management
+SI
+Système d’Information
+SIEM
+Security Information and Event Management
+SIM
+Security Information Management
+SOAR
+Security Orchestration, Automation and Response
+SOC
+Security Operations Center
+SQL
+Structured Query Language
+
+
+===== PAGE 14 =====
+
+Introduction générale
+Aujourd’hui, les systèmes d’information occupent une place importante dans le fonction-
+nement des entreprises. Avec l’évolution des technologies numériques, les cyberattaques de-
+viennent de plus en plus fréquentes et complexes. Elles peuvent provoquer des pertes de don-
+nées, des interruptions de service et des dommages importants pour les organisations. Il est donc
+nécessaire de mettre en place des solutions de sécurité capables de surveiller les systèmes, de
+détecter les activités suspectes et de réagir rapidement aux incidents.
+Dans ce contexte, SOC (Security Operations Centers jouent un rôle essentiel dans la sur-
+veillance et la protection des systèmes d’information. Les solutions SIEM (Security Informa-
+tion and Event Management) permettent de collecter et de centraliser les journaux provenant de
+différentes machines et équipements afin de détecter les événements de sécurité. Cependant, la
+détection seule ne suffit pas toujours pour faire face rapidement aux menaces. L’utilisation des
+solutions SOAR (Security Orchestration, Automation and Response) permet alors d’automati-
+ser certaines tâches et de faciliter la réponse aux incidents.
+L’entreprise Path To Secure, spécialisée dans le domaine de la cybersécurité, fait face à des
+enjeux liés à la surveillance et à la gestion des incidents de sécurité. Pour renforcer sa sécurité,
+une architecture SOC basée sur plusieurs outils open source constitue une approche adaptée
+pour améliorer la détection, l’analyse et l’automatisation des réponses. La solution intègre no-
+tamment Wazuh, Shuffle, TheHive, Cortex, MISP, OpenVAS, OWASP ZAP et pfSense afin
+d’assurer une meilleure protection face aux cybermenaces.
+Ce projet propose ainsi la mise en place d’une solution de sécurité dans un environnement
+virtualisé composé de plusieurs réseaux, notamment le réseau d’administration, le réseau SOC
+et le réseau de test, en présentant les différentes étapes de déploiement, les scénarios d’attaque
+réalisés et les résultats obtenus en matière de détection et de réponse aux incidents.
+L’objectif de cette solution est d’améliorer la surveillance des systèmes, de faciliter la dé-
+tection des menaces et d’automatiser certaines actions de réponse aux incidents. Les différents
+composants sont ainsi intégrés et testés afin de vérifier leur fonctionnement et les résultats ob-
+tenus. Le présent rapport décrit les différentes étapes de réalisation du projet et s’organise en
+cinq chapitres :
+• Le premier chapitre présente le contexte général du projet, l’organisme d’accueil, l’étude
+de l’existant et l’analyse des besoins.
+• Le deuxième chapitre présente l’état de l’art et les principales notions liées à la cyber-
+sécurité, au SOC, au SIEM et au SOAR.
+• Le troisième chapitre décrit la conception de l’architecture proposée ainsi que les choix
+des outils et des technologies utilisés.
+• Le quatrième chapitre présente l’implémentation, l’installation, la configuration et l’in-
+tégration des différents composants de la solution.
+1
+
+
+===== PAGE 15 =====
+
+• Le cinquième chapitre est consacré à la validation de la solution, aux tests réalisés à
+travers différents scénarios d’attaque et à l’évaluation de ses performances.
+Enfin, une conclusion générale présente les principales contributions de ce projet, les résul-
+tats obtenus et quelques perspectives d’amélioration pour les travaux futurs.
+
+
+===== PAGE 16 =====
+
+CHAPITRE 1
+Cadre général du projet
+
+
+===== PAGE 17 =====
+
+Chapitre 1 : Cadre général du projet
+1.1
+Introduction
+Dans ce premier chapitre, nous présentons l’organisme d’accueil ainsi que son domaine
+d’activité afin de situer le contexte dans lequel ce projet a été réalisé. Nous décrivons ensuite
+l’environnement du stage, l’étude de l’existant et les limites identifiées. Enfin, nous exposons
+les besoins auxquels la solution proposée doit répondre ainsi que les objectifs poursuivis dans
+le cadre de ce projet de fin d’études, consacré à l’implémentation d’un SOC pour la surveillance
+et la réponse automatisée aux incidents de cybersécurité.
+1.2
+Présentation de l’organisme d’accueil
+1.2.1
+Présentation de l’entreprise
+Path To Secure est une entreprise fondée en janvier 2021 par M. Rached Ben Salah. Il est
+spécialisée dans le domaine de la cybersécurité, et plus particulièrement dans l’expertise liée
+aux Security Operation Centers (SOC). L’entreprise intervient également dans le conseil en
+cybersécurité, offrant un accompagnement aux organisations souhaitant améliorer leur posture
+de sécurité et répondre aux exigences réglementaires.
+FIGURE 1.1 – logo Path To Secure
+1.2.2
+Domaines d’activités
+Path To Secure évolue dans plusieurs secteurs stratégiques liés à la sécurité de l’informa-
+tion :
+Compliance et Audit :
+- Audit réglementaire .
+- Audit conformément aux standards internationaux : ISO 27001, ISO 22301, PCI-DSS.
+Management de la sécurité de l’information :
+- Accompagnement à la mise en place de politiques, procédures et chartes de sécurité .
+4
+
+
+===== PAGE 18 =====
+
+Chapitre 1 : Cadre général du projet
+- Implémentation de systèmes de management (sécurité de l’information, continuité d’acti-
+vité, gestion des risques) .
+- Application des méthodologies d’analyse de risque : MEHARI, EBIOS, OWASP Risk
+Rating, etc.
+Audit technique et Pentest :
+- Audit de vulnérabilité .
+- Audit de conformité (CIS, benchmarks, etc.) .
+- Tests d’intrusion (pentests) sur des plateformes critiques.
+Formation et transfert de compétences :
+- Management : ISO 27001, ISO 22301, ISO 31000 .
+- Gestion des risques : ISO 27005, MEHARI, EBIOS .
+- Technique : audit technique des SI, sécurité web, audit et validation des applications.
+1.3
+Étude de l’existant
+L’étude de l’existant constitue une phase essentielle dans la mise en place d’une architecture
+SOC performante. Elle consiste à analyser les mécanismes actuels de sécurité déployés au sein
+de l’organisation, notamment en matière de surveillance réseau, de gestion des journaux d’évé-
+nements et de traitement des incidents. Cette analyse permet d’évaluer le niveau de maturité de
+la sécurité opérationnelle et d’identifier les insuffisances techniques et organisationnelles.
+Elle vise également à examiner les solutions disponibles sur le marché afin de sélectionner
+les outils les plus adaptés aux besoins en matière de centralisation des logs, de corrélation des
+événements et d’automatisation de la réponse aux incidents.
+1.3.1
+Présentation de l’existant
+L’environnement actuel de sécurité repose sur un ensemble de mécanismes destinés à as-
+surer la protection du système d’information contre les différentes menaces informatiques. Ces
+mécanismes comprennent des solutions de filtrage réseau, de protection des postes de travail
+ainsi que des outils de journalisation permettant de collecter les événements générés par les
+différents équipements.
+La surveillance de l’infrastructure s’appuie principalement sur les journaux produits par
+les serveurs, les postes de travail et les équipements réseau. Ces informations permettent aux
+administrateurs d’effectuer le suivi des activités du système, de détecter certains comportements
+inhabituels et d’intervenir en cas d’incident de sécurité.
+5
+
+
+===== PAGE 19 =====
+
+Chapitre 1 : Cadre général du projet
+Par ailleurs, la gestion des incidents est assurée selon des procédures internes reposant sur
+l’analyse des alertes, l’identification des causes et l’application des mesures correctives néces-
+saires. Les évaluations de sécurité sont également réalisées de manière périodique afin d’iden-
+tifier les vulnérabilités susceptibles d’affecter le système d’information.
+Cet environnement constitue une base fonctionnelle pour la protection de l’infrastructure in-
+formatique. Toutefois, l’évolution constante des cybermenaces et la complexité croissante des
+systèmes d’information nécessitent une approche plus intégrée, capable d’améliorer la supervi-
+sion, la détection et la réponse aux incidents de sécurité.
+1.3.2
+Critique de l’existant
+L’environnement actuel assure un premier niveau de protection, mais il ne répond plus plei-
+nement à l’évolution des cybermenaces : la supervision est fragmentée, l’analyse des événe-
+ments est manuelle et la réponse aux incidents n’est pas automatisée. Cette section établit un
+diagnostic de cet environnement à travers les actifs à protéger, les vecteurs d’attaque, les risques
+et les enjeux.
+1.3.2.1
+Les actifs critiques
+Les actifs listés dans le tableau 1.1 sont essentiels au fonctionnement du système d’infor-
+mation et nécessitent une surveillance et une protection adaptées.
+TABLE 1.1 – Catégories et actifs critiques
+Catégorie
+Actifs critiques
+Infrastructures réseau
+Pare-feu, routeurs, commutateurs, segments réseau
+Serveurs et postes de travail
+Serveurs Windows et Linux, postes des utilisateurs
+Applications internes
+Applications web, bases de données
+Journaux et données sensibles
+Journaux d’événements, données des utilisateurs
+Outils de sécurité
+Pare-feu, solutions de filtrage et de protection des
+postes
+Ressources humaines
+Administrateurs, équipe de sécurité, comptes à privi-
+lèges
+1.3.2.2
+Les vecteurs d’attaque
+Les principaux vecteurs d’attaque auxquels l’environnement peut être exposé sont les sui-
+vants :
+6
+
+
+===== PAGE 20 =====
+
+Chapitre 1 : Cadre général du projet
+— Attaques par force brute : tentatives répétées de connexion pour deviner un mot de
+passe, notamment sur les services RDP et SSH.
+— Scan de ports et reconnaissance : cartographie du réseau et des services exposés, géné-
+ralement avec des outils comme Nmap, avant une attaque.
+— Injections SQL : envoi de requêtes malveillantes à une application web pour lire ou
+modifier sa base de données.
+— Cross-Site Scripting (XSS) : injection de scripts dans une page web pour voler des ses-
+sions ou des cookies.
+— Exploitation de vulnérabilités : utilisation de failles connues dans les systèmes ou les
+logiciels non mis à jour.
+— Malwares : installation de logiciels malveillants pour infiltrer ou endommager les sys-
+tèmes.
+— Phishing et ingénierie sociale : manipulation des utilisateurs pour obtenir des identifiants
+ou des accès.
+— Déni de service (DoS/DDoS) : surcharge d’un service pour le rendre indisponible.
+1.3.2.3
+Les risques
+Ces vecteurs d’attaque exposent l’organisation à plusieurs catégories de risques, présentées
+dans le tableau 1.2. Cette classification permet de prioriser les mesures de prévention et de
+protection.
+TABLE 1.2 – Analyse des risques liés à l’absence de SOC
+Catégorie de risque
+Risques spécifiques
+Techniques
+Compromission des systèmes, perte ou vol de données, in-
+terruption des services
+Opérationnels
+Détection tardive des incidents, erreurs humaines lors des
+actions manuelles, surcharge des administrateurs
+Financiers
+Coûts de remédiation, pertes liées à l’arrêt des services
+Réputation
+Perte de confiance des clients et des partenaires
+Juridiques et conformité
+Non-respect des exigences réglementaires, difficulté à jus-
+tifier les actions menées lors d’un incident
+1.3.2.4
+Les enjeux
+Les enjeux liés à la cybersécurité de l’organisation touchent à la fois la sécurité, l’opération-
+nel et la stratégie, comme le montre le tableau 1.3.
+7
+
+
+===== PAGE 21 =====
+
+Chapitre 1 : Cadre général du projet
+TABLE 1.3 – Catégorisation des enjeux
+Catégorie d’enjeux
+Enjeux spécifiques
+Enjeux de sécurité
+• Centraliser la supervision des événements de
+sécurité.
+• Détecter rapidement les activités suspectes et
+les attaques.
+• Identifier et réduire les vulnérabilités des sys-
+tèmes et des applications.
+Enjeux opérationnels
+• Réduire les délais de détection, d’analyse et de
+traitement des incidents.
+• Automatiser la réponse, notamment le blocage
+des adresses IP malveillantes.
+• Assurer la traçabilité des alertes et des actions
+réalisées.
+Enjeux stratégiques
+• Renforcer la posture globale de cybersécurité.
+• Adopter des solutions open source évolutives et
+peu coûteuses.
+• Libérer du temps aux équipes pour se concen-
+trer sur l’analyse plutôt que sur les tâches répé-
+titives.
+1.4
+Analyse des besoins
+Après l’évaluation et l’étude de la situation actuelle, il est évident qu’il faut définir les cri-
+tères auxquels la prochaine architecture doit répondre. Cette étape est essentielle pour le projet
+puisqu’elle aide à déterminer les caractéristiques souhaitées ainsi que les contraintes techniques
+et organisationnelles à prendre en compte lors de la conception de la solution. L’analyse des
+besoins s’articule autour de deux composantes : les besoins fonctionnels qui définissent les
+services que le système doit pouvoir offrir, et les besoins non fonctionnels qui expriment les
+normes de qualité et de performance de l’architecture.
+8
+
+
+===== PAGE 22 =====
+
+Chapitre 1 : Cadre général du projet
+1.4.1
+Besoins fonctionnels
+Les besoins fonctionnels sont les fonctionnalités principales que l’architecture SOC doit
+offrir pour garantir un suivi efficace du système d’information et une gestion performante des
+incidents de cybersécurité.
+Collecte des journaux : centraliser les journaux d’événements issus des serveurs, des postes,
+du pare-feu et des applications web.
+Détection et corrélation : identifier les activités suspectes en temps réel et corréler les événe-
+ments pour détecter les incidents, grâce à des règles personnalisables.
+Automatisation : orchestrer le traitement des alertes à l’aide de workflows Shuffle, sans inter-
+vention manuelle.
+Gestion des incidents : créer les incidents et suivre les investigations dans TheHive.
+Enrichissement des alertes : ajouter du contexte aux alertes grâce aux analyseurs de Cortex et
+aux indicateurs de compromission (IoC) de MISP.
+Analyse des vulnérabilités : évaluer l’infrastructure avec OpenVAS et les applications web
+avec OWASP ZAP.
+Blocage automatique : bloquer les adresses IP malveillantes sur pfSense.
+Traçabilité et rapports : conserver l’historique des alertes et des actions, et produire des rap-
+ports sur les incidents et les vulnérabilités.
+1.4.2
+Besoins non fonctionnels
+Les besoins non fonctionnels définissent les exigences de qualité que doit respecter l’archi-
+tecture afin de garantir son bon fonctionnement, sa robustesse et sa capacité à répondre dura-
+blement aux objectifs du projet.
+Surveillance continue : surveiller en permanence les événements et les incidents de sécurité.
+Sécurité des données : préserver la confidentialité, l’intégrité et la disponibilité des données
+traitées.
+Performance : optimiser les délais de détection, d’analyse et de traitement des incidents.
+Évolutivité : permettre l’intégration de nouveaux composants ou services de sécurité.
+Interopérabilité : assurer une communication fluide et une compatibilité entre les différents
+outils du SOC.
+Facilité d’exploitation : simplifier l’administration, la maintenance et la mise à jour de l’infra-
+structure.
+9
+
+
+===== PAGE 23 =====
+
+Chapitre 1 : Cadre général du projet
+Traçabilité : conserver l’historique des événements de sécurité et des actions exécutées par les
+différents composants.
+Fiabilité et stabilité : garantir le fonctionnement continu des services de sécurité.
+1.5
+Solution proposée
+Afin de répondre aux limites mises en évidence lors de l’analyse de l’existant, ce projet pro-
+pose la conception et la mise en œuvre d’une architecture SOC (Security Operations Center)
+fondée sur l’intégration de plusieurs solutions open source. Cette architecture a pour objectif
+de centraliser la supervision des événements de sécurité, d’améliorer la détection des cyberme-
+naces et d’automatiser la gestion des incidents.
+L’architecture repose sur Wazuh, qui assure la collecte des journaux d’événements, la cor-
+rélation des données et la détection des activités suspectes. Les alertes générées sont ensuite
+transmises à Shuffle, chargé d’orchestrer les différentes actions automatisées selon des work-
+flows prédéfinis. Les incidents sont centralisés dans TheHive, qui facilite leur gestion, leur suivi
+et leur traitement.
+Afin d’enrichir les investigations, Cortex exécute automatiquement plusieurs analyseurs de
+sécurité, tandis que MISP fournit des renseignements sur les menaces ainsi que des indicateurs
+de compromission (IoC), permettant d’améliorer la qualité des analyses.
+En complément, OpenVAS réalise des analyses de vulnérabilités sur les systèmes et les
+services du réseau, tandis qu’OWASP ZAP teste la sécurité des applications web en détectant
+les failles courantes (injections SQL, XSS, mauvaises configurations, etc.). Ces deux outils
+permettent d’identifier les faiblesses présentes dans le système d’information avant qu’elles ne
+soient exploitées.
+Enfin, pfSense intervient comme pare-feu en appliquant automatiquement des mesures de
+protection, notamment le blocage des adresses IP identifiées comme malveillantes.
+L’intégration de ces différents composants permet de mettre en place une architecture co-
+hérente assurant la supervision centralisée des événements de sécurité, l’automatisation des
+processus de réponse aux incidents, l’enrichissement des alertes et l’identification proactive des
+vulnérabilités. Cette approche contribue à renforcer la sécurité globale du système d’informa-
+tion tout en améliorant la réactivité des équipes face aux cyberattaques.
+1.6
+Démarche adoptée
+La réalisation de ce projet a suivi une démarche progressive afin d’assurer une conception
+cohérente de l’architecture SOC et une intégration efficace de ses différents composants. Cette
+approche a permis de structurer les travaux depuis l’analyse des besoins jusqu’à la validation
+de la solution finale. Chaque phase a été réalisée de manière séquentielle, tout en tenant compte
+10
+
+
+===== PAGE 24 =====
+
+Chapitre 1 : Cadre général du projet
+des résultats obtenus à l’étape précédente.
+Les phases du projet : Le tableau 1.4 présente la planification détaillée de chaque phase du
+projet, incluant la durée et la description des activités réalisées.
+TABLE 1.4 – Démarche adoptée pour la réalisation du projet
+phase
+Durée
+Description
+phase 1
+3 semaines
+Analyse du contexte, étude de l’existant, identification des besoins et
+analyse des solutions de cybersécurité disponibles.
+phase 2
+3 semaines
+Conception de l’architecture SOC et définition des interactions entre
+les composants (Wazuh, Shuffle, TheHive, Cortex, MISP, OpenVAS,
+pfSense).
+phase 3
+3 semaines
+Déploiement de Wazuh et des agents de collecte pour la centralisa-
+tion et la supervision des événements de sécurité.
+phase 4
+3 semaines
+Intégration de TheHive, Shuffle, Cortex et MISP pour la gestion des
+incidents et l’automatisation de la réponse.
+phase 5
+4 semaines
+Configuration de pfSense pour le filtrage réseau et d’OpenVAS pour
+l’analyse des vulnérabilités.
+phase 6
+4 semaines
+Tests et validation de l’architecture à travers plusieurs scénarios d’at-
+taque et de workflows automatisés.
+phase 7
+3 semaines
+Rédaction du mémoire, analyse des résultats, évaluation des perfor-
+mances et préparation de la soutenance.
+1.7
+Conclusion
+Dans ce chapitre, nous avons présenté le contexte général du projet, l’organisme d’accueil
+et l’étude de l’existant, ce qui nous a permis de dégager les limites actuelles et les besoins de la
+solution. La démarche adoptée a aussi permis de structurer les phases du projet.
+Le chapitre suivant sera consacré à l’état de l’art : cybersécurité, SOC, SIEM, SOAR, Threat
+Intelligence et gestion des vulnérabilités.
+11
+
+
+===== PAGE 25 =====
+
+CHAPITRE 2
+État de l’art
+
+
+===== PAGE 26 =====
+
+Chapitre 2 : État de l’art
+2.1
+Introduction
+Dans ce chapitre, nous présentons les principaux concepts liés à la cybersécurité et à la
+sécurité des systèmes d’information. Nous abordons d’abord les notions fondamentales de la
+cybersécurité opérationnelle, puis le fonctionnement d’un SOC ainsi que les solutions SIEM
+et SOAR. Nous présentons également la Threat Intelligence et la gestion des vulnérabilités à
+travers des outils comme MISP, Cortex, OpenVAS et OWASP ZAP. Ces notions permettent de
+mieux comprendre les choix techniques présentés dans les chapitres suivants.
+2.2
+Fondements de la cybersécurité opérationnelle
+La cybersécurité opérationnelle regroupe les méthodes et les pratiques utilisées pour proté-
+ger les systèmes d’information contre les différentes menaces. Elle permet notamment d’iden-
+tifier les risques, de détecter les activités suspectes et de réagir aux incidents de sécurité. Dans
+cette section, nous présentons les concepts fondamentaux, les principales menaces et vulnéra-
+bilités ainsi que les principes de gestion des incidents.
+2.2.1
+Concepts fondamentaux
+La cybersécurité opérationnelle regroupe les différentes méthodes et pratiques utilisées pour
+protéger les systèmes d’information contre les menaces. Elle consiste principalement à identi-
+fier les risques, prévenir les attaques et réagir aux incidents de sécurité. Elle vise également à
+assurer la continuité et le bon fonctionnement des systèmes. Ces notions permettent de mieux
+comprendre les mécanismes utilisés par les solutions de sécurité, notamment le SIEM.
+La cybersécurité repose sur plusieurs notions importantes qui permettent de protéger les
+systèmes et les données. Elle comprend notamment la protection des informations, la gestion
+des accès, l’identification des risques ainsi que la sécurité des réseaux, des systèmes et des
+applications. Il est donc nécessaire de connaître les différentes menaces et vulnérabilités afin de
+mettre en place des mesures adaptées pour assurer la sécurité des ressources informatiques.
+La cybersécurité est un ensemble de processus, d’outils et de cadres visant à protéger les
+réseaux, les appareils, les programmes et les données des cyberattaques. Les cybercriminels
+lancent de telles attaques pour obtenir un accès non autorisé à des systèmes informatiques,
+interrompre des opérations d’entreprise, modifier, manipuler ou voler des données, réaliser de
+l’espionnage industriel ou extorquer de l’argent aux victimes[1].
+2.2.2
+Principes de sécurité : modèle CIA
+La cybersécurité repose sur trois principes essentiels : la confidentialité des données, leur
+intégrité et leur disponibilité.
+13
+
+
+===== PAGE 27 =====
+
+Chapitre 2 : État de l’art
+La confidentialité : consiste à protéger les informations contre tout accès non autorisé.
+Elle garantit que seules les personnes autorisées peuvent consulter les données sensibles. Elle
+repose notamment sur le principe du moindre privilège, qui limite les accès aux informations
+nécessaires selon les besoins de chaque utilisateur[2].
+L’intégrité : désigne l’exactitude et la fiabilité des données, ainsi que leur protection contre
+toute modification non autorisée. Elle permet de garantir que les informations restent correctes
+et utilisables par les utilisateurs et les systèmes autorisés[3].
+La disponibilité : garantit que les données et les systèmes restent accessibles aux utilisa-
+teurs autorisés lorsqu’ils en ont besoin. Elle consiste à protéger les ressources contre les pannes,
+les intrusions et les actions non autorisées pouvant empêcher leur accès [4].
+2.2.3
+Menaces en cybersécurité
+En plus des principes de base de la sécurité, les systèmes d’information peuvent être exposés
+à plusieurs types de menaces. Il est donc important de les connaître pour mieux protéger les
+systèmes et choisir les mesures de sécurité adaptées, notamment avec des solutions comme le
+SIEM et le SOAR.
+Les menaces de cybersécurité sont des attaques contre une organisation qui peuvent être des-
+tinées à atteindre divers objectifs. Un cyber-attaquant peut tenter de voler les informations sen-
+sibles d’une organisation, de perturber sa capacité à fournir des services ou d’effectuer d’autres
+actions qui nuisent à l’entreprise d’une manière ou d’une autre[5]. Parmi les menaces les plus
+courantes :
+Les applications Web : constituent une cible importante pour les attaques, surtout lors-
+qu’elles sont accessibles au public. Elles peuvent contenir différentes vulnérabilités, comme
+l’injection SQL (SQLi) qui consiste à insérer des données malveillantes dans une requête SQL
+afin d’en modifier le fonctionnement. Cette attaque peut permettre à un attaquant d’accéder, de
+modifier ou de manipuler les données stockées dans une base de données.
+Dans une attaque MitM, l’attaquant intercepte le trafic entre la source et la destination. Si
+le trafic n’est pas protégé par le chiffrement et les signatures numériques, cela peut permettre à
+l’attaquant de lire et de modifier le trafic intercepté.
+Le logiciel rançonneur : est un logiciel malveillant conçu pour utiliser le chiffrement afin
+de forcer la cible de l’attaque à payer une rançon. Une fois présent sur le système, le logiciel
+malveillant crypte les fichiers de l’utilisateur et demande un paiement en échange de la clé
+de décryptage. Les algorithmes de chiffrement modernes étant inviolables avec la technologie
+disponible, le seul moyen de récupérer les fichiers chiffrés est de restaurer les données à partir
+d’une sauvegarde (si elle est disponible) ou de payer la demande aléatoire[6].
+Les attaques par déni de service (DoS) : visent à rendre un service ou un système in-
+accessible aux utilisateurs légitimes. Elles peuvent être réalisées en exploitant une faiblesse
+d’une application ou en envoyant un grand nombre de requêtes afin de surcharger le système et
+14
+
+
+===== PAGE 28 =====
+
+Chapitre 2 : État de l’art
+d’empêcher le traitement des demandes normales. Dans certains cas, l’attaquant peut également
+demander une somme d’argent pour rétablir le fonctionnement du service.
+Le hameçonnage : est l’une des méthodes les plus courantes utilisées par les attaquants
+pour accéder à un système cible. Il est souvent plus facile d’inciter un utilisateur à cliquer sur
+un lien malveillant ou à ouvrir une pièce jointe que de localiser et d’exploiter avec succès une
+vulnérabilité dans le réseau d’une organisation. Les attaques par hameçonnage peuvent avoir
+plusieurs objectifs, notamment le vol d’informations d’identification, la diffusion de logiciels
+malveillants, la fraude financière et le vol de données sensibles.
+2.2.4
+Cadres normatifs et réglementaires
+Les cadres normatifs permettent de définir des règles et des bonnes pratiques pour amé-
+liorer la sécurité des systèmes d’information. Ils aident les organisations à mieux identifier les
+risques, à protéger leurs ressources et à gérer les incidents de sécurité. Dans cette section, nous
+présentons quelques normes et cadres de référence utilisés dans le domaine de la cybersécurité.
+2.2.4.1
+Normes Internationales
+Les normes internationales en cybersécurité servent de référence pour aider les organisations
+à mieux protéger leurs systèmes et leurs informations. Elles définissent également des règles et
+des exigences permettant de mettre en place et de gérer un système de management de la sécurité
+de l’information (SMSI).
+ISO/IEC 27001 est une norme internationale de référence pour la mise en place d’un sys-
+tème de management de la sécurité de l’information (SMSI). Elle fournit aux organisations
+des recommandations pour établir, mettre en œuvre, maintenir et améliorer continuellement la
+sécurité de leurs informations[7].comme illustré dans la Figure 2.1.
+FIGURE 2.1 – La norme 27001
+La norme ISO/IEC 27035-1 décrit les principes de la gestion des incidents, en veillant
+à ce que les organismes puissent se préparer, répondre et se remettre des incidents de manière
+efficace. Elle souligne l’importance de la préparation, de stratégies de réponse claires et de plans
+de reprise structurés qui s’alignent sur les politiques et les objectifs de sécurité d’un organisme.
+La norme ISO/IEC 27035-2 couvre les spécificités de la gestion des incidents, en fournis-
+sant des conseils détaillés sur la manière de détecter, de signaler, d’évaluer et de répondre aux
+15
+
+
+===== PAGE 29 =====
+
+Chapitre 2 : État de l’art
+incidents de cybersécurité, afin d’en minimiser l’impact et d’éviter qu’ils ne se reproduisent.
+Les parties 1 et 2 de la norme ISO/CEI 27035 créent un cadre qui protège les actifs informa-
+tionnels et renforce la résilience de l’organisme face à l’évolution des cybermenaces[8]. comme
+montre la Figure 2.2.
+FIGURE 2.2 – La norme 27035
+Norme NIST(National Institute of Standards and Technology) CSF (Cybersecurity Frame-
+work) est un ensemble de normes, de directives et de bonnes pratiques pour gérer les risques liés
+à la cybersécurité. Le NIST appartient au ministère de l’économie américain et a pour mission
+d’aider les organisations à réduire les risques liés à la cybersécurité, Il repose sur cinq domaines
+clés : identifier, protéger, détecter, répondre et récupérer. [9]. comme illustré dans la Figure 2.3.
+FIGURE 2.3 – Les principales fonctions du NIST
+2.2.4.2
+Réglementations Sectorielles
+Les réglementations sectorielles regroupent un ensemble de lois, règles et normes propres
+à un domaine d’activité spécifique. Leur objectif est d’encadrer les pratiques des organisations
+concernées en imposant des exigences précises En vue d’assurer la sécurité, la protection des
+données et la continuité de la qualité des services et le respect des obligations légales.
+16
+
+
+===== PAGE 30 =====
+
+Chapitre 2 : État de l’art
+RGPD : Le Règlement général sur la protection des données est une directive européenne
+qui se fixe pour but de réguler la protection des données à caractère personnel. Il contraint
+les entités à instituer des actions techniques et organisationnelles afin d’assurer la protection
+des informations et requiert l’annonce des atteintes aux données dans un délai n’excédant pas
+72 heures. Le RGPD impose que le SIEM conserve les logs de manière sécurisée et que l’IA
+utilisée pour l’analyse respecte la confidentialité des données personnelles.
+Loi Tunisienne sur la Protection des Données Personnelles (2018) : Art.31 : Est interdit
+le traitement des données à caractère personnel relatives à l’origine raciale ou génétique d’une
+personne, ou à ses convictions religieuses, ou à ses opinions et ses appartenances politiques ou
+philosophiques ou syndicales, ou à ses données biométriques, ou de santé ou sexuelles [10].
+2.3
+Centre Opérationnel de Sécurité SOC
+2.3.1
+Définition de SOC
+Un centre des opérations de sécurité (SOC) fournit l’équipe dédiée, les processus et la tech-
+nologie nécessaires pour se défendre contre les cyberattaques d’aujourd’hui, de plus en plus
+complexes et persistantes. Grâce à une surveillance continue et à des capacités de réponse ra-
+pide aux incidents, les SOC aident les organisations à garder une longueur d’avance sur les
+menaces[11].
+Par ailleurs, le SOC joue un rôle central dans la surveillance et la protection des systèmes
+d’information. Il assure plusieurs fonctions, notamment la collecte et la corrélation des jour-
+naux, le Threat Intelligence, le Ticketing et la gestion des incidents. Comme illustré dans la
+figure 2.4, ces différentes fonctions permettent au SOC d’assurer une surveillance globale et
+continue de la sécurité.
+FIGURE 2.4 – Les fonctions d’un SOC
+17
+
+
+===== PAGE 31 =====
+
+Chapitre 2 : État de l’art
+2.3.2
+Les objectifs d’un SOC
+Pour atteindre sa mission de protection de l’organisation contre les cybermenaces, le SOC
+poursuit plusieurs objectifs stratégiques et opérationnels essentiels :
+•
+Détection proactive des menaces :Surveiller en continu les systèmes, réseaux et ap-
+plications afin de repérer rapidement toute activité suspecte ou anomalie, dans le but de
+prévenir les incidents avant qu’ils ne causent des dommages.
+• Analyse et gestion des incidents : Évaluer la gravité et l’impact des incidents détectés,
+définir leur priorité, et coordonner les actions nécessaires pour les traiter efficacement et
+rapidement.
+• Réponse rapide et coordonnée : Organiser et diriger les interventions face aux incidents
+en mobilisant les équipes et les outils appropriés pour réduire au maximum les impacts
+sur l’organisation.
+•
+Protection continue et amélioration de la sécurité : Maintenir et renforcer l’infra-
+structure et les systèmes de sécurité, appliquer les correctifs nécessaires, mettre à jour les
+règles de détection et optimiser en permanence les processus de sécurité.
+•
+Sensibilisation et reporting : Communiquer à la direction et aux parties prenantes
+l’état de la sécurité, les risques identifiés et l’efficacité des mesures mises en place, afin
+d’aligner la cybersécurité avec les objectifs stratégiques de l’organisation.
+2.3.3
+Les composants d’un SOC
+Un SOC efficace repose sur trois piliers fondamentaux : Processus, Personnels et les
+technologies. Chacun de ces éléments joue un rôle crucial dans la capacité du SOC à
+protéger l’infrastructure informatique de l’entreprise.
+Personnels : Les analystes en sécurité, les ingénieurs et les gestionnaires du centre de
+opérations de sécurité (SOC) constituent le noyau de cette organisation. Ces acteurs
+contribuent à l’interprétation des données, à l’identification des anomalies et à la coor-
+dination de la réponse aux incidents par l’apport de leur expertise.
+Processus : L’organisation d’un SOC s’articule autour de politiques, processus et procé-
+dures bien définis. Ces éléments structurels garantissent une réponse cohérente et standar-
+disée face aux menaces identifiées. Ils définissent également les responsabilités de chaque
+membre de l’équipe et les protocoles à suivre en cas d’incident.
+La Technologie : Le SOC s’appuie sur un ensemble de technologies avancées pour auto-
+matiser la surveillance, améliorer la détection et réduire les temps de réponse. Parmi les
+outils clés, on retrouve :
+• SIEM (Security Information and Event Management) : Centralise et corrèle les
+événements de sécurité provenant de plusieurs sources.
+18
+
+
+===== PAGE 32 =====
+
+Chapitre 2 : État de l’art
+• EDR (Endpoint Detection and Response) : Surveille les terminaux pour détecter
+les comportements malveillants.
+• NDR (Network Detection and Response) : Analyse le trafic réseau à la recherche
+de menaces.
+• SOAR (Security Orchestration, Automation, and Response) : Automatise cer-
+taines tâches de réponse, optimisant l’efficacité opérationnelle du SOC.
+La figure 2.5 met en évidence les trois éléments essentiels qui composent un SOC : les
+personnes, les processus et les technologies.
+FIGURE 2.5 – Les composants d’un SOC
+2.4
+Système de gestion d’information et des événements de
+sécurité (SIEM)
+Le SIEM permet de centraliser et d’analyser les données de sécurité afin de détecter les
+activités suspectes et les éventuelles menaces. Cette section présente les principales notions du
+SIEM, ses objectifs et son fonctionnement
+2.4.1
+Principes fondamentaux du SIEM
+Les systèmes de gestion des informations et des événements de sécurité (SIEM) sont un
+élément essentiel de toute boîte à outils de cybersécurité moderne qui aide le SOC à collecter,
+détecter, enquêter et répondre aux cybermenaces internes et externes. Cet outil essentiel permet
+aux équipes de cybersécurité de collecter, d’analyser et de gérer les opérations de sécurité tout
+en maintenant et en assurant une réponse aux incidents optimale rapidement[12].
+19
+
+
+===== PAGE 33 =====
+
+Chapitre 2 : État de l’art
+Une solution de gestion des informations et des événements de sécurité (SIEM) combine la
+gestion des informations de sécurité (SIM) et la gestion des événements de sécurité (SEM) en
+une solution de sécurité complète qui détecte les menaces et contribue à la conformité réglemen-
+taire. Les solutions SIEM collectent et analysent de grandes quantités de données, notamment
+des journaux d’activité d’utilisateurs, ainsi que des pare-feu, des serveurs et d’autres appareils
+connectés au réseau [13].
+En tant que solution centralisée, le SIEM permet de collecter, traiter et analyser les données
+liées aux événements de sécurité. Ses fonctionnalités se répartissent en deux volets principaux :
+— Gestion des informations de sécurité (SIM) : Axée sur la collecte, le stockage et l’ana-
+lyse des données historiques, elle offre une vision rétrospective utile pour détecter les tendances
+et les anomalies.
+— Gestion des événements de sécurité (SEM) : Orientée vers la surveillance en temps
+réel, elle assure la corrélation des événements et émet des alertes en cas de menace.
+La SIM (Security Information Management) consiste principalement à collecter et centra-
+liser les journaux ainsi que les données de sécurité afin de permettre leur analyse. La SEM
+(Security Event Management) se concentre davantage sur la surveillance et le traitement des
+événements et des alertes de sécurité. Le SIEM combine ces deux approches en centralisant des
+données provenant de différentes sources, en temps réel ou non, afin d’identifier les menaces,
+d’analyser les événements et de distinguer les activités nécessitant une intervention de celles ne
+présentant pas de risque important[14].
+FIGURE 2.6 – Les composants du SIEM
+2.4.2
+Les objectifs du SIEM
+Le SIEM répond à plusieurs objectifs essentiels dans le but de consolider la sécurité des
+systèmes d’information :
+• Centralisation des données de sécurité : Le SIEM regroupe les journaux d’événements
+et les données provenant de multiples sources dans un système unique, simplifiant ainsi
+l’analyse et évitant la dispersion des informations entre différents outils ou plateformes.
+20
+
+
+===== PAGE 34 =====
+
+Chapitre 2 : État de l’art
+• Corrélation des données pour une détection avancée des menaces : Grâce à ses algo-
+rithmes de corrélation, le SIEM établit des liens entre divers événements qui, pris isolé-
+ment, peuvent paraître anodins. Cette capacité permet de détecter des attaques complexes,
+comme les mouvements latéraux ou l’escalade de privilèges au sein du réseau.
+• Réaction rapide et gestion des incidents : Le SIEM génère des alertes en temps réel
+et fournit des rapports détaillés sur les incidents. Ces fonctionnalités aident les équipes
+de sécurité à réagir rapidement pour contenir et résoudre les menaces, limitant ainsi les
+impacts négatifs.
+• Conformité aux normes et réglementations : En collectant et conservant les journaux
+d’audit selon les exigences légales, le SIEM facilite la création de rapports pour les audits
+et assure la conformité avec les réglementations, comme le RGPD ou la norme PCI DSS.
+•
+Renforcement continu de la sécurité : Les analyses et rapports fournis par le SIEM
+permettent d’identifier les failles récurrentes et d’ajuster les stratégies de sécurité. Cela
+contribue à améliorer en permanence la posture de sécurité de l’organisation.
+Le SIEM est bien plus qu’un simple outil technologique : il constitue un levier stratégique
+permettant aux entreprises de protéger efficacement leurs actifs, d’anticiper les menaces et de
+garantir leur conformité aux réglementations.
+2.4.3
+Mode de fonctionnement du SIEM
+Le fonctionnement d’un système SIEM repose sur une série d’étapes essentielles visant à
+assurer une gestion efficace des événements de sécurité issus de sources multiples :
+- Collecte des données :Le SIEM centralise les informations provenant de différentes sources
+telles que les journaux système, les alertes de sécurité, les flux réseau, les configurations des
+équipements et autres données pertinentes liées à l’activité du système d’information.
+- Normalisation : Les données collectées, souvent hétérogènes, sont ensuite converties
+dans un format standardisé afin d’assurer leur cohérence et leur compatibilité. Elles sont ensuite
+stockées dans une base de données centralisée facilitant leur traitement et leur analyse.
+- Corrélation : À travers un moteur de corrélation, le SIEM examine les événements nor-
+malisés afin d’identifier des relations entre eux. Cette étape permet de détecter des scénarios
+d’attaque complexes et de reconstituer le déroulement d’une intrusion.
+- Génération d’alertes : Lorsqu’un comportement suspect ou une anomalie est identifié,
+le système déclenche automatiquement une alerte classifiée selon son niveau de criticité, afin
+d’informer les équipes de sécurité.
+- Investigation : Les analystes examinent les alertes générées pour confirmer l’incident,
+analyser son origine et évaluer son impact, puis mettre en œuvre les actions correctives néces-
+saires.
+- Reporting : Enfin, le SIEM génère des rapports détaillés et synthétiques permettant d’as-
+surer le suivi des incidents, de répondre aux exigences de conformité et de faciliter la prise de
+21
+
+
+===== PAGE 35 =====
+
+Chapitre 2 : État de l’art
+décision stratégique.
+FIGURE 2.7 – Mode de fonctionnement d’un système SIEM
+2.5
+Système d’Orchestration, d’Automatisation et de Réponse
+en Sécurité (SOAR)
+SOAR, ou Security Orchestration, Automation and Response en anglais (Orchestration de
+la Sécurité, Automatisation et Réponse, en français), fait référence à un ensemble d’outils et de
+logiciels compatibles qui permettent aux entreprises de rationaliser leurs opérations de sécurité
+en automatisant des tâches et en orchestrant des flux de travail[15].
+SOAR combine trois fonctionnalités logicielles : la gestion des menaces et des vulnéra-
+bilités, la réponse aux incidents de sécurité et l’automatisation des opérations de sécurité. La
+sécurité SOAR fournit donc un système de gestion des menaces de haut en bas. Les menaces
+sont identifiées, puis une stratégie de réponse est mise en œuvre. Le système est ensuite auto-
+matisé, dans la mesure du possible pour le rendre plus efficace. Un système SOAR efficace peut
+être utilisé comme un outil précieux pour soulager la pression sur les équipes informatiques[16].
+2.5.1
+Les objectifs de SOAR
+Le SOAR,acronyme de Security Orchestration, Automation, and Response, a pour but d’op-
+timiser la gestion des incidents de cybersécurité en combinant automatisation, coordination des
+outils et réponses rapides. Ses objectifs principaux sont les suivants :
+• Automatiser les tâches répétitives : telles que la collecte de données, la vérification des
+alertes ou la mise en quarantaine d’éléments suspects, réduisant ainsi la charge de travail
+des analystes et minimisant les erreurs humaines.
+• Coordination entre les différents outils de sécurité :SIEM, antivirus, pare-feu, scan-
+ners de vulnérabilités ,en garantissant une réponse cohérente et synchronisée face aux
+22
+
+
+===== PAGE 36 =====
+
+Chapitre 2 : État de l’art
+incidents.
+• playbooks prédéfinis : SOAR accélère considérablement la détection, l’analyse et la
+neutralisation des menaces, limitant ainsi leur impact sur l’infrastructure.
+• Optimiser l’utilisation des ressources :En orientant les analystes vers les menaces les
+plus critiques, pendant que les incidents moins complexes sont traités automatiquement.
+2.5.2
+Mode de fonctionnement de SOAR
+En automatisant diverses tâches et en intégrant de multiples outils de sécurité au sein de
+l’infrastructure d’une entreprise, une plateforme SOAR améliore l’efficacité et l’efficacité dans
+la gestion des incidents de cybersécurité.
+Voici un aperçu de la manière dont SOAR fonctionne :
+• Collecte de données : la première étape consiste à recueillir des données à partir de
+diverses sources, telles que les journaux, les flux de renseignements sur les menaces,
+les dispositifs réseau, les points d’extrémité, les services cloud, etc. Ces informations
+fournissent des aperçus précieux des risques potentiels en matière de sécurité.
+• Analyse des données : une fois les données collectées à partir de différentes sources, elles
+doivent être analysées pour détecter les menaces potentielles. Les plateformes SOAR
+utilisent des techniques d’analyse avancées telles que des algorithmes d’apprentissage
+automatique ou d’intelligence artificielle pour identifier des motifs qui peuvent indiquer
+des activités malveillantes.
+• Ingestion et enrichissement : après l’analyse des données pour détecter d’éventuelles
+menaces, le système les ingère pour ajouter plus de contexte grâce au processus d’enri-
+chissement en utilisant des bases de données externes ou des ressources internes dispo-
+nibles au sein de votre entreprise.
+• Triage et investigation : lorsque le processus d’analyse a identifié une menace poten-
+tielle, les analystes classent son niveau de gravité en fonction des critères prédéfinis par
+les politiques de votre entreprise avant de poursuivre l’enquête.
+• Informations exploitables et remédiation : si une menace réelle est confirmée au cours
+de la phase d’enquête, des actions correctives appropriées sont prises en fonction de sa na-
+ture. Cela pourrait inclure des mesures de confinement telles que le blocage des adresses
+IP/domaines impliqués dans des campagnes d’attaque ou l’application de correctifs contre
+les vulnérabilités connues exploitées par les attaquants, entre autres choses[17].
+Les processus automatisés du SOAR permettent aux équipes de sécurité de détecter rapide-
+ment les menaces et d’y répondre tout en réduisant les efforts manuels nécessaires à la détection
+et à l’enquête sur les menaces.
+23
+
+
+===== PAGE 37 =====
+
+Chapitre 2 : État de l’art
+2.6
+Comparaison SIEM et SOAR
+Le tableau 2.1 illustre les distinctions et la complémentarité entre les technologies SIEM
+et SOAR, en analysant leurs fonctions clés, leurs finalités et leurs avantages respectifs pour la
+sécurité des systèmes d’information.
+TABLE 2.1 – Comparaison des technologies SIEM et SOAR
+Aspect
+SIEM
+SOAR
+Rôle principal
+Analyse et surveillance des
+événements de sécurité
+Automatisation et orchestration
+des réponses
+Collecte de
+données
+Agrégation et corrélation des
+journaux d’activité
+Exploitation des données pour des
+actions automatisées
+Objectif
+Identification anticipée des
+cybermenaces
+Réponse rapide et standardisée
+aux incidents
+Fonctionnalités
+clé
+Alertes fondées sur des anomalies
+Playbooks pour automatiser les
+processus
+Support pour
+l’équipe
+Offre une visibilité consolidée des
+menaces
+Réduit la charge de travail manuel
+de l’équipe de surveillance
+Exemples
+d’actions
+Générer des alertes en temps réel
+Isolation des systèmes
+compromis, blocage d’IP
+malveillantes
+Bénéfice
+Visibilité étendue sur les menaces
+Accélération des réponses et
+réduction des erreurs humaines
+Les deux solutions collectent des informations de sécurité provenant de plusieurs domaines.
+Cependant, leurs fonctions principales sont très différentes. Le SIEM se concentre sur l’analyse
+des données collectées, la détection des menaces et la diffusion d’alertes. Le SOAR, quant à
+lui, se concentre sur la génération de réponses automatisées aux informations collectées. Les
+solutions SIEM sont très efficaces pour détecter les cyberattaques, mais elles nécessitent une
+intervention manuelle de la part des analystes de la sécurité pour s’en défendre. Le SOAR peut
+travailler de manière beaucoup plus indépendante.
+2.7
+Intégration SIEM et SOAR
+Les plateformes SIEM et SOAR jouent un rôle clé dans la cybersécurité moderne en amé-
+liorant la visibilité du réseau, la détection des menaces et la capacité de réponse aux incidents.
+24
+
+
+===== PAGE 38 =====
+
+Chapitre 2 : État de l’art
+Nous allons aborder les concepts de SIEM et de SOAR, examiner l’importance stratégique de
+l’intégration de ces deux outils de sécurité.
+Les systèmes de SIEM ingèrent et corrèlent les fichiers journaux et les événements prove-
+nant des terminaux, des périphériques réseau, des applications, des fournisseurs d’identité et
+d’autres composants. Ils fonctionnent avec des ressources cloud et sur site pour centraliser les
+alertes, l’archivage et l’analyse des données de sécurité, faciliter les enquêtes, la recherche de
+menaces et démontrer la conformité.
+Les outils de SOAR relient tous les éléments (SIEM, EDR, gestion des tickets, etc.) afin
+d’automatiser les workflows de réponse aux incidents à l’aide de playbooks. Cela réduit les
+efforts manuels, accélère les réponses, établit un confinement et met en œuvre des mesures
+correctives.
+L’intégration d’outils de sécurité et la mise en place de réponses automatisées apportent une
+valeur stratégique à l’organisation. Les menaces de sécurité actuelles nécessitent une identifica-
+tion et une correction rapides.
+Les outils de sécurité intégrés améliorent la visibilité et éliminent les failles au niveau des
+terminaux, des réseaux et des environnements cloud. Cette visibilité met en lumière les menaces
+et les vulnérabilités. Après tout, on ne peut pas corriger ce que l’on ignore.
+FIGURE 2.8 – SIEM et SOAR
+2.8
+Conclusion
+Dans ce chapitre, nous avons présenté les principales notions de cybersécurité, ainsi que le
+rôle du SOC, du SIEM et du SOAR dans la détection et la réponse aux incidents.
+Nous avons également abordé leur complémentarité, afin de mieux comprendre les choix
+technologiques retenus pour la conception de notre architecture SOC dans le chapitre suivant.
+25
+
+
+===== PAGE 39 =====
+
+CHAPITRE 3
+Conception de l’architecture de la solution
+SOC
+
+
+===== PAGE 40 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+3.1
+Introduction
+Après avoir présenté les concepts fondamentaux de la cybersécurité, ce chapitre porte sur
+la conception de l’architecture SOC proposée. Il présente les différents choix technologiques,
+l’architecture réseau ainsi que le rôle et les interactions entre les composants. Cette étape permet
+de définir une architecture adaptée aux besoins du projet et de préparer son implémentation dans
+le chapitre suivant.
+3.2
+Choix et spécification des outils de la solution SOC
+Dans cette section, nous présentons les principaux outils retenus pour la mise en place de la
+solution SOC. Chaque outil répond à un besoin spécifique, notamment la détection, l’analyse,
+la gestion des incidents, l’automatisation et l’évaluation des vulnérabilités.
+3.2.1
+Spécification de la solution SIEM : Wazuh
+Plusieurs solutions SIEM existent pour répondre aux besoins de surveillance et de détection
+des incidents de sécurité. Le tableau 3.1 présente les principales solutions étudiées et permet
+de comparer leurs caractéristiques afin de sélectionner l’outil le plus adapté au projet.
+TABLE 3.1 – Comparaison synthétique des principales solutions SIEM
+Critère
+ELK Stack
+Wazuh
+Splunk
+IBM QRadar
+Coût
+Gratuit (open
+source)
+Gratuit (open
+source)
+Élevé
+Élevé
+Fonctionnalités
+natives
+Recherche et
+visualisation,
+détection à
+configurer
+SIEM, EDR,
+intégrité des
+fichiers, détection
+de vulnérabilités
+Très avancées,
+selon les modules
+Très avancées
+(réseau,
+comportement)
+Intégration
+SOAR (Shuffle,
+TheHive)
+Possible via API
+Native (webhook,
+intégrations)
+Possible via API
+Possible via API
+Complexité de
+mise en œuvre
+Élevée
+Modérée
+Élevée
+Élevée
+Support et
+public cible
+Communauté,
+organisations
+techniques
+Communauté,
+PME et projets
+académiques
+Professionnel,
+grandes
+entreprises
+Professionnel,
+grandes
+entreprises
+27
+
+
+===== PAGE 41 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+Critère
+ELK Stack
+Wazuh
+Splunk
+IBM QRadar
+Avantages
+Flexible et
+personnalisable
+Gratuit, complet,
+intégration facile
+avec la chaîne
+SOAR
+Analyse
+puissante,
+écosystème riche
+Solution
+complète pour
+entreprise
+Inconvénients
+Configuration
+complexe
+Support
+principalement
+communautaire
+Coût élevé
+Coût et
+complexité élevés
+Wazuh a été retenu pour ce projet en raison de ses capacités de surveillance et de détection des inci-
+dents, ainsi que de son caractère open source et gratuit. Il s’intègre également facilement avec les autres
+outils de la solution, notamment Shuffle et TheHive, afin d’assurer une gestion et une automatisation
+efficaces des incidents de sécurité.
+3.2.2
+Présentation de Wazuh
+La solution Wazuh se compose de plusieurs agents de sécurité des terminaux, déployés sur les sys-
+tèmes surveillés, et d’un serveur de gestion, qui collecte et analyse les données recueillies par les agents.
+En outre, Wazuh a été entièrement intégré à Elastic Stack, fournissant un moteur de recherche et un outil
+de visualisation des données qui permet aux utilisateurs de naviguer à travers leurs alertes de sécurité.
+FIGURE 3.1 – Logo de Wazuh
+Wazuh est une plateforme de sécurité SI tout-en-un, open source et puissante, conçue pour proté-
+ger les organisations contre les menaces cybernétiques. Elle se distingue par plusieurs fonctionnalités
+essentielles :
+1. Détection d’Intrusions (IDS/IPS) :Wazuh surveille en temps réel les activités du système et les
+journaux de sécurité, repérant les comportements suspects qui pourraient indiquer une intrusion.
+2. Corrélation des Événements : La plateforme analyse et connecte les informations provenant de
+diverses sources pour identifier les attaques complexes, permettant une réponse plus efficace.
+3. Analyse des Logs : Wazuh excelle dans l’analyse approfondie des journaux, aidant les utilisateurs
+à comprendre les activités du système et à réagir rapidement en cas d’incident.
+4. Gestion de Vulnérabilités : En identifiant et évaluant les faiblesses potentielles du système, Wa-
+zuh aide à renforcer la sécurité en anticipant les vulnérabilités.
+28
+
+
+===== PAGE 42 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+5. Conformité et Rapports : La plateforme génère des rapports détaillés pour aider les organisations
+à respecter les normes de sécurité, facilitant ainsi la démonstration de la conformité.
+6. Extensibilité et Intégrations : Wazuh peut être facilement étendu grâce à des modules complé-
+mentaires et s’intègre avec d’autres outils de sécurité, offrant une flexibilité d’utilisation.
+7. Architecture Évolutive : Que ce soit dans des environnements de petite ou grande envergure, sur
+site ou dans le cloud, Wazuh propose une architecture évolutive pour répondre aux besoins variés.
+8. Corrélation et Threat Intelligence : La plateforme utilise des mécanismes avancés de corrélation
+et s’appuie sur des informations sur les menaces pour améliorer la précision de la détection.
+3.2.3
+Les composants de Wazuh
+Wazuh est une puissante plateforme de sécurité open source qui intègre la détection des menaces, la
+surveillance de l’intégrité, la réponse aux incidents et la gestion de la conformité. Son architecture est
+modulaire, comprenant plusieurs composants clés :
+Agent Wazuh : Installé sur des points de terminaison (serveurs, VM, conteneurs), l’agent collecte
+des données de sécurité telles que des journaux, des modifications d’intégrité des fichiers et un inventaire
+système.
+Serveur Wazuh : L’unité centrale de traitement de la plateforme. Elle reçoit des données des agents
+ou de sources externes, les décode, applique des règles et génère des alertes.
+Indexeur Wazuh : Basé sur OpenSearch, ce composant stocke et indexe les alertes et les événements.
+Il permet une recherche rapide, un filtrage et des analyses à travers de grands ensembles de données.
+Tableau de bord Wazuh : Une interface web pour visualiser les alertes, gérer les agents et interagir
+avec la plateforme. Elle communique avec le Serveur Wazuh via une API RESTful.
+FIGURE 3.2 – Principaux composants de Wazuh
+3.2.4
+Spécification de la solution SOAR : Shuffle et TheHive
+Une solution SOAR permet d’automatiser et de faciliter la gestion des incidents de sécurité. Dans le
+cadre du projet, elle assure l’automatisation des actions de réponse et le suivi des incidents. Elle permet
+ainsi de réduire le temps de traitement et d’améliorer la coordination entre les différents composants du
+SOC.
+29
+
+
+===== PAGE 43 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+3.2.4.1
+Shuffle : automatisation des réponses
+Plusieurs solutions SOAR peuvent être utilisées pour automatiser la réponse aux incidents de sécu-
+rité. Le tableau 3.2 compare quelques solutions afin d’identifier celle qui répond le mieux aux besoins
+du projet.
+TABLE 3.2 – Comparaison de Shuffle avec d’autres solutions SOAR
+Critère
+Shuffle
+StackStorm
+Cortex XSOAR
+Splunk SOAR
+Coût
+Gratuit (open
+source)
+Gratuit (open
+source)
+Élevé (licence
+payante)
+Élevé (licence
+payante)
+Fonctionnalités
+natives
+Workflows
+visuels,
+webhooks,
+nombreuses
+applications
+Automatisation
+par règles et
+actions, packs
+extensibles
+Très avancées
+(playbooks,
+gestion des cas)
+Très avancées
+(playbooks,
+intégrations
+Splunk)
+Intégration
+SIEM (Wazuh,
+TheHive)
+Native (webhook,
+application
+TheHive)
+Possible, avec
+développement
+Possible via les
+intégrations
+Plus naturelle
+avec Splunk
+Complexité de
+mise en œuvre
+Modérée
+Élevée
+Élevée
+Élevée
+Support et
+public cible
+Communauté,
+PME et projets
+académiques
+Communauté,
+équipes DevOps /
+IT
+Professionnel,
+grandes
+entreprises
+Professionnel,
+utilisateurs de
+Splunk
+Avantages
+Gratuit, interface
+visuelle simple,
+orienté sécurité
+Flexible et
+puissant
+Solution très
+complète
+Intégration forte
+avec Splunk
+Inconvénients
+Moins de
+fonctions
+avancées que les
+solutions
+commerciales
+Orienté
+automatisation IT,
+configuration
+complexe
+Coût très élevé
+Coût élevé,
+dépendance à
+Splunk
+Shuffle a été choisi pour ce projet en raison de sa capacité à automatiser le traitement des alertes et la
+réponse aux incidents. Son intégration avec Wazuh, TheHive et pfSense permet d’assurer une meilleure
+coordination entre les différents composants de la solution.
+3.2.4.2
+TheHive : gestion des incidents
+Plusieurs plateformes de gestion des incidents de sécurité existent pour centraliser, suivre et traiter
+les alertes. Le tableau 3.3 compare quelques-unes de ces solutions afin d’identifier celle qui répond le
+30
+
+
+===== PAGE 44 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+mieux aux besoins du projet.
+TABLE 3.3 – Comparaison de TheHive avec d’autres solutions de gestion des incidents
+Critère
+TheHive
+RTIR
+ServiceNow SIR
+Jira Service
+Management
+Coût
+Gratuit (édition
+communautaire)
+Gratuit (open
+source)
+Très élevé
+(licence payante)
+Payant (licence
+par utilisateur)
+Fonctionnalités
+natives
+Gestion
+collaborative des
+cas, observables,
+tâches,
+enrichissement
+Ticketing orienté
+réponse aux
+incidents
+Gestion des
+incidents de
+sécurité intégrée à
+l’ITSM
+Gestion de
+services générale,
+plugins de
+sécurité
+Intégration
+(Cortex, MISP,
+Shuffle)
+Native
+Limitée,
+personnalisable
+Via l’écosystème
+ServiceNow
+Via les plugins
+Atlassian
+Complexité de
+mise en œuvre
+Modérée
+Élevée
+Élevée
+Modérée à élevée
+Support et
+public cible
+Communauté,
+équipes SOC /
+CERT et projets
+académiques
+Communauté,
+petites structures
+Professionnel,
+grandes
+entreprises
+Professionnel,
+équipes utilisant
+Atlassian
+Avantages
+Spécifique à la
+sécurité,
+collaboratif,
+intégration native
+Gratuit, simple
+Très complet
+Interface intuitive
+Inconvénients
+Édition
+communautaire
+limitée
+Interface
+vieillissante
+Coût très élevé
+Peu spécialisé en
+sécurité
+TheHive a été choisi, en raison de sa capacité à centraliser et organiser la gestion des incidents
+de sécurité. Son intégration avec Shuffle et Cortex permet d’assurer le suivi des alertes, l’analyse des
+incidents et une meilleure coordination des différentes actions.
+31
+
+
+===== PAGE 45 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+Dans la couche SOAR, Shuffle orchestre les workflows et automatise les actions à partir des alertes
+de Wazuh. TheHive centralise la gestion des incidents et assure leur suivi par les analystes. Il s’intègre
+à Cortex pour analyser les observables et à MISP pour exploiter les informations de Threat Intelligence
+et les IoC. La figure 3.3 présente cette intégration.
+FIGURE 3.3 – Intégration de TheHive, MISP et Cortex
+3.2.5
+Présentation de Shuffle
+Shuffle est une plateforme de SOAR qui permet aux équipes de sécurité d’orchestrer et d’automa-
+tiser le traitement d’incident sécurité de bout en bout. Son fonctionnement est principalement basé sur
+des applications ou intégrations, des triggers et des workflows. Shuffle est orienté vers un écosystème
+entièrement open-source. Cela inclut, sans s’y limiter, des workflows, des applications et des normes
+open-source (OpenAPI, Swagger)[18].
+Shuffle se distingue par sa capacité à automatiser et à orchestrer les processus de gestion des incidents
+de cybersécurité. En combinant l’automatisation des tâches répétitives et l’orchestration des actions entre
+les différentes solutions de sécurité, Shuffle permet aux équipes de sécurité de gagner en efficacité et en
+réactivité face aux menaces[19]
+Automatisation : Shuffle prend en charge les tâches répétitives, comme la collecte des données, l’analyse
+des journaux ou la vérification d’une adresse IP. Les analystes gagnent du temps et peuvent se concentrer
+sur l’investigation des incidents.
+Orchestration : Shuffle coordonne les actions entre plusieurs outils pour obtenir une réponse cohérente.
+Dans notre architecture, lorsque Wazuh détecte une attaque, il envoie une alerte à Shuffle. Celui-ci crée
+un cas dans TheHive, lance l’analyse de l’adresse IP avec Cortex, puis bloque l’adresse malveillante sur
+pfSense.
+32
+
+
+===== PAGE 46 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+FIGURE 3.4 – Logo de la plateforme Shuffle
+3.2.6
+Avantages de Shuffle
+• Rapidité : En automatisant les tâches répétitives, Shuffle permet une réponse instantanée aux inci-
+dents de cybersécurité, réduisant ainsi le temps de réaction global.
+• Efficacité : Enorchestrant les actions entre les différentes solutions de sécurité, Shuffle garantit une
+réponse cohérente et bien coordonnée, réduisant ainsi le risque d’erreurs humaines.
+• Flexibilité :Shuffle est une plateforme open source, ce qui signifie qu’elle peut être personnalisée
+et étendue pour répondre aux besoins spécifiques de chaque organisation.
+• Communauté active : Shuffle bénéficie d’une communauté active de développeurs et d’utilisateurs,
+ce qui garantit un développement continu et un support technique de qualité[20].
+3.2.7
+Présentation de Thehive
+TheHive est une plateforme open source de gestion des incidents de sécurité. Elle permet aux ana-
+lystes de créer, suivre et traiter les cas de manière collaborative. Dans notre projet, elle reçoit les alertes
+envoyées par Shuffle et les transforme en cas, qui sont ensuite enrichis par Cortex et MISP.
+FIGURE 3.5 – logo de thehive
+3.2.8
+Avantages de TheHive
+• Collaboration : plusieurs analystes peuvent suivre et traiter le même cas en même temps, grâce à
+une gestion centralisée et partagée.
+• Gestion structurée des cas : les alertes, les observables et les tâches d’un incident sont regroupés
+au même endroit, ce qui simplifie le suivi et la résolution.
+33
+
+
+===== PAGE 47 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+• Intégration : TheHive reçoit les alertes de Shuffle et se connecte à Cortex et à MISP pour enrichir
+automatiquement les cas.
+• Automatisation des analyses : associé à Cortex, il permet de lancer l’analyse des observables
+(adresses IP, fichiers) sans intervention manuelle.
+• Extensibilité : étant open source et modulaire, il peut être adapté aux besoins du projet.
+3.2.9
+Intégration de Shuffle et TheHive
+Shuffle et TheHive sont deux outils complémentaires qui interviennent à différentes étapes de la
+gestion des incidents dans notre architecture SOC :
+— Shuffle est utilisé pour l’orchestration et l’automatisation des workflows. Il reçoit les alertes géné-
+rées par Wazuh et permet d’enchaîner automatiquement plusieurs actions, comme la récupération
+des informations de l’alerte, la création d’un cas dans TheHive et l’analyse des observables.
+— TheHive est utilisé pour la gestion et le suivi des incidents. Il permet de centraliser les informa-
+tions relatives à un incident, de créer des cas et de suivre les différentes étapes de leur traitement.
+— La combinaison des deux outils permet de réduire les tâches manuelles et d’assurer un traitement
+plus rapide et organisé des alertes. Shuffle prend en charge l’exécution automatique des actions,
+tandis que TheHive permet de conserver une vision structurée de l’incident et de son traitement.
+— Cortex et MISP complètent cette chaîne en apportant des capacités d’analyse et d’enrichisse-
+ment des informations. Cortex permet notamment d’analyser les observables, tandis que MISP
+fournit des informations de Threat Intelligence pouvant être utilisées pour améliorer l’analyse des
+incidents.
+Ainsi, l’intégration de Shuffle, TheHive, Cortex et MISP permet de construire une chaîne de traite-
+ment cohérente, allant de la réception d’une alerte jusqu’à son analyse et son suivi. Cette organisation
+facilite la réponse aux incidents et améliore la traçabilité des différentes actions réalisées au sein du SOC.
+3.3
+Sécurité réseau et pare-feu : pfSense
+Dans une architecture SOC, le pare-feu contrôle les flux entre les réseaux et limite les accès non
+autorisés. Il joue aussi un rôle actif dans la réponse aux incidents, en bloquant le trafic malveillant. Cette
+section compare les solutions disponibles et présente celle retenue.
+3.3.1
+Étude comparative des pare-feu
+Le tableau 3.4 compare deux pare-feu open source (pfSense et OPNsense) et deux pare-feu commer-
+ciaux (FortiGate et Palo Alto), selon le coût, les fonctionnalités, l’intégration avec le projet, la complexité,
+ainsi que le support et le public cible.
+34
+
+
+===== PAGE 48 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+TABLE 3.4 – Synthèse comparative des pare-feu
+Critère
+pfSense
+OPNsense
+FortiGate
+Palo Alto
+Coût
+Gratuit (open
+source)
+Gratuit (open
+source)
+Licence payante
+Licence très
+coûteuse
+Fonctionnalités
+natives
+Filtrage, VPN,
+VLAN, IDS/IPS
+via paquets
+(Suricata, Snort)
+Filtrage, VPN,
+VLAN, IDS/IPS
+intégré
+Pare-feu nouvelle
+génération,
+écosystème
+Fortinet
+Pare-feu nouvelle
+génération
+avancé, détection
+par IA
+Intégration
+(Wazuh,
+Shuffle)
+Syslog vers
+Wazuh, API
+REST disponible
+Syslog vers
+Wazuh, API
+REST disponible
+API propriétaire
+Fortinet
+Intégration native
+avec Cortex
+XSOAR
+Complexité de
+mise en œuvre
+Modérée
+Modérée
+Modérée à élevée
+Élevée
+Support et
+public cible
+Communauté
+large, PME et
+projets
+académiques
+Communauté
+plus restreinte,
+PME
+Professionnel
+24/7, entreprises
+de toutes tailles
+Professionnel
+24/7, grandes
+entreprises
+Avantages
+Gratuit, flexible,
+très documenté
+Interface
+moderne,
+IDS/IPS natif
+Solution
+complète et
+performante
+Détection
+avancée des
+menaces
+Inconvénients
+Support
+principalement
+communautaire
+Communauté
+plus petite
+Coût élevé,
+dépendance à
+Fortinet
+Coût très élevé,
+complexité
+pfSense constitue la meilleure solution retenue pour notre projet. Il répond aux besoins de notre
+architecture grâce à ses fonctionnalités de filtrage des paquets, de gestion des VLAN et de VPN. Son
+caractère open source et gratuit, ainsi que son intégration avec Wazuh et Shuffle.
+3.3.2
+Présentation de pfSense
+pfSense est une solution open source basée sur FreeBSD, utilisée pour assurer la sécurité et la gestion
+des réseaux. Elle permet notamment de transformer une machine en pare-feu et offre plusieurs fonction-
+nalités avancées pour contrôler et protéger le trafic réseau. Dans le cadre du projet, pfSense joue le rôle
+de pare-feu central pour sécuriser les échanges entre les différentes zones du réseau[20].
+35
+
+
+===== PAGE 49 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+FIGURE 3.6 – Logo de pfSense
+Parmi les principaux avantages de pfSense, on peut citer :
+• Open source et gratuit : il ne nécessite aucune licence, ce qui réduit fortement les coûts par
+rapport aux pare-feu propriétaires.
+• Stabilité et fiabilité : basé sur FreeBSD, il est reconnu pour sa robustesse et sa sécurité.
+• Interface web intuitive : elle facilite la configuration et la gestion des règles, des interfaces et des
+services.
+• Richesse fonctionnelle : pare-feu à états, routage, NAT, VPN (OpenVPN, IPsec), DHCP, DNS,
+proxy et gestion de la bande passante.
+• Flexibilité et extensibilité : de nombreux paquets complémentaires (Snort, Suricata, pfBlockerNG)
+permettent d’ajouter des fonctions de détection et de filtrage.
+• Communauté active : une documentation abondante et un support communautaire facilitent la
+résolution des problèmes.
+• Facilité d’intégration : il peut être automatisé via des règles et des alias, ce qui permet le blocage
+automatique des adresses IP malveillantes depuis Shuffle dans notre architecture[21].
+pfSense assure trois missions principales dans l’architecture : Il segmente le réseau en trois VLAN
+(Administration, SOC et Pentest) et contrôle les échanges entre eux. Ses journaux sont transmis à Wazuh
+par syslog, ce qui permet de repérer les activités suspectes. Il est aussi piloté par Shuffle, via son API,
+pour bloquer automatiquement les adresses IP malveillantes.
+3.4
+Spécification de la solution de gestion des vulnérabilités :
+OpenVAS et OWASP ZAP
+Les scanners de vulnérabilités permettent d’identifier les failles de sécurité présentes sur les sys-
+tèmes, les services et les applications afin de réduire les risques d’exploitation. Cette section compare les
+solutions disponibles et présente celles retenues.
+3.4.1
+Étude comparative des scanners de vulnérabilités
+Le tableau 3.5 compare deux scanners open source (OpenVAS et OWASP ZAP) et deux solutions
+commerciales (Nessus et Qualys), selon le coût, les fonctionnalités natives, l’intégration avec le projet,
+la complexité, ainsi que le support et le public cible.
+36
+
+
+===== PAGE 50 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+TABLE 3.5 – Comparaison synthétique des scanners de vulnérabilités open source et
+commerciaux
+Critère
+OpenVAS
+OWASP ZAP
+Nessus
+Qualys
+Coût
+Gratuit (open
+source)
+Gratuit (open
+source)
+Licence payante
+(par nombre d’IP)
+Licence payante
+(abonnement)
+Fonctionnalités
+natives
+Scan réseau
+complet
+(serveurs, postes,
+équipements),
+base de tests très
+riche
+Test des
+applications web
+(injection SQL,
+XSS), scan actif
+et passif
+Scan réseau et
+conformité, base
+de vulnérabilités
+très fiable
+Gestion des
+vulnérabilités et
+de la conformité
+dans le cloud
+Intégration avec
+le projet
+API disponible,
+rapports
+exportables
+API REST
+disponible, tests
+automatisables
+API disponible,
+plus coûteuse
+Plateforme cloud
+tierce
+Complexité de
+mise en œuvre
+Modérée
+Faible à modérée
+Modérée
+Modérée à élevée
+Support et
+public cible
+Communauté,
+PME et projets
+académiques
+Communauté,
+développeurs et
+testeurs
+d’applications
+web
+Professionnel,
+entreprises
+Professionnel,
+grandes
+entreprises
+Avantages
+Couverture réseau
+large, rapports
+détaillés
+Spécialisé dans
+les applications
+web, simple à
+utiliser
+Fiable, interface
+intuitive
+Solution cloud,
+évolutive
+Inconvénients
+Ne détecte pas les
+failles
+applicatives
+(SQLi, XSS),
+parfois gourmand
+en ressources
+Ne couvre pas
+l’infrastructure
+réseau
+Coût élevé
+Coût élevé,
+dépendance au
+cloud
+OpenVAS et OWASP ZAP constituent les solutions retenues pour l’analyse des vulnérabilités de
+notre projet. OpenVAS permet d’analyser les systèmes et le réseau, tandis que OWASP ZAP est dédié
+aux applications web. Leur caractère open source, gratuit et complémentaire a motivé ce choix.
+37
+
+
+===== PAGE 51 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+3.4.2
+Présentation d’OpenVAS
+OpenVAS (Open Vulnerability Assessment System) est un scanner de vulnérabilités open source,
+développé par la société Greenbone et intégré à la suite Greenbone Vulnerability Management (GVM),
+un ensemble d’outils dédiés à la gestion des vulnérabilités[22].
+FIGURE 3.7 – Logo d’OpenVAS
+3.4.3
+Fonctionnement de Greenbone Vulnerability Management (GVM)
+Le fonctionnement de Greenbone Vulnerability Management (GVM) repose généralement sur trois
+étapes principales :
+1. Identification de la cible à analyser : la cible à auditer est définie, par exemple une adresse
+IP, une plage d’adresses ou un sous-réseau. GVM identifie ensuite les machines accessibles qui
+peuvent être analysées.
+2. Lancement du scan de vulnérabilités avec OpenVAS : le scan est effectué afin de détecter
+les vulnérabilités, les mauvaises configurations ainsi que les logiciels obsolètes présents sur les
+systèmes analysés.
+3. Génération du rapport et recommandations : à la fin de l’analyse, GVM génère un rapport
+présentant les vulnérabilités détectées, leur niveau de gravité ainsi que des recommandations per-
+mettant de les corriger.
+3.4.4
+Présentation d’OWASP ZAP
+OWASP ZAP est un outil gratuit de sécurité des applications web. Il permet de détecter automati-
+quement les vulnérabilités dans un site web. Son nom complet est “OWASP Zed Attack Proxy”. Il est
+maintenu par l’OWASP, une organisation dédiée à la sécurité informatique. ZAP s’utilise principalement
+pendant les tests de développement ou d’audit. Il aide les équipes à corriger des failles avant une mise en
+ligne.
+38
+
+
+===== PAGE 52 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+FIGURE 3.8 – Logo d’OWASP ZAP
+3.4.5
+Avantages de ZAP
+— Open source et gratuit, ce qui facilite son utilisation dans un environnement de test.
+— Flexible et extensible grâce aux nombreux modules complémentaires disponibles.
+— Compatible avec plusieurs systèmes d’exploitation et disponible également avec Docker.
+— Adapté à différents niveaux d’utilisateurs, des débutants aux spécialistes de la sécurité.
+— Permet d’intercepter et d’analyser les échanges entre le navigateur et l’application web.
+OpenVAS et OWASP ZAP sont placés dans le VLAN SOC et se complètent. OpenVAS analyse
+les machines des autres VLAN, comme le serveur Windows et la machine Ubuntu, pour détecter les
+vulnérabilités du système et du réseau. OWASP ZAP teste les applications web, par exemple DVWA,
+pour détecter les failles applicatives telles que l’injection SQL et le XSS.
+3.4.6
+Notions de CVE et de CVSS
+Les scanners OpenVAS et OWASP ZAP présentent leurs résultats à l’aide de deux notions : le CVE et
+le CVSS. Le CVE (Common Vulnerabilities and Exposures) est un identifiant unique attribué à chaque
+vulnérabilité de sécurité connue : il permet de la référencer et de la décrire de façon standardisée. Le
+CVSS (Common Vulnerability Scoring System) note la gravité d’une vulnérabilité sur une échelle de 0
+à 10 : plus le score est élevé, plus la faille est critique et doit être corrigée rapidement. Le tableau 3.6
+présente les niveaux de sévérité utilisés.
+39
+
+
+===== PAGE 53 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+TABLE 3.6 – Échelle de sévérité CVSS
+Niveau
+Score CVSS
+Signification
+Critical
+9.0 – 10.0
+Faille exploitable à distance, souvent sans authentification,
+pouvant permettre une prise de contrôle totale du système.
+Correction immédiate.
+High
+7.0 – 8.9
+Faille grave pouvant mener à un accès non autorisé ou à
+une fuite de données. Correction prioritaire.
+Medium
+4.0 – 6.9
+Faille pouvant faciliter une attaque mais nécessitant des
+conditions supplémentaires. Correction recommandée à
+court/moyen terme.
+Low
+0.1 – 3.9
+Impact direct faible, souvent utile en reconnaissance pour
+préparer une attaque plus large. Correction non urgente.
+Log / Info
+0.0
+Simple information collectée (bannière, version, service
+détecté), sans faille de sécurité avérée.
+3.5
+Architecture globale du système
+La figure 3.9 présente l’architecture globale de la solution, organisée en trois VLAN dédiés à l’ad-
+ministration, au SOC et aux tests de sécurité. Elle montre également l’intégration des différents outils de
+supervision, d’orchestration, de gestion des incidents et d’analyse des vulnérabilités.
+FIGURE 3.9 – Architecture globale de la solution
+40
+
+
+===== PAGE 54 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+3.6
+Description de l’Architecture
+Dans cette section, nous présentons l’architecture de la solution mise en place ainsi que l’organisa-
+tion des différents VLAN. Chaque VLAN regroupe les composants nécessaires à l’administration, à la
+sécurité et aux tests d’intrusion.
+a- VLAN 1 — Administration
+Ce VLAN héberge les postes et serveurs de travail légitimes de l’organisation simulée :
+— un serveur Windows Server 2019;
+— une machine Ubuntu dédiée à l’administration.
+Ce VLAN héberge les machines à protéger : un serveur Windows Server 2019 et une machine Ubuntu
+d’administration. Elles sont les cibles des attaques simulées.
+b- VLAN 2 — SOC
+Ce VLAN concentre l’ensemble de la chaîne de sécurité opérationnelle mise en place dans le cadre
+de ce projet.
+— Wazuh assure les fonctions de SIEM et d’EDR : collecte, corrélation et détection des événements
+de sécurité sur l’ensemble du parc supervisé.
+— Shuffle, plateforme SOAR, orchestre et automatise la réponse aux incidents à partir des alertes
+remontées par Wazuh.
+— La réponse automatisée s’appuie sur trois briques complémentaires :
+— TheHive pour la gestion des cas (case management);
+— Cortex pour l’analyse et l’enrichissement des indicateurs de compromission;
+— MISP pour le partage de renseignement sur la menace (threat intelligence).
+— Un sous-ensemble dédié à la gestion des vulnérabilités regroupe :
+— OpenVAS, pour le scan de vulnérabilités système et réseau;
+— OWASP ZAP, pour le test de sécurité des applications web.
+Ce VLAN regroupe la chaîne de sécurité : Wazuh, Shuffle, TheHive, Cortex, MISP, OpenVAS et OWASP
+ZAP. Il assure la détection, l’analyse et la réponse aux incidents.
+c- VLAN 3 — Pentest
+Ce VLAN contient une machine Kali Linux utilisée comme poste attaquant. Elle simule des intru-
+sions pour valider la détection et la réponse du SOC.
+41
+
+
+===== PAGE 55 =====
+
+Chapitre 3 : Conception de l’architecture de la solution SOC
+3.7
+Conclusion
+Dans ce chapitre, nous avons défini l’architecture de la solution SOC et justifié le choix des différents
+outils utilisés. Nous avons également présenté leur rôle, l’organisation du laboratoire et les interactions
+entre les composants.
+Le chapitre suivant sera consacré à la mise en œuvre de la solution.
+42
+
+
+===== PAGE 56 =====
+
+CHAPITRE 4
+Mise en œuvre de la solution SOC
+
+
+===== PAGE 57 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+4.1
+Introduction
+Dans ce chapitre, nous présentons les différentes étapes de réalisation de notre projet. Nous com-
+mençons par décrire l’environnement utilisé, puis nous expliquons l’installation et la configuration des
+outils retenus. Enfin, nous présentons les intégrations réalisées entre les différents composants afin de
+mettre en place une architecture SIEM-SOAR fonctionnelle.
+4.2
+Préparation de l’environnement de déploiement
+Dans cette section, nous présentons l’environnement de travail utilisé pour le déploiement de la so-
+lution. Nous décrivons les ressources matérielles ainsi que les logiciels utilisés pour installer, configurer
+et faire fonctionner les différents composants de l’architecture.
+4.2.1
+Environnement matériel
+La réalisation de ce projet a été effectuée sur un seul ordinateur personnel. Le tableau 4.1 présente
+les principales caractéristiques matérielles de la machine utilisée pour le déploiement de la solution.
+TABLE 4.1 – Caractéristiques de la machine hôte
+Composant
+Caractéristiques
+Processeur
+Intel(R) Core(TM) i5-1135G7 (11e génération) @ 2.40 GHz
+Mémoire vive (RAM)
+40 Go
+Stockage SSD
+512 Go
+Système d’exploitation
+Windows 11 Famille Unilingue 64 bits (Version 25H2)
+4.2.2
+Environnement logiciel
+Le tableau 4.2 présente les différentes machines virtuelles utilisées dans le cadre de ce projet. Il pré-
+cise, pour chacune d’elles, le système d’exploitation, les services installés ainsi que l’adresse IP associée.
+Afin de déployer cette infrastructure, nous avons choisi d’utiliser Oracle VirtualBox. Cette solution nous
+a permis d’exécuter plusieurs machines virtuelles sur un même ordinateur, tout en conservant un envi-
+ronnement indépendant pour chaque système. Cette organisation a facilité l’installation, la configuration
+et l’intégration des différents outils de notre architecture, notamment Wazuh, TheHive, Cortex, MISP,
+OpenVAS, pfSense et Kali Linux.
+44
+
+
+===== PAGE 58 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+TABLE 4.2 – Liste des machines virtuelles et leurs caractéristiques
+Machine
+Caractéristiques
+techniques
+Système
+d’exploita-
+tion
+Services ins-
+tallés
+Adresse IP
+Wazuh
+Ser-
+ver
+4 Go RAM, 45
+Go stockage
+Ubuntu 20.04
+LTS
+Wazuh
+Ma-
+nager, Wazuh
+Indexer,
+Wazuh Dash-
+board
+192.168.20.10
+Orchestrateur
+8 Go RAM, 30
+Go stockage
+Ubuntu 22.04
+LTS
+Shuffle
+192.168.20.30
+TheHive+
+cortex+misp
+8 Go RAM, 30
+Go stockage
+Ubuntu 22.04
+LTS
+Gestion
+des
+incidents
+192.168.20.20
+Pare-feu
+2 Go RAM, 30
+Go stockage
+FreeBSD
+PfSense
+192.168.10.1
+192.168.20.1
+192.168.30.1
+Windows
+Server
+2 Go RAM, 20
+Go stockage
+Windows
+Server 2019
+Wazuh Agent
+192.168.10.11
+192.168.20.102
+Linux Test
+2 Go RAM, 20
+Go stockage
+Ubuntu 20.04
+LTS
+Wazuh Agent
+192.168.10.12
+192.168.20.106
+Kali Linux
+2 Go RAM, 40
+Go stockage
+Kali
+Linux
+2024.1
+Outils
+de
+pentest,
+simulation
+d’attaques
+192.168.30.101
+OpenVAS
+et
+OWASP
+ZAP
+7 Go RAM, 30
+Go stockage
+Ubuntu 22.04
+LTS
+OpenVAS
+(scanner
+de
+vulnérabili-
+tés)
+192.168.20.40
+4.3
+Installation et configuration des composants
+Dans cette section, nous présentons les étapes d’installation et de configuration des différents outils
+utilisés dans notre architecture. Nous expliquons également les principales configurations réalisées afin
+d’assurer leur bon fonctionnement et leur intégration au sein de la solution proposée.
+45
+
+
+===== PAGE 59 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+4.3.1
+Installation de Wazuh
+Cette section présente les différentes étapes de l’installation de Wazuh. Nous commençons par l’ins-
+tallation du serveur Wazuh, puis nous expliquons le déploiement des agents sur les machines à superviser
+afin de permettre la collecte des journaux d’événements et leur transmission au serveur.
+4.3.1.1
+Wazuh Server
+L’installation de Wazuh Server constitue une étape importante de la mise en place de la plateforme
+SIEM. Dans le projet, il a été installé sur une machine virtuelle Ubuntu 22.04 avec le Manager, l’Indexer
+et le Dashboard, en suivant la documentation officielle de Wazuh [23].
+Wazuh Indexer : stockage et indexation des logs via OpenSearch. Cette commande assure l’instal-
+lation principale de l’indexer, comme illustré dans la figure 4.1
+FIGURE 4.1 – Installation de Wazuh indexer
+46
+
+
+===== PAGE 60 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+L’une des importantes étapes est de préciser l’adresse IP,comme présenté dans la figure 4.2.
+FIGURE 4.2 – Fixation de l’adresse IP pour Wazuh indexer
+Enfin on vérifie l’état de service installée,comme illustré dans la figure 4.3.
+FIGURE 4.3 – Vérification de l’état de service
+Wazuh Manager : traitement des données de sécurité. La première étape consiste à exécuter la
+commande d’installation du Wazuh Manager, comme illustré dans la figure 4.4.
+FIGURE 4.4 – Installation de Wazuh Manager
+47
+
+
+===== PAGE 61 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+Le Wazuh Manager est démarré, puis son état est contrôlé pour confirmer qu’il est bien actif, comme
+présenté dans la figure 4.5.
+FIGURE 4.5 – Lancement et vérification de l’état de Wazuh Manager
+wazuh Dashboard : interface web pour la visualisation, On lance la première commande d’installa-
+tion de Wazuh Dashboard,comme présenté dans la figure 4.6.
+FIGURE 4.6 – installation wazuh dashboard
+On vérifie le fonctionnement du service,comme montré dans la figure 4.7.
+48
+
+
+===== PAGE 62 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.7 – Vérification de l’état de Dashboard
+L’interface web de Wazuh est accessible via l’adresse https ://192.168.20.10, comme illustré dans la
+figure 4.8.
+FIGURE 4.8 – Interface Web du Wazuh
+49
+
+
+===== PAGE 63 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+4.3.1.2
+Wazuh Agent
+Les agents Wazuh collectent les logs des systèmes et les transmettent au Wazuh Manager pour ana-
+lyse.
+Tout d’abord, nous avons sélectionné Linux et le package DEB amd64, puis renseigné l’adresse du
+Wazuh Manager (192.168.20.10) et le nom de l’agent « Admin ». Ensuite, les commandes d’installation
+et de démarrage de l’agent ont été générées, comme le montrent les figures 4.9 et 4.10.
+FIGURE 4.9 – Configuration de l’agent Wazuh sous Ubuntu
+FIGURE 4.10 – Commandes d’installation de l’agent Wazuh sous Ubuntu
+50
+
+
+===== PAGE 64 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+Dans cette étape, les commandes nécessaires ont été exécutées sur la machine Linux Admin pour
+installer l’agent Wazuh. Le paquet a été téléchargé et installé avec succès, comme le montre la figure
+4.11.
+FIGURE 4.11 – Installation de l’agent Wazuh sur la machine Linux
+Nous avons démarré l’agent Wazuh sur la machine Admin et vérifié que son service fonctionne
+correctement, comme illustré dans la figure 4.12.
+FIGURE 4.12 – Démarrage de l’agent Wazuh sur la machine Admin
+51
+
+
+===== PAGE 65 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+Après le démarrage de l’agent, sa connexion a été vérifiée depuis la section Endpoints du Dashboard
+Wazuh. L’agent « Admin » apparaît avec le statut Active, l’adresse IP 192.168.20.107 et le système
+Ubuntu 20.04.6 LTS, confirmant son bon fonctionnement.comme illustré dans la figure 4.13.
+FIGURE 4.13 – Statut des agents Wazuh
+Sur Windows
+L’agent Wazuh a également été installé sur la machine Windows Server 2019 afin de surveiller son
+activité et de transmettre les journaux au Wazuh Manager.
+Depuis le Dashboard Wazuh, nous avons sélectionné le package Windows (MSI), puis renseigné
+l’adresse du Manager 192.168.20.10 et le nom de l’agent « WIN-SRV », comme l’illustrent les figures
+4.14 et 4.15.
+FIGURE 4.14 – Configuration de l’agent Wazuh sous Windows
+52
+
+
+===== PAGE 66 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.15 – Commandes d’installation de l’agent Wazuh sous Windows
+Ensuite, la commande PowerShell générée depuis le Dashboard a été exécutée pour télécharger,
+installer et démarrer l’agent Wazuh, comme le montre la figure 4.16.
+FIGURE 4.16 – Installation de l’agent Wazuh sur Windows Server
+Enfin, dans la section Endpoints, l’agent WIN-SRV apparaît avec le statut Active et l’adresse IP
+192.168.20.102, confirmant sa connexion au Wazuh Manager, comme présenté dans la figure 4.17.
+FIGURE 4.17 – Statut des agents Wazuh dans le dashboard
+53
+
+
+===== PAGE 67 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+4.3.2
+Installation de Shuffle
+Cette section présente les principales étapes d’installation et de configuration de Shuffle, réalisées en
+suivant sa documentation officielle. Il a été installé sur une machine virtuelle Ubuntu 22.04 avec Docker
+et Docker Compose, afin d’automatiser la réponse aux incidents et son intégration avec le SOC[24].
+a première étape consiste à cloner le dépôt officiel de Shuffle depuis GitHub, comme le montre la
+figure 4.18.
+FIGURE 4.18 – Mise en place de Shuffle
+L’étape suivante consiste à télécharger et installer Docker Compose dans le répertoire approprié pour
+permettre le déploiement des conteneurs Shuffle, comme illustré dans la figure 4.19.
+FIGURE 4.19 – Téléchargement de Docker Compose
+Le déploiement de Shuffle est ensuite lancé avec Docker Compose, qui démarre automatiquement
+les conteneurs nécessaires, comme illustré dans la figure 4.20.
+FIGURE 4.20 – Lancement de Docker-compose
+54
+
+
+===== PAGE 68 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+L’interface web de Shuffle est accessible via l’adresse https ://192.168.20.30 :3001. Les identifiants
+utilisés sont admin et Admin1234!, comme illustré dans la figure 4.21.
+FIGURE 4.21 – Interface Web de Shuffle
+4.3.3
+Installation de TheHive, Cortex et MISP
+TheHive est utilisé pour la gestion des incidents de sécurité. Il permet de centraliser les alertes et de
+faciliter leur traitement. Dans le projet, TheHive a été installé sur la même machine virtuelle que Cortex
+et MISP afin de faciliter leur intégration, en suivant la documentation officielle[25].
+Docker et Docker Compose ont été utilisés pour faciliter le déploiement des différents composants
+du SOC. Ils permettent d’exécuter et de gérer les services dans des conteneurs de manière simple et
+isolée.
+4.3.3.1
+Clonage du dépôt officiel TheHive-Project/Docker-Templates
+Ce dépôt contient les fichiers de configuration Docker nécessaires pour déployer TheHive, Cortex et
+MISP ensemble sur une seule machine ,comme illustré dans la figure 4.22.
+FIGURE 4.22 – Clonage du dépôt Docker-Templates
+55
+
+
+===== PAGE 69 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+4.3.3.2
+Préparation des dossiers et des permissions
+Nous avons ensuite accédé au répertoire Docker de TheHive, Cortex et MISP, puis créé les dossiers
+nécessaires et configuré leurs permissions, comme le montre la figure 4.23.
+FIGURE 4.23 – Création des dossiers et attribution des permissions
+4.3.3.3
+Lancement des services TheHive, Cortex et MISP
+Une fois l’environnement préparé, les conteneurs nécessaires au fonctionnement de TheHive, Cortex
+et MISP ont été lancés avec la commande docker-compose up -d. L’option -d permet d’exécuter les
+services en arrière-plan.
+Cortex a ainsi été démarré directement lors de cette étape, en tant que moteur d’analyse des obser-
+vables (adresses IP, URLs, fichiers) intégré à la plateforme,comme le montre la figure 4.24.
+FIGURE 4.24 – Lancement des services via Docker Compose
+Par la suite, l’image TheHive a été récupérée depuis le dépôt thehiveproject/thehive4, comme le
+montre la figure 4.25.
+FIGURE 4.25 – Téléchargement de l’image Docker TheHive 4
+56
+
+
+===== PAGE 70 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+De même, l’image Docker de MISP a été téléchargée depuis le dépôt coolacid/misp-docker :core-
+latest, comme le montre la figure 4.26.
+FIGURE 4.26 – Téléchargement de l’image Docker MISP
+4.3.3.4
+Démarrage des services TheHive, Cortex et MISP
+Après la configuration, les services TheHive, Cortex et MISP ont été démarrés avec Docker Com-
+pose. Leur lancement s’est effectué correctement, comme l’illustre la figure 4.27.
+FIGURE 4.27 – Démarrage des services
+4.3.3.5
+Accès aux interfaces web de TheHive, Cortex et MISP
+Une fois les services démarrés, les interfaces web de TheHive, Cortex et MISP ont été vérifiées afin
+de confirmer leur bon fonctionnement.
+57
+
+
+===== PAGE 71 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+TheHive : L’interface web est accessible via http ://192.168.20.20 :9000 avec les identifiants ad-
+min@thehive.local / secret, comme le montre la figure 4.28.
+FIGURE 4.28 – Accès à l’interface web de TheHive
+Cortex : L’interface web de Cortex est accessible via l’adresse http://192.168.20.20:9001,
+avec les identifiants admin / Admin1234!, comme l’illustre la figure 4.29.
+FIGURE 4.29 – Accès à l’interface web de cortex
+58
+
+
+===== PAGE 72 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+MISP : L’interface web de MISP est accessible via l’adresse https://192.168.20.20, avec
+les identifiants initiaux admin@admin.test / admin. Le changement du mot de passe par défaut a ensuite
+été demandé, comme l’illustre la figure 4.30.
+FIGURE 4.30 – Interface Web de MISP
+4.3.4
+Installation d’OpenVAS
+Nous avons installé Docker et Docker Compose sur la machine OpenVAS afin de préparer l’environ-
+nement nécessaire au déploiement de Greenbone, comme le montre la figure 4.31. Le service Docker a
+ensuite été démarré et activé pour fonctionner automatiquement avec le système.
+FIGURE 4.31 – Installation de Docker et Docker Compose
+59
+
+
+===== PAGE 73 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+4.3.4.1
+Téléchargement du fichier de configuration Greenbone
+Pour préparer l’installation de Greenbone, un répertoire de travail dédié a été créé. Le fichier com-
+pose.yaml y a ensuite été téléchargé afin de déployer les services nécessaires, comme présenté dans la
+figure 4.32.
+FIGURE 4.32 – Téléchargement du fichier compose.yaml
+4.3.4.2
+Téléchargement des images Docker nécessaires
+Les différents conteneurs nécessaires au fonctionnement de Greenbone ont été téléchargés à l’aide
+de la commande docker compose -f compose.yaml pull, comme le montre la figure 4.33.
+FIGURE 4.33 – Téléchargement des images Docker
+60
+
+
+===== PAGE 74 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+4.3.4.3
+Lancement des conteneurs
+Les différents conteneurs de Greenbone Community Edition ont été démarrés en mode détaché avec
+la commande docker compose -f compose.yaml up -d, comme présenté dans la figure 4.34.
+FIGURE 4.34 – Lancement des conteneurs OpenVAS
+4.3.4.4
+Accès à l’interface web d’OpenVAS
+Une fois les services démarrés, l’interface web d’OpenVAS a été accessible via l’adresse https ://192.168.20.40 :9392
+avec le compte administrateur créé lors de l’installation, comme présenté dans la figure 4.35.
+61
+
+
+===== PAGE 75 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.35 – Page de connexion à l’interface OpenVAS
+4.3.4.5
+Installation et lancement d’OWASP ZAP
+En complément d’OpenVAS, orienté infrastructure et système, l’outil OWASP ZAP (Zed Attack
+Proxy) a été installé sur la même machine afin de couvrir le volet applicatif (SQLi, XSS) qu’OpenVAS
+ne peut pas détecter. Installation :Le paquet zaproxy a été téléchargé depuis le canal stable, maintenu
+par Simon Bennett (psiinon), aboutissant à la version 2.17.0,comme présenté dans la figure 4.36.
+FIGURE 4.36 – Installation d’OWASP ZAP
+Lancement :Une fois le téléchargement terminé, le paquet zaproxy a été installé avec succès, rendant
+l’outil disponible pour le lancement des analyses de sécurité applicatives, comme le montre la figure 4.37.
+62
+
+
+===== PAGE 76 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.37 – Lancement d’OWASP ZAP
+4.3.5
+Installation de pfSense
+pfSense est une solution pare-feu open source basée sur FreeBSD, utilisée dans l’architecture pour
+assurer la segmentation du réseau et la sécurisation des flux entre les différentes zones. Son installation
+a été réalisée sur une machine virtuelle dédiée avec Oracle VirtualBox, comme présenté dans la figure
+4.38.
+FIGURE 4.38 – configuration réseau initiale de pfSense (WAN et Administration, SOC,
+pentest)
+L’interface d’administration de **pfSense** est accessible via l’adresse ‘https ://192.168.20.1‘. Le
+tableau de bord affiche l’état du système ainsi que les différentes interfaces configurées, comme le montre
+la figure 4.39.
+63
+
+
+===== PAGE 77 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.39 – Interface Web de pfSense
+pfSense utilise des règles de pare-feu pour contrôler les flux entre les différentes zones du réseau et
+Internet. Une règle autorise le trafic sortant du LAN (Administration) vers toute destination, permettant
+ainsi aux machines d’accéder à Internet, comme présenté dans la figure 4.40.
+FIGURE 4.40 – Règle de pare-feu autorisant le trafic sortant depuis le LAN
+Une passerelle par défaut a été configurée dans pfSense afin d’assurer le routage du trafic du LAN
+(Administration) vers Internet via le WAN. Elle est définie dans System > Routing > Gateways, comme
+présenté dans la figure 4.41.
+64
+
+
+===== PAGE 78 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.41 – Configuration de la passerelle réseau dans pfSense
+4.4
+Integration des composants
+Après l’installation des différents outils, nous avons réalisé leur intégration afin d’assurer leur com-
+munication et l’automatisation du traitement des incidents. Wazuh transmet ses alertes à Shuffle, qui
+communique avec TheHive et permet l’analyse via Cortex et l’enrichissement par MISP.
+4.4.1
+Intégration Wazuh – Shuffle
+Dans cette étape, nous avons intégré Wazuh à Shuffle afin d’automatiser le traitement des alertes de
+sécurité. Wazuh génère les alertes, tandis que Shuffle les reçoit via un webhook et déclenche le workflow
+configuré. La première étape consiste à créer et activer ce déclencheur, qui fournit une URL destinée à
+recevoir les alertes de Wazuh, comme présenté dans la Figure 4.42.
+65
+
+
+===== PAGE 79 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.42 – Ajout de Webhook
+La deuxième étape consiste à configurer l’URL du webhook dans le fichier /var/ossec/etc/ossec.conf
+de Wazuh. Cette configuration permet à Wazuh de transmettre automatiquement ses alertes à Shuffle au
+format JSON, comme illustré dans la Figure 4.43.
+FIGURE 4.43 – Configuration de l’URL
+4.4.2
+Intégration TheHive – Shuffle
+Cette intégration relie Shuffle à TheHive afin d’automatiser la gestion et le suivi des incidents. Les
+alertes traitées par Shuffle sont transmises à TheHive pour créer automatiquement les cases correspon-
+dantes.
+La première étape consiste à créer une organisation dédiée dans TheHive, comme illustré dans la
+Figure 4.44.
+66
+
+
+===== PAGE 80 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.44 – Création d’une organisation
+Après la création de l’organisation, un utilisateur dédié est créé dans TheHive avec les droits néces-
+saires à la gestion des alertes. Ce compte est ensuite utilisé pour établir la communication entre Shuffle
+et l’API de TheHive, comme présenté dans la Figure 4.45.
+67
+
+
+===== PAGE 81 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.45 – Création de nouvel utilisateur
+Après la création du compte, l’administrateur définit ou réinitialise son mot de passe afin de sécuriser
+son accès, comme présenté dans la Figure 4.46.
+68
+
+
+===== PAGE 82 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.46 – Réinitialisation de mot de passe
+Une clé API est générée pour l’utilisateur créé dans TheHive afin d’assurer l’authentification entre
+Shuffle et TheHive. Elle permet à Shuffle d’accéder à l’API de TheHive et de créer automatiquement les
+alertes,comme présenté dans la Figure 4.47.
+FIGURE 4.47 – Obtention de la clé API
+Dans Shuffle, TheHive est ajouté comme une application externe en renseignant l’URL du serveur
+et la clé API dans la section d’authentification. Cette configuration permet d’établir la communication
+entre les deux plateformes, comme illustré dans la Figure 4.48.
+69
+
+
+===== PAGE 83 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.48 – Configuration de URL et l’API pour l’alerte
+La génération automatique des alertes dans TheHive est assurée par un workflow configuré dans
+Shuffle. Le contenu JSON précise les principaux paramètres de l’alerte, notamment son titre, sa gravité,
+sa source et ses tags. Pour chaque nouvelle alerte, une valeur unique est attribuée au champ sourceRef,
+comme présenté dans la Figure 4.49.
+FIGURE 4.49 – Modification de Body pour l’alerte.
+Après ces configurations, le workflow est testé afin de vérifier son bon fonctionnement. Le résultat
+confirme la réussite de son exécution et valide ainsi l’intégration entre les différents composants, comme
+illustré dans la Figure 4.50.
+70
+
+
+===== PAGE 84 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.50 – Alerte réussite
+Enfin, nous vérifions dans l’interface de TheHive que l’alerte a bien été créée et enregistrée. Cette
+vérification confirme le bon fonctionnement du workflow et la transmission correcte des informations,
+comme présenté dans la Figure 4.51.
+FIGURE 4.51 – Affichage du résultat de l’alerte dans TheHive
+4.4.3
+Intégration TheHive – Cortex – MISP
+Dans cette étape, nous avons intégré TheHive à Cortex et MISP afin d’améliorer la gestion des
+incidents. Cortex analyse les indicateurs de compromission, tandis que MISP fournit des informations de
+Threat Intelligence. Cette intégration permet ainsi d’enrichir et d’analyser les alertes directement depuis
+TheHive.
+71
+
+
+===== PAGE 85 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+4.4.3.1
+Intégration de TheHive avec MISP
+Cette intégration permet à TheHive d’interroger MISP afin de vérifier les observables associés aux
+menaces connues. Une clé API est créée dans MISP via Administration > List Auth Keys pour permettre
+l’authentification de TheHive. La clé générée est ensuite récupérée, comme présenté dans la Figure 4.52.
+FIGURE 4.52 – Génération de la clé API dans MISP
+Nous avons ensuite ajouté le serveur MISP dans TheHive via Platform Management > MISP, en
+renseignant son nom, son URL et sa clé API, comme présenté dans la Figure 4.53.
+72
+
+
+===== PAGE 86 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.53 – Configuration du serveur MISP THP dans TheHive
+Enfin, nous avons testé la connexion avec MISP. Le serveur apparaît comme actif dans TheHive et la
+date de la dernière synchronisation est affichée, comme illustré dans la Figure 4.54.
+73
+
+
+===== PAGE 87 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.54 – Synchronisation réussie du serveur MISP avec TheHive
+4.4.3.2
+Intégration de TheHive avec Cortex
+Cette intégration relie TheHive à Cortex pour analyser les indicateurs de compromission. Un compte
+de service est créé dans Cortex avec les droits nécessaires (read, analyze et orgadmin), comme illustré
+dans la Figure 4.55.
+FIGURE 4.55 – Création de l’utilisateur de service dans Cortex
+Nous avons ensuite généré la clé API associée à ce compte afin de permettre son utilisation lors de
+la connexion avec TheHive, comme présenté dans la Figure 4.56.
+74
+
+
+===== PAGE 88 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.56 – Génération de la clé API Cortex
+Nous avons ensuite ajouté le serveur Cortex dans TheHive en renseignant la clé API, puis nous avons
+vérifié la connexion, comme illustré dans la Figure 4.57.
+FIGURE 4.57 – Test de connexion de Cortex avec TheHive
+75
+
+
+===== PAGE 89 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+La page de licence de TheHive indique que les deux connecteurs sont actifs et fonctionnels (statut
+OK). TheHive peut ainsi utiliser MISP pour rechercher des informations sur les observables et Cortex
+pour lancer leurs analyses, comme présenté dans la Figure 4.58.
+FIGURE 4.58 – Statut des intégrations Cortex et MISP dans TheHive
+4.4.4
+Intégration Shuffle – pfSense
+Cette intégration relie Shuffle à pfSense afin d’automatiser le blocage des adresses IP malveillantes
+via l’API du pare-feu. Pour cela, un alias MaliciousIPs de type Host(s) a été créé dans Firewall > Aliases
+afin de regrouper les adresses IP à bloquer, comme présenté dans la Figure 4.59.
+FIGURE 4.59 – Alias Malicious_IPs créé dans pfSense
+76
+
+
+===== PAGE 90 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+Une clé API a été créée dans pfSense via System > REST API > Keys avec SHA256 et une lon-
+gueur de 16 octets. Elle est ensuite configurée dans Shuffle pour assurer la communication avec pfSense,
+comme illustré dans la Figure 4.60.
+FIGURE 4.60 – : Génération de la clé API pfSense
+Le nœud HTTP 1 de Shuffle utilise une requête PATCH vers l’API REST de pfSense pour ajouter
+l’adresse IP à l’alias. La requête contient les données JSON nécessaires ainsi que la clé X-API-Key pour
+sécuriser la communication, comme présenté dans la Figure 4.61.
+77
+
+
+===== PAGE 91 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.61 – Configuration du nœud HTTP 1 pour la communication avec pfSense.
+Le test du nœud confirme la réussite de l’opération avec un statut 200 et la valeur SUCCESS. L’API
+de pfSense retourne les informations mises à jour de l’alias, comme présenté dans la Figure 4.62
+78
+
+
+===== PAGE 92 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.62 – Vérification du résultat de l’exécution du nœud http 1
+La vérification dans pfSense > Firewall > Aliases > IP confirme que l’adresse IP a été ajoutée à l’alias
+MaliciousIPs avec la description « Blocage SOAR ». Cette vérification valide le bon fonctionnement du
+blocage automatique, comme présenté dans la Figure 4.63.
+79
+
+
+===== PAGE 93 =====
+
+Chapitre 4 : Mise en œuvre de la solution SOC
+FIGURE 4.63 – Vérification de l’alias MaliciousIPs
+4.5
+Conclusion
+chapitre suivant. meme Dans ce chapitre, nous avons présenté la mise en place et la configuration
+de l’environnement de sécurité ainsi que l’intégration des différents outils. Les tests réalisés ont permis
+de vérifier leur bon fonctionnement, leur communication et l’automatisation des actions de sécurité. Cet
+environnement constitue ainsi la base de la validation de la solution présentée dans le chapitre suivant.
+80
+
+
+===== PAGE 94 =====
+
+CHAPITRE 5
+Validation de la solution
+
+
+===== PAGE 95 =====
+
+Chapitre 5 : Validation de la solution
+5.1
+Introduction
+Dans ce chapitre, nous présentons la validation de la solution de sécurité mise en place, à travers
+les différents tests réalisés dans notre environnement de laboratoire. L’objectif est de vérifier le bon
+fonctionnement de l’architecture et d’évaluer les résultats obtenus.
+5.2
+Validation
+La validation consiste à vérifier le fonctionnement des outils et les intégrations réalisées dans le cha-
+pitre précédent. Cette étape permet de confirmer que les alertes sont correctement détectées, transmises
+et traitées par les différents composants de la chaîne SOC/SOAR.
+Wazuh détecte les événements de sécurité grâce aux règles configurées dans le fichier local_rules.xml.
+Les alertes générées sont ensuite transmises à Shuffle à travers le webhook configuré,comme présenté
+dans la Figure 5.1.
+FIGURE 5.1 – Détection et corrélation des événements avec Wazuh
+Shuffle reçoit les alertes de Wazuh et déclenche automatiquement le workflow. Celui-ci assure la
+création de l’alerte dans TheHive, son enrichissement avec Cortex et la mise à jour de l’alias de blocage
+dans pfSense, comme illustré dans la Figure 5.2.
+82
+
+
+===== PAGE 96 =====
+
+Chapitre 5 : Validation de la solution
+FIGURE 5.2 – Réception de l’alerte Wazuh dans Shuffle
+TheHive reçoit l’alerte et crée automatiquement un incident avec l’observable correspondant, notam-
+ment l’adresse IP détectée. Cortex peut ensuite être utilisé pour analyser cet observable avec VirusTotal
+et obtenir des informations supplémentaires sur sa réputation, comme le montrent les figures 5.3 et 5.4.
+FIGURE 5.3 – Création d’une alerte dans TheHive
+FIGURE 5.4 – Analyse de l’observable avec Cortex et VirusTotal
+83
+
+
+===== PAGE 97 =====
+
+Chapitre 5 : Validation de la solution
+Enfin, Shuffle envoie une requête à l’API de pfSense afin de mettre à jour l’alias Malicious_IPs.
+La présence de l’adresse IP dans cet alias permet de vérifier que l’étape de blocage a été correctement
+exécutée comme illustré dans la Figure 5.5.
+FIGURE 5.5 – Vérification de l’alias Malicious_IPs dans pfSense
+Cette validation montre que les principaux composants de l’architecture communiquent correcte-
+ment et que la chaîne de traitement, depuis la détection par Wazuh jusqu’au blocage par pfSense, peut
+fonctionner de manière automatisée.
+5.3
+Scénarios d’attaque
+Après la validation des différents composants, deux scénarios d’attaque ont été réalisés sur deux
+systèmes d’exploitation différents afin d’évaluer la capacité de la solution à détecter une attaque par
+force brute RDP et une injection SQL sur DVWA.
+5.3.1
+Scénario 1 – Force brute RDP
+e premier scénario porte sur une attaque par force brute visant le service RDP du serveur Windows
+WIN-SRV. L’attaque est effectuée depuis la machine Kali à l’aide de l’outil Hydra et du dictionnaire
+rockyou.txt, en ciblant le port 3389, comme illustré dans la Figure 5.6.
+FIGURE 5.6 – Lancement de l’attaque par force brute RDP avec Hydra
+Durant l’attaque, les échecs de connexion sont enregistrés dans les journaux de sécurité Windows.
+La règle personnalisée de Wazuh détecte ces événements et génère une alerte, comme présenté dans la
+Figure 5.7.
+84
+
+
+===== PAGE 98 =====
+
+Chapitre 5 : Validation de la solution
+FIGURE 5.7 – Détection des tentatives RDP
+L’alerte est ensuite envoyée vers Shuffle à travers le webhook. Le contenu reçu contient les informa-
+tions nécessaires pour identifier l’adresse IP source de l’attaque ,comme le montre la figure 5.8.
+FIGURE 5.8 – Réception de l’alerte dans Shuffle
+85
+
+
+===== PAGE 99 =====
+
+Chapitre 5 : Validation de la solution
+Le workflow crée une alerte dans TheHive, puis un cas associé à cette alerte. L’adresse IP source
+est ajoutée comme observable afin de faciliter le suivi et l’analyse de l’incident,comme le montrent les
+figures 5.9 , 5.10, 5.11, 5.12
+FIGURE 5.9 – Création de l’alerte dans TheHive
+FIGURE 5.10 – Affichage de l’alerte RDP dans TheHive
+86
+
+
+===== PAGE 100 =====
+
+Chapitre 5 : Validation de la solution
+FIGURE 5.11 – Création du cas dans TheHive
+FIGURE 5.12 – Affichage du cas RDP dans TheHive
+L’adresse IP source, ajoutée comme observable dans le cas, est ensuite analysée par Cortex via deux
+analyseurs : VirusTotal et MISP. Cette analyse permet d’enrichir le contexte de l’incident grâce aux
+informations de réputation et de threat intelligence, comme présenté dans la Figure 5.13.
+FIGURE 5.13 – Analyses Cortex de l’IP RDP (VirusTotal et MISP)
+Pour terminer, Shuffle envoie une requête à l’API de pfSense afin d’ajouter l’adresse IP détectée
+à l’alias Malicious_IPs. La réponse de l’API indique un statut 200 avec une réponse SUCCESS,
+confirmant la réussite de l’opération, comme présenté dans les Figures 5.14 .
+87
+
+
+===== PAGE 101 =====
+
+Chapitre 5 : Validation de la solution
+FIGURE 5.14 – Réponse de l’API pfSense après le blocage
+La présence de l’adresse IP dans l’alias vérifie ainsi l’exécution du blocage, comme présenté dans
+les Figures 5.15.
+FIGURE 5.15 – Vérification de l’adresse IP dans l’alias Malicious_IPs
+Ce scénario montre que la solution peut détecter une attaque RDP et automatiser les différentes
+étapes de traitement, depuis l’alerte Wazuh jusqu’à l’ajout de l’adresse IP dans pfSense.
+88
+
+
+===== PAGE 102 =====
+
+Chapitre 5 : Validation de la solution
+5.3.2
+Scénario 2 – Injection SQL sur DVWA
+Le deuxième scénario concerne une injection SQL réalisée sur l’application vulnérable DVWA.
+Une requête SQL de type UNION-based est utilisée sur le module SQL Injection afin de tester la
+détection d’une attaque applicative, comme le montre la figure 5.16.
+FIGURE 5.16 – Réalisation de l’injection SQL sur DVWA
+L’activité malveillante est enregistrée dans les journaux du serveur web Apache. Wazuh analyse ces
+journaux à l’aide du décodeur web-accesslog et d’une règle personnalisée dédiée à la détection des
+injections SQL, comme présenté dans la Figure 5.17.
+FIGURE 5.17 – Détection de l’injection SQL par Wazuh
+89
+
+
+===== PAGE 103 =====
+
+Chapitre 5 : Validation de la solution
+Après la détection, l’alerte est envoyée vers Shuffle. Le payload contient les informations de l’évé-
+nement ainsi que l’adresse IP source. Cette information est utilisée dans la suite du workflow , comme le
+montre la figure 5.18.
+FIGURE 5.18 – Payload de l’alerte SQL reçu dans Shuffle
+Shuffle transmet ensuite l’alerte à TheHive, qui crée l’alerte correspondante (statut 201) ,comme le
+montrent les figures 5.19 et 5.20.
+90
+
+
+===== PAGE 104 =====
+
+Chapitre 5 : Validation de la solution
+FIGURE 5.19 – Création de l’alerte SQL Injection dans TheHive (nœud TheHive 1)
+FIGURE 5.20 – Alerte SQL Injection dans TheHive
+Un cas est ensuite créé automatiquement à partir de cette alerte (statut 201). L’adresse IP source est
+ajoutée comme observable ,comme le montrent les figures 5.21 et 5.22
+91
+
+
+===== PAGE 105 =====
+
+Chapitre 5 : Validation de la solution
+FIGURE 5.21 – Création du cas SQL Injection dans TheHive (nœud TheHive 2)
+FIGURE 5.22 – Cas SQL Injection dans TheHive
+L’adresse IP liée à l’attaque est analysée par Cortex à l’aide des analyseurs VirusTotal et MISP afin
+d’évaluer sa réputation et de vérifier les informations de threat intelligence, comme présenté dans la
+Figure 5.23.
+FIGURE 5.23 – Analyses Cortex de l’IP SQL Injection (VirusTotal et MISP)
+Enfin, l’adresse IP est envoyée à pfSense à travers une requête API. La réponse indique un statut 200
+et une réponse SUCCESS,comme le montre la figure 5.24.
+92
+
+
+===== PAGE 106 =====
+
+Chapitre 5 : Validation de la solution
+FIGURE 5.24 – Réponse de l’API pfSense pour le scénario SQL
+La vérification de l’alias Malicious_IPs permet de confirmer que l’adresse IP a été ajoutée
+,comme le montre la figure 5.25.
+FIGURE 5.25 – Vérification de l’adresse IP dans pfSense
+Ce scénario montre que la solution peut également détecter et traiter une attaque applicative à partir
+des journaux Apache. Il souligne aussi l’importance d’adapter le mapping des champs selon le type de
+journal analysé.
+93
+
+
+===== PAGE 107 =====
+
+Chapitre 5 : Validation de la solution
+5.4
+Analyse des vulnérabilités avec OpenVAS et OWASP ZAP
+En complément des deux scénarios d’attaque, une analyse des vulnérabilités a été réalisée en deux
+étapes : un scan système et réseau avec OpenVAS, suivi d’un scan applicatif avec OWASP ZAP. Cette
+approche permet de couvrir à la fois les vulnérabilités du système et celles liées à l’application.
+5.4.1
+Scan OpenVAS
+L’analyse a débuté par un scan de la machine Admin, qui joue le rôle d’agent Wazuh, avec l’adresse
+IP 192.168.20.105. Une cible a ensuite été créée dans GVM avec cette adresse et configurée pour
+analyser les ports TCP attribués par l’IANA, comme illustré dans la Figure 5.26.
+FIGURE 5.26 – Création de la cible 192.168.20.105 dans GVM
+Une fois la cible créée, nous avons configuré une nouvelle tâche de scan avec le profil Full and Fast.
+La tâche, nommée Scan-Admin, a ensuite été associée à la cible et lancée, comme illustré dans la Figure
+5.27.
+FIGURE 5.27 – Création et exécution de la tâche de scan OpenVAS
+Une fois le scan terminé, la tâche affiche le statut Done, ce qui confirme que l’analyse s’est déroulée
+correctementcomme présenté dans la Figure 5.28.
+94
+
+
+===== PAGE 108 =====
+
+Chapitre 5 : Validation de la solution
+FIGURE 5.28 – Résultat du scan OpenVAS terminé
+Le scan a révélé une sévérité globale de 4.8 (Medium), sans aucune vulnérabilité de niveau Critical
+ou High. Il a également identifié deux ports ouverts ainsi que cinq applications ou services sur la machine
+analysée, comme présenté dans la Figure 5.29.
+FIGURE 5.29 – Résultats du scan OpenVAS et scores CVSS
+Les principales vulnérabilités détectées sont présentées dans le tableau suivant.
+95
+
+
+===== PAGE 109 =====
+
+Chapitre 5 : Validation de la solution
+TABLE 5.1 – Vulnérabilités détectées par OpenVAS
+Vulnérabilité
+Sévérité
+CVSS
+Port
+FTP Unencrypted Cleartext Lo-
+gin
+Medium
+4.8
+21/tcp
+Weak MAC Algorithm(s) Sup-
+ported (SSH)
+Low
+2.6
+22/tcp
+TCP Timestamps Information
+Disclosure
+Low
+2.6
+general/tcp
+5.4.2
+Scan OWASP ZAP
+Comme OpenVAS se concentre principalement sur les systèmes et les services réseau, nous avons
+utilisé OWASP ZAP pour compléter l’analyse au niveau de l’application web.
+L’application utilisée est DVWA (Damn Vulnerable Web Application), accessible à l’adresse 192.168.10.12.
+Pour permettre à ZAP d’intercepter les échanges avec l’application, Firefox a été configuré pour utiliser
+le proxy local 127.0.0.1:8080, comme illustré dans la Figure 5.30.
+FIGURE 5.30 – Configuration du proxy Firefox vers OWASP ZAP
+Nous nous sommes ensuite connectés à l’application DVWA avec le compte de test admin/password.
+Le niveau de sécurité a été configuré sur Low afin de faciliter l’identification des vulnérabilités, comme
+illustré dans la Figure 5.31.
+96
+
+
+===== PAGE 110 =====
+
+Chapitre 5 : Validation de la solution
+FIGURE 5.31 – Configuration du niveau de sécurité de DVWA
+Après la configuration de l’environnement, nous avons lancé un scan actif (Active Scan) avec la
+politique Default Policy. L’analyse a porté sur l’application http://192.168.10.12/dvwa afin
+d’identifier les vulnérabilités potentielles, comme illustré dans la Figure 5.32.
+FIGURE 5.32 – Lancement du scan actif avec OWASP ZAP
+97
+
+
+===== PAGE 111 =====
+
+Chapitre 5 : Validation de la solution
+Le scan a permis d’identifier un total de 18 alertes, réparties de la manière suivante :
+— 3 alertes de niveau High;
+— 6 alertes de niveau Medium;
+— 4 alertes de niveau Low;
+— 5 alertes de type informatif.
+Parmi les résultats obtenus, deux vulnérabilités importantes ont été identifiées au niveau de l’application :
+le Cross-Site Scripting réfléchi (XSS) et l’injection SQL.
+Cross-Site Scripting réfléchi : ZAP a détecté une vulnérabilité XSS réfléchie, classée High et as-
+sociée au CWE-79. Le payload <script>alert(1);</script> injecté dans le paramètre id est
+retourné sans filtrage approprié, permettant l’exécution de code JavaScript, comme présenté dans la Fi-
+gure 5.33.
+FIGURE 5.33 – Détection de la vulnérabilité XSS par OWASP ZAP
+Injection SQL : La deuxième vulnérabilité détectée est une injection SQL, classée High et associée
+au CWE-89. Le payload ’ OR ’1’=’1’ - utilisé dans les paramètres name et id montre que les
+entrées utilisateur influencent directement la requête SQL, comme présenté dans la Figure 5.34.
+FIGURE 5.34 – Détection de la vulnérabilité d’injection SQL par OWASP ZAP
+98
+
+
+===== PAGE 112 =====
+
+Chapitre 5 : Validation de la solution
+En plus des vulnérabilités précédentes, OWASP ZAP a détecté plusieurs alertes de niveau Medium
+et Low, notamment l’absence de protection anti-CSRF et l’attribut HttpOnly manquant sur le cookie
+PHPSESSID. Ces faiblesses peuvent notamment augmenter les risques liés aux attaques XSS,comme
+illustré dans la Figure 5.35.
+FIGURE 5.35 – Détection du cookie de session sans attribut HttpOnly
+5.5
+Évaluation des performances
+Afin d’évaluer la solution mise en place, plusieurs critères ont été retenus. L’évaluation porte princi-
+palement sur la capacité de détection, l’automatisation du traitement, la fiabilité des échanges entre les
+composants, la rapidité de la réponse ainsi que la couverture des analyses de sécurité.
+5.5.1
+Critères d’évaluation
+Les principaux critères utilisés pour évaluer la solution sont les suivants :
+— Capacité de détection : vérifier si les activités malveillantes simulées sont correctement détectées
+par Wazuh.
+— Automatisation de la réponse : vérifier si le traitement de l’alerte est réalisé automatiquement à
+travers Shuffle, TheHive, Cortex et pfSense.
+— Fiabilité des échanges : vérifier si les informations sont correctement transmises entre les diffé-
+rents composants de l’architecture.
+— Temps de réponse : observer le délai entre la détection d’une activité et l’exécution de l’action
+de réponse. Dans notre environnement de laboratoire, aucune mesure précise en millisecondes n’a
+été réalisée.
+— Couverture de sécurité : vérifier la capacité de la solution à couvrir différents niveaux de sécurité
+à travers les scénarios d’attaque et les analyses de vulnérabilités.
+99
+
+
+===== PAGE 113 =====
+
+Chapitre 5 : Validation de la solution
+5.5.2
+Résultats de l’évaluation
+Les résultats obtenus lors des tests permettent de résumer l’évaluation comme suit :
+TABLE 5.2 – Évaluation de la solution selon les critères retenus
+Critère
+Résultat
+Observation
+Capacité de détection
+Validée
+Les deux scénarios réalisés, force brute RDP et
+injection SQL, ont été détectés par Wazuh.
+Automatisation
+de
+la
+réponse
+Validée
+Les alertes sont transmises à Shuffle et le work-
+flow permet de créer les éléments correspon-
+dants dans TheHive et d’effectuer l’action de
+blocage dans pfSense.
+Fiabilité des échanges
+Validée
+Les différents composants communiquent cor-
+rectement. L’API pfSense retourne notam-
+ment un statut HTTP 200 avec une réponse
+SUCCESS.
+Temps de réponse
+Non
+me-
+suré préci-
+sément
+Le traitement est automatisé, mais aucune me-
+sure précise du temps entre la détection et le
+blocage n’a été réalisée.
+Couverture de sécurité
+Validée
+OpenVAS permet d’analyser les services et
+le système, tandis qu’OWASP ZAP complète
+l’analyse au niveau de l’application web.
+L’évaluation montre que les principaux objectifs de la solution sont atteints dans l’environnement de
+laboratoire. Les deux scénarios d’attaque ont été correctement détectés et pris en charge par la chaîne
+SOC/SOAR. L’automatisation permet également de réduire les interventions manuelles entre la détection
+de l’événement et l’action de blocage.
+Cependant, le temps de réponse n’a pas été mesuré précisément dans cette étude. Une évaluation
+plus complète pourrait être réalisée en mesurant séparément le temps de détection par Wazuh, le temps
+de traitement du workflow Shuffle et le temps nécessaire à la mise à jour de l’alias de blocage dans
+pfSense.
+5.6
+Conclusion
+Dans ce chapitre, nous avons validé le fonctionnement de la solution de sécurité à travers différents
+tests réalisés dans l’environnement de laboratoire. Les scénarios d’attaque et les analyses de vulnéra-
+bilités ont permis d’évaluer la détection, l’analyse et le traitement des incidents. Les résultats obtenus
+montrent le bon fonctionnement des différents composants et l’efficacité de leur intégration.
+100
+
+
+===== PAGE 114 =====
+
+Conclusion générale
+Dans un contexte où les cybermenaces deviennent de plus en plus nombreuses et complexes, la
+mise en place d’une solution de supervision et de réponse aux incidents constitue un moyen important
+pour renforcer la sécurité des systèmes d’information. L’objectif de ce projet était ainsi de proposer une
+solution capable de surveiller l’environnement, de détecter les activités malveillantes et de faciliter leur
+traitement.
+Ce projet a permis de concevoir et de mettre en œuvre une solution basée sur plusieurs outils open
+source, notamment Wazuh, Shuffle, TheHive, Cortex, MISP, OpenVAS, OWASP ZAP et pfSense. L’in-
+tégration de ces composants permet d’assurer la collecte et l’analyse des événements, la détection des
+menaces, la gestion des incidents, l’enrichissement des indicateurs et l’automatisation de certaines ac-
+tions de réponse.
+La réalisation de ce projet a également permis de mettre en pratique les différentes étapes nécessaires
+à la mise en place de cette solution, depuis la conception de l’architecture réseau jusqu’à la configuration
+et l’intégration des différents outils. Les scénarios de force brute RDP et d’injection SQL sur DVWA
+ont permis de vérifier le fonctionnement de la chaîne de détection et de réponse. Les alertes générées par
+Wazuh ont été prises en charge et enrichies à travers TheHive, Cortex et MISP, tandis que Shuffle a permis
+d’orchestrer les différentes étapes jusqu’au blocage de l’adresse IP au niveau de pfSense. En complément,
+les analyses réalisées avec OpenVAS et OWASP ZAP ont permis d’identifier plusieurs vulnérabilités au
+niveau du système, des services réseau et de l’application web. Ces tests ont ainsi complété les scénarios
+d’attaque en apportant une vision plus globale de la sécurité de l’environnement étudié.
+Les résultats obtenus montrent que l’intégration des différents composants permet d’améliorer la
+visibilité sur les événements de sécurité, la détection des attaques et la rapidité de réaction face aux
+incidents. L’automatisation permet également de réduire certaines interventions manuelles et de faciliter
+le passage de la détection à la réponse.
+Cependant, certaines limites restent présentes, notamment les ressources disponibles dans l’environ-
+nement de laboratoire, la dépendance aux règles de détection et la nécessité d’adapter régulièrement les
+workflows aux nouvelles techniques d’attaque. La qualité de la réponse dépend également de la bonne
+configuration et de la coordination entre les différents composants.
+Comme perspectives, la solution pourrait être améliorée par l’ajout de nouvelles sources de Threat
+Intelligence, de règles de détection supplémentaires et de nouvelles actions automatisées. Le renforce-
+ment de la segmentation réseau et l’ajout de nouvelles sources de journaux permettraient également
+d’améliorer la visibilité et la sécurité de l’environnement. À plus long terme, l’intégration de techniques
+d’intelligence artificielle et de machine learning pourrait contribuer à mieux analyser les événements,
+prioriser les alertes et identifier des comportements inhabituels.
+En conclusion, ce projet a permis de mettre en place une solution de sécurité intégrée, automatisée
+et évolutive, combinant supervision, détection, analyse des incidents, Threat Intelligence, analyse des
+vulnérabilités et réponse automatisée. Il a également permis de développer des compétences pratiques
+en réseaux, cybersécurité, supervision et automatisation, tout en constituant une base solide pour une
+évolution future vers une solution de sécurité adaptée à un environnement réel.
+101
+
+
+===== PAGE 115 =====
+
+Webographie
+[1] Qu’est-ce que la cybersécurité et pourquoi est-elle nécessaire – OneLogin. https://www.onelogin.
+com/fr-fr/learn/what-is-cyber-security
+[2] Triade CIA : confidentialité, intégrité et disponibilité – SailPoint. https://www.sailpoint.
+com/fr/identity-library/cia-triad
+[3] Qu’est-ce qu’une politique de sécurité informatique? – Fortinet. https://www.fortinet.
+com/fr/resources/cyberglossary/it-security-policy
+[4] Triade CIA : confidentialité, intégrité et disponibilité – SailPoint. https://www.sailpoint.
+com/fr/identity-library/cia-triad
+[5] Les 6 principales menaces en matière de cybersécurité – Check Point Software. https://www.
+checkpoint.com/fr/cyber-hub/cyber-security/what-is-cybersecurity/top-6-cybers
+[6] Les 8 principaux types d’attaques cybernétiques – Check Point Software. https://www.checkpoint.
+com/fr/cyber-hub/cyber-security/what-is-cyber-attack/types-of-cyber-attacks/
+[7] ISO/IEC 27001 :2022 – Systèmes de management de la sécurité de l’information. https://www.
+iso.org/fr/standard/27001
+[8] ISO/IEC 27035 Information Security Incident Management – PECB. https://pecb.com/fr/
+education-and-certification-for-individuals/iso-iec-27035
+[9] Qu’est-ce que le NIST Cybersecurity Framework (CSF)? – Kiteworks. https://www.kiteworks.
+com/fr/conformite-reglementaire/nist-cybersecurity-framework/
+[10] Projet de loi organique n° 25/2018 relatif à la protection des données à caractère personnel – Tunisie.
+https://legislation-securite.tn/latest-laws/projet-de-loi-organique-n-25-2018
+[11] Qu’est-ce qu’un centre d’opérations de sécurité (SOC)? – Microsoft. https://www.microsoft.
+com/fr-fr/security/business/security-101/what-is-a-security-operations-center
+[12] Guide du SIEM (Gestion des informations et des événements de sécurité) – Veeam. https://
+www.veeam.com/blog/fr/siem-guide-security-information-event-management.
+html
+[13] Qu’est-ce que le SIEM? – Cloudflare. https://www.cloudflare.com/fr-fr/learning/
+security/what-is-siem/
+[14] Guide du SIEM (Gestion des informations et des événements de sécurité) – Veeam. https://
+www.veeam.com/blog/fr/siem-guide-security-information-event-management.
+html
+[15] Qu’est-ce que le SOAR (Security Orchestration Automation & Response)? – Proofpoint. https:
+//www.proofpoint.com/fr/threat-reference/security-orchestration-automation-re
+[16] Qu’est-ce que le SOAR? Orchestration, automatisation et réponse en matière de sécurité – Fortinet.
+https://www.fortinet.com/fr/resources/cyberglossary/what-is-soar
+102
+
+
+===== PAGE 116 =====
+
+Chapitre 5 : Validation de la solution
+[17] Qu’est-ce que le SOAR (Security Orchestration Automation & Response)? – Proofpoint. https:
+//www.proofpoint.com/fr/threat-reference/security-orchestration-automation-re
+[18] Shuffle, le SOAR Open Source – Néosoft. https://www.neosoft.fr/nos-publications/
+blog-tech/shuffle-le-soar-open-source/
+[19] Shuffle : Automatisez et orchestrez la gestion des incidents de cybersécurité – Blog d’Emmanuel
+Bama. https://emmanuelbama.net/2024/02/18/shuffle-automatisez-et-orchestrez-la-
+[20] pfSense – Wild Code School. https://www.wildcodeschool.com/lexique/pfsense
+[21] pfSense – Seeyar. https://www.seeyar.fr/pfsense/
+[22] OpenVAS Greenbone, le scanner de vulnérabilités gratuit – Jedha. https://www.jedha.co/
+formation-cybersecurite/openvas-greenbone-le-scanner-de-vulnerabilites-gratui
+[23] Documentation Wazuh. https://documentation.wazuh.com
+[24] Documentation Shuffle. https://shuffler.io/docs
+[25] Documentation TheHive. https://docs.thehive-project.org
+103
+
+
+===== PAGE 117 =====
+
+
+
+===== PAGE 118 =====
+
+Résumé 
+Ce mémoire présente la mise en place d’une solution intégrée de cybersécurité au sein de 
+Path to Secure, combinant un système SIEM (Wazuh), des outils SOAR (Shuffle et TheHive) 
+enrichis par Cortex et MISP, et un pare-feu pfSense. Cette architecture permet de collecter, 
+corréler et analyser les événements de sécurité provenant de différentes sources, et 
+d’automatiser la réponse aux incidents, notamment le blocage automatique des adresses IP 
+malveillantes. Le projet inclut la configuration des sources de logs, le déploiement des outils 
+de sécurité, le développement de workflows automatisés, l’analyse des vulnérabilités avec 
+OpenVAS et OWASP ZAP, ainsi que la validation de la solution par des scénarios d’attaque. 
+Mots-clés : SIEM, SOAR, Wazuh, Shuffle, TheHive, pfSense, automatisation, cybersécurité. 
+Abstract 
+This thesis presents the implementation of an integrated cybersecurity solution at Path to 
+Secure, combining a SIEM system (Wazuh), SOAR tools (Shuffle and TheHive) enriched by 
+Cortex and MISP, and a pfSense firewall. This architecture allows the collection, correlation, 
+and analysis of security events from multiple sources, and automates incident response, 
+notably the automatic blocking of malicious IP addresses. The project includes configuring 
+log sources, deploying security tools, developing automated workflows, assessing 
+vulnerabilities with OpenVAS and OWASP ZAP, and validating the solution through attack 
+scenarios. Keywords: SIEM, SOAR, Wazuh, Shuffle, TheHive, pfSense, automation, 
+cybersecurity.

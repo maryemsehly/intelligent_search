@@ -1,0 +1,2903 @@
+===== PAGE 1 =====
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+RAPPORT DE PROJET  
+   DE FIN D’ETUDES 
+         Pour l’obtention du Diplôme National d’ingénieur en 
+ 
+ 
+        Spécialité :    Génie logiciel 
+ 
+Intitulé 
+         
+   Conception et développement d’une application GPAO et mise 
+ en place d’un pipeline Jenkins basé à docker 
+ 
+Lieu du Stage                  Réalisé par               Encadré par 
+    
+ IRIS imprimerie                       Ben Salem              Mr. chtioui Houssem 
+ 
+ 
+                                                     Abdelaziz               M. Guerbej Henda 
+
+
+===== PAGE 2 =====
+
+Dédicace
+Je dédie, spécialement, ce travail à tous les membres de ma chère famille pour leurs
+nombreux sacrifices ainsi que le soutien moral qu’ils m’ont prodigué tout au long de
+mon cursus scolaire et universitaire. Je leur souhaite une longue vie pleine de joie et
+prospérité, ils sont pour moi un exemple de persévérance, courage et générosité.
+Je tiens à remercier tous mes amis, sans exception, auprès desquels j’ai passé d’agréables
+moments pendant ces dernières années, je leur souhaite tout le succès et un avenir
+brillant.
+III
+
+
+===== PAGE 3 =====
+
+Remerciment
+Au terme de ce travail, je tiens à exprimer ma profonde gratitude à mon encadrant
+Monsieur Houssem Chtioui pour son suivi et pour son énorme soutien qu’il n’a cessé
+de me prodiguer tout au long de la période du projet.
+Je tiens également à exprimer ma gratitude envers mon encadrante professionnelle,
+Madame Guerbej Henda, de la société IRIS, pour ses précieux conseils, informations
+et motivation qu’il m’a fournis et qui m’ont permis de tenir jusqu’au bout pour réussir
+ce projet. Avec lui, j’ai pu partager sa expertise au quotidien.
+J’aimerai remercier tous mes enseignants d’avoir partagé avec nous leur passion pour
+l’enseignement. J’ai grandement apprécié leur appui, implication et expérience tout au
+long de ma formation.
+J’adresse aussi mes vifs remerciements à tous les membres de la société IRIS au-
+près desquels j’ai trouvé l’accueil chaleureux, l’aide et l’assistance dont j’ai besoin, un
+environnement dans lequel j’ai pu m’adapter facilement.
+Je tiens finalement à remercier vivement les membres du jury qui ont fait l’honneur de
+juger ce travail et j’espère qu’il sera à la hauteur de la confiance qu’ils m’ont accordée.
+IV
+
+
+===== PAGE 4 =====
+
+Liste des acronymes
+GPAO : Gestion Production Assistée par Ordinateur.
+RH : Ressources Humaines.
+OF : Ordre Fabrication.
+V
+
+
+===== PAGE 5 =====
+
+Table des matières
+Table des figures
+IX
+Liste des tableaux
+XI
+Introduction générale
+1
+1
+Cadre général du travail
+3
+1.1
+introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Présentation de la société d’accueil . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2.1
+Présentation générale . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2.2
+Les prestations proposées
+. . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2.3
+Le marché et les principaux clients . . . . . . . . . . . . . . . . . .
+5
+1.2.4
+Le matériel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2.5
+Certification
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.3
+Etude de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.3.1
+OBILOG
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.3.2
+HERAKLES . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.3.3
+Foxyz . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.3.4
+Le flux du traitement d’une commande client au sein de l’entreprise 11
+1.3.5
+La gestion actuelle de la production . . . . . . . . . . . . . . . . . .
+12
+1.4
+Critique de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+1.4.1
+Solution envisagée . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.5
+Méthodologie de développement . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.5.1
+Le processus unifié . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+1.5.2
+Caractéristiques
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+1.5.3
+Cycle de vie . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+1.5.4
+Enchainement d’activités . . . . . . . . . . . . . . . . . . . . . . . .
+18
+1.6
+Chronogramme . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+1.7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2
+Activité spécification
+20
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.2
+Identification des acteurs . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.3
+Besoins fonctionnels
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.4
+Classement des cas d’utilisation
+. . . . . . . . . . . . . . . . . . . . . . . .
+22
+2.5
+Diagrammes de cas d’utilisation en packages . . . . . . . . . . . . . . . .
+22
+2.5.1
+Diagramme de package de cas d’utilisation général Responsable
+RH
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+VI
+
+
+===== PAGE 6 =====
+
+2.5.2
+Diagramme de package de cas d’utilisation général du Respon-
+sable Atelier . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+2.5.3
+Diagramme de package de cas d’utilisation général du Respon-
+sable développement. . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+2.5.4
+Diagramme de package de cas d’utilisation général du Respon-
+sable Commercial . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+2.5.5
+Diagramme de package de cas d’utilisation général de l’Adminis-
+trateur . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+2.6
+Exigences non fonctionnelles . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+2.6.1
+Exigences de qualité . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+2.6.2
+Exigences de performance . . . . . . . . . . . . . . . . . . . . . . .
+51
+2.7
+Contraintes de conception . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+2.8
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+3
+Activité analyse et conception
+53
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+3.2
+Architecture générale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+3.2.1
+Architecture 3-tiers . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+3.3
+Patrons de conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+3.3.1
+Patron de conception MVC . . . . . . . . . . . . . . . . . . . . . . .
+55
+3.3.2
+Patron de conception
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+3.4
+Conception détaillée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+3.4.1
+Diagramme de classes des collections . . . . . . . . . . . . . . . .
+56
+3.4.2
+Conception détaillée du package « Responsable RH » . . . . . .
+59
+3.4.3
+Conception détaillée du package « Responsable Développement » 63
+3.4.4
+Conception détaillée du package « Responsable Commercial » .
+65
+3.4.5
+Conception détaillée du package « Responsable Production »
+.
+68
+3.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+71
+4
+Cadre générale du projet
+72
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+4.2
+Environnement de développement . . . . . . . . . . . . . . . . . . . . . . .
+72
+4.2.1
+Technologies utilisées . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+4.2.2
+Langages de programmation . . . . . . . . . . . . . . . . . . . . . .
+74
+4.2.3
+Logiciels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+4.3
+Environnement de production . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+4.3.1
+Outils utilisés
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+4.3.2
+Langages . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+4.4
+Diagramme de déploiement . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+4.5
+Interfaces des applications . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+4.5.1
+Interface « Ajouter Nomenclature » . . . . . . . . . . . . . . . . . .
+81
+4.5.2
+Interface « Hiérarchie nomenclature »
+. . . . . . . . . . . . . . . .
+82
+4.5.3
+Interface « Ajouter élément sous nomenclature à ajouter » . . . .
+83
+4.5.4
+Interface « Affecter client ou Fournisseur »
+. . . . . . . . . . . . .
+83
+4.5.5
+Interface « Ajouter Commande » . . . . . . . . . . . . . . . . . . . .
+84
+4.5.6
+Interface « Ajouter Ligne commande » . . . . . . . . . . . . . . . .
+84
+4.5.7
+Interface « OF lancée » . . . . . . . . . . . . . . . . . . . . . . . . .
+85
+4.5.8
+Interface « Planification des Étapes de Production » . . . . . . . .
+85
+VII
+
+
+===== PAGE 7 =====
+
+4.5.9
+Interface « Planification par machine » . . . . . . . . . . . . . . . .
+86
+4.5.10 Interface « Suivi Production »
+. . . . . . . . . . . . . . . . . . . . .
+86
+4.5.11 Interface « Jenkins pipeline » . . . . . . . . . . . . . . . . . . . . .
+87
+4.5.12 Interface « SonarQube »
+. . . . . . . . . . . . . . . . . . . . . . . .
+88
+4.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+VIII
+
+
+===== PAGE 8 =====
+
+Table des figures
+2.1.1Logo du IRIS . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+3.1.2plateforme OBILOG . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+3.2.3plateforme OBILOG . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+3.3.4plateforme OBILOG . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+3.5.5Fiche de production sous format Word . . . . . . . . . . . . . . . . . . . . .
+13
+3.5.6Fiche de production sous format Word . . . . . . . . . . . . . . . . . . . . .
+14
+5.3.7Cycle de développement . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+5.4.8Cycle de développement . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+6.0.9Cycle de développement . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+5.1.1Diagramme de package « Responsable RH » . . . . . . . . . . . . . . . .
+23
+5.1.2Diagramme du cas d’utilisation « Gérer les personnels »
+. . . . . . . . .
+24
+5.2.3Diagramme de package « Chef d’Atelier» . . . . . . . . . . . . . . . . . . .
+26
+5.2.4Diagramme du cas d’utilisation « Gérer machine » . . . . . . . . . . . . .
+27
+5.2.5Diagramme du cas d’utilisation « Gérer conducteurs par machine/eta-
+peFabrication » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+5.2.6Diagramme du cas d’utilisation « Gérer planification OF » . . . . . . . . .
+32
+5.3.7Diagramme de package « Responsable Développement »
+. . . . . . . .
+35
+5.3.8Diagramme du cas d’utilisation « Gérer les nomenclatures» . . . . . . . .
+36
+5.4.9Diagramme du package « Responsable commercial » . . . . . . . . . . .
+39
+5.4.10Diagramme du cas d’utilisation «Gérer commandes» . . . . . . . . . . . .
+40
+5.4.11Diagramme du cas d’utilisation «Gérer clients» . . . . . . . . . . . . . . .
+43
+5.5.12Diagramme du package « Administrateur » . . . . . . . . . . . . . . . . . .
+46
+5.5.13Diagramme du cas d’utilisation «Consulter tableau de bord» . . . . . . .
+47
+5.5.14Diagramme du cas d’utilisation «Gérer compte» . . . . . . . . . . . . . . .
+48
+2.1.1Architecture 3-tiers
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+3.1.2Principe du patron de conception MVC . . . . . . . . . . . . . . . . . . . .
+55
+3.2.3Principe du patron de conception Repository . . . . . . . . . . . . . . . . .
+56
+4.1.4Le Modèle navigationnel Objet
+. . . . . . . . . . . . . . . . . . . . . . . . .
+58
+4.2.5DCP du cas d’utilisation « Gérer personnel » . . . . . . . . . . . . . . . . .
+60
+4.2.6DS du cas d’utilisation « Gérer personnel » . . . . . . . . . . . . . . . . . .
+62
+4.3.7DCP du cas d’utilisation « Gérer nomenclature » . . . . . . . . . . . . . .
+64
+4.3.8DS du cas d’utilisation « Gérer nomenclature » . . . . . . . . . . . . . . .
+65
+4.4.9DCP du cas d’utilisation « Gérer commandes » . . . . . . . . . . . . . . .
+66
+4.4.10DS du cas d’utilisation « Gérer commandes » . . . . . . . . . . . . . . . .
+67
+4.5.11DCP du cas d’utilisation « Gérer of » . . . . . . . . . . . . . . . . . . . . . .
+69
+4.5.12DS du cas d’utilisation « Gérer of » . . . . . . . . . . . . . . . . . . . . . . .
+70
+IX
+
+
+===== PAGE 9 =====
+
+2.1.1Logo Framework Spring Boot . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+2.1.2Logo Framework Angular . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+2.1.3Logo MongoDB
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+2.2.4Logo java . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+2.2.5Logo TypeScript . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+2.3.6Logo IntelliJ IDEA Ultimate . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+2.3.7Logo IntelliJ IDEA Ultimate . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+2.3.8Logo draw.io . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+2.3.9Logo Overleaf
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+3.1.10Logo Jenkins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+3.1.11Logo SonarQube . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+3.1.12Logo Nexus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+3.1.13Logo docker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+3.2.14Logo Groovy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+3.2.15Logo YML . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+4.0.16diagramme déploiement . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+5.1.17interface « ajouter nomenclature » . . . . . . . . . . . . . . . . . . . . . . .
+81
+5.1.18interface « ajouter nomenclature » . . . . . . . . . . . . . . . . . . . . . . .
+82
+5.2.19interface « Hiérarchie nomenclature » . . . . . . . . . . . . . . . . . . . . .
+82
+5.3.20interface « Ajouter élément sous nomenclature à ajouter» . . . . . . . . .
+83
+5.4.21interface « affecter client ou fournisseur » . . . . . . . . . . . . . . . . . . .
+83
+5.5.22interface « ajouter commande » . . . . . . . . . . . . . . . . . . . . . . . . .
+84
+5.6.23interface « ajouter ligne commande » . . . . . . . . . . . . . . . . . . . . .
+84
+5.7.24interface « OF lancée » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+85
+5.8.25interface « Planification des Étapes de Production » . . . . . . . . . . . .
+85
+5.9.26interface « Planification par machine » . . . . . . . . . . . . . . . . . . . . .
+86
+5.10.27
+interface « Diagramme de Gantt de Suivi de Production » . . . . . . . . .
+86
+5.11.28
+interface « Jenkins pipeline » . . . . . . . . . . . . . . . . . . . . . . . . . .
+88
+5.12.29
+interface « SonarQube » . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+88
+6.0.30Diagramme de classe . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+93
+X
+
+
+===== PAGE 10 =====
+
+Liste des tableaux
+1.1
+Comparatif des solutions existantes . . . . . . . . . . . . . . . . . . . . . .
+16
+2.1
+Tableau de classification des cas d’utilisation . . . . . . . . . . . . . . . . .
+22
+3.1
+Tableau descriptif des collections du modèle navigationnel . . . . . . . .
+57
+XI
+
+
+===== PAGE 11 =====
+
+Introduction générale
+L’optimisation des processus de production est un enjeu majeur pour les entreprises
+industrielles. Pour répondre à ce besoin, la GPAO (Gestion de Production Assistée
+par Ordinateur) est une solution qui permet de planifier et de suivre les opérations de
+production de manière efficace. Cependant, la mise en place d’une GPAO nécessite
+une réflexion préalable sur les processus métiers et les besoins de l’entreprise.
+Dans ce contexte, notre projet consiste en la conception et le développement d’une
+application GPAO pour répondre aux besoins spécifiques de notre entreprise cible.
+Pour faciliter le déploiement de cette application, nous avons également choisi d’utiliser
+une pipeline Jenkins basée sur Docker, ce qui permettra une intégration continue et
+une livraison rapide.
+Ce rapport présente tout le travail que nous avons réalisé tout au long de ce projet. Il
+est constitué de quatre chapitres décrits brièvement comme suit :
+Le premier chapitre sera consacré à la présentation de l’entreprise pour laquelle nous
+avons développé l’application GPAO ainsi que des objectifs de notre projet.Nous décri-
+rons également la méthodologie que nous avons utilisée pour mener à bien ce projet.
+Dans le deuxième chapitre, nous nous intéresserons à l’analyse détaillée des besoins
+fonctionnels et non fonctionnels de l’application GPAO. Nous présenterons également
+les différents cas d’utilisation de l’application et les diagrammes correspondants.
+Le troisième chapitre sera consacré à la phase de conception de l’application GPAO.
+Nous décrirons en détail l’architecture de l’application en utilisant des diagrammes UML
+et nous présenterons également la configuration de la pipeline Jenkins basée sur Do-
+cker pour assurer l’intégration continue et la livraison de l’application.
+Dans le quatrième chapitre, nous détaillerons la phase de réalisation de l’application
+GPAO.
+Nous présenterons les technologies et les outils que nous avons utilisés pour déve-
+1
+
+
+===== PAGE 12 =====
+
+lopper l’application, ainsi que les différentes interfaces graphiques que nous avons
+conçues pour offrir une expérience utilisateur conviviale. Enfin, nous expliquerons la
+chaîne des actions de notre pipeline Jenkins, en décrivant les différentes étapes du
+processus de déploiement et de livraison de l’application.
+En conclusion, ce rapport synthétisera les résultats de notre projet, mettra en évidence
+les contributions de notre application GPAO et discutera des perspectives futures pour
+son évolution et son déploiement dans d’autres contextes industriels.
+2
+
+
+===== PAGE 13 =====
+
+Chapitre 1
+Cadre général du travail
+1.1
+introduction
+Dans ce chapitre, nous allons présenter le cadre général du projet. Nous commençons
+par présenter la société d’accueil, dans laquelle nous avons effectué le stage. Ensuite
+nous présenterons l’étude de l’existant qui consiste à présenter les points faibles des
+travaux déjà réalisés dans le même contexte. Enfin nous dégageons les différentes
+problématiques et nous fixons les objectifs de notre travail, et pour plus de précision
+nous passons à la méthode de conception.
+1.2
+Présentation de la société d’accueil
+1.2.1
+Présentation générale
+IRIS imprimerie, fondée en 2011 par M. Mehdi Khadraoui, est une entreprise totale-
+ment exportatrice basée à technopole Sahline en Tunisie. Elle se spécialise dans le
+domaine de l’impression offset et numérique, offrant une large gamme de services al-
+lant de la conception graphique à l’impression sur différents supports en papier. Les
+produits proposés par IRIS couvrent un large éventail, incluant des cartes de visite,
+des étiquettes, des hangtags, ainsi que des boîtes et des étuis. Grâce à sa capacité
+à offrir une prestation complète et à développer des produits spéciaux, sur mesure
+et personnalisés, IRIS a su se positionner parmi les leaders de son marché. L’entre-
+prise a connu une croissance significative sur le marché international, en investissant
+continuellement et en adoptant une politique commerciale dynamique.
+3
+
+
+===== PAGE 14 =====
+
+Figure 2.1.1 – Logo du IRIS
+1.2.2
+Les prestations proposées
+La diversité et la richesse de la gamme de produits offerts par IRIS sont des facteurs
+clés de son succès. Au fil du temps, ces produits ont évolué en fonction des tendances
+du marché et des demandes spécifiques des clients. Voici un aperçu des produits pro-
+posés par l’entreprise : Étiquettes de marque : IRIS propose une variété d’étiquettes
+telles que les hang tags, les cavaliers de tailles, les pocket tags et les cartons de pas-
+sant ceinture. Packaging : L’entreprise propose des solutions d’emballage en papier et
+en carton, répondant ainsi aux besoins de ses clients en matière de conditionnement.
+Autocollants : IRIS propose des autocollants de toutes tailles et couleurs, permettant
+aux clients de communiquer efficacement leur message de manière visuelle.
+Grâce à son processus intégré, réunissant des professionnels de l’imprimerie et du
+graphisme au sein d’un même lieu, IRIS offre à ses clients une gamme de solutions
+complètes. Parmi les prestations proposées figurent :
+Conseil : L’équipe d’IRIS guide ses clients dans le choix du type d’impression, de la
+qualité, des supports, des papiers, des couleurs et des finitions, afin de répondre au
+mieux à leurs besoins.
+Conception graphique : Les experts d’IRIS sont en mesure de concevoir des visuels
+attrayants et percutants, en harmonie avec l’identité visuelle de chaque client.
+Repiquage : Cette étape consiste à reproduire fidèlement un motif ou un visuel sur dif-
+férents supports, offrant ainsi une grande flexibilité et une personnalisation optimale.
+Impression numérique : IRIS dispose de technologies d’impression numérique de
+pointe, permettant d’obtenir des résultats de haute qualité avec une grande précision
+et une grande rapidité d’exécution.
+Sérigraphie sur support papier : Cette technique permet d’appliquer des encres spé-
+ciales sur des supports papier, offrant ainsi des effets visuels uniques et une durabilité
+accrue. Ces prestations complètes offertes par IRIS témoignent de son expertise dans
+4
+
+
+===== PAGE 15 =====
+
+le domaine de l’imprimerie et de sa capacité à répondre aux besoins variés de sa clien-
+tèle.
+1.2.3
+Le marché et les principaux clients
+Ces clients prestigieux témoignent de la confiance accordée à IRIS et de sa capacité
+à offrir des prestations performantes répondant aux besoins spécifiques de chaque
+client. Grâce à son expérience et à sa réputation, IRIS a consolidé sa position sur le
+marché international et cherche à saisir les opportunités croissantes en élargissant
+continuellement son portefeuille clients.
+— BANANA MOON (France)
+— SET (France / Roumanie)
+— CARREFOUR (France)
+— KAPPA (Italie)
+— DEMCO (Belgique)
+— GARCIA (Royaume-Uni)
+— TLS (Suisse)
+— VANITY FAIR (États-Unis)
+— PEPE JEANS (Royaume-Uni)
+— Lou (Espagne)
+— LEE COOPER (Royaume-Uni)
+— SELMARK (Espagne)
+Ces clients prestigieux témoignent de la confiance accordée à IRIS et de sa capacité
+à offrir des prestations performantes répondant aux besoins spécifiques de chaque
+client. Grâce à son expérience et à sa réputation, IRIS a consolidé sa position sur le
+marché international et cherche à saisir les opportunités croissantes en élargissant
+continuellement son portefeuille clients.
+1.2.4
+Le matériel
+IRIS dispose d’un parc machine performant qui lui permet d’assurer une capacité opé-
+rationnelle de production à plein rendement, répondant ainsi à tous les besoins de ses
+clients. Le matériel est réparti de la manière suivante :
+Matériel Offset
+Cette technologie d’impression permet d’obtenir une qualité d’im-
+pression élevée pour les grandes quantités. IRIS dispose d’équipements offset mo-
+dernes et performants pour répondre aux exigences de ses clients.
+5
+
+
+===== PAGE 16 =====
+
+Matériel d’impression numérique
+L’impression numérique offre une grande flexibi-
+lité et permet des tirages de petites quantités avec une qualité élevée. IRIS dispose de
+machines d’impression numérique de pointe pour répondre aux demandes spécifiques
+et aux délais serrés.
+Matériel de découpe
+Pour offrir des produits finis de qualité, IRIS dispose d’un équi-
+pement de découpe précis et efficace. Cela permet de découper les produits imprimés
+selon les spécifications requises, garantissant des finitions précises.
+Matériel de finition
+IRIS dispose également de matériel de finition avancé pour ajou-
+ter les touches finales aux produits imprimés. Cela comprend des équipements tels
+que des machines de pliage, de reliure, de pelliculage, etc., qui permettent de donner
+une apparence professionnelle aux produits. En ce qui concerne la logistique, IRIS
+dispose d’un parc roulant composé de trois voitures pour assurer les livraisons à ses
+clients sur l’ensemble du territoire tunisien. Cette infrastructure logistique garantit une
+livraison rapide et fiable des produits, quelles que soient les conditions.
+1.2.5
+Certification
+IRIS accorde une grande importance à sa responsabilité sociale et environnementale.
+Dans cette optique, l’entreprise a obtenu des certifications qui témoignent de son enga-
+gement en faveur du développement durable et de l’éthique. Deux de ces certifications
+sont particulièrement remarquables :
+1. Certification FSC (Forest Stewardship Council) IRIS s’est engagée à contri-
+buer à un avenir meilleur pour la planète en adoptant des pratiques respec-
+tueuses de l’environnement. En tant que membre certifié du FSC, IRIS participe
+activement au recyclage, à la gestion durable des forêts et à la préservation de
+la biodiversité. Cette certification environnementale atteste des performances
+sociales, économiques et environnementales de l’entreprise, ainsi que de son
+engagement en faveur d’une gestion responsable des forêts.
+2. Certification ICS (Initiative for Compliance and Sustainability) IRIS accorde
+une importance primordiale à son engagement social et éthique envers son per-
+sonnel. La société a réussi à se conformer aux normes du code ICS, qui s’appuie
+sur les lois nationales du travail, ainsi que sur les instruments et les normes inter-
+nationales tels que les conventions de l’OIT (Organisation internationale du tra-
+vail) et de l’ONU. Cette certification garantit la protection et l’autonomisation de
+l’ensemble du personnel d’IRIS, y compris les fournisseurs et les sous-traitants.
+Elle favorise l’intégration sociale des employés à travers leur travail, encourage
+6
+
+
+===== PAGE 17 =====
+
+la convergence des visions entre les différents acteurs socio-économiques et
+contribue à la création de valeur ajoutée pour l’entreprise et l’économie du pays.
+Ces certifications sont des références internationales qui témoignent de l’engagement
+d’IRIS en matière d’éthique, de responsabilité sociale et environnementale. Elles consti-
+tuent des outils importants de vérification, de comparaison, d’amélioration continue et
+de développement dans ces domaines.
+1.3
+Etude de l’existant
+L’étude de l’existant revêt une importance capitale dans le processus de conception
+d’un projet. Au cours de cette étape cruciale, nous avons entrepris une analyse ap-
+profondie des solutions existantes proposées par les acteurs concurrents dans le do-
+maine de la gestion des distributions. L’objectif principal était de prendre connaissance
+des fonctionnalités offertes par ces solutions concurrentes, tout en identifiant les éven-
+tuelles lacunes qu’elles présentaient.
+Cette analyse rigoureuse nous a permis de saisir les différentes perspectives offertes
+par le marché actuel, en mettant l’accent sur les points faibles et les limites des solu-
+tions déjà en place. En conséquence, nous avons pu définir clairement les attentes et
+les besoins spécifiques de notre clientèle cible, ce qui nous a servi de base solide pour
+développer une offre plus complète et plus adaptée.
+Grâce à cette étude de l’existant, nous avons identifié les fonctionnalités clés qui de-
+vront être intégrées à notre plateforme de gestion des distributions, en mettant l’accent
+sur l’amélioration des points faibles relevés chez les solutions concurrentes. Cette
+approche nous a permis de définir une feuille de route précise et pertinente pour la
+conception et le développement de notre plateforme, en garantissant une proposition
+de valeur unique et différenciée pour nos clients.
+7
+
+
+===== PAGE 18 =====
+
+1.3.1
+OBILOG
+Est un logiciel ERP/GPAO adapté pour les industriels (TPE et PME) qui produisent
+en grandes séries. Il couvre toutes les fonctionnalités nécessaires à la gestion et le
+management de l’entreprise. Créé dès son origine par des industriels pour des indus-
+triels, OBILOG apporte une simplicité, une convivialité à l’utilisation et une richesse
+fonctionnelle évolutive.[1]
+Figure 3.1.2 – plateforme OBILOG
+Fonctionnalités
+— Gestion de la production
+— Gestion de la supply chain
+Points forts
+— Spécialisé pour les industries de production grandes séries
+— Réseau de Consultants experts du milieu industriel
+— Adaptable à vos secteurs d’activité
+— Certifications :ISO 9001
+Points faibles
+— Présentation encombrée de l’interface utilisateur.
+— Manque de fonctionnalités avancées.
+— Difficulté à personnaliser et adapter le système aux besoins spécifiques de l’en-
+treprise.
+8
+
+
+===== PAGE 19 =====
+
+1.3.2
+HERAKLES
+logiciel propose une solution complète à destination des TPE et PME industrielles. Plus
+de 750 entreprises lui font déjà confiance sur toute la France. Facile à prendre en main,
+la solution est aussi évolutive et propose de puissantes fonctionnalités.[2]
+Figure 3.2.3 – plateforme OBILOG
+Fonctionnalités
+— Gestion de la production
+— Gestion de la supplie chaine
+Points forts
+— Un lien direct avec tous nos clients
+— Solution évolutive et paramétrable
+— Prise en main facile de la solution
+Points faibles
+— Interface utilisateur complexe à prendre en main.
+— Manque de flexibilité dans la personnalisation des rapports et des tableaux de
+bord.
+— Absence de suivi en temps réel des activités de production.
+9
+
+
+===== PAGE 20 =====
+
+1.3.3
+Foxyz
+Un logiciel ERP/GPAO à taille humaine conçu pour aider les entreprises à créer de la
+valeur ajoutée dans leur activité. Cette solution accompagne les entreprises tout au
+long du processus, depuis l’établissement des devis jusqu’au règlement, en passant
+par la gestion des commandes.[3]
+Figure 3.3.4 – plateforme OBILOG
+Fonctionnalités
+— Gestion complète des processus
+— Suivi des performances et des indicateurs clés
+Points forts
+— Simple
+— Complet
+— Personnalisable
+— Certifications :ISO 9001
+Points faibles
+— Présentation encombrée de l’interface utilisateur.
+— Manque de fonctionnalités avancées.
+— Difficulté à personnaliser et adapter le système aux besoins spécifiques de l’en-
+treprise.
+10
+
+
+===== PAGE 21 =====
+
+1.3.4
+Le flux du traitement d’une commande client au sein de l’en-
+treprise
+Le processus de traitement des commandes clients au sein de la société IRIS est
+constitué de plusieurs étapes bien définies.
+Tout commence lorsque l’assistante commerciale reçoit la commande du client, soit
+par e-mail, soit par téléphone. Cette commande contient des informations telles que
+le type de commande, les références des articles à prod uire et le délai de livraison
+souhaité. L’assistante commerciale transmet ensuite ces informations au responsable
+de la production pour que la commande soit traitée.
+Le responsable de la production, à son tour, communique avec le responsable du ma-
+gasin afin de vérifier le niveau des stocks des produits finis. Si la quantité disponible
+en stock est suffisante pour satisfaire la commande, l’assistante commerciale prépare
+un bon de livraison et la commande est confiée à un livreur de la société IRIS pour la
+livraison.
+Cependant, si la quantité en stock est insuffisante pour répondre à la commande, le
+responsable de la production détermine la quantité à produire de chaque référence
+d’article et fait appel au responsable du magasin pour vérifier les stocks de matières
+premières telles que le papier, l’encre, le cordon, etc.
+Si les matières premières nécessaires ne sont pas disponibles en quantité suffisante,
+le responsable du magasin passe une commande pour les approvisionner et garantir
+ainsi le bon déroulement de la production de la commande. De même, le responsable
+du développement doit vérifier la disponibilité des outils d’impression spécifiques à la
+commande, tels que les plaques, les clichés de gaufrage, les films, etc.
+Si les outils spécifiques requis ne sont pas disponibles, le service technique artistique
+de la société IRIS les développe afin de les utiliser ultérieurement dans le processus
+de production.
+Une fois que les matières premières et les outils sont disponibles en stock, le respon-
+sable de la production prépare les ordres de fabrication (OF²(ordre de fabrication)) et
+les planifie en fonction de la disponibilité des ressources (humaines/machines) selon
+une séquence chronologique bien définie et en respectant l’ordre de fabrication de
+chaque OF.
+Au moment déterminé par le responsable de la production dans la planification des
+OF, le chef d’atelier lance la production de la commande et gère le flux de production
+ainsi que l’ordonnancement des étapes de production de chaque référence d’article,
+en se référant à la planification des OF.
+Une fois ce processus terminé dans l’atelier de production, la commande passe à l’ate-
+lier de finition où le responsable de la finition vérifie la qualité et les finitions de la
+commande, en respectant également la planification établie par le responsable de la
+11
+
+
+===== PAGE 22 =====
+
+production.
+Si une quantité de produit non conforme est détectée, le processus est relancé à partir
+de la phase de détermination de la quantité à produire, en spécifiant la quantité à
+relancer pour satisfaire les exigences du client.
+1.3.5
+La gestion actuelle de la production
+La gestion actuelle de la production au sein de la société IRIS repose sur l’utilisation
+de fichiers Word et Excel pour gérer les données. Cependant, le responsable de la
+production a constaté que cette méthode présente des limitations qui complexifient la
+gestion des données et freinent la productivité. Deux figures ont été mentionnées pour
+illustrer ces problèmes :
+12
+
+
+===== PAGE 23 =====
+
+Fiche7
+De production sous format Word Un fichier Word est utilisé pour représenter
+une fiche de production. Cela peut impliquer la saisie manuelle des informations rela-
+tives à la production, telles que les détails de la commande, les quantités à produire,
+les étapes de production, etc. Cependant, l’utilisation d’un fichier Word peut rendre dif-
+ficile la mise à jour et le suivi en temps réel de ces informations. Il peut également y
+avoir des risques d’erreurs ou de perte de données lors de la manipulation du fichier.
+Figure 3.5.5 – Fiche de production sous format Word
+13
+
+
+===== PAGE 24 =====
+
+Figure 3.5.6
+Planning d’un ordre de fabrication sous format Excel Un fichier Excel est utilisé pour
+représenter le planning d’un ordre de fabrication. Cela peut inclure des détails tels que
+les différentes étapes de production, les ressources nécessaires, les dates prévues,
+etc. Cependant, l’utilisation d’un fichier Excel peut présenter des limitations en termes
+de collaboration et de suivi en temps réel. Il peut également être difficile d’obtenir une
+vue d’ensemble de l’ensemble des ordres de fabrication et de les gérer de manière
+efficace.
+Figure 3.5.6 – Fiche de production sous format Word
+Et voici une liste des frustrations quotidiennes causées par l’absence d’un système
+informatisé de gestion de la production :
+Complexité d’accès aux données
+L’accès à l’information requiert toute une prépa-
+ration sans un GPAO²(gestion production assisté par ordinateur). Les données n’étant
+pas regroupées dans un même système informatique, les fichiers se multiplient, des
+doublons se créent et des données erronées apparaissent. Pas facile d’optimiser l’ac-
+tivité avec des données peu fiables.
+Atelier de la production dépassé sans GPAO
+L’atelier de la production de l’en-
+treprise est le premier maillon impacté par l’absence d’un logiciel de gestion de la
+14
+
+
+===== PAGE 25 =====
+
+production. Entre-les commandes, les OF, et les ressources matérielles et humaines,
+calculés avec Excel, les erreurs sont inévitables. D’après une étude effectuée par des
+spécialistes, 90% des feuilles Excel contiennent des erreurs.
+Les clients ne sont pas entièrement satisfaits
+Les premiers à pouvoir constater,
+et surtout subir, le système d’information démantelé, sont les clients. En l’absence du
+GPAO, maintenir une bonne expérience client peut devenir complexe. Afin de résoudre
+ces problèmes rencontrés, le directeur de la société IRIS, recourt à une équipe de
+développeur des systèmes d’informations en interne, pour concevoir et développer
+un logiciel de gestion de la production assisté par ordinateur «GPAO» qui consiste à
+remédier la gestion du flux de la production au sein de l’entrepris
+1.4
+Critique de l’existant
+Bien que les solutions existantes (FOXYZ, OBILOG, HERAKLES) répondent aux be-
+soins des entreprises en matière de gestion de la production et de la distribution, elles
+présentent également certaines incohérences et points faibles. Pour améliorer ces as-
+pects, nous envisageons d’apporter les améliorations suivantes :
+Présentation des données
+— Simplifier et désembrouiller l’interface utilisateur pour une meilleure lisibilité des
+données.
+— Adopter un design plus intuitif et convivial pour faciliter la navigation et l’accès
+aux informations.
+Facilité d’utilisation
+— Fournir une documentation complète et accessible sur les fonctionnalités de
+l’application pour guider les utilisateurs et les aider à exploiter pleinement le
+potentiel du logiciel.
+— Mettre en place des tutoriels interactifs ou des vidéos explicatives pour accom-
+pagner les utilisateurs dans leur apprentissage.
+Performance et rapidité
+— Optimiser les temps de chargement pour réduire les délais d’attente et améliorer
+l’efficacité de l’utilisation du logiciel.
+— Mettre en œuvre des mesures pour augmenter la réactivité du système et ga-
+rantir une expérience fluide et sans accrocs.
+15
+
+
+===== PAGE 26 =====
+
+Suivi en temps réel
+— Mettre en place des fonctionnalités de suivi en temps réel pour permettre aux
+utilisateurs de surveiller et de suivre les opérations de production et de distribu-
+tion à chaque étape du processus.
+— Intégrer des tableaux de bord et des rapports en temps réel pour fournir une
+vision globale de l’activité et faciliter la prise de décision.
+En apportant ces améliorations, nous visons à créer une solution de gestion de la
+production et de la distribution qui soit plus conviviale, performante et adaptée aux
+besoins spécifiques des entreprises.
+1.4.1
+Solution envisagée
+Après avoir étudié les défauts des solutions actuelles, nous allons présenter notre solu-
+tion qui devrait répondre aux besoins de ses utilisateurs en leur proposant un ensemble
+riche en termes de fonctionnalités.
+Le tableau 1.1 suivant permet de comparer entre les solutions existantes et la solution
+que nous souhaitons réaliser :
+Points faibles
+FOXYZ
+OBILOG
+HERAKLES
+Solution Envisagée
+Rapidité d’exécution
+X
+X
+Présentation encombrée des don-
+nées
+X
+X
+X
+Difficulté d’usage : Absence d’aide sur
+les fonctionnalités
+X
+X
+Lenteur du chargement
+X
+X
+Absence de notifications
+X
+X
+X
+Incapacité de suivi en temps réel
+X
+Table 1.1 – Comparatif des solutions existantes
+X : Le point faible est présent dans la solution respective.
+: La solution envisagée résout le point faible.
+1.5
+Méthodologie de développement
+La méthodologie de développement choisie pour ce projet est le Processus Unifié,
+également connu sous le nom de Rational Unified Process (RUP). Cette méthodologie
+offre une approche structurée et itérative pour le développement de systèmes logiciels.
+Le Processus Unifié se compose de quatre phases principales : la phase d’Inception,
+16
+
+
+===== PAGE 27 =====
+
+la phase d’Élaboration, la phase de Construction et la phase de Transition. Chaque
+phase est subdivisée en itérations, ce qui permet de développer le système de ma-
+nière progressive et itérative.
+La phase d’Inception consiste à comprendre les besoins du projet, à définir les objectifs
+et à évaluer la faisabilité. C’est également dans cette phase que l’équipe de dévelop-
+pement est formée et que les grandes lignes du projet sont établies.
+La phase d’Élaboration vise à approfondir l’analyse et la conception du système. Les
+fonctionnalités clés sont identifiées, les risques sont évalués et un plan de développe-
+ment détaillé est établi.
+La phase de Construction est axée sur le développement effectif du système. Les fonc-
+tionnalités sont implémentées, les tests sont effectués et les problèmes sont résolus
+au fur et à mesure.
+Enfin, la phase de Transition est consacrée à la préparation du déploiement et à la
+livraison du système aux utilisateurs finaux. Les tests finaux sont réalisés, la docu-
+mentation est finalisée et le système est déployé.
+Le Processus Unifié met l’accent sur la collaboration entre les membres de l’équipe, la
+gestion des risques et la validation continue des fonctionnalités tout au long du déve-
+loppement. Cette méthodologie permet de gérer efficacement la complexité du projet
+et d’apporter des ajustements en fonction des besoins changeants.
+1.5.1
+Le processus unifié
+Le processus unifié est une méthode de conception et de réalisation de logiciels dé-
+veloppés avec des langages de programmation orientés objet [4]. Il s’agit d’un guide
+méthodologique permettant d’éclaircir les différentes étapes du processus afin de ré-
+duire la complexité du projet et d’améliorer la qualité du livrable tout en ayant le contrôle
+pour prendre en charge les modifications qui interviennent au cours du développement
+sans qu’elles ne posent de problèmes.
+1.5.2
+Caractéristiques
+Le processus unifié est marqué par les caractéristiques suivantes :
+— Guidé par les cas d’utilisation : Les exigences des utilisateurs permettent de
+définir des cas d’utilisation. Il faut par conséquent bien comprendre les besoins
+de chacun d’eux, les définir avec précision et les prioriser.
+— Centré sur l’architecture : Cette architecture doit faire prévoir la réalisation de
+tous les cas d’utilisation et elle évolue de manière simultanée avec eux. Dès le
+démarrage du processus, nous aurons une vue sur l’architecture à mettre en
+place.
+17
+
+
+===== PAGE 28 =====
+
+— Itérative et incrémentale : Chaque phase du processus comprend des itéra-
+tions et est marqué par un jalon qui indiquera si les objectifs initiaux ont été
+remplis.
+— Piloté par les risques : Les risques majeures du projet doivent être identifiés
+au plus tôt et levés le plus rapidement possible.
+1.5.3
+Cycle de vie
+Cette méthode propose de se concentrer sur quatre phases subdivisées en plusieurs
+itérations. Les phases sont décrites brièvement comme suit
+— Phase de création : Permet de définir le produit et les objectifs du projet.
+— Phase d’élaboration : Vise à clarifier les besoins, définir l’architecture du pro-
+duit et à en valider la faisabilité.
+— Phase de construction : Vise à réaliser et mettre en œuvre le produit et les
+livrables associés.
+— Phase de transition : Vise à livrer le produit de sorte qu’il soit prêt à être utilisé.
+Ces phases sont présentées par la figure 5.3.7 suivante.
+Figure 5.3.7 – Cycle de développement
+1.5.4
+Enchainement d’activités
+Le processus unifié propose les enchainements d’activité suivants :
+— Exigences : Recherche des acteurs et des cas d’utilisation, priorisation, des-
+cription des cas d’utilisation, prototypages des interfaces utilisateur et structu-
+ration du modèle des cas d’utilisation.
+— Analyse : Analyse de l’architecture, des cas d’utilisation et des classes.
+18
+
+
+===== PAGE 29 =====
+
+— Conception : Conception de l’architecture, des cas d’utilisation, des classes et
+d’un sous-système.
+— Implémentation : Implémentation de l’architecture et d’un sous-système.
+— Tests : Planification, conception et exécution des tests.
+Figure 5.4.8 – Cycle de développement
+1.6
+Chronogramme
+Les différentes étapes de réalisation de ce projet pendant la durée du stage de 5 mois
+qui s’étend du 1 er Février jusqu’au 30 Juin sont représentées par le diagramme de
+Gantt de la figure suivante.
+Figure 6.0.9 – Cycle de développement
+1.7
+Conclusion
+Dans ce chapitre nous avons mentionné les inconvénients des solutions utilisées ac-
+tuellement et ceci afin de réaliser une application performante satisfaisant au mieux
+les attentes de ses utilisateurs. Le chapitre suivant détaillera encore plus les fonction-
+nalités de notre projet en présentant les acteurs et les actions qu’ils vont réaliser.
+19
+
+
+===== PAGE 30 =====
+
+Chapitre 2
+Activité spécification
+2.1
+Introduction
+Ce chapitre se concentre sur l’identification des améliorations potentielles pour notre
+système de gestion de production. Nous présenterons ces améliorations sous la forme
+de fonctionnalités, en mettant en évidence les différents acteurs impliqués et leurs
+tâches respectives. De plus, nous détaillerons les besoins non fonctionnels essentiels
+que notre système doit satisfaire afin de fournir une plateforme répondant aux attentes
+de ses utilisateurs.
+2.2
+Identification des acteurs
+Notre solution de gestion de production implique plusieurs acteurs clés, qui jouent des
+rôles importants dans le processus. Voici les acteurs identifiés :
+— Responsable RH : Il est chargé de la gestion des ressources humaines au sein
+de l’entreprise.
+— Chef d’atelier et Monitrice : Ils supervisent et coordonnent les activités de
+l’atelier de production. Le chef d’atelier est responsable de la planification et de
+l’organisation de la production, tandis que la monitrice assure le contrôle de la
+qualité et de la finition des nomenclatures.
+— Conducteur machine : Il opère les machines et équipements de production.
+Son rôle est d’assurer le bon fonctionnement des machines.
+— Assistante commerciale : Elle est en charge de la gestion des commandes
+clients. Son rôle consiste à recevoir les commandes, à vérifier la disponibilité
+des produits(article) et des matières premières(éléments).
+— Responsable de production : Il est responsable de la planification et de la
+20
+
+
+===== PAGE 31 =====
+
+coordination de la production. Son rôle est de définir les ordres de fabrication et
+de veiller au respect des délais de production.
+— Responsable de développement : Il est responsable de la gestion des outils
+et des technologies utilisés dans le processus de production. Son rôle consiste
+à assurer la disponibilité des outils d’impression spécifiques aux commandes
+clients et à coordonner les activités liées au développement des outils.
+— Administrateur : Il s’agit d’un utilisateur avec des privilèges étendus qui est
+responsable de la gestion globale du système. L’administrateur a accès à toutes
+les fonctionnalités de l’application et peut effectuer des tâches de configuration,
+de gestion des utilisateurs et des comptes et de surveillance du système.
+2.3
+Besoins fonctionnels
+Notre solution doit assurer les fonctionnalités suivantes à chacun de ses acteurs.
+Responsable RH :
+— Gérer les informations du personnel.
+— Gérer les processus de recrutement.
+— Gérer les formations et le développement des employés.
+Chef d’atelier et Monitrice :
+— Planifier les tâches et les affecter aux opérateurs.
+— Suivre l’avancement des tâches et les temps d’exécution.
+— Gérer les ressources et les équipements nécessaires aux tâches.
+Conducteur de machine :
+— Recevoir les instructions de travail du chef d’atelier.
+— Utiliser les machines et les outils conformément aux consignes.
+Assistante commerciale :
+— Gérer les commandes des clients.
+Responsable de production :
+— Planifier la production en fonction des commandes et des ressources dispo-
+nibles.
+— Suivre l’avancement de la production et ajuster les plannings si nécessaire.
+— Assurer la qualité des produits fabriqués.
+Responsable de développement :
+— Gérer les projets de développement de nouveaux produits.
+— Assurer le suivi des étapes de développement et respecter les délais.
+21
+
+
+===== PAGE 32 =====
+
+Administrateur :
+— Gérer les comptes et possède tous les droits et privilèges.
+2.4
+Classement des cas d’utilisation
+Après avoir identifié les besoins fonctionnels de chaque acteur, nous allons à présent
+les classifier selon la priorité fonctionnelle et le risque technique [1] pour pouvoir déci-
+der de l’ordre de réalisation de chacun de ces cas comme l’illustre le tableau suivant.
+Cas d’utilisation
+Priorité
+Risque
+Itération
+S’authentifier
+Moyenne
+Haut
+9
+Gérer employés
+Haute
+Moyen
+1
+Gérer conducteur et etape Fabrica-
+tion par machine
+Moyenne
+Bas
+6
+Gérer planification
+Haute
+Moyen
+5
+Gérer machine
+Moyenne
+Bas
+3
+Gérer les fiche technique des no-
+menclatures
+Moyenne
+Bas
+4
+Gérer les clients
+Haute
+Haut
+2
+Gérer commandes
+Haute
+Moyen
+7
+Consulter tableau de bord
+Basse
+Bas
+10
+Gérer compte
+Haute
+Moyen
+8
+Table 2.1 – Tableau de classification des cas d’utilisation
+2.5
+Diagrammes de cas d’utilisation en packages
+Après la définition des priorités et l’évaluation des risques de chaque fonctionnalité,
+nous allons maintenant illustrer le diagramme de cas d’utilisation général de notre solu-
+tion sous forme de packages pour chaque acteur. Ce type de diagramme nous permet
+d’exposer la relation entre les acteurs et le système en capturant leurs comportements
+avec ce dernier.
+22
+
+
+===== PAGE 33 =====
+
+2.5.1
+Diagramme de package de cas d’utilisation général Respon-
+sable RH
+La figure suivante illustre les cas d’utilisation possibles pour le responsable RH.
+Figure 5.1.1 – Diagramme de package « Responsable RH »
+2.5.1.1
+Raffinement des cas d’utilisation du package « Responsable RH »
+Nous allons maintenant détailler chaque fonctionnalité du package en présentant son
+diagramme de cas d’utilisation raffiné avec une description textuelle.
+23
+
+
+===== PAGE 34 =====
+
+Diagramme du cas d’utilisation « Gérer les personnels »
+Figure 5.1.2 – Diagramme du cas d’utilisation « Gérer les personnels »
+Nous allons maintenant détailler chaque fonctionnalité du package « Responsable RH
+» en présentant son diagramme de cas d’utilisation raffiné avec une description tex-
+tuelle.
+La fonctionnalité de gestion des personnels permet au responsable des ressources
+humaines d’effectuer les tâches suivantes :
+Acteurs : Responsable des RH- Administrateur.
+Acteur secondaire : Base de données des personnels.
+Résumé : L’acteur doit pouvoir gérer les informations relatives aux employés de l’en-
+treprise, notamment leur profil, leurs données personnelles, leur statut et leur accès à
+la plateforme.
+Précondition : Acteur authentifié.
+Scénario nominal :
+[S1] : Consultation de la liste des personnels
+1. Le système affiche la liste des personnels enregistrés, avec leurs informations
+de base (nom, prénom, poste, statut, etc.).
+2. L’acteur peut parcourir la liste et consulter les détails de chaque employé.
+[S2] : Modification des informations d’un personnel
+1. L’acteur sélectionne un employé dans la liste.
+24
+
+
+===== PAGE 35 =====
+
+2. Le système affiche les détails de personnel.
+3. L’acteur peut modifier les informations nécessaires (poste, adresse, statut, etc.).
+4. L’acteur valide les modifications.
+5. Le système met à jour les données de l’employé dans la base de données et
+affiche un message de succès.
+[S3] : Mise en veille d’un employé
+1. L’acteur sélectionne un personnel dans la liste.
+2. Le système affiche les détails de personnel.
+3. L’acteur demande la mise en veille de personnel.
+4. Le système affiche une confirmation de mise en veille.
+5. L’acteur confirme la mise en veille.
+6. Le système met à jour le statut de l’employé dans la base de données et affiche
+un message de succès.
+Scénario alternatif :
+[S3-5a] : L’acteur annule la mise en veille d’un personnel.
+1. Le système n’effectue pas la mise en veille et affiche un message d’annulation.
+2. Le scénario se termine.
+25
+
+
+===== PAGE 36 =====
+
+2.5.2
+Diagramme de package de cas d’utilisation général du Res-
+ponsable Atelier
+Ce diagramme est donné par la figure suivante.
+Figure 5.2.3 – Diagramme de package « Chef d’Atelier»
+26
+
+
+===== PAGE 37 =====
+
+2.5.2.1
+Raffinement des cas d’utilisation du package « Chef d’Atelier»
+Nous allons maintenant détailler chaque fonctionnalité du package en présentant son
+diagramme de cas d’utilisation raffiné avec une description textuelle.
+Diagramme du cas d’utilisation « Gérer machine » La fonctionnalité ”Gérer ma-
+Figure 5.2.4 – Diagramme du cas d’utilisation « Gérer machine »
+chine” permet au Chef d’Atelier d’effectuer différentes actions liées aux machines uti-
+lisées dans le processus de fabrication. La description textuelle de ce cas d’utilisation
+est donnée comme suit :
+Acteurs : Chef d’Atelier.
+Résumé : Le Chef d’Atelier doit avoir la possibilité de gérer les machines, notamment
+en les ajoutant, les modifiant, les supprimant et en consultant les détails des machines.
+Précondition : Le Chef d’Atelier doit être authentifié.
+Scénario nominal :
+[S1] :Ajouter une machine :
+1. Le Chef d’Atelier accède à l’interface de création de machine.
+2. Le Chef d’Atelier saisit les informations nécessaires de la machine (nom, nu-
+méro de série, type, etc.).
+3. Le Chef d’Atelier valide les informations.
+4. Le système enregistre la machine et affiche un message de succès.
+[S2] : Modifier une machine :
+1. Le Chef d’Atelier sélectionne une machine dans la liste des machines.
+27
+
+
+===== PAGE 38 =====
+
+2. Le Chef d’Atelier accède à l’interface de modification de la machine.
+3. Le Chef d’Atelier effectue les modifications souhaitées sur les informations de
+la machine.
+4. Le Chef d’Atelier valide les modifications.
+5. Le système met à jour les informations de la machine et affiche un message de
+succès.
+[S3] : Le Chef d’Atelier sélectionne l’option ”Mettre la machine en veille” pour une
+machine spécifique dans l’interface de liste des machines.
+1. Le système affiche une boîte de dialogue de confirmation.
+2. Le Chef d’Atelier confirme l’action en cliquant sur ”Oui”.
+3. Le système met la machine en veille.
+4. Le système affiche un message de confirmation de la mise en veille de la ma-
+chine.
+[S4] : Le Chef d’Atelier sélectionne l’option ”Mettre la machine en veille” pour une
+machine spécifique dans l’interface de liste des machines.
+1. Le Chef d’Atelier sélectionne l’option ”Supprimer” pour une machine spécifique
+dans l’interface de liste des machines.
+2. Le système affiche une boîte de dialogue de confirmation.
+3. Le Chef d’Atelier confirme l’action en cliquant sur ”Oui”.
+4. Le système supprime la machine de la liste.
+5. Le système affiche un message de confirmation de la suppression de la ma-
+chine.
+[S5] : Consulter les détails d’une machine :
+1. Le Chef d’Atelier sélectionne une machine dans la liste des machines.
+2. Le Chef d’Atelier accède à l’interface des détails de la machine.
+3. Le système affiche les informations détaillées de la machine, telles que son état,
+sa disponibilité, etc.
+Scénario alternatif :
+[S1-2a] : Le Chef d’Atelier ne remplit pas correctement les champs du formulaire de
+création :
+1. Le système affiche un message d’erreur indiquant les champs manquants ou
+invalides.
+2. Le scénario reprend à l’étape 2 de la demande d’ajout d’une machine.
+28
+
+
+===== PAGE 39 =====
+
+[S2-3a] : Le Chef d’Atelier annule les modifications sur une machine :
+1. Le système ignore les modifications effectuées par le Chef d’Atelier.
+2. Le système affiche un message indiquant l’annulation des modifications.
+[S3-2a] : Le Chef d’Atelier annule l’action de mise en veille.
+1. Le système ferme la boîte de dialogue de confirmation.
+2. Le scénario se termine.
+[S4-2a] : Le Chef d’Atelier annule l’action de suppression.
+1. Le système ferme la boîte de dialogue de confirmation.
+2. Le scénario se termine.
+[S5-2a] : Le Chef d’Atelier sélectionne une machine inexistante :
+1. Le système affiche un message indiquant que la machine sélectionnée n’existe
+pas.
+Diagramme du cas d’utilisation « Gérer machine par conducteur et par étape de
+fabrication »
+Figure 5.2.5 – Diagramme du cas d’utilisation « Gérer conducteurs par machine/eta-
+peFabrication »
+La fonctionnalité de gestion des machines par conducteur et par étape de fabrication
+permet de spécifier quel conducteur est assigné à quelle machine pour chaque étape
+29
+
+
+===== PAGE 40 =====
+
+de fabrication. Voici la description textuelle de ce cas d’utilisation :
+Acteurs : Chef d’Atelier
+Résumé : Le chef d’atelier doit pouvoir associer un conducteur à une machine pour
+une étape de fabrication spécifique. Il peut également modifier ou supprimer ces as-
+sociations existantes.
+Précondition : Le chef d’atelier doit être authentifié dans le système.
+Scénario nominal :
+[S1] :Le chef d’atelier accède à l’interface de gestion des machines par conducteur et
+par étape :
+1. Le chef d’atelier sélectionne l’option de gestion des machines par conducteur
+et par étape.
+[S2] : Le chef d’atelier choisit une étape de fabrication :
+1. Le système affiche la liste des étapes de fabrication disponibles.
+2. Le chef d’atelier sélectionne une étape de fabrication dans la liste.
+[S3] : Le chef d’atelier choisit une machine et un conducteur pour l’étape sélectionnée. :
+1. Le système affiche la liste des machines disponibles.
+2. Le chef d’atelier choisit une machine parmi les options disponibles.
+3. Le système affiche la liste des conducteurs disponibles.
+4. Le chef d’atelier choisit un conducteur parmi les options disponibles.
+[S4] : Le chef d’atelier valide l’association machine-conducteur-étape :
+1. Le chef d’atelier confirme les choix de la machine, du conducteur et de l’étape
+de fabrication.
+2. Le système enregistre l’association dans le système.
+[S5] : Le chef d’atelier souhaite modifier une association existante :
+1. Le chef d’atelier accède à l’interface de gestion des machines par conducteur
+et par étape.
+2. Le système affiche la liste des associations existantes.
+3. Le chef d’atelier sélectionne l’association à modifier.
+4. Le système affiche les détails de l’association, y compris la machine, le conduc-
+teur et l’étape de fabrication associés.
+5. Le chef d’atelier modifie la machine, le conducteur ou l’étape de fabrication selon
+les besoins.
+6. Le système met à jour l’association avec les nouvelles informations.
+30
+
+
+===== PAGE 41 =====
+
+[S6] :Le chef d’atelier souhaite supprimer une association existante :
+1. Le chef d’atelier accède à l’interface de gestion des machines par conducteur
+et par étape.
+2. Le système affiche la liste des associations existantes.
+3. Le chef d’atelier sélectionne l’association à supprimer.
+4. Le système affiche un message de confirmation.
+5. Le chef d’atelier confirme la suppression de l’association.
+6. Le système supprime l’association. informations.
+Scénario alternatif :
+[S2-1a] : Aucune étape de fabrication disponible.
+1. Le système affiche un message indiquant qu’aucune étape de fabrication n’est
+disponible.
+2. Le chef d’atelier revient à l’interface principale.
+3. Le scénario se termine.
+[S3-2a] : Aucune machine disponible.
+1. Le système affiche un message indiquant qu’aucune machine n’est disponible.
+2. Le chef d’atelier revient à l’interface de gestion des machines par conducteur et
+par étape.
+3. Le scénario reprend à l’étape [S2].
+[S3-4a] : LAucun conducteur disponible.
+1. Le système affiche un message indiquant qu’aucun conducteur n’est disponible.
+2. Le chef d’atelier revient à l’interface de gestion des machines par conducteur et
+par étape.
+3. Le scénario reprend à l’étape [S2].
+31
+
+
+===== PAGE 42 =====
+
+Diagramme du cas d’utilisation « Gérer planifications des OFs pour les étapes
+par machine »
+Figure 5.2.6 – Diagramme du cas d’utilisation « Gérer planification OF »
+La fonctionnalité de gestion des planifications des OFs pour les étapes par machine
+permet au chef d’atelier de planifier les ordres de fabrication (OFs) pour chaque étape
+de production, en les associant à une machine spécifique. Cette fonctionnalité permet
+d’organiser et de coordonner les ressources matérielles et les étapes de fabrication
+nécessaires à la réalisation des OFs. Une fois les planifications effectuées, le chef
+d’atelier a la possibilité de lancer les OFs planifiés, ce qui déclenche leur exécution ef-
+fective sur les machines assignées. Voici la description textuelle de ce cas d’utilisation :
+Acteurs : Chef d’Atelier
+Résumé : Le chef d’atelier doit pouvoir planifier les étapes de fabrication pour chaque
+OF, affecter une machine à chaque étape planifiée et gérer l’état des planifications (non
+lancées et lancées).
+Précondition : Le chef d’atelier doit être authentifié dans le système.
+Scénario nominal :
+[S1] :Le chef d’atelier accède à la liste des planifications des OFs non lancées par
+32
+
+
+===== PAGE 43 =====
+
+machine.
+1. Le système affiche la liste des machines disponibles.
+2. Le chef d’atelier sélectionne une machine dans la liste.
+3. Le système affiche la liste des planifications des OFs non lancées pour la ma-
+chine sélectionnée.
+4. Le chef d’atelier sélectionne une planification dans la liste.
+5. Le système affiche les détails de la planification, y compris les étapes de fabri-
+cation associées.
+6. Le chef d’atelier planifie les étapes de fabrication pour la planification sélection-
+née, en indiquant les machines et les ressources nécessaires.
+7. Le système enregistre les informations de planification.
+[S2] : Le chef d’atelier souhaite consulter la liste des planifications des OFs lancées.
+1. Le chef d’atelier accède à la liste des planifications des OFs lancées.
+2. Le système affiche la liste des planifications des OFs lancées, triées par ordre
+de priorité.
+[S3] : Le chef d’atelier souhaite modifier la planification d’une étape pour une planifi-
+cation donnée.
+1. Le chef d’atelier sélectionne une planification dans la liste des planifications des
+OFs non lancées par machine.
+2. Le système affiche les détails de la planification, y compris les étapes de fabri-
+cation planifiées.
+3. Le chef d’atelier sélectionne une étape de fabrication à modifier.
+4. Le système affiche les détails de l’étape de fabrication, y compris la machine et
+les ressources affectées.
+5. Le chef d’atelier modifie les informations de l’étape de fabrication, telles que la
+machine ou les ressources nécessaires.
+6. Le système met à jour la planification de l’étape de fabrication.
+[S4] : Le chef d’atelier souhaite lancer une planification.
+1. Le chef d’atelier sélectionne une planification dans la liste des planifications des
+OFs non lancées par machine.
+2. Le système affiche les détails de la planification, y compris les étapes de fabri-
+cation planifiées.
+3. Le chef d’atelier vérifie que toutes les étapes de fabrication sont remplies.
+33
+
+
+===== PAGE 44 =====
+
+4. Si toutes les étapes sont remplies, le chef d’atelier choisit l’option ”Lancer la
+planification”.
+5. Le système met à jour l’état de la planification en tant que ”lancée”.
+Scénario alternatif :
+[S1-6a] : Le chef d’atelier ne parvient pas à planifier les étapes de fabrication pour la
+planification sélectionnée :
+1. Le système détecte une erreur ou une incohérence dans les informations de
+planification fournies.
+2. Le système affiche un message d’erreur indiquant la nature de l’erreur.
+3. Le scénario reprend à l’étape 6, permettant au chef d’atelier de corriger les in-
+formations de planification.
+[S3-5a] :Le chef d’atelier ne parvient pas à modifier les informations d’une étape de
+fabrication :
+1. Le système détecte une erreur ou une incohérence dans les informations de
+l’étape de fabrication fournies.
+2. Le système affiche un message d’erreur indiquant la nature de l’erreur.
+3. Le scénario reprend à l’étape 5, permettant au chef d’atelier de corriger les in-
+formations de l’étape de fabrication.
+[S4-3a] : Le chef d’atelier constate que toutes les étapes de fabrication ne sont pas
+remplies pour la planification sélectionnée :
+1. Le chef d’atelier visualise les étapes de fabrication de la planification.
+2. Le système détecte au moins une étape de fabrication non remplie.
+3. Le système affiche un message indiquant les étapes de fabrication manquantes.
+4. Le scénario se termine, empêchant le lancement de la planification tant que
+toutes les étapes ne sont pas remplies.
+34
+
+
+===== PAGE 45 =====
+
+2.5.3
+Diagramme de package de cas d’utilisation général du Res-
+ponsable développement.
+Ce diagramme est donné par la figure suivante.
+Figure 5.3.7 – Diagramme de package « Responsable Développement »
+35
+
+
+===== PAGE 46 =====
+
+2.5.3.1
+Raffinement des cas d’utilisation du package « Responsable Dévelop-
+pement »
+Nous allons maintenant détailler chaque fonctionnalité du package en présentant son
+diagramme de cas d’utilisation raffiné avec une description textuelle.
+Diagramme du cas d’utilisation « Gérer nomenclature »
+Figure 5.3.8 – Diagramme du cas d’utilisation « Gérer les nomenclatures»
+La fonctionnalité de gestion des nomenclatures permet au Responsable de Développe-
+ment de créer, modifier et mettre en veille les nomenclatures utilisées dans le système.
+Les nomenclatures peuvent être de trois types : ”Famille”, ”Article” ou ”Élément”. Le
+Responsable de Développement peut consulter la liste des nomenclatures existantes,
+ajouter de nouvelles nomenclatures en spécifiant leur nom et leur type, et effectuer
+des modifications sur les nomenclatures existantes, telles que changer leur nom, leur
+type…, affecter des composites (nomenclatures de type ”Élément”) ou des parents
+(nomenclatures de type ”Famille” ou ”Article”) et associer une étape de fabrication à
+chaque élément. Le Responsable de Développement peut également mettre en veille
+une nomenclature, ce qui la désactive temporairement du système. En cas de besoin,
+il peut réactiver une nomenclature mise en veille. De plus, le Responsable de Dévelop-
+pement a la possibilité de supprimer définitivement une nomenclature du système. Ces
+fonctionnalités permettent au Responsable de Développement de gérer efficacement
+les nomenclatures utilisées dans le processus de développement du produit.
+36
+
+
+===== PAGE 47 =====
+
+Description textuelle de ce cas d’utilisation :
+Acteurs : Responsable de Développement
+Acteur secondaire : Base de données de la nomenclature
+Résumé : Le Responsable de Développement est responsable de la gestion des no-
+menclatures, qui peuvent être de type ”Famille”, ”Article” ou ”Élément”. Précondition :
+Le Responsable de Développement est authentifié dans le système.
+Scénario nominal :
+[S1] :Le Responsable de Développement souhaite consulter la liste des nomencla-
+tures.
+1. Le système affiche la liste des nomenclatures disponibles, avec les informations
+associées (nom, type…). Le Responsable de Développement peut effectuer les
+actions suivantes :
+[S2]a : Ajouter une nouvelle nomenclature :
+1. Le Responsable de Développement saisit les informations requises (nom, type..).
+2. Le Responsable de Développement peut également affecter des composites
+(nomenclatures de type ”Élément”) à la nomenclature en cours de création.
+3. Le Responsable de Développement peut affecter des parents (nomenclatures
+de type ”Famille” ou ”Article”) à la nomenclature en cours de création.
+4. Le Responsable de Développement peut affecter une étape de fabrication à
+chaque élément affecté.
+5. Le Responsable de Développement valide l’ajout de la nomenclature.
+[S3]b : Mettre en veille une nomenclature :
+1. Le Responsable de Développement sélectionne une nomenclature de la liste.
+Le Responsable de Développement choisit l’option ”Mettre en veille”.
+2. Le système demande une confirmation. Le Responsable de Développement
+confirme la mise en veille de la nomenclature.
+[S4]c : Modifier une nomenclature :
+1. Le Responsable de Développement sélectionne une nomenclature de la liste.
+2. Le Responsable de Développement choisit l’option ”Modifier”.
+3. Le système affiche le formulaire de modification avec les informations actuelles
+de la nomenclature.
+4. Le Responsable de Développement effectue les modifications nécessaires (nom,
+type, composites, parents, étape de fabrication…).
+37
+
+
+===== PAGE 48 =====
+
+5. Le Responsable de Développement valide les modifications de la nomenclature.
+Scénario alternatif :
+[S2-1] : Le Responsable de Développement abandonne l’ajout d’une nomenclature.
+1. Le Responsable de Développement quitte le formulaire d’ajout sans valider les
+informations saisies. .
+[S4-1] :Le Responsable de Développement abandonne la modification d’une nomen-
+clature.
+1. Le Responsable de Développement quitte le formulaire de modification sans
+valider les modifications effectuées.
+[S3-1] :Le Responsable de Développement annule la mise en veille d’une nomencla-
+ture.
+1. Le Responsable de Développement choisit l’option ”Annuler” lors de la demande
+de confirmation pour mettre en veille une nomenclature.
+[S3-2] : Le Responsable de Développement supprime une nomenclature.
+1. Le Responsable de Développement sélectionne une nomenclature de la liste.
+2. Le Responsable de Développement choisit l’option ”Supprimer”.
+3. Le système demande une confirmation.
+4. Le Responsable de Développement confirme la suppression de la nomencla-
+ture.
+5. Le système supprime la nomenclature de la base de données.
+38
+
+
+===== PAGE 49 =====
+
+2.5.4
+Diagramme de package de cas d’utilisation général du Res-
+ponsable Commercial
+Ce diagramme est donné par la figure suivante.
+Figure 5.4.9 – Diagramme du package « Responsable commercial »
+39
+
+
+===== PAGE 50 =====
+
+2.5.4.1
+Raffinement des cas d’utilisation du package « Responsable Commer-
+cial »
+Nous allons maintenant détailler chaque fonctionnalité du package en présentant son
+diagramme de cas d’utilisation raffiné avec une description textuelle.
+Diagramme du cas d’utilisation « Gérer commandes »
+Ce diagramme est donné par la figure suivante.
+Figure 5.4.10 – Diagramme du cas d’utilisation «Gérer commandes»
+Acteur principal : Responsable commercial Acteur secondaire : Base de données
+des commandes
+Résumé : Le Responsable commercial doit pouvoir gérer les commandes passées par
+les clients, notamment en ajoutant de nouvelles commandes, en ajoutant des articles à
+une commande existante, en supprimant une commande et en fermant une commande
+une fois que tous les articles ont été ajoutés.
+Précondition : Le Responsable commercial est authentifié dans le système. Scénario
+nominal :
+[S1] : Le Responsable commercial souhaite consulter la liste des commandes.
+1. Le système affiche la liste des commandes disponibles, avec les informations
+associées (numéro, client, date, état). Le Responsable commercial peut effec-
+tuer les actions suivantes :
+40
+
+
+===== PAGE 51 =====
+
+a. Ajouter une nouvelle commande :
+1. Le Responsable commercial sélectionne l’option ”Créer commande”.
+2. Le système affiche le formulaire de création de commande.
+3. Le Responsable commercial saisit les informations nécessaires pour la com-
+mande (client, produits, quantités, dates de livraison, etc.).
+4. Le Responsable commercial valide la création de la commande.
+b. Ajouter des articles à une commande :
+1. Le Responsable commercial sélectionne une commande dans la liste des com-
+mandes. Le système affiche les détails de la commande.
+2. Le Responsable commercial choisit l’option ”Ajouter article”.
+3. Le système affiche la liste des articles disponibles.
+4. Le Responsable commercial sélectionne un article et saisit la quantité souhai-
+tée.
+5. Le Responsable commercial valide l’ajout de l’article à la commande.
+c. Supprimer une commande :
+1. Le Responsable commercial sélectionne une commande dans la liste des com-
+mandes.
+2. Le Responsable commercial choisit l’option ”Supprimer”.
+3. Le système demande une confirmation.
+4. Le Responsable commercial confirme la suppression de la commande.
+d. Fermer une commande :
+1. Le Responsable commercial sélectionne une commande dans la liste des com-
+mandes.
+2. Le système affiche les détails de la commande.
+3. Le Responsable commercial vérifie que tous les articles nécessaires ont été
+ajoutés avec les quantités appropriées.
+4. Le Responsable commercial choisit l’option ”Fermer commande”. Le système
+demande une confirmation.
+5. Le Responsable commercial confirme la fermeture de la commande.
+Scénarios alternatifs :
+[S1-2a] : Le Responsable commercial abandonne la création d’une nouvelle com-
+mande
+41
+
+
+===== PAGE 52 =====
+
+1. Le Responsable commercial quitte le formulaire de création sans valider les
+informations saisies.
+[S1-2b] : Le Responsable commercial abandonne l’ajout d’un article à une commande.
+1. Le Responsable commercial quitte la sélection d’article sans valider l’ajout à la
+commande.
+[S1-2c] : Le Responsable commercial annule la suppression d’une commande.
+1. Le Responsable commercial choisit l’option ”Annuler” lors de la demande de
+confirmation de suppression.
+[S1-2d] : Le Responsable commercial confirme la suppression d’une commande.
+1. Le Responsable commercial choisit l’option ”Confirmer” lors de la demande de
+confirmation de suppression.
+[S1-2e] : Le Responsable commercial abandonne la fermeture d’une commande.
+1. Le Responsable commercial choisit l’option ”Annuler” lors de la demande de
+confirmation de fermeture.
+[S1-2f] : Le Responsable commercial confirme la fermeture d’une commande.
+1. Le Responsable commercial choisit l’option ”Confirmer” lors de la demande de
+confirmation de fermeture.
+42
+
+
+===== PAGE 53 =====
+
+Diagramme du cas d’utilisation « Gérer clients »
+Ce diagramme est donné par la figure suivante.
+Figure 5.4.11 – Diagramme du cas d’utilisation «Gérer clients»
+La fonctionnalité de gestion des clients permet au Responsable commercial de gérer
+les relations avec les clients de l’entreprise. Le Responsable commercial a la possibilité
+de consulter la liste des clients enregistrés, d’ajouter de nouveaux clients, de modifier
+les informations des clients existants, d’affecter des articles spécifiques à chaque client
+et de gérer l’état des clients, notamment en les mettant en veille si nécessaire. Cette
+fonctionnalité vise à maintenir une base de données précise et à jour des clients, fa-
+cilitant ainsi la gestion des activités commerciales et le suivi des interactions avec les
+clients.
+Description textuelle de ce cas d’utilisation :
+Acteur principal : Responsable commercial
+Acteur secondaire : Base de données des clients
+Résumé : Le Responsable commercial est responsable de la gestion des clients de
+l’entreprise, en ajoutant de nouveaux clients, en modifiant les informations des clients
+43
+
+
+===== PAGE 54 =====
+
+existants, en mettant des clients en veille, en affectant des articles aux clients et en
+consultant la liste des clients enregistrés.
+Précondition : Le Responsable commercial est authentifié dans le système.
+Scénario nominal :
+[S1] : Le Responsable commercial souhaite consulter la liste des clients.
+1. Le système affiche la liste des clients enregistrés, avec les informations asso-
+ciées (nom, coordonnées, statut). Le Responsable commercial peut effectuer
+les actions suivantes :
+a. Ajouter un nouveau client :
+1. Le Responsable commercial saisit les informations requises (nom, coordon-
+nées).
+2. Le Responsable commercial valide l’ajout du client.
+b. Modifier un client :
+1. Le Responsable commercial sélectionne un client de la liste.
+2. Le Responsable commercial choisit l’option ”Modifier”.
+3. Le système affiche le formulaire de modification avec les informations actuelles
+du client.
+4. Le Responsable commercial effectue les modifications nécessaires (nom, co-
+ordonnées).
+5. Le Responsable commercial valide les modifications du client.
+c. Mettre en veille un client :
+1. Le Responsable commercial sélectionne un client de la liste.
+2. Le Responsable commercial choisit l’option ”Mettre en veille”.
+3. Le système demande une confirmation.
+4. Le Responsable commercial confirme la mise en veille du client.
+d. Affecter des articles à un client :
+1. Le Responsable commercial sélectionne un client de la liste.
+2. Le Responsable commercial choisit l’option ”Affecter des articles (Nomencla-
+ture. Type = Article).
+3. Le système affiche la liste des articles disponibles.
+4. Le Responsable commercial sélectionne les articles à affecter au client.
+5. Le Responsable commercial valide l’affectation des articles.
+44
+
+
+===== PAGE 55 =====
+
+Scénarios alternatifs :
+[S1-2a] : Le Responsable commercial abandonne l’ajout d’un client.
+1. Le Responsable commercial quitte le formulaire d’ajout sans valider les infor-
+mations saisies.
+[S1-2b] : Le Responsable commercial abandonne la modification d’un client.
+1. Le Responsable commercial quitte le formulaire de modification sans valider les
+modifications effectuées.
+[S1-2c] : Le Responsable commercial annule la mise en veille d’un client.
+1. Le Responsable commercial choisit l’option ”Annuler” lors de la demande de
+confirmation pour mettre en veille un client.
+[S1-2d] : Le Responsable commercial supprime un client.
+1. Le Responsable commercial sélectionne un client de la liste.
+2. Le Responsable commercial choisit l’option ”Supprimer”.
+3. Le système demande une confirmation.
+4. Le Responsable commercial confirme la suppression du client. Le système sup-
+prime le client de la base de données.
+Ce cas d’utilisation permet au Responsable commercial de gérer efficacement les
+clients de l’entreprise, en maintenant une liste à jour des clients enregistrés, en ef-
+fectuant des modifications si nécessaire, en mettant en veille les clients inactifs et en
+associant des articles spécifiques à chaque client pour faciliter la gestion des com-
+mandes.
+45
+
+
+===== PAGE 56 =====
+
+2.5.5
+Diagramme de package de cas d’utilisation général de l’Ad-
+ministrateur
+Ce diagramme est donné par la figure suivante.
+Figure 5.5.12 – Diagramme du package « Administrateur »
+46
+
+
+===== PAGE 57 =====
+
+2.5.5.1
+Raffinement des cas d’utilisation du package « Administrateur »
+Nous allons maintenant détailler chaque fonctionnalité du package en présentant son
+diagramme de cas d’utilisation raffiné avec une description textuelle.
+Diagramme du cas d’utilisation « Consulter tableau de bord »
+Figure 5.5.13 – Diagramme du cas d’utilisation «Consulter tableau de bord»
+Ce cas d’utilisation permet à l’Administrateur d’accéder rapidement aux informations
+essentielles sur l’état du système et d’obtenir des indicateurs clés pour faciliter la prise
+de décision et le suivi des performances. Le tableau de bord offre une vue synthétique
+et visuelle des données importantes, ce qui permet à l’Administrateur de rester informé
+et de gérer efficacement l’application.
+Acteur principal : Administrateur
+Résumé : L’Administrateur a la possibilité de consulter le tableau de bord, qui offre une
+vue globale des principales informations et statistiques de l’application. Le tableau de
+bord fournit des indicateurs clés et des graphiques visuels pour aider l’Administrateur
+à suivre l’état et les performances du système.
+Précondition : L’Administrateur est authentifié dans le système.
+Scénario nominal :
+[S1] : L’Administrateur souhaite consulter le tableau de bord. Le système affiche le
+tableau de bord qui présente les informations suivantes :
+— Nombre total d’utilisateurs enregistrés dans le système.
+— Dernière connexion d’utilisateur.
+— Nombre d’utilisateurs actifs et désactivés.
+— Nombre de commandes en cours.
+— Nombre de commandes livrées.
+— Graphique des ventes mensuelles.
+— Graphique des utilisateurs par rôle.
+— Graphique des commandes par catégorie.
+L’Administrateur peut interagir avec le tableau de bord pour :
+47
+
+
+===== PAGE 58 =====
+
+— Zoomer sur certains graphiques pour afficher plus de détails.
+— Obtenir des informations supplémentaires en survolant les éléments du tableau
+de bord.
+— Exporter les données du tableau de bord au format PDF ou CSV.
+Diagramme du cas d’utilisation « Gérer compte »
+Figure 5.5.14 – Diagramme du cas d’utilisation «Gérer compte»
+Ce cas d’utilisation permet à l’Administrateur de gérer les comptes d’utilisateur en ajou-
+tant, modifiant, mettant en veille et supprimant des comptes. La liste des comptes
+affiche également le champ ”Dernière connexion”, permettant à l’Administrateur de
+visualiser cette information. Ces fonctionnalités offrent à l’Administrateur un contrôle
+complet sur les comptes d’utilisateur et facilitent la gestion des autorisations et des
+accès au système.
+Acteur principal : Administrateur
+Résumé : L’Administrateur a la possibilité de gérer les comptes d’utilisateur, notam-
+ment en les ajoutant, les modifiant, les mettant en veille et les supprimant. La liste des
+comptes affiche également le champ ”Dernière connexion”.
+Précondition : L’Administrateur est authentifié dans le système.
+Scénario nominal :
+[S1] : L’Administrateur souhaite consulter la liste des comptes d’utilisateur.
+1. Le système affiche la liste des comptes d’utilisateur avec les informations asso-
+ciées à chaque compte (nom d’utilisateur, rôle, statut, dernière connexion).
+48
+
+
+===== PAGE 59 =====
+
+[S2] : L’Administrateur souhaite ajouter un nouveau compte d’utilisateur.
+1. L’Administrateur sélectionne l’option ”Ajouter un compte”.
+2. Le système affiche le formulaire de création de compte.
+3. L’Administrateur saisit les informations requises (nom d’utilisateur, mot de passe,
+rôle).
+4. L’Administrateur valide l’ajout du compte.
+[S3] : L’Administrateur souhaite modifier un compte d’utilisateur existant.
+1. L’Administrateur sélectionne un compte d’utilisateur dans la liste.
+2. L’Administrateur choisit l’option ”Modifier”.
+3. Le système affiche le formulaire de modification du compte.
+4. L’Administrateur effectue les modifications nécessaires (nom d’utilisateur, mot
+de passe, rôle).
+5. L’Administrateur valide les modifications du compte.
+[S4] : L’Administrateur souhaite mettre un compte d’utilisateur en veille.
+1. L’Administrateur sélectionne un compte d’utilisateur dans la liste.
+2. L’Administrateur choisit l’option ”Mettre en veille”. Le système demande une
+confirmation.
+3. L’Administrateur confirme la mise en veille du compte.
+[S5] : L’Administrateur souhaite supprimer un compte d’utilisateur.
+1. L’Administrateur sélectionne un compte d’utilisateur dans la liste.
+2. L’Administrateur choisit l’option ”Supprimer”.
+3. Le système demande une confirmation.
+4. L’Administrateur confirme la suppression du compte.
+5. Le système supprime le compte de la base de données.
+Scénarios alternatifs :
+[S2-2a] : L’Administrateur abandonne l’ajout d’un nouveau compte d’utilisateur.
+1. L’Administrateur quitte le formulaire de création sans valider les informations
+saisies.
+[S3-2a] : L’Administrateur abandonne la modification d’un compte d’utilisateur.
+1. L’Administrateur quitte le formulaire de modification sans valider les modifica-
+tions effectuées.
+[S4-2a] : L’Administrateur annule la mise en veille d’un compte d’utilisateur.
+49
+
+
+===== PAGE 60 =====
+
+1. L’Administrateur choisit l’option ”Annuler” lors de la demande de confirmation
+pour mettre en veille un compte.
+[S4-2b] : L’Administrateur réactive un compte d’utilisateur mis en veille.
+1. L’Administrateur sélectionne un compte d’utilisateur dans la liste en veille.
+2. L’Administrateur choisit l’option ”Réactiver”.
+3. Le système demande une confirmation.
+4. L’Administrateur confirme la réactivation du compte.
+[S5-2a] : L’Administrateur annule la suppression d’un compte d’utilisateur.
+1. L’Administrateur choisit l’option ”Annuler” lors de la demande de confirmation
+pour supprimer un compte.
+[S1-2a] : Aucun compte d’utilisateur n’est trouvé dans le système.
+1. Le système affiche un message indiquant qu’aucun compte d’utilisateur n’est
+disponible.
+2.6
+Exigences non fonctionnelles
+Lors du développement de la solution, il est primordial de prendre en compte certaines
+contraintes et répondre à des besoins non fonctionnels afin d’assurer une meilleure
+interaction avec les utilisateurs. Ces exigences concernent la qualité et la performance.
+2.6.1
+Exigences de qualité
+— Interfaces conviviales : Les applications doivent avoir des interfaces avec des
+couleurs sobres et une présentation claire car les acteurs passeront la majorité
+de leur temps à les utiliser. Développer des applications avec des couleurs trop
+vives et une mise en page désorganisée fatiguera l’utilisateur et diminuera sa
+productivité.
+— Formulaires de gestion simples : Les opérations de gestion seront fréquentes
+et répétitives. Par conséquent, le système doit avoir des formulaires simples qui
+ne nécessitent pas un grand effort.
+— Mise en page : Très fréquemment, l’utilisateur effectuera une série de workflows
+avec un ordre précis. Pour cette raison, l’affichage des sections doit respecter
+cet ordre afin d’avoir une gestion plus accélérée.
+50
+
+
+===== PAGE 61 =====
+
+2.6.2
+Exigences de performance
+Pour notre application GPAO, nous avons identifié les exigences de performance sui-
+vantes :
+— Scalabilité : Le système doit être capable de s’adapter et de s’étendre facile-
+ment pour répondre à la croissance des besoins de l’entreprise. Il doit pouvoir
+supporter une augmentation du nombre d’utilisateurs, de données et de tran-
+sactions sans compromettre les performances. La conception de l’architecture
+doit prendre en compte la capacité de mise à l’échelle afin de permettre une
+évolutivité future.
+— Optimisation des requêtes : Les requêtes effectuées sur la base de don-
+nées doivent être optimisées pour garantir des performances optimales. Cela
+implique la création d’index appropriés, l’utilisation de requêtes efficaces et la
+minimisation des opérations coûteuses en termes de temps de traitement. L’ob-
+jectif est d’obtenir des temps de réponse courts lors de l’exécution de requêtes
+complexes.
+— Opérations de création rapides : Les opérations courantes telles que l’ajout
+de produits, de catégories et d’autres éléments similaires ne doivent pas prendre
+plus de 1 seconde. Cette exigence vise à garantir une réactivité élevée de l’ap-
+plication lors des opérations de création, permettant aux utilisateurs d’effectuer
+rapidement leurs tâches sans subir de délais inutiles.
+2.7
+Contraintes de conception
+— Utilisation d’une architecture modulaire : L’application doit être conçue se-
+lon une architecture modulaire, permettant une séparation claire des différentes
+fonctionnalités et composants. Cela facilite la maintenance, l’évolutivité et la
+réutilisation du code, tout en assurant une meilleure gestion des dépendances
+entre les modules.
+— Sécurité des données : Les données sensibles des utilisateurs, telles que les
+informations de paiement et les données personnelles, doivent être stockées
+et traitées de manière sécurisée. L’application doit mettre en place des méca-
+nismes de cryptage, d’authentification et de contrôle d’accès pour garantir la
+confidentialité et l’intégrité des données.
+— Scalabilité du système : L’application doit être conçue pour être scalable, c’est-
+à-dire qu’elle doit pouvoir gérer efficacement une augmentation du nombre d’uti-
+lisateurs et de la charge de travail. Cela implique d’utiliser des technologies et
+des architectures qui permettent d’ajuster les ressources en fonction des be-
+soins, comme l’utilisation de serveurs cloud extensibles.
+51
+
+
+===== PAGE 62 =====
+
+— Accessibilité : L’application doit être conçue en tenant compte des principes de
+l’accessibilité, de manière qu’elle puisse être utilisée par un large éventail d’uti-
+lisateurs, y compris ceux ayant des besoins spécifiques tels que les personnes
+handicapées. Cela peut impliquer l’utilisation de techniques comme le support
+des technologies d’assistance et la conformité aux normes d’accessibilité.
+2.8
+Conclusion
+Dans ce chapitre, nous avons examiné en détail les acteurs, les besoins fonctionnels
+et non fonctionnels, ainsi que les interactions entre les utilisateurs et notre application
+GPAO. Nous avons identifié les différentes fonctionnalités clés, telles que la gestion
+des commandes, des nomenclatures, des clients, des comptes utilisateurs et du ta-
+bleau de bord. Nous avons également pris en compte des exigences de qualité, telles
+que des interfaces conviviales et des formulaires de gestion simples. De plus, nous
+avons établi des exigences de performance, notamment la capacité de gérer un grand
+nombre de comptes et de permettre une connexion simultanée de plusieurs utilisa-
+teurs. Enfin, nous avons souligné les contraintes de conception, telles que l’enregistre-
+ment des fichiers sur une source externe. Dans le prochain chapitre, nous aborderons
+la phase de conception de la solution.
+52
+
+
+===== PAGE 63 =====
+
+Chapitre 3
+Activité analyse et conception
+3.1
+Introduction
+Dans le chapitre d’analyse et de conception, nous aborderons la phase cruciale de la
+conception de notre solution. Nous commencerons par définir l’architecture générale
+du système, en identifiant les différents composants et leur interaction. Ensuite, nous
+mettrons en évidence les patrons de conception que nous avons choisis d’appliquer,
+afin d’optimiser la structure et les fonctionnalités de notre système. Pour représenter de
+manière visuelle notre conception, nous établirons un diagramme de classes décrivant
+les différentes classes et leurs relations. De plus, nous élaborerons des diagrammes
+de classes participantes et des diagrammes de séquences pour chaque package, afin
+de visualiser l’interaction entre les différents éléments de notre solution. Cette phase
+de conception nous permettra de poser les bases solides sur lesquelles nous pourrons
+développer et mettre en œuvre notre solution de manière efficace et cohérente.
+3.2
+Architecture générale
+Lors de la conception d’un système logiciel, il est très important de choisir judicieu-
+sement le modèle d’architecture qui lui convient, ceci garantira le bon fonctionnement
+entre les différentes couches.
+3.2.1
+Architecture 3-tiers
+Pour la réalisation de notre solution, nous avons opté pour l’architecture 3-tiers qui est
+un modèle logique visant à séparer nettement trois couches logicielles au sein d’une
+même application [5]. Les trois niveaux de cette architecture sont décrits brièvement
+comme suit :
+53
+
+
+===== PAGE 64 =====
+
+— Couche présentation : Il s’agit de la partie visible de l’application qui permet à
+l’utilisateur d’interagir avec le système.
+— Couche applicative : C’est la partie qui implémente la logique, les différentes
+règles de gestion et qui décrit les opérations que l’application effectue sur les
+données en fonction des requêtes des utilisateurs réalisées au travers de la
+couche présentation.
+— Couche accès aux données : C’est la couche qui gère l’accès aux données.
+Ces données sont récupérées et retournées à la couche applicative pour être
+traitées et renvoyées l’utilisateur.
+La figure suivante, illustre les interactions entre les différents composants de l’archi-
+tecture 3-tiers.
+Figure 2.1.1 – Architecture 3-tiers
+3.3
+Patrons de conception
+Lors du développement des applications, on fait souvent face à certains problèmes de
+conception récurrents. Pour les résoudre de manière efficace et réutilisable on utilise
+les patrons de conception qui sont des descriptions ou des modèles reconnus comme
+54
+
+
+===== PAGE 65 =====
+
+étant une convention à suivre permettant non seulement de corriger le problème mais
+aussi d’améliorer la qualité du code et d’accélérer le processus de développement.
+3.3.1
+Patron de conception MVC
+Le Model-View-Controller (MVC) est l’un des patrons de conceptions les plus popu-
+laires et les plus utilisés lors du développement des applications. Il a commencé à
+être utilisé depuis l’année 1978 pour développer des clients lourds11 mais grâce à sa
+puissance il a été adopté rapidement pour le développement des applications web. Ce
+patron de conception répond aux besoins des applications interactives en séparant les
+problématiques liées aux différents composants au sein de leur architecture respective
+[W6]. Les trois principaux composants sont les suivants :
+— Modèle : Il contient les données pures de l’application, il ne contient aucune
+logique décrivant comment présenter les données à l’utilisateur.
+— Vue : Elle permet de présenter et de mettre en forme les données du modèle
+pour l’utilisateur.
+— Contrôleur : Il se place entre la vue et le modèle. Il détecte les événements dé-
+clenchés et exécute la réaction appropriée à ces derniers. La figure 33 présente
+le principe du patron de conception MVC.
+Figure 3.1.2 – Principe du patron de conception MVC
+55
+
+
+===== PAGE 66 =====
+
+3.3.2
+Patron de conception
+Repository Dans les applications où il y a de nombreuses interactions avec la base
+de données, un accès direct à cette dernière peut causer plusieurs soucis, tels que la
+répétition de code, un potentiel plus élevé d’erreur de programmation et une difficulté
+à tester la logique métier. Pour éviter ces inconvénients, l’utilisation du Repository Pat-
+tern se montre efficace car ce patron de conception réalise une abstraction entre la
+couche d’accès aux données et la couche de logique métier. Il récupère les données
+de la source, les mappe à une entité métier [6] et sauvegarde les modifications qui ont
+eu lieu comme expliqué dans la figure suivante.
+Figure 3.2.3 – Principe du patron de conception Repository
+3.4
+Conception détaillée
+Afin d’avoir une vue claire et approfondie sur la structure interne du système, nous
+allons, en premier lieu présenter le diagramme de classes des entités de la solution
+entière puis prendre chaque package de ceux décrits dans le chapitre précèdent et
+exposer sa conception détaillée à l’aide des diagrammes de classes participantes et
+diagrammes de séquences.
+3.4.1
+Diagramme de classes des collections
+Ce diagramme est souvent considéré comme le diagramme le plus important dans la
+modélisation orientée-objet. Il s’agit d’une représentation statique des éléments consti-
+tuant un système avec leurs attributs et leurs opérations ainsi que les différentes rela-
+tions entre eux.
+56
+
+
+===== PAGE 67 =====
+
+Le tableau suivant donne une description brève de chacune des 21 classes qui com-
+posent notre diagramme.
+collections
+Description
+Nomenclature
+Modélise les informations relatives à une nomencla-
+ture avec (parents,childrens) et étape fabrication si elle
+est de type Elément.
+Compte
+Définit les informations qui concernent un compte.
+Contact
+Définit les informations qui concernent un contact.
+Commande
+Modélise les informations concernant une commande
+organisée créée par un Responsable Commercial et
+ses lignes commandes.
+EtapeFabrication Possède les informations concernant l’étape fabrica-
+tion.
+EtatMachine
+Possède les informations concernant état machine.
+Machine
+Modélise les détails d’une machine avec son état.
+OrdreFabrication Présente les données d’une Ordre de fabrication,
+la machine affecter, nom étape fabrication, quantité,
+date.
+Roles
+Possède les informations concernant rôle.
+Personnel
+Modélise les détails d’un personnel et son compte.
+LigneCmd
+Présente les données d’une ligne commande avec l’ar-
+ticle, la quantité, date livraison.
+Fournisseur
+Possède les informations concernant un client et
+ses éléments (nomenclature de type élément) et son
+contact.
+Client
+Possède les informations concernant un client et ses
+articles (nomenclature de type article) et son contact.
+Table 3.1 – Tableau descriptif des collections du modèle navigationnel
+57
+
+
+===== PAGE 68 =====
+
+Figure 4.1.4 – Le Modèle navigationnel Objet
+58
+
+
+===== PAGE 69 =====
+
+3.4.2
+Conception détaillée du package « Responsable RH »
+3.4.2.1
+Diagrammes de classes participantes
+Le diagramme de classes participantes (DCP) est un type de diagramme permettant de
+faire l’union entre les cas d’utilisation, la maquette IHM et les diagrammes de concep-
+tion logicielle qui sont les diagrammes d’interaction et les diagrammes de classes de
+conception. Cet avantage rend ce type de diagramme particulièrement important pour
+piloter la phase de réalisation du produit la rendant plus claire et plus efficace. Les trois
+types de classes du DCP sont :
+— Dialogues : Représentent les interfaces utilisateurs.
+— Collection : Ne possèdent que les attributs représentants les informations per-
+sistantes de l’application.
+— Contrôles : Intermédiaires entre les classes de dialogues et les classes des
+collections. Elles ne possèdent que les opérations exprimant la logique d’appli-
+cation.
+DCP du cas d’utilisation « Gérer personnel »
+59
+
+
+===== PAGE 70 =====
+
+Figure 4.2.5 – DCP du cas d’utilisation « Gérer personnel »
+60
+
+
+===== PAGE 71 =====
+
+Dans le diagramme illustré par la figure ci-dessus, nous remarquons la présence de
+trois interfaces principales reliées chacune au contrôle adéquat afin de permettre à l’ac-
+teur de réaliser les opérations de gestion nécessaires sur les personnels. Le contrôle
+« CtrlPersonnel » se charge de la création, la modification et de la récupération des
+personnels.
+61
+
+
+===== PAGE 72 =====
+
+3.4.2.2
+Diagrammes de séquences
+Après avoir réalisé les DCP de chaque fonctionnalité du package « Responsable RH
+» nous allons maintenant nous concentrer sur les diagrammes de séquences.
+DS du cas d’utilisation « Gérer personnel »
+Figure 4.2.6 – DS du cas d’utilisation « Gérer personnel »
+62
+
+
+===== PAGE 73 =====
+
+3.4.3
+Conception détaillée du package « Responsable Développe-
+ment »
+3.4.3.1
+Diagrammes de classes participantes
+Le diagramme de classes participantes (DCP) est un type de diagramme permettant de
+faire l’union entre les cas d’utilisation, la maquette IHM et les diagrammes de concep-
+tion logicielle qui sont les diagrammes d’interaction et les diagrammes de classes de
+conception . Cet avantage rend ce type de diagramme particulièrement important pour
+piloter la phase de réalisation du produit la rendant plus claire et plus efficace. Les trois
+types de classes du DCP sont :
+— Dialogues : Représentent les interfaces utilisateurs.
+— Collection : Ne possèdent que les attributs représentants les informations per-
+sistantes de l’application.
+— Contrôles : Intermédiaires entre les classes de dialogues et les classes d’enti-
+tés. Elles ne possèdent que les opérations exprimant la logique d’application.
+63
+
+
+===== PAGE 74 =====
+
+DCP du cas d’utilisation « Gérer nomenclature »
+Figure 4.3.7 – DCP du cas d’utilisation « Gérer nomenclature »
+Dans le diagramme illustré par la figure 4.3.7, nous remarquons la présence de trois
+interfaces principales reliées chacune au contrôle adéquat afin de permettre à l’acteur
+de réaliser les opérations de gestion nécessaires sur les nomenclatures. Le contrôle
+«CtrlNomenclature» se charge de la création, la modification et de la récupération des
+nomenclature et l’affectation des parents pour bien construire notre hiérarchie.
+3.4.3.2
+Diagrammes de séquences
+Après avoir réalisé les DCP de chaque fonctionnalité du package «Responsable Dé-
+veloppement» nous allons maintenant nous concentrer sur les diagrammes de sé-
+quences
+64
+
+
+===== PAGE 75 =====
+
+DS du cas d’utilisation « Gérer nomenclature »
+Figure 4.3.8 – DS du cas d’utilisation « Gérer nomenclature »
+3.4.4
+Conception détaillée du package « Responsable Commer-
+cial »
+3.4.4.1
+Diagrammes de classes participantes
+Le diagramme de classes participantes (DCP) est un type de diagramme permettant de
+faire l’union entre les cas d’utilisation, la maquette IHM et les diagrammes de concep-
+tion logicielle qui sont les diagrammes d’interaction et les diagrammes de classes de
+65
+
+
+===== PAGE 76 =====
+
+conception [4]. Cet avantage rend ce type de diagramme particulièrement important
+pour piloter la phase de réalisation du produit la rendant plus claire et plus efficace.
+Les trois types de classes du DCP sont :
+— Dialogues : Représentent les interfaces utilisateurs.
+— Collection : Ne possèdent que les attributs représentants les informations per-
+sistantes de l’application.
+— Contrôles : Intermédiaires entre les classes de dialogues et les classes d’en-
+tités. Elles ne possèdent que les opérations exprimant la logique d’application.
+DCP du cas d’utilisation « Gérer commandes »
+Figure 4.4.9 – DCP du cas d’utilisation « Gérer commandes »
+Dans le diagramme illustré par la figure ci-dessus, nous remarquons la présence de
+trois interfaces principales reliées chacune au contrôle adéquat afin de permettre à
+l’acteur de réaliser les opérations de gestion nécessaires sur les commandes.
+66
+
+
+===== PAGE 77 =====
+
+— Le contrôle « CtrCommande » se charge de la création et de la récupération
+des commandes.
+— Le contrôle « CtrNomenclature » se charge de la récupération des nomencla-
+tures de type Article de client sélectionner.
+3.4.4.2
+Diagrammes de séquences
+Après avoir réalisé les DCP de chaque fonctionnalité du package « Responsable RH
+» nous allons maintenant nous concentrer sur les diagrammes de séquences.
+DS du cas d’utilisation « Gérer commandes »
+Figure 4.4.10 – DS du cas d’utilisation « Gérer commandes »
+67
+
+
+===== PAGE 78 =====
+
+3.4.5
+Conception détaillée du package « Responsable Production
+»
+3.4.5.1
+Diagrammes de classes participantes
+Le diagramme de classes participantes (DCP) est un type de diagramme permettant de
+faire l’union entre les cas d’utilisation, la maquette IHM et les diagrammes de concep-
+tion logicielle qui sont les diagrammes d’interaction et les diagrammes de classes de
+conception [4]. Cet avantage rend ce type de diagramme particulièrement important
+pour piloter la phase de réalisation du produit la rendant plus claire et plus efficace.
+Les trois types de classes du DCP sont :
+— Dialogues : Représentent les interfaces utilisateurs.
+— Collection : Ne possèdent que les attributs représentants les informations per-
+sistantes de l’application.
+— Contrôles : Intermédiaires entre les classes de dialogues et les classes d’enti-
+tés. Elles ne possèdent que les opérations exprimant la logique d’application.
+68
+
+
+===== PAGE 79 =====
+
+DCP du cas d’utilisation « Gérer of »
+Figure 4.5.11 – DCP du cas d’utilisation « Gérer of »
+Dans le diagramme illustré par la figure ci-dessus, nous remarquons la présence de
+trois interfaces principales reliées chacune au contrôle adéquat afin de permettre à
+l’acteur de réaliser les opérations de gestion nécessaires sur les commandes.
+— Le contrôle « CtrOF » se charge de la récupération des of non lancés et de la
+planification de chaque étape de la liste des étapes productions.
+— Le contrôle « CtrlMachine » se charge de la récupération des machines par
+étape production.
+— Le contrôle « CtrlPersonnel » se charge de la récupération des conducteurs par
+69
+
+
+===== PAGE 80 =====
+
+machine sélectionner.
+3.4.5.2
+Diagrammes de séquences
+Après avoir réalisé les DCP de chaque fonctionnalité du package « Responsable Pro-
+duction » nous allons maintenant nous concentrer sur les diagrammes de séquences.
+DS du cas d’utilisation « Gérer of »
+Figure 4.5.12 – DS du cas d’utilisation « Gérer of »
+70
+
+
+===== PAGE 81 =====
+
+3.5
+Conclusion
+Au cours de ce chapitre, nous avons défini l’aspect statique et l’aspect dynamique
+de notre système grâce au schéma conceptuel et à une description détaillée des diffé-
+rents cas d’utilisation contenus dans chaque package avec les diagrammes de classes
+participantes et les diagrammes de séquences. Dans le chapitre suivant, nous allons
+procéder à l’étape de réalisation de notre solution.
+71
+
+
+===== PAGE 82 =====
+
+Chapitre 4
+Cadre générale du projet
+4.1
+Introduction
+Dans ce chapitre, nous allons commencer par décrire l’environnement de travail que
+nous avons mis en place. Nous présenterons les différentes technologies et les outils
+que nous avons utilisés pour le développement de notre application. Cela inclut no-
+tamment l’utilisation d’un pipeline Jenkins basé sur Docker, qui nous permet de mettre
+en œuvre une approche de développement et de déploiement efficace. Ensuite, nous
+aborderons les différentes interfaces que nous avons réalisées. Nous mettrons en évi-
+dence les aspects de convivialité, d’ergonomie et d’interaction avec les utilisateurs qui
+ont été pris en compte lors de la conception et de l’implémentation de ces interfaces.
+Ce chapitre constitue une étape importante dans la concrétisation de notre projet. En
+mettant en place un environnement de travail solide et en développant des interfaces
+utilisateur conviviales, nous posons les bases d’une application performante et intui-
+tive.
+4.2
+Environnement de développement
+Dans cette sous-section nous décrivons les Frameworks et les logiciels exploités pour
+concevoir notre solution.
+4.2.1
+Technologies utilisées
+4.2.1.1
+Spring Boot
+Spring Boot est un Framework open source basé sur Java utilisé pour créer un micro-
+service. Il est développé par Pivotal Team et est utilisé pour construire des applications
+72
+
+
+===== PAGE 83 =====
+
+de ressorts autonomes et prêtes pour la production. Ce chapitre vous donnera une
+introduction à Spring Boot et vous familiarisera avec ses concepts de base.[7]
+Figure 2.1.1 – Logo Framework Spring Boot
+4.2.1.2
+Angular
+Angular est un Framework pour clients, open source, basé sur TypeScript et codirigé
+par l’équipe du projet « Angular » chez Google ainsi que par une communauté de
+particuliers et de sociétés. Angular est une réécriture complète d’AngularJS, cadriciel
+construit par la même équipe. Il permet la création d’applications Web et plus particu-
+lièrement d’applications Web monopages : des applications Web accessibles via une
+page Web unique qui permet de fluidifier l’expérience utilisateur et d’éviter les charge-
+ments de pages à chaque nouvelle action. Le framework est basé sur une architecture
+du type MVC et permet donc de séparer les données, le visuel et les actions pour une
+meilleure gestion des responsabilités. Un type d’architecture qui a largement fait ses
+preuves et qui permet une forte maintenabilité et une amélioration du travail collabo-
+ratif.[8]
+Figure 2.1.2 – Logo Framework Angular
+4.2.1.3
+MongoDB
+MongoDB est une base de données NoSQL orientée document. Elle se distingue des
+bases de données relationnelles par sa flexibilité et ses performances. Découvrez tout
+ce que vous devez savoir sur cet outil incontournable pour l’ingénierie des données.[9]
+73
+
+
+===== PAGE 84 =====
+
+Figure 2.1.3 – Logo MongoDB
+4.2.2
+Langages de programmation
+4.2.2.1
+JAVA
+Java est le premier langage de programmation et la première plate-forme de dévelop-
+pement. Il réduit les coûts, raccourcit les délais de développement, favorise l’innovation
+et améliore les services d’application. Avec des millions de développeurs utilisant plus
+de 60 milliards de solutions JVM (Java Virtual Machine) dans le monde, Java reste la
+plate-forme de développement de choix pour les entreprises et les développeurs.[10]
+Figure 2.2.4 – Logo java
+4.2.2.2
+TypeScript
+Il s’agit un langage open-source développé par Microsoft en 2012. Il est utilisé par An-
+gular et représente un sur-ensemble de Javascript puisqu’il introduit des fonctionnalités
+optionnelles mais utiles notamment le typage et la programmation orientée-objet.[11]
+Figure 2.2.5 – Logo TypeScript
+74
+
+
+===== PAGE 85 =====
+
+4.2.3
+Logiciels
+4.2.3.1
+IntelliJ IDEA Ultimate
+IntelliJ IDEA Ultimate est un environnement de développement intégré (IDE) de Jet-
+Brains, conçu pour les développeurs professionnels. Il offre un large éventail de fonc-
+tionnalités avancées pour faciliter le développement de logiciels. IntelliJ IDEA Ultimate
+prend en charge plusieurs langages de programmation, notamment Java, Kotlin, Ja-
+vaScript, HTML, CSS et bien d’autres. Il offre des fonctionnalités telles que l’achève-
+ment du code, le débogage, la refactoring, la gestion de version, les tests unitaires et
+l’intégration avec d’autres outils de développement. Avec son interface conviviale et
+ses performances optimisées, IntelliJ IDEA Ultimate est largement utilisé dans l’indus-
+trie du développement logiciel.[12]
+Figure 2.3.6 – Logo IntelliJ IDEA Ultimate
+4.2.3.2
+WebStorm
+WebStorm est un environnement de développement intégré (IDE) spécialisé dans le
+développement web. Il est développé par JetBrains et offre des fonctionnalités avan-
+cées pour la création d’applications web modernes. WebStorm prend en charge des
+langages tels que HTML, CSS, JavaScript, TypeScript et Node.js. Il propose des outils
+de productivité tels que la complétion de code, la vérification des erreurs, le débogage,
+la gestion de version et l’intégration avec des frameworks populaires tels que React,
+Angular et Vue.js. Avec son interface conviviale et ses fonctionnalités spécifiques au
+développement web, WebStorm est apprécié par les développeurs pour sa facilité d’uti-
+lisation et son efficacité dans la création d’applications web de haute qualité.[13]
+4.2.3.3
+Draw.io
+Draw.io est un outil de création de diagrammes en ligne utilisé dans les environnements
+de développement. Il permet de créer facilement des diagrammes et des schémas pour
+visualiser des concepts, des architectures, des flux de données, des organigrammes,
+75
+
+
+===== PAGE 86 =====
+
+Figure 2.3.7 – Logo IntelliJ IDEA Ultimate
+etc. Draw.io offre une interface conviviale avec une large gamme d’éléments prédé-
+finis pour faciliter la création de différents types de diagrammes. Il permet également
+de collaborer en temps réel avec d’autres utilisateurs, de sauvegarder et de partager
+les diagrammes créés. Draw.io est un outil pratique pour représenter visuellement des
+informations complexes et faciliter la compréhension et la communication dans le pro-
+cessus de développement.[14]
+Figure 2.3.8 – Logo draw.io
+4.2.3.4
+Overleaf
+Overleaf est un éditeur LaTeX collaboratif basé sur le cloud utilisé pour écrire, éditer et
+publier des documents scientifiques. Il s’associe à un large éventail d’éditeurs scienti-
+fiques pour fournir des modèles LaTeX de journaux officiels et des liens de soumission
+directs.[15]
+Figure 2.3.9 – Logo Overleaf
+76
+
+
+===== PAGE 87 =====
+
+4.3
+Environnement de production
+Dans cette section, nous présenterons l’environnement de production que nous avons
+mis en place pour notre projet. Nous avons choisi d’utiliser Docker, une plateforme de
+conteneurisation, afin de créer des environnements isolés et reproductibles pour nos
+applications. De plus, nous avons intégré Jenkins, un outil d’intégration continue, pour
+automatiser les processus de déploiement, de test et de gestion des versions. Grâce
+à cette infrastructure, nous sommes en mesure de garantir une mise en production
+fluide et efficace de notre solution.
+4.3.1
+Outils utilisés
+4.3.1.1
+Jenkins
+Jenkins est un outil DevOps open source d’automatisation du logiciel d’intégration
+continue / livraison et déploiement continus (CI / CD) écrit dans le langage de pro-
+grammation Java. Il est utilisé pour implémenter des workflows CI/CD, appelés pipe-
+lines.[16]
+Figure 3.1.10 – Logo Jenkins
+4.3.1.2
+SonarQube
+SonarQube se base sur l’analyse statique du code, ce qui lui permet d’étudier le code
+source avant même l’exécution de l’application. Par opposition, l’analyse dynamique
+requiert l’exécution de l’application pour en étudier le comportement et détecter les
+problèmes dont elle souffre.[17]
+Figure 3.1.11 – Logo SonarQube
+77
+
+
+===== PAGE 88 =====
+
+4.3.1.3
+Nexus
+Nexus est un référentiel de gestion des artefacts logiciels utilisé dans les environne-
+ments de développement et de test. Il permet de stocker, organiser et gérer les diffé-
+rents composants logiciels nécessaires aux tests. Nexus facilite l’accès aux artefacts,
+garantit leur intégrité et leur disponibilité, et permet de gérer les dépendances entre
+les composants. Il offre des fonctionnalités avancées de recherche, de suivi des ver-
+sions et de gestion des droits d’accès. Nexus est un outil essentiel pour optimiser les
+processus de test et assurer la cohérence des environnements de développement et
+de test.[18]
+Figure 3.1.12 – Logo Nexus
+4.3.1.4
+Docker
+Docker est une plate-forme logicielle qui vous permet de concevoir, tester et déployer
+des applications rapidement. Docker intègre les logiciels dans des unités normalisées
+appelées conteneurs, qui rassemblent tous les éléments nécessaires à leur fonction-
+nement, dont les bibliothèques, les outils système, le code et l’environnement d’exécu-
+tion. Avec Docker, vous pouvez facilement déployer et dimensionner des applications
+dans n’importe quel environnement, avec l’assurance que votre code s’exécutera cor-
+rectement.[19]
+Figure 3.1.13 – Logo docker
+78
+
+
+===== PAGE 89 =====
+
+4.3.2
+Langages
+4.3.2.1
+Apache Groovy
+Apache Groovy est un langage puissant, typé et dynamique, avec des capacités de ty-
+page statique et de compilation statique, pour la plate-forme Java visant à améliorer la
+productivité des développeurs grâce à un syntaxe. Il s’intègre en douceur à n’importe
+quel programme Java et fournit immédiatement à votre application fonctionnalités puis-
+santes, y compris les capacités de script, la création de langage spécifique au domaine,
+Métaprogrammation et programmation fonctionnelle au moment de l’exécution et de la
+compilation.[20]
+Figure 3.2.14 – Logo Groovy
+4.3.2.2
+YML
+Le langage YAML (Yet Another Markup Langage) est un langage de sérialisation de
+données lisible par l’homme servant à écrire des fichiers de configuration. Il est popu-
+laire, car il est conçu pour être facile à comprendre par rapport à d’autres langages de
+programmation. Pour toutes ces raisons, il est utilisé par des logiciels comme Kuber-
+netes ou Ansible.[21]
+Figure 3.2.15 – Logo YML
+79
+
+
+===== PAGE 90 =====
+
+4.4
+Diagramme de déploiement
+Le diagramme de déploiement illustre l’architecture de déploiement de notre environ-
+nement basé sur Jenkins, Docker, SonarQube et Nexus. Jenkins est utilisé comme outil
+d’intégration continue pour automatiser le processus de déploiement. Docker permet
+la conteneurisation des applications et la gestion des images. SonarQube est utilisé
+pour l’analyse statique du code source, fournissant des métriques et des rapports sur
+la qualité du code. Nexus est utilisé comme référentiel de gestion des artefacts, sto-
+ckant et distribuant les binaires. Ce diagramme met en évidence les interactions entre
+ces composants clés et illustre le flux de déploiement de l’application.
+Figure 4.0.16 – diagramme déploiement
+4.5
+Interfaces des applications
+Nous allons dans cette partie réaliser un workflow en partant de la création d’une no-
+menclature (Article) avec sa composites (Eléments) et l’affectation de fournisseurs et
+clients jusqu’au suivi de commande en temps réel (tous est gérer par l’administrateur
+pour éviter la répétition d’authentification).
+80
+
+
+===== PAGE 91 =====
+
+4.5.1
+Interface « Ajouter Nomenclature »
+Dans cette première interface capturée, nous avons la possibilité d’ajouter une nou-
+velle nomenclature de type Article. Cela nous permet de définir les informations et les
+caractéristiques de cet article. Nous pouvons renseigner son nom, sa description, ainsi
+que d’autres attributs pertinents.
+De plus, dans cette même interface, nous avons la fonctionnalité d’affectation des pa-
+rents et des composites à cet article. Cela nous permet de spécifier les familles parents
+dont dépendent cet article, ainsi que les articles composites qui le composent. Cette
+fonctionnalité est essentielle pour établir les liens hiérarchiques entre les différentes
+nomenclatures de notre système.
+Figure 5.1.17 – interface « ajouter nomenclature »
+81
+
+
+===== PAGE 92 =====
+
+Figure 5.1.18 – interface « ajouter nomenclature »
+4.5.2
+Interface « Hiérarchie nomenclature »
+L’interface ”Hiérarchie” de notre application GPAO offre à l’utilisateur une vue visuelle
+de la structure hiérarchique des nomenclatures et de leurs relations.
+Figure 5.2.19 – interface « Hiérarchie nomenclature »
+82
+
+
+===== PAGE 93 =====
+
+4.5.3
+Interface « Ajouter élément sous nomenclature à ajouter »
+Figure 5.3.20 – interface « Ajouter élément sous nomenclature à ajouter»
+4.5.4
+Interface « Affecter client ou Fournisseur »
+Dans cette interface, nous pouvons affecter une nomenclature d’article spécifique à
+un client dans notre application GPAO. L’interface présente une liste déroulante ou un
+champ de recherche pour sélectionner le client souhaité.
+Figure 5.4.21 – interface « affecter client ou fournisseur »
+83
+
+
+===== PAGE 94 =====
+
+4.5.5
+Interface « Ajouter Commande »
+Cette interface présente plusieurs champs, tels que le numéro de commande, la date
+et la sélection du client parmi une liste préexistante. L’utilisateur peut choisir le client
+concerné en utilisant une liste déroulante. En associant chaque commande à un client
+spécifique.
+Figure 5.5.22 – interface « ajouter commande »
+4.5.6
+Interface « Ajouter Ligne commande »
+Dans cette interface, l’utilisateur peut sélectionner l’article souhaité parmi la liste des
+articles disponibles pour le client et la commande sélectionnés.
+Figure 5.6.23 – interface « ajouter ligne commande »
+84
+
+
+===== PAGE 95 =====
+
+4.5.7
+Interface « OF lancée »
+Figure 5.7.24 – interface « OF lancée »
+4.5.8
+Interface « Planification des Étapes de Production »
+L’interface ”Planification des Étapes de Production” offre aux utilisateurs la possibilité
+de gérer et de planifier les différentes étapes de production d’un article. Elle permet
+à l’utilisateur de définir les ressources nécessaires pour chaque étape, telles que la
+monitrice ou les conducteurs. De plus, l’interface permet également à l’utilisateur de
+spécifier les temps prévus pour chaque étape, ce qui facilite la planification et l’orga-
+nisation du processus de production.
+Figure 5.8.25 – interface « Planification des Étapes de Production »
+85
+
+
+===== PAGE 96 =====
+
+4.5.9
+Interface « Planification par machine »
+L’interface ”Planification par machine” permet à l’utilisateur de gérer les étapes de pro-
+duction affectées à chaque machine et de définir les temps réels pour ces étapes.
+Figure 5.9.26 – interface « Planification par machine »
+4.5.10
+Interface « Suivi Production »
+L’interface ”Suivi de Production” offre une visualisation claire et concise de l’état d’avan-
+cement de la production par commande. Grâce à ce diagramme de Gantt, l’utilisateur
+peut facilement suivre les différentes machines et les étapes de production en cours
+pour chaque commande.
+Figure 5.10.27 – interface « Diagramme de Gantt de Suivi de Production »
+86
+
+
+===== PAGE 97 =====
+
+4.5.11
+Interface « Jenkins pipeline »
+L’interface du pipeline Jenkins est un élément essentiel de notre processus de déploie-
+ment continu. Elle est composée de plusieurs étapes clés qui permettent une automa-
+tisation fluide et efficace de notre flux de travail. Les étapes incluent :
+— Tool to Install : Cette étape permet l’installation des outils nécessaires pour
+notre projet, garantissant ainsi un environnement de développement cohérent.
+— Maven Clean : Cette étape effectue un nettoyage du projet en supprimant les
+fichiers et les répertoires générés lors des précédentes compilations.
+— Maven Package : Cette étape crée un package exécutable de notre application
+à partir du code source et des dépendances.
+— Maven Compile : Cette étape compile le code source pour générer les fichiers
+binaires correspondants.
+— Nexus Artifact : Cette étape publie l’artefact de notre application sur Nexus,
+notre gestionnaire de dépôts, pour une gestion centralisée des packages.
+— JUnit Test : Cette étape exécute les tests unitaires pour assurer la qualité et la
+fiabilité de notre application.
+— Maven SonarQube : Cette étape analyse la qualité du code source à l’aide
+de SonarQube, en identifiant les problèmes potentiels et en fournissant des
+recommandations d’amélioration.
+— Docker Build : Cette étape construit une image Docker à partir de notre appli-
+cation, permettant ainsi son déploiement dans un environnement conteneurisé.
+— Docker Push : Cette étape pousse l’image Docker créée précédemment vers
+notre registre d’images Docker, facilitant ainsi le partage et la distribution de
+l’application.
+— Docker Compose : Cette étape déploie notre application en utilisant Docker
+Compose, en configurant et en orchestrant les différents conteneurs néces-
+saires.
+87
+
+
+===== PAGE 98 =====
+
+Cette interface du pipeline Jenkins offre une automatisation complète et cohérente de
+notre processus de déploiement, garantissant ainsi une livraison continue de notre
+application avec une qualité optimale et une efficacité accrue.
+Figure 5.11.28 – interface « Jenkins pipeline »
+4.5.12
+Interface « SonarQube »
+L’interface SonarQube est une plateforme d’analyse statique du code source qui four-
+nit des informations détaillées sur la qualité du code, la sécurité et la maintenabilité de
+notre application. Elle offre une vue complète des problèmes potentiels et des recom-
+mandations pour améliorer la qualité globale du code.
+Figure 5.12.29 – interface « SonarQube »
+88
+
+
+===== PAGE 99 =====
+
+4.6
+Conclusion
+Le chapitre cadre général de projet explore les différents aspects de notre projet GPAO,
+y compris les environnements de développement et de production utilisés avec des
+technologies comme Docker, Jenkins, SonarQube et Nexus. Nous examinons éga-
+lement les outils et les langages sélectionnés, tels que Spring Boot, Angular et Ty-
+peScript, pour une expérience utilisateur fluide et des performances optimales. Enfin,
+nous présentons les interfaces développées pour gérer les comptes, les rôles, les four-
+nisseurs, les clients, les nomenclatures, les commandes, les machines, les étapes de
+production, les ordres de fabrication et les entreprises, offrant ainsi une vue d’ensemble
+claire de notre projet GPAO.
+89
+
+
+===== PAGE 100 =====
+
+Conclusion et perspectives
+En conclusion, notre projet de GPAO a été une étape importante dans notre parcours
+de développement logiciel. Nous avons réussi à concevoir et implémenter une appli-
+cation robuste et fonctionnelle qui répond aux besoins de notre client. Grâce à notre
+analyse approfondie des processus de gestion de la production, nous avons pu mettre
+en place des fonctionnalités clés telles que la création de nomenclatures, la gestion
+des commandes et le suivi en temps réel.
+L’utilisation d’outils tels que IntelliJ IDEA Ultimate, WebStorm, Jenkins, SonarQube et
+Nexus nous a permis d’améliorer notre productivité et de garantir la qualité du code tout
+au long du processus de développement. L’intégration de ces outils dans un pipeline
+Jenkins basé sur Docker nous a permis d’automatiser les déploiements, de faciliter les
+tests et d’assurer une livraison continue de notre application GPAO.
+Pour l’avenir, il existe plusieurs perspectives intéressantes pour notre travail. Tout
+d’abord, nous pourrions envisager d’étendre les fonctionnalités de notre application
+GPAO en intégrant des modules supplémentaires tels que la gestion des stocks, la
+planification des ressources ou l’optimisation des processus de production. Cela per-
+mettrait de répondre à un éventail plus large de besoins des entreprises.
+En ce qui concerne le DevOps, nous pourrions continuer à améliorer notre pipeline
+d’intégration et de déploiement en explorant des technologies telles que Kubernetes
+pour la gestion des conteneurs et l’évolutivité. L’automatisation des tests, y compris
+les tests de charge et de performance, pourrait également être une perspective inté-
+ressante pour garantir la fiabilité et les performances de notre application GPAO.
+Par ailleurs, l’utilisation de l’intelligence artificielle et de l’apprentissage automatique
+pourrait être une perspective prometteuse pour optimiser les processus de gestion
+de la production. Par exemple, en utilisant des techniques de prévision et d’analyse
+90
+
+
+===== PAGE 101 =====
+
+des données, nous pourrions améliorer la planification des ressources, détecter les
+problèmes potentiels et proposer des recommandations pour optimiser les flux de pro-
+duction.
+En somme, notre travail sur la GPAO nous a permis d’acquérir de solides compétences
+en développement logiciel et en DevOps. Les perspectives futures pour notre travail
+résident dans l’expansion des fonctionnalités, l’amélioration continue du pipeline De-
+vOps et l’exploration de technologies émergentes telles que l’intelligence artificielle.
+Cela nous permettra de rester à la pointe de l’innovation et de répondre aux besoins
+changeants du secteur de la gestion de la production.
+91
+
+
+===== PAGE 102 =====
+
+Bibliographie
+[1]
+In : Logiciel ERP industrie (obilog.fr) (6/06/2022.).
+[2]
+In : HERAKLES : Logiciel ERP - GPAO - Accueil (herakles-erp.com) ().
+[3]
+In : Foxyz : L’Assistant Numérique des TPE/PME - Logiciel ERP/GPAO ().
+[4]
+In : [Online]. Available : https ://www.lucas-uzan.fr/cest-quoi-le-processus-unifie/.
+(15 Mai 2021).
+[5]
+In : https ://www.ibm.com/cloud/learn/three-tier-architecture. (1 Juin 2021).
+[6]
+In : https ://docs.microsoft.com/enus/dotnet/architecture/microservices/microservice-
+ddd-cqrs-patterns/infrastructurepersistence-layer-design (1 Juin 2021).
+[7]
+In : confluence.jetbrains.com ().
+[8]
+In : https ://www.vectorlogo.zone/logos/angular/index.html ().
+[9]
+In : https ://fr.wikipedia.org/wiki/MongoDB ().
+[10]
+In : https ://fr.wikipedia.org/wiki/Java ().
+[11]
+In : https ://fr.wikipedia.org/wiki/TypeScript (2021).
+[12]
+In : https ://commons.wikimedia.org/wiki/File :IntelliJ-IDEA-Icon.svg ().
+[13]
+In : https ://commons.wikimedia.org/wiki/File :WebStorm-Icon.svg ().
+[14]
+In : https ://en.wikipedia.org/wiki/Diagrams.net ().
+[15]
+In : https ://en.wikipedia.org/wiki/Overleaf ().
+[16]
+In : https ://fr.wikipedia.org/wiki/Jenkins ().
+[17]
+In : https ://worldvectorlogo.com/logo/sonarqube ().
+[18]
+In : https ://www.pylondesign.co.uk/portfolio/nexus-logo/ ().
+[19]
+“docker logo”. In : https ://www.pngwing.com/ ().
+[20]
+In : https ://commons.wikimedia.org/wiki/File :Groovy-logo.svg ().
+[21]
+In : https ://icon-icons.com/icon/yml ().
+92
+
+
+===== PAGE 103 =====
+
+Annexe
+Figure 6.0.30 – Diagramme de classe
+93
+
+
+===== PAGE 104 =====
+
+Résumé
+Notre projet GPAO, réalisé en collaboration avec la société IRIS, vise à informatiser et
+optimiser la gestion de la production dans les industries. Nous avons développé une
+plateforme web et mobile basée sur les technologies Spring Boot et Angular, offrant
+une expérience utilisateur fluide et conviviale.
+Grâce à notre solution, les entreprises peuvent gérer efficacement leurs processus
+de production, obtenir une vision globale de l’état de leur entreprise et maximiser leur
+efficacité et leurs revenus. Nous avons intégré des pratiques de DevOps, utilisant des
+outils tels que Jenkins, Docker et Nexus, pour faciliter le déploiement et la gestion de
+l’application.
+Ce projet, réalisé dans le cadre de notre projet de fin d’études à l’École Pluridisciplinaire
+Internationale de Sousse EPI, ouvre de nouvelles perspectives dans le domaine de la
+gestion de la production.
+Les mots-clés associés à ce projet sont : GPAO, IRIS, Spring Boot, Angular, DevOps.
+Abstract
+In order to computerize and optimize production management in industries, our GPAO
+project was developed in collaboration with IRIS company. We have created a web and
+mobile platform using Spring Boot and Angular technologies, providing a smooth and
+user-friendly experience.
+With our solution, businesses can efficiently manage their production processes, gain a
+comprehensive view of their company’s state, and maximize their efficiency and reve-
+nue. We have implemented DevOps practices, utilizing tools such as Jenkins, Docker,
+and Nexus, to facilitate application deployment and management.
+This project, carried out as part of our final year project at École Pluridisciplinaire In-
+ternationale de Sousse EPI, opens new perspectives in the field of production mana-
+gement.
+The keywords associated with this project are : GPAO, IRIS, Spring Boot, Angular,
+DevOps.
+94

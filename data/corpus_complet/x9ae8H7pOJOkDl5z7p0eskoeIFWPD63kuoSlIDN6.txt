@@ -1,0 +1,4175 @@
+===== PAGE 1 =====
+
+ 
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de 
+Mahdia 
+ 
+MEMOIRE 
+ 
+N° d’ordre : LCS-GLSI-3-
+2026-022  
+Ministère de l’Enseignement Supérieur et 
+de la Recherche Scientifique  
+ 
+ 
+ 
+MEMOIRE  
+                                                 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+                                                 
+ Effectué à 
+ 
+HNCDev 
+ 
+ 
+En vue de l’obtention du diplôme de 
+ 
+Licence  Computer Science : Génie Logiciel et Système d'Information 
+ 
+Elaboré par : 
+ 
+Salma Khefifi  
+Mohamed Aziz Boutar 
+ 
+     
+Conception et Développement d’une Plateforme Intelligente de Détection 
+d’Anomalies de Sécurité basée sur l’Analyse des Fichiers Logs 
+ 
+ 
+ 
+Soutenu le : 15 juin 2026  
+devant le jury composé de : 
+ 
+ 
+Président 
+: Bassem Bsir 
+Rapporteur 
+: Olfa Ben Rhaiem 
+Encadrant Académique 
+: Ines Ben Hassine 
+Encadrant Professionnel 
+: Mohamed Hwarthi 
+ 
+ 
+ 
+Année universitaire 2025-2026 
+
+
+===== PAGE 2 =====
+
+Remerciements
+Au terme de ce travail, nous tenons à remercier Madame Ines Ben Hassine pour son
+encadrement, ses encouragements et sa motivation. Nous lui sommes reconnaissants pour
+le temps qu’elle nous a consacré et pour ses précieux conseils.
+Nous exprimons également notre gratitude et notre appréciation à Monsieur Mohamed
+Hwarthi pour son accompagnement, son soutien continu, ainsi que pour tout l’effort et
+le temps qu’il nous a accordés afin de mener à bien ce projet.
+Nous adressons nos vifs remerciements à toute l’équipe de HNCDev pour nous avoir
+aidés à acquérir une meilleure compréhension du mode de fonctionnement de l’organisme,
+ainsi que pour la belle ambiance et la bonne humeur qu’elle nous a offertes pendant toute
+la durée du stage.
+Nous remercions aussi tous les enseignants de l’Institut Supérieur d’Informatique
+de Mahdia pour la qualité de leur enseignement et leurs efforts tout au long de nos
+études.
+Enfin, nos remerciements s’adressent également aux membres du jury pour avoir
+accepté de prêter attention à notre travail et de l’évaluer.
+ii
+
+
+===== PAGE 3 =====
+
+Dédicaces
+À moi-même, tout d’abord.
+Pour ma persévérance, ma résilience et toutes ces heures d’acharnement pour mener à
+bien ce projet. Pour n’avoir jamais baissé les bras face aux défis et avoir cru en mes
+capacités jusqu’au bout.
+À ma très chère mère, Hanen, et mon très cher père, Raouf.
+Vous êtes les piliers de ma vie. Aucun mot, aucune dédicace ne saurait exprimer la
+profondeur de mon amour et de ma gratitude pour vos sacrifices, votre soutien
+inconditionnel et vos prières qui ont toujours éclairé mon chemin. Ce fruit est le vôtre.
+À ma sœur adorée, Ranim.
+Pour ta présence réconfortante, ton affection et ton soutien de chaque instant.
+À mon cousin, Lotfi Ben Moussa.
+Une mention toute particulière à toi, pour avoir été bien plus qu’un membre de la
+famille : un véritable frère de cœur, un confident et un soutien infaillible sur qui j’ai
+toujours pu compter.
+À toute ma famille élargie.
+Pour vos encouragements continus et la chaleur de nos liens.
+À mon binôme, Salma Khefifi.
+Merci pour ta patience, ton dévouement et la belle synergie qui nous a unis. Ce projet
+n’aurait pas été le même sans notre esprit d’équipe et notre solidarité.
+À mes amis exceptionnels : Med Ali, Ahmed Barouni, Ahmed Younsi et Yassine.
+Pour les rires, les moments de détente inoubliables et les encouragements qui m’ont
+donné l’énergie d’avancer. Merci d’être la famille que j’ai choisie.
+Mohamed Aziz Boutar
+iii
+
+
+===== PAGE 4 =====
+
+Dédicaces
+À ma grande famille et mes amis.
+Je souhaite exprimer ma profonde reconnaissance envers toutes les personnes qui ont
+constamment manifesté leur confiance en moi, et qui continuent à le faire.
+À ma chère maman.
+Tout d’abord, je te dédie ce travail pour ton amour et tes encouragements qui m’ont
+donné la force nécessaire pour accomplir ce projet.
+À mon père, mes frères adorées.
+Je tiens à remercier mon père pour sa présence constante et son soutien moral et matériel
+inestimable. À mes frères , je prie pour que Dieu nous garde toujours unis et heureux.
+À ma douce sœur Sarah.
+Merci d’être mon ange gardien qui m’a guidée tant de fois. J’aurais vraiment aimé que tu
+sois là, je t’aime énormément.
+À mes fidèles amies.
+Merci pour votre amitié sincère et les merveilleux moments que nous avons partagés
+ensemble.
+À mon binôme, Mohamed Aziz Boutar.
+Je te remercie pour ta patience et tes encouragements tout au long de la réalisation de ce
+projet.
+Merci à tous pour votre amour et votre confiance. Avec tous mes sentiments les plus
+sincères de respect, de gratitude et de reconnaissance. Que Dieu vous bénisse tous.
+Salma Khefifi
+iv
+
+
+===== PAGE 5 =====
+
+Table des matières
+Remerciements
+ii
+Introduction générale
+1
+1
+Cadre du projet
+3
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Présentation de l’organisme d’accueil et du cadre général du stage
+. . .
+4
+1.2.1
+Organisme d’accueil . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2.2
+Cadre général du stage . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3
+Problématique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4
+Étude et critique de l’existant . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4.1
+Analyse et étude des solutions existantes . . . . . . . . . . . . .
+6
+1.4.1.1
+Outils payants . . . . . . . . . . . . . . . . . . . . .
+6
+1.4.1.2
+Outils gratuits . . . . . . . . . . . . . . . . . . . . .
+7
+1.4.2
+Limites des solutions existantes
+. . . . . . . . . . . . . . . . .
+8
+1.5
+Solution proposée et Objectifs
+. . . . . . . . . . . . . . . . . . . . . .
+9
+1.6
+Méthodologie et langage de conception
+. . . . . . . . . . . . . . . . .
+11
+1.6.1
+Choix de méthodologie : Méthodologie AGILE . . . . . . . . .
+11
+1.6.2
+Présentation de la méthode Scrum . . . . . . . . . . . . . . . .
+11
+1.6.2.1
+Composants principaux de Scrum . . . . . . . . . . .
+12
+1.6.2.2
+Pourquoi Scrum?
+. . . . . . . . . . . . . . . . . . .
+13
+1.6.3
+Langage de conception . . . . . . . . . . . . . . . . . . . . . .
+13
+1.7
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2
+Spécifications des besoins
+15
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.2
+Analyse et spécifications des besoins . . . . . . . . . . . . . . . . . . .
+16
+2.2.1
+Spécifications des besoins fonctionnels
+. . . . . . . . . . . . .
+16
+2.2.2
+Spécifications des besoins non fonctionnels . . . . . . . . . . .
+18
+2.2.3
+Identification des acteurs . . . . . . . . . . . . . . . . . . . . .
+18
+2.2.4
+Diagramme de cas d’utilisation global . . . . . . . . . . . . . .
+18
+2.3
+Pilotage du projet avec SCRUM
+. . . . . . . . . . . . . . . . . . . . .
+20
+2.3.1
+Équipe et rôles . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.3.2
+le Backlog du produit . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.3.3
+Planification des Sprints . . . . . . . . . . . . . . . . . . . . .
+24
+v
+
+
+===== PAGE 6 =====
+
+Table des matières
+2.4
+Environnement Logiciel du travail . . . . . . . . . . . . . . . . . . . .
+24
+2.5
+Architecture générale . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.5.1
+Architecture physique . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.5.2
+Architecture logique
+. . . . . . . . . . . . . . . . . . . . . . .
+28
+2.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3
+Sprint 1 :Gestion des utilisateurs et des accès
+31
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.2
+Backlog du sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.3
+Analyse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.3.1
+Diagramme de cas d’utilisation du Sprint 1 . . . . . . . . . . .
+35
+3.3.2
+Description du cas d’utilisation «S’inscrire» . . . . . . . . . . .
+35
+3.3.3
+Description du cas d’utilisation «S’authentifier» . . . . . . . . .
+36
+3.3.4
+Description du cas d’utilisation «Modifier profil» . . . . . . . .
+37
+3.3.5
+Description du cas d’utilisation «Supprimer utilisateur»
+. . . .
+38
+3.3.6
+Description du cas d’utilisation «Mise à jour d’un rôle» . . . . .
+38
+3.4
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.4.1
+Diagramme de séquence du cas «S’inscrire»
+. . . . . . . . . .
+39
+3.4.2
+Diagramme de séquence du cas : S’authentifier . . . . . . . . .
+40
+3.4.3
+Diagramme de séquence du cas : Modifier profil
+. . . . . . . .
+42
+3.4.4
+Diagramme de séquence du cas : Supprimer utilisateur . . . . .
+42
+3.4.5
+Diagramme de séquence du cas : Mettre à jour un rôle
+. . . . .
+43
+3.4.6
+Diagramme de classes du Sprint 1 . . . . . . . . . . . . . . . .
+44
+3.5
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.5.1
+Interface d’authentification (Connexion) . . . . . . . . . . . . .
+45
+3.5.2
+Interface d’inscription
+. . . . . . . . . . . . . . . . . . . . . .
+45
+3.5.3
+Interface de récupération de mot de passe . . . . . . . . . . . .
+46
+3.5.4
+Interface du profil utilisateur . . . . . . . . . . . . . . . . . . .
+47
+3.5.5
+Interface de gestion des utilisateurs (Vue Administrateur) . . . .
+47
+3.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4
+Sprint 2 :Importation et préparation des données
+49
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.2
+Backlog du sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.3
+Analyse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.3.1
+Diagramme de cas d’utilisation du Sprint 2 . . . . . . . . . . .
+53
+4.3.2
+Description du cas d’utilisation «Importer les fichiers CSV» . .
+54
+4.3.3
+Description du cas d’utilisation «Nettoyer et parser»
+. . . . . .
+54
+4.3.4
+Description du cas d’utilisation « calculer les variables compor-
+tementales» . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.4
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+4.4.1
+Diagramme de séquence du cas «Importer les fichiers CSV» . .
+56
+4.4.2
+Diagramme de séquence du cas «Nettoyer et Parser» . . . . . .
+57
+4.4.3
+Diagramme de séquence du cas «Calculer les variables compor-
+tementales» . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+4.4.4
+Diagramme de classes du Sprint 2 . . . . . . . . . . . . . . . .
+59
+4.5
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+vi
+
+
+===== PAGE 7 =====
+
+Table des matières
+4.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5
+Sprint 3 :IA et détection automatique
+62
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.2
+Backlog du sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.3
+Analyse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+5.3.1
+Diagramme de cas d’utilisation globale du sprint 3 :
+. . . . . .
+65
+5.3.2
+Description du cas d’utilisation «Consulter le score d’une anomalie» 66
+5.3.3
+Description du cas d’utilisation «Relancer la détection» . . . . .
+66
+5.3.4
+Description du cas d’utilisation «Consulter le modéle utilisé»
+.
+67
+5.3.5
+Description du cas d’utilisation «Détecter les anomalies» . . . .
+67
+5.4
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+5.4.1
+Diagramme de séquence du cas «Consulter le score d’une anomalie» 68
+5.4.2
+Diagramme de séquence du cas «Relancer la détection»
+. . . .
+69
+5.4.3
+Diagramme de séquence du cas «Consulter le modéle utilisé»
+.
+70
+5.4.4
+Diagramme de séquence du cas «Détecter les anomalies» . . . .
+71
+5.4.5
+Diagramme de classes du Sprint 3 . . . . . . . . . . . . . . . .
+72
+5.5
+Realisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+5.5.1
+Interface de consultation des anomalies . . . . . . . . . . . . .
+74
+5.5.2
+Interface de relance de la détection (Rejeu)
+. . . . . . . . . . .
+75
+5.5.3
+Interface du rejeu chronologique (Timeline Replay) . . . . . . .
+76
+5.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+6
+Sprint 4 :Dashboard et Reporting
+78
+6.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+6.2
+Backlog du sprint 4 :
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+6.3
+Analyse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+6.3.1
+Diagramme de cas d’utilisation globale du sprint 4 . . . . . . .
+81
+6.3.2
+Description du cas d’utilisation «Consulter le tableau de board»
+82
+6.3.3
+Description du cas d’utilisation «Qualifier l’incident» . . . . . .
+82
+6.3.4
+Description du cas d’utilisation «Générer des alerts à partir des
+anomalies » . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+6.4
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+84
+6.4.1
+Diagramme de séquence du cas «Consulter le tableau de board»
+84
+6.4.2
+Diagramme de séquence du cas «Qualifier l’incident» . . . . . .
+85
+6.4.3
+Diagramme de séquence du cas «Générer des alerts à partir des
+anomalies» . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+86
+6.4.4
+Diagramme de classes du sprint 4 . . . . . . . . . . . . . . . .
+87
+6.5
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+6.5.1
+Interface du Tableau de bord global (Dashboard) . . . . . . . .
+89
+6.5.2
+Interface de gestion des alertes . . . . . . . . . . . . . . . . . .
+91
+6.5.3
+Interface de détail et qualification des alertes
+. . . . . . . . . .
+93
+6.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+94
+Conclusion générale
+95
+Webographie
+96
+vii
+
+
+===== PAGE 8 =====
+
+Table des figures
+1.1
+Logo de la société . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2
+logo Splunk Enterprise Security
+. . . . . . . . . . . . . . . . . . . . .
+7
+1.3
+logo IBM QRadar
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.4
+logo Wazuh . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.5
+logo ELK Stack . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.6
+La méthodologie agile
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.7
+Aperçu de la méthode Scrum . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.8
+L’Unified Modeling Language
+. . . . . . . . . . . . . . . . . . . . . .
+14
+2.1
+Diagramme de cas d’utilisation global . . . . . . . . . . . . . . . . . .
+19
+2.2
+Architecture physique de la plateforme . . . . . . . . . . . . . . . . . .
+27
+2.3
+Architecture logique de la plateforme . . . . . . . . . . . . . . . . . . .
+28
+2.4
+flux logique du système . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.1
+Diagramme de cas d’utilisation du sprint 1 . . . . . . . . . . . . . . . .
+35
+3.2
+Diagramme de séquence du cas "S’inscrire" . . . . . . . . . . . . . . .
+40
+3.3
+Diagramme de séquence du cas :S’authentifier . . . . . . . . . . . . . .
+41
+3.4
+Diagramme de séquence du cas :Modifier profil . . . . . . . . . . . . .
+42
+3.5
+Diagramme de séquence du cas :Supprimer utilisateur . . . . . . . . . .
+43
+3.6
+Diagramme de séquence du cas :Mettre à jour un rôle . . . . . . . . . .
+44
+3.7
+Diagramme de classes détailées du sprint 1
+. . . . . . . . . . . . . . .
+44
+3.8
+Interface d’authentification (Connexion) . . . . . . . . . . . . . . . . .
+45
+3.9
+Interface d’inscription . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+3.10 Interface de récupération de mot de passe
+. . . . . . . . . . . . . . . .
+46
+3.11 Interface du profil utilisateur . . . . . . . . . . . . . . . . . . . . . . .
+47
+3.12 Interface de gestion des utilisateurs et des rôles
+. . . . . . . . . . . . .
+48
+4.1
+Diagramme de cas d’utilisation du sprint 2 . . . . . . . . . . . . . . . .
+54
+4.2
+Diagramme de séquence du cas «Importer les fichiers CSV»
+. . . . . .
+56
+4.3
+Diagramme de séquence du cas «Nettoyer et Parser»
+. . . . . . . . . .
+57
+4.4
+Diagramme de séquence du cas «Calculer les variables comportementales» 58
+4.5
+Diagramme de classes détailées du sprint 2
+. . . . . . . . . . . . . . .
+59
+4.6
+Interface d’importation des fichiers de logs CSV (Partie 1)
+. . . . . . .
+60
+4.6
+Interface d’importation des fichiers de logs CSV (Suite) . . . . . . . . .
+61
+5.1
+Diagramme de cas d’utilisation du sprint 3 . . . . . . . . . . . . . . . .
+66
+viii
+
+
+===== PAGE 9 =====
+
+Table des figures
+5.2
+Diagramme de séquence du cas«Consulter le score d’une anomalie» . .
+69
+5.3
+Diagramme de séquence du cas«Relancer la détection» . . . . . . . . .
+70
+5.4
+Diagramme de séquence du cas«Consulter le modéle utilisé» . . . . . .
+71
+5.5
+Diagramme de séquence du cas«Détecter les anomalies» . . . . . . . .
+72
+5.6
+Diagramme de classes détailées du sprint 3
+. . . . . . . . . . . . . . .
+73
+5.7
+Interface de consultation des anomalies et des scores de risque . . . . .
+74
+5.8
+Interface de relance de la détection (Rejeu) . . . . . . . . . . . . . . . .
+75
+5.8
+Interface de visualisation du rejeu chronologique
+. . . . . . . . . . . .
+76
+6.1
+Diagramme de cas d’utilisation du sprint 4 . . . . . . . . . . . . . . . .
+82
+6.2
+Diagramme de séquence du cas«Consulter le tableau de board» . . . . .
+85
+6.3
+Diagramme de séquence du cas«Qualifier l’incident» . . . . . . . . . .
+86
+6.4
+Diagramme de séquence du cas«Générer des alerts à partir des anomalies» 87
+6.5
+Diagramme de classes détailées du sprint 4
+. . . . . . . . . . . . . . .
+88
+6.6
+Tableau de bord de supervision global (Partie 1) . . . . . . . . . . . . .
+89
+6.6
+Tableau de bord de supervision global (Partie 2) . . . . . . . . . . . . .
+90
+6.6
+Tableau de bord de supervision global (Suite) . . . . . . . . . . . . . .
+91
+6.7
+Interface de gestion et d’historique des alertes (Partie 1) . . . . . . . . .
+91
+6.7
+Interface de gestion et d’historique des alertes (Suite) . . . . . . . . . .
+92
+6.8
+Interface de détail et de qualification des alertes (Partie 1) . . . . . . . .
+93
+6.8
+Interface de détail et de qualification des alertes (Suite) . . . . . . . . .
+94
+ix
+
+
+===== PAGE 10 =====
+
+Liste des tableaux
+1.1
+Informations à propos « HNCDev »
+. . . . . . . . . . . . . . . . . . .
+5
+1.2
+Limites des solutions de détection d’anomalies basées sur les logs
+. . .
+9
+2.1
+Identification des acteurs du système . . . . . . . . . . . . . . . . . . .
+18
+2.2
+Rôles clés dans la méthodologie
+. . . . . . . . . . . . . . . . . . . . .
+20
+2.3
+Backlog du produit . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.4
+Planification des sprints . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.5
+Présentation des outils utilisés
+. . . . . . . . . . . . . . . . . . . . . .
+26
+3.1
+Backlog du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.2
+Description du cas d’utilisation :S’inscrire . . . . . . . . . . . . . . . .
+36
+3.3
+Description du cas d’utilisation : S’authentifier
+. . . . . . . . . . . . .
+37
+3.4
+Description du cas d’utilisation : Modifier profil . . . . . . . . . . . . .
+38
+3.5
+Description du cas d’utilisation :Supprimer utilisateur . . . . . . . . . .
+38
+3.6
+Description du cas d’utilisation :Mise à jour d’un rôle . . . . . . . . . .
+39
+4.1
+Backlog du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.2
+Description du cas d’utilisation : Importer les fichiers CSV . . . . . . .
+54
+4.3
+Description du cas d’utilisation : Nettoyer et parser les champs importants 55
+4.4
+Description du cas d’utilisation : calculer les variables comportementales 55
+5.1
+Backlog du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+5.2
+Description du cas d’utilisation : Consulter le score d’anomalie . . . . .
+66
+5.3
+Description du cas d’utilisation : Relancer la détection
+. . . . . . . . .
+67
+5.4
+Description du cas d’utilisation :Consulter le modéle utilisé . . . . . . .
+67
+5.5
+Description du cas d’utilisation : Détecter les anomalies . . . . . . . . .
+68
+6.1
+Backlog du Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+6.2
+Description textuelle du cas d’utilisation :Consulter le tableau de board
+82
+6.3
+Description textuelle du cas d’utilisation :Qualifier les incidents
+. . . .
+83
+6.4
+Description textuelle du cas d’utilisation :Générer des alerts à partir des
+anomalies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+84
+x
+
+
+===== PAGE 11 =====
+
+Introduction générale
+Avec la transformation numérique des entreprises, les réseaux informatiques jouent
+un rôle central dans le fonctionnement des systèmes d’information. Ces réseaux assurent
+la communication entre les différents équipements, serveurs et utilisateurs, tout en
+garantissant l’accès aux ressources essentielles de l’entreprise. Dans ce contexte, ils
+génèrent en permanence une grande quantité de fichiers logs provenant des routeurs, des
+commutateurs, des pare-feux et des serveurs.
+Ces fichiers logs constituent une source d’information cruciale pour surveiller l’activité
+du réseau, détecter les incidents techniques et identifier les menaces de sécurité. Toutefois,
+la taille massive et la complexité de ces données rendent leur analyse manuelle difficile,
+voire inefficace, notamment dans des environnements réseaux dynamiques et à grande
+échelle.
+La détection des anomalies dans les logs réseaux devient alors une nécessité pour
+assurer la sécurité et la fiabilité des infrastructures informatiques. Elle permet d’identifier
+des comportements inhabituels tels que les intrusions, les attaques informatiques, les
+défaillances matérielles ou les mauvaises configurations.
+Dans ce cadre, l’utilisation des modèles d’intelligence artificielle, en particulier les
+techniques de Machine Learning et de Deep Learning, offre des solutions performantes
+pour analyser automatiquement les logs réseau. Ces modèles sont capables d’apprendre
+les comportements normaux du système et de détecter en temps réel toute activité
+anormale, améliorant ainsi la capacité de réponse face aux incidents.
+Ainsi, la détection des anomalies basée sur les fichiers logs dans les réseaux d’entre-
+prises constitue un enjeu majeur pour garantir la sécurité, la disponibilité et la performance
+des systèmes d’information. Ce travail s’inscrit dans cette optique en proposant une
+approche intelligente visant à exploiter efficacement les données issues des logs réseaux
+afin de détecter et prévenir les anomalies.
+1
+
+
+===== PAGE 12 =====
+
+Liste des tableaux
+Ce mémoire est organisé en six chapitres. Le premier chapitre présente l’organisme
+d’accueil, la problématique étudiée, l’analyse de l’existant, la solution proposée ainsi que
+la méthodologie adoptée.
+Le deuxième chapitre est consacré à l’analyse et à la spécification des besoins, à la
+gestion du projet selon la méthode Scrum, à l’environnement de développement et à
+l’architecture générale de la solution.
+Les troisième, quatrième, cinquième et sixième chapitres présentent respectivement
+les différents sprints du projet : la gestion des utilisateurs et des accès, l’importation
+et la préparation des données, la détection automatique des anomalies par intelligence
+artificielle, ainsi que le dashboard et le reporting. Chaque sprint est décrit à travers
+son backlog et les principaux diagrammes UML, notamment les diagrammes de cas
+d’utilisation, de séquence et de classes.
+Enfin, une conclusion générale synthétise les résultats obtenus et présente les pers-
+pectives d’évolution du projet.
+2
+
+
+===== PAGE 13 =====
+
+Chapitre1
+Cadre du projet
+Contents
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Présentation de l’organisme d’accueil et du cadre général du stage
+4
+1.2.1
+Organisme d’accueil . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2.2
+Cadre général du stage . . . . . . . . . . . . . . . . . . . . .
+5
+1.3
+Problématique . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4
+Étude et critique de l’existant . . . . . . . . . . . . . . . . . . . . .
+6
+1.4.1
+Analyse et étude des solutions existantes . . . . . . . . . . . .
+6
+1.4.2
+Limites des solutions existantes
+. . . . . . . . . . . . . . . .
+8
+1.5
+Solution proposée et Objectifs
+. . . . . . . . . . . . . . . . . . . .
+9
+1.6
+Méthodologie et langage de conception . . . . . . . . . . . . . . . .
+11
+1.6.1
+Choix de méthodologie : Méthodologie AGILE . . . . . . . .
+11
+1.6.2
+Présentation de la méthode Scrum . . . . . . . . . . . . . . .
+11
+1.6.3
+Langage de conception . . . . . . . . . . . . . . . . . . . . .
+13
+1.7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+3
+
+
+===== PAGE 14 =====
+
+Chapitre 1. Cadre du projet
+1.1
+Introduction
+Ce premier chapitre a pour but de présenter le cadre général de notre projet. Ainsi, nous
+débuterons par une présentation de l’organisme d’accueil afin de situer l’environnement
+professionnel dans lequel s’inscrit ce projet. Nous aborderons ensuite la problématique
+liée à la surveillance des réseaux informatiques, et nous metterons en évidence les limites
+des solutions traditionnelles. Par la critique de ces solutions existantes, nous dégagerons
+la solution proposée et les objectifs à atteindre. Enfin, nous présenterons la méthodologie
+adoptée pour assurer un développement structuré, fiable et adapté aux exigences des
+systèmes de sécurité modernes.
+1.2
+Présentation de l’organisme d’accueil et du cadre
+général du stage
+1.2.1
+Organisme d’accueil
+HNCDev [1] est une société de développement informatique spécialisée dans la
+création de logiciels sur mesure, de sites web, d’applications web et mobiles. Avec plus
+de 10 ans d’expertise, elle propose des solutions innovantes et adaptées aux besoins des
+clients, tout en offrant une réelle opportunité de développement sur le plan professionnel.
+HNCDev propose des solutions digitales complètes pour optimiser la présence en ligne
+des entreprises :
+— Solutions ERP : Conception et réalisation de solutions ERP intégrées.
+— Développement d’applications mobiles : L’équipe de HNCDev conçoit des
+applications web et mobiles (Android / iOS) performantes..
+— Développement sur les CMS les plus connus : Développement de sites web à
+l’aide des CMS les plus connus.
+— Développement sur les solutions de gestion open source :Développement de
+solutions de gestion basées sur des technologies open source, permettant de créer
+des systèmes flexibles, évolutifs et adaptés aux besoins spécifiques des entreprises.
+4
+
+
+===== PAGE 15 =====
+
+Chapitre 1. Cadre du projet
+— Des solutions informatiques et de Télecommunication : Conception et mise
+en place de solutions informatiques et de télécommunication diversifiées (GES,
+GPAO, GMAO..).
+— Développement d’applications web : Conception et réalisation de sites web
+dynamiques et d’applications web performantes.
+Figure 1.1 – Logo de la société
+Nom
+HNCDev
+Adresse Postale
+Adresse postale 3, Rue Ahmed Triki Montplaisir 1073 Tunis
+Nom de directeur
+Mr Fethi Barkouti
+Site web
+Site web https ://hncdev.com
+Numéro téléphone
++216 94 09 07 90
+Adresse mail
+fethibar@gmail.com
+Table 1.1 – Informations à propos « HNCDev »
+1.2.2
+Cadre général du stage
+Ce projet s’inscrit dans le cadre du projet de fin d’études pour l’obtention de la
+licence en sciences informatiques à l’Institut Supérieur d’Informatique de Mahdia. Il a été
+réalisé au sein de « HNCDev », cette expérience immersive dans un environnement réel a
+représenté l’occasion d’explorer le monde professionnel, d’appliquer nos connaissances
+théoriques et de développer de nouvelles compétences pratiques Il consiste à concevoir
+et à développer un agent intelligent basé sur les techniques d’intelligence artificielle,
+capable de détecter les anomalies de sécurité à partir des fichiers logs générés par les
+différents équipements des réseaux d’entreprises.
+5
+
+
+===== PAGE 16 =====
+
+Chapitre 1. Cadre du projet
+1.3
+Problématique
+La transformation numérique des entreprises a considérablement élargi la surface
+d’attaque des systèmes d’information, rendant la surveillance des réseaux plus critique que
+jamais. Face à cette réalité, les solutions de sécurité traditionnelles montrent clairement
+leurs limites : elles reposent sur des règles statiques incapables de s’adapter aux nouvelles
+menaces, peinent à traiter les volumes croissants de fichiers logs, et détectent les incidents
+souvent trop tard pour limiter les dégâts. À cela s’ajoute le coût élevé des plateformes
+de supervision avancées, qui restent inaccessibles à la majorité des petites et moyennes
+entreprises, les laissant exposées sans moyens adaptés. Comment concevoir une solution
+intelligente et accessible, capable d’analyser automatiquement les logs réseau et de
+détecter les comportements anormaux en temps réel, tout en répondant aux contraintes
+des PME?
+1.4
+Étude et critique de l’existant
+Cette section examine les solutions actuelles de supervision de la sécurité des réseaux
+d’entreprises à travers l’analyse des fichiers logs et les systèmes de détection d’intrusions.
+L’objectif est de comprendre comment les événements de sécurité sont actuellement
+surveillés, quelles sont les limites des outils existants tels que les SIEM et les IDS.
+Cette phase est primordiale pour bien instaurer une solution améliorant la détection des
+anomalies et la réactivité face aux incidents de sécurité.
+1.4.1
+Analyse et étude des solutions existantes
+Plusieurs solutions existent aujourd’hui, en Tunisie comme à l’étranger, pour la
+supervision de la sécurité des réseaux d’entreprises, notamment les systèmes SIEM, les
+IDS/IPS ainsi que divers outils d’analyse des logs disponibles sur le marché.
+1.4.1.1
+Outils payants
+Les solutions commerciales offrent généralement des fonctionnalités avancées et un
+support professionnel, mais leur coût élevé les rend difficilement accessibles aux petites
+6
+
+
+===== PAGE 17 =====
+
+Chapitre 1. Cadre du projet
+structures. Parmi les outils payants nous pouvons citer :
+- Splunk Enterprise Security [2] : solution SIEM de référence, reconnue pour ses
+capacités d’analyse avancée des logs, de corrélation d’événements et de détection
+d’anomalies en temps réel. Elle offre une interface intuitive et des tableaux de bord
+personnalisables, mais son coût de licence reste particulièrement prohibitif.
+Figure 1.2 – logo Splunk Enterprise Security
+- IBM QRadar[3] : plateforme SIEM dotée d’une intelligence intégrée permettant la
+corrélation automatique des événements de sécurité et l’identification des menaces.
+Bien qu’elle soit très performante dans les environnements complexes, sa mise en
+œuvre nécessite une expertise technique importante et un investissement financier
+conséquent.
+Figure 1.3 – logo IBM QRadar
+1.4.1.2
+Outils gratuits
+Les solutions open source constituent une alternative intéressante, notamment pour
+les organisations disposant de ressources limitées. Elles offrent une certaine flexibilité,
+mais requièrent souvent des compétences techniques poussées pour leur déploiement et
+leur maintenance. Parmi ces outils gratuits, nous citons :
+- Wazuh[4] : plateforme SIEM open source complète, intégrant des fonctionnalités
+de détection d’intrusions, d’analyse des logs en temps réel et de surveillance de
+7
+
+
+===== PAGE 18 =====
+
+Chapitre 1. Cadre du projet
+l’intégrité des fichiers. Elle est largement adoptée dans les environnements à budget
+restreint.
+Figure 1.4 – logo Wazuh
+- ELK Stack [5] : solution populaire pour la centralisation, l’indexation et la
+visualisation des logs. Bien qu’elle soit puissante pour l’exploration des données,
+elle ne dispose pas nativement de mécanismes de détection d’anomalies basés sur
+le machine learning, ce qui limite son efficacité face aux menaces avancées.
+Figure 1.5 – logo ELK Stack
+1.4.2
+Limites des solutions existantes
+Bien que de nombreuses solutions de supervision de la sécurité des réseaux d’entre-
+prises existent aujourd’hui, telles que les systèmes SIEM, IDS/IPS et les outils d’analyse
+des fichiers logs, leur efficacité reste parfois limitée face à l’évolution rapide des menaces
+modernes.
+8
+
+
+===== PAGE 19 =====
+
+Chapitre 1. Cadre du projet
+Solution
+Limites
+Splunk Enterprise Secu-
+rity
+— Coût élevé : le modèle de tarification fondé sur le
+volume de données indexées quotidiennement peut
+devenir très coûteux à mesure que l’infrastructure de
+l’entreprise se développe.
+— La version gratuite est plafonnée à 500 Mo de don-
+nées par jour et offre seulement un ensemble limité de
+fonctionnalités, ce qui la rend inadaptée à un environ-
+nement de production.
+IBM QRadar (Commer-
+cial SIEM)
+— La taille maximale pour les charges utiles (payloads)
+syslog est limitée à 32 000 octets.
+— Les outils d’automatisation intégrés (QRadar SOAR)
+sont réputés complexes à déployer et à maintenir au
+quotidien.
+Wazuh
+— 01API : La limite par défaut pour les requêtes API est
+de 300 requêtes par minute.
+— La montée de version des composants de la stack
+sans impacter la compatibilité ni entraîner de perte
+de données peut être complexe en environnement de
+production.
+ELK
+Stack
+(Open
+Source)
+— Forte gourmandise matérielle : consommation élevée
+des ressources
+— La montée de version des composants de la stack
+sans impacter la compatibilité ni entraîner de perte
+de données peut être complexe en environnement de
+production.
+Table 1.2 – Limites des solutions de détection d’anomalies basées sur les logs
+1.5
+Solution proposée et Objectifs
+Notre projet de fin d’études s’inspire des plateformes internationales de supervision et
+de sécurité des réseaux afin de proposer une solution de haut niveau adaptée aux besoins
+actuels. L’objectif principal est de dépasser certaines limites de ces solutions, notamment
+leur coût élevé ainsi que leur complexité et leur inadéquation aux besoins spécifiques des
+petites structures.
+Dans ce contexte, nous avons conçu une plateforme plus accessible, pensée pour
+9
+
+
+===== PAGE 20 =====
+
+Chapitre 1. Cadre du projet
+notre environnement économique et centrée sur les besoins des PME, tout en garantissant
+simplicité d’utilisation et efficacité.
+Elle propose notamment une solution intelligente de détection d’anomalies basée
+sur le machine learning, capable d’analyser automatiquement les logs web, d’identifier
+des comportements suspects et de générer des alertes en temps réel. La plateforme
+intègre également des fonctionnalités avancées telles que le replay des événements et la
+re-détection, permettant une analyse plus approfondie et une meilleure compréhension
+des incidents de sécurité. L’ensemble de cette solution a pour ambition non seulement
+de renforcer la capacité de détection des systèmes existants, mais aussi d’offrir un cadre
+évolutif et proactif face aux cyberattaques modernes.
+Ainsi, pour répondre à la problématique et instaurer notre solution, notre projet
+poursuivra les objectifs suivants :
+- Automatiser l’analyse des logs en exploitant des techniques de machine learning
+pour traiter de grands volumes de données et identifier les patterns suspects sans
+intervention humaine constante.
+- Détecter les anomalies en temps réel grâce à un agent intelligent s’affranchissant
+des limites des règles statiques.
+- Générer des alertes contextualisées permettant aux équipes de réagir rapidement
+et de manière ciblée.
+- Offrir des fonctionnalités d’investigation avancées, notamment le replay des
+événements et la re-détection pour une meilleure compréhension des incidents.
+- Proposer une solution accessible aux PME, avec une interface simple et un
+déploiement à faible coût comparé aux plateformes commerciales existantes.
+Ces objectifs guideront l’ensemble des choix techniques et architecturaux développés
+dans les chapitres suivants.
+10
+
+
+===== PAGE 21 =====
+
+Chapitre 1. Cadre du projet
+1.6
+Méthodologie et langage de conception
+1.6.1
+Choix de méthodologie : Méthodologie AGILE
+Le choix d’un modèle de développement dépend de la complexité et des besoins
+spécifiques du projet. Dans un contexte où les exigences peuvent évoluer au fil du temps,
+il est préférable d’opter pour une approche itérative et flexible plutôt qu’un modèle strict
+en cascade.
+En optant pour une méthode Agile SCRUM [6] dans la mise en œuvre de notre
+projet, qui combine une structure organisée avec la souplesse nécessaire pour s’adapter
+aux changements. Cette approche permet de livrer progressivement des fonctionnalités
+opérationnelles, de recueillir rapidement les retours des utilisateurs et d’ajuster le projet
+en continu afin de répondre au mieux aux besoins en matière de détection d’anomalies et
+de sécurité des systèmes d’information.
+Figure 1.6 – La méthodologie agile
+1.6.2
+Présentation de la méthode Scrum
+Scrum est une méthodologie Agile largement utilisée dans le développement logiciel.
+Elle repose sur des cycles courts et répétitifs appelés sprints, permettant de livrer
+progressivement des fonctionnalités tout en améliorant continuellement le produit. Cette
+approche favorise également une collaboration étroite entre les membres de l’équipe et
+les différentes parties prenantes.
+11
+
+
+===== PAGE 22 =====
+
+Chapitre 1. Cadre du projet
+Figure 1.7 – Aperçu de la méthode Scrum
+1.6.2.1
+Composants principaux de Scrum
+A. Sprints
+Le développement est organisé en cycles courts appelés sprints, généralement de 2
+à 4 semaines. Chaque sprint aboutit à une version fonctionnelle du produit, offrant une
+visibilité continue sur l’avancement et permettant des ajustements rapides.
+B. Rôles clés dans Scrum
+- Product Owner : Définit et priorise les fonctionnalités selon les recommandations
+fournies par l’équipe
+- Scrum Master : Assure le respect des principes Scrum, supprime les obstacles
+et facilite la communication au sein de l’équipe, jouant ainsi le rôle de médiateur
+entre le Product Owner et l’équipe de croissance.
+- Équipe de développement : Composée de développeurs, designers et testeurs,
+cette équipe est responsable de l’implémentation des fonctionnalités du système
+ainsi que de leur validation pour garantir leur bon fonctionnement.
+C. Backlog
+Le backlog est une liste dynamique des tâches à réaliser. Il est régulièrement mis à
+jour par le Product Owner en fonction des priorités et des retours des utilisateurs.
+D. Daily Standups
+Des réunions quotidiennes de 15 minutes permettent à l’équipe de faire le point sur :
+- Les tâches accomplies depuis la dernière réunion,
+12
+
+
+===== PAGE 23 =====
+
+Chapitre 1. Cadre du projet
+- Les tâches à réaliser dans la journée,
+- Les difficultés ou obstacles rencontrés, afin de les résoudre rapidement et de
+maintenir le projet sur la bonne voie.
+E. Sprint Review et Sprint Retrospective
+- Sprint Review : à la fin de chaque sprint, l’équipe présente les fonctionnalités
+développées aux parties prenantes. L’objectif est de recueillir leurs retours, valider
+les fonctionnalités et ajuster les priorités pour les sprints suivants.
+- Sprint Retrospective : après chaque sprint, l’équipe réalise une analyse interne
+pour identifier ce qui a bien fonctionné et ce qui peut être amélioré. Cette réunion
+permet d’optimiser les méthodes de travail, de corriger les difficultés rencontrées
+et de mieux planifier les prochains sprints.
+1.6.2.2
+Pourquoi Scrum?
+La méthodologie Scrum a été retenue pour les raisons suivantes :
+- Flexibilité et adaptabilité : Permet d’ajuster rapidement le développement en
+fonction des retours des utilisateurs et de l’évolution des besoins .
+- Organisation claire : Les tâches sont découpées en étapes courtes et gérables,
+facilitant le suivi des progrès.
+- Amélioration continue : Les fonctionnalités sont régulièrement réévaluées et
+optimisées au fil des sprints.
+- Collaboration renforcée : Favorise un dialogue constant entre les membres de
+l’équipe et les parties prenantes.
+- Livraison progressive : Chaque sprint produit une version exploitable de la
+plateforme, garantissant un développement contrôlé et fluide.
+1.6.3
+Langage de conception
+L’UML (Unified Modeling Language) [7] est un langage graphique de modélisation
+informatique. Ce langage est désormais la référence en modélisation objet. Cette dernière
+13
+
+
+===== PAGE 24 =====
+
+Chapitre 1. Cadre du projet
+consiste à modéliser des éléments du monde réel ou virtuel en un ensemble d’entités
+informatiques appelées « objet ».
+Figure 1.8 – L’Unified Modeling Language
+1.7
+Conclusion
+Ce premier chapitre a permis de poser les bases de notre projet en présentant
+l’organisme d’accueil. Nous y avons également réalisé un état de l’art des solutions
+existantes sur le marché, afin d’identifier les besoins non couverts par ces dernières et qui
+constituent le cœur de notre travail.
+Dans ce contexte, nous avons exposé la solution proposée, la méthodologie adoptée
+pour mener à bien ce projet, ainsi que le langage de modélisation utilisé.
+Ce chapitre constitue ainsi une base essentielle pour le chapitre suivant, dans lequel
+nous détaillerons l’analyse des besoins fonctionnels et techniques du système, en vue de
+préparer sa conception et son implémentation.
+14
+
+
+===== PAGE 25 =====
+
+Chapitre2
+Spécifications des besoins
+Contents
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.2
+Analyse et spécifications des besoins . . . . . . . . . . . . . . . . .
+16
+2.2.1
+Spécifications des besoins fonctionnels
+. . . . . . . . . . . .
+16
+2.2.2
+Spécifications des besoins non fonctionnels . . . . . . . . . .
+18
+2.2.3
+Identification des acteurs . . . . . . . . . . . . . . . . . . . .
+18
+2.2.4
+Diagramme de cas d’utilisation global . . . . . . . . . . . . .
+18
+2.3
+Pilotage du projet avec SCRUM
+. . . . . . . . . . . . . . . . . . .
+20
+2.3.1
+Équipe et rôles . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.3.2
+le Backlog du produit . . . . . . . . . . . . . . . . . . . . . .
+20
+2.3.3
+Planification des Sprints . . . . . . . . . . . . . . . . . . . .
+24
+2.4
+Environnement Logiciel du travail . . . . . . . . . . . . . . . . . .
+24
+2.5
+Architecture générale . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.5.1
+Architecture physique . . . . . . . . . . . . . . . . . . . . . .
+27
+2.5.2
+Architecture logique
+. . . . . . . . . . . . . . . . . . . . . .
+28
+2.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+15
+
+
+===== PAGE 26 =====
+
+Chapitre 2. Spécifications des besoins
+2.1
+Introduction
+La phase d’implémentation reste cruciale pour la réussite du projet, car elle signifie le
+résultat de tout le travail mené tout au long du projet. Mais cette phase doit être précédée
+par une phase préparative importante. Pour ce faire, ce chapitre est dédié dans un premier
+temps à l’identification des acteurs de notre application, puis nous détaillerons les besoins
+fonctionnels et non-fonctionnels. Et nous terminerons par la gestion du projet avec Scrum
+ainsi que la planification des différents sprints.
+2.2
+Analyse et spécifications des besoins
+Cette section présente les exigences fondamentales. Nous commençons par détailler
+les spécifications fonctionnelles et non fonctionnelles avant d’identifier les utilisateurs et
+leurs rôles au sein du système
+2.2.1
+Spécifications des besoins fonctionnels
+Les spécifications décrivent ce que le système doit pouvoir exécuter pour offrir les
+services attendus par les utilisateurs afin de répondre à leurs besoins :
+- Authentification utilisateur :La plateforme doit permettre l’authentification des
+utilisateurs via email et mot de passe, tout en sécurisant les sessions à l’aide d’un
+mécanisme de session sécurisé.
+- Importation manuelle des fichiers logs : La plateforme doit permettre à l’utili-
+sateur d’importer des fichiers logs via une interface web, en prenant en charge le
+format CSV. Elle doit vérifier la validité du format et de la structure des fichiers,
+refuser tout import non conforme et assurer un stockage sécurisé des données
+importées.
+- Stockage et structuration des logs :La plateforme doit enregistrer les logs bruts,
+les structurer en données exploitables et permettre leur consultation ainsi que leur
+recherche (par date, IP et type).
+- Nettoyage et validation des données logs :Le système doit détecter et ignorer
+ou supprimer les lignes de logs corrompues, incomplètes ou incohérentes, tout en
+16
+
+
+===== PAGE 27 =====
+
+Chapitre 2. Spécifications des besoins
+conservant une trace des lignes rejetées (compteur ou rapport) afin de faciliter le
+diagnostic.
+- Parsing et extraction des champs :Le système doit parser les logs afin d’en
+extraire les champs essentiels (timestamp, IP, etc.) .
+- Transformation des logs pour l’IA (feature engineering) :Le système doit
+transformer les champs extraits en données numériques (encodage, normalisation,
+agrégation temporelle) afin de générer un dataset exploitable pour l’entraînement
+et l’inférence du modèle.
+- Détection automatique des anomalies : Le système doit analyser les nouveaux
+logs en mode batch ou temps réel afin de détecter automatiquement les anoma-
+lies et produire un résultat de classification pour chaque événement ou groupe
+d’événements.
+- Calcul et affichage d’un score d’anomalie :Le système doit attribuer un score de
+gravité à chaque anomalie détectée et l’afficher dans l’interface afin de prioriser les
+incidents.
+- Génération d’alertes et gestion des incidents :Le système doit générer une
+alerte en cas de détection d’anomalie, enregistrer ses détails (date, source, score et
+contexte) et fournir un historique consultable des incidents.
+- Notifications (Email) :Le système doit envoyer des notifications par email lors de
+la détection d’anomalies et permettre de configurer les destinataires.
+- Dashboard global de supervision :La plateforme doit fournir un tableau de bord
+affichant des indicateurs clés.
+- Visualisation et analyses graphiques :La plateforme doit afficher des graphiques
+d’analyse et permettre leur mise à jour en temps réel ou de façon périodique selon
+le mode d’acquisition des données.
+- Filtrage et recherche avancée :La plateforme doit permettre de filtrer les logs et
+anomalies par date, IP, type d’erreur ou statut, ainsi que par score de gravité.
+17
+
+
+===== PAGE 28 =====
+
+Chapitre 2. Spécifications des besoins
+2.2.2
+Spécifications des besoins non fonctionnels
+- Utilisabilité :La plateforme offre une expérience utilisateur simple et claire, avec
+une interface intuitive facilitant la navigation entre les tableaux de bord, les logs
+,les anomalies et les alertes.
+- Performance et Scalabilité :La plateforme assure un traitement rapide des logs en
+temps réel tout en supportant une augmentation du volume sans dégradation des
+performances.
+- Traçabilité :Toutes les actions importantes et les événements du système sont
+journalisés afin d’assurer la traçabilité.
+- Disponibilité et Fiabilité :Grâce au modèle d’IA intégré, la plateforme assure une
+disponibilité continue pour la collecte et la surveillance en temps réel des logs,
+ainsi qu’une détection fiable des anomalies avec un minimum d’erreurs
+2.2.3
+Identification des acteurs
+Les acteurs d’un projet peuvent être des individus, des matériels ou des programmes
+informatiques interagissant avec la machine afin de produire des scénarios. Notre projet
+implique trois acteurs clés :
+Acteur
+Description
+Administrateur
+Responsable principal de la plateforme. Il gère l’importation
+des logs, la configuration des connexions serveurs, l’entraî-
+nement des modèles, la visualisation des résultats, ainsi que
+la gestion des utilisateurs et des paramètres système.
+Analyste Sécurité
+Spécialiste en sécurité consulte les dashboards, les logs, les
+anomalies, les rapports et les métriques sans pouvoir modifier
+les paramètres système.
+Système d’IA
+Acteur non humain chargé du traitement automatique des
+logs : parsing, nettoyage, transformation, détection des ano-
+malies, génération de scores et déclenchement des alertes.
+Table 2.1 – Identification des acteurs du système
+2.2.4
+Diagramme de cas d’utilisation global
+Le diagramme suivant présente de manière générale les différentes utilisations de
+notre système, en décrivant les actions mises afin de répondre aux besoins des acteurs.
+18
+
+
+===== PAGE 29 =====
+
+Chapitre 2. Spécifications des besoins
+Figure 2.1 – Diagramme de cas d’utilisation global
+19
+
+
+===== PAGE 30 =====
+
+Chapitre 2. Spécifications des besoins
+2.3
+Pilotage du projet avec SCRUM
+Cette section présente l’approche choisie pour piloter le développement de notre
+projet via la méthodologie Scrum
+2.3.1
+Équipe et rôles
+le tableau 2.2 détaille les acteurs, leurs rôles ainsi que leurs tâches.
+Rôle
+Acteur
+Tâches
+Product Owner
+Mrs Mohamed Hwarthi
+porteur et responsable de projet
+,guide l’équipe sur Scrum et aide
+à lever les obstacles
+Scrum Master
+Mme Ines Ben Hassine
+Gère
+la
+vision
+de
+l’applica-
+tion,priorise le backlog et valide les
+livrables.
+Scrum team
+Mohamed Aziz Boutar
+Salma Khefifi
+Recueil des besoins, Conception, Dé-
+veloppement ,Test et validation
+Table 2.2 – Rôles clés dans la méthodologie
+2.3.2
+le Backlog du produit
+Le backlog produit est une liste priorisée de toutes les fonctionnalités d’un produit,
+Il représente l’ensemble des besoins,des exigences et des spécifications des utilisateurs,
+souvent décrits sous forme de "userstory" ou récit utilisateur.
+ID
+Fonctionnalités
+US
+User Story
+Priorité
+1
+Inscription et
+Authentification
+1.1
+En tant qu’utilisateur (Admin/Analyste de
+securité),je veux pouvoir m’inscrire.
+Fort
+1.2
+En tant qu’utilisateur, je veux m’authenti-
+fier afin d’accéder de manière sécurisée à
+la plateforme.
+Fort
+2
+Modification du pro-
+fil
+2.1
+En tant qu’Analyste de securité, je veux
+modifier mon profil afin de mettre à jour
+mes données personnelles.
+Fort
+20
+
+
+===== PAGE 31 =====
+
+Chapitre 2. Spécifications des besoins
+3
+Gestion des
+utilisateurs
+3.1
+En tant qu’administrateur, je peux ajouter
+un utilisateur.
+Fort
+3.2
+En tant qu’administrateur, je peux modifier
+un utilisateur.
+Fort
+3.3
+En tant qu’administrateur, je peut suppri-
+mer un utilisateur.
+Fort
+4
+Gestion des rôles
+4.1
+En tant qu’administrateur, je peux définir
+un rôle pour un utilisateur.
+Fort
+4.2
+En tant qu’administrateur, je peux mettre
+à jour le rôle d’un utilisateur.
+Fort
+4.3
+En tant qu’administrateur, je peut suppri-
+mer le rôle d’un utilisateur.
+Fort
+5
+Importation des logs
+5.1
+En tant qu’utilisateur, je veux importer ma-
+nuellement un fichier CSV afin d’injecter
+les logs dans la plateforme.
+Fort
+5.2
+En tant qu’utilisateur, je veux disposer d’un
+identifiant d’import afin d’assurer le suivi
+du traitement.
+Fort
+5.3
+En tant qu’utilisateur, je veux consulter
+l’état de traitement d’un import afin de
+savoir si l’opération s’est déroulée correc-
+tement.
+Fort
+6
+Validation et
+structuration des
+données
+6.1
+En tant que système, je veux vérifier la
+présence des colonnes obligatoires afin de
+valider la conformité du fichier importé.
+Fort
+6.2
+En tant que système, je veux nettoyer et par-
+ser les champs importants afin de structurer
+correctement les logs.
+Fort
+21
+
+
+===== PAGE 32 =====
+
+Chapitre 2. Spécifications des besoins
+6.3
+En tant que système, je veux stocker les
+logs dans une structure normalisée afin de
+faciliter les traitements ultérieurs.
+Fort
+7
+Construction des
+variables de
+traitement
+7.1
+En tant que système, je veux agréger
+les événements par fenêtres temporelles
+afin d’analyser les comportements dans le
+temps.
+Fort
+7.2
+En tant que système, je veux calculer des
+variables comportementales à partir des
+logs afin d’alimenter le modèle IA.
+Fort
+7.3
+En tant que système, je veux enregistrer
+les variables calculées afin de conserver
+une trace du traitement effectué.
+Fort
+8
+Détection des
+anomalies
+8.1
+En tant qu’Agent IA, je veux intégrer un
+modèle de détection basé sur Isolation Fo-
+rest afin d’identifier les comportements
+anormaux.
+Fort
+8.2
+En tant qu’Agent IA, je veux exécuter au-
+tomatiquement la détection après l’import
+afin d’automatiser le pipeline.
+Fort
+9
+Gestion des
+anomalies
+9.1
+En tant qu’utilisateur, je veux consulter un
+score d’anomalie afin d’évaluer le niveau
+de risque associé.
+Moyen
+9.2
+En tant qu’utilisateur, je veux accéder aux
+anomalies détectées par import afin de
+faciliter l’analyse.
+Fort
+10
+Génération des
+alertes et
+notifications
+10.1
+En tant qu’Agent IA, je veux générer des
+alertes à partir des anomalies afin de signa-
+ler les comportements suspects.
+Fort
+22
+
+
+===== PAGE 33 =====
+
+Chapitre 2. Spécifications des besoins
+10
+Génération
+des
+alertes
+et
+notifica-
+tions
+10.2
+En tant qu’Agent IA, je veux catégoriser
+les alertes selon le type de menace afin
+d’améliorer leur interprétation.
+Fort
+10.3
+En tant qu’analyste, je souhaite consulter
+l’historique des alertes, afin d’assurer le
+suivi des incidents détectés .
+Moyen
+10.4
+En tant qu’administrateur, je veux recevoir
+des notifications par e-mail pour les alertes
+critiques afin d’être informé rapidement.
+Fort
+11
+Supervision de la
+plateforme
+11.1
+En tant qu’utilisateur, je veux disposer d’un
+tableau de bord global afin d’avoir une vue
+synthétique du système.
+Fort
+12
+Relance et rejeu du
+traitement
+12.1
+En tant qu’utilisateur, je veux relancer la
+détection sur un import existant afin de
+recalculer les anomalies et alertes.
+Fort
+12.2
+En tant qu’utilisateur, je veux visualiser un
+replay chronologique afin de comprendre
+l’évolution de la détection.
+Fort
+13
+Gestion des modèles
+de détection
+13.1
+En tant qu’administrateur, je veux enregis-
+trer un modèle actif afin de conserver la
+configuration utilisée pour la détection.
+Fort
+13.2
+En tant qu’utilisateur, je veux consulter le
+modèle utilisé et son seuil de détection afin
+de mieux interpréter les résultats.
+Moyen
+14
+Investigation et
+génération de
+rapports
+14.1
+En tant qu’analyste, je peux qualifier l’in-
+cident afin de confirmer la menace ou de
+déterminer s’il s’agit d’un faux positif.
+Moyen
+14.2
+En tant qu’analyste, je peux exporter un
+rapport.
+Moyen
+Table 2.3 – Backlog du produit
+23
+
+
+===== PAGE 34 =====
+
+Chapitre 2. Spécifications des besoins
+2.3.3
+Planification des Sprints
+La présente section a pour objectif d’exposer la manière dont les éléments du
+backlog produit ont été structurés et planifiés dans le temps pour le développement de
+notre plateforme. En s’appuyant sur une priorisation des fonctionnalités, ainsi que sur
+l’estimation des efforts requis pour chacune d’elles. Cette démarche permet d’assurer
+une capacité d’adaptation accrue face aux évolutions des besoins, tout en garantissant
+une validation continue du plateforme, issue d’un processus d’intégration incrémentale
+des différentes versions développées.
+ID
+Nom du sprint
+Fonctionnalités
+Durée
+Sprint 1
+Gestion des utilisa-
+teurs et des accès
+- Inscription et Authentification
+- Modification du profil
+- Gestion des utilisateurs
+- Gestion des rôles
+23 jours
+Sprint 2
+Importation et prépa-
+ration des données
+- Importation des logs
+- Validation et structuration des don-
+nées
+- Construction des variables de traite-
+mentt
+30 jours
+Sprint 3
+IA et détection auto-
+matique
+- Détection des anomalies
+- Gestion des anomalies
+- Relance et rejeu du traitement
+- Gestion des modèles de détection
+25 jours
+Sprint 4
+Dashboard et Repor-
+ting
+- Génération des alertes et notifica-
+tions
+- Supervision de la plateforme
+- Investigation et génération de rap-
+port
+24 jours
+Table 2.4 – Planification des sprints
+2.4
+Environnement Logiciel du travail
+Cette section présente l’environnement logiciel, qui regroupe l’ensemble des outils
+nécessaires à la réalisation de notre projet. Il comprend notamment les éditeurs de
+24
+
+
+===== PAGE 35 =====
+
+Chapitre 2. Spécifications des besoins
+code, les logiciels de modélisation, ainsi que les technologies de programmation et les
+frameworks utilisés pour le développement.
+Outil
+Description
+React[8] est une bibliothèque JavaScript moderne uti-
+lisée pour le développement de l’interface utilisateur
+dynamique et interactive de la plateforme.
+JavaScript[9] est un langage de programmation utilisé
+pour développer des interfaces web dynamiques et
+interactives. Dans ce projet, il est principalement utilisé
+avec React pour implémenter le frontend et gérer les
+interactions utilisateur.
+FastAPI[10] est un framework backend basé sur Py-
+thon, utilisé pour la création d’API REST performantes
+assurant la communication avec le frontend.
+Swagger UI[11] est un outil intégré à FastAPI per-
+mettant de tester, documenter et visualiser les API
+REST de manière interactive. Il facilite la validation
+des endpoints durant le développement.
+Draw.io[12] est utilisé pour la conception des dia-
+grammes UML et d’architecture du système.
+Visual Studio Code[13] est l’éditeur de code utilisé
+pour le développement du backend et du frontend.
+25
+
+
+===== PAGE 36 =====
+
+Chapitre 2. Spécifications des besoins
+Outil
+Description
+Python[14] est le langage principal utilisé pour le
+traitement des données, l’analyse des logs et l’implé-
+mentation du modèle de Machine Learning.
+Scikit-learn[15] est une bibliothèque de Machine Lear-
+ning utilisée pour implémenter le modèle Isolation
+Forest pour la détection des anomalies.
+LaTeX[16] est utilisé pour la rédaction du rapport avec
+une mise en forme professionnelle.
+MongoDB[17] est une base de données NoSQL utilisée
+pour stocker les logs, les anomalies détectées et les
+alertes générées.
+Mailtrap[18] est une plateforme d’emailing tout-en-un
+conçue pour les développeurs et marketeurs, permettant
+de tester, envoyer et contrôler les emails
+Taiga[19] est un outil de gestion de projet agile uti-
+lisé pour organiser les tâches, suivre l’avancement du
+projet et faciliter la collaboration entre les membres
+de l’équipe à travers des méthodes comme Scrum ou
+Kanban.
+Table 2.5 – Présentation des outils utilisés
+26
+
+
+===== PAGE 37 =====
+
+Chapitre 2. Spécifications des besoins
+2.5
+Architecture générale
+Un système informatique désigne un ensemble structuré de moyens matériels et
+logiciels, en interaction avec les technologies de télécommunication, dont la finalité est
+d’assurer la collecte, le traitement, le stockage et la restitution des données. À cet égard,
+il constitue un élément fondamental dans la conception des applications, en contribuant à
+garantir leur robustesse, leur maintenabilité ainsi que leur évolutivité à long terme.
+2.5.1
+Architecture physique
+Notre application repose sur une architecture à trois couches composée de trois
+composants principaux : le frontend, le serveur backend et la base de données. Chaque
+composant joue un rôle spécifique dans le fonctionnement global du système.
+Figure 2.2 – Architecture physique de la plateforme
+-Le client (Frontend) utilise une application web développée avec React. Cette
+interface permet aux utilisateurs d’importer des fichiers logs, de visualiser les ano-
+malies détectées et d’interagir avec le système via un tableau de bord dynamique. La
+communication avec le backend se fait à travers des requêtes HTTP via une API REST.
+-Le serveur backend est implémenté avec FastAPI. Il constitue le cœur du système
+en assurant le traitement des requêtes, la validation des données, l’exécution de la logique
+27
+
+
+===== PAGE 38 =====
+
+Chapitre 2. Spécifications des besoins
+métier et l’intégration du modèle de Machine Learning. Il prend en charge l’analyse des
+logs et la détection des anomalies.
+-Le serveur de base de données repose sur MongoDB, une base NoSQL utilisée
+pour stocker les logs importés, les résultats d’analyse, les anomalies détectées ainsi que
+les alertes générées. Elle garantit la persistance et la gestion flexible des données.
+-Le module Machine Learning est intégré au backend sous forme de modèles
+pré-entraînés (Isolation Forest et scaler). Il permet d’identifier automatiquement les
+comportements anormaux dans les logs.
+Cette architecture modulaire permet d’assurer une bonne scalabilité, une maintenance
+facilitée et une séparation claire des responsabilités.
+2.5.2
+Architecture logique
+L’architecture logique de notre plateforme repose sur une organisation en couches
+permettant de séparer les différentes responsabilités du système.
+Figure 2.3 – Architecture logique de la plateforme
+Elle est composée de cinq couches principales :
+- La couche de présentation (Vue) correspond à l’interface utilisateur développée
+avec React. Elle permet l’affichage des données, la visualisation des anomalies
+28
+
+
+===== PAGE 39 =====
+
+Chapitre 2. Spécifications des besoins
+et des alertes, ainsi que l’interaction avec le système à travers un tableau de bord
+dynamique.
+- La couche API (Contrôleur) est assurée par FastAPI. Elle agit comme un
+intermédiaire entre le frontend et le backend en exposant des services REST. Elle
+reçoit les requêtes HTTP, les traite et retourne les réponses appropriées.
+- La couche de traitement (Logique métier) prend en charge la validation des
+fichiers logs, le nettoyage des données, la transformation des informations et
+l’extraction des caractéristiques nécessaires à l’analyse.
+- La couche d’intelligence artificielle repose sur un modèle de Machine Learning
+basé sur l’algorithme Isolation Forest. Cette couche analyse les données préparées
+afin de détecter automatiquement les comportements anormaux.
+- La couche de persistance utilise MongoDB pour stocker les logs importés, les
+anomalies détectées ainsi que les alertes générées. Elle assure la cohérence, la
+disponibilité et la gestion flexible des données.
+Le fonctionnement global du système peut être résumé par le flux logique suivant :
+Figure 2.4 – flux logique du système
+2.6
+Conclusion
+Ce chapitre a permis de cadrer le projet en définissant les besoins, les acteurs et les
+principales fonctionnalités de la plateforme. Il a également présenté l’organisation du
+développement via Scrum, ainsi que les outils et technologies mis en place.
+29
+
+
+===== PAGE 40 =====
+
+Chapitre 2. Spécifications des besoins
+Enfin, l’architecture proposée fournit une vue d’ensemble du système, en soulignant
+sa modularité et sa capacité à incorporer des mécanismes intelligents de détection
+d’anomalies. Ce cadre fournit une base solide pour la suite du projet.
+30
+
+
+===== PAGE 41 =====
+
+Chapitre3
+Sprint 1 :Gestion des utilisateurs et des
+accès
+Contents
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.2
+Backlog du sprint 1
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.3
+Analyse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.3.1
+Diagramme de cas d’utilisation du Sprint 1 . . . . . . . . . .
+35
+3.3.2
+Description du cas d’utilisation «S’inscrire» . . . . . . . . . .
+35
+3.3.3
+Description du cas d’utilisation «S’authentifier» . . . . . . . .
+36
+3.3.4
+Description du cas d’utilisation «Modifier profil» . . . . . . .
+37
+3.3.5
+Description du cas d’utilisation «Supprimer utilisateur»
+. . .
+38
+3.3.6
+Description du cas d’utilisation «Mise à jour d’un rôle» . . . .
+38
+3.4
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.4.1
+Diagramme de séquence du cas «S’inscrire»
+. . . . . . . . .
+39
+3.4.2
+Diagramme de séquence du cas : S’authentifier . . . . . . . .
+40
+3.4.3
+Diagramme de séquence du cas : Modifier profil
+. . . . . . .
+42
+3.4.4
+Diagramme de séquence du cas : Supprimer utilisateur . . . .
+42
+3.4.5
+Diagramme de séquence du cas : Mettre à jour un rôle
+. . . .
+43
+3.4.6
+Diagramme de classes du Sprint 1 . . . . . . . . . . . . . . .
+44
+3.5
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.5.1
+Interface d’authentification (Connexion) . . . . . . . . . . . .
+45
+3.5.2
+Interface d’inscription
+. . . . . . . . . . . . . . . . . . . . .
+45
+3.5.3
+Interface de récupération de mot de passe . . . . . . . . . . .
+46
+3.5.4
+Interface du profil utilisateur . . . . . . . . . . . . . . . . . .
+47
+3.5.5
+Interface de gestion des utilisateurs (Vue Administrateur) . . .
+47
+3.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+31
+
+
+===== PAGE 42 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+3.1
+Introduction
+Dans le chapitre précédent, nous avons procédé à la structuration de notre projet
+en plusieurs sprints. Le premier sprint de développement visait à établir les fonda-
+tions essentielles de l’application, en mettant en place les mécanismes d’inscription et
+d’authentification destinés aux différents profils d’utilisateurs.
+3.2
+Backlog du sprint 1
+Le backlog du Sprint 1 définit les bases d’accès à la plateforme, notamment les
+mécanismes d’inscription, d’authentification et de gestion des profils. Le tableau suivant
+présente les fonctionnalités à developper durant ce sprint.
+ID
+User story
+Id tâche
+Tâche
+Durée (j)
+1.1
+En tant qu’utilisateur
+(Admin/Analyste
+securitée), je veux
+pouvoir m’inscrire
+1.1.A
+Créer le front-end de « Sign Up »
+0.5
+1.1.B
+Développer le formulaire front-end
+« Sign Up » avec validation de base
+0.5
+1.1.C
+Implémenter l’API POST /signup
+0.5
+1.1.E
+Tester le flux « Sign Up »
+0.5
+1.2
+En tant qu’utilisateur, je
+veux m’authentifier afin
+d’accéder de manière
+sécurisée à la
+plateforme
+1.2.A
+Créer le front-end de « Login »
+0.5
+1.2.B
+Développer le formulaire front-end
+« Login » avec validation de base
+0.5
+1.2.C
+Implémenter l’API POST /login
+0.5
+1.2.D
+Tester le flux de « Login »
+0.5
+2.1
+En tant qu’Analyste de
+securité, je veux
+modifier mon profil afin
+de mettre à jour mes
+données personnelles.
+2.1.A
+Créer le front-end de «Monprofil»
+0.5
+32
+
+
+===== PAGE 43 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+2.1
+En tant qu’Analyste de
+securité, je veux gérer
+mon profil afin de mettre
+à jour mes données per-
+sonnelles.
+2.1.B
+Implémenter l’API PUT/users/id
+0.5
+2.1.C
+Tester la mise à jour du profil
+0.5
+3.1
+En tant
+qu’administrateur, je
+peux ajouter un
+utilisateur.
+3.1.A
+Implémenter la logique backend
+pour l’enregistrement en base de don-
+née
+1
+3.1.B
+Valider les champs obligatoires et
+les formats de données (nom, email,
+etc)
+0.5
+3.1.C
+Tester l’ajout d’un utilisateur
+0.5
+3.2
+En tant
+qu’administrateur, je
+peux modifier un
+utilisateur.
+3.2.A
+Créer la vue « modifier un utilisateur
+»
+1
+3.2.B
+Implémenter la logique backend
+pour la mise à jour des données
+1
+3.2.C
+Gérer les erreurs de modification (ex :
+utilisateur non trouvé)
+0.5
+3.2.D
+Tester la modification d’un utilisa-
+teur
+0.5
+3.3
+En tant
+qu’administrateur, je
+peux supprimer un
+utilisateur.
+3.3.A
+Créer la vue « supprimer un utilisa-
+teur »
+1
+3.3.B
+Implémenter la logique backend
+pour la suppression des données
+1
+3.3.C
+Ajouter une confirmation avant sup-
+pression et gérer les dépendances
+1
+3.3.D
+Tester la suppression d’un utilisateur
+0.5
+33
+
+
+===== PAGE 44 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+4.1
+En tant
+qu’administrateur, je
+peux définir un rôle
+pour un utilisateur.
+4.1.A
+Créer la vue « attribution de rôle »
+pour l’utilisateur
+1
+4.1.B
+Implémenter la logique backend
+pour affecter un rôle à un utilisateur
+1
+4.1.C
+Mettre en place la gestion des rôles
+(ex : admin, Analyste securité)
+0.5
+4.1.D
+Gérer les erreurs (ex : utilisateur in-
+trouvable)
+0.5
+4.1.E
+Tester l’attribution et la modification
+des rôles
+0.5
+4.2
+En tant
+qu’administrateur, je
+peux mettre à jour du
+rôle pour un utilisateur.
+4.2.A
+Créer la vue « mise à jour de rôle »
+pour l’utilisateur
+1
+4.2.B
+Implémenter la logique backend de
+mise à jour du rôle en base de don-
+nées
+1
+4.2.C
+Gérer les erreurs (ex : utilisateur in-
+trouvable)
+0.5
+4.2.D
+Tester la mise à jour du rôle
+0.5
+4.3
+En tant
+qu’administrateur, je
+peux supprimer le rôle
+d’un utilisateur.
+4.3.A
+Créer la vue « supprimer le rôle »
+1
+4.3.B
+Implémenter la logique backend
+pour la suppression
+1
+4.3.C
+Tester la suppression du rôle
+0.5
+Table 3.1 – Backlog du Sprint 1
+3.3
+Analyse
+Dans cette section, nous réalisons une analyse approfondie des fonctionnalités du
+premier sprint, en nous concentrant sur la modélisation des interactions à travers des
+diagrammes.
+34
+
+
+===== PAGE 45 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+3.3.1
+Diagramme de cas d’utilisation du Sprint 1
+la figure 3.1 illustre le diagramme détaillé du cas d’utilisation "Sprint 1" :
+Figure 3.1 – Diagramme de cas d’utilisation du sprint 1
+3.3.2
+Description du cas d’utilisation «S’inscrire»
+Le Tableau 3.2 décrit de façon textuelle l’usage du cas d’utilisation "S’inscrire". Il
+présente le scénario principal ainsi que les différentes alternatives.
+35
+
+
+===== PAGE 46 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+Cas d’utilisation
+S’inscrire
+Acteurs
+-Analyste securité .
+Pré-condition
+- L’Analyste n’a pas de compte et clique sur«Créer un compte»
+depuis l’écran Login.
+Scénario principal
+1. Le
+système
+affiche
+le
+formulaire
+d’inscription
+(nom,prénom,emailetc.).
+2. L’Analyste remplit le formulaire avec ses coordonnées.
+3. L’Analyste clique sur le bouton "Register".
+4. Le système valide les champs en s’assurant qu’ils sont
+correctement remplis .
+5. Si les informations saisies sont correctes, le système affiche
+le message "User registered successfully!" et le redige vers
+la page de connexion .
+Scénario alternatif
+- champs vides : le système affiche un message d’erreur.
+- Données déjà existantes : le système affiche le message
+"User already Registered!" .
+Table 3.2 – Description du cas d’utilisation :S’inscrire
+3.3.3
+Description du cas d’utilisation «S’authentifier»
+Le Tableau 3.3 décrit de façon textuelle l’usage du cas d’utilisation "S’authentifier".
+Il présente les cénario principal ainsi que les différentes alternatives.
+36
+
+
+===== PAGE 47 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+Cas d’utilisation
+S’authentifier
+Acteurs
+- Admin ou Analyste sécurité.
+Pré-condition
+- L’utilisateur doit être inscrit sur la plateforme et posséder des
+identifiants valides.
+Scénario principal
+1. Le système affiche l’interface d’authentification.
+2. L’utilisateur saisit ses informations d’identification .
+3. L’utilisateur confirme la saisie en cliquant sur le bouton
+"connect".
+4. Le système vérifie les paramètres saisis et valide l’identité de
+l’utilisateur.
+5. Le système génère et envoie automatiquement un code de double
+authentification (2FA) sur l’email de l’utilisateur.
+6. Le système affiche l’interface de saisie du code 2FA.
+7. L’utilisateur saisit le code reçu et cliquer survérifier le code.
+8. Le système vérifie le code et oriente l’utilisateur vers le tableau
+de bord.
+Scénario alternatif
+- Email/Mot de passe incorrect : Le système affiche le message
+"Incorrect Email or Password!".
+- Utilisateur non trouvé : Le système affiche le message "Utilisateur
+non trouvé".
+- Code 2FA incorrect ou expiré : Le système affiche un message
+d’erreur et invite l’utilisateur à réessuyer ou à renvoyer un nouveau
+code.
+- Mot de passe oublié :
+a. L’utilisateur clique sur "Mot de passe oublié" et saisit son
+adresse email.
+b. Le système envoie un lien de réinitialisation par email.
+c. L’utilisateur ouvre le lien, saisit son nouveau mot de passe et
+clique sur "Réinitialiser".
+d. Le système enregistre les modifications et redirige l’utilisateur
+vers l’interface d’authentification.
+Table 3.3 – Description du cas d’utilisation : S’authentifier
+3.3.4
+Description du cas d’utilisation «Modifier profil»
+Le Tableau 3.4 décrit de façon textuelle l’usage du cas d’utilisation "Modifier profil"
+37
+
+
+===== PAGE 48 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+Cas d’utilisation
+Modifier profil
+Acteurs
+Analyste de sécurité (Principal)
+Pré-condition
+L’analyste de sécurité est authentifié et connecté à son compte.
+Scénario principal
+1. L’utilisateur accède à la section "Mon Profil".
+2. L’utilisateur modifie les informations souhaitées (nom,
+email, mot de passe, etc.).
+3. L’utilisateur clique sur le bouton de validation pour
+enregistrer les modifications.
+4. Le système valide les nouvelles données et met à jour
+le profil dans la base de données.
+5. Le système affiche un message de confirmation de la
+mise à jour.
+Scénario alternatif
+Données invalides : Si le format de l’email est incorrect ou
+si le mot de passe ne respecte pas les critères de sécurité, le
+système affiche un message d’erreur et demande la correction
+des champs.
+Table 3.4 – Description du cas d’utilisation : Modifier profil
+3.3.5
+Description du cas d’utilisation «Supprimer utilisateur»
+Le Tableau 3.5 décrit de façon textuelle l’usage du cas d’utilisation "Supprimer
+utilisateur"
+Cas d’utilisation
+Supprimer un utilisateur .
+Acteurs
+Admin.
+Pré-condition
+- L’administrateur est authentifié et possède les droits d’administra-
+tion.
+Scénario principal
+1. L’administrateur accède à la section "Utilisateurs".
+2. L’administrateur sélectionne l’option "supprimer" .
+3. L’administrateur confirme le changement.
+4. Une notification de confirmation s’affiche à l’écran par le système.
+Scénario alternatif
+—————————–
+Table 3.5 – Description du cas d’utilisation :Supprimer utilisateur
+3.3.6
+Description du cas d’utilisation «Mise à jour d’un rôle»
+Le Tableau 3.6 décrit de façon textuelle l’usage du cas d’utilisation "Mise à jour d’un
+rôle"
+38
+
+
+===== PAGE 49 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+Cas d’utilisation
+Définir les rôles
+Acteurs
+Admin
+Pré-condition
+Un compte utilisateur est ouvert en mode édition.
+Scénario principal
+1. L’administrateur accède à la section "Utilisateurs".
+2. L’administrateur sélectionne le nouveau rôle pour l’utilisa-
+teur(Analyste securitée,Admin).
+3. L’administrateur confirme le changement.
+4. Le système met à jour les métadonnées de l’utilisateur .
+Scénario alternatif
+————————–
+Table 3.6 – Description du cas d’utilisation :Mise à jour d’un rôle
+3.4
+Conception
+3.4.1
+Diagramme de séquence du cas «S’inscrire»
+Le diagramme de séquence 3.2 présente les différentes étapes qu’un Analyste doit
+suivre pour créer son compte sur la plateforme. Tout débute lorsque l’Analyste transmet
+le formulaire d’inscription au Contrôleur par le biais de l’Interface de gestion, qui vérifie
+alors les données saisies pour confirmer leur conformité. Si les champs sont bien remplis,
+le Contrôleur fait appel à la Base de données afin de vérifier que les coordonnées sont
+bien inédites. Celles-ci enregistrent le nouvel utilisateur si disponible et confirment
+leur disponibilité. Le mécanisme se termine par l’affichage d’un message de succès et l
+Redirection de votre Analyste client vers la page de connexion, ou par l’apparition d’un
+message d’erreur lorsque les champs sont vides ou si le compte est déjà initalisé.
+39
+
+
+===== PAGE 50 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+Figure 3.2 – Diagramme de séquence du cas "S’inscrire"
+3.4.2
+Diagramme de séquence du cas : S’authentifier
+Le diagramme de séquence 3.3 présente les différentes étapes par lesquelles un
+Administrateur ou un Analyste peut s’authentifier de façon sécurisée sur la plateforme.
+Tout débute lorsque l’utilisateur envoie ses identifiants au Contrôleur via l’Interface de
+gestion; le Contrôleur interroge alors la Base de données afin de vérifier son identité.
+Si les données sont correctes, le Contrôleur active une vérification complémentaire en
+transmettant un code de double authentification (2FA) que l’utilisateur doit entrer et
+valider. Le processus se solde par une autorisation d’accès et une redirection vers le
+tableau de bord en cas de succès, l’affichage d’un message d’erreur si les identifiants ou
+le code sont invalides, ou le déclenchement d’une procédure de réinitialisation par email
+40
+
+
+===== PAGE 51 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+en cas d’oubli du mot de passe.
+Figure 3.3 – Diagramme de séquence du cas :S’authentifier
+41
+
+
+===== PAGE 52 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+3.4.3
+Diagramme de séquence du cas : Modifier profil
+Le diagramme de séquence de la Figure 3.4 montre comment l’Analyste de sécurité
+interagit avec le système pour modifier son profil. Tout commence lorsque l’utilisateur
+accède à son profil et y apporte des modifications. Ensuite, il valide ces changements.
+L’Interface profil envoie ces informations au Contrôleur, qui vérifie si tout est correct.
+si les données sont correctes, le Contrôleur met à jour les informations dans la Base de
+données et envoie un message de succés.Sinon le contrôleur détecte l’erreur et renvoie un
+message d’alerte à l’utilisateur via l’interface profil pour qu’il puisse corriger ses erreurs.
+Figure 3.4 – Diagramme de séquence du cas :Modifier profil
+3.4.4
+Diagramme de séquence du cas : Supprimer utilisateur
+La figure 3.5 représente le déroulement du cas d’utilisation « supprimer un utilisateur
+». L’administrateur, après s’être authentifié, choisit, dans l’interface de gestion, l’utilisateur
+42
+
+
+===== PAGE 53 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+à supprimer. Le système demande confirmation pour éviter une suppression accidentelle.
+Une fois la confirmation acquise, l’ordre est envoyé au contrôleur qui supprime alors
+l’entrée correspondante dans la base de données. Enfin, un message de succès est affiché
+afin de notifier l’administrateur que l’opération s’est bien déroulée.
+Figure 3.5 – Diagramme de séquence du cas :Supprimer utilisateur
+3.4.5
+Diagramme de séquence du cas : Mettre à jour un rôle
+La figure 3.6 montre le déroulement du cas d’utilisation « mettre à jour le rôle d’un
+utilisateur ». Après s’être authentifié, l’administrateur clique sur «Changer de rôle» et
+le système récupère et affiche la liste des rôles disponibles. L’administrateur choisit le
+nouveau rôle souhaité, puis confirme sa sélection lorsqu’une demande de confirmation
+lui est proposée par le système. La modification est ensuite envoyée au contrôleur, qui
+met à jour le rôle de l’utilisateur dans la base de données. Enfin, un message de succès
+est affiché afin de notifier l’administrateur que l’opération s’est bien déroulée.
+43
+
+
+===== PAGE 54 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+Figure 3.6 – Diagramme de séquence du cas :Mettre à jour un rôle
+3.4.6
+Diagramme de classes du Sprint 1
+Afin de modéliser la structure de données permettant de supporter les fonctionnalités
+d’inscription,d’authentification ,gestion des utilisateurs et de gestion des rôles, nous
+présentons le diagramme de classes relatif au premier sprint.
+Figure 3.7 – Diagramme de classes détailées du sprint 1
+44
+
+
+===== PAGE 55 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+3.5
+Réalisation
+Cette section présente la phase de réalisation du projet, au cours de laquelle nous
+exposons les différentes interfaces développées à la suite des étapes d’analyse et de
+conception du premier sprint.
+3.5.1
+Interface d’authentification (Connexion)
+L’interface de connexion (Figure 3.8) permet aux utilisateurs de s’authentifier de
+façon sécurisée grâce à la saisie de leur adresse email et de leur mot de passe. L’accès est
+sécurisé et nécessite des identifiants valides.
+Figure 3.8 – Interface d’authentification (Connexion)
+3.5.2
+Interface d’inscription
+L’interface d’inscription (Figure 3.9) permet à de nouveaux analystes de sécurité de
+créer un compte sur la plateforme en saisissant leur nom, adresse email et mot de passe
+sécurisé.
+45
+
+
+===== PAGE 56 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+Figure 3.9 – Interface d’inscription
+3.5.3
+Interface de récupération de mot de passe
+Si l’utilisateur oublie son mot de passe, il peut utiliser cette interface (Figure 3.10)
+pour entrer son adresse e-mail et recevoir un lien de réinitialisation.
+Figure 3.10 – Interface de récupération de mot de passe
+46
+
+
+===== PAGE 57 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+3.5.4
+Interface du profil utilisateur
+Cette interface (Figure 3.11) permet à l’utilisateur connecté d’afficher ses informations
+personnelles, de modifier son profil (nom, email) ou de mettre à jour son mot de passe de
+façon sécurisée.
+Figure 3.11 – Interface du profil utilisateur
+3.5.5
+Interface de gestion des utilisateurs (Vue Administrateur)
+L’administrateur dispose d’une interface dédiée (Figure 3.12) qui lui permet d’afficher
+la liste de tous les comptes enregistrés, de modifier leur rôle (Admin ou Analyste) et
+d’effacer des comptes si nécessaire.
+47
+
+
+===== PAGE 58 =====
+
+Chapitre 3. Sprint 1 :Gestion des utilisateurs et des accès
+Figure 3.12 – Interface de gestion des utilisateurs et des rôles
+3.6
+Conclusion
+Ce premier sprint, intitulé « Authentification et gestion des comptes », nous a permis
+de finaliser les phases d’analyse, de conception et de réalisation, avec un accent particulier
+sur la conception du design front-end de la plateforme. Dans le chapitre suivant, nous
+initierons la deuxième sprint de notre projet.
+48
+
+
+===== PAGE 59 =====
+
+Chapitre4
+Sprint 2 :Importation et préparation
+des données
+Contents
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.2
+Backlog du sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.3
+Analyse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.3.1
+Diagramme de cas d’utilisation du Sprint 2 . . . . . . . . . .
+53
+4.3.2
+Description du cas d’utilisation «Importer les fichiers CSV» .
+54
+4.3.3
+Description du cas d’utilisation «Nettoyer et parser»
+. . . . .
+54
+4.3.4
+Description du cas d’utilisation « calculer les variables com-
+portementales» . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.4
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+4.4.1
+Diagramme de séquence du cas «Importer les fichiers CSV» .
+56
+4.4.2
+Diagramme de séquence du cas «Nettoyer et Parser» . . . . .
+57
+4.4.3
+Diagramme de séquence du cas «Calculer les variables com-
+portementales» . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+4.4.4
+Diagramme de classes du Sprint 2 . . . . . . . . . . . . . . .
+59
+4.5
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+4.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+49
+
+
+===== PAGE 60 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+4.1
+Introduction
+Suite à la mise en place des fondations de l’application au cours du Sprint 1, cette partie
+vise à reprendre les mêmes étapes pour introduire le Sprint 2, consacré à l’importation et
+à la préparation des données.
+4.2
+Backlog du sprint 2
+Le tableau 4.1 illustre le backlog global du Sprint 2.
+ID
+User story
+Id tâche
+Tâche
+Durée (j)
+4.1
+En tant qu’utilisateur, je
+veux importer
+manuellement un fichier
+CSV afin d’injecter les
+logs dans la plateforme.
+4.1.A
+Création de l’interface utilisateur
+pour la sélection du fichier.
+1
+4.1.B
+Développement du service de récep-
+tion et de téléchargement du fichier
+sur le serveur.
+1
+4.1.C
+Configuration du stockage tempo-
+raire des fichiers bruts.
+1
+4.2
+En tant qu’utilisateur, je
+veux disposer d’un
+identifiant d’import afin
+d’assurer le suivi du
+traitement.
+4.2.A
+Mise en place d’un générateur de
+jetons uniques (UUID) pour chaque
+session d’import.
+1
+4.2.B
+Création de la table de suivi dans la
+base de données.
+1
+4.2.C
+Liaison de l’identifiant au fichier im-
+porté pour permettre le traçage.
+1
+50
+
+
+===== PAGE 61 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+4.3
+En tant qu’utilisateur, je
+veux consulter l’état de
+traitement d’un import
+afin de savoir si
+l’opération s’est
+déroulée correctement.
+4.3.A
+Développement des différents statuts
+de traitement (En attente, En cours,
+Terminé, Échec).
+1
+4.3.B
+Conception d’un tableau de bord de
+suivi pour l’utilisateur.
+1
+4.3.C
+Mise en place d’un système de ra-
+fraîchissement des données pour ac-
+tualiser l’état.
+1
+5.1
+En tant que système, je
+veux vérifier la
+présence des colonnes
+obligatoires afin de
+valider la conformité du
+fichier importé.
+5.1.A
+Définition du dictionnaire des co-
+lonnes obligatoires attendues.
+1
+5.1.B
+Développement de l’algorithme de
+vérification des en-têtes du fichier.
+1
+5.1.C
+Gestion du rejet automatique des fi-
+chiers non conformes.
+1
+5.2
+En tant que système, je
+veux nettoyer et parser
+les champs importants
+afin de structurer
+correctement les logs.
+5.2.A
+Développement du script d’extrac-
+tion des données textuelles vers un
+format exploitable.
+1
+5.2.B
+Nettoyage des données (suppression
+des espaces, correction des formats
+de date).
+1
+5.2.C
+Traitement des valeurs manquantes
+ou des caractères spéciaux.
+1
+51
+
+
+===== PAGE 62 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+5.3
+En tant qu’utilisateur, je
+veux distinguer les
+lignes valides des lignes
+rejetées afin d’évaluer
+la qualité de l’import.
+5.3.A
+Implémentation d’un compteur de
+lignes pour isoler les erreurs.
+1
+5.3.B
+Génération d’un rapport de qualité
+détaillant les lignes posant problème.
+1
+5.3.C
+Affichage de la synthèse de l’import
+à l’utilisateur.
+1
+5.4
+En tant que système, je
+veux stocker les logs
+dans une structure
+normalisée afin de
+faciliter les traitements
+ultérieurs.
+5.4.A
+Conception du schéma de la table
+finale "Logs Normalisés".
+1
+5.4.B
+Développement de la procédure d’in-
+sertion massive en base de données.
+1
+5.4.C
+Indexation des colonnes critiques
+pour accélérer les futures recherches
+de l’IA.
+1
+6.1
+En tant que système, je
+veux agréger les
+événements par fenêtres
+temporelles afin
+d’analyser les
+comportements dans le
+temps.
+6.1.A
+Définition des fenêtres de temps pour
+le regroupement des événements.
+1
+6.1.B
+Développement de la logique de cal-
+cul par intervalles (ex : nombre d’ac-
+tions par minute).
+1
+6.1.C
+Vérification de l’alignement tempo-
+rel des données agrégées.
+1
+52
+
+
+===== PAGE 63 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+6.2
+En tant que système, je
+veux calculer des
+variables
+comportementales à
+partir des logs afin
+d’alimenter le modèle
+d’intelligence
+artificielle.
+6.2.A
+Extraction des caractéristiques clés
+(fréquence de connexion, types d’er-
+reurs récurrentes).
+1
+6.2.B
+Calcul des moyennes et des écarts-
+types par utilisateur ou par session.
+1
+6.2.C
+Transformation des données tex-
+tuelles en valeurs numériques (Vec-
+torisation).
+1
+6.3
+En tant que système, je
+veux enregistrer les
+variables calculées afin
+de conserver une trace
+du traitement effectué.
+6.3.A
+Création de la structure de stockage
+pour les caractéristiques calculées.
+1
+6.3.B
+Développement de la fonction de
+sauvegarde des vecteurs de données.
+1
+6.3.C
+Vérification finale des données avant
+leur injection dans le modèle de dé-
+tection d’anomalies.
+1
+Table 4.1 – Backlog du Sprint 2
+4.3
+Analyse
+Dans cette partie, nous procédons à une analyse détaillée des fonctionnalités du
+deuxième sprint, en les reliant à leurs cas d’utilisation correspondants.
+4.3.1
+Diagramme de cas d’utilisation du Sprint 2
+la figure 4.1 illustre le diagramme détaillé du cas d’utilisation "Sprint 2" :
+53
+
+
+===== PAGE 64 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+Figure 4.1 – Diagramme de cas d’utilisation du sprint 2
+4.3.2
+Description du cas d’utilisation «Importer les fichiers CSV»
+Le Tableau 4.2 décrit de façon textuelle l’usage du cas d’utilisation "Importer les
+fichiers CSV".
+Cas d’utilisation
+Importer des fichiers CSV
+Acteurs
+Utilisateur (Principal), Système (Secondaire)
+Pré-condition
+L’utilisateur possède un fichier CSV au format compatible.
+Scénario principal
+1. L’utilisateur sélectionne le fichier CSV sur son poste local.
+2. L’utilisateur lance l’importation.
+3. Le système valide et structurer et les données.
+4. Le système affiche un message de succès avec le résumé de
+l’import.
+Scénario alternatif
+- Fichier corrompu : Le système interrompt l’import et affiche
+"Seuls les fichiers CSV sont autorisés.".
+Table 4.2 – Description du cas d’utilisation : Importer les fichiers CSV
+4.3.3
+Description du cas d’utilisation «Nettoyer et parser»
+le Tableau 4.3 décrit de façon textuelle l’usage du cas d’utilisation "Nettoyer et
+parser".Il présente les cénario principal ainsi que les différentes alternatives.
+54
+
+
+===== PAGE 65 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+Cas d’utilisation
+Nettoyer et parser les champs importants
+Acteurs
+Système
+Pré-condition
+Les données textuelles ont été extraites des logs et sont
+disponibles pour le traitement.
+Scénario principal
+1. Le système extrait les données textuelles des logs.
+2. Le système nettoie les données en supprimant les espaces
+inutiles et en corrigeant les formats de date.
+3. Le système traite les valeurs manquantes et les caractères
+spéciaux.
+4. Le système structure les données dans un format exploi-
+table.
+Scénario alternatif
+- Données invalides : Le fichier est automatiquement classé
+dans les rejected logs.
+Table 4.3 – Description du cas d’utilisation : Nettoyer et parser les champs importants
+4.3.4
+Description du cas d’utilisation « calculer les variables com-
+portementales»
+Le Tableau 4.4 décrit de façon textuelle l’usage du cas d’utilisation "calculer les
+variables comportementales".
+Cas d’utilisation
+Calculer des variables comportementales (Feature Enginee-
+ring)
+Acteurs
+Système
+Pré-condition
+Les logs sont nettoyés, normalisés et stockés dans la base de
+données.
+Scénario principal
+1. Le système récupère les logs normalisés par fenêtres tem-
+porelles.
+2. Le système extrait les caractéristiques clés (fréquence de
+connexion, types d’erreurs).
+3. Le système calcule les moyennes et écarts-types par utili-
+sateur ou par session.
+4. Le système transforme ces données textuelles en valeurs
+numériques (vectorisation).
+Scénario alternatif
+———————–
+Table 4.4 – Description du cas d’utilisation : calculer les variables comportementales
+55
+
+
+===== PAGE 66 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+4.4
+Conception
+4.4.1
+Diagramme de séquence du cas «Importer les fichiers CSV»
+Ce diagramme de séquence 4.2 montre comment un administrateur importe des
+fichiers CSV. Tout commence par l’authentification de l’utilisateur. Ensuite, l’utilisateur
+choisit un fichier sur son ordinateur et démarre l’importation en cliquent sur le button. Le
+contrôleur prend le fichier et gère le processus de deux manières. Si le fichier est correct,
+les données sont bien organisées et enregistrées dans la base de données. L’utilisateur
+reçoit alors un message de succès et un résumé. Si le fichier est endommagé ou a un
+format incorrect, le système arrête le processus et affiche un message d’erreur. Ce message
+indique que seuls les fichiers CSV sont acceptés.
+Figure 4.2 – Diagramme de séquence du cas «Importer les fichiers CSV»
+56
+
+
+===== PAGE 67 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+4.4.2
+Diagramme de séquence du cas «Nettoyer et Parser»
+Ce diagramme de séquence 4.3 montre les étapes du processus de traitement automatisé
+des données dans le système. Tout commence par l’activation du Module de nettoyage.
+Le Module de nettoyage nettoie les logs bruts en supprimant les espaces inutiles et en
+mettant les dates au bon format. Ensuite, les données nettoyées sont envoyées au Module
+de parsing. Le Module de parsing améliore la structure des données en gérant les valeurs
+manquantes et les caractères spéciaux. Le processus se termine de deux manières. Si
+les données sont valides, elles sont mises dans un format utilisable et archivées par le
+système. Mais si les données sont invalides, le fichier est mis de côté dans un dossier
+appelé Rejected Logs, et le système reçoit un message de confirmation.
+Figure 4.3 – Diagramme de séquence du cas «Nettoyer et Parser»
+57
+
+
+===== PAGE 68 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+4.4.3
+Diagramme de séquence du cas «Calculer les variables com-
+portementales»
+la figure 4.4 présente le processus automatisé de préparation des données pour
+l’intelligence artificielle, ou (Feature Engineering). Celui-ci est déclenché à intervalles
+réguliers. Le Planificateur de tâches est à l’origine de ce flux. Il demande au Moteur
+d’Analyse IA de commencer le calcul des variables. Pour ce faire, le Moteur d’Analyse
+IA récupère d’abord les journaux normalisés depuis la Base de données. Cela se fait
+dans des fenêtres temporelles définies. Ensuite, il effectue différents traitements. Parmi
+ceux-ci, il y a l’extraction des caractéristiques clés. Le calcul des statistiques, comme les
+moyennes et les écarts-types, est aussi effectué. De plus, le Moteur d’Analyse IA procède
+à la vectorisation numérique des données. Lorsque le processus se termine, il peut se
+présenter sous deux formes.
+Si le calcul est un succès, les variables (features) sont sauvegardées dans la Base
+de données. Une confirmation de bonne réception est alors envoyée. Par contre, si les
+données sont insuffisantes, une alerte est générée dans les journaux du système. Celle-ci
+permet de signaler l’anomalie de traitement.
+Figure 4.4 – Diagramme de séquence du cas «Calculer les variables comportementales»
+58
+
+
+===== PAGE 69 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+4.4.4
+Diagramme de classes du Sprint 2
+Après avoir défini l’architecture de base liée à l’authentification, nous avons enrichi
+le diagramme de classes du Sprint 1 pour y intégrer les nouvelles entités nécessaires au
+traitement des données. Cette évolution structurelle permet de modéliser non seulement
+la gestion des utilisateurs, mais aussi le cycle de vie complet des logs, depuis leur impor-
+tation manuelle jusqu’à leur transformation en vecteurs numériques pour l’intelligence
+artificielle.
+Figure 4.5 – Diagramme de classes détailées du sprint 2
+59
+
+
+===== PAGE 70 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+4.5
+Réalisation
+Cette partie présente la phase de mise en œuvre du deuxième sprint, qui a pour
+objectif l’intégration, la validation et la préparation des logs pour l’analyse IA.
+L’interface d’importation (Figure 4.6) permet à l’utilisateur de sélectionner et d’im-
+porter un fichier de logs bruts au format CSV. À l’issue de l’import, le système retourne
+un identifiant unique d’importation (UUID), le statut du traitement (en cours, terminé,
+échec) ainsi qu’un récapitulatif détaillant le nombre de lignes valides stockées et le
+nombre de lignes rejetées (non conformes).
+Figure 4.6 – Interface d’importation des fichiers de logs CSV (Partie 1)
+60
+
+
+===== PAGE 71 =====
+
+Chapitre 4. Sprint 2 :Importation et préparation des données
+Figure 4.6 – Interface d’importation des fichiers de logs CSV (Suite)
+4.6
+Conclusion
+En conclusion, ce deuxième sprint a permis de finaliser le pipeline de traitement
+des données, de l’importation manuelle des logs jusqu’à leur normalisation complète.
+Nous avons mis en œuvre le Feature Engineering, ce qui a transformé les données brutes
+en variables numériques exploitables, et nous sommes ainsi certains de la qualité des
+informations fournies au système. Maintenant que nous avons achevé cette étape, nous
+pouvons commencer le Sprint 3, qui s’intitule « IA et détection automatique », et qui
+portera sur le déploiement du modèle d’apprentissage et l’identification des anomalies.
+61
+
+
+===== PAGE 72 =====
+
+Chapitre5
+Sprint 3 :IA et détection automatique
+Contents
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.2
+Backlog du sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.3
+Analyse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+5.3.1
+Diagramme de cas d’utilisation globale du sprint 3 :
+. . . . .
+65
+5.3.2
+Description du cas d’utilisation «Consulter le score d’une
+anomalie» . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+5.3.3
+Description du cas d’utilisation «Relancer la détection» . . . .
+66
+5.3.4
+Description du cas d’utilisation «Consulter le modéle utilisé»
+67
+5.3.5
+Description du cas d’utilisation «Détecter les anomalies» . . .
+67
+5.4
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+5.4.1
+Diagramme de séquence du cas «Consulter le score d’une
+anomalie» . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+5.4.2
+Diagramme de séquence du cas «Relancer la détection»
+. . .
+69
+5.4.3
+Diagramme de séquence du cas «Consulter le modéle utilisé»
+70
+5.4.4
+Diagramme de séquence du cas «Détecter les anomalies» . . .
+71
+5.4.5
+Diagramme de classes du Sprint 3 . . . . . . . . . . . . . . .
+72
+5.5
+Realisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+5.5.1
+Interface de consultation des anomalies . . . . . . . . . . . .
+74
+5.5.2
+Interface de relance de la détection (Rejeu)
+. . . . . . . . . .
+75
+5.5.3
+Interface du rejeu chronologique (Timeline Replay) . . . . . .
+76
+5.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+62
+
+
+===== PAGE 73 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+5.1
+Introduction
+Dans ce chapitre, nous présentons le Sprint 3« IA et détection automatique»,qui
+constitue le cœur analytique du projet où nous mettons en œuvre le modèle d’apprentissage
+pour détecter les anomalies de façon autonome. Nous détaillons comment nous concevons
+des mécanismes pour gérer les modèles de détection et assurer le rejeu des traitements.
+Cela permet une surveillance optimale des logs.
+5.2
+Backlog du sprint 3
+Le tableau 5.1 présente le backlog global du Sprint 3
+ID
+User story
+Id tâche
+Tâche
+Durée (j)
+8.1
+En tant qu’Agent IA, je
+veux intégrer Isolation
+Forest afin d’identifier
+les comportements
+anormaux.
+8.1.A
+Intégrer l’algorithme Isolation Fo-
+rest dans le pipeline de données.
+2
+8.1.B
+Développer le service de détection
+automatique post-importation.
+1
+8.1.C
+Créer la vue de consultation des
+scores d’anomalies.
+1
+8.1.D
+Tester la précision de la détection sur
+les jeux de données.
+1
+8.2
+En tant qu’Agent IA, je
+veux exécuter
+automatiquement la
+détection après l’import
+afin d’automatiser le
+pipeline.
+8.2.A
+Configurer le déclencheur (trigger)
+post-importation dans le backend.
+0.5
+8.2.B
+Développer le service d’appel auto-
+matique du modèle Isolation Forest.
+1
+8.2.C
+Gérer la file d’attente (background
+task) pour le traitement asynchrone
+des logs.
+1
+.
+8.2.D
+Mettre en place un système de statut
+pour informer l’utilisateur de la fin
+du traitement.
+0.5
+63
+
+
+===== PAGE 74 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+8.2
+8.2.E
+Réaliser des tests d’intégration pour
+vérifier l’enchaînement automatique
+Import -> Détection.
+1
+9.1
+En tant qu’utilisateur, je
+veux consulter un score
+d’anomalie afin
+d’évaluer le niveau de
+risque associé.
+9.1.A
+Créer l’API pour récupérer le score
+et le niveau de risque d’un log spéci-
+fique.
+1
+9.1.B
+Intégrer une légende interactive ex-
+pliquant les seuils de risque.
+0.5
+9.1.C
+Tester la cohérence entre la détection
+du modèle et le score affiché.
+0.5
+9.2
+En tant qu’utilisateur, je
+veux accéder aux
+anomalies détectées par
+import afin de faciliter
+l’analyse.
+9.2.A
+Créer une interface de liste filtrable
+pour afficher les imports terminés.
+1
+9.2.B
+Implémenter des fonctionnalités de
+tri (par score, par adresse ip).
+1
+9.2.C
+Tester la navigation entre la liste glo-
+bale des imports et la vue spécifique
+des anomalies.
+1
+12.1
+En tant qu’utilisateur, je
+veux relancer la
+détection sur un import
+existant afin de
+recalculer les
+anomalies.
+12.1.A
+Implémenter la logique de "Redetec-
+tion" pour recalculer les anomalies.
+2
+12.1.B
+Créer l’interface de relance du trai-
+tement.
+1
+12.1.C
+Vérifier la cohérence des anomalies
+après un rejeu.
+1
+12.2
+En tant qu’utilisateur, je
+veux visualiser un rejeu
+chronologique afin de
+comprendre l’évolution
+de la détection.
+12.2.A
+Créer l’API permettant de récupé-
+rer les séquences d’anomalies par
+fenêtre temporelle.
+1
+12.2.B
+Créer l’interface de visualisation du
+replay chronologique.
+1
+64
+
+
+===== PAGE 75 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+12.2
+12.2.C
+Tester la fluidité de l’affichage chro-
+nologique et vérifier la cohérence
+des données après un rejeu.
+1
+13.1
+En tant
+qu’administrateur, je
+veux enregistrer un
+modèle actif afin de
+conserver la
+configuration utilisée
+pour la détection.
+13.1.A
+Implémenter le module de sauve-
+garde des configurations de modèles
+(seuil, paramètres).
+1
+13.1.B
+Tester la persistance des configura-
+tions en base de données.
+1
+13.2
+En tant qu’utilisateur, je
+veux consulter le
+modèle utilisé et son
+seuil de détection afin
+de mieux interpréter les
+résultats.
+13.2.A
+Développer l’interface d’affichage
+du nom du modèle utilisé et de son
+seuil actuel.
+1
+13.2.B
+Tester la clarté et la visibilité de ces
+informations pour l’utilisateur.
+1
+Table 5.1 – Backlog du Sprint 3
+5.3
+Analyse
+Dans cette partie, nous procédons à une analyse détaillée des fonctionnalités du
+troisième sprint, en les reliant à leurs cas d’utilisation correspondants.
+5.3.1
+Diagramme de cas d’utilisation globale du sprint 3 :
+la figure 5.1 illustre le diagramme détaillé du cas d’utilisation "Sprint 3" :
+65
+
+
+===== PAGE 76 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+Figure 5.1 – Diagramme de cas d’utilisation du sprint 3
+5.3.2
+Description du cas d’utilisation «Consulter le score d’une
+anomalie»
+Le Tableau 5.2 décrit de façon textuelle l’usage du cas d’utilisation "Consulter le
+score d’une anomalie"
+Cas d’utilisation
+Consulter le score d’anomalie
+Acteurs
+Administrateur / Analyste de sécurité
+Pré-condition
+Le pipeline de détection IA a terminé l’analyse des logs et les
+scores ont été générés en base de données.
+Scénario principal
+1. L’utilisateur accède à la liste des anomalies détectées.
+2. Le système récupère le score calculé par le modèle Isolation
+Forest.
+3. Le système affiche le score accompagné d’un indicateur visuel
+(couleur) selon le niveau de risque.
+Scénario alternatif
+——-.
+Table 5.2 – Description du cas d’utilisation : Consulter le score d’anomalie
+5.3.3
+Description du cas d’utilisation «Relancer la détection»
+Le Tableau 5.3 décrit de façon textuelle l’usage du cas d’utilisation "Relancer la
+détection"
+66
+
+
+===== PAGE 77 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+Cas d’utilisation
+Relancer la détection sur un import existant
+Acteurs
+Administrateur / Analyste de sécurité
+Pré-condition
+Un import de logs existe déjà dans le système et a potentiellement
+déjà subi une première analyse.
+Scénario principal
+1. L’utilisateur accède au tableau de board.
+2. L’utilisateur sélectionne le bouton de relance du traitement sur
+un fichier spécifique.
+3. Le système exécute à nouveau l’algorithme Isolation Forest avec
+la configuration actuelle.
+4. Le système recalcule les scores, met à jour la liste des alertes
+détectées, puis les affiche. .
+Scénario alternatif
+——
+Table 5.3 – Description du cas d’utilisation : Relancer la détection
+5.3.4
+Description du cas d’utilisation «Consulter le modéle utilisé»
+Le Tableau 5.4 décrit de façon textuelle l’usage du cas d’utilisation «Consulter le
+modéle utilisé»
+Cas d’utilisation
+Consulter le modéle utilisé
+Acteurs
+Administrateur/Analyste de sécurité
+Pré-condition
+Le système de détection est actif et un modèle d’IA est chargé avec
+ses paramètres.
+Scénario principal
+1. L’utilisateur accède au tableau de bord.
+2. Le système récupère les métadonnées du modèle actuellement
+en cours d’exécution (nom du modèle, version).
+3. Le système extrait le seuil de détection configuré en base de
+données.
+4. Le système affiche ces informations dans l’interface .
+Scénario alternatif
+——
+Table 5.4 – Description du cas d’utilisation :Consulter le modéle utilisé
+5.3.5
+Description du cas d’utilisation «Détecter les anomalies»
+Le Tableau 5.5 décrit de façon textuelle l’usage du cas d’utilisation «Détecter les
+anomalies»
+67
+
+
+===== PAGE 78 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+Cas d’utilisation
+Détecter une anomalie
+Acteurs
+Agent IA
+Pré-condition
+Le pipeline de détection détecte le succès de l’importation des logs
+dans le backend.
+Scénario principal
+1. Le backend détecte l’importation des logs et configure le dé-
+clencheur (trigger) post-import.
+2. Le système place la tâche dans la file d’attente pour un traitement
+asynchrone des logs.
+3. L’Agent IA appelle le service de traitement automatique du
+modèle de détection Isolation Forest.
+4. Le modèle analyse les logs, identifie les comportements anor-
+maux et génère un score d’anomalie pour chaque log.
+5. Le système enregistre les scores générés en base de données.
+Scénario alternatif
+——-
+Table 5.5 – Description du cas d’utilisation : Détecter les anomalies
+5.4
+Conception
+5.4.1
+Diagramme de séquence du cas «Consulter le score d’une
+anomalie»
+Ce diagramme de séquence 5.2 illustre les étapes à suivre pour consulter le score
+de risque global. Tout commence lorsque l’Administrateur ou l’Analyste demande le
+score au Système. Le Système demande alors à la Base de données de lui fournir les
+informations requises. Une fois les données retournées, le Système évalue le risque global.
+Le processus se termine par l’affichage du score et du niveau de risque dans l’interface
+de l’Administrateur ou de l’Analyste.
+68
+
+
+===== PAGE 79 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+Figure 5.2 – Diagramme de séquence du cas«Consulter le score d’une anomalie»
+5.4.2
+Diagramme de séquence du cas «Relancer la détection»
+Ce diagramme de séquence 5.3 montre les étapes pour relancer manuellement une
+analyse de sécurité. Tout se déclenche lorsque l’Administrateur ou l’Analyste requiert au
+Système de relancer la détection. Le Système réexécute alors son analyse des données.
+On termine ce process par l’affichage des nouveaux résultats de détection sur l’interface
+de l’Administrateur ou de l’Analyste.
+69
+
+
+===== PAGE 80 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+Figure 5.3 – Diagramme de séquence du cas«Relancer la détection»
+5.4.3
+Diagramme de séquence du cas «Consulter le modéle uti-
+lisé»
+Ce diagramme de séquence 5.4 explique les étapes permettant de consulter le modèle
+d’Intelligence Artificielle enregistré. Tout débute quand l’Analyste demande au Système
+d’afficher le modèle. Le Système demande alors à la Base de données de lui fournir ces
+informations. À l’issue de cette séquence, l’interface de l’Analyste présente le listing ou
+les détails du modèle.
+70
+
+
+===== PAGE 81 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+Figure 5.4 – Diagramme de séquence du cas«Consulter le modéle utilisé»
+5.4.4
+Diagramme de séquence du cas «Détecter les anomalies»
+Le diagramme de séquence 5.5 présente les étapes automatisées de détection des
+anomalies suite à une importation de logs. Tout débute lorsque le Contrôleur détecte
+la fin d’un import et insère une tâche de traitement asynchrone dans la File d’attente.
+Le traitement s’effectue donc en arrière-plan : la File d’attente active l’Agent IA qui
+fait appel au modèle Isolation Forest. Il examine les données, repère les comportements
+anormaux et calcule les scores de risque. Le processus se termine lorsque l’Agent IA
+récupère ces scores, les enregistre dans la Base de données et reçoit une confirmation
+d’enregistrement.
+71
+
+
+===== PAGE 82 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+Figure 5.5 – Diagramme de séquence du cas«Détecter les anomalies»
+5.4.5
+Diagramme de classes du Sprint 3
+Dans cette partie, nous avons enrichi les diagrammes de classes précédents afin
+d’intégrer les composantes dédiées au traitement et à l’analyse des données de sécurité.
+Cette évolution permet de modéliser le flux complet des logs, depuis leur importation et
+leur prétraitement jusqu’à leur normalisation et leur analyse par le module d’intelligence
+artificielle. Elle permet également de représenter le processus de détection des anomalies
+basé sur le modèle Isolation Forest ainsi que la génération des alertes associées, renforçant
+ainsi la supervision et l’identification des comportements suspects au sein du système.
+72
+
+
+===== PAGE 83 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+Figure 5.6 – Diagramme de classes détailées du sprint 3
+73
+
+
+===== PAGE 84 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+5.5
+Realisation
+Cette section présente les diverses interfaces proposées auprès des utilisateurs dans
+le but d’opérer le modèle d’intelligence artificielle dans les tâches assignées (Isolation
+Forest), et de suivre les résultats de la détection des anomalies en temps réel.
+5.5.1
+Interface de consultation des anomalies
+Cette interface (figure 5.7) présente la liste des anomalies détectées par le modèle
+pour un import donné, au moment de son entrée. Pour chaque log anormal, l’interface
+affiche le score d’anomalie produite par l’Isolation Forest, l’adresse IP source, le point de
+terminaison (endpoint) accédé, et profile sa couleur en fonction de la classe de risque du
+l’historique de log (faible, moyen ou fort) en fonction des seuils configurés.
+Figure 5.7 – Interface de consultation des anomalies et des scores de risque
+74
+
+
+===== PAGE 85 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+5.5.2
+Interface de relance de la détection (Rejeu)
+Cette interface, qui relance la détection (Figure 5.8), permet de relancer manuellement
+l’application de l’algorithme Isolation Forest par les analystes et administrateurs sur
+un ensemble de logs déjà importé. Paramétrer à nouveau le modèle avec de nouveaux
+hyperparamètres ou changer le seuil de contamination pour que les scores de risque soient
+recalculés dynamiquement constitue un intérêt évident.
+Figure 5.8 – Interface de relance de la détection (Rejeu)
+75
+
+
+===== PAGE 86 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+5.5.3
+Interface du rejeu chronologique (Timeline Replay)
+Cette interface de visualisation (Figure 5.9) restitue les événements et anomalies sous
+forme d’une ligne de temps animée, de sorte qu’elle puisse faire le suivi pas à pas de
+l’évolution temporelle des tentatives suspectes, ainsi que la chronologie précise d’une
+attaque de sécurité.
+Figure 5.8 – Interface de visualisation du rejeu chronologique
+76
+
+
+===== PAGE 87 =====
+
+Chapitre 5. Sprint 3 :IA et détection automatique
+5.6
+Conclusion
+Ce chapitre a décrit la mise au point du cœur analytique de notre projet. En intégrant
+avec succès l’algorithme Isolation Forest, nous avons donné à la plateforme une véritable
+capacité autonome et proactive de détection de cybermenaces.
+En parallèle de l’automatisation du pipeline de données, nous avons développé des
+outils de supervision avancés pour l’analyste de sécurité (consultation des scores, rejeu
+chronologique, gestion des modèles). Le système est désormais complètement fonctionnel,
+intelligent et interactif, permettant d’enclencher la dernière phase de validation et de tests
+de la solution.
+77
+
+
+===== PAGE 88 =====
+
+Chapitre6
+Sprint 4 :Dashboard et Reporting
+Contents
+6.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+6.2
+Backlog du sprint 4 : . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+6.3
+Analyse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+6.3.1
+Diagramme de cas d’utilisation globale du sprint 4 . . . . . .
+81
+6.3.2
+Description du cas d’utilisation «Consulter le tableau de board» 82
+6.3.3
+Description du cas d’utilisation «Qualifier l’incident» . . . . .
+82
+6.3.4
+Description du cas d’utilisation «Générer des alerts à partir
+des anomalies » . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+6.4
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+84
+6.4.1
+Diagramme de séquence du cas «Consulter le tableau de board» 84
+6.4.2
+Diagramme de séquence du cas «Qualifier l’incident» . . . . .
+85
+6.4.3
+Diagramme de séquence du cas «Générer des alerts à partir
+des anomalies» . . . . . . . . . . . . . . . . . . . . . . . . .
+86
+6.4.4
+Diagramme de classes du sprint 4 . . . . . . . . . . . . . . .
+87
+6.5
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+6.5.1
+Interface du Tableau de bord global (Dashboard) . . . . . . .
+89
+6.5.2
+Interface de gestion des alertes . . . . . . . . . . . . . . . . .
+91
+6.5.3
+Interface de détail et qualification des alertes
+. . . . . . . . .
+93
+6.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+94
+78
+
+
+===== PAGE 89 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+6.1
+Introduction
+Le quatrième et dernier sprint, intitulé « Dashboard et Reporting», marque l’achè-
+vement opérationnel de la plateforme de détection d’anomalies en transformant les
+informations brutes de l’algorithme Isolation Forest en outils d’aide à la décision. Ce
+sprint se concentre sur la mise en place d’une interface de visualisation interactive
+composée de tableaux de bord, de widgets statistiques et de graphiques de tendances
+permettant une supervision globale de l’état de sécurité du système. Il intègre également
+des fonctionnalités de qualification des alertes, de notification automatique des incidents
+critiques par email ainsi qu’un module de génération et d’exportation de rapports afin de
+faciliter le suivi, l’analyse et la documentation des incidents détectés.
+6.2
+Backlog du sprint 4 :
+Le tableau 6.1 récapitule l’ensemble des fonctionnalités prévues dans le backlog du
+Sprint 4.
+ID
+User story
+Id tâche
+Tâche
+Durée (j)
+10.1
+En tant qu’Agent IA, je
+veux générer des alertes
+à partir des anomalies
+afin de signaler les
+comportements
+suspects.
+10.1.A
+Développer le module de génération
+automatique des alertes.
+1
+10.1.B
+Implémenter les règles de détection
+des comportements suspects.
+1
+10.1.C
+Tester et valider les alertes générées.
+1
+10.2
+En tant qu’Agent IA, je
+veux catégoriser les
+alertes selon le type de
+menace afin d’améliorer
+leur interprétation.
+10.2.A
+Définir les catégories de menaces et
+niveaux associés.
+1
+10.2.B
+Implémenter le mécanisme de clas-
+sification des alertes.
+1
+79
+
+
+===== PAGE 90 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+10.2
+10.2.C
+Vérifier et tester la catégorisation des
+alertes.
+1
+10.3
+En tant qu’analyste, je
+souhaite consulter
+l’historique des alertes,
+afin d’assurer le suivi
+des incidents détectés et
+de prioriser leur
+analyse.
+10.3.A
+Développer l’interface de consulta-
+tion de l’historique des alertes.
+1
+10.3.B
+Implémenter l’affichage des détails
+d’une alerte.
+1
+10.3.C
+Tester l’affichage et la consultation
+des alertes.
+1
+10.4
+En tant
+qu’administrateur, je
+veux recevoir une
+notification email
+uniquement pour les
+alertes critiques afin
+d’éviter les notifications
+inutiles.
+10.4.A
+Configurer le système d’envoi des
+emails.
+1
+10.4.B
+Implémenter le filtrage des alertes
+critiques.
+1
+10.4.C
+Tester
+l’envoi
+des
+notifications
+email.
+1
+11.1
+En tant qu’utilisateur, je
+veux consulter le
+tableau de bord global
+afin d’avoir une vue
+synthétique du système.
+11.1.A
+Concevoir l’interface du tableau de
+bord global.
+2
+11.1.B
+Intégrer les données principales du
+système.
+2
+11.1.C
+Tester l’affichage et la navigation du
+tableau de bord.
+2
+80
+
+
+===== PAGE 91 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+14.1
+En tant qu’analyste, je
+peux qualifier l’incident
+afin de confirmer la
+menace ou de
+déterminer s’il s’agit
+d’un faux positif.
+14.1.A
+Développer l’interface de qualifica-
+tion des incidents.
+1
+14.1.B
+Implémenter les options de valida-
+tion et de faux positif.
+1
+14.1.C
+Tester le processus de qualification
+des incidents.
+1
+14.2
+En tant qu’analyste, je
+peux exporter un
+rapport afin de
+documenter et de
+communiquer
+officiellement les
+anomalies détectées
+pour une prise de
+décision rapide.
+14.2.A
+Développer la fonctionnalité d’ex-
+portation des rapports.
+1
+14.2.B
+Générer les rapports au format
+PDF/Excel.
+1
+14.2.C
+Tester l’exportation et la validité des
+rapports.
+1
+Table 6.1 – Backlog du Sprint 4
+6.3
+Analyse
+6.3.1
+Diagramme de cas d’utilisation globale du sprint 4
+la figure 6.1 illustre le diagramme détaillé du cas d’utilisation "Sprint 4" :
+81
+
+
+===== PAGE 92 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+Figure 6.1 – Diagramme de cas d’utilisation du sprint 4
+6.3.2
+Description du cas d’utilisation «Consulter le tableau de
+board»
+Le Tableau 6.2 décrit de façon textuelle l’usage du cas d’utilisation «Consulter le
+tableau de board»
+Cas d’utilisation
+Consulter le tableau de bord global
+Acteurs
+Administrateur / Analyste
+Pré-condition
+L’utilisateur est connecté à l’application et les données du
+système sont chargées en base de données.
+Scénario principal
+1. L’utilisateur accède à la page d’accueil ou à la section
+dédiée au tableau de bord.
+2.Le système extrait et agrège les données principales en
+temps réel.
+3.Le système charge l’interface graphique globale.
+4.Le système affiche la vue synthétique contenant les mé-
+triques clés et les indicateurs de performance du système.
+Scénario alternatif
+-Aucune donnée n’est disponible dans le système :
+Le système affiche l’interface du tableau de bord avec des
+indicateurs à zéro.
+Table 6.2 – Description textuelle du cas d’utilisation :Consulter le tableau de board
+6.3.3
+Description du cas d’utilisation «Qualifier l’incident»
+Le Tableau 6.3 décrit de façon textuelle l’usage du cas d’utilisation «Qualifeir
+l’incident»
+82
+
+
+===== PAGE 93 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+Cas d’utilisation
+Qualifier les incidents
+Acteurs
+Analyste de sécurité
+Pré-condition
+Un ou plusieurs incidents/alertes sont enregistrés dans le
+système et visibles sur l’interface.
+Scénario principal
+1.L’analyste accède à l’interface de qualification des inci-
+dents.
+2. L’analyste sélectionne un incident non qualifié dans la
+liste.
+3.L’analyste évalue les détails de l’incident et choisit l’option
+appropriée (Confirmer la menace / faux positif).
+4.Le système enregistre la qualification choisie et met à jour
+le statut de l’incident en base de données.
+5. Le système classe l’incident et nettoyer la liste des menaces
+actives.
+Scénario alternatif
+L’incident s’avère être un faux positif :
+1. L’analyste sélectionne l’option de validation « Faux Positif
+».
+2. Le système classe l’incident comme résolu/clos pour faux
+positif afin de nettoyer la liste des menaces actives.
+Table 6.3 – Description textuelle du cas d’utilisation :Qualifier les incidents
+6.3.4
+Description du cas d’utilisation «Générer des alerts à partir
+des anomalies »
+Le Tableau 6.4 décrit de façon textuelle l’usage du cas d’utilisation «Générer des
+alerts à partir des anomalies»
+83
+
+
+===== PAGE 94 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+Cas d’utilisation
+Générer des alertes à partir des anomalies
+Acteurs
+Agent IA
+Pré-condition
+Des anomalies ou des flux de données brutes sont capturés et
+disponibles dans le système.
+Scénario principal
+1. L’Agent IA analyse en continu les données et anomalies
+détectées.
+2. Le système applique les règles de détection des comporte-
+ments suspects.
+3. Le module de génération automatique crée les alertes corres-
+pondantes.
+4. Le système teste, valide et enregistre les alertes générées afin
+de signaler les comportements suspects.
+Scénario alternatif
+- Aucune anomalie ou comportement suspect détecté :
+Le système ne génère aucune alerte et poursuit sa surveillance
+continue en arrière-plan.
+Table 6.4 – Description textuelle du cas d’utilisation :Générer des alerts à partir des
+anomalies
+6.4
+Conception
+6.4.1
+Diagramme de séquence du cas «Consulter le tableau de
+board»
+Le diagramme de séquence 6.2 présente les différentes étapes pour consulter le tableau
+de bord global. Tout se déclenche au moment où l’Utilisateur entre dans la partie de
+l’interface réservée à la consultation des statistiques. Le Système traite cette requête et
+interroge la Base de données afin d’extraire et d’agréger les indicateurs de sécurité en
+temps réel. Le processus se conclut soit par l’affichage d’une vue synthétique contenant
+les métriques clés sur l’interface de l’Utilisateur, soit par la présentation d’un message
+d’information si aucune donnée n’est encore disponible dans le système.
+84
+
+
+===== PAGE 95 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+Figure 6.2 – Diagramme de séquence du cas«Consulter le tableau de board»
+6.4.2
+Diagramme de séquence du cas «Qualifier l’incident»
+Le diagramme de séquence 6.3 présente les étapes à suivre pour qualifier un incident
+de sécurité. Tout se déclenche lorsque l’Analyste choisit une alerte et lui assigne un
+nouveau statut (exemple : en cours, résolu ou faux positif). Le Système prend en charge
+cette action et envoie la modification à laBase de données afin de mettre à jour l’état
+de l’anomalie. A l’issue de la validation de qualification, on affiche dans l’interface de
+l’Analyste une confirmation que la qualification a été correctement prise en compte.
+85
+
+
+===== PAGE 96 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+Figure 6.3 – Diagramme de séquence du cas«Qualifier l’incident»
+6.4.3
+Diagramme de séquence du cas «Générer des alerts à partir
+des anomalies»
+Le diagramme de séquence 6.5 présente les étapes automatisées qui permettent de
+déclencher des alertes à partir de l’analyse continue des données. Tout débute lorsque
+l’Agent IA envoie des anomalies au Contrôleur, lequel met ensuite en œuvre ses règles de
+détection pour repérer d’éventuels comportements suspects. Si une menace est détectée,
+le Contrôleur fait appel au Module de génération d’alertes. Ce dernier génère les alertes
+86
+
+
+===== PAGE 97 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+correspondantes et les lui envoie pour test et validation. Le processus se solde soit par
+l’enregistrement de ces alertes par leContrôleur dans la Base de données, dont il reçoit
+une confirmation, soit par la simple poursuite de la surveillance en arrière-plan si aucune
+anomalie n’est avérée.
+Figure 6.4 – Diagramme de séquence du cas«Générer des alerts à partir des anomalies»
+6.4.4
+Diagramme de classes du sprint 4
+La figure 6.5 illustre le diagramme de classes du sprint 4 représente une évolution de
+celui du sprint 3, en y intégrant le module de gestion des rapports. Cette amélioration
+permet d’enrichir la conception globale du système en assurant une meilleure cohérence
+entre les différentes entités. Ainsi, le modèle obtenu offre une vue unifiée de l’ensemble
+des fonctionnalités de la plateforme, incluant la gestion des logs, la détection d’anomalies
+et le traitement des rapports, aboutissant à un diagramme de classes global et complet.
+87
+
+
+===== PAGE 98 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+Figure 6.5 – Diagramme de classes détailées du sprint 4
+88
+
+
+===== PAGE 99 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+6.5
+Réalisation
+La présente section présente la phase terminale du projet qui caractérise par l’im-
+plémentation d’un tableau de bord de supervision globale ainsi que des dimensions de
+gestion apportées au niveau des alertes de sécurité.
+6.5.1
+Interface du Tableau de bord global (Dashboard)
+L’interface du tableau de bord global (Figure 6.6) fournit une ressource visuelle qui
+mesure de manière significative l’état de sécurité du système. Elle affiche sous forme de
+widgets statistiques essentiels le nombre d’imports total, le nombre de logs analysés, le
+taux d’anomalies détectées ainsi que les menaces actives, en complément de graphiques
+interactifs représentant les variations dans le temps des incidents et la typologie des
+alertes par niveau de sévérité.
+Figure 6.6 – Tableau de bord de supervision global (Partie 1)
+89
+
+
+===== PAGE 100 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+Figure 6.6 – Tableau de bord de supervision global (Partie 2)
+90
+
+
+===== PAGE 101 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+Figure 6.6 – Tableau de bord de supervision global (Suite)
+6.5.2
+Interface de gestion des alertes
+L’interface (Figure 6.7) représente la liste des alertes générées par le système à partir
+des anomalies d’IP persistantes ou d’activités révélées comme suspectes. Elle permet
+à l’analyste de trier et filtrer les alertes selon leur sévérité ou leur statut (nouveauté, en
+cours, résolue, faux positif). Un bouton d’exportation permet d’obtenir en téléchargement
+un rapport de sécurité conclusif au format PDF.
+Figure 6.7 – Interface de gestion et d’historique des alertes (Partie 1)
+91
+
+
+===== PAGE 102 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+Figure 6.7 – Interface de gestion et d’historique des alertes (Suite)
+92
+
+
+===== PAGE 103 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+6.5.3
+Interface de détail et qualification des alertes
+Dès que l’analyste clique sur l’alerte, une fenêtre des détails s’ouvre (Figure 6.8)
+contenant les logs de l’alerte sous forme non traitée dans un terminal, le graphe des
+scores de chacune des anomalies indépendantes calculées par le modèle IA, l’historique
+de l’ensemble des activités suspectes sur l’adresse IP concernée, et enfin des boutons
+d’action pour qualifier l’évènement (une alerte peut être marquée comme « faux positif »
+ou comme « menace confirmée » avec une escalade automatique).
+Figure 6.8 – Interface de détail et de qualification des alertes (Partie 1)
+93
+
+
+===== PAGE 104 =====
+
+Chapitre 6. Sprint 4 :Dashboard et Reporting
+Figure 6.8 – Interface de détail et de qualification des alertes (Suite)
+6.6
+Conclusion
+Ce quatrième et dernier sprint concrétise les phases d’analyse, de conception et de
+réalisation du module « Dashboard et Reporting ». L’ergonomie de l’interface front-end a
+été particulièrement soignée pour assurer une manipulation fluide et intuitive des données
+de sécurité. En offrant une visualisation claire et en temps réel des anomalies identifiées
+par l’agent IA, ce tableau de bord valide l’efficacité opérationnelle et la solidité technique
+de la solution.
+94
+
+
+===== PAGE 105 =====
+
+Conclusion générale et perspectives
+Ce projet de fin d’études s’est déroulé au sein de l’entreprise « HNCDev » dans le
+cadre de l’obtention du diplôme de licence en Génie Logiciel et Systèmes d’Information à
+l’Institut Supérieur d’Informatique de Mahdia. Il avait pour objectif la conception et le
+développement d’une plateforme intelligente de détection d’anomalies reposant sur un
+pipeline de traitement de données ainsi qu’un modèle d’intelligence artificielle.
+Afin de mener à bien ce projet, le travail a été organisé selon une démarche agile
+découpée en quatre sprints :
+- Sprint 1 : Authentification et gestion des comptes : Mise en place du système
+d’accès sécurisé et des fonctionnalités fondamentales de gestion des utilisateurs.
+- Sprint 2 : Importation et traitement des données : Construction du pipeline de
+traitement permettant l’importation, la normalisation et la préparation des logs.
+- Sprint 3 : IA et détection des anomalies : Intégration de l’algorithme Isolation
+Forest afin d’assurer la détection automatique des comportements anormaux.
+- Sprint 4 : Dashboard et Reporting : Développement d’une interface interactive
+offrant une visualisation claire, dynamique et en temps réel des résultats obtenus.
+Ce projet nous a permis de mettre en pratique plusieurs compétences acquises durant
+notre parcours universitaire, notamment dans les domaines du développement web, du
+traitement de données, de l’intelligence artificielle et de la cybersécurité. Il nous a également
+offert l’opportunité de travailler dans un environnement professionnel tout en appliquant
+les principes des méthodes agiles.
+La solution réalisée constitue une base solide pouvant être enrichie par plusieurs
+perspectives d’amélioration, telles que l’intégration de nouveaux modèles d’apprentissage
+automatique, l’analyse en temps réel de flux de données plus volumineux, ainsi que l’ajout
+de fonctionnalités avancées de supervision et d’alerte.
+En conclusion, ce projet représente une expérience formatrice et enrichissante aussi
+bien sur le plan technique que professionnel, et nous a permis de développer notre esprit
+d’analyse, notre autonomie ainsi que notre capacité à concevoir des solutions innovantes
+répondant à des besoins réels.
+95
+
+
+===== PAGE 106 =====
+
+Webographie
+[1] https://hncdev.com/, consulté le 12/03/2026.
+[2] https://docs.splunk.com/Documentation, consulté le 22/03/2026.
+[3] https://www.ibm.com/products/qradar, consulté le 22/03/2026.
+[4] https://wazuh.com/, consulté le 23/03/2026.
+[5] https://www.elastic.co/what-is/elk-stack, consulté le 22/03/2026.
+[6] https://bubbleplan.net/pedagogie-projet/methode-scrum, consulté le
+29/03/2026.
+[7] https://www.lucidchart.com/pages/fr/langage-uml,
+consulté
+le
+29/03/2026.
+[8] https://fr.react.dev/learn, consulté le 19/04/2026.
+[9] https://developer.mozilla.org/fr/docs/Web/JavaScript,
+consulté
+le
+05/04/2026.
+[10] https://liora.io/fastapi, consulté le 03/04/2026.
+[11] https://swagger.io/tools/swagger-ui/, consulté le 10/04/2026.
+[12] https://www.drawio.com/doc/getting-started-diagram-types, consulté
+le 15/04/2026.
+[13] https://code.visualstudio.com/, consulté le 01/04/2026.
+[14] https://www.oracle.com/africa-fr/developer/
+what-is-python-for-developers/, consulté le 08/04/2026.
+[15] https://www.ibm.com/fr-fr/think/topics/scikit-learn,
+consulté
+le
+10/04/2026.
+[16] https://www.latex-project.org/, consulté le 29/03/2026.
+[17] https://www.mongodb.com/docs/, consulté le 23/03/2026.
+[18] https://docs.mailtrap.io/, consulté le 25/04/2026.
+[19] https://docs.taiga.io/, consulté le 20/03/2026.
+96
+
+
+===== PAGE 107 =====
+
+LogSentinel AI : Plateforme intelligente de
+cybersécurité et d’analyse des logs basée sur l’IA
+Résumé :
+Le projet LogSentinel AI consiste à développer une plateforme intelligente de sécurité
+permettant l’importation et l’analyse de fichiers CSV contenant des logs afin de détecter
+automatiquement les anomalies. Développée avec React.js, JavaScript et FastAPI, elle
+s’appuie sur MongoDB pour le stockage des données et sur des modèles d’intelligence
+artificielle implémentés en Python avec Scikit-learn. La plateforme offre également des
+fonctionnalités de gestion des alertes, d’investigation et de notification par e-mail via
+Mailtrap, tout en suivant la méthodologie Agile Scrum pour assurer un développement
+itératif et évolutif.
+Mots clés : Plateforme de sécurité, Intelligence artificielle, Détection d’anomalies, Logs,
+CSV, MongoDB, Python, Scikit-learn, React.js, FastAPI, Alertes, Investigation, Mailtrap,
+Scrum.
+Abstract :
+The LogSentinel AI project consists of developing an intelligent security platform that
+enables the import and analysis of CSV files containing logs in order to automatically
+detect anomalies. Built with React.js, JavaScript, and FastAPI, it relies on MongoDB
+for data storage and on artificial intelligence models implemented in Python using
+Scikit-learn. The platform also provides alert management, investigation, and email
+notification features via Mailtrap, while following the Agile Scrum methodology to
+ensure iterative and scalable development.
+Keywords :Security platform, Artificial intelligence, Anomaly detection, Logs, CSV,
+MongoDB, Python, Scikit-learn, React.js, FastAPI, Alerts, Investigation, Mailtrap,
+Scrum.
+97
+
+
+===== PAGE 108 =====
+
+5%
+INDICE DE SIMILITUDE 8%
+SOURCES INTERNET
+3%
+PUBLICATIONS
+5%
+COPIES DE L'ÉTUDIANT
+1
+2%
+2
+2%
+3
+1%
+Exclure les citations
+Activer
+Exclure la bibliographie Activer
+Exclure les
+correspondances
+< 1%
+Mohamed Aziz Boutar & Salma Khefifi
+RAPPORT DE SIMILITUDE
+SOURCES PRINCIPALES
+Submitted to University of Manouba
+Copie de l'étudiant
+Submitted to University of Monastir
+Copie de l'étudiant
+Submitted to University of Tunis
+Copie de l'étudiant
+
+
+===== PAGE 109 =====
+
+99

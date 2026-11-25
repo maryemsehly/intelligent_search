@@ -1,0 +1,5240 @@
+===== PAGE 1 =====
+
+ 
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de 
+Mahdia 
+ 
+MEMOIRE 
+ 
+N° d’ordre: LCS-GLSI-3-
+2025-059  
+Ministère de l’Enseignement Supérieur et 
+de la Recherche Scientifique  
+ 
+ 
+ 
+MEMOIRE  
+                                                 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+                                                 
+ Effectué à 
+ 
+SEA Electronics 
+ 
+ 
+En vue de l’obtention du diplôme de 
+ 
+Licence  Computer Science : Génie Logiciel et Système d'Information 
+ 
+Elaboré par : 
+ 
+MAOUI SIWAR, MAAIEZ SALMA 
+ 
+     
+Conception et Développement d'une Application Mobile pour la Gestion et le 
+Pilotage de Robots AGV Industriels 
+ 
+ 
+ 
+Soutenu le :  12 juin 2025  
+devant le  jury composé de : 
+ 
+ 
+Président 
+ : Taher Aymen belhadj 
+Rapporteur 
+: Nissaf Fredj 
+Encadrante Académique 
+ : Leila Bayoudhi 
+Encadrant   Professionnel 
+: Khaled Saad 
+ 
+ 
+ 
+Année universitaire  2024 - 2025 
+
+
+===== PAGE 2 =====
+
+
+
+===== PAGE 3 =====
+
+Remerciements
+Avant de présenter notre travail, nous souhaitons témoigner notre respect à
+toutes les âmes qui ont contribué, de près ou de loin, directement
+ou indirectement, avec peu ou beaucoup d’efforts, à la réalisation de cette étape
+importante de notre parcours éducatif.
+Nous exprimons notre profonde gratitude à, M. Khaled Saad, notre
+encadrant professionnel, pour le temps qu’il nous a consacré, la qualité de son
+accompagnement, ainsi que ses conseils avisés. Sa rigueur, sa disponibilité et
+sa bienveillance ont grandement contribué à enrichir notre parcours, tant sur le
+plan professionnel que personnel.
+Nous adressons également nos sincères remerciements à, Mme Leila
+Bayoudhi, notre encadrante pédagogique, pour son encadrement attentif,
+sa disponibilité constante et son soutien tout au long de cette aventure.
+Sa pédagogie et son engagement ont été pour nous une source précieuse de
+motivation et de progrès.
+Enfin, nous adressons nos remerciements les plus sincères aux membres
+du jury pour leur disponibilité à évaluer ce travail, ainsi que pour leur grande
+patience et leur bienveillance à nous faire part de leurs retours, à la fois correctifs
+et constructifs.
+i
+
+
+===== PAGE 4 =====
+
+Dédicaces
+Mes plus grands remerciements et ma gratitude s’adressent
+avant tout à Dieu, créateur et source de tous les miracles. Une
+foi sincère en Son pouvoir et en Ses choix, accompagnée d’un peu
+de persévérance ne peut finir inchaallah qu’en réussite.
+À ma chère partenaire Salma Maize
+Pour rester brève, je voulais simplement te remercier pour cette
+expérience, qui, avec tous ses moments épineux et lumineux à la
+fois, n’est qu’une preuve de plus de la force de notre amitié.
+À mes chers parents
+Je n’arrive pas à croire à quelle vitesse le temps est passé.
+Depuis mon enfance, je n’ai vu qu’un immense effort de votre
+part pour bâtir un projet de réussite à travers nous.
+À chaque instant, je prends davantage conscience de la valeur et
+de l’impact de tout ce que vous faites sans relâche, dans l’espoir
+de voir un jour vos sacrifices et vos apports inestimables
+récompensés, ne serait-ce qu’un tout petit peu.
+Maaoui Siwar
+ii
+
+
+===== PAGE 5 =====
+
+Dédicaces
+Ma profonde gratitude va d’abord à Dieu, source de toute
+bénédiction. Avec foi en Ses choix et un peu de persévérance,
+la réussite est, inchaAllah, au bout du chemin.
+À ma chère binôme et precieuse amie Siwar Maaoui
+Merci d’avoir partagé cette aventure à mes côtés, avec ton
+énergie, ta bienveillance et ton soutien indéfectible. Ton amitié a
+été une force dans les moments difficiles, et ta présence a
+transformé ce projet en une expérience unique et inoubliable.
+À ma chère Maman
+Je suis reconnaissante envers ma mère pour son soutien
+inconditionnel et sa patience.
+À mon cher père
+Je suis sincèrement reconnaissante envers mon père, qui nous a
+malheureusement quittés. Son amour, son soutien et ses
+enseignements continuent de m’inspirer et de me guider dans ma
+vie.
+Maayez Salma
+iii
+
+
+===== PAGE 6 =====
+
+Table des matières
+Table des figures
+xii
+Liste des tableaux
+xiv
+Liste des abréviations
+xvi
+Introduction générale
+1
+1
+Étude préalable
+3
+1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+2
+Contexte et organisme d’accueil
+. . . . . . . . . . . . . . . . . . . . . . . . .
+3
+2.1
+Présentation de l’entreprise
+. . . . . . . . . . . . . . . . . . . . . . .
+3
+2.2
+Services offerts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2.3
+Chiffres clés
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+3
+Cadre et présentation du projet . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+3.1
+Contexte du projet
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+3.1.1
+L’intralogistique : facteur de performance et de compétitivité
+6
+3.1.2
+Les robots AGV et AMR pour renforcer l’intralogistique 4.0
+7
+3.2
+Besoins et motivations derrière la mise en place du projet
+. . . . . . .
+7
+4
+Analyse de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+4.1
+Etude des solutions existantes . . . . . . . . . . . . . . . . . . . . . .
+8
+4.1.1
+SIMOVE AGV Control . . . . . . . . . . . . . . . . . . . .
+8
+4.1.2
+AGV . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+4.2
+Critique de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+4.2.1
+Axes d’évaluation . . . . . . . . . . . . . . . . . . . . . . .
+10
+4.2.2
+Évaluation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+4.3
+Solution proposée
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+iv
+
+
+===== PAGE 7 =====
+
+Table des matières
+5
+Méthodologie de travail
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+5.1
+Étude des méthodologie existantes
+. . . . . . . . . . . . . . . . . . .
+12
+5.1.1
+La Méthodologie Waterfall : Origine et Principes . . . . . . .
+12
+5.1.2
+L’Agilité : une révolution dans la gestion de projet . . . . . .
+12
+5.2
+Méthodologie adoptée : Scrum . . . . . . . . . . . . . . . . . . . . . .
+12
+5.3
+Langage de modélisation
+. . . . . . . . . . . . . . . . . . . . . . . .
+14
+6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2
+Préparation du projet
+16
+1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2
+Capture des besoins
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.1
+Spécification des besoins
+. . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.1.1
+Spécification des besoins fonctionnels
+. . . . . . . . . . . .
+17
+2.1.2
+Spécification des besoins non fonctionnels . . . . . . . . . .
+18
+2.2
+Modélisation des besoins
+. . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.2.1
+Identification des acteurs
+. . . . . . . . . . . . . . . . . . .
+18
+2.2.2
+Diagramme de cas d’utilisations global
+. . . . . . . . . . .
+19
+3
+Conduite du projet avec Scrum . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.1
+Organisation de l’équipe scrum
+. . . . . . . . . . . . . . . . . . . . .
+20
+3.2
+Le Backlog du produit . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.3
+Planification des sprints
+. . . . . . . . . . . . . . . . . . . . . . . . .
+22
+4
+Technologies et outils de développement
+. . . . . . . . . . . . . . . . . . . .
+23
+4.1
+Approche de développement adoptée
+. . . . . . . . . . . . . . . . . .
+23
+4.2
+Flutter pour le développement cross-plateforme
+. . . . . . . . . . . .
+24
+4.3
+Environnement de développement et autres outils utilisés
+. . . . . . .
+25
+4.3.1
+Astah UML
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+4.3.2
+Node.js . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+4.3.3
+Dart
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+4.3.4
+Firebase . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+4.3.5
+Cloudinary
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+4.3.6
+Postman . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+4.3.7
+Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+4.3.8
+Rive
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+v
+
+
+===== PAGE 8 =====
+
+Table des matières
+4.3.9
+Android Studio
+. . . . . . . . . . . . . . . . . . . . . . . .
+29
+4.3.10
+Visual Studio Code
+. . . . . . . . . . . . . . . . . . . . . .
+29
+4.3.11
+GitHub
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+4.4
+Outils et plateformes de prototypage IoT et robotique . . . . . . . . . .
+30
+4.4.1
+Raspberry Pi OS
+. . . . . . . . . . . . . . . . . . . . . . .
+30
+4.4.2
+ROS 2 Jazzy . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+5
+Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3
+Release 1 : Module utilisateurs
+36
+1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+2
+Développement du Sprint 1 : « Inscription et Authentification» . . . . . . . . .
+36
+2.1
+Backlog du sprint
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+2.2
+Analyse
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+2.2.1
+Raffinement du cas d’utilisation « Demander inscription »
+.
+38
+2.2.2
+Raffinement du cas d’utilisation « S’authentifier » . . . . . .
+40
+2.2.3
+Raffinement du cas d’utilisation « Réinitialiser mot de passe »
+42
+2.3
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+2.3.1
+Diagramme de classes
+. . . . . . . . . . . . . . . . . . . .
+44
+2.3.2
+Diagrammes de séquence dynamiques
+. . . . . . . . . . . .
+45
+2.4
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+3
+Développement du sprint 2 : « gestion de comptes »
+. . . . . . . . . . . . . .
+51
+3.1
+Sprint Backlog . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+3.2
+Analyse
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+3.2.1
+Raffinement du cas d’utilisation «Gérer demandes d’inscriptions» 53
+3.2.2
+Raffinement du cas d’utilisation « Gérer utilisateurs » . . . .
+54
+3.2.3
+Raffinement du cas d’utilisation « Modifier profil »
+. . . . .
+56
+3.3
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+3.3.1
+Diagramme de classes
+. . . . . . . . . . . . . . . . . . . .
+57
+3.3.2
+Diagrammes de séquence dynamiques
+. . . . . . . . . . . .
+58
+3.4
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+4
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+vi
+
+
+===== PAGE 9 =====
+
+Table des matières
+4
+Release 2 : Module robots
+64
+1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+2
+Développement du sprint 3 : «Gestion du robot AGV et mise en place du
+prototype» . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+2.1
+Sprint Backlog . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+2.2
+Conception d’un prototype fonctionnel
+. . . . . . . . . . . . . . . . .
+65
+2.2.1
+Contexte et objectifs du prototype . . . . . . . . . . . . . . .
+66
+2.2.2
+Choix du Matériel . . . . . . . . . . . . . . . . . . . . . . .
+66
+2.3
+Analyse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+70
+2.4
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+2.4.1
+Diagramme de classes
+. . . . . . . . . . . . . . . . . . . .
+72
+2.4.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . .
+73
+2.5
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+2.5.1
+Mise en place du prototype AGV . . . . . . . . . . . . . . .
+74
+2.5.2
+Interface dédiée à la gestion de robots
+. . . . . . . . . . . .
+74
+2.6
+Test de l’application dans un environnement ROS conteneurisé
+. . . .
+75
+2.6.1
+Stratégie de test . . . . . . . . . . . . . . . . . . . . . . . .
+75
+2.6.2
+Réalisation du test . . . . . . . . . . . . . . . . . . . . . . .
+75
+3
+Développement du Sprint 4 «Pilotage et visualisation des KPIs » . . . . . . . .
+76
+3.1
+Sprint Backlog . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+3.2
+Communication entre couches du prototype et l’application
+. . . . . .
+79
+3.2.1
+Vue d’ensemble du système
+. . . . . . . . . . . . . . . . .
+79
+3.2.2
+Communication entre composants
+. . . . . . . . . . . . . .
+79
+3.3
+Analyse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+3.3.1
+Raffinement du cas d’utilisation « piloter robots » . . . . . .
+80
+3.3.2
+Raffinement du cas d’utilisation « visualiser KPIs » . . . . .
+82
+3.4
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+3.4.1
+Diagramme de classes
+. . . . . . . . . . . . . . . . . . . .
+83
+3.4.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . .
+84
+3.5
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+86
+4
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+5
+Release 3 : Module missions et livraison dockerisée de l’application
+89
+vii
+
+
+===== PAGE 10 =====
+
+1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+2
+Développement du sprint 5 : « Gestion des stations et des missions » . . . . . .
+89
+2.1
+Backlog sprint
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+90
+2.2
+Analyse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+91
+2.2.1
+Raffinement du cas d’utilisation « Gérer stations » . . . . . .
+91
+2.2.2
+Raffinement du cas d’utilisation « Gérer missions »
+. . . . .
+94
+2.3
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+96
+2.3.1
+Diagramme de classes
+. . . . . . . . . . . . . . . . . . . .
+96
+2.3.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . .
+97
+2.4
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+2.5
+Industrialisation et livraison dockerisée de l’application
+. . . . . . . . 101
+2.5.1
+Dockerisation de l’application
+. . . . . . . . . . . . . . . . 101
+2.5.2
+Mise en place du pipeline CI/CD avec GitHub Actions
+. . . 105
+3
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 107
+Conclusion et Perspectives
+108
+Bibliographie
+109
+viii
+
+
+===== PAGE 11 =====
+
+Table des figures
+1.1
+Laboratoire 4.0 SEA
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Domaines d’expertise du Groupe SEA . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3
+Chiffres ckés du Groupe SEA . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.4
+L’intralogistique
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.5
+Schéma d’intégration de l’application
+. . . . . . . . . . . . . . . . . . . . . .
+8
+1.6
+l’application SIMOVE AGV Control
+. . . . . . . . . . . . . . . . . . . . . .
+9
+1.7
+AGV
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.8
+Évaluation des solutions existantes . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.9
+Apparition de la méthodologie Agile . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.10 Méthodologie Scrum . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.11 Logo UML
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.1
+Diagramme cas d’utlisation global . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.2
+État de l’art de développement mobile . . . . . . . . . . . . . . . . . . . . . .
+24
+2.3
+Framework flutter . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.4
+Logo Astah UML . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.5
+Logo Nodejs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+2.6
+Logo Dart . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+2.7
+Logo Firebase . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.8
+Logo Cloudinary
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.9
+Logo Postman . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.10 Logo Docker
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.11 Logo Rive . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.12 Logo Android Studio . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+2.13 Logo Visual Studio Code . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+2.14 Logo Github . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+ix
+
+
+===== PAGE 12 =====
+
+Table des figures
+2.15 Logo Raspberry Pi OS
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+2.16 Raspberry Pi Imager
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+2.17 Logo de ROS 2 Jazzy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+2.18 Architecture clean flutter . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.1
+Diagramme de cas d’utilisation demander inscription . . . . . . . . . . . . . .
+38
+3.2
+Diagramme de cas d’utilisation s’authentifier
+. . . . . . . . . . . . . . . . . .
+40
+3.3
+Diagramme de cas d’utilisation réinitialiser mot de passe . . . . . . . . . . . .
+42
+3.4
+Diagramme de classes du Sprint1 . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.5
+Diagramme d’interaction MVC « S’inscrire avec email/mot de passe » . . . . .
+45
+3.6
+Diagramme d’interaction MVC « S’authentifier avec email/mot de passe » . . .
+46
+3.7
+Diagramme d’interaction MVC « Réinitialiser mot de passe » . . . . . . . . . .
+47
+3.8
+Interfaces de lancement de l’application . . . . . . . . . . . . . . . . . . . . .
+48
+3.9
+Interfaces de création de compte . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+3.10 Interfaces de création de compte : Succès et échecs . . . . . . . . . . . . . . .
+49
+3.11 Interfaces de connexion utilisateur : Succès et échecs . . . . . . . . . . . . . .
+49
+3.12 Interface de succès de la connexion : Accès à la page d’accueil . . . . . . . . .
+50
+3.13 Réinitialisation de mot de passe
+. . . . . . . . . . . . . . . . . . . . . . . . .
+50
+3.14 Réinitialisation de mot de passe : Accès réussi par email de confirmation . . . .
+51
+3.15 Diagramme du cas d’utilisation gérer demandes d’inscriptions
+. . . . . . . . .
+53
+3.16 diagramme du cas d’utilisation gérer utilisateurs
+. . . . . . . . . . . . . . . .
+55
+3.17 diagramme du cas d’utilisation modifier profil . . . . . . . . . . . . . . . . . .
+56
+3.18 Diagramme de classe du sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+3.19 Diagramme de séquence « Gérer demandes d’inscriptions » . . . . . . . . . . .
+59
+3.20 Diagramme de séquence « Gérer utilisateur »
+. . . . . . . . . . . . . . . . . .
+60
+3.21 Diagramme de séquence « Modifier profil » . . . . . . . . . . . . . . . . . . .
+61
+3.22 Interfaces de gestion des demandes utilisateurs
+. . . . . . . . . . . . . . . . .
+62
+3.23 Interfaces de gestion des utilisateurs . . . . . . . . . . . . . . . . . . . . . . .
+62
+3.24 Interface de modification de profil . . . . . . . . . . . . . . . . . . . . . . . .
+63
+4.1
+Raspberry pi 4
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+4.2
+ESP32 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+4.3
+Moteur DC
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+4.4
+L298N . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+x
+
+
+===== PAGE 13 =====
+
+Table des figures
+4.5
+TCRT5000
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+4.6
+MFRC522 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.7
+Batterie Li-ion 18650 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+70
+4.8
+Diagramme de cas d’utilisation gérer robots . . . . . . . . . . . . . . . . . . .
+71
+4.9
+Diagramme de classes du sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . .
+72
+4.10 Diagramme de séquence « Gérer robot » . . . . . . . . . . . . . . . . . . . . .
+73
+4.11 câblage du prototype
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+4.12 Interface de gestion des robots . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+4.13 fichier docker-compose.yml
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+4.14 test de l’application à l’aide du conteneur docker
+. . . . . . . . . . . . . . . .
+76
+4.15 Schema de communication entre composants
+. . . . . . . . . . . . . . . . . .
+80
+4.16 Diagramme de cas d’utilisation piloter robots
+. . . . . . . . . . . . . . . . . .
+80
+4.17 Diagramme de cas d’utilisation visualiser KPIs
+. . . . . . . . . . . . . . . . .
+82
+4.18 Diagramme de classes du sprint 4
+. . . . . . . . . . . . . . . . . . . . . . . .
+83
+4.19 Diagramme de séquence « Piloter robot »
+. . . . . . . . . . . . . . . . . . . .
+84
+4.20 Diagramme de séquence « Visualiser KPIs » . . . . . . . . . . . . . . . . . . .
+85
+4.21 Schéma de câblage complet du prototype
+. . . . . . . . . . . . . . . . . . . .
+86
+4.22 Interfaces de l’étapes de connexion, échecs et succès avec ROS
+. . . . . . . .
+86
+4.23 Interface de commande de robot . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+4.24 Interface visualisation des KPI . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+5.1
+Diagramme de cas d’utilisation gérer stations
+. . . . . . . . . . . . . . . . . .
+92
+5.2
+Diagramme de cas d’utilisation gérer missions . . . . . . . . . . . . . . . . . .
+94
+5.3
+Diagramme de classes du sprint 5
+. . . . . . . . . . . . . . . . . . . . . . . .
+96
+5.4
+Diagramme de séquence « Gérer stations » : . . . . . . . . . . . . . . . . . . .
+97
+5.5
+Diagramme de séquence « Effectuer mapping théorique » . . . . . . . . . . . .
+98
+5.6
+Diagramme de séquence « Gérer missions » . . . . . . . . . . . . . . . . . . .
+99
+5.7
+Interfaces de gestion des stations . . . . . . . . . . . . . . . . . . . . . . . . . 100
+5.8
+Interfaces de gestion et suivis des missions
+. . . . . . . . . . . . . . . . . . . 100
+5.9
+processus de dockerisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . 101
+5.10 création du dockerfile
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 102
+5.11 assemblage de l’image Docker . . . . . . . . . . . . . . . . . . . . . . . . . . 103
+5.12 Nouvelle image ajoutée
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 103
+5.13 Instantiation et exécution du conteneur
+. . . . . . . . . . . . . . . . . . . . . 104
+xi
+
+
+===== PAGE 14 =====
+
+5.14 Développement de l’application dans un conteneur
+. . . . . . . . . . . . . . . 104
+5.15 création du workflow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 105
+5.16 éxécution automatique du workflow
+. . . . . . . . . . . . . . . . . . . . . . . 106
+5.17 Livraison automatisé de l’image générée . . . . . . . . . . . . . . . . . . . . . 106
+5.18 fichier éxécutables générés en artifact
+. . . . . . . . . . . . . . . . . . . . . . 106
+xii
+
+
+===== PAGE 15 =====
+
+Liste des tableaux
+1.1
+Définition des critères d’évaluation . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.2
+Comparaison des applications selon les critères définis
+. . . . . . . . . . . . .
+11
+2.1
+Acteurs du système . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.2
+Organisation scrum . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.3
+Product backlog . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.4
+Planification des sprints
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.1
+Backlog du sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+3.2
+Description textuelle du uc demander inscription
+. . . . . . . . . . . . . . . .
+39
+3.3
+Description textuelle du uc s’authentifier
+. . . . . . . . . . . . . . . . . . . .
+41
+3.4
+Description textuelle du uc réinitialiser mot de passe
+. . . . . . . . . . . . . .
+43
+3.5
+Backlog du sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+3.6
+Description textuelle du uc gérer inscriptions
+. . . . . . . . . . . . . . . . . .
+54
+3.7
+Description textuelle du uc gérer utilisateurs . . . . . . . . . . . . . . . . . . .
+55
+3.8
+Description textuelle du uc modifier profil . . . . . . . . . . . . . . . . . . . .
+57
+4.1
+Backlog du sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+4.2
+Choix de la carte
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+4.3
+Choix du microcontrôleur
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+4.4
+capteur de suivi . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.5
+Choix du lecteur RFID . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.6
+Choix du batterie . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+70
+4.7
+Description textuelle du cas d’utilisation « Gérer robots » . . . . . . . . . . . .
+71
+4.8
+Backlog sprint 4
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+4.9
+Description textuelle du uc piloter robot . . . . . . . . . . . . . . . . . . . . .
+81
+4.10 Description textuelle du uc Visualiser robot
+. . . . . . . . . . . . . . . . . . .
+82
+xiii
+
+
+===== PAGE 16 =====
+
+5.1
+Backlog sprint 5
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+90
+5.2
+Gérer stations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+92
+5.3
+description textuelle du uc gérer missions
+. . . . . . . . . . . . . . . . . . . .
+95
+xiv
+
+
+===== PAGE 17 =====
+
+Liste des abréviations
+— AGV
+=
+Autonomous Guided Vehicule
+— AMR
+=
+Autonomous Mobile Robot
+— API
+=
+Application Programming Interface
+— APK
+=
+Android Package Kit
+— APT
+=
+Advanced Package Tool
+— BLoC
+=
+Business Logic Component
+— CD
+=
+Continuous Delivery
+— CI
+=
+Continuous Integration
+— CRUD
+=
+Create Read Update Delete
+— IaC
+=
+Infrastructure as Code
+— JS
+=
+Java Script
+— KPI
+=
+Key Performance Indicator
+xv
+
+
+===== PAGE 18 =====
+
+Liste des abréviations
+— MVC
+=
+Model View Controller
+— MVP
+=
+Minimal Viable Product
+— NDK
+=
+Native Development Kit
+— OS
+=
+Operating System
+— RFID
+=
+Radio Frequency IDentification
+— ROS
+=
+Robot Operating System
+— SARL
+=
+Société À Responsabolités Limités
+— SARL
+=
+Société À Responsabilités Limités
+— SDK
+=
+Software Development Kit
+— TCP
+=
+Transmission Control Protocol
+— UART
+=
+Universal Asynchronous Receiver Transmitter
+— UDP
+=
+User Diagram Protocol
+— UML
+=
+Unified Modeling Language
+— VUCA
+=
+Volatil Incertain Complexe Ambigu
+— WS
+=
+Web Socket
+— WSS
+=
+Web Socket Secure
+xvi
+
+
+===== PAGE 19 =====
+
+Introduction générale
+L’explosion technologique dans le domaine de l’industrie, connu par la génération 4.0
+vient d’influencer les différents domaines connexes en particulier celui de la logistique interne
+qui prouve aujourd’hui son importance et captive de plus en plus les intérêts des professionnels.
+On assiste à l’émergence de la notion de l’intralogistique 4.0, caractérisée par l’implication
+des solutions technologiques modernes dans la gestion du mouvement interne des matériaux au
+sein d’une installation ou d’une entreprise.
+Les systèmes automatisés et robotiques représentent l’une des tendances majeures dans ce
+domaine. SEA s’inscrit aujourd’hui dans cette dynamique en développant son propre système de
+robot AGV (Automated Guided Vehicle), destiné à optimiser le transport interne des matériaux
+de manière autonome, sécurisée et efficace.
+Cependant, bien que les caractéristiques matérielles et techniques du robot constituent un facteur
+clé de performance, un contrôle mal conçu ou mal géré peut nuire considérablement à la qualité
+du service rendu. Consciente de cette réalité, SEA se propose de développer l’application
+mobile SEA Robotics, un outil stratégique permettant de centraliser le pilotage, la supervision et
+l’optimisation de ses AGVs. Grâce à cette interface mobile intuitive, l’entreprise vise à renforcer
+l’efficacité globale de son système en offrant aux utilisateurs une gestion en temps réel, flexible
+et réactive des opérations intralogistiques.
+C’est autour de cette démarche que s’inscrit le présent travail au sein de la société SEA
+électronics filiale de SEA Group. En effet, nous visons développer une application mobile
+multiplateforme pour la gestion et le pilotage des robots AGV industriels. Cette application
+doit être en mesure d’assurer les services suivants : gestion d’inscription et d’authentification
+des travailleurs, gestion des robots, connexion aux robots, interaction avec les robots pour
+le pilotage, la visualisation des indicateurs de performances ou l’organisation des missions.
+Bien que le robot AGV réel développé par SEA soit pleinement accessible pour
+les phases de test et de développement en interne, son caractère confidentiel empêche toute
+utilisation ou démonstration en dehors du périmètre de l’entreprise. Cette restriction limite
+1
+
+
+===== PAGE 20 =====
+
+Introduction générale
+les possibilités de validation externe et de présentation du système dans un contexte académique
+ou public. Afin de surmonter cette contrainte, un prototype physique d’AGV, reposant sur des
+technologies IoT et embarquant un système ROS sur Raspberry Pi, a été conçu. Ce prototype
+simule le comportement du robot réel notamment à travers le suivi de ligne et l’échange de
+données avec l’application mobile et permet de démontrer l’efficacité de l’interface développée
+dans un environnement contrôlé, sans compromettre la confidentialité du système industriel.
+Hormis l’introduction et la conclusion générale,ce projet de fin d’études est structuré
+en cinq chapitres qui retracent la concrétisation du projet depuis sa naissance en tant qu’idée
+jusqu’à sa réalisation concrète :
+– Chapitre 1 « Étude préalable » : Dans ce chapitre nous introduisons le contexte du
+projet et posons sa problématique. Nous menons également une étude de l’existant et
+finissons par le choix de la méthodologie à adopter pour ce travail.
+– Chapitre 2 « Préparation du projet » : Ce chapitre comme son nom l’indique est une
+phase de préparation de base pour la mise en œuvre du projet à partir d’une spécification
+fonctionnelle tirée des besoins d’utilisateurs, accompagnée d’une organisation globale par
+Scrum et achevée par l’identification des outils et technologies nécessaires pour entamer
+le développement.
+– Chapitre 3 « Release 1 : Module utilisateurs » : Ce chapitre marque le début du
+developpement de l’application, avec la création des fonctionnalités liés aux utilisateurs
+tout en suivant un cheminement allant de l’analyse à la conception jusqu’à la réalisation
+technique pour chacun des sprints « Inscription et Authentification» et « gestion de
+comptes » .
+– Chapitre 4 « Release 2 : Module Robots » : Ce chapitre s’intéresse à l’interfaçage de
+l’application avec le robot AGV et inclus les prèmières étapes de mise en œuvre d’un
+prototype IOT permettant de minimiser la complexité de de l’AGV. Ce travail sera divisé
+entre les deux sprints «Gestion du robot AGV et mise en place du prototype » et Pilotage
+et visualisation des KPIs ».
+– Chapitre 5 « Release 3 : Module missions et livraison dockerisée de l’application » :
+Ce module est traité au sein du dernier sprint « Gestion des stations et des mission ».
+Il permet d’ajouter une nouvelle dimension fonctionnelle au système par la manipulation
+des missions par les robots et présente l’intégration d’une approche DevOps.
+2
+
+
+===== PAGE 21 =====
+
+Chapitre 1
+Étude préalable
+1
+Introduction
+Dans la genèse d’un projet l’étude préalable est une phase incontournable qui conditionne
+sa réussite. Ce premier chapitre pose les fondations du projet en explorant le cadre général
+dans lequel il s’inscrit, allant de l’environnement hôte jusqu’à la définition du projet ainsi que
+la méthodologie de travail adoptée passant par une étude critique de l’existant. Des notions
+de bases inévitables pour la bonne assimilation et compréhension du projet seront également
+définis.
+2
+Contexte et organisme d’accueil
+En vue d’obtenir nos diplômes de licence en sciences de l’informatique délivrés par
+l’Institut Supérieu d’Informatique de Mahdia (ISIMA), une immersion en milieu professionnel
+s’est imposée comme une étape essentielle. Ainsi, nous avons eu l’opportunité d’effectuer un
+stage au sein de la société SEA Electronics, filiale de SEA GROUP, durant lequel nous avons
+contribué à l’un de ses projets récents. Cette première expérience sur le terrain, réalisée du 1er
+février au 31 mai 2025, nous a permis de mettre en pratique nos acquis académiques et de
+découvrir le fonctionnement d’un environnement professionnel.
+SEA GROUP, structure d’accueil de ce stage, sera présentée dans la suite de cette section.
+2.1
+Présentation de l’entreprise
+SEA Group Tunisie est une entreprise tunisienne spécialisée dans l’ingénierie
+industrielle, l’automatisme, l’électrique, la robotique et la mécatronique [1].
+3
+
+
+===== PAGE 22 =====
+
+Chapitre 1. Étude préalable
+Forte de plus de 30 ans d’expertise, l’entreprise accompagne ses clients industriels dans
+la conception, l’intégration et la mise en œuvre de solutions techniques innovantes et sur mesure.
+L’initiative a été lancée en 1994 par M. Mongi Nouira fondateur de SEA electronics, et mène
+ensuite à la créartion du Group SEA comptant quatre sociétés filiales SARL :
+• SEA Electronics (1994) : Au service des fabricants locaux, partenaire de solutions
+Siemens certifié et centre de formation agréé par l’État tunisien.
+• SEA International (2007) : dédiée aux projets entièrement destinés à l’exportation.
+• SEA Trading (2012) : fondée pour soutenir les activités des sociétés précédentes.
+• SEA Industrie (2022) : pour chaîne de production d’assemblage, machines à usages
+spéciales, totalement exportatrice.
+La figure 1.1 capture la zone allouée au laboratoire 4.0 de SEA electonics dédiée au déroulement
+du projet.
+FIGURE 1.1 : Laboratoire 4.0 SEA
+2.2
+Services offerts
+Le Groupe SEA s’appuie sur une équipe de plus de 50 collaborateurs hautement qualifiés,
+dont 25 ingénieurs, garantissant une qualité conforme à la norme ISO 9001 sous la certification
+"Solution Partner SIEMENS". Grâce à une démarche d’innovation continue, le groupe maintient
+un haut niveau de performance et d’excellence.
+Son expertise diversifiée lui permet d’intervenir dans un large éventail de domaines comme
+montré dans la figure 1.2 et de s’adapter à des situations variées, répondant ainsi aux exigences
+spécifiques de chaque projet industriel.
+4
+
+
+===== PAGE 23 =====
+
+Chapitre 1. Étude préalable
+FIGURE 1.2 : Domaines d’expertise du Groupe SEA
+2.3
+Chiffres clés
+Vingt-sept années d’expertise et d’innovation ont permis au Groupe SEA de bâtir une
+solide réputation à travers des partenariats stratégiques, des projets réussis et une large base de
+clients satisfaits. La figure 1.3 est un récapitulatif autour des chiffres clés du groupe SEA.
+FIGURE 1.3 : Chiffres ckés du Groupe SEA
+3
+Cadre et présentation du projet
+En tant que stagiaires au sein de SEA Group, nous nous sommes vu confier une mission
+en adéquation avec notre projet pédagogique et tourne autour du developpement de l’application
+5
+
+
+===== PAGE 24 =====
+
+Chapitre 1. Étude préalable
+mobile
+"SEA
+Robotics".
+Notre
+intervention
+s’inscrit
+dans
+la
+réponse
+à un besoin spécifique d’un projet d’envergure développé par l’entreprise. Cette section vise
+ainsi à introduire le contexte de notre contribution en présentant d’abord le projet global de
+l’entreprise avant de préciser notre rôle et notre apport au sein de cette initiative.
+3.1
+Contexte du projet
+Cette section ouvre une piste de réflexion sur les concepts liés au sujet tels que
+l’intralogistique et sa relation avec les robots à guidage automatique (AGV) ainsi que les robots
+mobiles autonomes (AMR) afin de fournir un contexte clair avant d’entrer dans le vif du sujet.
+3.1.1
+L’intralogistique : facteur de performance et de compétitivité
+Le terme intralogistique simplifié par la figure 1.4 regroupe l’ensemble de flux
+logistiques, physiques et informationnels au sein d’un site (usine, entrepôt, centre
+de distribution...) depuis l’entrée en stock des matières première jusqu’à l’expédition des
+produits finis. Cela inclus tous les mouvements de stock et de stockage, d’approvisionnement
+et de transfert de produits.
+FIGURE 1.4 : L’intralogistique
+Dans un monde VUCA (Volatil, Incertain, Complexe et Ambigu) auquel nous sommes
+confrontés depuis quelques années, il y a eu une véritable prise de conscience envers cette
+fonction. L’intralogistique apparaît aujourd’hui comme une réponse pertinente aux enjeux
+contemporains de la chaine d’approvisionnement [2].
+Vers l’intralogistique 4.0 :
+Depuis quelques années, nous assistons à l’essor de ce qui est appelé l’industrie du futur,
+également appelée industrie 4.0, l’intralogistique évolue également vers une version plus
+connectée, automatisée et intelligente.
+Nous pouvons parler d’un mouvement vers l’intralogistique 4.0 qui cherche à gagner en efficacité
+et compétitivité.
+6
+
+
+===== PAGE 25 =====
+
+Chapitre 1. Étude préalable
+Concrètement, il existe aujourd’hui de nombreuses solutions pour une logistique plus connectée :
+• La mécanisation : utilisation d’une machine pour remplacer l’effort humain.
+• L’automatisation : utilisation d’une machine qui exécute de manière autonome
+un programme prédéfini.
+• La robotisation : utilisation d’une machine qui exécute de manière autonome
+un programme qui peut être fixe, modifiable ou adaptable.
+Ces technologies transforment en profondeur l’organisation des flux internes, en visant efficacité,
+traçabilité et réactivité.
+3.1.2
+Les robots AGV et AMR pour renforcer l’intralogistique 4.0
+Les véhicules à guidage automatique ou AGV et les robots mobiles autonomes ou AMR
+sont des acteurs clés de l’intralogistique 4.0. En automatisant les flux internes avec intelligence
+et efficacité, ils renforcent la performance, la flexibilité et la réactivité des entreprises face aux
+enjeux du monde industriel moderne [3].
+Ces deux types de robots jouent un rôle très important dans l’amélioration de performance
+intralogistique :
+• Automatiser les flux internes de manière continue, même 24h/24.
+• Réduire les tâches répétitives pour les opérateurs humains.
+• Améliorer la traçabilité des marchandises grâce à des systèmes connectés.
+• Réduire les erreurs humaines et les risques d’accidents.
+• Gagner en flexibilité pour faire face à des environnements logistiques complexes
+et changeants.
+S’inscrivant dans cette dynamique, SEA Group a lancé en mars 2024 le projet SMART-GO100,
+un AGV innovant destiné aux entreprises industrielles, notamment les entrepôts.
+Ce projet mobilise plusieurs domaines technologiques, en particulier le développement logiciel
+à travers une application mobile dédiée.
+3.2
+Besoins et motivations derrière la mise en place du projet
+L’application mobile "SEA Robotics" vient renforcer l’interaction entre l’utilisateur et le
+système des robots AGV. En effet, face aux exigences croissantes de réactivité, de contrôle en
+temps réel et de flexibilité dans les environnements logistiques, une interface mobile s’impose
+7
+
+
+===== PAGE 26 =====
+
+Chapitre 1. Étude préalable
+comme une solution pratique et accessible. Nous avons essayé par la figure 1.5 de schématiser
+le processus d’intégration du système d’AGV dans le workflow industriel.
+FIGURE 1.5 : Schéma d’intégration de l’application
+4
+Analyse de l’existant
+Après avoir posé les bases du projet, une revue des solutions similaires existantes
+s’impose afin d’identifier les bonnes pratiques, repérer les manques potentiels et orienter nos
+choix de conception. Cette démarche permet non seulement de s’inspirer des approches
+éprouvées, mais aussi d’adapter la solution aux besoins spécifiques du contexte visé.
+4.1
+Etude des solutions existantes
+Bien qu’il n’existe pas d’applications mobiles exactement dans le même contexte que
+notre projet, deux solutions identifiées présentent des fonctionnalités proches ou des approches
+comparables, et peuvent ainsi servir de références utiles.
+4.1.1
+SIMOVE AGV Control
+Lancée en 2023, SIMOVE AGV Control est une application mobile multiplateforme
+développée par la société SIEMENS.Comme montrée dans la figure 1.6 elle permet d’établir
+une communication TCP/IP et UDP avec un robot AGV automatisé à l’aide d’un automate
+8
+
+
+===== PAGE 27 =====
+
+Chapitre 1. Étude préalable
+Siemens S7-1200 ou S7-1500, en s’appuyant sur la bibliothèque SIMOVE CarrierControl [4].
+FIGURE 1.6 : l’application SIMOVE AGV Control
+4.1.2
+AGV
+AGV est une application mobile conçue comme un outil d’accompagnement pour
+les véhicules de transport intelligents. Comme le montre la figure 1.7, elle permet notamment
+de commander un robot via Bluetooth ou à distance. La visualisation d’informations détaillées
+sur chaque véhicule (état, position, etc.) et la configuration des paramètres opérationnels [5].
+FIGURE 1.7 : AGV
+4.2
+Critique de l’existant
+Afin de structurer notre critique des applications similaires identifiées, nous avons défini
+une série de critères d’analyse jugés pertinents dans le contexte de notre projet.
+9
+
+
+===== PAGE 28 =====
+
+Chapitre 1. Étude préalable
+4.2.1
+Axes d’évaluation
+Ces critères listés par le tableau 1.1 permettent une évaluation cohérente et comparative,
+orientée vers les exigences spécifiques de notre solution cible.
+TABLEAU 1.1 : Définition des critères d’évaluation
+Critère
+Type
+Importance
+Échelle d’évaluation
+Compatibilité
+multiplateforme
+Technique
+Une large compatibilité est
+essentielle pour garantir un
+accès généralisé, quel que soit
+le terminal utilisé.
+Note de 1 à 3, un point
+pour chaque plateforme
+supportée :
+-Windows
+-Ios
+-Android
+Sécurité de la
+communication
+Technique
+Évalue les mécanismes de
+sécurité mis en place pour les
+échanges de données entre
+l’application et le système.
+Note de 0 à 3, un point
+si l’accès est
+authentifié, un point si
+le protocole de
+communication est
+sécurisé, un point s’il y
+a gestion de
+concurrence.
+Richesse
+fonctionnelle
+Fonctionnel
+Mesure l’étendue et la
+diversité des fonctionnalités
+offertes par l’application.Une
+application complète est
+mieux adaptée à une
+exploitation opérationnelle.
+Un point pour chaque
+fonctionnalité de base.
+Réactivité du
+système
+Fonctionnel
+Correspond à la fluidité de
+l’application et sa capacité à
+répondre rapidement aux
+actions de l’utilisateur et aux
+événements en temps réel.
+Note tirée des avis des
+utilisateurs, 1 si 90%
+au moins confirme la
+réactivité de
+l’application et 0 sinon.
+Scalabilité
+Fonctionnel
+Analyse la capacité de
+l’application à s’adapter à une
+montée en charge, notamment
+à gérer plusieurs AGV,
+plusieurs utilisateurs...
+Un point pour chaque
+mise en place de la
+scalabilité.
+Ergonomie et
+facilité
+d’utilisation
+UI/UX
+S’intéresse à la qualité de
+l’interface graphique, à la
+simplicité de navigation, et à
+la clarté des informations
+présentées.
+Une Note de 0 à 3 :
+- 0 pour médiocre
+- 1 pour moyenne
+- 2 pour élevée
+- 3 pour très élevée
+4.2.2
+Évaluation
+Les critères d’évaluations, ont permis d’élaboler la grille d’évaluations ainsi que l’histogramme
+correspondant des applications montrés respectivement par le tableau 1.2 et la figure 1.8.
+10
+
+
+===== PAGE 29 =====
+
+Chapitre 1. Étude préalable
+TABLEAU 1.2 : Comparaison des applications selon les critères définis
+SIMOVE AGV Control
+AGV
+Compatibilité multiplateforme
+1
+1
+Sécurité de la communication
+1
+2
+Richesse fonctionnelle
+4
+10
+Réactivité du système
+1
+1
+Scalabilité
+0
+2
+Ergonomie et facilité d’utilisation
+2
+1
+FIGURE 1.8 : Évaluation des solutions existantes
+4.3
+Solution proposée
+À l’issue de l’étude menée, l’application mobile proposée se présente comme une
+solution multiplateforme, scalable et ergonomique, conçue pour accompagner le déploiement
+des robots AGV au sein de l’entrepôt. Elle vise à combler les insuffisances en matière de
+sécurité, à offrir des fonctionnalités adaptées aux différents profils d’utilisateurs et à s’imposer
+comme un véritable outil de gestion des flux logistiques internes.
+5
+Méthodologie de travail
+Afin de mener à bien la réalisation du projet, il est essentiel de s’appuyer sur une
+méthodologie rigoureuse et adaptée. Cette section se propose de présenter la méthodologie
+adoptée, ainsi que les raisons qui ont motivé ce choix en tenant compte des spécificités du
+projet et des exigences de son environnement.
+11
+
+
+===== PAGE 30 =====
+
+Chapitre 1. Étude préalable
+5.1
+Étude des méthodologie existantes
+Lorsqu’il s’agit de gérer un projet de développement de logiciel, deux grandes écoles
+de pensée dominent : les méthodologies traditionnelles, souvent représentées par Waterfall,
+et les méthodologies agiles. Mais avant de trancher sur la meilleure approche à adopter, il est
+essentiel de prendre du recul et d’analyser le cadre de chacune en tenant compte de leur origine,
+de leurs principes et de leur adéquation aux différents types de projets.
+5.1.1
+La Méthodologie Waterfall : Origine et Principes
+Le développement logiciel en mode Waterfall (cascade), introduit en 1970 par Winston
+Royce, suit un processus linéaire et séquentiel en plusieurs phases (besoins, conception,
+développement, tests, déploiement et maintenance). Chaque étape doit être complétée avant de
+passer à la suivante rendant difficile toute modification en cours de projet. Malgré des variantes
+comme le cycle en V, cette méthode reste rigide et souffre de plusieurs limites : besoin de tout
+définir dès le départ, peu de flexibilité, livraison tardive et risques élevés en cas d’erreurs.
+Le rapport Standish 2020 révèle que seuls 14 % des projets Waterfall réussissent, ce qui montre
+son inadéquation dans un monde VUCA où les besoins évoluent rapidement [6].
+5.1.2
+L’Agilité : une révolution dans la gestion de projet
+Face aux limites du modèle Waterfall, 17 experts ont créé en 2001 le Manifeste Agile,
+comme illustré dans la figure 1.9.Il s’agit d’une nouvelle approche fondée sur 4 valeurs et
+12 principes, visant plus de flexibilité et d’adaptation au changement. L’agilité repose sur
+une gestion itérative et incrémentale, avec des livraisons rapides pour obtenir du feedback
+client, favoriser la collaboration et réduire les risques. Elle a transformé la gestion de projet
+en mettant l’accent sur l’innovation continue. Toutefois, l’agilité n’est pas toujours la meilleure
+option : pour les projets bien définis et à faible incertitude, des méthodes plus structurées comme
+le cycle en V peuvent rester pertinentes [7].
+5.2
+Méthodologie adoptée : Scrum
+La méthodologie Agile a été choisie pour ce projet avec la mise en œuvre de Scrum
+pour structurer et organiser le développement. Scrum est un cadre Agile qui se concentre
+sur l’itération rapide et l’adaptabilité en permettant des ajustements constants en fonction des
+retours des parties prenantes et des évolutions des besoins.
+12
+
+
+===== PAGE 31 =====
+
+Chapitre 1. Étude préalable
+FIGURE 1.9 : Apparition de la méthodologie Agile
+Ce choix a été motivé par la volonté de maximiser la collaboration au sein de l’équipe et
+d’assurer une livraison continue de valeur tout au long du projet.
+Dans Scrum, le travail est organisé en sprints, qui sont des périodes de temps fixes (généralement
+de 1 à 4 semaines). Chaque sprint vise à produire une version fonctionnelle et potentiellement
+livrable du produit. Le déroulement d’un sprint est représenté dans la figure 1.10 ci-dessus, qui
+illustre les différentes étapes clés du processus. Les principales cérémonies Scrum incluent :
+• Sprint Planning : pour définir les objectifs et les tâches du sprint.
+• Daily Scrum : réunion quotidienne pour suivre l’avancement.
+• Sprint Review : pour présenter les résultats du sprint aux parties prenantes.
+• Sprint Retrospective : pour réfléchir à l’amélioration continue du processus.
+FIGURE 1.10 : Méthodologie Scrum
+13
+
+
+===== PAGE 32 =====
+
+Chapitre 1. Étude préalable
+Les rôles clés dans Scrum sont :
+• Scrum Master : facilitateur, responsable du respect du cadre Scrum.
+• Product Owner : garant des besoins du client et des priorités du produit.
+• Équipe de développement : responsables de la création des fonctionnalités définies.
+Cette approche permet de garantir une gestion dynamique du projet, de s’adapter aux imprévus
+et d’offrir des améliorations régulières en fonction des retours des utilisateurs et des stakeholders.
+5.3
+Langage de modélisation
+Une dizaine d’années après le début de son utilisation dans les projets de développement
+orienté objet, UML, dont le logo est indiqué par la figure 1.11, s’est imposé comme la norme
+de référence en matière de modélisation logicielle.
+Issu de la fusion de plusieurs méthodes de modélisation antérieures, UML permet de représenter
+les éléments du monde réel de manière abstraite, sans se soucier des détails d’implémentation,
+et ce, quel que soit le langage de programmation [8].
+FIGURE 1.11 : Logo UML
+La modélisation objet repose sur l’identification des objets pertinents dans un domaine
+donné, ainsi que sur la définition de leurs données (attributs) et des fonctions (méthodes) qui
+leur sont associées.
+Dans cette optique, et suite au choix de la méthodologie de travail, nous avons adopté UML
+comme langage de modélisation afin de concevoir les différents aspects fonctionnels
+et structurels du système. Grâce à sa richesse en diagrammes (cas d’utilisation, classes,
+séquences, etc.), UML offre une vision claire, standardisée et structurée des composants du
+projet, facilitant ainsi la communication entre les différents acteurs techniques et fonctionnels.
+14
+
+
+===== PAGE 33 =====
+
+Chapitre 1. Étude préalable
+6
+Conclusion
+Ce chapitre a posé les bases du projet en exposant son contexte industriel, les motivations
+de sa mise en œuvre et les limites des solutions existantes. Il a également introduit
+la méthodologie Scrum adoptée pour la conduite du projet, ainsi que le langage UML choisi
+pour la modélisation.
+15
+
+
+===== PAGE 34 =====
+
+Chapitre 2
+Préparation du projet
+1
+Introduction
+Le chapitre précédent n’est qu’une épisode introductive destinée à préciser le cadre
+général du projet. Le présent chapitre, quant à lui, permet de poser les bases nécessaires à
+sa mise en œuvre.
+Nous commencerons par une identification rigoureuse des différents besoins suivie d’une
+analyse conceptuelle détaillée. Par la suite, nous expliquerons comment le travail sera
+concrètement piloté selon la méthodologie Scrum. Enfin, nous présenterons la mise en place
+d’une architecture technique solide nécessaire pour mener à bien le phase de développement.
+2
+Capture des besoins
+La phase de capture des besoins est cruciale : elle permet de s’assurer que
+le système à concevoir réponde pleinement aux attentes des différentes parties prenantes.
+2.1
+Spécification des besoins
+Toute application est définie par un ensemble de besoins fonctionnels et non
+fonctionnels.
+- Les besoins fonctionnels répondent à la question « quoi faire? ». Ils décrivent les actions,
+services ou fonctionnalités que l’application doit fournir à ses utilisateurs.
+- Les besoins non fonctionnels répondent à la question « comment le faire? ». Ils définissent
+les contraintes techniques et qualitatives que le système doit respecter.
+16
+
+
+===== PAGE 35 =====
+
+Chapitre 2. Préparation du projet
+2.1.1
+Spécification des besoins fonctionnels
+• Invité :
+◦S’informer : l’application doit avoir une interface « présentation » pour présenter
+le projet et permettre aux utilisateurs de découvrir les robots AGV sans avoir à
+s’authentifier.
+• Employé :
+◦S’inscrire : l’application doit fournir une interface avec un formulaire d’inscription
+pour les employés qui souhaitent demander l’accès aux fonctionnalités internes.
+◦Recevoir un email d’acceptation : Une fois un employé est accepté par le super
+admin,
+le
+système
+doit
+lui
+envoyer
+un
+email
+pour
+l’informer
+de
+son
+acceptation et l’inviter à se connecter.
+◦S’authentifier : Une page d’authentification par email et mot de passe, ou par Google
+est inévitable pour associer les utilisateurs à leurs rôles et bien sécuriser le système
+contre tout accès inapproprié.
+◦Récupérer mot de passe : L’oubli de mot de passe est un incident très populaire qui
+peut entrainer la perte de son compte et doit alors être géré par le système en rendant
+possible sa récupération par émail.
+◦Modifier profil : Chaque utilisateur doit avoir la possibilité de mettre à jour quelques
+informations de son profil à l’aide d’une interface dédiée.
+◦Visualiser kPIs : L’interface de base après authentification est l’interface
+de visualisation de kPIs où l’employé peut suivre en temps réel les indicateurs de
+performances des différents robots AGV.
+• Admin :
+◦Piloter un robot : Une interface de commande doit être conçue pour permettre à
+l’admin de choisir un robot, établir une connexion Web Socket avec la machine et
+guider le robot vers sa trajectoire, ou vers sa station de charge.
+◦Gérer les robots : L’admin a le privilège de gérer les robots en consultant l’ensemble
+des robots, supprimer, ajouter ou modifier certains.
+◦Gérer les stations : L’admin doit être dans la mesure de gérer les positions clés sur
+la trajectoire du robot pour les cibler plus tard.
+◦Gérer les missions : L’admin doit être dans la mesure de gérer les missions de
+livraison de charges manipulés par les différents robots.
+17
+
+
+===== PAGE 36 =====
+
+Chapitre 2. Préparation du projet
+• Super admin :
+◦Gérer les demandes d’inscription : Une liste des inscriptions en demande
+d’approbations doit être accessible pour le super admin afin de pouvoir les accepter
+avec des rôles, rejeter ou même ignorer pour garantir la sécurité de son système.
+◦Gérer les comptes utilisateurs : Le super admin doit accéder à une interface de
+gestion d’utilisateurs pour les consulter, supprimer ou modifier leurs rôles.
+2.1.2
+Spécification des besoins non fonctionnels
+• Multiplateforme : L’application doit être compatible avec plusieurs systèmes
+d’exploitation, notamment Android et iOS pour garantir un usage pour toutes les appareils.
+• Sécurité : Les données échangées entre les utilisateurs, les robots et la base de données
+doivent être sécurisées (authentification, autorisation, chiffrement des données, etc..).
+• Performance : L’application doit offrir une réactivité fluide, avec un temps de réponse
+court (< 1s pour les actions critiques) même lorsque plusieurs robots sont actifs.
+• Scalabilité : Le système doit pouvoir gérer plusieurs utilisateurs robots et données, sans
+perte de performance.
+• Ergonomie / UX : L’interface doit être intuitive, accessible à des utilisateurs non
+techniques, et adaptée aux environnements d’usage (grandes icônes, etc..).
+• Maintenance et évolutivité : L’architecture doit permettre des mises à jour faciles, l’ajout
+de nouvelles fonctionnalités (ex : nouveaux types de robots).
+2.2
+Modélisation des besoins
+Une modélisation des besoins sera réalisée à travers l’identification des acteurs ainsi que
+l’élaboration d’un diagramme de cas d’utilisation global.
+2.2.1
+Identification des acteurs
+Un acteur est l’idéalisation d’un rôle joué par une personne ou objet externe interagissant
+avec le système. Ces acteurs permettent de cerner l’interface que le système va devoir offrir à
+son environnement.Vu que l’application est destinée à la gestion des robots au sein d’un site
+industriel (usine, entrepôt ...) différents profils humains repertoriés dans le tableau 2.1 peuvent
+interagir avec le système : invité, employé,administrateur, et superAdmin. On peut également
+identifier des acteurs non humains comme système ROS.
+18
+
+
+===== PAGE 37 =====
+
+Chapitre 2. Préparation du projet
+TABLEAU 2.1 : Acteurs du système
+Acteur
+Description
+Permissions
+Invité
+(externe)
+Utilisateur anonyme, non connecté.
+Peut consulter les données publiques
+(ex : démos, infos générales).
+Employé
+(externe)
+Travailleur interne à l’entrepôt.
+Peut visualiser les indicateurs de
+performances des robots et gérer son
+profil.
+Admin
+(externe)
+Employer responsable du pilotage des
+robot et leurs gestions.
+Peut assigner des missions, gérer les
+robots et les commander en temps réel
+Super
+admin
+(externe)
+Le grand responsable dans l’entreprise.
+Peut gérer les utilisateurs, les
+demandes d’inscriptions et a un accès
+complet à l’application.
+ROS
+(interne)
+Framework de communication entre
+différents composants du robot
+Doit interagir avec l’application par
+envoi et réception de messages
+2.2.2
+Diagramme de cas d’utilisations global
+Le diagramme de cas d’utilisation donné par la figure 2.1 capture le comportement de
+l’application "SEA Robotics" tel qu’un acteur le voit. Il fournit les cas d’utilisation impliqués.
+FIGURE 2.1 : Diagramme cas d’utlisation global
+19
+
+
+===== PAGE 38 =====
+
+Chapitre 2. Préparation du projet
+3
+Conduite du projet avec Scrum
+Tout au long de cette partie, nous allons nous focaliser sur la mise en œuvre efficace
+de la méthodologie Scrum dans le cadre de notre projet. Nous commencerons par identifier
+les différents acteurs Scrum au sein de notre équipe et définir clairement leurs rôles respectifs.
+Ensuite, nous procéderons à la rédaction du backlog produit en recensant l’ensemble
+des fonctionnalités attendues. Enfin, nous organiserons l’ensemble du travail à réaliser en le
+répartissant de manière structurée sous forme de sprints, selon les principes agiles.
+3.1
+Organisation de l’équipe scrum
+Les rôles Scrum ont été clairement définis et facilement identifiés au sein de notre équipe
+composée de quatre membres. Le tableau 2.2 met en évidence la répartition des rôles scrum ainsi
+que les responsabilités de chaque membre.
+TABLEAU 2.2 : Organisation scrum
+Rôle
+Équipe de
+développement
+Product Owner
+Scrum Master
+Responsable
+Mlle Maize Salma
+Mlle Maaoui Siwar
+M. Saad Khaled
+Mme Bayoudhi Leila
+Mission
+En charge de la
+conception, du
+développement et du
+testing de l’application,
+selon les besoins
+définis dans le backlog
+produit.
+Représente les parties
+prenantes
+(stakeholders) et
+s’assure que l’équipe
+livre le bon produit, de
+la bonne manière et au
+bon moment, en
+fonction des priorités
+du client.
+Veille au bon
+déroulement du cadre
+Scrum en facilitant les
+échanges, en
+supprimant les
+obstacles et en
+s’assurant que l’équipe
+respecte les pratiques
+agiles.
+3.2
+Le Backlog du produit
+Le product backlog illustré dans le tableau 2.3 décrit l’ensemble des fonctionnalités
+de l’application du point de vue du client, sous forme de user stories. Il est rédigé en amont du
+développement par le Product Owner, en collaboration avec le reste de l’équipe. Ce document
+joue un rôle central dans la méthodologie Scrum, car il constitue à la fois une base de référence
+et une convention partagée entre les membres de l’équipe. Le backlog reste sous la responsabilité
+du Product Owner, qui le met à jour en fonction de l’évolution des besoins, des priorités, ou des
+retours des parties prenantes.
+20
+
+
+===== PAGE 39 =====
+
+Chapitre 2. Préparation du projet
+TABLEAU 2.3 : Product backlog
+ID
+Fonctionnalité
+ID
+User story
+Priorité
+1
+Inscription
+1.1
+En
+tant
+que
+Super
+admin,
+je veux m’inscrire à l’application, afin d’être
+automatiquement associé à mon rôle comme
+super admin.
+Élevée
+1.2
+En tant que admin ou employé je veux m’inscrire
+à l’application afin d’être éventuellement accepté
+par le super admin
+Élevée
+1.3
+En tant que super admin je veux consulter les
+demandes d’inscription non traités afin de rejeter
+ou accepter avec des rôles les utilisateurs.
+Élevée
+1.4
+En tant que employé ou admin inscrit, je veux
+recevoir un éventuel email afin de m’informer que
+je suis accepté par le super admin et accéder à
+mon compte.
+Moyenne
+2
+Authentification
+2.1
+En tant que super admin, admin ou employé je
+veux pouvoir m’authentifier et accéder à mon
+compte dans l’application.
+Élevée
+2.2
+En tant que super admin, admin ou employé,
+je veux pouvoir me déconnecter afin de quitter
+l’application en sécurité.
+Élevée
+2.3
+En tant que super admin, admin ou employé je
+veux pouvoir récupérer mon mot de passe avec
+mon email en cas d’oubli pour récupérer mon
+compte
+Élevée
+3
+Gestion de
+profil
+3.1
+En tant que super admin, admin ou employé je
+veux pouvoir modifier mes informations afin de
+les mettre à jour.
+Moyenne
+4
+Gestion des
+utilisateurs
+4.1
+En tant que super admin, je veux pouvoir
+consulter les utilisateurs, supprimer un utilisateur
+ou modifier son rôle afin de mieux contrôler
+l’accès à l’application.
+Élevée
+5
+Réalisation de
+prototype
+5.1
+En tant que developpeur, je avoir un prototype
+fonctionnel simulant l’interaction de l’AGV de la
+société afin de pouvoir simuler le système réel
+tout en respectant l’aspect confidentiel du projet
+réel.
+Moyenne
+6
+Gestion des
+robots
+6.1
+En tant que admin ou super admin, je veux
+pouvoir consulter la liste des robots, ajouter,
+supprimer ou modifier un robots afin d’évoluer le
+système ou corriger un défaut.
+Élevée
+7
+Commande de
+robot
+7.1
+En tant que admin ou super admin, je veux
+pouvoir piloter un robots à partir de l’application
+en temps réel en ajustant sa vitesse afin de bien le
+contrôler.
+Élevée
+8
+Visualisation
+des KPIs
+8.1
+En tant que employé, admin ou super admin, je
+veux pouvoir choisir un robot afin de visualiser
+ses indicateurs de performances en temps réel.
+Moyenne
+21
+
+
+===== PAGE 40 =====
+
+Chapitre 2. Préparation du projet
+9
+Gestion des
+stations
+9.1
+En tant que super admin ou admin, je veux faire
+l’ajout manuel des stations en saisissant le tag de
+chacune et son nom, les modifier ou supprimer
+afin de définir et mettre à jour de façon simple les
+position clé de la trajectoire robot.
+Moyenne
+9.2
+En tant que super admin, je veux pouvoir faire le
+mapping théorique afin d’identifier les différentes
+stations dans l’espace.
+Élevée
+10
+Gestion des
+missions
+10.1
+En tant que super admin ou admin, je veux créer
+dans l’ordre des missions avec la liste des stations
+cible afin qu’il soient attribuées et exécutées
+automatiquement par robots.
+Moyenne
+10.2
+En tant que super admin ou admin, je veux
+pouvoir modifier et supprimer des missions
+seulement s’ils sont encore en liste d’attente afin
+de mettre à jour le planning des missions.
+Moyenne
+10.3
+En tant que super admin ou admin, je veux
+pouvoir visualiser l’état des missions en temps
+réel afin de contrôler le déroulement du planning.
+Moyenne
+10.4
+En tant que super admin ou admin, je veux
+pouvoir ordonner la reprise de mission pour un
+robot ayant complété sa livraison dans une station
+afin qu’il puisse continuer exécution.
+Élevée
+3.3
+Planification des sprints
+Dans notre projet, les cinq sprints ont été définis de manière équitable, avec une durée
+fixe de 20 jours chacun.
+Chaque sprint fait partie d’un release et regroupe un ensemble de fonctionnalités équilibrées,
+sélectionnées pour contribuer de façon cohérente à la construction incrémentale du système.
+La planification globale des sprints a été réalisée en amont, comme présenté dans le tableau 2.4.
+TABLEAU 2.4 : Planification des sprints
+Release ID
+Sprint ID
+Nom de Sprint
+Durée /j
+Release 1
+1
+Inscription et authentification
+20
+2
+Gestion de comptes et d’utilisateurs
+20
+Release 2
+3
+Mise en place du prototype et Gestion de robots
+20
+4
+Visualisation de Kpis et pilotage robots
+20
+Release 3
+5
+Gestion de stations et gestion de missions
+20
+22
+
+
+===== PAGE 41 =====
+
+Chapitre 2. Préparation du projet
+4
+Technologies et outils de développement
+Une fois les besoins fonctionnels et non fonctionnels clairement définis, l’étape suivante
+consiste à sélectionner l’ensemble des technologies et outils nécessaires à la réalisation du
+projet. Ce choix est crucial, car il va fortement influencer le bon déroulement du développement,
+les performances de l’application, ainsi que le temps de mise en œuvre.
+Il est donc important d’adopter une démarche réfléchie et structurée. Nous allons dans un
+premier temps justifier le choix de Flutter pour le développement front-end de notre application
+mobile, puis présenter une liste des autres outils utilisés tout au long du projet, en expliquant
+brièvement le rôle de chacun.
+4.1
+Approche de développement adoptée
+Face à l’exigence non fonctionnelle de compatibilité multiplateforme, une étude
+approfondie des différentes approches de développement mobile s’impose.
+Bien que le développement natif (Java pour Android, Swift pour iOS) offre des performances
+optimales, il présente un inconvénient majeur : son manque de flexibilité.
+En effet, une application développée nativement pour Android ne sera pas directement utilisable
+sur iOS, ce qui implique une double charge de travail et une maîtrise de deux langages distincts.
+Ce processus peut rapidement devenir coûteux, complexe et chronophage.
+Il existe aujourd’hui plusieurs approches de développement mobile, chacune reposant sur des
+technologies spécifiques, avec leurs propres avantages et limites. Le choix de l’approche dépend
+principalement de critères tels que les performances attendues, la compatibilité multiplateforme,
+les ressources humaines et techniques disponibles, ainsi que la complexité globale du projet.
+Dans le cadre du développement de notre application mobile, le choix de la technologie s’est
+orienté vers une solution cross-platform, afin de répondre aux exigences de déploiement
+simultané sur Android et iOS, tout en optimisant les ressources de développement. Pour appuyer
+cette décision, la figure 2.2 illustre un processus de réflexion basé sur une série de questions
+binaires (oui/non), orientées selon les besoins de l’utilisateur. Cependant, cette approche de
+développement implique l’évaluation de plusieurs frameworks cross-platform populaires, tels
+que Flutter, React Native ou Xamarin, chacun présentant une forte compétitivité ainsi que des
+concepts, avantages et inconvénients propres. C’est pour cette raison qu’il a été nécessaire
+d’effectuer une deuxième phase de sélection, plus approfondie, pour déterminer l’outil le plus
+adapté à notre contexte.[9]
+23
+
+
+===== PAGE 42 =====
+
+Chapitre 2. Préparation du projet
+FIGURE 2.2 : État de l’art de développement mobile
+4.2
+Flutter pour le développement cross-plateforme
+Après avoir opté pour une approche de développement cross-plateforme afin de garantir
+la compatibilité de notre application sur Android et iOS, une seconde analyse comparative a
+été menée pour identifier l’outil technologique pour le développement frontend le plus adapté.
+Parmi les solutions les plus populaires, Flutter et React Native se démarquent largement.
+Toutefois, Flutter s’est imposé comme le meilleur choix pour notre projet, notamment en raison
+de ses excellentes performances, de sa fluidité d’affichage, ainsi que de son écosystème riche et
+en constante évolution. Développé par Google, Flutter permet de créer des interfaces modernes,
+réactives et personnalisées à partir d’un seul et même code source, tout en offrant un accès natif
+aux fonctionnalités de l’appareil.
+Ce choix nous permet non seulement de gagner en efficacité, mais aussi de réduire les coûts et
+d’accélérer le temps de développement, tout en assurant une expérience utilisateur de qualité
+sur l’ensemble des plateformes cibles. Flutter repose sur le langage de programmation Dart,
+un langage orienté objet reconnu pour sa syntaxe claire, sa rapidité d’exécution et sa courbe
+d’apprentissage relativement douce. Les principaux avantages de Flutter, qui ont motivé notre
+choix, sont présentés dans la figure 2.3.
+24
+
+
+===== PAGE 43 =====
+
+Chapitre 2. Préparation du projet
+FIGURE 2.3 : Framework flutter
+4.3
+Environnement de développement et autres outils utilisés
+Le développement de notre application s’est appuyé sur un ensemble d’outils logiciels
+spécialisés, couvrant différentes étapes du cycle de vie du projet : conception, développement,
+tests. Ces outils ont été sélectionnés pour leur pertinence technique, leur compatibilité avec
+notre architecture et leur capacité à optimiser la productivité de l’équipe.
+Chaque sous-section ci-dessous présente un outil ou une technologie clé utilisée dans le projet,
+accompagnée de son logo représentatif.
+4.3.1
+Astah UML
+Astah UML (voir figure 2.4) est un outil de conception visuelle dédié aux diagrammes
+UML.Il se caractérise par son respect strict des règles fondamentales du langage UML.
+Contrairement à certains outils flexibles qui permettent une modélisation libre non vérifiée,
+Astah impose des contraintes spécifiques à chaque diagramme, garantissant ainsi une conception
+conforme aux normes UML. Cette approche réduit les erreurs de modélisation et favorise la
+cohérence du système [10].
+FIGURE 2.4 : Logo Astah UML
+25
+
+
+===== PAGE 44 =====
+
+Chapitre 2. Préparation du projet
+4.3.2
+Node.js
+Node.js (voir figure 2.5) a été utilisé pour développer le backend de notre application.
+Il s’agit d’un environnement d’exécution JavaScript côté serveur, reconnu pour sa rapidité, sa
+scalabilité et sa capacité à gérer efficacement des connexions simultanées grâce à son modèle
+événementiel et asynchrone. Dans notre architecture, Node.js fonctionne en tant que service
+backend autonome, tournant en continu indépendamment de l’application Flutter. Il joue un rôle
+central dans la gestion des communications avec les robots AGV, en récupérant des données
+telles que les KPIs, les missions en cours, les états des robots, etc. Node.js n’interagit pas
+directement avec Flutter, mais communique avec Firebase, qui sert de pont entre le backend
+et l’interface mobile. Ainsi, les données récupérées par Node.js sont transmises à Firebase, où
+elles deviennent accessibles en temps réel par l’application Flutter [11].
+FIGURE 2.5 : Logo Nodejs
+4.3.3
+Dart
+Dans le cadre de ce projet, Dart (voir figure 2.6) ne s’est pas limité à un simple langage
+d’interface pour Flutter, mais constitue le cœur du développement de la logique métier de
+l’application. Grâce à sa syntaxe claire, sa gestion efficace de l’asynchronisme (futures, streams)
+et sa parfaite intégration avec Flutter, Dart a permis de développer des fonctionnalités complexes
+tout en garantissant une bonne lisibilité et maintenabilité du code.
+La logique métier, comprenant la gestion des rôles utilisateurs, la communication avec
+le backend, la validation des données, la gestion des états et bien d’autres aspects, a été
+principalement implémentée à l’aide de Dart. Son modèle orienté objet et ses outils de typage
+ont facilité l’organisation du code clean architecture claire et évolutive [12].
+FIGURE 2.6 : Logo Dart
+26
+
+
+===== PAGE 45 =====
+
+Chapitre 2. Préparation du projet
+4.3.4
+Firebase
+Firebase (voir figure 2.7), la plateforme de développement d’applications proposée par
+Google, est utilisé dans ce projet pour gérer plusieurs aspects essentiels du backend. En particulier,
+Firebase Authentication a permis de mettre en place une gestion sécurisée des identifiants
+utilisateurs, facilitant l’authentification et la gestion des sessions de manière fiable.
+Par ailleurs, Cloud Firestore est utilisé comme base de données NoSQL pour le stockage structuré
+des
+données
+sous
+forme
+de
+collections
+et
+de
+documents,
+tout
+en
+assurant
+une synchronisation en temps réel entre le backend (Node.js) et le frontend (Flutter).
+L’intégration fluide de Firebase avec Flutter a considérablement simplifié la communication
+entre les différentes couches de l’application [13].
+FIGURE 2.7 : Logo Firebase
+4.3.5
+Cloudinary
+Cloudinary (voir figure 2.8), est une plateforme de gestion de contenu multimédia dans le
+cloud, conçue pour stocker, optimiser et diffuser des images et des vidéos. Dans notre application,
+Cloudinary a est utile pour héberger les ressources visuelles telles que les images de présentation
+et les vidéos de la page d’accueil. Grâce à ses fonctionnalités de transformation à la volée,
+de diffusion via CDN (Content Delivery Network) et de compression intelligente, Cloudinary
+garantit un chargement rapide, une meilleure expérience utilisateur et une gestion centralisée et
+sécurisée des fichiers multimédia [14].
+FIGURE 2.8 : Logo Cloudinary
+27
+
+
+===== PAGE 46 =====
+
+Chapitre 2. Préparation du projet
+4.3.6
+Postman
+Postman (figure 2.9), est un outil crucial pour le test des API REST. Il permet de simuler
+des requêtes HTTP CRUD et d’observer les réponses du serveur. Dans ce projet, il sert à valider
+les interactions entre l’application mobile et le backend [15].
+FIGURE 2.9 : Logo Postman
+4.3.7
+Docker
+Docker (voir figure 2.10) est utilisé pour tester certaines fonctionnalités dans un
+environnement isolé, notamment avec ROS. Il permet également de conteneuriser l’application
+afin de faciliter son déploiement sécurisé et d’adopter une démarche DevOps efficace [16].
+FIGURE 2.10 : Logo Docker
+4.3.8
+Rive
+Rive (figure 4.1) est efficace pour intégrer des animations interactives basées sur des
+machines à états, permettant une gestion fluide et dynamique des transitions visuelles dans
+l’application [17].
+FIGURE 2.11 : Logo Rive
+28
+
+
+===== PAGE 47 =====
+
+Chapitre 2. Préparation du projet
+4.3.9
+Android Studio
+Android Studio (voir figure 2.12) a été utilisé comme environnement de développement
+intégré (IDE) pour la création et l’émulation de l’application mobile. Développé par Google,
+Android Studio offre un ensemble d’outils puissants pour coder, tester et déboguer des
+applications Android. Il intègre un émulateur performant, des outils de visualisation d’interface
+(UI Designer) ainsi qu’un support complet pour Kotlin et Java, ce qui en fait un choix
+incontournable pour les développeurs Android [18].
+FIGURE 2.12 : Logo Android Studio
+4.3.10
+Visual Studio Code
+VS Code ou Visual Studio Code (voir figure 2.13) est un éditeur de code source léger,
+extensible et très performant, largement adopté pour le développement moderne. Il est utilisé
+comme
+environnement principal pour le développement de notre application mobile Flutter. Grâce à
+ses nombreuses extensions (Flutter, Dart, GitHub Copilot, Docker, Remote-Containers, etc.),
+il offre une expérience de développement complète et fluide, même dans des environnements
+complexes.
+L’une des forces majeures de VS Code réside dans sa capacité à permettre le développement
+directement à l’intérieur de conteneurs Docker, sans avoir à installer localement toutes les
+dépendances. Cette approche permet à notre équipe de travailler sur des versions conteneurisées
+de l’application depuis différentes machines, y compris celles qui n’étaient pas équipées des
+outils requis, tout en conservant un environnement de développement cohérent, isolé
+et reproductible [19].
+FIGURE 2.13 : Logo Visual Studio Code
+29
+
+
+===== PAGE 48 =====
+
+Chapitre 2. Préparation du projet
+4.3.11
+GitHub
+GitHub (voir figure 2.14) sert comme outil de gestion de version et comme plateforme de
+collaboration. Il permet de suivre l’historique des modifications du code, de travailler à plusieurs
+simultanément, et d’intégrer un worflow pour le CI/CD pour une approche DevOps [20].
+FIGURE 2.14 : Logo Github
+4.4
+Outils et plateformes de prototypage IoT et robotique
+Le bon fonctionnement du prototype repose non seulement sur une architecture
+matérielle bien pensée, mais également sur un environnement logiciel cohérent, modulaire
+et interopérable, capable de gérer les communications, l’exécution des tâches et l’interaction
+utilisateur.
+L’ensemble du système repose sur une pile logicielle articulée autour de ROS 2, Micro-ROS,
+Flutter et divers outils de développement embarqué.
+4.4.1
+Raspberry Pi OS
+Le choix de Raspberry Pi OS pour la Raspberry Pi 4 a été motivé par sa compatibilité
+native avec le matériel Raspberry Pi et son optimisation pour les architectures ARM.
+Ce système d’exploitation, dérivé de Debian, est spécialement conçu pour offrir un environnement
+stable, léger et fiable (voir Figure 2.15) [21].
+FIGURE 2.15 : Logo Raspberry Pi OS
+30
+
+
+===== PAGE 49 =====
+
+Chapitre 2. Préparation du projet
+Installation :
+L’installation de Raspberry Pi OS sur la Raspberry Pi 4 a été réalisée en utilisant une
+image officielle de Raspberry Pi OS comme illustré dans la figure 2.16.
+Les étapes comprennent :
+— Téléchargement de l’image : L’image de Raspberry Pi OS a été téléchargée depuis le
+site officiel de Raspberry Pi.
+— Création de la carte SD bootable : L’utilitaire Raspberry Pi Imager a été utilisé pour
+créer une carte SD bootable avec l’image téléchargée.
+— Installation et configuration initiale : L’installation a été suivie de la configuration
+initiale, comprenant la mise à jour du système, la configuration du réseau et l’installation
+des paquets essentiels.
+FIGURE 2.16 : Raspberry Pi Imager
+4.4.2
+ROS 2 Jazzy
+Le choix de la version ROS 2 Jazzy (voir Figure 2.17) a été motivé par sa modernité
+et son support à long terme, offrant une base robuste pour le développement de systèmes
+robotiques avancés. ROS 2 introduit une architecture plus modulaire et orientée vers la performance
+en temps réel, ce qui est essentiel pour les applications embarquées sur Raspberry Pi. Toutefois,
+son installation sur Raspberry Pi OS n’est pas directe et comporte plusieurs défis liés à la
+compatibilité logicielle [22].
+31
+
+
+===== PAGE 50 =====
+
+Chapitre 2. Préparation du projet
+FIGURE 2.17 : Logo de ROS 2 Jazzy
+Problèmes de compatibilité :
+ROS 2 Jazzy est principalement développé pour fonctionner
+sur des distributions Ubuntu récentes. Or Raspberry Pi OS bien que basé sur Debian présente
+certaines différences qui rendent l’installation complexe et non officiellement supportée. Les
+principaux problèmes rencontrés sont :
+— Le manque de paquets précompilées pour l’architecture ARM64 sous Debian.
+— Des erreurs de dépendances lors de la tentative d’installation via les dépôts APT officiels.
+— Des incompatibilités avec les versions de Python, CMake ou GCC installées par défaut.
+Installation manuelle et dépendances :
+— Installation
+de
+nombreuses
+dépendances
+:
+Cela
+inclut
+des
+bibliothèques
+de communication DDS, des outils de construction comme colcon et vcstool, des
+éléments du middleware ROS tels que rclcpp et ament, ainsi que diverses dépendances
+système.
+— Compilation des paquets ROS 2 : L’utilisation de colcon build a permis
+de compiler les paquets nécessaires. Cependant, ce processus est très long sur Raspberry
+Pi en raison de ses ressources limitées.
+— Personnalisation du workspace : Il a fallu désactiver certains paquets non compatibles
+ou inutiles afin d’optimiser les performances.
+32
+
+
+===== PAGE 51 =====
+
+Chapitre 2. Préparation du projet
+5
+Architecture
+Lors du développement d’une application Flutter, les programmeurs sont rapidement
+confrontés à deux axes d’organisation majeurs : le choix du gestionnaire d’état (state
+management) et l’architecture générale de l’application. Ces deux aspects, bien que distincts,
+sont intimement liés et ont un impact direct sur la maintenabilité, l’évolutivité et la testabilité
+du projet. Devant la diversité des solutions existantes, il peut être difficile de trancher.
+Très naturellement, tout comme nous, êtres humains, avons besoin d’une architecture interne,
+notre squelette, pour maintenir notre corps et organiser nos organes de manière cohérente,
+une application ne peut pas fonctionner durablement sans une structure solide. En effet, un
+projet Flutter contient une multitude d’éléments : classes, méthodes, fonctions, widgets, objets,
+animations, API, etc. Sans une organisation rigoureuse, tous ces composants finissent par
+s’entasser dans une sorte d’anarchie logicielle qui rend le code difficile à maintenir, à faire
+évoluer ou à tester.
+C’est pour cela que la mise en place d’une architecture propre (Clean Architecture) devient non
+seulement importante, mais inévitable. Elle permet de poser des fondations claires, de séparer
+les responsabilités, et de donner une direction structurée au projet.
+Dans cette logique, nous avons choisi d’adopter BLoC (Business Logic Component). BLoC
+n’est pas simplement une librairie de gestion d’état, ni une simple implémentation du pattern
+Observer. C’est aussi un véritable pattern architectural, qui s’intègre parfaitement avec les
+principes de la Clean Architecture. Il permet de centraliser la logique métier dans des composants
+réutilisables, testables et indépendants de l’interface utilisateur. Cette approche nous a permis
+de structurer notre application de manière claire, en distinguant bien les différentes couches
+de responsabilités, tout en gardant un code lisible, modulaire et facile à faire évoluer comme
+indiqué dans la figure 2.18.
+1. La couche de présentation, qui comprend l’interface utilisateur et interagit avec les BLoC
+via des événements et des états.
+2. La couche de domaine, qui contient la logique métier proprement dite, notamment les
+entités, les cas d’utilisation (use cases) et les interfaces abstraites.
+3. La couche de données, responsable de la gestion des sources de données (API, base de
+données locale, etc.) et de l’implémentation des interfaces définies dans le domaine.
+33
+
+
+===== PAGE 52 =====
+
+Chapitre 2. Préparation du projet
+FIGURE 2.18 : Architecture clean flutter
+Le modèle (Model) représente le blueprint des données avec lesquelles l’application
+va travailler. Il définit la structure des informations à manipuler, souvent sous forme de classes,
+en reflétant fidèlement la forme des données attendues. Ces données peuvent provenir
+de différentes sources : une API, une base de données locale, ou encore d’un système externe
+comme ROS (Robot Operating System) dans le cadre d’applications embarquées ou robotiques.
+Le modèle agit alors comme une passerelle de traduction, transformant les données brutes
+issues de ces sources en objets compréhensibles et exploitables par le reste de l’application.
+Cette abstraction permet une meilleure séparation des responsabilités et garantit une plus grande
+flexibilité en cas de changement ou d’évolution de la source de données.
+Cette combinaison de BLoC avec la Clean Architecture nous a permis de construire
+34
+
+
+===== PAGE 53 =====
+
+Chapitre 2. Préparation du projet
+une
+application
+modulaire,
+scalable
+et
+testable
+en
+respectant
+les
+bonnes
+pratiques
+du développement Flutter moderne [23].
+6
+Conclusion
+À travers ce chapitre, nous avons mis en place les fondements nécessaires pour assurer
+une réalisation cohérente, structurée et efficace du projet. Les choix effectués, tant sur le plan
+technique que méthodologique, ont été guidés par le souci d’anticiper les contraintes, de garantir
+la maintenabilité du code et de faciliter la collaboration au sein de l’équipe.
+L’ensemble de cette réflexion en amont nous permet d’aborder la phase de développement avec
+une vision claire, des outils adaptés et une organisation bien établie, favorisant ainsi une mise
+en œuvre progressive et maîtrisée de la solution envisagée.
+35
+
+
+===== PAGE 54 =====
+
+Chapitre 3
+Release 1 : Module utilisateurs
+1
+Introduction
+Ce premier release, composé des deux premiers Sprints 1 et 2 porte sur la mise en place
+d’un système d’authentification complet et fonctionnel qui non seulement garantie un accès
+conditionnel, sécurisé et personnalisé à l’application mais aussi, qui prévoit et traite les incidents
+majeurs probables comme l’oubli de mot de passe ou les tentatives d’accès non autorisés.
+Ce premier module est fondamental, car il constitue une brique incontournable de quasiment
+toutes les applications qu’elles soient sectorielles comme l’application SEA Robotics
+ou publiques. Ce chaitre sera divisé en deux partie la première dédiée au développement du
+sprint 1 et la deuxième s’intéresse au sprint 2. Chaque partie traite le backlog du sprint, son
+analyse, sa conception et enfin sa réalisation.
+2
+Développement
+du
+Sprint
+1
+:
+«
+Inscription
+et Authentification »
+Le premier sprint intitulé Inscription et authentification et durant 20 jours marque la
+première interaction entre l’utilisateur et l’application. Il englobe la mise en place d’une interface
+de connexion avec la possibilité de rediriger vers une interface d’inscription ou de récupération
+de mot de passe.
+L’ensemble du processus, analyse, conception et développement frontend et backend de cet
+incrément seront objets de ce sprint.Cependant, le bon fonctionnement global du système et sa
+logique métier complète ne pourront être réellement assurés qu’avec la contribution du sprint
+suivant.
+36
+
+
+===== PAGE 55 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+2.1
+Backlog du sprint
+L’incrément relatif à l’Inscription et l’authentification se produira à l’issu d’une liste de
+user stories traduite sous forme de taches techniques organisés dans le backlog de sprint la durée
+estimée en jours pour la réalisation de chaque tâche :
+TABLEAU 3.1 : Backlog du sprint 1
+ID
+User Story
+ID
+Taches associés
+Durée
+(jour)
+1
+En
+tant
+que
+super
+admin,
+admin
+ou
+employé nouveau je veux
+m’inscrire à l’application
+1.1
+Créer
+une
+interface
+d’inscription
+avec
+comme
+champs
+requis
+:
+le
+nom
+de
+l’utilisateur, son adresse email et un mot de
+passe
+1
+en
+remplissant
+un
+formulaire
+d’inscription,
+afin de pouvoir disposer
+1.2
+Mettre
+en
+place
+un
+mécanisme
+de
+vérification
+des
+champs
+saisies
+par
+l’utilisateur avant enregistrement.
+1
+d’un
+compte
+et
+éventuellement accéder à
+l’application.
+1.3
+Mettre
+en
+place
+un
+mécanisme
+d’enregistrement des nouvelles demandes
+d’inscription dans la base de données avec
+un statut « En attente » par défaut indiquant
+qu’elles sont en attente de validation.
+1
+1.4
+Intégrer Backend et Frontend avec test et
+validation de la fonctionnalité.
+1
+2
+En
+tant
+que
+super
+admin, admin ou employé
+disposant d’un compte,
+2.1
+Créer l’interface de connexion incluant une
+animation (Rive) programmée selon les
+actions de l’utilisateur.
+2
+Je
+veux
+m’authentifier
+auprès
+de
+l’application
+afin de pouvoir être
+2.2
+Mettre en place la logique backend pour la
+vérification des identifiants saisis dans la
+base de données.
+1
+associé d’accéder à mon
+compte
+et
+exercer
+les
+fonctionnalités liées à mon
+rôle.
+2.3
+Créer la session utilisateur et l’associer
+à son compte si les informations sont
+correctes et que le compte et valide.
+1
+2.4
+Intégrer les parties avec mise en place
+du mécanisme de déconnexion et tester la
+fonctionnalité.
+2
+3
+En tant que super admin,
+admin ou employer.
+3.1
+Créer une interface simple de récupération
+de mot de passe.
+1
+Je
+veux
+pouvoir
+réinitialiser
+mon
+mot
+de passe en cas d’oubli.
+3.2
+Mettre en place la logique de réinitialisation
+de mot de passe avec l’envoi d’un email de
+réinitialisation sécurisé.
+1
+afin
+de
+récupérer
+mon
+compte.
+3.3
+Tester
+et
+valider
+la
+fonctionnalité
+récupération du compte
+1
+37
+
+
+===== PAGE 56 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+2.2
+Analyse
+La phase d’analyse est une phase primordiale qui doit être attaquée au cours de la
+négociation d’un produit. Les cas d’utilisation « Demander inscription », « s’authentifier »
+et « Réinitialiser mot de passe » restent très généraux et ne permettent pas d’avoir une vue
+complète sur le processus impliqué.
+Les raffinements de ces cas d’utilisations ainsi que leurs descriptions textuelles seront au cœur
+de cette analyse.
+2.2.1
+Raffinement du cas d’utilisation « Demander inscription »
+Le cas d’utilisation « Demander inscription » peut être réalisé de deux manières soit avec
+email et mot de passe soit avec Google.
+Le premier utilisateur inscrit doit passer par une phase de vérification d’email et sera
+automatiquement enregistré avec le role super Admin assigné. La figure 3.1 illustre le case
+d’utilisation « Demander inscription » raffiné.
+FIGURE 3.1 : Diagramme de cas d’utilisation demander inscription
+Le tableau 3.2 fournit une description textuelle du cas d’utilisation «Demander
+inscription» :
+38
+
+
+===== PAGE 57 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+TABLEAU 3.2 : Description textuelle du uc demander inscription
+Titre
+Demander inscription
+Acteurs
+- Employé
+- Admin
+- SuperAdmin
+Résumé
+- Permettre à un acteur non inscrit à l’application de créer un compte
+avec rôle Super-admin ou déposer une demande de création de compte.
+Préconditions
+- L’acteur est un employé dans l’industrie qui héberge l’application SEA
+Robotcs.
+- L’acteur n’est pas inscrit à l’application et n’a pas déjà déposé une
+demande d’inscription.
+Description
+nominale du Aaa
+scénario
+Scénario1 :S’inscrire avec email/password
+1. L’acteur clique sur le bouton ‘S’inscrire.
+2. Le système télécharge la page d’inscription.
+3. L’acteur remplit le formulaire par son nom, son email, et son mot de
+passe.
+4. Le système vérifie si tous les champs sont non vides.
+5. Le système s’assure que chaque donnée respecte le format attendu.
+6. Le système vérifie que le mot de passe respecte les règles de sécurité.
+7. Le système vérifie que l’adresse email n’est pas déjà utilisée.
+8. Le système vérifie si le compte SuperAdmin est déjà présent dans le
+système.
+9. Le système insère le nouvel employé dans la liste d’attente.
+10. Fin du cas d’utilisation.
+Scénario2 : S’inscrire avec compte Google
+1. L’acteur clique sur le bouton ‘S’inscrire avec Google’.
+2. Le système affiche le pop-up de Google.
+3. L’acteur se connecte à son compte Google.
+4. Le système récupère les informations d’identification.
+5. Le système vérifie Le jeton d’identification (ID Token).
+6. Le système vérifie que l’adresse email n’est pas déjà utilisée.
+7. Le système vérifie si le compte SuperAdmin est déjà présent dans le
+système.
+8. Le système insère le nouvel employé dans la liste d’attente.
+9. Fin du cas d’utilisation
+Scénarios
+alternatifs
+Scénario1 :S’inscrire avec email/password
+3.a - Si un champ est vide, le système lui accorde le message d’erreur «
+Vous devez remplir ce champs »
+Le scénario nominal reprend au point 1
+4.a-Si une le format d’une donnée est inattendu, le système affiche un
+message d’erreur explicite « Format inapproprié »
+Le scénario nominal reprend au point 1
+5.a- Si le mot de passe non sécurisé, le système réaffiche les règles de
+sécurité non appliquée
+Le scénario nominal reprend au point 1
+Scénario2 : S’inscrire avec compte Google
+5.a-Si le jeton d’identification est invalide le système affiche un message
+d’erreur.
+Le scénario nominal reprend au point 1
+39
+
+
+===== PAGE 58 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+Scénarios
+alternatifs
+Scénarios 1 et 2 :
+6.a- Si l’adresse email fournie est utilisée, le système affiche le message
+d’erreur « adresse email existante »
+Le système reprend au point 1 du scénario nominal
+7.a- Si c’est le premier compte créé dans le système,
+8-Le système enregistre le compte de l’utilisateur Inactivé comme étant
+SuperAdmin et affiche le message « Veuillez valider votre email pour
+activer votre compte SuperAdmin »
+9- L’acteur finalise son inscription en cliquent sur le lien dans l’email
+10-Le système active le compte du superAdmin
+11-Fin du cas d’utilisation
+7.a.9.a- Si l’acteur ne finalise pas son inscription avant l’expiration du
+délai,
+10-Le système supprime le compte SuperAdmin
+11-Fin du cas d’utilisation
+Postconditions
+- Si l’utilisateur n’est pas le premier inscrit, sa demande est placée dans
+la liste d’attente.
+- Si l’utilisateur est le premier inscrit, il devient Super Admin et est
+immédiatement activé.
+- Un message de confirmation est affiché dans tous les cas.
+2.2.2
+Raffinement du cas d’utilisation « S’authentifier »
+La figure 3.2 suivante présente le raffinement du cas d’utilisation « S’authentifier » :
+FIGURE 3.2 : Diagramme de cas d’utilisation s’authentifier
+Le tableau 3.3 suivant fournit une description textuelle du cas d’utilisation «S’authentifier» :
+40
+
+
+===== PAGE 59 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+TABLEAU 3.3 : Description textuelle du uc s’authentifier
+Titre
+S’authentifier
+Acteurs
+- Employé
+- Admin
+- SuperAdmin
+Résumé
+- Permettre à un acteur inscrit non authentifier de s’authentifier à
+l’application afin d’accéder aux fonctionnalités.
+Préconditions
+- L’acteur clique sur le bouton « Se connecter »
+- La page de connexion est téléchargée.
+Description
+nominale du
+scénario
+Scénario1 : s’authentifier par email et mot de passe
+1. L’acteur remplit le formulaire de connexion en entrant son email et
+mot de passe
+2. L’acteur clique sur le bouton « Se connecter »
+3. Le système vérifie que les champs sont non vides.
+4. Le système vérifie que le format de l’email est valide.
+5. Le système vérifie si un compte avec l’email fourni existe avec le
+service d’authentification email/password.
+6. Le système vérifie que le compte utilisateur est activé.
+7. Le système authentifie l’utilisateur par son mot de passe.
+8. Le système vérifie que le compte utilisateur est activé.
+9. Le système crée la une nouvelle session pour cet utilisateur en
+l’associant à son rôle.
+10. L’acteur accède à l’application.
+11. Fin du cas d’utilisation.
+Scénario2 : s’authentifier avec compte Google
+1. L’acteur clique sur le bouton « se connecter avec Google ».
+2. Le système affiche une fenêtre pop-up de Google.
+3. L’acteur entre ses identifiants Google.
+4. Le système vérifie le Token d’identification (ID Token) contenu dans
+les informations d’identifications (credential).
+5. Le système vérifie si un compte avec l’email fourni existe avec Google
+comme fournisseur d’authentification.
+6. Le système vérifie que le compte utilisateur est activé.
+7. Le système crée la une nouvelle session pour cet utilisateur en
+l’associant à son rôle.
+8. L’acteur a accès à l’application.
+9. Fin du cas d’utilisation.
+Scénarios
+alternatifs
+Scénarios 1et 2 :
+3.a - Si un champ est vide, le système lui accorde le message d’erreur «
+Vous devez remplir ce champs ».
+Le scénario nominal reprend au point 1
+4.a-Si le format de l’email est invalide, le système affiche le message
+d’erreur « Email invalide ».
+Le scénario nominal reprend au point 1
+5.a-Si l’email n’est pas associé à un compte ou associé avec un autre
+fournisseur d’authentification, le système affiche le message d’erreur «
+Utilisateur non reconnu ».
+Le scénario nominal reprend au point 1
+41
+
+
+===== PAGE 60 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+Scénarios
+alternatifs
+6.a-Si le compte est en attente de validation, le système affiche le
+message d’erreur « Compte en attente d’approbation ».
+Le scénario nominal reprend au point 1
+Postconditions
+- L’utilisateur est connecté à l’application.
+2.2.3
+Raffinement du cas d’utilisation « Réinitialiser mot de passe »
+La figure 3.3 présente le diagramme du cas d’utilisation «Réinitialiser mot de passe»
+raffiné. La réinitialisation de mot de passe peut être réalisée par un utilisateur approuvé ou
+en attente et fait appel à deux sous cas impliqués notamment la vérification de l’existence de
+l’utilisateur pour s’assurer à partir de l’email que le compte à récupérer existe dans la base de
+données.
+Si la vérification est réussie et que l’email est valide, un lien de réinitialisation est envoyé
+par email pour finaliser le processus en saisissant le nouveau mot de passe sinon le processus
+échoue.
+FIGURE 3.3 : Diagramme de cas d’utilisation réinitialiser mot de passe
+Le tableau 3.4 traite le cas d’utilisation « Réinitialiser mot de passe» à l’aide
+de descriptions textuelle des différents scénarios qui peuvent intervenir lors de l’exécution du
+processus.
+42
+
+
+===== PAGE 61 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+TABLEAU 3.4 : Description textuelle du uc réinitialiser mot de passe
+Titre
+Réinitialiser mot de passe
+Acteurs
+- Employé
+- Admin
+- SuperAdmin
+Résumé
+- Permettre à un utilisateur qui a oublié son mot de passe de
+le réinitialiser de manière sécurisée via un lien envoyé par
+email.
+Préconditions
+- L’acteur clique sur le lien ‘Mot de passe oublié’.
+- La page de réinitialisation est téléchargée.
+Description nominale du
+scénario
+1. L’acteur entre son email.
+2. L’acteur clique sur le bouton « Envoyer ».
+3. Le système vérifie que l’email est valide.
+4. Le système vérifie qu’un compte avec cet email existe.
+5. Le système génère un jeton unique sécurisé et crée un
+lien unique de réinitialisation.
+6. Le système envoie ce lien à l’adresse email de
+l’utilisateur.
+7. Le système affiche le message « Un email de
+réinitialisation a été envoyé à votre adresse ».
+8. L’acteur ouvre l’email dans sa boite de réception et
+clique sur le lien de réinitialisation.
+9. Le système affiche une interface sécurisée.
+10. L’acteur saisie son nouveau mot de passe.
+11. Le système vérifie que le token est valide.
+12. Le système vérifie que le lien n’a pas expiré.
+13. Le mot de passe est mis à jour et l’acteur est informé.
+14. Fin du cas d’utilisation.
+Scénarios alternatifs
+3.a - Si l’email est invalide, le système affiche le message
+d’erreur « Email invalide ».
+Le scénario nominal reprend au point 1
+4.a-Si l’email ne correspond à aucun compte utilisateur, le
+système affiche le message d’erreur « Email inexistant ».
+Le scénario nominal reprend au point 1.
+11.a-Si le jeton n’est pas valide, le système affiche "Le lien
+de réinitialisation n’est pas valide ou a déjà été utilisé."
+Le scénario nominal reprend au point 1
+12.a-Si le lien est expiré, le système affiche le message "Le
+lien de réinitialisation a expiré. Veuillez en demander un
+nouveau."
+Le scénario nominal reprend au point 1
+Postconditions
+- Le mot de passe est réinitialisé et le compte est récupéré.
+43
+
+
+===== PAGE 62 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+2.3
+Conception
+L’objectif de cette section est de réaliser une étude conceptuelle des données à travers
+des diagrammes de classes et des diagrammes de séquence dynamiques.
+2.3.1
+Diagramme de classes
+Le diagramme de classe est le plus nécessaire dans le modélisation orientée objets.
+Il traduit les concepts identifiés dans l’analyse du système en classes éventuellement avec des
+attributs, des méthodes et des relations. À ce premier niveau, nous avons identifié un concept
+fondamental de notre application : le concept d’utilisateur mis en oeuvre dans le figure 3.4.
+FIGURE 3.4 : Diagramme de classes du Sprint1
+En effet, chaque utilisateur constitue une entité principale du système, représentée dans
+notre modélisation par une classe Utilisateur.
+Cette classe regroupe un ensemble de propriétés clés qui permettent :
+• de l’identifier de manière unique (ex. : identifiant, email),
+• de le classifier selon son type ou rôle (ex. : administrateur, collecteur, client...),
+• de gérer ses permissions et son niveau d’accès,
+• et de l’authentifier de manière sécurisée.
+44
+
+
+===== PAGE 63 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+Le diagramme de classes suivant reflète cette représentation, en structurant les informations de
+chaque utilisateur dans une classe dédiée, au cœur de la conception de notre système.
+2.3.2
+Diagrammes de séquence dynamiques
+Diagramme de séquence « S’inscrire avec email/mot de passe »
+Le diagramme de séquence relatif au cas d’utilisation S’inscrire avec email/mot de passe » et
+représenté par la figure 3.5 décrit dans un ordre chronologique les méthodes déclenchées par
+les différentes entités du système en interaction pour mener à la réalisation du cas d’utilisation.
+La notation de Jacobson des diagramme de séquence permet de simplifier les objets impliqués
+en quatre catégories stéréotypés à voire : l’acteur, l’interface, le contrôleur et le modèle.
+Les interaction avec la base de donnée seront encapsulés dans le modèle.
+FIGURE 3.5 : Diagramme d’interaction MVC « S’inscrire avec email/mot de passe »
+45
+
+
+===== PAGE 64 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+Diagramme de séquence « S’authentifier avec email/mot de passe » :
+Le cas d’utilisation s’authentifier avec email et mot de passe est réalisé à l’issue de différentes
+étapes tel qu’on peut voire dans la figure 3.6, son déclenchement nécessite une action de l’acteur
+qui clique sur le bouton de chargement du formulaire d’authentification, une fois le bouton
+de connexion est cliqué, le contenu des champs d’email et de mot de passe passeront par
+une première phase de vérification réalisé par la couche de présentation pour s’assurer que
+les informations saisies respectent le format attendu.si tout est conforme aux attentes, un appel
+est dirigé au contrôleur qui sert d’intermédiaire entre la couche de présentation et la couche
+des données. Celui ci fait appel au modèle "utilisateur" qui par un ensembles d’étapes arrive à
+confirmer la correspondance et l’existence des informations d’identification.
+FIGURE 3.6 : Diagramme d’interaction MVC « S’authentifier avec email/mot de passe »
+46
+
+
+===== PAGE 65 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+Diagramme de séquence « Réinitialiser mot de passe » :
+le diagramme de séquence « Réinitialiser mot de passe » démontré par la figure 3.7 montre un
+appel en direction d’une une entité extérieure qui est la boite email de l’utilisateur.
+Cette ci est impliquée dans différentes fonctionnalités du système vu qu’elle est considérée
+comme un canal sécurisé et personnel auquel seul l’utilisateur censé a accès.
+Une fois l’adresse email est trouvé dans la collection utilisateur de la base de donnée par
+le modèle, un lien d’initialisation est envoyé et l’utilisateur a recours à sa boite email pour
+y accéder. Ce lien est à usage unique et à expiration temporelle et mène à une interface dédiée
+au saisie du nouveau mot de passe.
+FIGURE 3.7 : Diagramme d’interaction MVC « Réinitialiser mot de passe »
+2.4
+Réalisation
+Cette section présente les premières réalisations de SEA Robotics développée au cours
+de ce print. Elle décrit les principales interfaces et fonctionnalités implémentées, illustrées à
+l’aide de captures d’écran prises lors de l’exécution de l’application.
+47
+
+
+===== PAGE 66 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+• Interfaces de présentation de l’application
+L’écran montré par la figure 3.8 représente le premier point d’entrée de l’application et sert à
+fournir une introduction brève, intuitive et animée du robot AGV et ses caractéristiques.
+FIGURE 3.8 : Interfaces de lancement de l’application
+• Interface d’inscription par email et mot de passe
+La figure 3.9 montre l’interface d’inscription qui se compose d’un formulaire avec les différents
+champs requis pour la création du compte ainsi que les critères à vérifier pour s’assurer que le
+de mot de passe est bien sécurisé. L’interface 3.10 montre les popup affichés dans le cas d’échec
+ou de succès.
+FIGURE 3.9 : Interfaces de création de compte
+48
+
+
+===== PAGE 67 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+FIGURE 3.10 : Interfaces de création de compte : Succès et échecs
+• Interface d’authentification
+Les captures illustrés par la figure 3.11 montres l’interface de connexion ainsi que les cas
+d’échecs qui en dérivent.
+FIGURE 3.11 : Interfaces de connexion utilisateur : Succès et échecs
+49
+
+
+===== PAGE 68 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+• Interfaces d’authentification cas de succès
+En cas de succès (utilisateur authentifié et compte approuvé ), l’application redirige l’acteur
+vers sa page d’acceuil comme visible sur la figure 3.12.
+FIGURE 3.12 : Interface de succès de la connexion : Accès à la page d’accueil
+• Interface de demande de réinitialisation de mot de passe
+La demande de réinitialisation du mot de passe s’effectue à partir de l’application mobile par
+une la saisie de l’email comme démontré dans la figure 3.13
+FIGURE 3.13 : Réinitialisation de mot de passe
+50
+
+
+===== PAGE 69 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+• Interface de réinitialisation du mot de passe
+Un exemple de l’email de réinitialisation ainsi l’interface accédée par le lien est montré dans la
+figure 3.14
+FIGURE 3.14 : Réinitialisation de mot de passe : Accès réussi par email de confirmation
+3
+Développement du sprint 2 : « gestion de comptes »
+Le deuxième sprint, intitulé Gestion de comptes et également d’une durée de 20 jours,
+vient enrichir les fonctionnalités de base mises en place lors du sprint précédent.
+Il se focalise sur le cœur de la gestion des comptes utilisateurs, en ciblant trois cas d’utilisation
+essentiels au bon fonctionnement de l’application :
+• Gérer les demandes d’inscriptions
+• Gérer les utilisateurs
+• Modifier son profil
+Ce sprint constitue une étape clé dans l’administration de la plateforme, en permettant une
+meilleure organisation et un contrôle renforcé des utilisateurs du système. Il établit ainsi
+les bases nécessaires pour les fonctionnalités plus avancées prévues dans les sprints suivants.
+3.1
+Sprint Backlog
+Le tableau 3.5 est le sprint backlog de « gestion de comptes » :
+51
+
+
+===== PAGE 70 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+TABLEAU 3.5 : Backlog du sprint 2
+ID
+User Story
+ID
+Taches associés
+Durée
+(jour)
+1
+En tant que super admin,
+je veux pouvoir visualiser
+la liste des utilisateurs en
+attente afin de décider
+1.1
+Créer l’interface de gestion des demandes
+d’inscriptions qui permet de sélectionner un
+rôle pour chaque utilisateur, l’accepter ou le
+rejeter.
+1
+leurs rôles et leurs accès.
+1.2
+Implémenter l’acceptation d’un utilisateur
+coté backend qui permet de supprimer
+l’utilisateur, ou de changer son statut à «
+approuvé » avec un rôle « employé » par
+défaut.
+1
+1.3
+Intégrer Backend et Frontend avec test et
+validation de la fonctionnalité.
+1.5
+2
+En tant qu’employé ou
+2.1
+Créer un modèle d’email personnalisé
+2
+admin
+venant
+d’être
+accepté
+par
+le
+super
+admin, je veux être
+2.2
+Mettre en place une Fonction backend
+d’envoi d’email qui s’exécute dès qu’un
+nouvel utilisateur vient d’être accepté.
+1
+notifié
+par
+mail
+d’acceptation
+afin
+de
+pouvoir me connecter à
+l’application.
+2.3
+Tester et valider la fonctionnalité.
+1
+3
+En
+tant
+que
+super
+admin, Je veux pourvoir
+visualiser la liste des
+3.1
+Créer une interface simple de visualisation
+et de gestion des utilisateurs avec camps de
+filtrage pour faciliter la recherche.
+1
+utilisateurs
+inscrits,
+changer leurs rôles et
+3.2
+Mettre en place la logique modification de
+rôle et de suppression d’un compte.
+1
+supprimer leurs comptes
+afin
+de
+gérer
+en
+continu
+leurs
+accès
+à
+l’application.
+3.3
+Intégrer front et back avec test et validation.
+1.5
+4
+En
+tant
+qu’employé,
+admin ou super admin
+connecté, Je veux
+4.1
+Créer l’interface de modification du profil :
+les propriétés à modifier sont l’email, le nom,
+le mot de passe et la photo de profil.
+1
+pouvoir
+modifier
+mes
+informations
+afin
+de
+mettre
+à
+jour
+mon
+compte.
+4.2
+Développer partie backend de modification
+de compte.
+1
+4.3
+Intégrer backend et front end avec test et
+validation.
+1
+52
+
+
+===== PAGE 71 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+3.2
+Analyse
+L’analyse de ce sprint abordera en détails chacun des cas d’utilisations ciblés à travers
+les diagrammes de cas d’utilisations raffinés accompagnés des descriptions textuelles.
+3.2.1
+Raffinement du cas d’utilisation «Gérer demandes d’inscriptions»
+La figure 3.15 suivante présente le diagramme du cas d’utilisation « Gérer demandes
+d’inscriptions » après raffinement. Ce cas est délégué au super administrateur en le permettant
+de consulter la liste des comptes inactivés, et les traiter en acceptant, des utilisateur, spécifiant
+leurs rôles ou les refusant.
+En cas d’acceptation, l’utilisateur reçoit un email de notification car il peut désormais accéder
+à l’application. Si l’email de l’utilisateur n’est pas valide, le super admin sera notifié par email.
+FIGURE 3.15 : Diagramme du cas d’utilisation gérer demandes d’inscriptions
+Les différents scénarios probables lors du déroulement de ce cas « Gérer demandes
+d’inscriptions » font l’objet du tableau 3.6 qui décrit en détails les différentes étapes de sa
+réalisation.
+53
+
+
+===== PAGE 72 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+TABLEAU 3.6 : Description textuelle du uc gérer inscriptions
+Titre
+gérer inscriptions
+Acteurs
+- SuperAdmin (primaire)
+- Employé (secondaire)
+- Admin (secondaire)
+Résumé
+- Permettre au Super Admin de finaliser le processus d’inscription par
+acceptation ou rejet et notifier l’employé inscrit de son approbation.
+Préconditions
+- Le Super Admin est connecté à l’application.
+Description
+nominale
+du
+scénario
+1. Le Super Admin accède à l’interface « Demandes en attente ».
+2. Le système récupère la liste des utilisateurs avec le statut En attente.
+3. Le Super Admin consulte les informations de chaque utilisateur.
+4. Le Super Admin sélectionne un rôle (employé, admin) pour un
+utilisateur donné.
+5. Le Super Admin clique sur Accepter ou Rejeter.
+6. Le système met à jour le statut de l’utilisateur dans la base de données :
+de « en attente » à « approuvé ».
+7. Le système envoie un email personnalisé à l’utilisateur concerné
+l’informant de la décision.
+8. Fin du cas d’utilisation.
+Scénarios
+alternatifs
+2.a – S’il n’y a aucune demande en attente :
+Le système affiche un message : « Aucune demande en attente
+actuellement. »
+Fin du cas d’utilisation.
+5.a – Si le Super Admin tente de valider sans choisir de rôle :
+Le système attribut un rôle « employé » par défaut.
+Le scénario nominal reprend au point 6.
+Postconditions
+- L’utilisateur est soit accepté (avec rôle attribué), soit rejeté.
+- L’utilisateur reçoit une notification par email de la décision.
+3.2.2
+Raffinement du cas d’utilisation « Gérer utilisateurs »
+La figure 3.16 présente le diagramme du cas d’utilisation « Gérer utilisateurs » raffiné.
+La gestion des utilisateurs est également l’une des responsabilités du super administrateur, qui
+peut consulter la liste des utilisateurs approuvés via une interface dédiée. Il peut rechercher
+un utilisateur spécifique grâce à une option de filtrage, modifier le rôle d’un utilisateur ou le
+supprimer.
+Ce cas d’utilisation permet ainsi de maintenir une organisation claire et un contrôle rigoureux
+des accès au système. Ces fonctionnalités offrent une flexibilité dans l’administration
+des comptes et assurent une gestion efficace des membres de la plateforme.
+L’objectif est de garantir une structure cohérente et sécurisée du système utilisateur.
+54
+
+
+===== PAGE 73 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+FIGURE 3.16 : diagramme du cas d’utilisation gérer utilisateurs
+Le tableau 3.7 suivant fournit une description textuelle du cas d’utilisation «Gérer
+utilisateurs» :
+TABLEAU 3.7 : Description textuelle du uc gérer utilisateurs
+Titre
+Gérer utilisateurs
+Acteurs
+- SuperAdmin
+Résumé
+- Permettre au Super Admin de consulter la liste des utilisateurs
+enregistrés, de modifier leurs rôles et de supprimer leurs comptes afin de
+gérer en continu leurs accès à l’application.
+Préconditions
+- Le Super Admin est connecté à l’application.
+Description
+nominale
+du
+scénario
+1. Le Super Admin accède à l’interface « Gestion des utilisateurs ».
+2. Le système récupère et affiche la liste des utilisateurs enregistrés.
+3. Le Super Admin filtre ou recherche un utilisateur spécifique.
+4. Le Super Admin consulte les informations de l’utilisateur sélectionné.
+5. Le Super Admin peut modifier le rôle de l’utilisateur.
+6. Le Super Admin peut supprimer le compte de l’utilisateur.
+7. Le super Admin confirme son action.
+8. Le système enregistre la nouvelle mise à jour dans la base de données.
+9. Fin du cas d’utilisation.
+Scénarios
+alternatifs
+2.a – S’il n’y a aucun utilisateur confirmé :
+Le système affiche un message : «Aucun utilisateur trouvé. »
+Fin du cas d’utilisation.
+Postconditions
+- L’acteur est soit accepté (avec rôle attribué), soit rejeté.
+- L’acteur reçoit une notification par email de la décision.
+55
+
+
+===== PAGE 74 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+3.2.3
+Raffinement du cas d’utilisation « Modifier profil »
+La figure 3.17 suivante présente le diagramme du cas d’utilisation « Modifier profil »
+raffiné. La modification de profil est possible pour tout type d’utilisateur authentifié et implique
+implicitement l’affichage des information de l’utilisateur en rendant possible la modification du
+nom d’utilisateur et de sa photo de profil.
+Cette fonctionnalité contribue à la personnalisation de l’expérience utilisateur et renforce
+la maîtrise de ses propres données.
+Elle assure également la cohérence des informations affichées dans le système, notamment lors
+des interactions avec d’autres utilisateurs.
+FIGURE 3.17 : diagramme du cas d’utilisation modifier profil
+La modification de profil est traitée plus en détail dans le tableau 3.8. Cette fonctionnalité
+constitue une brique fondamentale dans presque toutes les applications.
+Elle ne fait pas exception à l’apparition de scénarios alternatifs ou d’exceptions qui peuvent
+interférer avec son exécution, tels que la validation des champs, les erreurs de connexion ou les
+conflits de données.
+56
+
+
+===== PAGE 75 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+TABLEAU 3.8 : Description textuelle du uc modifier profil
+Titre
+Modifier profil
+Acteurs
+- SuperAdmin
+- Admin
+- Employé
+Résumé
+- Permettre à l’acteur de modifier ses propres informations personnelles
+afin de maintenir son profil à jour.
+Préconditions
+- L’acteur est connecté à l’application.
+Description
+nominale
+du
+scénario
+1. L’acteur accède à l’interface « Mon profil ».
+2. Le système affiche les informations personnelles actuelles de
+l’utilisateur (nom, prénom, email, photo, etc.).
+3. L’acteur modifie les champs souhaités (ex. : nom, mot de passe, photo,
+etc.).
+4. L’acteur clique sur « Enregistrer les modifications ».
+5. Le système vérifie la validité des champs modifiés.
+6. Le système met à jour les informations dans la base de données.
+7. Le système affiche un message de confirmation : « Vos informations ont
+été mises à jour avec succès. »
+8. Fin du cas d’utilisation.
+Scénarios
+alternatifs
+5.a – Si l’une des données saisies est invalide,
+le système accroche un message d’erreur au champ concerné « donnée
+inappropriée ».
+Le scénario nominal reprend au point 3.
+Postconditions
+1. Le profil utilisateur est mis à jour dans le système.
+2. Les nouvelles informations sont visibles lors des prochaines connexions.
+3.3
+Conception
+La conception de ce sprint débutera par l’élaboration du diagramme de classes associé,
+afin d’identifier les nouvelles entités, leurs propriétés et comportements, issus de l’analyse
+fonctionnelle de l’incrément en cours. Dans un second temps, les diagrammes de séquence
+correspondant aux cas d’utilisation identifiés précédemment seront développés, afin de détailler
+les interactions dynamiques entre les différents acteurs et les composants du système.
+3.3.1
+Diagramme de classes
+Le diagramme de classe accumulé du sprint 2 est donné par la figure 3.18, on peut
+identifier nouvelles méthodes associé principalement au rôle super admin notamment
+l’acceptation d’un utilisateur, la recherche d’un utilisateur, le et la suppression rejet
+d’un utilisateur et enfin la modification d’un rôle utilisateur.Le rôle employé est aussi doté de
+nouveaux comportement destinés à la modification de son profil notamment la modification de
+sa photo ou de son nom.
+57
+
+
+===== PAGE 76 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+FIGURE 3.18 : Diagramme de classe du sprint 2
+3.3.2
+Diagrammes de séquence dynamiques
+Diagramme de séquence « Gérer demandes d’inscriptions » :
+La figure 3.19 illustre, sous forme de diagramme d’interaction, les échanges entre l’acteur Super
+Admin et les différents objets du système dans le cadre de la gestion des inscriptions.
+L’acteur peut exécuter les différentes tâches ou sous-cas d’utilisation associés à cette
+gestion via une interface dédiée (ManagePendingUsers) accessible uniquement depuis
+son espace personnel.
+Cette interface affiche automatiquement la liste des utilisateurs en attente, si elle existe, en
+interagissant avec le contrôleur, lequel transmet ensuite la requête à la couche de données, en
+lien direct avec la base de données.
+Depuis cette interface, le Super Admin peut consulter la liste, et gérer autant d’utilisateurs
+qu’il le souhaite, en lançant des actions telles que la suppression, l’acceptation (avec ou sans
+modification de rôle). Chaque action suit le flux d’interaction défini, transitant par les différents
+objets du système, pour contribuer à l’exécution complète du processus.
+Lorsqu’un utilisateur est accepté par le Super Admin, son état est immédiatement mis à jour
+dans la base de données, passant de "en attente" à "approuvé" par l’objet utilisateur
+et simultanément, un email personnalisé est généré et envoyer vers sa boite email.Dès réception
+de cet email, il peut se connecter et accéder à l’application.
+58
+
+
+===== PAGE 77 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+FIGURE 3.19 : Diagramme de séquence « Gérer demandes d’inscriptions »
+Diagramme de séquence « Gérer utilisateur » :
+La figure 3.20 présente le diagramme de séquence associé au cas d’utilisation Gérer utilisateurs,
+illustrant les interactions dynamiques entre les différents composants du système lors de la
+gestion des comptes approuvés. tout commence par L’interface de gestion des utilisateurs,
+accessible exclusivement par le Super Admin. À partir de cette interface, le Super Admin
+peut entreprendre deux actions principales : modifier le rôle d’un utilisateur ou supprimer
+définitivement un compte, entraînant ainsi la perte d’accès à l’application pour l’utilisateur
+concerné. Chaque action initiée depuis l’interface déclenche une communication avec
+le contrôleur, qui joue un rôle central dans le traitement des requêtes. Ce contrôleur applique
+les règles de gestion appropriées, puis interagit avec l’objet User pour mettre à jour les données
+59
+
+
+===== PAGE 78 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+dans la base. Les changements effectués sont immédiatement répercutés dans l’interface afin de
+refléter l’état actuel du système.
+FIGURE 3.20 : Diagramme de séquence « Gérer utilisateur »
+60
+
+
+===== PAGE 79 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+Diagramme de séquence « Modifier profil » :
+La modification de profil est dédié à tout utilisateur authentifié, et se déroule via une interface
+dédiée (updateProfileInterface), l’interface affiche l’ensemble des informations associées
+à l’utilisateur et ce dernier peut optionnellement faire deux types de modifications.
+Si l’utilisateur décide par exemple de changer sa photo de profil, il lui suffit de cliquer sur
+l’ancienne photo et sélectionner une photo du répertoire de son appareil, la confirmation de
+la modification fait appel au controleur via une méthode (sendInformation()) avec comme
+paramètres la nouvelle photo, cette méthode est transmise à la couche de données après
+vérification pour persister le changement.
+Le même processus est appliqué pour un changement du nom utilisateur.
+FIGURE 3.21 : Diagramme de séquence « Modifier profil »
+61
+
+
+===== PAGE 80 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+3.4
+Réalisation
+• Interfaces de gestions des demandes utilisateurs :
+La figure 3.22 illustre l’interface de gestion des demandes des utilisateurs, permettant
+au SuperAdmin d’accepter une demande en attribuant un rôle, ou de rejeter l’invitation de
+l’utilisateur.
+FIGURE 3.22 : Interfaces de gestion des demandes utilisateurs
+• Interfaces de gestions des utilisateurs :
+La figure 3.23 présente l’interface de gestion des utilisateurs, à travers laquelle le SuperAdmin
+peut modifier ou supprimer des utilisateurs du système.
+FIGURE 3.23 : Interfaces de gestion des utilisateurs
+62
+
+
+===== PAGE 81 =====
+
+Chapitre 3. Release 1 : Module utilisateurs
+• Interface de modification de profil :
+La figure 3.24 montre l’écran de modification du profil, où l’utilisateur peut modifier son nom,
+ou son photo de profil.
+FIGURE 3.24 : Interface de modification de profil
+4
+Conclusion
+Ce chapitre a couvert les fonctionnalités liés à la gestion des comptes utilisateurs ainsi
+que leurs accès à l’application à travers une modelisation UML bien structurée et simplifiée
+visant à fournir un niveau de détails valorieux tout en dissimilant la complexité de la mise
+en oeuvre technique. Par la fin de ce chapitre les utilisateur ont la possibilité d’acceuillir des
+informations, s’inscrire, s’authentifier, se déconnecter, réinitialiser leurs mot de passe, modifier
+leurs profils et subir la gestion du super admin.
+63
+
+
+===== PAGE 82 =====
+
+Chapitre 4
+Release 2 : Module robots
+1
+Introduction
+Ce deuxième release, structuré en deux sprints, marque l’intégration des premières
+fonctionnalités liées à l’exploitation concrète du robot. Il s’inscrit dans la continuité
+du développement en apportant une dimension fonctionnelle à l’application, en lien direct avec
+son objectif industriel.
+Le premier sprint a été dédié à la mise en place du module de gestion du robot et la
+réalisation d’une première version de prototype d’AGV, comprenant la conception de l’interface
+de gestion et la réalisation de base IOT.
+Le second sprint a porté sur la visualisation de certains indicateurs clés et le pilotage du
+robot, offre une vue d’ensemble sur l’état et l’activité du robot. Ces éléments visent à fournir
+un retour d’information essentiel aux utilisateurs lors de l’utilisation du système.
+2
+Développement du sprint 3 : «Gestion du robot AGV et
+mise en place du prototype»
+Le premier sprint permet de poser les bases du prototype et de la fonctionnalité de
+gestion de robots, en passant par une phase d’étude de matériel, d’analyse, de conception et de
+réalisation. Il abouti au développement du premier module de base en relation avec les robots.
+2.1
+Sprint Backlog
+Le backlog de ce sprint est rédigé dans le tableau 4.1 et permet d’organiser les tâches
+associés à cet incrément et estimer leurs échéances.
+64
+
+
+===== PAGE 83 =====
+
+Chapitre 4. Release 2 : Module robots
+TABLEAU 4.1 : Backlog du sprint 3
+ID
+User Story
+ID
+Taches associés
+Durée
+(jour)
+1
+En
+tant
+qu’utilisateur
+je
+veux
+que
+le
+robot
+prototype suive une ligne
+tracée au sol et soit équipé
+1.1
+Choisir le matériel nécessaire et optimisé
+pour la mise en oeuvre du prototype.
+3
+d’un
+lecteur
+de
+tags
+RFID afin de simuler le
+comportement du véritable
+AGV suiveur de trajectoire
+en environnement réel.
+1.2
+Cabler le robot, configurer la lecture des
+données, et tester la détection de ligne avec
+les moteurs pour assurer le suivi.
+4
+2
+En tant que admin ou
+super
+admin
+connecté,
+je veux pouvoir ajouter un
+robot dans le système en
+le définissant par un nom
+2.1
+Créer le formulaire de création d’un robot
+en assurant l’unicité et la validité de
+l’adresse IP, du protocole de connexion (ws
+ou wss) ainsi que le numéro de port (9090
+par défaut).
+1
+et
+son
+adresse
+IP
+afin
+de l’enregistrer dans le
+système.
+2.2
+Intégrer
+la
+partie
+backend
+de
+l’enregistrement du robot dans la base
+de données puis tester et valider.
+1
+3
+En tant que admin ou
+super admin connecté, Je
+veux pouvoir consulter
+3.1
+Créer l’interface de gestion de robots et
+y intégrer un popup avec le formulaire
+d’addition.
+2
+la
+liste
+des
+robots
+existants,
+modifier
+ou
+supprimer un robot.
+3.2
+Développer
+la
+partie
+backend
+pour
+récupérer la liste des robots, supprimer,
+valider et enregistrer des modifications.
+2
+Afin de mettre à jour le
+système.
+3.3
+Intégrer et tester.
+2
+4
+En tant que admin ou
+super admin connecté,
+4.1
+Mettre en place le mécanisme de connexion
+basé sur le protocole web socket.
+2
+Je veux me connecter à un
+robot enregistré grâce à un
+bouton.
+4.2
+Créer
+un
+bouton
+réactif
+qui
+permet
+d’exécuter la commande de connexion et
+de refléter l’état de connexion.
+2
+Afin d’interagir avec lui.
+4.3
+Tester
+1
+2.2
+Conception d’un prototype fonctionnel
+Dans le cadre de la validation des fonctionnalités clés d’un AGV industriel confidentiel,
+un prototype simplifié a été mis en place. Bien qu’il reste très élémentaire par rapport au
+système final, ce prototype permet d’expérimenter les comportements fondamentaux de manière
+sécurisée et interactive. Le contrôle de l’ensemble est assuré par l’application mobile Flutter,
+offrant ainsi une interface intuitive pour le pilotage à distance.
+65
+
+
+===== PAGE 84 =====
+
+Chapitre 4. Release 2 : Module robots
+2.2.1
+Contexte et objectifs du prototype
+Dans le cadre industriel, les AGV sont des robots autonomes utilisés pour la logistique, le
+transport de matériaux ou l’assemblage. Le projet original, confidentiel, requiert une navigation
+précise et une exécution de missions programmables. Le prototype a pour objectifs :
+• les fonctions critiques du robot original : navigation autonome via suivi de ligne, exécution
+de missions déclenchées par RFID, et contrôle manuel via une interface mobile.
+• Valider l’interopérabilité entre les composants matériels et logiciels.
+• Respecter des contraintes strictes : éviter la réplication de technologies propriétaires,
+isoler les tests, et garantir la sécurité des communications.
+2.2.2
+Choix du Matériel
+Le choix des composants matériels constitue une étape cruciale dans la conception d’un
+prototype fonctionnel, stable et évolutif. Les composants ont été sélectionnés en fonction de
+plusieurs critères : compatibilité avec ROS 2 et Micro-ROS, facilité d’intégration, consommation
+énergétique, coût, disponibilité, et pertinence pour simuler un robot industriel de type AGV.
+Cette section présente les éléments choisis pour la conception du prototype.
+• Raspberry pi 4
+Le Raspberry Pi 4 montré dans la figure 4.1 est utilisé comme cerveau central du robot.
+Il exécute le middleware ROS 2, gère les communications avec les nœuds Micro-ROS, traite les
+commandes de l’application Flutter et supervise l’exécution des missions. Son format compact
+et sa puissance en font une solution idéale par rapport aux autres cartes utilisées pour les
+applications robotiques embarquées. Ce choix est justifié par le tableau 4.2.
+FIGURE 4.1 : Raspberry pi 4
+66
+
+
+===== PAGE 85 =====
+
+Chapitre 4. Release 2 : Module robots
+TABLEAU 4.2 : Choix de la carte
+Choix
+Avantages
+Inconvénients
+Raspberry Pi4
+Puissant, ROS 2 natif, compact
+Peut surchauffer sans
+refroidissement actif
+Raspberry Pi5
+Plus puissant que Pi 4, meilleure
+gestion thermique
+Coût plus élevé
+Nvidia Jetson Nano
+Très puissant, accélération IA
+grâce au GPU intégré
+Plus cher, consommation plus
+élevée
+• ESP32
+La carte ESP32, illustrée à la figure 4.2 a été retenue parmi les options du tableau 4.3
+pour son excellente compatibilité avec Micro-ROS et son rapport performance/coût . Elle joue
+un rôle essentiel dans le contrôle et la synchronisation bas niveau du robot notamment pour la
+gestion des moteurs, la lecture des capteurs de ligne, ainsi que l’acquisition des données RFID,
+nécessaires au suivi précis de la trajectoire et à l’identification des stations nécessaires plus tard.
+FIGURE 4.2 : ESP32
+TABLEAU 4.3 : Choix du microcontrôleur
+Choix
+Avantages
+Inconvénients
+ESP32
+Puissant, connectivité intégrée,
+compatible Micro-ROS
+Moins de GPIO que certaines
+alternatives.
+Arduino Uno
+Facile à utiliser, bien documenté
+Pas de connectivité intégrée, pas
+Micro-ROS
+STM32
+Puissant, flexible
+Programmation plus complexe
+• Moteurs DC + L298N
+Nous avons choisi des moteurs à courant continu comme dans la figure 4.3 pilotés par
+un pont en H L298N montrés par la figure 4.4, une solution largement éprouvée, économique
+et simple à intégrer par rapport dans un système ROS/Micro-ROS.
+67
+
+
+===== PAGE 86 =====
+
+Chapitre 4. Release 2 : Module robots
+FIGURE 4.3 : Moteur DC
+FIGURE 4.4 : L298N
+• Capteur suiveur de ligne (TCRT5000)
+Pour le suivi de ligne, le capteur TCRT5000 illustré par la figure 4.5a été sélectionné plutot que
+les autres capteurs mentionnés dans le tableau 4.4 pour sa simplicité, son coût réduit et sa bonne
+compatibilité avec les microcontrôleurs.
+FIGURE 4.5 : TCRT5000
+68
+
+
+===== PAGE 87 =====
+
+Chapitre 4. Release 2 : Module robots
+TABLEAU 4.4 : capteur de suivi
+Choix
+Avantages
+Inconvénients
+TCRT5000
+Très économique, facile à utiliser
+Sensible à la lumière ambiante
+QRE1113
+Plus compact, meilleur temps de
+réponse
+Coût plus élevé
+Lidar
+Haute précision
+Très coûteux, inutile pour simple
+suivi de ligne
+• Choix du lecteur RFID
+Ce module démontré par la figure 4.6 permet au robot de lire des tags RFID sur son chemin pour
+déclencher des actions. Il est compact, économique, et supporté par de nombreuses bibliothèques.
+La justification de son choix est traitée par le tableau 4.5, repose également sur sa parfaite
+adéquation aux besoins fonctionnels de notre projet.
+FIGURE 4.6 : MFRC522
+TABLEAU 4.5 : Choix du lecteur RFID
+Choix
+Avantages
+Inconvénients
+MFRC522 (choisi)
+Très économique, simple à
+intégrer
+Portée de lecture limitée ( 3 cm)
+PN532
+Portée supérieure, plus robuste
+Plus cher, plus encombrant
+RDM6300
+Fréquence plus basse (125 kHz)
+Moins répandu, données moins
+sécurisées, plus cher
+• Batterie Li-ion 18650 3.7V 3000mAh
+Pour alimenter le prototype, nous avons opté pour une batterie Li-ion 18650 représentée par la
+figure 4.7 rechargeable de 3.7V avec une capacité de 3000mAh. Ce choix traité dans le tableau
+4.6 est motivé par sa densité énergétique élevée, sa portabilité, et sa disponibilité à bas coût.
+69
+
+
+===== PAGE 88 =====
+
+Chapitre 4. Release 2 : Module robots
+FIGURE 4.7 : Batterie Li-ion 18650
+TABLEAU 4.6 : Choix du batterie
+Choix
+Avantages
+Inconvénients
+Batterie Li-ion
+18650 (choisie)
+Légère, rechargeable, grande
+capacité, format standard
+Nécessite un circuit de
+protection (BMS), 1 cellule =
+3.7V
+Pile 9V
+Facile à trouver, pas besoin de
+chargeur
+Non rechargeable, faible
+capacité, tension instable
+Batterie LiPo
+Densité énergétique très élevée,
+adaptée aux projets RC
+Très sensible, risques d’incendie
+sans précaution
+2.3
+Analyse
+Dans la présente section, nous analysons la sous partie « Gérer robots » lié à ce sprint.
+Cette analyse comprendra un raffinement du cas d’utilisation gérer robots relatif à l’application
+ainsi que sa description textuelle détaillée.
+Raffinement du cas d’utilisation « Gérer robots »
+Le cas d’utilisation « Gérer robots » comme montré par la figure 4.8 est attribuée au rôles
+admin et superAdmin et se décompose en des sous cas notamment l’ajout d’un nouveau robot
+en saisissant son nom et adresse ip, la suppression d’un robot ou la modification d’un robot tous
+ces cas sont réalisés à partir d’une interface de gestion qui implique une visualisation des robots
+existants.
+70
+
+
+===== PAGE 89 =====
+
+Chapitre 4. Release 2 : Module robots
+FIGURE 4.8 : Diagramme de cas d’utilisation gérer robots
+Le tableau 4.7 suivant fournit une description textuelle du cas d’utilisation « Gérer
+robots ». Il met en évidence les interactions principales entre l’administrateur (ou superAdmin)
+et le système, lors de la manipulations des fonctions liés à la gestion des robots tout en prenant
+en compte les scénarios alternatifs susceptibles de se produire.
+TABLEAU 4.7 : Description textuelle du cas d’utilisation « Gérer robots »
+Titre
+Gérer robots
+Acteurs
+- Admin
+- SuperAdmin
+Résumé
+- Permettre à l’acteur de gérer les robots en les consultant, définissant un
+nouveau robot, supprimer ou modifier un robot existant.
+Préconditions
+- L’acteur est connecté à l’application.
+Description
+nominale
+du
+scénario
+1. L’acteur accède à l’interface « Gérer robots ».
+2. Le système récupère et affiche la liste des robots enregistrés.
+3. L’acteur peut chercher un robot spécifique dans la liste ou par filtrage.
+4. L’acteur consulte les informations relatives au robot sélectionné.
+5. L’acteur peut modifier les propriétés d’un robot.
+6. L’acteur peut confirmer ou annuler ses modifications.
+7. Le système vérifie les modifications et les enregistre.
+8. L’acteur peut cliquer sur le bouton d’addition pour définir un nouveau
+robot à ajouter.
+9. Le système vérifie et enregistre le nouveau robot en lui associant le port
+9090 utilisé par défaut par le système du robot.
+10. L’acteur peut supprimer un robot en cliquant au bouton de suppression.
+11. Fin du cas d’utilisation.
+71
+
+
+===== PAGE 90 =====
+
+Chapitre 4. Release 2 : Module robots
+Scénarios
+alternatifs
+2.a – Si aucun robot n’est trouvé,
+Le système affiche le message « Aucun robot n’est trouvé ».
+Le scénario nominal reprend au point 5 ou 8 respectivement.
+7.a, 9.a – Si un robot avec le même nom existe déjà,
+Le système affiche un message d’erreur « Un robot avec le même nom
+existe déjà ».
+7.b, 9.b – Si l’adresse IP est invalide, le système interdit l’acteur de
+confirmer son action.
+Le scénario reprend respectivement au point 5 ou 8.
+Postconditions
+- Les robots sont définis et mis à jour efficacement.
+2.4
+Conception
+La conception du prototype a été abordée plus tôt dans une section dédiée à l’étude
+du matériel nécessaire à la construction du modèle minimal d’AGV. Cette partie conceptuelle
+prendra en charge la tache de gestion de robot du coté de l’application mobile et présentera
+successivement le diagramme de classe et le diagramme de cas d’utilisation.
+2.4.1
+Diagramme de classes
+Ce sprint propose le nouveaux concept métier : robot avec comme attributs son adresse
+ip et son nom et dotés des opérations relatifs à sa gestion. La figure 4.9 reflètent ces changement
+dans le diagramme de classe de sprint 3.
+FIGURE 4.9 : Diagramme de classes du sprint 3
+72
+
+
+===== PAGE 91 =====
+
+Chapitre 4. Release 2 : Module robots
+2.4.2
+Diagrammes de séquence
+Diagramme de séquence « Gérer robots »
+Le diagramme de séquence « Gérer robots » (4.10) illustre les interactions entre l’administrateur
+(ou super administrateur), l’interface, le contrôleur et l’objet robot. L’acteur consulte la liste
+des robots, puis peut en ajouter, modifier ou supprimer. Chaque action déclenche des échanges
+entre les différentes couches de l’application, accompagnés de vérifications assurant la validité
+et l’intégrité des données.
+FIGURE 4.10 : Diagramme de séquence « Gérer robot »
+73
+
+
+===== PAGE 92 =====
+
+Chapitre 4. Release 2 : Module robots
+2.5
+Réalisation
+Dans cette section, nous présentons d’une part l’illustration du schéma de câblage du
+prototype du robot, mettant en évidence les connexions entre les différents composants matériels,
+et d’autre part, les interfaces utilisateurs de l’application en rapport avec les fonctionnalités
+livrés par ce release.
+2.5.1
+Mise en place du prototype AGV
+La figure 4.11 suivante le câblage du prototype basé sur l’ESP32 et les capteurs de la
+couche physique.
+FIGURE 4.11 : câblage du prototype
+2.5.2
+Interface dédiée à la gestion de robots
+La figure 4.12 présente l’interface de gestion des robots, permettant à l’Admin ou
+SuperAdmin d’ajouter, modifier ou supprimer un robot dans le système
+FIGURE 4.12 : Interface de gestion des robots
+74
+
+
+===== PAGE 93 =====
+
+Chapitre 4. Release 2 : Module robots
+2.6
+Test de l’application dans un environnement ROS conteneurisé
+Les fonctionnalités de ce sprint sont dédiées à l’interaction avec le robot AGV et plus
+particulièrement son système ROS, pour battir cette dépendance pour le robot, on a choisit de
+configurer un environnement similaire virtuel en vue de mener à bien la communication.
+2.6.1
+Stratégie de test
+Pour tester cette partie nécessitant une communication web socket avec le système ROS,
+essayer directement sur le robot AGV n’est pas une bonne idée. C’est pour cette raison qu’il
+s’est avéré utile de simuler l’environnement ROS du robot et pour y arriver il faut disposer
+d’un système d’exploitation Ubuntu sur lequel une distribution compatible ros est installée. Et
+c’est à ce contexte que les conteneurs docker prouvent leurs efficacités, au lieu d’installer tout
+un système d’exploitation sur une machine virtuelle et s’infliger de sa lourdeur un conteneur
+léger peut jouer le rôle en regroupant tous les composants systèmes nécessaires à l’exécution
+du système ROS de manière isolée, plus légère et efficace.
+2.6.2
+Réalisation du test
+Exécuter le système ROS sur un conteneur Docker revient à instancier une image Docker
+qui contient tout l’environnement ROS configuré (dépendances, bibliothèque, packages...),
+Pour ça on va utiliser l’image officielle « osrf/ros » hébergée sur docker hub (repository officiel
+d’images Docker) publiée par OSRF (Open Source Robotics Foundation).
+Pour faciliter le lancement et la gestion de ce conteneur, on utilise un fichier docker-compose.yml
+montré dans la figure 4.13 qui définit les services, volumes, ports et variables d’environnement
+à utiliser.
+Image : osrf/ros :jazzy-desktop-full →l’image ROS 2 Jazzy complète avec interface graphique.
+Ports : 9090 :9090 →expose le port 9090 du conteneur sur ta machine, utilisé par rosbridge
+(WebSocket).
+Command :
+• Met à jour les paquets (apt-get update)
+• Installe le serveur rosbridge ROS 2 (ros-jazzy-rosbridge-server)
+• Source l’environnement ROS 2 Jazzy
+• Lance rosbridge via ros2 launch
+Après le lancement du conteneur à partir du fichier docker compose on peut agir sur le
+75
+
+
+===== PAGE 94 =====
+
+Chapitre 4. Release 2 : Module robots
+FIGURE 4.13 : fichier docker-compose.yml
+système ROS pour répondre au besoin de test, la figure 4.14 est un exemple de test validé.
+FIGURE 4.14 : test de l’application à l’aide du conteneur docker
+3
+Développement du Sprint 4 «Pilotage et visualisation des
+KPIs »
+Le deuxième sprint, intitulé Pilotage et visualisation des KPIs et s’étalant sur une durée
+de 20 jours, vient enrichir l’interaction utilisateur avec le robot en apportant une couche de
+monitoring en temps réel de l’activité des robots AGV.
+Ce sprint vise aussi à offrir à l’utilisateur une interface dynamique permettant de consulter en
+76
+
+
+===== PAGE 95 =====
+
+Chapitre 4. Release 2 : Module robots
+temps réel les principaux indicateurs de performance tels que la vitesse instantanée, la position
+courante, l’évolution de la température de batterie au cours du temps etc.
+3.1
+Sprint Backlog
+Le tableau 4.8 présente le sprint backlog de sprint 4.
+TABLEAU 4.8 : Backlog sprint 4
+ID
+User Story
+ID
+Tâches associées
+Durée
+(jour)
+1
+En tant que admin ou
+super admin connecté à
+un robot, je veux pouvoir
+piloter ses mouvements
+1.1
+Créer
+un
+joystick
+virtuel
+personnalisé
+pour le pilotage du robot en tenant en
+considération 4 mouvement : avancer,
+reculer, tourner à gauche et tourner à droite.
+1
+en
+ajustant
+sa
+vitesse
+grâce à un joystick virtuel
+ou en citant des ordres
+vocaux. Afin de le guider
+à
+distance
+vers
+une
+destination déterminée
+1.2
+Développer la partie backend qui permet de
+communiquer avec le système ROS (Robot
+Operating System) auquel l’application est
+connectée en publiant des messages qui
+traduisent le mouvement voulu par le robot
+ainsi que la vitesse sur le Topic /cmdvel.
+1
+lorsqu’il
+est
+hors
+trajectoire.
+1.3
+Intégrer
+la
+logique
+de
+commande
+au
+joystick.
+1
+1.4
+Intégrer un modele AI speech to text
+(analyse des signaux vocaux) pour réagir à
+certains ordres vocaux.
+1
+1.5
+Développer une Interface de commande
+composée du bouton de connexion, joystick
+et slide bar de vitesse .
+1
+1.6
+Mettre en place un conteneur Docker avec
+image ros jazzy installé pour simuler le
+système du robot et tester.
+2
+2
+En tant que admin ou
+super admin connecté, je
+veux passer par une liste
+des
+robots
+disponibles.
+Afin d’en choisir un pour
+le commander.
+2.1
+Créer une interface avec la liste des robots
+qui mène à l’interface de pilotage une fois
+un robot sélectionné.
+1
+3
+En tant que admin ou
+super admin connecté, je
+veux pouvoir visualiser
+3.1
+Créer
+l’interface
+de
+visualisation
+des
+valeurs de performance clés d’un robot
+sélectionné.
+2
+pour un robot sélectionné,
+sa position, sa vitesse, son
+niveau de charge et ses
+3.2
+Ajouter la partie logique de lecture de ces
+valeurs de la base de données basée sur les
+timestamp (date de mise à jour)
+1
+missions afin de avoir un
+avis sur sa performance.
+3.3
+Tester
+cette
+version
+et
+valider
+le
+comportement
+1
+77
+
+
+===== PAGE 96 =====
+
+Chapitre 4. Release 2 : Module robots
+4
+En
+tant
+qu’employé,
+admin ou super admin,
+4.1
+Ajouter un graphique en nuages de points
+avec les dernières valeurs de température.
+1
+je veux voir également
+l’évolution
+de
+la
+température minimale et
+maximale de la batterie du
+robot en une courbe Afin
+d’analyser et identifier les
+moments de pics.
+4.2
+Tester et valider le graphique.
+1
+5
+En tant qu’employé admin
+ou super admin, je veux
+que toute nouvelle valeur
+de ces KPIs soit
+5.1
+Concevoir une architecture basée sur la
+séparation de la lecture des robots et
+l’écriture pour chasser en temps réel les
+nouvelles valeurs.
+1
+affichée en temps réel Afin
+d’assurer un suivi direct du
+robot.
+5.2
+Mettre en place et tester un service Node.js
+qui prend en charge l’écoute en continue
+des KPIS des différents robots dans le but
+d’assurer une cohérence de lecture entre les
+différents utilisateurs et éviter les tentatives
+de connexions répétitives à un robot. Ce
+middleware interagit en enregistrant en
+temps réel les valeurs récupérés des robots
+dans Firestore.
+1
+5.3
+Implémenter l’écoute en temps réel de
+flux de données dans Firestore mettre
+à jour l’interface de visualisation avec
+chaque nouvelle écriture effectué par le
+pont Node.js.
+1
+5.4
+Intégrer, tester et valider
+1
+6
+En tant que developpeur,
+je
+veux
+déployer
+un
+système
+ROS
+(Robot
+Operating
+System)
+sur
+la carte Raspberry Pi du
+robot prototype
+6.1
+Installer une version compatible (ex :
+ROS
+Noetic
+sur
+Ubuntu
+20.04),
+avec
+configuration
+des
+variables
+d’environnement.
+1
+afin
+de
+gérer
+la
+communication
+interne
+des composants du robot
+(capteurs, moteurs) et de
+préparer l’interaction avec
+l’application mobile.
+6.2
+Ajouter et tester le packet rosbridge pour
+la communication de l’éxtérieur avec le
+prototype.
+1
+78
+
+
+===== PAGE 97 =====
+
+Chapitre 4. Release 2 : Module robots
+3.2
+Communication entre couches du prototype et l’application
+L’architecture du système développé repose sur l’intégration cohérente de plusieurs
+composants matériels et logiciels interconnectés pour simuler le comportement d’un robot
+mobile autonome de type AGV.
+3.2.1
+Vue d’ensemble du système
+Le système développé repose sur une architecture hybride combinant des éléments
+matériels embarqués et une interface logicielle mobile. Le cœur du prototype est constitué
+d’un robot mobile autonome, capable de naviguer de manière automatique ou d’être contrôlé
+manuellement. L’ensemble est orchestré à l’aide de ROS 2, qui joue un rôle central dans la
+gestion des communications et des processus. Le Raspberry Pi assure la coordination générale,
+la réception des commandes et l’envoi des consignes, tandis que l’ESP32 se charge
+de l’exécution des ordres moteurs et de la gestion des capteurs embarqués via Micro-ROS.
+Comme présenté dans les chapitres précédents, l’application mobile développée sous Flutter
+joue le rôle d’interface utilisateur à distance. Elle communique avec le système robotique via
+ROSBridge, qui assure l’interfaçage entre ROS 2 et les applications externes. Une connexion
+WebSocket permet à l’utilisateur d’envoyer des commandes (par exemple : des déplacements
+manuels) et de recevoir en temps réel des informations sur l’état du robot.
+3.2.2
+Communication entre composants
+La communication entre les différentes entités du système s’organise comme suit (voir
+Figure 4.15) :
+• Application mobile Flutter →Raspberry Pi : grâce à rosbridge, l’application envoie des
+messages
+ROS
+2
+via
+WebSocket.
+Ces
+messages
+contiennent
+des
+commandes
+de mouvement manuelles ou d’autres requêtes.
+• Raspberry Pi
+↔
+ESP32 : la communication se fait via liaison série (UART)
+via Micro-ROS. Le Raspberry Pi agit comme agent ROS, tandis que l’ESP32 agit comme
+nœud micro-ROS exécutant les commandes (mouvement, lecture capteurs).
+• Capteurs, tels que le lecteur RFID, sont connectés à l’ESP32, qui collecte les données
+en temps réel et les transmet au Raspberry Pi via Micro-ROS pour traitement et prise
+de décision. En parallèle, le Raspberry Pi envoie des instructions de mouvement vers
+l’ESP32, qui les interprète et pilote les moteurs DC à l’aide du module L298N.
+79
+
+
+===== PAGE 98 =====
+
+Chapitre 4. Release 2 : Module robots
+FIGURE 4.15 : Schema de communication entre composants
+3.3
+Analyse
+cette analyse tourne autour de raffinements et de descriptions textuelles respectivement
+des deux cas d’utilisation incluse dans ce sprint « piloter robots » et « visualiser KPIs ».
+3.3.1
+Raffinement du cas d’utilisation « piloter robots »
+La figure 4.16 illustre le diagramme de cas d’utilisation « piloter robots » étendu.
+FIGURE 4.16 : Diagramme de cas d’utilisation piloter robots
+80
+
+
+===== PAGE 99 =====
+
+Chapitre 4. Release 2 : Module robots
+Le tableau 4.9 permet de mieux comprendre le fonctionnement du cas d’utilisation «
+Piloter robot » en décrivant les interactions acteur-système et les cas d’exceptions qui peut
+survenir. Ce use case permet à l’utilisateur de piloter le robot via un joystick virtuel à partir de
+l’interface
+mobile.
+Le
+succès
+de
+commande
+exige
+l’établissement
+une
+connexion
+bidirectionnelle, temps-réel et persistante entre l’application et le robot grâce au protocole de
+communication web socket. Le robot AGV (ou le prototype) doit être configuré pour pouvoir
+traiter les commandes de l’utilisateur en des actions visibles.
+TABLEAU 4.9 : Description textuelle du uc piloter robot
+Titre
+Piloter robot
+Acteurs
+- Admin
+- SuperAdmin
+Résumé
+- Permettre à l’acteur de prendre le contrôle d’un robot via
+l’application, en lui envoyant des commandes.
+Préconditions
+- L’acteur est connecté à l’application.
+Description
+nominale
+du
+scénario
+1. L’acteur accède à l’interface « Commander robots ».
+2. Le système récupère et affiche la liste des robots enregistrés.
+3. L’acteur sélectionne un robot spécifique.
+4. Le système redirige l’acteur vers l’interface de commande.
+5. L’acteur doit cliquer le bouton « connecter » afin de tenter d’établir
+une connexion Web Socket avec le robot choisi.
+6. L’acteur peut glisser la barre de vitesse pour activer une valeur
+incluse dans la plage proposée.
+7. L’acteur peut décrire et ses commandes en utilisant le joystick virtuel.
+8. Le système vérifie l’état de connexion, traduit et transmet les
+commandes en temps réel selon le mouvement du stick.
+9. L’acteur peut décrire ses commandes via des ordres articulé au
+langage naturel.
+10. Le système vérifie l’état de connexion, analyse les signaux vocaux
+de l’utilisateur pour inférer les mots prononcés, puis traduit et transmet
+ses commandes en temps réel selon l’ordre dicté.
+11. En cas de déconnection involontaire, le système retente une
+reconnexion automatique.
+12. L’acteur peut se déconnecter du robot et quitter l’interface.
+13. Fin du cas d’utilisation.
+Scénarios
+alternatifs
+5.a – Si la connexion au robot échoue pour des raisons de réseaux ou
+d’inactivation,
+Le système doit indiquer la cause de l’erreur et l’acteur peut réessayer
+plus tard ou quitter.
+Le scénario nominal reprend au point 5 ou finit.
+8.a, 10.a-Si le système détecte que l’utilisateur n’est pas connecté,
+Le système affiche un message d’erreur « tentative d’envoi sans
+connexion! ».
+Le scénario nominal reprend au point 5.
+Postconditions
+- Les commandes données par l’utilisateur, sont exécutés par le robot.
+81
+
+
+===== PAGE 100 =====
+
+Chapitre 4. Release 2 : Module robots
+3.3.2
+Raffinement du cas d’utilisation « visualiser KPIs »
+Le cas d’utilisation « visualiser KPIs » est enrichhi par lee diagramme de la figure 4.17.
+FIGURE 4.17 : Diagramme de cas d’utilisation visualiser KPIs
+Le tableau 4.10 fournit une description textuelle du cas d’utilisation «Visualiser KPIs» :
+TABLEAU 4.10 : Description textuelle du uc Visualiser robot
+Titre
+Visualiser robot
+Acteurs
+- Employé
+- Admin
+- SuperAdmin
+Résumé
+- Permet à l’utilisateur de visualiser les indicateurs clés de performance
+(KPIs) d’un robot sélectionné, tels que la vitesse, la charge de batterie,
+les missions et l’évolution de la température.
+Préconditions
+- L’acteur est connecté à l’application.
+Description
+nominale
+du
+scénario
+1. L’acteur accède à l’interface « Visualiser KPIs ».
+2. L’acteur sélectionne un robot spécifique de la liste déroulante.
+3. Le système récupère les derniers KPIs respectifs au robot sélectionné
+et les affiche.
+4. Le système met à jour ces données pour refléter en continu l’état
+actuel du robot.
+5. Fin du cas d’utilisation.
+Scénarios
+alternatifs
+3.a – Si aucune valeur n’est trouvée pour un robot, Le système affiche
+un message « Aucun indicateur n’est trouvé »
+Fin du cas d’utilisation.
+Postconditions
+- Les KPIs du robot sélectionné sont affichés à l’écran.
+-L’utilisateur a une vue claire de l’état et des performances du robot en
+temps réel.
+82
+
+
+===== PAGE 101 =====
+
+Chapitre 4. Release 2 : Module robots
+3.4
+Conception
+Le diagramme de classe ainsi que les diagramme de séquence sont au cœur
+de la conception de ce sprint. Nous abordons d’abord l’enrichissement du cas de classe après
+l’introduction de ce nouveau sprint. Ensuite les diagrammes de séquences respectivement pour
+les cas d’utilisation « Piloter robot » et « visualiser kPIs » apporteront une dimension dynamique
+à leur conception.
+3.4.1
+Diagramme de classes
+Les
+fonctionnalités
+ajoutées
+par
+ce
+sprint
+révèlent
+de
+nouveaux
+concepts
+à modéliser dans le diagramme de classe représenté par la figure 4.18.
+On peut noter L’apparition des classes Robot avec comme attributs name et IPadress et KPI
+avec comme attributs leurs timestamp et les différents indicateurs inclus, ainsi que de nouvelles
+méthodes tel que commandRobot(), connectToRobot() ...
+FIGURE 4.18 : Diagramme de classes du sprint 4
+83
+
+
+===== PAGE 102 =====
+
+Chapitre 4. Release 2 : Module robots
+3.4.2
+Diagrammes de séquence
+Deux diagrammes de séquences feront l’objet de ce sprint, respectivement « Piloter robot
+» et « Visualiser KPIs » le but de ces diagramme est de dissimiler les processus d’exécutions de
+ces cas d’utilisation au sein du système et en tenant en compte la chronologie des échanges.
+Diagramme de séquence « Piloter robot »
+Le pilotage de robot s’effectue à l’achèvement d’un ensemble d’étapes. L’acteur impliqué
+notamment un admin ou super admin doit être authentifié et doit commencer par le sélection du
+robot qu’il souhaite piloter.Il est dirigé vers une interface de commande contenant un bouton de
+connexion. Il doit en premier temps se connecter au robot via un clic sur ce bouton. Ce signal
+déclenchera une méthode de connexion déléguée à l’objet robot qui envoie et établie une requête
+de connexion au robot devant être à l’écoute. Si la connexion est bien établie l’acteur est notifié
+et peut dès lors commander via le joystick et en temps réel son robot. La déconnexion peut être
+gérée par l’acteur ou prise en charge automatiquement pour éviter les connexion inutiles. Au
+cas contraire entraînant l’échec de connexion, une notification d’échec est affiché pour informer
+l’admin qui peut réessayer ou quitter (voir figure 4.19).
+FIGURE 4.19 : Diagramme de séquence « Piloter robot »
+84
+
+
+===== PAGE 103 =====
+
+Chapitre 4. Release 2 : Module robots
+Diagramme de séquence « Visualiser KPIs »
+La visualisation des KPIs est gérée majoritairement par le backend du système via une
+architecture bien étudiée. En effet la lecture des KPIs est prise en charge par un serveur Node js
+qui s’exécute en arrière plan en se connectant en continu à tous les robots enregistrés et publiant
+leurs KPIs dans la base de données pour qu’ils soient accessibles par l’application.
+À ce stade, tout employé, admin ou le superAdmin authentifié peut à partir de l’interface de
+visualisation visualiser les variations KPIs des différents robots en temps réel.
+Il demande la en menu la liste des robots via un appel (getRobotsList()), sélectionne le robot
+auquel il s’intéresse (chooseRobot()), cela déclenche un appel à l’objet contrôleur qui à son tour
+fait un appel à l’objet robot (getRobotKPIs) pour l’écoute des KPIs à partir de la base de données
+de manière asynchrone (ListenToKpis). Cette écoute permet à tout nouveau document KPIs
+additionné à la base de données par le serveur Node js d’atteindre l’objet robot et déclencher un
+changement dans l’affichage (voir figure 4.20).
+FIGURE 4.20 : Diagramme de séquence « Visualiser KPIs »
+85
+
+
+===== PAGE 104 =====
+
+Chapitre 4. Release 2 : Module robots
+3.5
+Réalisation
+• Mise en place du prototype AGV :
+La figure 4.21 suivante présente le schéma global de câblage du prototype, incluant
+l’ensemble des modules utilisés.
+FIGURE 4.21 : Schéma de câblage complet du prototype
+• Étapes de connexion avec ROS :
+La figure 4.22 illustre les différentes étapes du processus de connexion ROS via websocket
+du robot au système. Elle met en évidence les scénarios possibles, allant d’une tentative de
+connexion initiale jusqu’à son aboutissement avec succès, ou son échec.
+FIGURE 4.22 : Interfaces de l’étapes de connexion, échecs et succès avec ROS
+• Interfaces de commande de robot :
+La figure 4.23 présente l’interface de sélection du robot et l’interface de commande. Dans un
+premier temps, l’utilisateur choisit le robot à contrôler via la liste des robot disponibles. Une
+86
+
+
+===== PAGE 105 =====
+
+Chapitre 4. Release 2 : Module robots
+fois le robot sélectionné, l’interface de commande permet de le piloter en temps réel à l’aide
+d’un joystick virtuel.
+FIGURE 4.23 : Interface de commande de robot
+• Interface visualisation des KPIs :
+La figure 4.24 illustre l’interface de visualisation des KPIs, offrant une vue synthétique des
+données essentielles.
+FIGURE 4.24 : Interface visualisation des KPI
+4
+Conclusion
+Après avoir mené à bien ce release, l’application peut être considérée comme un MVP
+(Minimal Viable Product) c’est à dire à une version minimale, fonctionnelle et efficace capable
+87
+
+
+===== PAGE 106 =====
+
+Chapitre 4. Release 2 : Module robots
+d’assurer la gestion et le pilotage des robots AGV au sein du site industriel.Le livrable atteint
+ce niveau de maturité suite à une démarche conceptuelle UML bien structurée. Le prototype
+est également en mesure de se connecter à l’application et agir en réponse aux commandes de
+l’utilisateur.
+88
+
+
+===== PAGE 107 =====
+
+Chapitre 5
+Release 3 : Module missions et livraison
+dockerisée de l’application
+1
+Introduction
+Dans ce troisième et dernier release, nous avons poursuivi le développement
+de l’application en se focalisant sur deux aspects majeurs, répartis sur deux sprints distincts :
+Gestion des stations et des missions qui se caractérise par l’ajout d’un nouveau module
+permettant de définir les stations auquel le robot sera confronté ainsi que le planning des
+missions à effectuer par tous les robots.
+Dockerisation :l’utilisation de la dockerisation comme méthode efficace pour livrer le code
+source de l’application.
+Ce release a donc permis non seulement d’enrichir le périmètre fonctionnel, mais également de
+préparer l’application pour son intégration dans un environnement de production ou de test plus
+réaliste, tout en respectant les bonnes pratiques DevOps.
+2
+Développement du sprint 5 : « Gestion des stations et des
+missions »
+Le premier sprint de cette release, intitulé « Gestion des stations et des missions », s’est
+déroulé sur une période de 20 jours.
+Il a consisté à mettre en place une interface permettant de :
+• Définir les différentes stations auxquelles les robots peuvent être affectés;
+• Planifier les missions à exécuter par chaque robot, en tenant compte de leur disponibilité
+89
+
+
+===== PAGE 108 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+et du type de mission.
+Ce sprint a permis de structurer une partie essentielle du fonctionnement de l’application.
+2.1
+Backlog sprint
+Les taches à effectuer tout au long de ce dernier sprint sont sont refléter de point de vue
+application et prototype et sont abordés sous forme de user stories dans le sprint backlog donné
+par le tableau 5.1.
+TABLEAU 5.1 : Backlog sprint 5
+ID
+User Story
+ID
+Taches associés
+Durée
+(jour)
+1
+En tant qu’administrateur ou super
+administrateur connecté, je veux
+pouvoir définir et gérer
+manuellement les stations sous
+forme de tags RFID placés sur la
+trajectoire du robot (ajout,
+modification, suppression).
+1.1
+Créer l’interface de gestion des
+stations contenant une table avec
+tous
+les
+stations
+affichés,
+des
+boutons
+d’ajout
+,
+suppression
+et modification. Une station est
+définit par un Tag unique (UID)
+associé à un nom unique.
+2,5
+Afin de permettre au robot
+d’identifier dynamiquement les
+points clés de son parcours.
+1.2
+Mettre
+en
+place
+les
+fonctions
+de gestion des stations (ajout,
+modification, suppression) basées
+sur
+les
+transactions
+Firestore,
+afin de garantir l’intégrité des
+données en cas d’accès concurrent
+et d’éviter les conflits lors des
+opérations simultanées.
+2,5
+1.3
+Intégrer, tester et valider
+2
+2
+En tant qu’administrateur ou super
+administrateur connecté, je veux
+pouvoir construire la liste des
+stations en mode « Mapping
+théorique », en déléguant la lecture
+des tags RFID (UID) au robot
+2.1
+Ajouter un bouton « Mapping
+théorique » qui s’affiche si aucune
+station n’existe, et qui redirige
+vers une interface de sélection de
+robots et puis vers le mapping
+théorique.
+2
+qui parcourt sa trajectoire. Afin de
+récupérer automatiquement les
+points de passage sans saisie
+manuelle, et faciliter
+2.2
+Mettre en place et intégrer le
+mécanisme de d’abonnement et
+d’écoute des tags RFID depuis le
+robot sélectionné.
+2
+la configuration initiale de
+l’environnement.
+2.3
+Développer un code python pour
+la publication des valeurs UID
+sur le topic RFID-READ sur un
+conteneur Docker. Pour tester le
+mapping théorique.
+1
+3
+En tant que admin ou super admin
+connecté, je veux pouvoir créer une
+mission qui comprend
+3.1
+Mettre en place l’interface de
+visualisation et de création de
+missions.
+2
+90
+
+
+===== PAGE 109 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+un ensemble ordonné de stations et
+qui est déléguée à un robot
+spécifique Afin de planifier
+précisément le parcours à effectuer
+3.2
+Développer le partie backend qui
+permet de publier les nouvelle
+missions
+sur
+le
+topic
+dédié
+/task-sequence coté robot.
+1
+par le robot et automatiser
+l’exécution de tâches ciblées.
+3.3
+Intégrer et tester
+1
+4
+En tant que admin ou super admin
+connecté à un robot, je veux
+pouvoir signaler la reprise d’une
+mission stoppée dans une station
+cible en cliquant sur un bouton de
+reprise. Afin de permettre au robot
+de compléter sa mission après avoir
+terminé son action dans l’une des
+stations.
+4.1
+Développer
+la
+gestion
+automatique des états des stations :
+-une
+mission
+non
+exécutée
+a
+un
+état
+en
+attente
+-une mission en exécution est
+notée
+par
+l’état
+en
+progrès
+-une
+mission
+en
+exécution
+mais
+stoppée
+dans
+l’une
+des
+stations
+est
+en
+état
+stoppé
+-une
+mission
+achevée
+avec
+succès est en état complété
+2
+4.2
+Mettre en place la partie backend
+de reprise en envoyant un signal au
+robot depuis l’application.
+1
+4.3
+Intégrer toute la partie de missions
+et la tester
+1
+2.2
+Analyse
+Dans cette section, nous allons mener une étude analytique autour des deux cas
+d’utilisations « Gérer stations » et « Gérer missions » à travers des diagrammes de cas
+d’utilisations raffinés ainsi que des descriptions textuelles.
+2.2.1
+Raffinement du cas d’utilisation « Gérer stations »
+Le cas d’utilisation Gérer station est raffiné par la figure 5.1 et dévoile un ensemble de
+sous cas impliqués nécessaire à la décomposition de du cas général. La gestion de station est
+associé à l’acteur admin (ou super admin) et nécessite qu’il soit authentifié.
+La gestion peut être peut correspondre à l’ajout d’une nouvelle station définie par un nom et un
+UID.
+Le UID doit correspondre à un jeton RFID intégré à la trajectoire du robot et qui et détectable
+par son capteur lecteur de RFID. Cela nous mène à proposer deux modes d’ajout : un mode
+manuel c’est a dire que le tag UID est saisi caractère par caractère par l’admin et un mode
+mapping qui délègue cette responsabilité au robot. L’admin peut aussi modifier une station ou
+supprimer une station.
+91
+
+
+===== PAGE 110 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+FIGURE 5.1 : Diagramme de cas d’utilisation gérer stations
+Le tableau 5.2 fournit une description textuelle du cas d’utilisation « Gérer stations»
+TABLEAU 5.2 : Gérer stations
+Titre
+Gérer stations
+Acteurs
+- Admin
+- SuperAdmin
+Résumé
+- Permet à l’acteur de gérer les stations (ou points de passage) que les
+robots rencontrent sur leur trajectoire. Ces stations sont représentées
+physiquement par des tags RFID placés dans l’environnement de
+déplacement du robot.
+Préconditions
+Scénario1 « Gestion manuelle des stations »
+- L’acteur est connecté à l’application.
+Scénario2« Mapping théorique »
+- Les stations ne sont pas encore définies.
+Description
+nominale
+du
+scénario
+Scénario1 « Gestion manuelle des stations »
+1. L’acteur accède à l’interface « Gérer stations ».
+2. Le système récupère et affiche dans un tableau la liste des stations.
+3. L’acteur peut demander d’ajouter une nouvelle station en cliquant sur le
+bouton d’ajout.
+4. Le système affiche un popup avec les deux champs tag et nom.
+5. L’acteur saisie le nom de la station et le tag.
+6. L’acteur clique sur le bouton enregistrer.
+7. Le système vérifie la validité et l’unicité du tag et du nom et enregistre.
+8. L’acteur clique sur le bouton annuler.
+9. Le système annule l’ajout et le popup disparait.
+92
+
+
+===== PAGE 111 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+10. L’acteur peut modifier le nom ou le tag d’une station en cliquent sur le
+bouton de modification associé à la station.
+11. Le système vérifie l’unicité du tag et du nom avant de confirmer la
+modification.
+12. L’acteur peut supprimer une station en cliquant sur le bouton supprimer
+associé à la station.
+13. Fin du scénario.
+Scénario2 « Mapping théorique »
+1. Le système propose à l’acteur de procéder avec le mapping théorique.
+2. L’acteur clique sur le bouton « Mapping théorique ».
+3. Le système affiche la liste des robots.
+4. L’acteur sélectionne un robot pour le mapping théorique.
+5. Le système redirige l’acteur vers l’interface de mapping théorique.
+6. L’acteur clique sur le bouton de connexion.
+7. Le système se connecte au robot.
+8. L’acteur clique sur le bouton d’écoute pour commencer l’écoute des tags.
+9. Le système s’abonne au topic RFID-READ du robot.
+10. Le système affiche chaque tag RFID lue par le robot.
+11. L’acteur associe un nom au tag et confirme ou annule.
+12. Le système vérifie la validité et l’unicité du tag et du nom avant
+d’enregistrer.
+13. L’acteur clique sur le bouton terminer.
+14. Le système arrête l’écoute, se déconnecte du robot exécute un retour à
+la page initiale de gestion de sessions.
+15. Fin du scénario.
+16. Le système met à jour ces données pour refléter en continu l’état actuel
+du robot.
+17. Fin du cas d’utilisation.
+Scénarios
+alternatifs
+Scénario1 « Gestion manuelle des stations »
+7.a-Si aucune station n’est encore enregistrée,
+Le système affiche le message « Aucune station » ainsi que le bouton de
+mapping théorique.
+Le scénario nominal reprend au point 3.
+7.a et 11.a-Si le nom ou le Tag est invalide ou déjà utilisé,
+Le système affiche un message d’erreur appropprié
+Le scénario nominal reprend respectivement au points 5 et 10.
+Scénario2 « Mapping théorique »
+7.a-Si le robot n’est pas actif ou la tentative de connexion échoue,
+Le système affiche un message indiquant l’erreur
+Le scénario nominal reprend au point 6 ou Fin avec échec
+10.a-Si la connexion avec le robot n’est pas établie, le système affiche le
+message d’erreur « Tentative d’écoute sans connexion!».
+Le scénario nominal reprend au point 6.
+12.a- Si le nom ou le Tag est invalide ou déjà utilisé,
+Le système affiche un message d’erreur approprié.
+Le scénario nominal reprend au point 11.
+Postconditions
+- Les données relatives aux stations sont mises à jour dans Firestore.
+- Les stations peuvent désormais être associées à des missions.
+- Le système reflète fidèlement les points de passage connus du robot.
+93
+
+
+===== PAGE 112 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+2.2.2
+Raffinement du cas d’utilisation « Gérer missions »
+Le cas d’utilisation « Gérer missions » est décomposé dans la figure 5.2. Gérer les
+mission revient est l’une des responsabilités des acteurs admins et revient à ajouter, modifier,
+supprimer ou reprendre une mission.
+L’ajout d’une mission s’effectue en attribuant un nom et sélectionnant dans l’ordre l’ensemble
+des stations cibles. Cette mission est ensuite ajouter à une liste d’attente pour une exécution
+ultérieure par l’un des robots.
+La modification d’une mission revient à le changement de son nom, et/ou de l’organisation des
+stations et n’est accepté que si la mission est en attente.
+La suppression d’une mission revient à enlever une mission de la liste d’attente ou de l’historique
+des mission effectuées.
+La reprise de mission correspond aux mission en cours d’exécution et est utile pour valider la
+livraison au sein d’une station et permettre au robot de en pause de poursuivre ses tâches.
+FIGURE 5.2 : Diagramme de cas d’utilisation gérer missions
+Le tableau 5.3 fournit une description textuelle du cas d’utilisation « Gérer missions». Il
+présente de manière globale le fonctionnement de ce cas à travers les interactions entre l’acteur
+et le système, et traite les cas de branchements pouvant interférer avec le scénario d’exécution
+nominal.
+94
+
+
+===== PAGE 113 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+TABLEAU 5.3 : description textuelle du uc gérer missions
+Titre
+Gérer missions
+Acteurs
+- Admin
+- SuperAdmin
+Résumé
+- Permet à l’acteur de gérer les missions que les robots doivent effectuer.
+Ces missions permettent d’organiser les déplacements des robots selon un
+planning prédéfini physiquement par des tags RFID placés dans
+l’environnement de déplacement du robot.
+Préconditions
+- L’acteur est connecté à l’application.
+- Des stations sont déjà définies dans le système.
+- Au moins un robot est enregistré dans le système.
+Description
+nominale
+du
+scénario
+1. L’acteur accède à l’interface « Gérer missions ».
+2. Le système affiche la liste des missions existantes avec leurs détails.
+3. L’acteur peut créer une mission en cliquant sur le bouton « Ajouter une
+mission ».
+4. Le système affiche un formulaire de création contenant :
+o Le champ « Nom de la mission »
+o Une liste déroulante de sélection du robot
+o Une interface pour ordonner les stations à inclure dans la mission
+5. L’acteur remplit les champs requis.
+6. L’acteur peut cliquer sur « Enregistrer ».
+7. Le système vérifie L’unicité du nom de mission lui attribue un ordre et
+l’enregistre.
+8. L’acteur peut annuler la création.
+9. L’acteur peut sélectionner une mission de la liste.
+10. Le système affiche les détails de la mission.
+11. L’acteur peut cliquer sur le bouton de reprise pour permettre au robot
+stoppé de continuer sa mission.
+12. Le système se connecte au robot.
+13. Le système envoie le signal de reprise au robot, valide la station
+courante et met à jour l’état de la station.
+14. Fin du scénario.
+Scénarios
+alternatifs
+2.a-Si Aucune mission n’est trouvée,
+Le système affiche le message « Aucune mission! »
+Le scénario nominal reprend au point 3.
+7.a-Si l’un des champs est vide ou le nom n’est pas unique,
+Le système affiche un message d’erreur approprié.
+Le scénario nominal reprend au point 5.
+12.a-Si la tentative de connexion a échoué,
+Le système affiche le message d’erreur lié à l’échec
+Le scénario nominal reprend au point 11 ou Fin.
+Postconditions
+- Une mission est ajoutée, modifiée ou supprimée.
+- Le système garde une trace des missions avec leurs statuts (en attente, en
+cours, terminée, etc.).
+95
+
+
+===== PAGE 114 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+2.3
+Conception
+Dans cette partie, nous abordons la conceptualisation des données de ce sprint en utilisant
+le diagramme de classe étendu à l’issue des nouvelles notions abordés ainsi que trois diagrammes
+de séquences centré autour des fonctionnalités de bases ajoutées notamment « Gérer stations »
+, « Faire mapping théorique » et « Gérer missions ».
+2.3.1
+Diagramme de classes
+Le diagramme de classe montré par la figure 5.3 introduit les concepts vus plus tôt
+dans l’analyse de cet incrément.Deux nouvelles classes y sont ajoutées notamment la classe
+Station avec les deux attributs name et UID et la classe Mission avec un ensemble d’attributs
+comprenant un ensemble d’attributs et reliée aux classes station et la classe .
+Des nouvelles méthodes sont aussi ajoutés aux anciens classes comme : manageStation() et
+makeTheoMapping().
+FIGURE 5.3 : Diagramme de classes du sprint 5
+96
+
+
+===== PAGE 115 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+2.3.2
+Diagrammes de séquence
+Les diagrammes de séquences seront traités dans la présente section et vont servir de
+bases pour la conceptualisation technique.
+Diagramme de séquence « Gérer stations » :
+La figure 5.4 illustre le diagramme de séquence du cas d’utilisation « Gérer stations ».
+FIGURE 5.4 : Diagramme de séquence « Gérer stations » :
+97
+
+
+===== PAGE 116 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+Diagramme de séquence « Effectuer Mapping théorique » :
+L’objectif principal du mapping théorique est de garantir la cohérence entre : Le monde physique
+(l’environnement réel), Le robot (et sa perception ou localisation), Et l’application (l’interface
+de contrôle ou de gestion). Il est crucial que un tag RFID envoyé par l’application au robot
+corresponde fidèlement au tag physique réel placé dans l’environnement. Toute incohérence
+entre le tag référencé dans l’application et le tag réellement détecté par le robot pourrait entraîner
+une erreur d’exécution de tâche. La figure 5.5 présente l’exécution de cette fonctionnalité par
+des échanges de messages (opérations) entre les objets impliqués selon l’approche Jacobson.
+Une interface dédiée permet à l’admin ou superAdmin de sélectionner un robot pour le mapping,
+l’interface propose alors à l’acteur de se connecter au robot choisit et d’écouter les tags UID
+lises par le robot se déplaçant sur sa trajectoire. Les méthodes listenToRFID(), et stopListenin()
+sont des méthodes asynchrones invoqués par le contrôleur vers l’objet robot (qui encapsule la
+logique de communication avec robot) afin de commencer et terminer l’échange avec le robot.
+FIGURE 5.5 : Diagramme de séquence « Effectuer mapping théorique »
+98
+
+
+===== PAGE 117 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+Diagramme de séquence « Gérer missions » :
+Le diagramme de séquence « Gérer missions » est montré dans la figure 5.6 et permet de clarifier
+les responsabilités des différents des différents objets impliqués.
+FIGURE 5.6 : Diagramme de séquence « Gérer missions »
+99
+
+
+===== PAGE 118 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+2.4
+Réalisation
+• Interfaces de gestion des stations :
+La figure 5.7 présente les interfaces de gestion des stations RFID. Ces interfaces offrent deux
+modes de gestion : un mapping théorique permettant d’enregistrer les stations en les positionnant
+visuellement dans l’environnement, et une interface simple pour créer, modifier, supprimer ou
+consulter les informations des stations RFID.
+FIGURE 5.7 : Interfaces de gestion des stations
+• Interfaces de gestion et suivis des missions :
+La figure 5.8 présente les interfaces de gestion et de suivi des missions, permettant à l’utilisateur
+de planifier, attribuer et suivre en temps réel l’état d’exécution des différentes missions confiées
+aux robots.
+FIGURE 5.8 : Interfaces de gestion et suivis des missions
+100
+
+
+===== PAGE 119 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+2.5
+Industrialisation et livraison dockerisée de l’application
+Pour faciliter la maintenance et l’évolution future du projet, une phase d’industrialisation
+a été mise en place grâce à la containerisation de l’application mobile avec Docker. Une image
+contenant toutes les dépendances nécessaires à la génération de l’APK a été créée et hébergée
+sur Docker Hub. Un workflow GitHub Actions automatise les tests, la reconstruction de l’image,
+la génération de l’APK dans un conteneur, et sa publication comme artefact. Cette démarche
+assure une livraison fiable, reproductible et facile à reprendre par l’entreprise.
+2.5.1
+Dockerisation de l’application
+L’utilisation de l’outil de conteneurisation Docker a été déjà évoquée dans les parties
+précédentes notamment pour rendre possible de tester les fonctionnalités de l’application sur un
+système ROS similaire à celui du robot grâce à une image préconfigurée qui réduit
+considérablement les soucis des installations et préparations fastidieuses. Forts de cette première
+expérience, le choix de Docker s’impose naturellement pour la conteneurisation de notre propre
+travail. Dockeriser l’application revient à rendre possible son exécution par le moteur Docker
+dans des environnement conteneurisés identiques issues d’une image standardisée. Les étapes
+pour y parvenir sont représentées dans la figure 5.9.
+FIGURE 5.9 : processus de dockerisation
+• Création du Dockerfile :
+Docker suit une architecture en couches, chaque commande est une nouvelle couche empilée
+pour former l’environnement final. Cette approche offre plusieurs avantages notamment la
+101
+
+
+===== PAGE 120 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+réutilisabilité des couches ainsi que l’optimisation des builds grâce à la mise en cache.
+Dans notre cas, le Dockerfile montré par la figure 5.10 est basé sur une image linux Alpine
+et permet d’installer les dépendances nécessaires (telle que Flutter, le SDK Android ou encore
+le NDK) et de copier le code de l’application pour continuer le développement ou lancer les
+commandes de compilation et générer les fichiers APK (Android Package Kit).
+FIGURE 5.10 : création du dockerfile
+• Assemblage de l’image Docker :
+Une fois le Dockerfile est rédigé, la commande « docker build » demande au Docker
+engine de produire l’image en exécutant les instructions dans l’ordre et assemblant les couches.
+Les logs affichés au cours du build sont capturés par la figure 5.11.
+102
+
+
+===== PAGE 121 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+FIGURE 5.11 : assemblage de l’image Docker
+Cette étape aboutit à une unité d’exécution prête à l’instanciation, et contenant tout le
+nécessaire pour compiler le code flutter dans son espace propre, stable, reproductif, isolée et
+léger. Une image est distinguée par un nom et éventuellement un namespace et un tag.
+On peut vérifier que la nouvelle image vient de s’ajouter dans la liste via la commande « docker
+images » qui montre le nom de l’image en output (voir figure 5.12.
+FIGURE 5.12 : Nouvelle image ajoutée
+• Instanciation de l’image :
+Une fois l’image construite, elle peut être utilisée pour créer autant de conteneurs que
+nécessaire. Chaque conteneur constitue un environnement isolé, portable et identique, capable
+d’exécuter l’application de manière autonome. L’instanciation est flexible : il est possible de
+configurer des réseaux, monter des volumes pour la persistance des données, et exposer des
+ports pour l’accès aux services. Cette approche assure une cohérence entre les environnements
+de développement, de test et de production. A titre d’exemple nous avons créer un container
+nommé « myAppContainer » à partir de l’image sea-robotics et on va y exécuter quelques
+commandes (voir figure 5.13).
+103
+
+
+===== PAGE 122 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+FIGURE 5.13 : Instantiation et exécution du conteneur
+Pour une expérience développeur plus fluide et réelle, l’extension « dev Container » de
+VS code permet d’attacher l’éditeur de texte à un conteneur de développement pour travailler
+(voir Figure 5.14).
+FIGURE 5.14 : Développement de l’application dans un conteneur
+104
+
+
+===== PAGE 123 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+2.5.2
+Mise en place du pipeline CI/CD avec GitHub Actions
+Après avoir conteneurisé notre application, il devient essentiel d’automatiser le cycle de
+développement et de livraison à partir d’un pipeline d’intégration continue et livraison continue
+CI/CD définie à l’aide d’un Github workflow. La figure 5.15 montre un fichier du workflow
+permettant d’exécuter sur une machine Linux un job avec des actions de tests automatiques,
+d’assemblage de l’image, de d’extraction des APKs comme artéfact du workflow et de la mise
+à jours de la nouvelle image dans le repository Docker Hub.
+FIGURE 5.15 : création du workflow
+En effectuant un push dans la branche principale du repository Github, le pipeline le job
+sont déclenchés automatiquement. Lorsqu’elle finit en succès, on peut voir les informations des
+différentes actions, les fichiers APK retournés comme artéfact livrable et la nouvelle image bien
+hébergée, tous ces résultas font les objets respectivement des figures 5.16, 5.17 et 5.18.
+105
+
+
+===== PAGE 124 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+FIGURE 5.16 : éxécution automatique du workflow
+FIGURE 5.17 : Livraison automatisé de l’image générée
+FIGURE 5.18 : fichier éxécutables générés en artifact
+106
+
+
+===== PAGE 125 =====
+
+Chapitre 5. Release 3 : Module missions et livraison dockerisée de l’application
+3
+Conclusion
+À l’issue de ce chapitre, le développement fonctionnel de l’application touche à sa
+fin par l’intégration du module missions qui prend en charge la gestion des stations et la
+planification des tâches, tout en conservant la possibilité d’évolutions futures. Afin d’assurer
+une transmission efficace et professionnelle du travail réalisé, une approche DevOps a été
+adoptée pour la livraison du code source. Cette démarche facilite la maintenance, la poursuite
+du développement et l’intégration du projet dans un système plus large à venir marquant ainsi
+la clôture du projet tout en assurant sa pérennité dans un cadre industriel moderne.
+Ce projet sert à développer une application mobile multiplate-forme dédiée à la gestion
+des robots AGV.
+107
+
+
+===== PAGE 126 =====
+
+Conclusion et Perspectives
+Au terme de ces quatre mois de stage, nous avons eu l’opportunité de mettre en pratique
+nos connaissances tout en découvrant de nouvelles compétences dans un environnement
+professionnel stimulant. Le travail réalisé a porté sur le développement et l’intégration d’une
+application mobile dédiée à la gestion et au contrôle des robots AGV, en lien avec la logistique
+interne de l’entreprise.
+Grâce à une démarche méthodologique rigoureuse et une collaboration continue avec
+l’équipe encadrante, les objectifs fixés en début de stage ont été atteints, notamment en ce qui
+concerne la conception de l’interface, la communication avec les robots, et l’amélioration de
+l’expérience utilisateur.
+Cette expérience nous a permis de développer un profil polyvalent, melant développement
+mobile, compréhension des systèmes embarqués, assimilation des des pratiques devops et gestion
+de projet. En perspective, plusieurs pistes d’amélioration peuvent être envisagées, telles que
+l’ajout de nouvelles fonctionnalités intelligentes à l’application, l’extension de son usage à
+d’autres types de robots, ou encore l’intégration avec des systèmes ERP.
+Ce projet constitue ainsi une base solide pour de futurs développements au sein de
+l’entreprise et un tremplin pour notre évolution professionnelle.
+108
+
+
+===== PAGE 127 =====
+
+Bibliographie
+[1]
+SEA ELECTRONICS, Solution AGV – Véhicule Autonome. adresse : https://sea-
+electronics.com/solution-agv/.
+[2]
+MANUTAN, VUCA : comment s’adapter et évoluer dans ce monde? Adresse : https:
+//www.manutan.com/blog/fr/strategie-achats/vuca-comment-
+sadapter-et-evoluer-dans-ce-monde.
+[3]
+TRANSITIC, Automatisation d’entrepôt : bienvenue dans l’intralogistique 4.0. adresse :
+https://www.transitic.com/blog/automatisation- entrepot-
+intralogistique-4-0/.
+[4]
+SIEMENS, SIMOVE AGV Control App. adresse : https://play.google.com/
+store/apps/details?id=com.siemens.simoveagvcontrol&hl=en_
+AU&pli=1.
+[5]
+AGV, AGV App sur l’App Store. adresse : https://apps.apple.com/tt/app/
+agv/id6737102987?l=fr-FR.
+[6]
+ANDREA ZERIAL, Méthode Waterfall : la base de la gestion de projet. adresse : https:
+//www.organisation-performante.com/methode-waterfall-la-
+base-de-la-gestion-de-projet/.
+[7]
+AGILISTE.FR, Le Manifeste Agile : une révolution dans la gestion de projet. adresse :
+https : / / agiliste . fr / le - manifeste - agile - une - revolution -
+dans-la-gestion-de-projet/.
+[8]
+LAURENT AUDIBERT, Cours UML — Introduction à la modélisation objet. adresse :
+https://laurent-audibert.developpez.com/Cours-UML/?page=
+introduction-modelisation-objet.
+109
+
+
+===== PAGE 128 =====
+
+Bibliographie
+[9]
+SERVICENOW, Qu’est-ce que le développement mobile? Adresse : https://www.
+servicenow . com / fr / workflows / creator - workflows / what - is -
+mobile-development.html.
+[10]
+CHANGE VISION, INC., Téléchargement des logiciels Astah. adresse : https : / /
+astah.net/downloads/.
+[11]
+OPENJS FOUNDATION, Téléchargement de Node.js.
+[12]
+DART TEAM, Téléchargement du SDK Dart. adresse : https://dart.dev/get-
+dart.
+[13]
+FIREBASE, Console Firebase. adresse : https://console.firebase.google.
+com.
+[14]
+CLOUDINARY, Getting Started with Cloudinary. adresse : https : / / console .
+cloudinary.com/pm/c-a2880b6357d42794e2f5383d074abe/getting-
+started.
+[15]
+POSTMAN, Inscription à Postman. adresse : https://identity.getpostman.
+com/signup.
+[16]
+DOCKER, INC., Téléchargement de Docker Desktop. adresse : https://www.docker.
+com/products/docker-desktop/.
+[17]
+RIVE, INC., Rive Editor. adresse : https://editor.rive.app/.
+[18]
+GOOGLE LLC, Téléchargement d’Android Studio. adresse : https://developer.
+android.com/studio?hl=fr.
+[19]
+MICROSOFT, Téléchargement de Visual Studio Code. adresse : https : / / code .
+visualstudio.com/download.
+[20]
+GITHUB, Solutions DevOps sur GitHub. adresse : https://github.com/solutions/
+use-case/devops.
+[21]
+RASPBERRY PI FOUNDATION, Téléchargement de Raspberry Pi Desktop pour PC et
+Mac. adresse : https://www.raspberrypi.com/software/raspberry-
+pi-desktop/.
+[22]
+OPEN ROBOTICS, Installation de ROS 2 Jazzy Jalisco. adresse : https://docs.
+ros.org/en/jazzy/Installation.html.
+110
+
+
+===== PAGE 129 =====
+
+Bibliographie
+[23]
+YAMEN ABDULRAHMAN, Clean Architecture in Flutter | MVVM | BloC | Dio. adresse :
+https : / / medium . com / @yamen . abd98 / clean - architecture - in -
+flutter-mvvm-bloc-dio-79b1615530e1.
+111
+
+
+===== PAGE 130 =====
+
+Application Mobile pour la Gestion et le Pilotage de Robots
+AGV Industriels
+Résumé
+Ce projet développe une application multiplateforme innovante pour la gestion et le
+pilotage de robots AGV dans un contexte d’intralogistique industrielle. Conçue avec Flutter
+(Dart) pour le frontend mobile et Node.js avec Firestore pour le backend, la solution offre
+une expérience utilisateur fluide, une architecture scalable permettant la gestion simultanée de
+plusieurs robots, ainsi qu’un accès sécurisé et authentifié. L’application intègre des
+fonctionnalités avancées, telles que le contrôle à distance des AGV, la planification et l’exécution
+automatique des tâches logistiques, ainsi que la visualisation en temps réel des indicateurs
+de performance (KPI). Un prototype IoT fonctionnel simulant un AGV a été développé pour
+illustrer les capacités de l’application dans un environnement réaliste, tout en garantissant la
+confidentialité des systèmes robotiques réels. La plateforme a été conteneurisée et livrée à
+l’entreprise partenaire, facilitant son intégration dans un projet concret, avec une perspective
+d’évolution et de déploiement à grande échelle.
+Mots clés : AGV, Intralogistique, Contrôle à distance, IoT, Flutter, Node.js, Firestore, KPI,
+Sécurisé, Multiplateforme.
+Abstract
+This project presents the development of an innovative cross-platform application for
+managing and controlling AGV in an industrial intralogistics environment. Developed using
+Flutter (Dart) for the mobile frontend and Node.js with Firestore for the backend, the platform
+provides a smooth user experience, scalable architecture for multiple robots, and secure,
+authenticated access. The application includes advanced features such as remote AGV control,
+automated scheduling and execution of logistical tasks, and real-time monitoring of key
+performance indicators (KPIs). A functional IoT prototype simulating an AGV was built to
+showcase the system’s capabilities in a realistic scenario while preserving the confidentiality of
+real robotic systems. The application was containerized and delivered to the partner company,
+ready for real-world integration and future scalability within the actual project.
+Keywords : AGV, Intralogistics, Remote control, IoT, Flutter, Node.js, Firestore, KPI, Secure,
+Cross-platform.
+
+
+===== PAGE 131 =====
+
+
+
+===== PAGE 132 =====

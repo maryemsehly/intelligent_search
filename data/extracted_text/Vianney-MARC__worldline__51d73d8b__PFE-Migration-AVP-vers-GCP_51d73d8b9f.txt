@@ -1,0 +1,2585 @@
+===== PAGE 1 =====
+
+Établissement
+Entreprise d’accueil
+Projet de Fin d’Études
+Migration de la plateforme AVP vers
+Google Cloud
+GKE (cluster privé), Cloud SQL (Private IP), Gateway API
+Tuteur entreprise :
+M. Daniel DUFOSSE
+Auteur :
+Vianney Marc
+Tuteur école :
+M. Guillaume LOZENGUEZ
+Worldline
+23 rue de la Pointe
+59139 Noyelles-lès-Seclin
+Institut Mines-Télécom Nord Europe
+Villeneuve-d’Ascq — rue Guglielmo Marconi
+BP 20145 — 59653 Villeneuve-d’Ascq cedex
+Période : Septembre 2025 — Août 2026
+Promotion : FISA–TI 26
+Année : 2025–2026
+Poste : SRE intégrateur
+
+
+===== PAGE 2 =====
+
+PFE — Migration AVP/GCP
+Remerciements
+Je tiens tout d’abord à remercier l’entreprise Worldline pour m’avoir accueilli durant ces
+trois années d’alternance. Cette expérience m’a permis d’évoluer progressivement au sein de
+l’entreprise, de développer de solides compétences techniques et humaines, et de participer à des
+projets concrets à forte valeur ajoutée. Elle s’est conclue par la réalisation de ce Projet de Fin
+d’Études, consacré à la migration d’une plateforme on-premise vers un environnement Google
+Cloud Platform (GCP), une expérience particulièrement enrichissante tant sur le plan technique
+que professionnel.
+Je souhaite adresser mes sincères remerciements à toute l’équipe d’intégration pour son
+accueil, sa disponibilité, son esprit d’entraide et les nombreux échanges qui ont contribué à mon
+apprentissage tout au long de cette année.
+J’adresse également mes plus vifs remerciements à Monsieur Daniel Dufossé, mon tuteur
+en entreprise, pour la confiance qu’il m’a accordée, son accompagnement, sa disponibilité ainsi
+que ses précieux conseils tout au long de cette alternance. Je remercie également Monsieur
+Guillaume Lozenguez, mon tuteur pédagogique, pour son suivi, ses recommandations et son
+accompagnement durant la réalisation de ce Projet de Fin d’Études.
+Je tiens également à remercier Monsieur Michel Nowicki, responsable de mon équipe, pour
+la confiance qu’il m’a témoignée ainsi que pour avoir instauré un environnement de travail
+stimulant, propice à l’apprentissage, à la prise d’initiative et au développement de nouvelles
+compétences.
+Mes remerciements s’adressent également à Monsieur Romain Vanmarcke, de l’équipe sys-
+tèmes PMT3, pour son suivi technique dans le cadre de ce projet, son expertise sur les techno-
+logies mises en œuvre et la qualité de ses conseils, qui ont largement contribué à la réussite de
+cette migration.
+Je souhaite également remercier l’ensemble des collaborateurs de Worldline avec lesquels j’ai
+eu l’occasion de travailler ou d’échanger au cours de ces trois années. Leur disponibilité, leur
+bienveillance et le partage de leurs connaissances ont été une source d’apprentissage permanente
+et ont largement contribué à mon évolution professionnelle.
+Enfin, je tiens à exprimer ma profonde gratitude envers ma famille et mes proches pour leur
+soutien indéfectible, leur patience et leurs encouragements tout au long de ces années d’études
+et plus particulièrement durant cette dernière année, particulièrement exigeante. Leur confiance
+et leur présence ont constitué une source de motivation essentielle et m’ont permis de mener ce
+projet à son terme.
+Je souhaite enfin remercier l’ensemble des enseignants de l’IMT Nord Europe, qui, au travers
+de leur enseignement et de leur accompagnement tout au long de ma formation, m’ont permis
+d’acquérir les connaissances et les méthodes nécessaires à la réalisation de ce projet ainsi qu’à
+mon entrée dans le monde professionnel.
+1
+
+
+===== PAGE 3 =====
+
+PFE — Migration AVP/GCP
+Résumé
+Dans le cadre de mon Projet de Fin d’Études réalisé chez Worldline, j’ai travaillé sur la migra-
+tion d’un système existant on-premise (hébergé sur des serveurs physiques internes à l’entre-
+prise, par opposition au cloud) vers un environnement cloud, dans une logique de modernisation
+des infrastructures et d’optimisation des déploiements. L’AVP (Ansible Validation Platform)
+tourne aujourd’hui sur Cirrus (HAProxy/Keepalived, StatPing, ARA, AVP-Bot, Ansible-Seek,
+MySQL/PostgreSQL) ; la cible GCP propose GKE privé, Cloud SQL, ArgoCD (GitOps), Terra-
+form (Infrastructure as Code), Secret Manager, Cloud Logging et Prometheus/GKE. Ce travail
+s’est inscrit dans une démarche ingénieur structurée : analyse de l’existant, conception d’une
+architecture cible, mise en œuvre puis validation, tout en intégrant les dimensions économiques,
+organisationnelles et de durabilité du projet. Mon parcours de trois années d’alternance chez
+Worldline, marqué par une évolution progressive vers des missions transverses au sein de l’équipe
+FLSS/Intégration, constitue le second axe de ce rapport.
+Abstract
+As part of my final-year engineering project at Worldline, I worked on migrating an existing
+on-premise system to a cloud environment, as part of a broader effort to modernize infrastruc-
+ture and optimize deployments. The AVP (Ansible Validation Platform) currently runs on Cir-
+rus (HAProxy/Keepalived, StatPing, ARA, AVP-Bot, Ansible-Seek, MySQL/PostgreSQL) ; the
+GCP target relies on a private GKE cluster, Cloud SQL, ArgoCD (GitOps), Terraform (Infra-
+structure as Code), Secret Manager, Cloud Logging and Prometheus/GKE. This work followed
+a structured engineering approach : analysis of the existing system, design of a target archi-
+tecture, implementation and validation, while integrating economic, organizational and sustai-
+nability dimensions. My three-year apprenticeship at Worldline, marked by a progressive shift
+toward cross-team responsibilities within the FLSS/Integration team, forms the second axis of
+this report.
+2
+
+
+===== PAGE 4 =====
+
+PFE — Migration AVP/GCP
+Introduction
+Le Projet de Fin d’Études constitue l’aboutissement du parcours de formation d’ingénieur, en
+permettant de mobiliser l’ensemble des compétences acquises au cours de mon cursus académique
+et de mes expériences en entreprise. Réalisé dans un contexte professionnel réel, il s’inscrit dans
+une démarche visant à répondre à une problématique d’ingénierie concrète, tout en intégrant
+des dimensions techniques, organisationnelles et opérationnelles.
+Ce projet s’inscrit dans la continuité de mes trois années d’alternance au sein de Worldline,
+au cours desquelles j’ai progressivement développé mes compétences et élargi mon périmètre
+d’intervention. D’un rôle initialement centré sur des tâches techniques ciblées, j’ai évolué vers
+une approche plus globale, intégrant des enjeux d’architecture, d’intégration et de suivi de projet,
+notamment grâce à mon implication au sein de l’équipe FLSS.
+Dans ce contexte, mon Projet de Fin d’Études porte sur la migration et l’industrialisation
+de la plateforme AVP vers une architecture cloud-native sur Google Cloud Platform. Ce projet
+s’inscrit dans une dynamique de modernisation des systèmes d’information, avec pour objectif
+d’améliorer la fiabilité, la scalabilité et la maintenabilité des déploiements, tout en répondant
+aux contraintes d’exploitation et d’intégration existantes. Il prend également en compte des
+enjeux plus larges, tels que l’optimisation des coûts d’infrastructure, la maîtrise des ressources,
+ainsi que les principes du Site Reliability Engineering (SRE).
+La réalisation de ce projet repose sur une démarche ingénieur structurée, suivant la logique
+Diagnostiquer, Solutionner, Opérationnaliser, Évaluer : l’analyse de l’existant et des
+besoins (Périmètre fonctionnel et technique et Architecture cible (To-Be) sur GCP), la concep-
+tion de solutions adaptées (Plan de migration, Sécurité & Réseau et Observabilité), leur mise
+en œuvre (Zoom technique, CI/CD, tests et validation et les sections suivantes de la Partie 3),
+puis l’évaluation des résultats obtenus au regard des indicateurs de succès fixés (section 6.6 et
+section 16).
+Ce rapport est structuré de la manière suivante : une première partie présente l’entreprise,
+le service d’accueil ainsi que mon parcours en apprentissage ; une deuxième partie est consa-
+crée au projet d’ingénieur, depuis la problématique initiale jusqu’aux objectifs, en détaillant la
+méthodologie adoptée ; une troisième partie propose une analyse approfondie de l’architecture
+existante, de l’architecture cible et de la mise en œuvre technique, incluant l’analyse écono-
+mique ; une quatrième partie dresse un bilan des compétences acquises et met en perspective
+mon projet professionnel ; enfin, une conclusion synthétise les apports du projet et ouvre sur les
+perspectives futures.
+3
+
+
+===== PAGE 5 =====
+
+PFE — Migration AVP/GCP
+Table des matières
+Table des matières
+Remerciements
+1
+Résumé
+2
+Abstract
+2
+Introduction
+3
+Partie 1 — Présentation de l’entreprise et du service d’accueil
+6
+1
+Worldline : un leader européen du paiement en mutation stratégique
+6
+2
+Une réorganisation opérée en 2023 : de T&O à CPDC
+6
+3
+Cession de MeTS à Magellan Partners
+8
+4
+Mon positionnement : équipe Intégration au sein du CPDC
+9
+Partie 2 — Le projet d’ingénieur
+10
+5
+Contexte et objectifs
+10
+6
+Présentation de la problématique et des objectifs du projet
+10
+6.1
+Contexte du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+6.2
+Problématique centrale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+6.3
+Enjeux du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+6.4
+Objectifs du Projet de Fin d’Études
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+6.5
+Démarche Agile / Kanban . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+6.6
+Indicateurs de succès . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+Partie 3 — Analyse de l’architecture existante, cible et mise en œuvre technique
+15
+7
+Périmètre fonctionnel et technique
+15
+8
+Architecture cible (To-Be) sur GCP
+16
+9
+Zoom technique : connexions et déploiement des services critiques
+19
+10 Plan de migration (phases)
+34
+11 Sécurité & Réseau
+35
+12 Observabilité (logs & métriques)
+35
+13 CI/CD, tests et validation
+36
+14 Développement durable
+37
+15 Risques, contraintes et plans de repli
+37
+16 Analyse économique comparative — CAPEX vs OPEX
+39
+17 Planning & livrables
+41
+Partie 4 — Poste actuel et profil de compétences
+42
+18 Définition de l’ingénieur Informatique et Télécommunications, et ma spécificité
+42
+19 Progression vers le métier d’ingénieur à travers mes missions
+42
+20 Bilan de compétences
+43
+21 Projet professionnel
+45
+22 Axes de progression
+45
+Conclusion
+47
+Liste des acronymes
+49
+23 Bibliographie / Sitographie
+49
+Annexes
+50
+Glossaire des composants
+54
+Annexe obligatoire — Usage de l’intelligence artificielle
+59
+4
+
+
+===== PAGE 6 =====
+
+PFE — Migration AVP/GCP
+Table des figures
+Table des figures
+1
+Organisation cible : Cloud Services intégrés au sein de la GBL MTS. . . . . . . . . . . . .
+7
+2
+Périmètre de la transaction — MeTS + activités sélectionnées Financial Services Digital
+Banking . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+3
+Tableau Kanban du projet — Vue par phase (Phase 0 à Phase 6) . . . . . . . . . . . . . .
+13
+4
+Diagramme de Gantt du projet — Vue Planning temporelle . . . . . . . . . . . . . . . . .
+14
+5
+Architecture cible AVP sur GCP. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+6
+Vue d’ensemble de la plateforme AVP : services, espaces de nommage et connexions. . . .
+19
+7
+ARA dans la vue d’ensemble — namespace ara mis en évidence. . . . . . . . . . . . . .
+20
+8
+ARA — flux d’une requête utilisateur, de la Gateway jusqu’à Cloud SQL. . . . . . . . . .
+21
+9
+ARA — synchronisation des secrets depuis GCP Secret Manager jusqu’au pod. . . . . . .
+22
+10
+ArgoCD dans la vue d’ensemble — namespace wl-system mis en évidence. . . . . . . .
+23
+11
+ArgoCD — boucle de réconciliation GitOps. . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+12
+GitLab Runner dans la vue d’ensemble — namespace avp-gitlab-runner mis en évidence. 25
+13
+Flux As-Is : test d’un rôle Ansible sur l’infrastructure Cirrus/on-premise.
+. . . . . . . . .
+26
+14
+Exécution d’un test de rôle Ansible, de la Merge Request jusqu’à ARA.
+. . . . . . . . . .
+26
+15
+avp-bot dans la vue d’ensemble — namespace avp-bot mis en évidence. . . . . . . . . .
+27
+16
+avp-bot — réception d’un webhook GitLab et réponse sur la Merge Request.
+. . . . . . .
+28
+17
+avp-bot en conditions réelles : commande ping postée sur une Merge Request et réponse
+du bot. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+18
+Ansible-Seek dans la vue d’ensemble — namespace ansible-seek mis en évidence.
+. . .
+30
+19
+Ansible-Seek en conditions réelles : inventaire des machines consultable depuis la page
+/guest/. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+20
+Monitoring dans la vue d’ensemble — namespace monitoring mis en évidence. . . . . .
+32
+21
+Monitoring — collecte des métriques et consultation des tableaux de bord. . . . . . . . . .
+33
+22
+Grafana en conditions réelles — tableau de bord Kubernetes / Compute Resources / Cluster. 33
+23
+Plan de migration AVP — enchaînement des 5 phases, chacune conditionnée par la vali-
+dation de la précédente (failsafe, vertical). . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+24
+Observabilité — collecte des métriques et consultation des tableaux de bord (détail en
+Zoom technique). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+25
+Vue comparative As-Is (Cirrus/on-premise) ↔To-Be (GCP), brique par brique. . . . . . .
+50
+26
+Interface ARA — liste des exécutions Molecule (molecule_plugins gce), playbooks create/destroy
+réels, succès et échecs. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+27
+ArgoCD — Applications synchronisées dans le namespace wl-system. . . . . . . . . . . .
+51
+28
+Pipeline Molecule GCE (rôle motd) passant de bout en bout : create, converge, idempotence,
+verify (tests InSpec) et destroy.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+29
+Flux ansible-daily : exécution périodique indépendante des Merge Requests. . . . . . .
+53
+30
+Organigramme du Delivery Center MTS. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+Liste des tableaux
+1
+Analyse SWOT — Worldline (2026)
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+2
+Comparaison organisationnelle — Avant/Après la réorganisation Delivery Center MTS . .
+7
+3
+Les cinq catégories d’enjeux du projet
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+4
+Objectifs opérationnels du projet AVP — décomposition par phase . . . . . . . . . . . . .
+12
+5
+Chart ara-chart — fichier, ressource, rôle . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+6
+Configuration gitlab-runner — contenu . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+7
+Chart avp-bot-chart — contenu . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+8
+Chart ansible-seek-chart — contenu
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+9
+Chart monitoring-chart — contenu . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+10
+Mécanismes de sécurité et réseau . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+11
+Composants d’observabilité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+12
+Chaîne CI/CD et validation — étape, détail . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+13
+Leviers de sobriété numérique de l’architecture cible
+. . . . . . . . . . . . . . . . . . . . .
+37
+15
+Simulation comparative de coûts mensuels — Cirrus vs GCP (estimation) . . . . . . . . .
+40
+16
+Correspondance blocs RNCP — illustrations tirées du parcours . . . . . . . . . . . . . . .
+44
+5
+
+
+===== PAGE 7 =====
+
+PFE — Migration AVP/GCP
+Worldline : un leader européen du paiement en mutation stratégique
+Partie 1 — Présentation de l’entreprise et du service d’accueil
+1
+Worldline : un leader européen du paiement en mutation stratégique
+Worldline est le leader européen des services de paiement et des transactions électroniques
+(4,63 Md€ de CA en 2024, plus de 20 000 collaborateurs, 50+ pays), organisé autour de trois
+Global Business Lines : Merchant Services (MS, commerçants), Financial Services (FS, ban-
+caire/interbancaire) et — jusqu’à sa cession en 2026 — Mobility & e-Transactional Services
+(MeTS, secteur public, santé, transports). Le marché est dominé par une concurrence intense
+(Adyen, Nexi, Stripe, Apple Pay/Google Pay), qui impose à Worldline innovation continue,
+conformité stricte (PCI-DSS, RGPD, souveraineté numérique) et compétitivité tarifaire.
+Table 1 – Analyse SWOT — Worldline (2026)
+Forces
+Faiblesses
+Leader européen des paiements électroniques ;
+portefeuille clients diversifié (SNCF, DGFIP,
+EDF, Euronext. . .) ; expertise reconnue en sé-
+curité et conformité PCI-DSS
+Structure historique complexe issue de nom-
+breuses acquisitions ; dépendance à des envi-
+ronnements legacy coûteux ; pression sur les
+marges
+Opportunités
+Menaces
+Développement des services cloud natifs ; re-
+centrage stratégique (North Star 2030) sur le
+cœur de métier paiement
+Concurrence accrue (Adyen, Stripe, Nexi,
+PayPal) ; risques sociaux liés aux restructura-
+tions ; défis réglementaires
+Depuis 2023, Worldline a engagé une transformation profonde de son modèle opératoire :
+simplification organisationnelle, standardisation, mutualisation des infrastructures et adoption
+des architectures cloud-native, dans un contexte de pression sur les marges et de restructurations
+successives (plan Power24, puis North Star 2030 — détaillé en section 3).
+2
+Une réorganisation opérée en 2023 : de T&O à CPDC
+Jusqu’en 2023, la production informatique de Worldline était gérée de façon transverse par
+un département centralisé (Production Services, au sein de Technology & Operations), organisé
+en silos techniques (systèmes, bases de données, réseau, intégration) mutualisés entre les trois
+GBLs. En mai 2023, Worldline a intégré le Delivery Center MTS directement au sein de la GBL
+MTS, créant le Cloud & Production Delivery Center (CPDC, dirigé par Éric Willems), avec pour
+objectif de rapprocher les compétences de delivery des équipes projets et de préparer un modèle
+DevOps/SRE à l’échelle de l’entreprise — organigrammes et détail de cette réorganisation déjà
+présentés dans mes rapports d’alternance précédents. Le tableau suivant en résume l’essentiel :
+6
+
+
+===== PAGE 8 =====
+
+PFE — Migration AVP/GCP
+Une réorganisation opérée en 2023 : de T&O à CPDC
+Table 2 – Comparaison organisationnelle — Avant/Après la réorganisation Delivery Center
+MTS
+Dimension
+Avant (T&O Production Ser-
+vices)
+Après (COO MTS / CPDC)
+Modèle opératoire
+Tâches driven — silos techniques
+Platform
+Engineering
++
+De-
+vOps/SRE, vision bout en bout
+Infrastructures
+prioritaires
+Legacy, Cirrus, IaaS V2
+Cloud publics (GCP, AWS, Azure)
++ Cirrus SNC
+Pipeline CI/CD
+Piloté manuellement via scripts
+Infrastructure
+as
+Code,
+GitLab
+CI/CD, standardisation Ansible
+Objectif principal
+Maintien en conditions opération-
+nelles (MCO)
+Industrialisation,
+time-to-market,
+scalabilité cloud
+Figure 1 – Organisation cible : Cloud Services intégrés au sein de la GBL MTS.
+Cette lecture « modèle réactif →modèle proactif » est celle affichée par la documentation
+interne du projet de réorganisation elle-même (l’objectif explicite de la création du CPDC étant
+de sortir d’une logique de Maintien en Conditions Opérationnelles (MCO) — c’est-à-
+dire le maintien en état de fonctionnement de l’existant, sans levier d’amélioration continue —
+pour aller vers l’industrialisation). Je la reprends ici comme grille de lecture parce qu’elle éclaire
+concrètement mon propre positionnement, mais il s’agit de l’objectif déclaré de la réorganisa-
+tion, pas d’un résultat que j’aurais mesuré moi-même : je n’ai pas de données de comparaison
+avant/après sur, par exemple, le temps moyen de résolution d’incident ou la fréquence des dé-
+ploiements, qui permettraient de vérifier objectivement ce changement de modèle.
+L’équipe d’intégration, dans laquelle j’évolue sous la supervision de Michel Nowicki, se po-
+sitionne comme un acteur transversal de cette transformation : support de 100+ projets en
+production, contribution au patch management, démantèlement des infrastructures legacy, et
+montée en compétences cloud-native — c’est directement dans ce cadre que s’inscrit le projet
+AVP de ce PFE.
+7
+
+
+===== PAGE 9 =====
+
+PFE — Migration AVP/GCP
+Cession de MeTS à Magellan Partners
+3
+Cession de MeTS à Magellan Partners
+De Power24 à North Star 2030
+Le plan Power24 (2023–2025), qui visait 220 M€/an d’économies par l’automatisation et
+la centralisation vers des centres de services internationaux, a été remplacé début 2026 par un
+nouveau plan de transformation, North Star 2030. La direction reconnaît explicitement que les
+leviers de Power24 n’avaient pas résolu certains blocages opérationnels ; North Star 2030 reprend
+des piliers similaires mais change de méthode — un pilotage par environ 300 porteurs de projets
+internes plutôt qu’un cadrage descendant — avec pour objectif une croissance annuelle moyenne
+de 4 % (2027–2030), un EBITDA proche de 1 milliard d’euros, et un free cash-flow positif dès
+2027. La cession de MeTS s’inscrit directement dans ce plan : recentrer les investissements sur
+le cœur de métier paiement en Europe.
+Cession finalisée : ce qui a réellement eu lieu
+Le 1er juin 2026, Worldline a annoncé la finalisation de la cession du périmètre MeTS
+(Mobility & e-Transactional Services) au groupe Magellan Partners — closing effectivement
+réalisé, et non plus seulement annoncé comme lors de la rédaction initiale de ce rapport. La
+transaction porte sur une valeur d’entreprise de 400 millions d’euros (280 millions d’euros
+nets en trésorerie, l’écart correspondant aux coûts d’autonomie, engagements de retraite et
+impôts liés à la séparation). Le périmètre couvre les activités Trusted Services, Transport &
+Mobility et Omnichannel Interactions, ainsi que certaines activités Digital Banking de Financial
+Services — environ 3 800 collaborateurs.
+Figure 2 – Périmètre de la transaction — MeTS + activités sélectionnées Financial Services
+Digital Banking
+Pierre-Antoine Vacheron, Directeur Général de Worldline, a qualifié cette opération d’« étape
+clé dans l’exécution du plan North Star, franchie en temps et en heure », le groupe étant désor-
+mais « pleinement recentré sur son cœur de métier. . . les paiements en Europe ». Côté acquéreur,
+8
+
+
+===== PAGE 10 =====
+
+PFE — Migration AVP/GCP
+Mon positionnement : équipe Intégration au sein du CPDC
+Magellan Partners double ainsi de taille, avec un objectif de 900 M€ de chiffre d’affaires en 2026
+et une présence élargie à 13 pays et 6 700 employés.
+Lecture ingénieur : ce que la finalisation change concrètement
+Contrairement à une simple annonce, un closing effectif déclenche des obligations opéra-
+tionnelles concrètes qui touchent directement mon périmètre de projet : la ségrégation effective
+des systèmes d’information métiers (Customer IT – CIT) et des systèmes d’information internes
+(Business IT – BIT) entre les deux groupes, transfert ou duplication des accès et identités (IAM,
+comptes de service GCP) actuellement partagés avec le reste de Worldline, et renégociation des
+contrats d’infrastructure mutualisée (registres d’images, CI/CD partagé) sous un Master Part-
+nership Agreement. Pour une plateforme comme AVP, en cours de migration au moment même
+de ce closing, cela renforce un argument déjà présent dans la problématique du projet : produire
+une infrastructure documentée et reproductible via Terraform n’est plus seulement une
+bonne pratique DevOps, c’est ce qui permettra de redéployer la plateforme de façon autonome
+si elle doit être dupliquée ou transférée dans le périmètre technique de Magellan — un scénario
+qui n’était qu’hypothétique à l’écriture des premières lignes de ce rapport et qui est aujourd’hui
+un fait acquis.
+4
+Mon positionnement : équipe Intégration au sein du CPDC
+Mon Projet de Fin d’Études a été réalisé au sein du département Data Management &
+Integration (H. Francq), et plus précisément de l’équipe Integration Services SP Team, sous
+la supervision de Michel Nowicki — organigramme complet du Delivery Center MTS donné en
+annexe (figure 30). Mon tuteur en entreprise est rattaché à cette équipe ; le pilotage opérationnel
+du PFE est quant à lui assuré par mon responsable de projet, rattaché à l’équipe Platform
+Management SP (PMT3), qui définit les orientations techniques et les choix d’architecture.
+Cette double tutelle illustre le fonctionnement matriciel du CPDC : le pilotage technique par les
+équipes plateforme, la mise en œuvre par les équipes d’intégration.
+L’équipe Integration Services intervient en transverse sur l’ensemble des projets du périmètre
+Specific Product, dans une logique de Platform Engineering plutôt que de simple support : elle
+conçoit, intègre et opère des solutions mutualisées visant à industrialiser et standardiser les
+déploiements. C’est dans ce cadre que s’inscrit ma mission : la migration et l’industrialisation
+de la plateforme AVP (Ansible Validation Platform) vers Google Cloud Platform, projet qui
+mobilise directement les compétences de conception d’architecture, d’Infrastructure as Code
+(Terraform) et d’intégration CI/CD/GitOps détaillées en Partie 3, dans un contexte où —
+comme développé ci-dessus — la documentation et la reproductibilité de l’infrastructure ont
+pris une dimension stratégique supplémentaire avec la finalisation de la cession à Magellan
+Partners.
+9
+
+
+===== PAGE 11 =====
+
+PFE — Migration AVP/GCP
+Contexte et objectifs
+Partie 2 — Le projet d’ingénieur
+5
+Contexte et objectifs
+Plateforme.
+AVP (Ansible Validation Platform) vise la validation de rôles Ansible (compati-
+bilité RHEL8/9, détection de régressions, suivi des exécutions et métriques d’exécution).
+Constat actuel.
+Les composants s’exécutent sur des VMs Cirrus (on-prem) avec un maintien
+manuel de la disponibilité et des mises à jour — la correspondance complète entre chaque
+brique actuelle et sa cible GCP est donnée en annexe (figure 25) ; la Partie 3 revient en détail
+sur l’architecture cible.
+Objectifs cibles.
+— Disponibilité & fiabilité : LB managé, cluster GKE privé, bases Cloud SQL (ba-
+ckups/PITR).
+— Sécurité : VPC privé, Private IP vers Cloud SQL, SSL/TLS, Workload Identity, Net-
+work Policies.
+— Automatisation : CI/CD GitLab (Terraform infra + Helm apps), GitLab Runner
+(chart Helm, executor Kubernetes).
+— Observabilité : Cloud Logging (logs JSON), Prometheus/GKE (métriques, alertes
+SLA/error).
+— Transfert maîtrisé : approche blue/green (DCMTS-valid →CPDC_PRODUCT).
+6
+Présentation de la problématique et des objectifs du projet
+6.1
+Contexte du projet
+Présentation de la plateforme AVP
+La plateforme Ansible Validation Platform (AVP) constitue un outil central dans la chaîne
+d’intégration continue de l’équipe Système. Elle automatise la validation et l’exécution des rôles
+Ansible — aussi bien depuis les pipelines CI/CD (Merge Requests) que via le rejeu pério-
+dique indépendant (ansible-daily) —, permettant de vérifier la compatibilité des rôles avec
+les environnements cibles (RHEL8/9), d’identifier les régressions et d’assurer la traçabilité des
+exécutions.
+À ce titre, AVP joue un rôle direct dans la fiabilité des déploiements et la qualité des livrables
+logiciels à l’échelle du périmètre MTS. Tout dysfonctionnement se répercute immédiatement
+sur l’ensemble des pipelines qui en dépendent, impactant potentiellement plusieurs dizaines de
+projets en production simultanément. Sa disponibilité et sa robustesse sont donc des exigences
+non négociables.
+Inscription dans la stratégie Move2Cloud
+Ce projet s’inscrit pleinement dans la stratégie Move2Cloud portée par le CPDC, qui vise à
+migrer l’ensemble des plateformes internes du périmètre MTS vers des architectures cloud-natives
+10
+
+
+===== PAGE 12 =====
+
+PFE — Migration AVP/GCP
+Contexte et objectifs
+sur Google Cloud Platform. Il constitue un cas d’usage concret et structurant pour démontrer
+la faisabilité et les bénéfices d’une telle approche au sein de l’équipe Integration Services, avec
+une ambition de généralisation à d’autres plateformes.
+Dans le contexte de la transition en cours vers Magellan Partners, ce projet revêt une di-
+mension stratégique supplémentaire : produire une infrastructure documentée, reproductible
+et alignée sur les standards DevOps modernes constitue un actif technique valorisable pour le
+nouvel ensemble.
+6.2
+Problématique centrale
+L’analyse de l’existant et des enjeux identifiés conduit à formuler la problématique centrale
+du projet de la manière suivante :
+Comment migrer et industrialiser la plateforme AVP sur Google Cloud Platform
+afin d’améliorer la fiabilité, la traçabilité et la scalabilité des déploiements, tout en
+garantissant la sécurité, la maintenabilité et l’intégration avec les pipelines CI/CD
+existants — dans un contexte de contraintes opérationnelles, budgétaires et organi-
+sationnelles réelles ?
+Cette problématique implique une démarche d’ingénierie complète et structurée, intégrant
+l’analyse critique de l’existant, la conception raisonnée d’une architecture cible, l’automatisation
+des déploiements via Infrastructure as Code, et l’évaluation rigoureuse des résultats obtenus. Elle
+engage des arbitrages sur les technologies, les coûts, la sécurité et l’organisation du travail.
+6.3
+Enjeux du projet
+Le projet s’articule autour de cinq catégories d’enjeux interdépendants, dont la prise en
+compte simultanée constitue le cœur de la démarche ingénieur — elles correspondent directe-
+ment aux cinq dimensions engagées par la fiche de validation du PFE (management de projet,
+technique, économique, managériale, développement durable).
+Table 3 – Les cinq catégories d’enjeux du projet
+Catégorie
+Enjeux clés
+Techniques
+Architecture cloud robuste et sécurisée (GKE privé multi-zone, VPC,
+IAM, Workload Identity) ; industrialisation via Terraform et GitOps
+(ArgoCD) ; intégration native GitLab CI/CD ; migration des services
+(ARA, AVP-Bot, GitLab Runners) sur Kubernetes ; observabilité com-
+plète (Cloud Logging, Monitoring, alertes)
+Organisationnels
+& managériaux
+Standardiser les environnements pour réduire la dette technique ; facili-
+ter l’exploitation autonome par les équipes internes (interface Système,
+Cloud, Dev, Sécurité) ; documentation vulgarisée pour non spécialistes
+(annexe 23) ; montée en compétences cloud-native de l’équipe
+11
+
+
+===== PAGE 13 =====
+
+PFE — Migration AVP/GCP
+Contexte et objectifs
+Économiques
+Passage d’un modèle CAPEX (VMs fixes) à OPEX (pay-as-you-go) ;
+réduction des temps de déploiement/maintenance ; limitation des inter-
+ventions manuelles ; ROI justifié par une analyse coûts/bénéfices (sec-
+tion 16)
+Stratégiques
+(transition
+Ma-
+gellan)
+Démontrer la maturité cloud de l’équipe dans un contexte de cession
+finalisée ; produire une infrastructure documentée, reproductible et au-
+ditable ; contribuer à la valorisation des actifs techniques du périmètre
+MeTS
+Durabilité
+Rationaliser l’usage des ressources via l’auto-scaling Kubernetes ; sup-
+primer les VMs surdimensionnées et non utilisées ; réduire l’empreinte
+énergétique par mutualisation et standardisation
+Il est important de souligner l’interdépendance de ces enjeux : les choix techniques impactent
+directement les coûts, qui conditionnent les décisions organisationnelles, qui influencent à leur
+tour les pratiques de documentation et de transmission. Une approche ingénieur rigoureuse
+consiste précisément à traiter ces dimensions de manière intégrée plutôt que séquentielle.
+6.4
+Objectifs du Projet de Fin d’Études
+Objectif principal
+L’objectif principal du projet est de migrer l’ensemble des services AVP vers GCP en mettant
+en place une infrastructure cloud reproductible, sécurisée et évolutive, intégrée dans les pipelines
+CI/CD existants de l’équipe. Cette infrastructure doit pouvoir être opérée de manière autonome
+par les équipes après la fin du projet.
+Objectifs opérationnels par phase
+Table 4 – Objectifs opérationnels du projet AVP — décomposition par phase
+Phase
+Objectif
+Actions opérationnelles
+Phase 0
+Analyse & compréhen-
+sion
+Analyser l’architecture AVP existante, identifier les
+flux et dépendances, cartographier les services à mi-
+grer, évaluer les contraintes sécurité et réseau.
+Phase 1
+Conception architecture
+cible
+Définir l’architecture cible sur GCP, choisir et justi-
+fier les composants technologiques, réaliser une ana-
+lyse économique comparative, identifier les risques.
+Phase 2
+Mise en place de l’envi-
+ronnement
+Configurer l’environnement GCP, déployer le clus-
+ter GKE privé multi-zone, mettre en place Workload
+Identity, Cloud SQL, Artifact Registry, Secret Mana-
+ger.
+12
+
+
+===== PAGE 14 =====
+
+PFE — Migration AVP/GCP
+6.5
+Démarche Agile / Kanban
+Phase
+3,
+4, 5
+Déploiement AVP & in-
+tégration CI/CD
+Migrer et conteneuriser les services AVP, déployer le
+GitLab Runner (chart Helm), intégrer ArgoCD, vali-
+der les pipelines CI/CD de bout en bout.
+Phase 6
+Validation & documen-
+tation
+Mettre en place la supervision, tester performances et
+résilience, documenter l’architecture et les runbooks,
+évaluer les bénéfices (SLO, coûts, performances).
+6.5
+Démarche Agile / Kanban
+Le tableau Kanban ci-dessous présente la vue par phase du projet, couvrant les 7 phases
+principales de la migration :
+Figure 3 – Tableau Kanban du projet — Vue par phase (Phase 0 à Phase 6)
+Le projet a été mené selon une approche agile adaptée au contexte opérationnel de l’équipe.
+L’organisation du travail reposait sur un suivi des tâches via des tickets GitLab Issues, des points
+réguliers avec le tuteur — permettant le suivi des risques (dépendances aux environnements
+existants, impacts possibles sur les pipelines CI/CD en production) et leur capitalisation dans
+des comptes-rendus de réunion —, et une priorisation continue des livrables.
+La méthode Kanban a permis une visualisation claire de l’avancement à travers trois co-
+lonnes : À faire, En cours et Terminé. Cette approche a favorisé une meilleure gestion des
+priorités, une adaptation rapide aux contraintes techniques et une réduction des blocages.
+La vue Planning (Gantt) ci-dessous illustre la répartition temporelle des tâches sur l’ensemble
+de la durée du projet, d’octobre 2025 à août 2026 :
+6.6
+Indicateurs de succès
+La réussite du projet est évaluée selon cinq critères complémentaires, alignés sur les cinq
+enjeux présentés ci-dessous :
+13
+
+
+===== PAGE 15 =====
+
+PFE — Migration AVP/GCP
+6.6
+Indicateurs de succès
+Figure 4 – Diagramme de Gantt du projet — Vue Planning temporelle
+— Fonctionnel : l’ensemble des services AVP (ARA, AVP-Bot, GitLab Runners) fonctionnent
+correctement sur GKE et traitent les webhooks GitLab de bout en bout.
+— Technique : les pipelines CI/CD déclenchent des pods éphémères, les résultats remontent
+dans ARA, ArgoCD assure le déploiement GitOps.
+— Sécurité : aucune clé statique n’est utilisée (Workload Identity), les secrets sont gérés via
+Secret Manager, le cluster GKE est privé.
+— Économique : les coûts cloud sont inférieurs ou comparables à l’infrastructure Cirrus exis-
+tante, avec un potentiel d’optimisation via auto-scaling (cf. section 16).
+— Qualité : l’architecture est documentée, reproductible via Terraform, et les procédures sont
+transmissibles à l’équipe.
+État d’avancement à la date de rédaction : ARA, AVP-Bot et Ansible-Seek sont déployés
+sur GKE (exposés en HTTPS, démonstration de bout en bout réalisée) et le driver Molecule
+GCE (remplaçant Vagrant) est opérationnel — Ansible-Seek, dernier des trois, volontairement
+dépriorisé derrière les deux premiers le temps de fiabiliser la chaîne critique (cf. Conclusion,
+Perspectives). Ces critères seront ré-évalués en fin de projet dans la partie 3.
+14
+
+
+===== PAGE 16 =====
+
+PFE — Migration AVP/GCP
+Périmètre fonctionnel et technique
+Partie 3 — Analyse de l’architecture existante, cible et mise en œuvre tech-
+nique
+7
+Périmètre fonctionnel et technique
+Avant de détailler l’architecture cible puis chaque brique en Zoom technique, cette section
+délimite précisément ce qui est couvert par le projet — et ce qui, délibérément, ne l’est pas
+encore.
+Services applicatifs
+Le périmètre couvre quatre services applicatifs, à des degrés d’avancement différents. ARA
+(Ansible Run Analysis) centralise et visualise les résultats des exécutions Ansible ; c’est le ser-
+vice consulté au quotidien par l’équipe, et celui dont dépend la traçabilité de toute la chaîne de
+test. avp-bot automatise le pilotage des Merge Requests GitLab (commandes en commentaire,
+relance de pipeline, merge) ainsi que le rejeu périodique des rôles via ansible-daily (voir an-
+nexe, glossaire). GitLab Runner n’est pas un service métier mais l’infrastructure d’exécution
+CI/CD elle-même : sans lui, aucun des deux services précédents ne peut être validé automa-
+tiquement. Enfin, Ansible-Seek (gestion et analyse des rôles Ansible) complète le périmètre
+fonctionnel : déployé après ARA et avp-bot, volontairement dépriorisé le temps de fiabiliser la
+chaîne critique (son chart, ansible-seek-chart, inclut un sidecar dédié au rafraîchissement
+périodique du cache depuis l’API GitLab). À ces quatre services s’ajoute la couche monitoring
+(Prometheus/Grafana), transverse plutôt que fonctionnellement autonome.
+Données
+Une seule base de données relationnelle est dans le périmètre : PostgreSQL, hébergée sur
+Cloud SQL, utilisée exclusivement par ARA pour stocker l’historique des exécutions Ansible
+(playbooks, hôtes, statuts, durées). MySQL, présent sur l’infrastructure Cirrus pour un usage
+applicatif complémentaire, n’entre pas dans le périmètre actuel : son seul consommateur histo-
+rique n’est pas concerné par cette première vague de migration.
+Accès & edge
+L’entrée du trafic public repose sur Cloud DNS (résolution de nom) et Cloud Armor (filtrage
+périmétrique), avant un Load Balancer HTTPS géré individuellement par chart applicatif : une
+Gateway (Gateway API GKE) par service, chacune avec son propre certificat managé — le choix
+de ne pas mutualiser une Gateway unique est justifié en Zoom technique (section ARA). Chaque
+service expose ainsi son propre nom d’hôte, sans dépendance de déploiement croisée avec les
+autres charts.
+CI/CD & tests
+La chaîne CI/CD repose sur les pipelines GitLab existants, exécutés par un GitLab Runner
+piloté par le GitLab Runner Operator (executor Kubernetes) : chaque job CI démarre un pod
+éphémère dédié plutôt que de partager un exécutable persistant. Les rôles Ansible sont validés
+15
+
+
+===== PAGE 17 =====
+
+PFE — Migration AVP/GCP
+Architecture cible (To-Be) sur GCP
+via Molecule avec le driver GCE : chaque scénario de test provisionne une VM GCE dédiée à la
+volée (Workload Identity molecule-gce@), y applique le rôle, exécute les vérifications, puis la
+détruit automatiquement — sans VM de test qui reste allumée entre deux exécutions.
+Observabilité
+Trois couches complémentaires composent l’observabilité de la plateforme : Cloud Logging
+centralise les logs applicatifs et d’infrastructure au format JSON, Cloud Monitoring couvre
+les métriques d’infrastructure gérées nativement par GKE (santé des nœuds, ressources), et
+Prometheus/Grafana couvrent les métriques applicatives exposées par chaque service sur son
+endpoint /metrics. Cette séparation infrastructure / applicatif est détaillée en Zoom technique.
+8
+Architecture cible (To-Be) sur GCP
+L’infrastructure actuelle (Cirrus/on-premise) présente quatre catégories de limitations qui
+motivent la migration, au-delà du seul objectif d’aller « dans le cloud ». Sur le plan technique,
+elle repose sur des machines virtuelles statiques, sans scalabilité automatique, avec un couplage
+fort entre composants. Sur le plan opérationnel, la gestion manuelle des déploiements génère
+une dette croissante et un risque de configuration drift — l’état réel d’une VM qui dérive silen-
+cieusement de sa configuration documentée ; la reproduction d’un environnement est par ailleurs
+difficile du fait de son hétérogénéité. Sur le plan de l’observabilité, le monitoring existant
+(StatPing) ne centralise pas les logs et ne permet pas de corréler les événements entre services,
+ce qui complique le diagnostic d’incident. Sur le plan économique enfin, le coût des VMs est
+fixe, indépendant de l’utilisation réelle, sans possibilité d’auto-scaling (cf. section 16).
+Chaque brique de cette architecture As-Is est mise en correspondance directe avec son équi-
+valent cible dans le schéma comparatif donné en annexe (figure 25). Cette section se concentre
+sur la cible : comment chaque service est connecté sur GCP, et pourquoi c’est structurellement
+différent d’une simple « copie » des VMs existantes.
+16
+
+
+===== PAGE 18 =====
+
+PFE — Migration AVP/GCP
+Architecture cible (To-Be) sur GCP
+Figure 5 – Architecture cible AVP sur GCP.
+La figure 5 résume l’ensemble de la cible : entrée (Cloud DNS, Cloud Armor, une Ga-
+teway API dédiée par service), le cluster GKE avec ses espaces de nommage (ara, avp-bot
+et ansible-seek pour les trois services applicatifs, chacun isolé ; wl-system pour ArgoCD et
+External Secrets ; monitoring pour Prometheus/Grafana ; gitlab-runner-system pour l’opé-
+rateur GitLab Runner et avp-gitlab-runner pour sa ressource Runner, volontairement séparés
+— cf. Zoom technique), et les services managés GCP (Cloud SQL, Secret Manager, Artifact Re-
+gistry, Cloud NAT/Router, Cloud Logging/Monitoring). Les mécanismes transverses (GitOps,
+secrets, Workload Identity) et le détail de chaque brique sont repris et approfondis en Zoom
+technique.
+Comment les services sont connectés sur GKE
+La cible GCP remplace chaque machine dédiée par une ressource Kubernetes qui peut être
+recréée à l’identique à tout moment :
+— Entrée : Cloud DNS résout le nom de domaine de chaque service, un Load Balancer HTTPS
+(Gateway API GKE) route ensuite le trafic vers le bon Service Kubernetes. Chaque chart
+crée sa propre Gateway plutôt que d’en partager une commune (cf. Zoom technique ci-après) :
+un Load Balancer de plus par service, au bénéfice d’un déploiement indépendant de chaque
+chart.
+— GKE privé (cluster gke-cluster-dev-vmc, Workload Identity, un espace de nommage par
+service) : héberge ARA, avp-bot, Ansible-Seek, le GitLab Runner et le monitoring, chacun
+dans son propre namespace. Chaque service ne peut joindre que ce dont il a réellement besoin,
+là où les VMs Cirrus étaient sur le même réseau interne.
+— ARA se connecte directement à Cloud SQL en Private IP + TLS (postgres.host dans les
+valeurs Helm) — pas de composant réseau supplémentaire à opérer.
+17
+
+
+===== PAGE 19 =====
+
+PFE — Migration AVP/GCP
+Architecture cible (To-Be) sur GCP
+— Cloud SQL (PostgreSQL, Private IP, SSL requis, sauvegardes automatiques + PITR) rem-
+place la VM de base de données dédiée : la même fonction, sans administration manuelle du
+moteur de base de données.
+— CI/CD : le namespace avp-gitlab-runner héberge un GitLab Runner permanent (piloté
+par le GitLab Runner Operator), qui ne fait que recevoir les déclenchements de pipeline —
+chaque job s’exécute dans un pod éphémère créé pour l’occasion (executor Kubernetes), qui
+provisionne à son tour une VM GCE éphémère pour y exécuter et vérifier le rôle Ansible
+testé (détail en Zoom technique, figure 14).
+— Sortie réseau : tout trafic sortant (mise à jour de paquets, appel à une API GCP) passe par
+Cloud NAT/Cloud Router — aucune ressource du cluster n’a d’adresse IP publique propre.
+— Secrets : ni ARA ni avp-bot ne lisent un mot de passe écrit en clair dans un fichier de
+configuration — chacun reçoit ses identifiants via un Secret Kubernetes synchronisé depuis
+Secret Manager (mécanisme détaillé en annexe, glossaire 23, et en Zoom technique).
+Le gain principal de cette réorganisation n’est pas visible sur le schéma : c’est que chacune de
+ces ressources (Deployment, Service, Secret) est décrite dans un fichier versionné (chart Helm)
+et peut être recréée à l’identique en quelques minutes, alors que reconstruire une VM Cirrus à
+l’identique suppose de retrouver et rejouer manuellement sa configuration.
+18
+
+
+===== PAGE 20 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+9
+Zoom technique : connexions et déploiement des services critiques
+Les composants de la plateforme sont documentés dans le dépôt de chaque chart Helm selon
+un même format, choisi précisément pour rester compréhensible sans connaissance préalable de
+Kubernetes : un tableau qui relie chaque fichier du chart à la ressource Kubernetes qu’il crée et
+au rôle de cette ressource, puis le flux réel (qui parle à qui, et pourquoi), puis les commandes
+de déploiement et de vérification effectivement utilisées.
+Avant d’entrer dans le détail de chaque service, la figure 6 donne la vue d’ensemble : tous
+les services de la plateforme, les espaces de nommage Kubernetes dans lesquels ils tournent,
+et surtout comment ils se connectent entre eux — par quel fichier, quelle variable, ou quel
+mécanisme d’identité. Chaque sous-section qui suit reprend ce même schéma en mettant en
+évidence, en orange, la brique qu’elle détaille — pour toujours pouvoir resituer le composant
+traité dans l’ensemble.
+Figure 6 – Vue d’ensemble de la plateforme AVP : services, espaces de nommage et connexions.
+Trois mécanismes transverses reviennent d’un service à l’autre et valent la peine d’être posés
+une fois pour toutes avant le détail :
+— GitOps (ArgoCD) : chaque service applicatif (ARA, avp-bot, Ansible-Seek, monitoring,
+GitLab Runner) est décrit dans un dépôt Git dédié sous m2c/charts/*. ArgoCD compare
+en continu l’état réel du cluster à ce que ces dépôts décrivent, et corrige tout écart automa-
+tiquement — y compris un changement fait « à la main » via kubectl.
+— Secrets (External Secrets Operator) : aucun service ne lit directement GCP Secret
+Manager. Un seul ClusterSecretStore (gcp-secret-manager), fourni par argocd-chart,
+sert d’intermédiaire pour tous les autres charts, via un ExternalSecret propre à chaque
+service.
+— Identité (Workload Identity) : chaque composant qui doit parler à une API GCP (lire
+un secret, provisionner une VM) le fait via un compte de service GCP dédié, lié à son propre
+ServiceAccount Kubernetes — jamais via l’identité générique du nœud GKE.
+19
+
+
+===== PAGE 21 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+ARA (Ansible Run Analysis)
+Figure 7 – ARA dans la vue d’ensemble — namespace ara mis en évidence.
+ARA collecte et expose les résultats d’exécution des rôles/playbooks Ansible lancés par le
+GitLab Runner (cf. plus loin) via une API/interface web.
+Table 5 – Chart ara-chart — fichier, ressource, rôle
+Fichier
+Ressource
+Rôle
+namespace.yaml
+Namespace
+Namespace dédié (ara)
+deployment.yaml
+Deployment
+Conteneur
+recordsansible/ara-api,
+config DB/Django injectée par variables
+d’environnement depuis des Secrets
+service.yaml
+Service (ClusterIP)
+Expose le pod en interne, port 80 →8000
+gateway.yaml
+Gateway
+(Gateway
+API)
+Point d’entrée HTTPS dédié à ce chart
+httproute.yaml
+HTTPRoute
+Route le nom d’hôte public vers le Service
+configmap.yaml
+ConfigMap
+Réglages Django (ALLOWED_HOSTS, DEBUG,
+PAGE_SIZE)
+externalsecret.yaml
+ExternalSecret ×2
+Mot de passe Postgres + clé Django, syn-
+chronisés depuis GCP Secret Manager (seul
+mode supporté)
+networkpolicy.yaml
+NetworkPolicy
+(op-
+tionnelle)
+Restreint l’egress du pod à Cloud SQL +
+DNS
+20
+
+
+===== PAGE 22 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+servicemonitor.yaml
+ServiceMonitor (op-
+tionnelle)
+Expose les métriques au Prometheus Opera-
+tor (cf. §Monitoring)
+Figure 8 – ARA — flux d’une requête utilisateur, de la Gateway jusqu’à Cloud SQL.
+Flux de trafic (une requête utilisateur).
+Chaque chart crée sa propre Gateway plutôt
+que d’en partager une commune (choix documenté dans ara-chart/docs/decisions.md) : cela
+coûte un Load Balancer GCP de plus par service, mais garantit qu’un chart reste déployable
+seul, sans dépendre d’une ressource créée par un autre dépôt.
+Flux de synchronisation des secrets.
+Avant la mise en place de ce mécanisme, le mot de
+passe Cloud SQL et la clé Django étaient committés en clair dans un template Helm — c’est
+précisément ce risque que ce flux élimine : aucune valeur de secret n’est plus jamais écrite dans
+un dépôt Git.
+21
+
+
+===== PAGE 23 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+Figure 9 – ARA — synchronisation des secrets depuis GCP Secret Manager jusqu’au pod.
+Déploiement et vérification.
+helm install ara . -n ara --create-namespace \
+--set postgres.host=<ip-cloudsql> \
+--set hostname=ara.<domaine> \
+--set externalSecrets.enabled=true
+kubectl -n ara get externalsecret
+# doit être SecretSynced
+kubectl -n ara get pods,gateway,httproute
+curl -sk -o /dev/null -w "%{http_code}\n" https://ara.<domaine>/api/
+La base Postgres elle-même (Cloud SQL) est gérée par Terraform (w133572-terraform/
+06-cloudsql.tf) : instance, base et utilisateur applicatif sont créés par terraform apply,
+avec le mot de passe lu depuis une variable sensible et jamais réécrit par un plan ultérieur
+(lifecycle.ignore_changes).
+22
+
+
+===== PAGE 24 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+ArgoCD et la gestion centralisée des secrets (GitOps)
+Figure 10 – ArgoCD dans la vue d’ensemble — namespace wl-system mis en évidence.
+ArgoCD ne se contente pas de déployer les charts : il surveille en continu que l’état réel du
+cluster correspond à ce qui est décrit dans chaque dépôt Git, et corrige automatiquement tout
+écart (figure 11). Le chart argocd-chart joue en plus un rôle d’infrastructure partagée pour
+les autres services : il fournit le ClusterSecretStore gcp-secret-manager utilisé par ARA,
+avp-bot, Ansible-Seek et le GitLab Runner.
+Figure 11 – ArgoCD — boucle de réconciliation GitOps.
+Le cheminement concret du déploiement.
+Terraform provisionne le cluster GKE et « boots-
+trap » ArgoCD ainsi que l’Application app-of-apps root, définie dans le dépôt w133572-gitops.
+Ce même dépôt héberge, de façon consolidée, l’ensemble des Applications de la plateforme
+23
+
+
+===== PAGE 25 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+(apps/dev/*.yaml) : root elle-même, ArgoCD, ARA, avp-bot, Ansible-Seek, monitoring, ainsi
+que GitLab Runner et son opérateur — chacune pointant vers son propre chart sous le groupe
+GitLab m2c/charts/*. Un ancien dépôt séparé, m2c-platform, remplissait ce même rôle de
+pointeur au tout début du projet mais n’est plus utilisé pour les Applications actuellement
+en place (huit au total). Une capture de l’interface ArgoCD est donnée en annexe (figure 27),
+montrant les huit Applications réellement synchronisées dans le namespace wl-system — six
+Synced, deux OutOfSync au moment de la capture (écart mineur, corrigé automatiquement par
+la boucle de réconciliation GitOps).
+Pourquoi ArgoCD a besoin d’un accès Git explicite.
+Les dépôts de charts (ara-chart,
+argocd-chart. . .) vivent sous un groupe GitLab différent de celui déjà connu d’ArgoCD : chaque
+dépôt doit donc être déclaré comme Secret Kubernetes de type repository :
+kubectl -n wl-system create secret generic repo-m2c-ara \
+--from-literal=type=git \
+--from-literal=url=https://gitlab.../m2c/charts/ara.git \
+--from-literal=username=<gitlab-username> \
+--from-literal=password=<token>
+kubectl -n wl-system label secret repo-m2c-ara \
+argocd.argoproj.io/secret-type=repository
+Pourquoi External Secrets a besoin de Workload Identity.
+Le ClusterSecretStore
+ne peut lire Secret Manager que si le pod External Secrets dispose d’une identité GCP. Cette
+identité est un compte de service dédié, séparé de celui des nœuds GKE, pour ne donner accès
+aux secrets qu’au composant qui en a réellement besoin :
+gcloud iam service-accounts create external-secrets \
+--display-name="External Secrets Operator - Secret Manager accessor"
+gcloud iam service-accounts add-iam-policy-binding \
+external-secrets@<projet>.iam.gserviceaccount.com \
+--role roles/iam.workloadIdentityUser \
+--member "serviceAccount:<projet>.svc.id.goog[wl-system/external-secrets]"
+Créer un secret ne donne pas automatiquement le droit de le lire : chaque secret nécessite en
+plus son propre binding IAM roles/secretmanager.secretAccessor pour ce même compte
+de service.
+Vérification.
+kubectl -n wl-system get secret -l argocd.argoproj.io/secret-type=repository
+kubectl -n wl-system get clustersecretstore gcp-secret-manager
+argocd app list
+# tous les services en Synced/Healthy
+GitLab Runner — exécution des tests de rôles Ansible
+24
+
+
+===== PAGE 26 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+Figure 12 – GitLab Runner dans la vue d’ensemble — namespace avp-gitlab-runner mis
+en évidence.
+Le GitLab Runner est piloté par le GitLab Runner Operator : le chart gitlab-runner-chart
+ne crée pas directement un Deployment, mais une ressource personnalisée Runner (CRD apps.
+gitlab.com/v1beta2) que l’opérateur lit pour créer réellement les pods de jobs — même prin-
+cipe que Prometheus Operator pour le monitoring (§ Monitoring). L’installation de l’opérateur
+lui-même (CRDs, RBAC, contrôleur) est une Application ArgoCD volontairement distincte de
+la configuration du Runner, pour découpler leurs cycles de vie (détail en annexe, glossaire). Le
+Runner tourne dans le namespace avp-gitlab-runner, avec l’executor Kubernetes : chaque
+job CI démarre un pod éphémère dédié, plutôt que de partager un exécutable Docker/Shell
+persistant.
+Table 6 – Configuration gitlab-runner — contenu
+Fichier
+Rôle
+runner-values.yaml
+Valeurs
+Helm
+:
+URL
+GitLab,
+tags
+(gke,avp),
+runners.kubernetes.namespace, image de build par défaut
+externalsecret.yaml
+Synchronise le token de registration depuis Secret Manager, via
+le même ClusterSecretStore que ARA
+runners.kubernetes.
+service_account
+ServiceAccount
+Kubernetes
+lié
+par
+Workload
+Iden-
+tity
+au
+compte
+GCP
+molecule-gce@,
+avec
+les
+droits
+compute.instanceAdmin.v1
+nécessaires
+pour
+provision-
+ner/détruire des VM de test
+Avant : le flux As-Is (Cirrus/on-premise).
+Le même besoin (tester un rôle Ansible depuis
+une Merge Request et en tracer le résultat) existait déjà sur l’infrastructure historique, avec
+un enchaînement comparable mais reposant sur des composants installés en dur sur des VMs
+25
+
+
+===== PAGE 27 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+dédiées (AVP Bot, Ansible Daily) plutôt que sur des pods éphémères :
+Figure 13 – Flux As-Is : test d’un rôle Ansible sur l’infrastructure Cirrus/on-premise.
+Après : le flux To-Be (GCP/GKE).
+Un rôle Ansible (exemple : motd) déclare un scéna-
+rio Molecule utilisant le driver GCE (molecule-plugins[gce]) : au lieu d’un conteneur Do-
+cker/Vagrant local, le test provisionne une vraie machine virtuelle GCE éphémère, y exécute le
+rôle, puis la détruit — un test représentatif d’un environnement de production réel, pas d’un
+environnement de conteneur simplifié.
+Figure 14 – Exécution d’un test de rôle Ansible, de la Merge Request jusqu’à ARA.
+La logique reste la même (déclenchement depuis une MR, traçabilité vers ARA), mais chaque
+composant « installé sur une VM dédiée » devient une ressource recréée à la demande : le Runner
+26
+
+
+===== PAGE 28 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+permanent (mais sans VM propre), les VMs de test éphémères plutôt que tdavp0Xs, et le callback
+ARA directement en interne au cluster plutôt que par un appel réseau vers une machine séparée.
+L’image du pod de job (wl-ansirunner) est l’image standard Worldline pour l’exécution
+Ansible/Molecule ; son registre d’origine n’étant pas résolvable depuis le VPC du cluster GKE
+(absence de zone DNS dédiée), elle est mise à disposition via un miroir dans l’Artifact Registry
+du projet (avp-registry), alimenté manuellement (podman pull / podman push) en attendant
+l’ouverture de cette résolution DNS côté plateforme.
+Bootstrap du token (commande réelle).
+Le token de registration GitLab (préfixe glrt-,
+généré depuis Settings > CI/CD > Runners) est stocké dans Secret Manager avec une réplication
+restreinte à europe-west3 — contrainte d’organisation qui interdit la réplication automatique
+en région « globale » :
+gcloud secrets create gitlab-runner-token \
+--replication-policy=user-managed --locations=europe-west3
+printf ’%s’ ’glrt-XXXXXXXXXXXX’ | \
+gcloud secrets versions add gitlab-runner-token --data-file=-
+Vérification.
+kubectl -n avp-gitlab-runner get pods
+# gitlab-runner en Running
+kubectl -n avp-gitlab-runner get externalsecret gitlab-runner-token
+# Résultat visible côté GitLab : Settings > CI/CD > Runners (runner "gke,avp" actif)
+avp-bot — interaction conversationnelle sur les Merge Requests
+Figure 15 – avp-bot dans la vue d’ensemble — namespace avp-bot mis en évidence.
+avp-bot est un bot GitLab qui réagit aux commentaires sur les Merge Requests des rôles
+Ansible (@awl-ansible-avp-bot test, cancel, merge, release, ping) et expose un endpoint
+27
+
+
+===== PAGE 29 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+dédié pour recevoir les résultats d’ansible-daily. Contrairement à ARA ou à Grafana (consul-
+tés par un humain), avp-bot reçoit des webhooks GitLab : c’est GitLab qui initie la connexion
+vers lui, pas l’inverse — d’où la nécessité d’une exposition HTTPS publique au même titre que
+les autres services.
+Table 7 – Chart avp-bot-chart — contenu
+Fichier
+Rôle
+deployment.yaml
+Conteneur avp-bot (image Artifact Registry), configuration non
+sensible en variables d’environnement
+gateway.yaml
+/
+httproute.yaml
+Gateway HTTPS dédiée (certificat avp-bot-certificate), indé-
+pendante des autres charts
+externalsecret.yaml
+Token GitLab + secret webhook + secret ansible-daily, synchro-
+nisés depuis Secret Manager
+networkpolicy.yaml (op-
+tionnelle)
+Restreint l’egress du pod à l’API GitLab (HTTPS) + DNS
+Figure 16 – avp-bot — réception d’un webhook GitLab et réponse sur la Merge Request.
+28
+
+
+===== PAGE 30 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+Figure 17 – avp-bot en conditions réelles : commande ping postée sur une Merge Request et
+réponse du bot.
+Le second déclencheur : ansible-daily.
+Au-delà des commentaires sur les Merge Requests,
+avp-bot reçoit aussi les résultats d’un cron ansible-daily qui rejoue périodiquement les rôles
+Ansible contre le dépôt de référence, indépendamment de toute Merge Request — le détail de
+cet enchaînement (issu de la documentation de l’infrastructure historique) est donné en annexe
+(figure 29).
+Ce mécanisme n’a pas d’équivalent dans l’architecture cible sur GCP : selon mon tuteur
+d’entreprise, il devient superflu dès lors que la validation des rôles a déjà lieu à chaque Merge
+Request via le pipeline CI/CD (GitLab Runner et Molecule GCE, cf. section précédente) — un
+second passage périodique et indépendant n’apporte plus de garantie supplémentaire dans ce
+nouveau contexte.
+Déploiement et vérification.
+helm install avp-bot . -n avp-bot --create-namespace \
+--set hostname=avp-bot.<domaine> \
+--set externalSecrets.enabled=true
+kubectl -n avp-bot get externalsecret,pods,gateway,httproute
+# Côté GitLab : Settings > Webhooks doit pointer vers https://avp-bot.<domaine>/webhook
+29
+
+
+===== PAGE 31 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+Ansible-Seek — inventaire Ansible consultable
+Figure 18 – Ansible-Seek dans la vue d’ensemble — namespace ansible-seek mis en évidence.
+Ansible-Seek est un outil de consultation : il liste les machines de l’inventaire Ansible et
+permet de retrouver rapidement où un rôle ou un groupe de variables s’applique. Contrairement
+aux autres services, il n’a pas été déployé en même temps qu’ARA et avp-bot mais après,
+volontairement dépriorisé le temps de fiabiliser la chaîne critique — il est aujourd’hui pleinement
+opérationnel sur GCP. Son chart (ansible-seek-chart) a été écrit entièrement pour ce projet,
+sans base existante.
+Table 8 – Chart ansible-seek-chart — contenu
+Fichier
+Rôle
+deployment.yaml
+Un seul Deployment, deux conteneurs : le serveur Flask (lecture
+seule du cache) et un sidecar qui régénère ce cache toutes les
+15 min depuis l’API GitLab, tous deux montés sur un volume
+emptyDir partagé (hors de /app, pour ne jamais masquer le code
+applicatif copié par le Dockerfile)
+gateway.yaml
+/
+httproute.yaml
+Gateway
+HTTPS
+dédiée
+(certificat
+ansible-seek-certificate),
+même
+modèle
+que
+les
+autres
+services
+externalsecret.yaml
+Token GitLab (WL_GITLAB_ACCESSTOKEN), utilisé uniquement par
+le sidecar pour interroger l’API GitLab
+networkpolicy.yaml (op-
+tionnelle)
+Restreint l’egress du sidecar à l’API GitLab (HTTPS) + DNS
+Le serveur ne modifie jamais rien : c’est un outil de recherche, pas d’exécution. Le cache
+lui-même (cache.json) a dû être rendu configurable (CACHE_FILE) pour que le sidecar et le
+30
+
+
+===== PAGE 32 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+serveur pointent vers le même fichier sans que l’un ne masque le code de l’autre — détail de
+conception nécessaire dès qu’un pod partage un volume entre deux conteneurs issus de la même
+image.
+Figure 19 – Ansible-Seek en conditions réelles : inventaire des machines consultable depuis la
+page /guest/.
+Déploiement et vérification.
+helm install ansible-seek . -n ansible-seek --create-namespace \
+--set hostname=ansible-seek.<domaine> \
+--set externalSecrets.enabled=true
+kubectl -n ansible-seek get pods
+# READY doit afficher 2/2 (serveur + sidecar) sur le même pod
+kubectl -n ansible-seek logs deploy/ansible-seek-ansible-seek -c cache-refresh
+31
+
+
+===== PAGE 33 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+Monitoring — Prometheus et Grafana
+Figure 20 – Monitoring dans la vue d’ensemble — namespace monitoring mis en évidence.
+Ce chart installe Prometheus Operator, une instance Prometheus et Grafana via la dépen-
+dance Helm upstream kube-prometheus-stack. Les autres charts de la plateforme (ARA en
+premier lieu) créent leurs propres ServiceMonitor — présents dans leur chart respectif mais
+sans effet tant que Prometheus Operator n’est pas installé : aucun couplage n’est créé dans le
+sens inverse, Monitoring peut être déployé ou retiré indépendamment des autres services.
+Table 9 – Chart monitoring-chart — contenu
+Fichier
+Rôle
+Chart.yaml (dépendance)
+kube-prometheus-stack : Prometheus Operator, Prometheus,
+Grafana, Alertmanager (désactivé)
+gateway.yaml
+/
+httproute.yaml
+Gateway
+HTTPS
+dédiée
+à
+Grafana
+(certificat
+monitoring-certificate)
+healthcheckpolicy.yaml
+Health check GCP sur /api/health (endpoint natif Grafana)
+32
+
+
+===== PAGE 34 =====
+
+PFE — Migration AVP/GCP
+Zoom technique : connexions et déploiement des services critiques
+Figure 21 – Monitoring — collecte des métriques et consultation des tableaux de bord.
+Figure 22 – Grafana en conditions réelles — tableau de bord Kubernetes / Compute Resources
+/ Cluster.
+Ce tableau de bord, fourni par défaut avec kube-prometheus-stack (aucune configuration
+Grafana supplémentaire n’a été nécessaire), agrège les métriques cAdvisor/kube-state-metrics
+remontées par Prometheus pour donner une vue d’ensemble de la consommation du cluster :
+24,7 % d’utilisation CPU et 34,1 % de mémoire au moment de la capture, avec le détail requests
+vs limits par namespace applicatif (ansible-seek, ara, avp-bot, avp-gitlab-runner). Ce dé-
+coupage par namespace est directement utile pour dimensionner les ressources de chaque chart
+(requests et limits) sur des bases mesurées plutôt qu’estimées.
+Dimensionnement.
+Le cluster de développement a déjà connu un incident de capacité (Node
+Auto Provisioning bloqué, cf. section suivante) : ce chart est donc volontairement léger — ré-
+tention Prometheus à 7 jours, pas de stockage persistant, Alertmanager désactivé, ressources
+modestes sur chaque composant.
+33
+
+
+===== PAGE 35 =====
+
+PFE — Migration AVP/GCP
+Plan de migration (phases)
+Déploiement et vérification.
+helm install monitoring . -n monitoring --create-namespace \
+--set grafana.hostname=grafana.<domaine>
+kubectl -n monitoring get pods
+# prometheus, grafana en Running
+kubectl -n ara get servicemonitor
+# créé par ara-chart, scrappé ici
+curl -sk -o /dev/null -w "%{http_code}\n" https://grafana.<domaine>/api/health
+10
+Plan de migration (phases)
+1. Bootstrap GCP : VPC, NAT, IAM de base, GKE privé (WI/NP), Cloud SQL (Post-
+greSQL), Gateway API + certificats managés, monitoring (Prometheus/Grafana).
+2. ARA vers GKE : déployer ARA (connexion directe Cloud SQL, Private IP), migrer don-
+nées ARA (dump/restore) vers Cloud SQL PG, vérifier callback Ansible →ARA, SLOs et
+observabilité.
+3. Cutover ARA : réserver IP LB, configurer Gateway/hosts, bascule DNS publique ara.
+avp.example.com vers GKE, tests E2E, rollback prêt.
+4. Extension : déployer avp-bot ; installer GitLab Runner (Operator + CRD Runner, executor
+K8s) ; activer tests Molecule (GCE) ; déployer Ansible-Seek en dernier, selon priorité.
+5. Durcissement & Transfert : alertes SLA/error, durcir IAM/NP, Secret Manager CSI,
+egress via NAT ; DCMTS-valid →CPDC_PRODUCT en blue/green ; décommission Cirrus
+après sauvegardes.
+Figure 23 – Plan de migration AVP — enchaînement des 5 phases, chacune conditionnée par
+la validation de la précédente (failsafe, vertical).
+Chaque flèche du schéma porte une condition de passage explicite (« infra OK », « données
+OK », « cutover ARA OK ». . .) : le principe du plan est qu’aucune phase ne démarre avant que
+34
+
+
+===== PAGE 36 =====
+
+PFE — Migration AVP/GCP
+Plan de migration (phases)
+la précédente soit validée, avec un rollback possible à chaque étape plutôt qu’un big-bang de
+migration.
+Blue/Green.
+Déploiement identique dans DCMTS-valid puis bascule DNS/Ingress vers CPDC\
+_PRODUCT. Rollback = repointer les enregistrements DNS sur l’ancien LB.
+11
+Sécurité & Réseau
+Table 10 – Mécanismes de sécurité et réseau
+Mécanisme
+Rôle
+GKE privé (VPC-native)
+Nœuds/plan de contrôle non exposés publiquement
+Workload Identity
+Mapping ServiceAccount K8s ↔ServiceAccount GCP (auth
+IAM sans clé statique)
+Network Policies
+Isolation L3/L4 entre pods (par namespace/labels)
+Cloud SQL
+Private IP (peering/PSC), SSL requis, PITR côté Postgres
+Gateway API / HTTPS LB
+HTTPS only (443), une Gateway + certificat managé par ser-
+vice
+Cloud NAT / Cloud Router
+Egress Internet contrôlé (mises à jour, appels API GCP)
+Secrets (External Secrets Ope-
+rator)
+Synchronisation depuis GCP Secret Manager vers des Secrets
+Kubernetes
+(ClusterSecretStore gcp-secret-manager),
+via Workload Identity — pas de mot de passe committé,
+jamais lu directement par un pod applicatif
+Le mécanisme de synchronisation des secrets est détaillé en Zoom technique (figure 9).
+12
+Observabilité (logs & métriques)
+Table 11 – Composants d’observabilité
+Composant
+Rôle
+Cloud Logging
+Logs GKE au format JSON ; filtres, corrélations, exports
+Cloud Monitoring
+Métriques infrastructure GKE (nœuds, pods, quotas) mana-
+gées par GCP
+Prometheus
+(chart
+monito-
+ring)
+Scrape des ServiceMonitor exposés par les autres charts (ex.
+/metrics d’ARA)
+Grafana (chart monitoring)
+Tableaux de bord applicatifs, alertes basées sur les métriques
+Prometheus
+35
+
+
+===== PAGE 37 =====
+
+PFE — Migration AVP/GCP
+CI/CD, tests et validation
+Traçabilité ARA
+Callback des exécutions Ansible (rôles testés en CI) vers ARA
+— historisation et diagnostic
+Figure 24 – Observabilité — collecte des métriques et consultation des tableaux de bord (détail
+en Zoom technique).
+13
+CI/CD, tests et validation
+Table 12 – Chaîne CI/CD et validation — étape, détail
+Étape
+Détail
+Pipelines GitLab (infra)
+Terraform : VPC, NAT, GKE, Cloud SQL, DNS/Gateway API
+Pipelines GitLab (apps)
+Helm
+:
+ARA,
+avp-bot,
+Ansible-Seek,
+monitoring
+(Prome-
+theus/Grafana), GitLab Runner
+GitLab Runner
+Chart Helm officiel, executor Kubernetes : chaque job CI démarre
+un pod éphémère dédié, détruit à la fin
+Tests
+Molecule
+(driver
+GCE)
+Provisionne une VM GCE temporaire, exécute et vérifie le rôle
+Ansible testé (prepare/converge/verify), détruit la VM auto-
+matiquement (cleanup)
+Traçabilité
+Chaque exécution de test journalisée dans ARA (callback plugins)
+Validation
+SLOs ARA, conformité réseau (Private IP, SSL), quotas/coûts
+Le détail fichier par fichier de cette chaîne (.gitlab-ci.yml, runner-values.yaml, molecule/
+gce/molecule.yml. . .) est donné en Zoom technique, section « GitLab Runner » (figure 14).
+36
+
+
+===== PAGE 38 =====
+
+PFE — Migration AVP/GCP
+CI/CD, tests et validation
+14
+Développement durable
+La dimension environnementale de ce projet n’est pas un chantier séparé : elle découle direc-
+tement des choix d’architecture cloud-native déjà justifiés plus haut. Elle est regroupée ici pour
+rester identifiable en tant que telle, plutôt que dispersée en sous-texte des sections techniques.
+Table 13 – Leviers de sobriété numérique de l’architecture cible
+Levier
+Effet
+Ressources
+éphémères
+(pods
+de job, VM GCE de test)
+N’existent que le temps du job/test (quelques minutes), contre
+des VMs dédiées allumées 24/7 sur l’infrastructure actuelle —
+élimine la consommation « au repos »
+Auto-scaling
+du
+node
+pool
+GKE
+Le
+nombre
+de
+nœuds
+suit
+la
+charge
+réelle
+(total_min_node_count / total_max_node_count) plutôt
+qu’une capacité fixe dimensionnée pour le pic
+Mutualisation du cluster
+Plusieurs services (ARA, avp-bot, Ansible-Seek, monitoring,
+runner) partagent le même cluster GKE plutôt que des VMs
+dédiées chacune, meilleur taux d’utilisation du matériel phy-
+sique sous-jacent
+Suppression automatique des
+ressources temporaires
+Chaque VM de test est détruite par le driver Molecule à la fin
+du scénario (molecule destroy), sans intervention manuelle
+— élimine le risque de VM orpheline facturée sans usage
+Point de vigilance.
+Ces bénéfices ne sont pas automatiques : une règle d’auto-scaling mal
+réglée, une ressource temporaire non nettoyée suite à un incident, ou un volume de logs/egress
+mal anticipé peuvent partiellement les annuler (cf. section coûts). La sobriété numérique de cette
+architecture est donc une propriété à surveiller dans la durée, pas un acquis définitif une fois le
+déploiement terminé.
+15
+Risques, contraintes et plans de repli
+Risque
+Impact
+Mitigation
+Mauvaise route DNS lors
+du cutover
+Indisponibilité du service
+TTL court, plan de rollback
+DNS documenté
+Accès
+DB
+Private
+IP/SSL mal configuré
+ARA indisponible
+Tests de connectivité Private
+IP + vérification certificats
+SSL
+Quotas GCP / coûts
+Retards, réallocations
+Réservation de quotas, alertes
+budgets
+37
+
+
+===== PAGE 39 =====
+
+PFE — Migration AVP/GCP
+CI/CD, tests et validation
+Hardening
+incomplet
+(IAM/NP)
+Exposition involontaire
+Revue sécurité, tests réseau,
+scans pré-prod
+CI/CD non idempotent
+Déploiements instables
+Revues MR, plan Terraform,
+–dry-run Helm
+Performance Cloud SQL
+Dégradations perfs
+Tests
+de
+charge,
+tuning
+connexions/index/params
+PG
+Plan de repli.
+Rollback DNS (blue/green), restauration PITR Postgres si besoin, réouver-
+ture temporaire de l’environnement As-Is.
+38
+
+
+===== PAGE 40 =====
+
+PFE — Migration AVP/GCP
+Analyse économique comparative — CAPEX vs OPEX
+16
+Analyse économique comparative — CAPEX vs OPEX
+Objectif
+L’objectif n’est pas de produire un chiffre unique « la migration économise Y euros », mais
+de simuler, poste par poste, le passage d’un modèle où les ressources sont provisionnées pour le
+pic (Cirrus, coût fixe quelle que soit l’utilisation réelle) à un modèle facturé à l’usage (GCP).
+Les montants du tableau ci-dessous sont une estimation illustrative construite à partir des
+tarifs publics du simulateur de prix Google Cloud et d’ordres de grandeur usuels pour des VMs
+internes ; ils n’ont pas été confrontés à la facturation Cirrus réelle ni recalculés depuis la console
+GCP du projet. Ils illustrent la structure du raisonnement économique (quels postes basculent
+d’un coût fixe à un coût à l’usage) plutôt qu’un chiffrage contractuel. Une version ultérieure du
+rapport pourra les remplacer par les valeurs réelles (facturation interne Cirrus, Billing Reports
+GCP du projet fra-dcmts-gcp-valid-dev).
+Le principal gain attendu n’est pas le compute, c’est la maintenance
+Le calcul le plus intuitif (comparer le prix d’une VM à celui d’un pod) sous-estime le vrai gain
+de ce projet. Sur l’infrastructure Cirrus actuelle, chacune des 8 VMs demande un maintien en
+conditions opérationnelles récurrent : application des correctifs de sécurité, mise à jour de l’OS,
+surveillance manuelle de l’espace disque, intervention en cas de panne matérielle. Cette charge
+de maintenance humaine ne disparaît pas dans un tableau de prix cloud brut (le prix d’un
+nœud GKE ou d’une instance Cloud SQL l’ignore), mais elle disparaît réellement du quotidien
+de l’équipe une fois la plateforme industrialisée :
+— les mises à jour de sécurité des nœuds sont gérées automatiquement par GKE (auto-upgrade),
+là où chaque VM Cirrus est patchée individuellement ;
+— une ressource cassée se recrée en quelques minutes depuis son chart Helm/Terraform, au lieu
+d’un dépannage manuel sur une machine précise ;
+— Cloud SQL prend en charge les sauvegardes et la haute disponibilité nativement, sans script
+de sauvegarde à maintenir.
+C’est cette charge de maintenance libérée, valorisée en équivalent €/mois de temps ingénieur,
+qui doit être mise en face du surcoût éventuel de certains postes cloud (egress, observabilité) —
+pas seulement le compute brut.
+39
+
+
+===== PAGE 41 =====
+
+PFE — Migration AVP/GCP
+Analyse économique comparative — CAPEX vs OPEX
+Simulation par poste (estimation illustrative)
+Table 15 – Simulation comparative de coûts mensuels — Cirrus vs GCP (estimation)
+Poste
+Cirrus (actuel)
+GCP (cible)
+Commentaire
+Compute (ARA + AVP-
+Bot + Ansible-Seek)
+~450 €/mois (3 VMs
+actives + 2 standby,
+24/7)
+~90 €/mois (2 nœuds
+e2-standard-2,
+auto-scaling)
+VMs
+standby
+(wdavp02s,
+tdavp04s)
+factu-
+rées en continu sans
+usage réel
+Base de données
+~150 €/mois (2 VMs
+dédiées, 100 Go cha-
+cune)
+~35 €/mois (Cloud
+SQL
+db-f1-micro,
+sauvegardes incluses)
+Load balancing
+~120
+€/mois
+(2
+VMs
+HA-
+Proxy/Keepalived)
+~25 €/mois (Cloud
+Load Balancer ma-
+nagé)
+CI/CD Runner
+~80 €/mois (VM al-
+lumée 24/7)
+~10
+€/mois
+(pods
+éphémères,
+facturés
+à l’exécution)
+Poste avec le
+plus
+fort potentiel d’éco-
+nomie
+Réseau sortant (egress)
+Non isolé (réseau in-
+terne mutualisé)
+~40 €/mois (Cloud
+NAT)
+Poste de risque de
+surcoût à surveiller
+Observabilité
+Inclus (StatPing ba-
+sique, pas de coût dé-
+dié)
+~20 €/mois (Cloud
+Logging + Monito-
+ring)
+Fonctionnalité
+en
+plus
+(historique,
+corrélation), pas un
+doublon
+Maintenance
+hu-
+maine
+(patching,
+dépannage, sauvegardes)
+~18 h/mois
+~4
+h/mois (majo-
+ritairement automa-
+tisé)
+Poste
+qualitati-
+vement
+le
+plus
+significatif,
+cf.
+ci-
+dessus
+Total
+(hors
+mainte-
+nance)
+~820 €/mois
+~220 €/mois
+Écart principalement
+porté par le compute
+et le load balancing
+Comment remplacer cette estimation par des chiffres réels
+— Côté Cirrus : coût d’allocation des 8 VMs (à demander à l’équipe infra/FinOps interne)
+et temps ingénieur mensuel moyen passé sur le patching/dépannage de la plateforme AVP
+(estimable à partir des tickets d’intervention).
+— Côté GCP : simulateur de prix officiel Google Cloud, appliqué aux dimensionnements réels
+retenus dans w133572-terraform (2 nœuds e2-standard-2, Cloud SQL db-f1-micro).
+40
+
+
+===== PAGE 42 =====
+
+PFE — Migration AVP/GCP
+Planning & livrables
+Limites de l’exercice
+Le temps ingénieur libéré par l’automatisation ne se traduit pas immédiatement en économie
+budgétaire (l’équipe n’est pas réduite en proportion) : c’est un gain de capacité, réinvesti sur
+d’autres projets — un argument à formuler ainsi plutôt que comme une réduction de coût
+directe.
+17
+Planning & livrables
+Livrables
+Terraform (infra), Helm charts (apps), manifests K8s, scripts de migration DB, schémas
+(roadmap + flux réseau), runbooks (cutover/rollback), dossier de validation (tests Molecule,
+SLOs, sécurité).
+Jalons (exemple)
+S1–S2 : Bootstrap GCP (VPC, GKE privé, Cloud SQL, Gateway API, monitoring)
+S3 : ARA sur GKE + migration DB
+S4 : Cutover ARA (DNS)
+S5 : avp-bot, GitLab Runner, Ansible-Seek
+S6 : Tests Molecule (GCE), alertes SLA/error, hardening
+S7 : Réplication CPDC_PRODUCT, blue/green, décommission Cirrus
+41
+
+
+===== PAGE 43 =====
+
+PFE — Migration AVP/GCP
+Définition de l’ingénieur Informatique et Télécommunications, et ma spécificité
+Partie 4 — Poste actuel et profil de compétences
+18
+Définition de l’ingénieur Informatique et Télécommunications, et ma spé-
+cificité
+Le métier d’ingénieur en informatique et télécommunications couvre l’ensemble de la chaîne
+de valeur d’un système d’information : l’analyse d’un besoin, la conception d’une architecture
+technique et économiquement viable, sa mise en œuvre, sa sécurisation, puis son exploitation
+dans la durée. Au-delà de la maîtrise technique, il implique une capacité à arbitrer entre des
+contraintes contradictoires (coût, délai, sécurité, maintenabilité) et à rendre ces arbitrages com-
+préhensibles par des interlocuteurs non spécialistes.
+Ma spécificité s’est construite progressivement autour de l’exploitation de production, puis
+de l’automatisation et de l’architecture cloud. Je me positionne aujourd’hui comme ingénieur
+Cloud / DevOps, avec une double compétence rare à ce stade de carrière : une culture de
+production IT (support N2/N3, gestion d’incidents, patch management, conformité PCI-DSS)
+acquise dès mes premières expériences, et une montée en puissance récente sur les pratiques
+d’industrialisation cloud-native (Terraform, Kubernetes, GitOps). C’est cette combinaison —
+comprendre les contraintes d’exploitation réelles avant de concevoir l’automatisation qui les
+remplace — qui structure mon profil.
+Au regard des cinq blocs de compétences du titre RNCP de niveau 7 (Bac+5) visés par
+ma formation, mon PFE mobilise en priorité les blocs Management de projet, Analyse du
+besoin, Configurer et administrer les réseaux et Concevoir/développer des projets
+informatiques et réseaux — cf. correspondance détaillée en section 20. Le bloc Tester et
+sécuriser des développements est mobilisé de façon plus partielle : la sécurisation (Workload
+Identity, Secret Manager) est traitée en profondeur, mais les tests automatisés applicatifs (au
+sens développement logiciel) restent un axe où mon expérience est plus limitée, cf. axes de
+progression (section 22).
+19
+Progression vers le métier d’ingénieur à travers mes missions
+Mon parcours de formation associe une entrée par les réseaux et télécommunications (DUT,
+licence professionnelle) à une spécialisation progressive vers le cloud et le DevOps au cours du
+cycle ingénieur, entièrement réalisé en alternance chez Worldline :
+— 2020–2022 — DUT Réseaux et Télécommunications, Université d’Artois (Béthune) : proto-
+coles TCP/IP, routage & VLAN, systèmes Linux, supervision réseau. En parallèle, alternance
+d’un an comme Ingénieur de Production junior chez Mesa France (Wasquehal) : scripts Py-
+thon, intégration d’API, monitoring ELK, administration Active Directory.
+— 2022–2023 — Licence Professionnelle Conception et Gestion d’Infrastructures Réseaux, Uni-
+versité de Lille, complétée par un stage de 4 mois SysOps chez Worldline (avril–août 2023) :
+automatisation de déploiements Linux via Ansible, mise en place de pipelines CI/CD, scripts
+Bash.
+— 2023–2026 — Cycle ingénieur IMT Nord Europe, en alternance chez Worldline (Intégrateur
+SRE).
+42
+
+
+===== PAGE 44 =====
+
+PFE — Migration AVP/GCP
+Bilan de compétences
+Au sein de cette alternance de trois ans, mes missions ont évolué de façon progressive, avec
+un changement de nature perceptible chaque année :
+Année 1 — Découverte et analyse des infrastructures.
+Analyse des flux réseau entre les
+serveurs Worldline et les clients, diagnostic et documentation des architectures existantes, dé-
+couverte des outils d’exploitation (GitLab, ServiceNow). Position : observation et compréhension
+de l’infrastructure en place, sans responsabilité directe sur un périmètre.
+Année 2 — Support système, sécurité et gestion de projet technique.
+Montée en
+compétence sur l’expertise Linux (patch management, diagnostic système, gestion des incidents
+et tickets N2/N3), avec une consolidation des compétences en sécurité et chiffrement (boîtiers
+HSM, norme PCI-DSS). En parallèle, prise de responsabilité sur la gestion de l’application SNCF
+au sein d’une équipe réduite — application emblématique de l’équipe, qui traite les flux finan-
+ciers entre les différents systèmes SNCF (guichets, internet SIPS, extranet de suivi commercial)
+— ainsi que sur des projets de dismantling de serveurs obsolètes (identification des composants,
+documentation des procédures de dépréciation, coordination avec plusieurs équipes) et la reprise
+de l’activité sauvegarde/restauration (Commvault, Oracle), en formation interne pour reprendre
+les compétences d’un collègue partant en retraite. Sur le périmètre SNCF, l’objectif final d’auto-
+nomie complète (rédaction de consignes, analyse d’incidents, interface directe avec les business
+units) n’est pas encore pleinement atteint à ce stade — point développé en section 22.
+Année 3 — Stage DevOps à Barcelone, puis PFE.
+Stage international de deux mois
+(juillet–août 2025) au sein de Worldline Iberia, orienté automatisation : intégration de deux mo-
+dules dans un projet existant (paydrive), avec une première découverte concrète de l’écosystème
+Google Cloud Platform — Infrastructure as Code avec Terraform, déploiement automatisé via
+ArgoCD. Cette expérience constitue la transition directe vers mon Projet de Fin d’Études, qui
+réutilise le même environnement technique (GCP, Terraform, ArgoCD) découvert à Barcelone,
+cette fois sur un périmètre et une responsabilité bien plus larges : la conception complète de
+l’architecture cible, pas seulement l’intégration dans une architecture existante.
+Cette progression — de l’observation, au support technique encadré, à la prise de responsa-
+bilité sur un périmètre applicatif, puis à la conception d’architecture — illustre une autonomie
+croissante que je détaille compétence par compétence ci-dessous.
+20
+Bilan de compétences
+Cinq compétences clés, formulées à partir d’expériences concrètes
+En reprenant la structure recommandée par l’école (« Suite à cette expérience, je suis capable
+de. . . car j’ai. . . »), voici les compétences clés que je retiens de l’ensemble de mon parcours, y
+compris du PFE :
+Traitement et structuration de l’information technique. Suite à mon expérience de dis-
+mantling de serveurs et à l’analyse de l’architecture AVP existante en début de PFE, je suis
+capable de collecter, analyser et structurer des informations techniques dispersées afin de
+43
+
+
+===== PAGE 45 =====
+
+PFE — Migration AVP/GCP
+Bilan de compétences
+produire une documentation exploitable par d’autres. Preuve : documentation des procé-
+dures de dépréciation matérielle ; cartographie des flux applicatifs AVP (GitLab, AVP-Bot,
+Ansible, ARA) en phase d’analyse du PFE.
+Apprentissage autonome de nouvelles technologies. Suite à mes autoformations succes-
+sives (Ansible, Terraform, Kubernetes, GitOps) et à ma découverte de GCP lors du stage
+à Barcelone, je suis capable d’apprendre une technologie nouvelle par la documentation et
+l’expérimentation, puis de l’appliquer directement à un contexte professionnel réel — le
+PFE en étant la démonstration la plus aboutie.
+Résolution de problèmes techniques. Suite aux incidents traités en support N2/N3 et aux
+blocages rencontrés en phase de configuration de l’infrastructure GCP (droits IAM, connec-
+tivité réseau), je suis capable d’identifier l’origine d’un problème par une démarche struc-
+turée (isolement de la cause, test d’hypothèses, validation) plutôt que par ajustements
+successifs non méthodiques.
+Organisation et gestion de projet technique. Suite à la conduite en parallèle de plusieurs
+projets d’infrastructure (dismantling, sauvegarde/restauration, PFE) et au suivi du plan-
+ning Kanban/Gantt de ce PFE (section 6.6), je suis capable de prioriser mon travail selon
+les échéances et les dépendances techniques, et de rendre cet avancement visible pour mon
+encadrement.
+Communication technique vers des interlocuteurs non spécialistes. Suite aux travaux
+de documentation en entreprise et à la nécessité de vulgariser les concepts d’infrastructure-
+as-code, de Kubernetes et de GitOps auprès d’équipes non techniques dans le cadre du
+PFE, je suis capable de formaliser un sujet technique complexe de façon accessible. Preuve
+concrète : le glossaire des composants rédigé en annexe de ce rapport (annexe 23), conçu
+explicitement pour un lecteur non spécialiste.
+Correspondance avec les blocs de compétences RNCP
+Table 16 – Correspondance blocs RNCP — illustrations tirées du parcours
+Bloc RNCP
+Illustration
+1. Management de projet
+Suivi Kanban/Gantt du PFE, coordination de projets de
+dismantling en parallèle, suivi des risques et comptes-rendus
+(section 6.6)
+2. Analyse du besoin
+Analyse
+de
+l’architecture
+AVP
+existante
+et
+de
+ses
+contraintes avant conception de la cible (Partie 3)
+3. Configurer et administrer
+les réseaux
+Analyse des flux réseau Worldline/clients (année 1), concep-
+tion VPC/IAM/réseau de l’architecture GCP cible (Partie
+3)
+44
+
+
+===== PAGE 46 =====
+
+PFE — Migration AVP/GCP
+Projet professionnel
+4. Concevoir/développer des
+projets informatiques et ré-
+seaux
+Conception de l’architecture cloud AVP, modules Terra-
+form, charts Helm
+5. Tester et sécuriser des dé-
+veloppements
+Sécurisation via Workload Identity/Secret Manager ; tests
+d’infrastructure Molecule — axe encore partiel, cf. sec-
+tion 22
+Auto-positionnement sur la grille de compétences transversales
+Sur la grille des compétences transversales de l’ingénieur IMT Nord Europe (niveaux 1 à
+4), mon auto-évaluation fait apparaître une progression nette entre le début du cycle ingénieur
+et la situation actuelle, en particulier sur les axes Exploitation de l’information, Organisation
+et Agilité — portés notamment par les missions de dismantling et le suivi du PFE. Les axes
+Leadership et Prise de décision restent, de façon cohérente avec mon niveau d’expérience, les
+moins développés : je n’ai pas encore eu la responsabilité hiérarchique d’une équipe, seulement
+la coordination technique de projets circonscrits.
+Remarque méthodologique : la grille chiffrée complète (niveau par axe, avant/après) reste
+à reporter ici sous forme de tableau à partir de mon auto-évaluation détaillée — l’exercice de
+positionnement précis gagnera à être refait après la fin du PFE plutôt qu’anticipé, pour refléter
+l’état réel des compétences au moment de la soutenance plutôt qu’une projection.
+21
+Projet professionnel
+Je vise des postes d’ingénieur Cloud, DevOps Engineer ou Platform Engineer : la
+conception et le déploiement d’architectures cloud évolutives, l’industrialisation et l’automati-
+sation de plateformes, ou la construction de plateformes internes fiables au service d’équipes de
+développement. Ces trois intitulés décrivent une même trajectoire vue sous des angles différents,
+et le PFE AVP est représentatif de chacun d’eux à la fois.
+Les secteurs qui m’intéressent en priorité sont la fintech (cohérent avec mon expérience
+Worldline), le cloud/SaaS, et plus largement l’infrastructure IT d’entreprise — des en-
+vironnements où la fiabilité et la conformité (PCI-DSS, RGPD) sont des contraintes fortes,
+domaine dans lequel j’ai déjà une expérience concrète plutôt qu’une appétence théorique.
+Je détiens la certification AWS Certified Cloud Practitioner, et un niveau d’anglais certi-
+fié TOEIC B2 — pertinent dans un contexte de transition internationale (Worldline/Magellan)
+et de documentation technique en anglais.
+22
+Axes de progression
+Cette analyse ne peut pas se limiter à une valorisation des points forts : trois axes de pro-
+gression ressortent clairement de ce bilan, avec des exemples concrets plutôt que des généralités.
+— Autonomie sur un périmètre applicatif de bout en bout. Sur le périmètre SNCF
+(année 2), l’objectif final d’autonomie complète — rédaction de consignes, analyse d’incidents
+sans supervision, interface directe avec les business units — n’est pas encore atteint. C’est
+45
+
+
+===== PAGE 47 =====
+
+PFE — Migration AVP/GCP
+Axes de progression
+un axe de progression identifié dès l’écriture de ce bilan, pas seulement un point théorique :
+la suite logique après le PFE est de rechercher des missions où cette autonomie complète est
+exigée dès le départ.
+— Sécurité cloud avancée et tests applicatifs. Le PFE traite la sécurisation de l’infrastruc-
+ture (Workload Identity, Secret Manager, Network Policies) mais peu la sécurité applicative
+avancée (Zero Trust, IAM fin, Service Mesh) ni les tests automatisés au sens développement
+logiciel — le bloc RNCP 5 est donc mobilisé partiellement. Ces sujets restent à approfondir.
+— Leadership et gestion de projet à plus grande échelle. Mes expériences de coordination
+(dismantling, PFE) portent sur des périmètres techniques circonscrits, pas sur l’animation
+d’une équipe ni la gestion d’un portefeuille de projets. Une montée en compétence sur les
+méthodologies Agile à l’échelle (SAFe, déjà vu en formation mais pas pratiqué en conditions
+réelles) et sur le management technique serait un prolongement naturel.
+— FinOps et optimisation économique cloud. La section 16 de ce rapport constitue une
+première approche méthodologique de l’analyse économique cloud, mais reste volontairement
+construite avec des valeurs indicatives faute de temps pour collecter les données réelles de
+facturation. Une pratique plus poussée du FinOps (suivi de coûts en continu, optimisation
+post-déploiement) reste à développer.
+Ce regard critique n’invalide pas la trajectoire suivie : il la précise. Le PFE AVP a démontré
+une capacité réelle à concevoir et amorcer une migration cloud de bout en bout ; les axes ci-dessus
+indiquent où porter l’effort pour passer d’une première mission cloud réussie à une expertise
+reproductible sur d’autres projets.
+46
+
+
+===== PAGE 48 =====
+
+PFE — Migration AVP/GCP
+Axes de progression
+Conclusion
+Synthèse
+Ce PFE a permis de migrer la plateforme AVP d’une infrastructure de machines virtuelles
+dédiées (Cirrus/on-premise) vers un cluster GKE privé sur GCP. Chaque service critique —
+ARA, avp-bot, GitLab Runner — est désormais packagé en chart Helm, déployé via GitOps
+(ArgoCD), sans clé statique (Workload Identity de bout en bout) et avec ses secrets synchronisés
+depuis Secret Manager. La chaîne de validation des rôles Ansible (Merge Request →job CI →
+pod éphémère →VM GCE de test →traçabilité dans ARA) est reproductible et documentée
+via Terraform, ce qui constitue la condition première pour qu’elle soit reprise de façon autonome
+par l’équipe une fois le projet terminé.
+Regard critique
+La démarche a suivi la logique diagnostiquer →solutionner →opérationnaliser →évaluer
+plutôt qu’une trajectoire linéaire : plusieurs choix initiaux ont été révisés en cours de route à la
+lumière de contraintes réelles, et il a aussi fallu savoir revenir sur mes propres décisions de net-
+toyage. L’exemple le plus net : en identifiant une Application ArgoCD gitlab-runner-operator
+apparemment redondante (une comparaison rapide avec l’historique Git suggérait un doublon
+legacy), je l’ai supprimée — sans vérifier la documentation du chart associé, qui explique ex-
+plicitement que l’installation de l’opérateur (CRDs, RBAC, contrôleur) est volontairement une
+Application distincte de sa configuration, pour découpler leurs cycles de vie. Le contrôleur a
+continué de tourner plusieurs jours, orphelin de toute Application (une suppression n’entraîne
+pas de cascade delete automatique sur ArgoCD), sans que rien ne le signale — jusqu’à ce qu’une
+relecture du README du chart révèle l’erreur. La correction (recréer l’Application au bon endroit)
+a été rapide ; la leçon retenue l’est moins : vérifier la documentation avant de supprimer une res-
+source dont on ne comprend pas immédiatement le rôle, plutôt qu’après. De la même façon, une
+partie non négligeable du travail a consisté à diagnostiquer des blocages très concrets plutôt qu’à
+dérouler un plan préétabli sans accroc. L’exemple le plus parlant : le pipeline CI/CD construi-
+sant l’image avp-bot échouait silencieusement depuis près d’un mois (dernier succès identifié a
+posteriori en remontant l’historique des pipelines), avec l’erreur Kaniko DENIED: Permission
+’artifactregistry.repositories.uploadArtifacts’ denied. Le diagnostic (le compte de
+service lié par Workload Identity au Runner, molecule-gce@fra-dcmts-gcp-valid-dev.iam.
+gserviceaccount.com, ne disposait que du rôle artifactregistry.reader hérité de son usage
+pour les VMs Molecule, jamais du droit d’écriture) a mené à un correctif IAM ciblé (artifac-
+tregistry.writer sur le dépôt avp-registry) plutôt qu’à un contournement. C’est cette itération
+diagnostiquer →corriger à la racine qui a le plus contribué à la montée en compétence sur
+l’écosystème GCP — et elle a aussi mis en évidence un choix discutable à corriger : réutiliser
+un même compte de service pour deux usages distincts (VMs de test et publication d’images)
+plutôt que d’appliquer le moindre privilège strictement par usage.
+Le driver Molecule GCE (annexe, glossaire) a également nécessité un diagnostic en plusieurs
+couches avant de fonctionner réellement de bout en bout (figure 28). Le symptôme initial —
+timeout SSH sur une instance pourtant RUNNING — s’est révélé n’être ni un problème de firewall
+47
+
+
+===== PAGE 49 =====
+
+PFE — Migration AVP/GCP
+Axes de progression
+ni de droits IAM, mais un défaut plus profond : l’image de base, construite à l’origine pour Vir-
+tualBox (Vagrant), n’activait jamais son volume LVM racine dans l’initramfs une fois portée sur
+l’hyperviseur KVM de GCE, et n’embarquait pas le guest agent Google nécessaire à l’injection
+dynamique de clé SSH. La résolution — montage du disque hors ligne depuis une VM de se-
+cours, régénération de l’initramfs (dracut –regenerate-all), puis installation du guest agent
+— illustre qu’un symptôme réseau peut avoir une cause qui n’a rien à voir avec le réseau, et qu’il
+faut être prêt à descendre jusqu’au niveau de l’image système quand les couches supérieures
+(firewall, IAM, DNS) sont toutes écartées une à une.
+Enfin, l’analyse économique du chapitre dédié reste une estimation construite sur le simula-
+teur de prix public, faute d’avoir pu la confronter à la facturation réelle des deux plateformes à
+ce stade du projet — un point de rigueur qu’il convient d’assumer explicitement plutôt que de
+présenter un chiffrage comme définitif.
+Perspectives
+Le PFE dispose encore d’un mois de développement au moment de la rédaction de ce rapport,
+ce qui permet d’identifier dès à présent les axes de poursuite du projet :
+— Chiffrage économique : remplacer l’estimation du chapitre coûts par la facturation réelle
+Cirrus et les rapports de facturation GCP du projet, une fois un mois d’exploitation complet
+disponible ;
+— Observabilité : formaliser des règles d’alerte proactives et des SLO explicites au-delà de la
+simple collecte de métriques déjà en place ;
+— Mutualisation du Gateway : réévaluer le choix actuel d’une Gateway par chart si le nombre
+de services applicatifs venait à croître, pour limiter le nombre de Load Balancers facturés ;
+— Durcissement IAM : séparer le compte de service molecule-gce@..., aujourd’hui utilisé
+à la fois pour provisionner les VMs de test Molecule et pour la publication d’images CI, en
+deux identités dédiées par usage — un compte n’a pas vocation à cumuler les droits de deux
+fonctions distinctes (cf. Regard critique).
+Au-delà du résultat technique, ce projet a été l’occasion de mettre en œuvre une posture
+d’ingénieur complète — analyse d’un existant, conception argumentée d’une cible, arbitrages
+sous contrainte, mise en œuvre outillée et recul critique sur les choix effectués — qui constitue
+la meilleure préparation possible à la suite de mon parcours professionnel.
+48
+
+
+===== PAGE 50 =====
+
+PFE — Migration AVP/GCP
+Bibliographie / Sitographie
+Liste des acronymes
+AVP
+Ansible Validation Platform
+ARA
+Ansible Run Analysis
+GKE
+Google Kubernetes Engine
+VPC
+Virtual Private Cloud
+PITR
+Point-In-Time Recovery
+WI
+Workload Identity
+NP
+Network Policies
+LB
+Load Balancer
+CI/CD
+Intégration/Déploiement continus
+MCO
+Maintien en Conditions Opérationnelles
+CPDC
+Cloud & Production Delivery Center
+GBL
+Global Business Line
+23
+Bibliographie / Sitographie
+Références
+[1] Google
+Cloud
+—
+Private
+clusters
+in
+GKE.
+https://cloud.google.com/
+kubernetes-engine/docs/concepts/private-cluster
+[2] Google
+Cloud
+—
+Gateway
+API
+for
+GKE.
+https://cloud.google.com/
+kubernetes-engine/docs/concepts/gateway-api
+[3] Google Cloud — Cloud SQL Private IP. https://cloud.google.com/sql/docs/mysql/
+private-ip
+[4] Luccioni, A. S., Jernite, Y., & Strubell, E. (2024). Power Hungry Processing : Watts Driving
+the Cost of AI Deployment ? ACM Conference on Fairness, Accountability, and Transparency
+(FAccT).
+[5] Google Cloud — Workload Identity. https://cloud.google.com/kubernetes-engine/
+docs/how-to/workload-identity
+[6] Google Cloud — Cloud NAT. https://cloud.google.com/nat/docs/overview
+[7] GitLab — GitLab Runner Helm Chart. https://docs.gitlab.com/runner/install/
+kubernetes/
+49
+
+
+===== PAGE 51 =====
+
+PFE — Migration AVP/GCP
+Bibliographie / Sitographie
+Annexes
+Schéma et tableau de correspondance As-Is →To-Be
+Figure 25 – Vue comparative As-Is (Cirrus/on-premise) ↔To-Be (GCP), brique par brique.
+Domaine
+As-Is (Cirrus)
+To-Be (GCP)
+Edge
+HAProxy/Keepalived (80/443)
+Cloud DNS + HTTPS LB (Ga-
+teway API), HTTPS only (443)
+Supervision
+StatPing — wdavp01s / wdavp02s
+(standby)
+Prometheus/Grafana (GKE)
+ARA
+tdavp01s (9191)
+Deployment+Service (GKE),
+connexion directe Cloud SQL
+AVP-Bot
+tdavp02s
+Deployment+Service (GKE)
+Ansible-Seek
+tdavp03s (tdavp04s standby)
+Deployment+Service (GKE)
+PostgreSQL
+bdavp02s (5432)
+Cloud SQL PostgreSQL (Pri-
+vate IP, SSL, PITR)
+MySQL
+bdavp01s (3306)
+non requis pour le périmètre actuel
+CI/CD
+GitLab pipelines (Helm)
+GitLab
+pipelines
++
+GitLab
+Runner Operator, Terraform
++ Helm
+Logs
+—
+Cloud Logging (JSON)
+Métriques
+—
+Prometheus/Grafana,
+alertes
+SLA/error
+50
+
+
+===== PAGE 52 =====
+
+PFE — Migration AVP/GCP
+Références
+Réseau
+—
+VPC
+privé,
+Cloud
+NAT,
+WI/NP, Secret Manager via
+External Secrets
+Aperçu de la plateforme en fonctionnement
+Les deux captures ci-dessous illustrent l’état réellement observable de la plateforme sur GCP
+— au-delà des schémas d’architecture, ARA et ArgoCD tournent effectivement sur GKE.
+Figure 26 – Interface ARA — liste des exécutions Molecule (molecule_plugins gce), play-
+books create/destroy réels, succès et échecs.
+Figure 27 – ArgoCD — Applications synchronisées dans le namespace wl-system.
+La capture ci-dessus montre les huit Application actuellement gérées, toutes dans le names-
+pace wl-system : root (l’app-of-apps bootstrapée par Terraform depuis le dépôt w133572-gitops,
+51
+
+
+===== PAGE 53 =====
+
+PFE — Migration AVP/GCP
+Références
+cf. Zoom technique section ArgoCD), qui pilote à son tour argocd, ara, avp-bot, ansible-seek,
+monitoring, ainsi que gitlab-runner et gitlab-runner-operator (le Runner GKE réellement
+utilisé par les pipelines, namespace avp-gitlab-runner, et son opérateur découplé, cf. Zoom
+technique). Six sont Synced, deux (ara et monitoring) sont OutOfSync au moment de la cap-
+ture — écart mineur, corrigé automatiquement par la boucle de réconciliation GitOps décrite
+en Zoom technique.
+Figure 28 – Pipeline Molecule GCE (rôle motd) passant de bout en bout : create, converge,
+idempotence, verify (tests InSpec) et destroy.
+Flux ansible-daily (détail)
+Ce flux est mentionné en Zoom technique (section avp-bot) comme second déclencheur d’avp-
+bot, indépendant des Merge Requests. Le schéma ci-dessous, issu de la documentation de l’in-
+frastructure historique, détaille cet enchaînement.
+52
+
+
+===== PAGE 54 =====
+
+PFE — Migration AVP/GCP
+Références
+Figure 29 – Flux ansible-daily : exécution périodique indépendante des Merge Requests.
+Organigramme du Delivery Center MTS
+Ce schéma illustre le positionnement mentionné en Partie 1 : mon département de ratta-
+chement (Data Management & Integration, H. Francq) et mon équipe (Integration Services SP
+Team, M. Nowicki), au sein du Delivery Center MTS dirigé par Éric Willems.
+Figure 30 – Organigramme du Delivery Center MTS.
+53
+
+
+===== PAGE 55 =====
+
+PFE — Migration AVP/GCP
+Références
+Glossaire des composants de la plateforme AVP
+Cette annexe décrit, composant par composant, ce que fait chaque brique de l’architecture et
+pourquoi elle existe. Elle est organisée en cinq familles : le socle applicatif AVP, l’infrastructure
+GCP, l’orchestration Kubernetes, la sécurité/gestion des secrets, et la chaîne CI/CD. Chaque
+entrée suit le même format : à quoi ça sert, puis comment c’est implémenté concrètement sur ce
+projet.
+A. Le socle applicatif AVP
+AVP (Ansible Validation Platform).
+Nom donné à l’ensemble de la plateforme, pas à
+un composant unique. Son rôle est de vérifier automatiquement qu’un rôle Ansible modifié
+fonctionne toujours correctement (compatibilité RHEL8/9, absence de régression) avant qu’il ne
+soit fusionné dans le dépôt partagé utilisé par toutes les équipes. Sans AVP, chaque modification
+de rôle Ansible devrait être testée manuellement par son auteur.
+ARA (Ansible Run Analysis).
+Sert de « registre des exécutions » : chaque fois qu’un play-
+book Ansible tourne (test de rôle, exécution de production), ARA enregistre le détail — quelles
+tâches ont été jouées, combien de temps ça a pris, ce qui a échoué. C’est un tableau de bord
+d’historique et de diagnostic, pas un outil qui exécute lui-même les playbooks. Techniquement,
+c’est une application web Django (recordsansible/ara-api) qui stocke ses données dans une
+base PostgreSQL et reçoit les résultats via des callback plugins Ansible (ARA_API_SERVER) dé-
+clarés dans l’environnement d’exécution. Sur GCP, ARA est le service le plus avancé du projet :
+déployé sur GKE, exposé en HTTPS, avec une démonstration de bout en bout déjà réalisée (voir
+ara-chart/docs/demo.md) — un run Ansible réel apparaît dans son interface.
+AVP-Bot.
+Le « chef d’orchestre » côté GitLab : c’est lui qui reçoit la commande tapée par
+un développeur en commentaire sur une Merge Request (par exemple @awl-ansible-avp-bot
+test) et qui déclenche la suite du processus. Concrètement, il expose un serveur HTTP qui reçoit
+les webhooks GitLab, interprète la commande (ping, test, cancel, merge, release), et modifie
+en conséquence le fichier requirements.yml du dépôt « plateforme » AVP pour inclure ou retirer
+la version du rôle en cours de test. Il reçoit ensuite un second webhook — cette fois émis par
+ansible-daily à la fin de l’exécution — pour poster le résultat (succès/échec) directement sur
+la Merge Request. Sans ce bot, chaque étape (mise à jour du fichier de requirements, lancement
+du test, relecture du résultat) serait manuelle.
+Ansible-Seek.
+Un outil de consultation : il liste les machines de l’inventaire Ansible et permet
+de retrouver rapidement où un rôle ou un groupe de variables s’applique. Techniquement, un
+serveur Flask qui expose un cache, régénéré par un conteneur sidecar dédié (refresh_cache.py
+en boucle) dans le même pod, à partir de l’inventaire Ansible réel. Il ne modifie rien : c’est un
+outil de recherche, pas d’exécution.
+ansible-daily.
+Le moteur d’exécution : c’est le composant qui clone (ou met à jour) le dépôt de
+rôles, installe les dépendances Galaxy, puis lance réellement ansible-playbook. En cas de succès
+54
+
+
+===== PAGE 56 =====
+
+PFE — Migration AVP/GCP
+Références
+ou d’échec, il notifie les canaux configurés (Mattermost, Slack, et surtout le webhook AVP-Bot
+qui referme la boucle décrite plus haut). C’est le seul composant qui exécute réellement du code
+Ansible sur une cible.
+Molecule.
+Un framework de test pour les rôles Ansible : il provisionne une machine jetable,
+y applique le rôle, vérifie le résultat, puis détruit la machine. Le driver (le mécanisme de pro-
+visionnement) change selon l’environnement : sur Cirrus, ce sont des VMs Vagrant, construites
+depuis le dépôt vagrant-boxes (images RHEL8/9 publiées sur Nexus) ; sur GCP, c’est le plu-
+gin molecule-plugins gce qui crée des instances Compute Engine éphémères à la place, à
+partir d’une image de base RHEL8 durcie (licence BYOL Red Hat) construite par Packer
+(dépôts w133572-packer et packer-images-gcp-rhel8) et provisionnées sous l’identité dédiée
+molecule-gce@..., sans jamais copier de clé JSON sur la machine de CI (voir Workload Iden-
+tity, section D). Le dépôt de playbooks Ansible n’a besoin d’aucune adaptation : seul le driver
+change, Molecule et les scénarios de test restent identiques d’un environnement à l’autre.
+B. Infrastructure GCP
+VPC (Virtual Private Cloud).
+Le réseau privé qui isole les ressources du projet du reste
+d’Internet. Rien n’y est routable directement depuis l’extérieur : tout accès passe par des points
+d’entrée contrôlés (Load Balancer en entrée, Cloud NAT en sortie).
+GKE (Google Kubernetes Engine) — cluster privé.
+Le service GCP qui fait tourner
+Kubernetes sans que l’équipe ait à gérer elle-même les machines du plan de contrôle. « Privé »
+signifie que ni les nœuds ni le plan de contrôle n’ont d’adresse IP publique — on ne peut s’y
+connecter que depuis le réseau interne Worldline (IPs publiques Worldline autorisées explicite-
+ment dans master_authorized_networks, voir 05-gke-cluster.tf). C’est l’équivalent cloud
+des machines Cirrus actuelles, mais avec la capacité de créer/détruire automatiquement des
+capacités de calcul selon la charge (auto-scaling), ce qu’une VM statique ne sait pas faire.
+Cloud SQL.
+Le service de base de données managée de GCP. Au lieu d’installer et maintenir
+PostgreSQL soi-même sur une VM (mises à jour de sécurité, sauvegardes, réplication), GCP s’en
+occupe. C’est la base utilisée par ARA ; elle n’est pas gérée par les charts Helm de ce projet —
+sa configuration réseau et ses utilisateurs sont provisionnés séparément.
+Artifact Registry.
+Le registre où sont stockées les images Docker construites pour la plate-
+forme (par exemple les images des services applicatifs, une fois conteneurisés). Équivalent cloud
+d’un registre Docker privé.
+Cloud NAT / Cloud Router.
+Le mécanisme qui permet aux pods et VMs du réseau privé
+de sortir vers Internet (par exemple pour télécharger un paquet ou joindre une API GCP) sans
+leur donner d’adresse IP publique en retour. Le trafic sortant est traduit par Cloud NAT, routé
+par Cloud Router : c’est une porte à sens unique, contrôlée.
+55
+
+
+===== PAGE 57 =====
+
+PFE — Migration AVP/GCP
+Références
+Cloud Load Balancer / Cloud Armor / Cloud DNS.
+La chaîne d’entrée du trafic public.
+Cloud DNS résout le nom de domaine, Cloud Armor filtre les requêtes suspectes avant qu’elles
+n’atteignent l’application (protection contre les attaques réseau basiques), et le Load Balancer
+HTTP(S) répartit le trafic vers le bon service à l’intérieur du cluster.
+C. Orchestration Kubernetes et déploiement
+Namespace.
+Une simple cloison logique à l’intérieur d’un même cluster : elle permet de re-
+grouper les ressources d’un même service (ARA a son namespace ara, les jobs CI ont le leur) et
+d’appliquer des règles (réseau, quotas) différenciées entre elles.
+Deployment / Service (Kubernetes).
+Un Deployment décrit combien d’exemplaires (pods)
+d’une application doivent tourner et comment les redémarrer en cas de panne. Un Service
+donne à ce groupe de pods une adresse réseau stable à l’intérieur du cluster — sans lui, chaque
+redémarrage de pod changerait son adresse.
+Pod éphémère.
+Une instance d’exécution qui n’est créée que pour la durée d’une tâche (par
+exemple un job CI/CD), puis détruite. C’est le principe qui remplace le « GitLab Runner sur
+VM toujours allumée » de l’architecture actuelle : la ressource n’existe que le temps du calcul,
+donc elle ne coûte rien en dehors de son exécution.
+Helm / Chart Helm.
+Helm est le gestionnaire de paquets de Kubernetes : au lieu d’écrire à
+la main chaque fichier YAML (Deployment, Service, Secret...), on définit un chart — un modèle
+paramétrable (values.yaml) qu’on peut installer, mettre à jour (helm upgrade) ou annuler
+(helm rollback) comme un paquet logiciel classique. Chaque service de la plateforme (ARA,
+ArgoCD, le runner GitLab) vit dans son propre chart, dans son propre dépôt Git (ara-chart,
+argocd-chart, gitlab-runner-chart), choix documenté pour qu’aucun chart ne dépende d’un
+autre pour être déployable seul.
+Gateway API (Gateway, HTTPRoute, GCPGatewayPolicy, HealthCheckPolicy).
+La façon moderne, sur GKE, d’exposer un service en HTTPS. La Gateway crée le point d’en-
+trée (et le Load Balancer GCP associé), la HTTPRoute indique quel nom de domaine doit
+atteindre quel Service, la GCPGatewayPolicy impose la politique SSL de l’entreprise, et la
+HealthCheckPolicy définit comment GCP vérifie que le service répond correctement. Choix
+notable du projet : chaque chart crée sa propre Gateway plutôt que de partager une Gateway
+commune — cela coûte un Load Balancer GCP de plus par service, mais garantit qu’un chart
+reste déployable seul, sans dépendre d’une ressource créée par un autre dépôt.
+ArgoCD / GitOps.
+ArgoCD est l’outil qui garde le cluster Kubernetes synchronisé avec ce
+qui est décrit dans un dépôt Git : si l’état réel du cluster diverge de ce que dit le dépôt (modifica-
+tion manuelle, crash, dérive de configuration), ArgoCD le corrige automatiquement. Le principe
+« GitOps » qui en découle est que Git devient la seule source de vérité de l’infrastructure : pour
+changer quelque chose, on modifie un fichier et on merge une Merge Request — plus jamais de
+56
+
+
+===== PAGE 58 =====
+
+PFE — Migration AVP/GCP
+Références
+commande kubectl tapée à la main en production. C’est aussi ce qui donne un historique com-
+plet des changements (donc un rollback simple : revenir à un commit précédent). Concrètement,
+Terraform provisionne le cluster GKE puis « bootstrap » ArgoCD et l’Application app-of-apps
+root, définie dans le dépôt w133572-gitops. Ce dépôt héberge, de façon consolidée, les fichiers
+pointeurs de toutes les Applications de la plateforme (apps/dev/*.yaml : ArgoCD, ARA, avp-
+bot, Ansible-Seek, monitoring, GitLab Runner et l’opérateur GitLab Runner) ; chacun pointe
+à son tour vers le chart Helm réel du service sous le groupe GitLab m2c/charts/* (y compris
+pour l’opérateur GitLab Runner, voir ci-dessous : son contenu est une copie vendored dans ce
+même groupe, pas l’upstream brut). L’ancien dépôt m2c-platform, qui remplissait ce rôle de
+pointeur au tout début du projet, n’est plus utilisé pour les Applications actuellement en place.
+GitLab Runner.
+Le composant qui exécute réellement les jobs définis dans les pipelines
+.gitlab-ci.yml. Sur l’infrastructure actuelle, un Runner tourne en permanence sur une VM dé-
+diée. Sur GKE, il est piloté par le GitLab Runner Operator : plutôt que de créer directement
+un Deployment, le chart gitlab-runner-chart crée une ressource personnalisée Runner (CRD
+apps.gitlab.com/v1beta2) qui décrit la configuration voulue (tags gke,avp,awl-ansible,
+molecule-gce, compte de service, image de build) ; c’est l’opérateur, en la lisant, qui crée réel-
+lement les pods de jobs — chacun éphémère, via l’executor Kubernetes. Ce mécanisme est le
+même principe que Prometheus Operator pour la stack de monitoring (section E) : un chart
+Helm produit une ressource déclarative, un contrôleur séparé la traduit en ressources concrètes.
+L’installation de l’opérateur lui-même (CRDs, RBAC, contrôleur) est délibérément une Ap-
+plication ArgoCD distincte (apps/dev/gitlab-runner-operator.yaml), séparée de gitlab-
+runner-chart qui ne contient que la configuration spécifique à AVP : ce découpage isole le cycle de
+vie de l’opérateur (rarement mis à jour) de celui du Runner (spécifique au projet). Son contenu
+ne pointe pas directement sur le dépôt upstream gitlab-runner-operator : config/default
+de ce dépôt ne se construit pas tel quel via kustomize (config/manager/kustomization.yaml
+y est généré par leur Makefile et volontairement absent du dépôt Git) — la source réelle est
+donc une copie vendored (pré-rendue par makemanifests puis committée) dans m2c/charts/
+gitlab-runner.git, chemin operator. C’est un choix volontaire, pas un abandon de l’approche
+Operator au profit d’un chart Helm classique.
+D. Sécurité et gestion des secrets
+IAM (Identity and Access Management).
+Le système de permissions de GCP : qui (uti-
+lisateur, service) a le droit de faire quoi (lire un secret, créer une ressource) sur quel périmètre.
+Chaque compte de service créé dans ce projet (par exemple external-secrets@...) reçoit
+uniquement les droits strictement nécessaires à son rôle — principe du moindre privilège.
+Workload Identity.
+Le mécanisme qui permet à un pod Kubernetes d’agir avec une identité
+GCP (donc d’appeler des API GCP, comme Secret Manager) sans qu’une clé JSON secrète ne
+soit jamais copiée dans le cluster. Concrètement, un ServiceAccount Kubernetes est « lié » à
+un compte de service GCP via une règle IAM (roles/iam.workloadIdentityUser) : GKE se
+charge ensuite de l’authentification de façon transparente. C’est la différence entre « il existe un
+57
+
+
+===== PAGE 59 =====
+
+PFE — Migration AVP/GCP
+Références
+fichier de clé qui, s’il fuite, donne un accès permanent » et « l’accès est vérifié à chaque appel,
+sans secret stocké nulle part ».
+Secret Manager (GCP).
+Le coffre-fort centralisé où sont stockées les valeurs sensibles (mot
+de passe de base de données, clé Django, token de registration GitLab Runner) — jamais en clair
+dans un fichier de configuration versionné dans Git. Chaque secret est répliqué dans une région
+précise (europe-west3 ici, imposé par une contrainte d’organisation) plutôt qu’en réplication
+automatique mondiale.
+External Secrets Operator / ExternalSecret / ClusterSecretStore.
+Le pont entre
+Secret Manager (GCP) et Kubernetes. Un ClusterSecretStore définit où aller chercher les
+secrets (ici, GCP Secret Manager) et avec quelle identité (Workload Identity). Une ressource
+ExternalSecret, déclarée dans le chart de chaque service, dit quel secret GCP synchroniser vers
+quel Secret Kubernetes. L’opérateur fait ensuite la synchronisation en tâche de fond, à intervalle
+régulier : l’application (ARA, par exemple) continue de lire un Secret Kubernetes classique, sans
+rien savoir de GCP — c’est l’opérateur qui fait le travail de mise à jour derrière. Avant la mise en
+place de ce mécanisme, le mot de passe Cloud SQL et la clé Django de ARA étaient committés
+en clair dans un template Helm : c’est précisément ce risque que ce composant élimine.
+NetworkPolicy.
+Une règle qui restreint les communications réseau entre pods, à l’intérieur
+même du cluster (par exemple : le pod ARA n’a le droit de parler qu’à Cloud SQL et au DNS, à
+rien d’autre). Sans cette règle, tout pod du cluster peut par défaut joindre n’importe quel autre
+pod.
+E. Observabilité
+Cloud Logging / Cloud Monitoring.
+Les services GCP de centralisation des logs et des
+métriques d’infrastructure (CPU, mémoire, disponibilité des nœuds). Remplacent la supervision
+StatPing actuelle, qui ne donnait qu’un statut binaire « up/down » sans historique ni corrélation.
+Prometheus / ServiceMonitor.
+Prometheus est l’outil standard de collecte de métriques
+applicatives dans l’écosystème Kubernetes (il scrape, c’est-à-dire interroge périodiquement, un
+endpoint /metrics exposé par chaque application). Une ressource ServiceMonitor indique à
+l’opérateur Prometheus déjà présent sur le cluster quel service surveiller. Composant optionnel
+dans les charts actuels (serviceMonitor.enabled), pas encore activé en usage réel.
+Note de méthode : chaque entrée ci-dessus a été vérifiée par rapport au code et à la documentation
+réelle des dépôts du projet (ara-chart/docs/, argocd-chart/docs/, gitlab-runner-chart/docs/,
+w133572-terraform/, w133572-gitops/), et non reformulée depuis une documentation géné-
+rique GCP.
+58
+
+
+===== PAGE 60 =====
+
+PFE — Migration AVP/GCP
+Références
+Annexe obligatoire — Usage de l’intelligence artificielle
+Conformément à la note pédagogique du PFE (§4.5), cette annexe détaille l’usage réalisé
+d’outils d’IA générative pendant ce projet et la rédaction du présent rapport.
+Outil utilisé
+Claude (Anthropic), via l’interface en ligne de commande Claude Code, comme assistant de
+développement et de rédaction.
+Ce qui a été fait avec l’assistant
+— Débogage technique itératif : diagnostic pas à pas des incidents rencontrés sur l’infra-
+structure GCP/GKE (accès IAM, images GCE, pipelines GitLab CI, Terraform, Molecule)
+— l’assistant proposait des hypothèses et des commandes, moi je les exécutais, en observais le
+résultat réel, et décidais de la suite. Beaucoup de pistes proposées se sont révélées fausses ou
+incomplètes à l’usage (cf. le nombre d’itérations documenté au fil du projet) et ont nécessité
+mon arbitrage pour choisir la voie à suivre.
+— Génération de schémas techniques (diagrammes PlantUML, corrections de fichiers .drawio)
+à partir de mes descriptions du système réel.
+— Aide à la rédaction et à la relecture du présent rapport : reformulation, mise en cohérence
+de sections rédigées à des moments différents, correction de références techniques devenues
+obsolètes au fil du projet (ex. composants abandonnés en cours de route).
+Ce qui n’a pas été délégué
+Les choix d’architecture, les arbitrages techniques (notamment le refus de contourner les
+contrôles de conformité Spector plutôt que de les respecter), la compréhension du contexte
+entreprise, et la relecture critique finale de chaque section restent miens. L’assistant n’a exécuté
+aucune action sur les environnements de production sans validation explicite de ma part au
+préalable.
+Estimation de l’impact environnemental
+Anthropic ne publie pas de méthodologie officielle de calcul d’empreinte carbone par requête
+pour ses modèles. À titre indicatif, les études publiées sur l’inférence de grands modèles de lan-
+gage donnent des ordres de grandeur de l’ordre de 0,2 à 3 Wh par échange conversationnel selon
+la taille du modèle et la longueur du contexte [4]. Sur la durée du projet, le volume d’échanges
+avec l’assistant est estimé à quelques centaines d’interactions, soit un ordre de grandeur de
+quelques centaines de Wh à quelques kWh au total — comparable à la consommation électrique
+de quelques heures d’utilisation d’un ordinateur portable. Cette estimation reste volontairement
+large faute de données constructeur précises ; elle est fournie par souci de transparence plutôt
+que comme une mesure certifiée.
+59

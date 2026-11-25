@@ -1,0 +1,5219 @@
+===== PAGE 1 =====
+
+ 
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de 
+Mahdia 
+ 
+MEMOIRE 
+ 
+N° d’ordre : LCS-GLSI-3-
+2026-063  
+Ministère de l’Enseignement Supérieur et 
+de la Recherche Scientifique  
+ 
+ 
+ 
+MEMOIRE  
+                                                 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+                                                 
+ Effectué à 
+ 
+EPS Taher Sfar 
+ 
+ 
+En vue de l’obtention du diplôme de 
+ 
+Bachelor in Computer Science: Software Engineering and Information Systems 
+ 
+Elaboré par : 
+ 
+Amani Hazgui, Abdessalem Yosra 
+ 
+     
+Création d' un assistant pour aider les médecins anesthésistes dans la 
+consultation pre_anesthesie 
+ 
+ 
+ 
+Soutenu le :  15 juin 2026  
+devant le jury composé de : 
+ 
+ 
+Président 
+ : Emna Ben Ayed 
+Rapporteur 
+ : Ben Aichaa Takwa 
+Encadrant Académique 
+ : Tarek M. Hamdani 
+Encadrant Professionnel 
+ : Rami Manaa 
+ 
+ 
+ 
+Année universitaire 2025-2026 
+
+
+===== PAGE 2 =====
+
+Dédicace
+À mes parents, pour les sacrifices consentis tout au long de ces années d’études, pour leur
+patience sans faille et leur soutien dans chaque moment de doute.
+À mes sœurs, pour leur amour, leur encouragement constant et leur présence précieuse.
+À l’EPS Taher Sfar Mahdia, qui nous a accordé sa confiance, son temps et son expertise
+médicale, sans lesquels ce projet n’aurait pas pu voir le jour.
+Aux 69 patients de l’EPS Mahdia, dont les données cliniques ont rendu possible
+l’entraînement de nos modèles et dont nous espérons que ce travail contribuera, un jour, à
+améliorer la qualité de leur prise en charge.
+À mes enseignants de l’ISIMA, pour la rigueur et la passion qu’ils transmettent à chaque cours.
+Ce travail vous est dédié.
+Hazgui Amani
+
+
+===== PAGE 3 =====
+
+Dédicace
+À mes parents, pour leurs sacrifices, leur patience et leur confiance infinie. Merci pour toutes
+les valeurs que vous m’avez transmises et pour votre présence à chaque étape de ma vie. Ce
+travail est le fruit de vos efforts autant que des miens.
+À mon mari, pour son amour, sa compréhension, son soutien inconditionnel et sa présence à
+mes côtés dans les moments difficiles comme dans les moments de réussite. Merci de m’avoir
+encouragée à avancer et à croire en moi jusqu’au bout.
+À ma fille, ma plus belle source de bonheur et de motivation. Ton sourire m’a donné la force et
+le courage de continuer et de réaliser ce projet.
+À mes frères, sœurs, amis et proches, merci pour vos encouragements et votre soutien moral.
+J’adresse également mes sincères remerciements à toutes les personnes qui ont contribué, de
+près ou de loin, à la réalisation de ce projet de fin d’études, notamment mes encadrants et
+enseignants pour leurs précieux conseils et leur accompagnement.
+Enfin, à toutes les personnes qui ont cru en moi et m’ont soutenue durant cette aventure, je
+dédie ce travail avec une profonde gratitude.
+Ce travail vous est dédié.
+Abdessalem Yosra
+
+
+===== PAGE 4 =====
+
+Remerciements
+Nous adressons nos plus sincères remerciements à nos encadreurs académique M. Hamdani
+Mouhamed Tarek et professionnel M. Manaa Rami pour leur disponibilité, leurs précieux
+conseils, leur accompagnement et leurs encouragements tout au long de la réalisation de ce
+projet.
+Leur expérience et leurs orientations ont été d’une grande valeur dans l’aboutissement de ce
+travail.
+Nous tenons également à exprimer notre profonde gratitude à toute l’équipe du service
+d’Anesthésie-Réanimation qui a contribué à la réussite de ce projet.
+Nos remerciements s’adressent particulièrement au chef du département professeur Majdoub
+Ali pour son accueil et son soutien et professeur Bannour Imen pour ses conseils, sa confiance
+et son accompagnement tout au long de cette expérience.
+Les médecins résidents pour leur aide, leur disponibilité et leur collaboration durant les
+différentes étapes de notre projet.
+Une pensée particulière à l’infirmière de la consultation d’anesthésie Mme Memi Samia
+pour sa gentillesse, son aide précieuse et son implication.
+Enfin, nous remercions toutes les personnes qui, de près ou de loin, ont participé à la
+réalisation de ce travail et nous ont soutenues durant cette aventure enrichissante.
+Hazgui Amani & Abdessalem Yosra
+
+
+===== PAGE 5 =====
+
+TABLE DES MATIÈRES
+Hazgui Amani & Abdessalem Yosra
+Table des matières
+Dédicace
+ii
+Dédicace
+iii
+Remerciements
+iv
+Table des matières
+x
+Liste des figures
+xiii
+Liste des tableaux
+xv
+Liste des acronymes
+xvi
+1
+Introduction générale
+1
+2
+Cadre général du projet
+3
+2.1
+Établissement d’accueil . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+2.1.1
+Capacités et services . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2.1.2
+Coordonnées de l’établissement . . . . . . . . . . . . . . . . . . . . .
+4
+2.2
+Étude préalable . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2.2.1
+Problématique
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2.2.2
+Solution envisagée . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+2.3
+Étude de l’existant
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+2.3.1
+Le logiciel actuel (DMI) . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+2.3.2
+Contraintes logistiques . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+2.4
+Présentation du projet VitalCare
+. . . . . . . . . . . . . . . . . . . . . . . . .
+7
+Page v
+
+
+===== PAGE 6 =====
+
+TABLE DES MATIÈRES
+Hazgui Amani & Abdessalem Yosra
+2.4.1
+Apports de la solution
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+2.5
+Méthodologie du travail . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.5.1
+Comparaison des modèles de développement . . . . . . . . . . . . . .
+8
+2.5.2
+Rôles clés dans Scrum . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.5.3
+Pilotage du projet avec Scrum . . . . . . . . . . . . . . . . . . . . . .
+9
+2.6
+Outils collaboratifs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+3
+Spécification des besoins
+13
+3.1
+Identification des besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+3.1.1
+Les acteurs principaux . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+3.1.2
+Les besoins fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+3.1.3
+Les besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . . .
+15
+3.2
+Équipe et rôles
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+3.3
+Backlog de produit . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.4
+Identification des sprints
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.5
+Diagramme des cas d’utilisation générale
+. . . . . . . . . . . . . . . . . . . .
+19
+3.6
+Planning prévisionnel du projet . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.7
+Definition of Done
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+4
+Choix technique
+23
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+4.2
+Intérêt du choix . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+4.3
+Les technologies choisies . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+4.3.1
+Couche de présentation [3, 4, 5] . . . . . . . . . . . . . . . . . . . . .
+24
+4.3.2
+Couche métier [6]
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+4.3.3
+Couche données
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+4.3.4
+Déploiement
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+4.4
+Architecture de l’application . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+4.4.1
+Teste [13] . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+4.5
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+5
+Sécurité et gestion
+29
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+5.2
+Backlog du sprint 1 « Sécurité et gestion des utilisateurs »
+. . . . . . . . . . .
+29
+5.3
+Modélisation fonctionnelle . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+5.3.1
+Diagrammes de cas d’utilisation général du premier sprint « Sécurité et
+gestion des utilisateurs » . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+Page vi
+
+
+===== PAGE 7 =====
+
+TABLE DES MATIÈRES
+Hazgui Amani & Abdessalem Yosra
+5.3.2
+Raffinement du cas d’utilisation « Authentification » . . . . . . . . . .
+33
+5.3.3
+Description textuelle du cas d’utilisation « Authentification » . . . . . .
+33
+5.3.4
+Raffinement du cas d’utilisation « Validation des comptes »
+. . . . . .
+34
+5.3.5
+Description textuelle du cas d’utilisation « Validation des comptes » . .
+34
+5.3.6
+Raffinement du cas d’utilisation « Gestion des comptes » . . . . . . . .
+35
+5.3.7
+Description textuelle du cas d’utilisation « Gestion des comptes » . . .
+36
+5.3.8
+Raffinement du cas d’utilisation « Attribution des rôles » . . . . . . . .
+36
+5.3.9
+Description textuelle du cas d’utilisation « Attribution des rôles »
+. . .
+37
+5.3.10 Raffinement du cas d’utilisation « Détection des tentatives non autorisées
+»
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+5.3.11 Description textuelle du cas d’utilisation « Détection des tentatives non
+autorisées » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+5.3.12 Raffinement du cas d’utilisation « Consultation des activités des utilisateurs
+»
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+5.3.13 Description textuelle du cas d’utilisation « Consultation des activités
+des utilisateurs » . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+5.3.14 Raffinement du cas d’utilisation « Déconnexion sécurisée »
+. . . . . .
+40
+5.3.15 Description textuelle du cas d’utilisation « Déconnexion sécurisée » . .
+40
+5.4
+Modélisation dynamique . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+5.4.1
+Diagramme de classes
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+5.4.2
+Diagramme de séquence . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+5.5
+Implémentation des fonctionnalités du sprint 1 . . . . . . . . . . . . . . . . . .
+43
+5.5.1
+Interface de connexion . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+5.5.2
+Interface d’inscription
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+5.5.3
+Interface de validation des comptes
+. . . . . . . . . . . . . . . . . . .
+45
+5.5.4
+Interface de gestion des médecins . . . . . . . . . . . . . . . . . . . .
+45
+5.5.5
+Interface d’attribution des rôles
+. . . . . . . . . . . . . . . . . . . . .
+46
+5.5.6
+Interface de surveillance des accès . . . . . . . . . . . . . . . . . . . .
+46
+5.5.7
+Interface des journaux d’activité . . . . . . . . . . . . . . . . . . . . .
+47
+5.5.8
+Interface de déconnexion . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+5.5.9
+Interface de modification du compte . . . . . . . . . . . . . . . . . . .
+48
+5.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+6
+Gestion des dossiers
+50
+6.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+6.2
+Backlog du sprint 2 « Gestion des dossiers patients »
+. . . . . . . . . . . . . .
+50
+6.3
+Modélisation fonctionnelle . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+Page vii
+
+
+===== PAGE 8 =====
+
+TABLE DES MATIÈRES
+Hazgui Amani & Abdessalem Yosra
+6.3.1
+Diagramme de cas d’utilisation général du sprint 2 « Gestion des dossiers
+patients » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+6.3.2
+Raffinement du cas d’utilisation « Création dossier patient » . . . . . .
+52
+6.3.3
+Description textuelle du cas d’utilisation « Création dossier patient » . .
+53
+6.3.4
+Raffinement du cas d’utilisation « Consultation et mise à jour du dossier
+patient » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+6.3.5
+Description textuelle du cas d’utilisation « Consultation et mise à jour
+du dossier patient » . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+6.3.6
+Raffinement du cas d’utilisation « Prise de décision » . . . . . . . . . .
+54
+6.3.7
+Description textuelle du cas d’utilisation « Prise de décision » . . . . .
+55
+6.4
+Modélisation dynamique . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+6.4.1
+Diagramme de classes du sprint 2 « Gestion des dossiers patients » . . .
+56
+6.4.2
+Diagramme de séquence du sprint 2 « Gestion des dossiers patients »
+.
+57
+6.5
+Implémentation des fonctions du sprint 2 « Gestion des dossiers patients » . . .
+58
+6.5.1
+Création d’un dossier patient . . . . . . . . . . . . . . . . . . . . . . .
+58
+6.5.2
+Capture des photos cliniques . . . . . . . . . . . . . . . . . . . . . . .
+61
+6.5.3
+Interface médecin spécialiste - Mes patients . . . . . . . . . . . . . . .
+62
+6.5.4
+Interface médecin anesthésiste . . . . . . . . . . . . . . . . . . . . . .
+63
+6.5.5
+Évaluation anesthésique et décision . . . . . . . . . . . . . . . . . . .
+64
+6.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+7
+Évaluation anesthésique
+66
+7.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+7.2
+Inspection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+7.3
+Constitution du dataset . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+7.4
+Conception de la prédiction [1] . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+7.4.1
+Architecture des modèles entraînés
+. . . . . . . . . . . . . . . . . . .
+70
+7.5
+Principes et logiques
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+7.5.1
+Préparation et structuration des données (Notebook 1 & 2) [1] . . . . .
+72
+7.5.2
+Modèle de classification du score de Mallampati (Notebook 3) [5, 1] . .
+72
+7.5.3
+Modèle d’analyse de l’extension cervicale (Notebook 4) . . . . . . . .
+73
+7.5.4
+Modèle d’évaluation de l’ouverture de la bouche (Notebook 5) . . . . .
+74
+7.5.5
+Modèle d’analyse de l’état dentaire (Notebook 6) . . . . . . . . . . . .
+74
+7.5.6
+Tableau récapitulatif . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+7.6
+Description des données
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+7.7
+Apprentissage et Résultats
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+7.7.1
+Mallampati . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+Page viii
+
+
+===== PAGE 9 =====
+
+TABLE DES MATIÈRES
+Hazgui Amani & Abdessalem Yosra
+7.7.2
+Mobilité cervicale
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+7.7.3
+Ouverture de la bouche . . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+7.7.4
+État dentaire
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+7.7.5
+Récapitulatif
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+7.7.6
+Impact de la data augmentation
+. . . . . . . . . . . . . . . . . . . . .
+81
+7.7.7
+Discussion sur le modèle Mallampati
+. . . . . . . . . . . . . . . . . .
+82
+7.8
+Deuxième évaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+7.9
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+84
+8
+Intégration globale
+85
+8.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+85
+8.2
+Définition des critères . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+86
+8.2.1
+ASA - American Society of Anesthesiologists [34, 35] . . . . . . . . .
+86
+8.2.2
+NYHA - New York Heart Association [36, 35]
+. . . . . . . . . . . . .
+86
+8.2.3
+Intubation difficile
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+8.3
+Scores ASA et NYHA
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+88
+8.4
+Agrégation des prédictions et cohérence globale : notebook7 . . . . . . . . . .
+89
+8.4.1
+Principe . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+8.4.2
+Stratégie de scoring du risque global . . . . . . . . . . . . . . . . . . .
+89
+8.4.3
+Évaluation et visualisation . . . . . . . . . . . . . . . . . . . . . . . .
+90
+8.5
+Évaluation globale
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+91
+8.6
+Communication et protocoles . . . . . . . . . . . . . . . . . . . . . . . . . . .
+91
+8.7
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+92
+9
+Sécurité et finalisation
+94
+9.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+94
+9.2
+Évaluation globale
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+94
+9.3
+Tests finaux . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+95
+9.3.1
+Tests fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+96
+9.3.2
+Validation ergonomique
+. . . . . . . . . . . . . . . . . . . . . . . . .
+96
+9.3.3
+Tableau récapitulatif des tests
+. . . . . . . . . . . . . . . . . . . . . .
+97
+9.3.4
+Tests de sécurité
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+98
+9.3.5
+Tests de performance . . . . . . . . . . . . . . . . . . . . . . . . . . .
+99
+9.4
+Préparation du déploiement . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+99
+9.4.1
+Configuration de l’environnement . . . . . . . . . . . . . . . . . . . . 100
+9.4.2
+Sécurisation de l’application . . . . . . . . . . . . . . . . . . . . . . . 100
+Page ix
+
+
+===== PAGE 10 =====
+
+TABLE DES MATIÈRES
+Hazgui Amani & Abdessalem Yosra
+9.4.3
+Optimisation finale . . . . . . . . . . . . . . . . . . . . . . . . . . . . 101
+9.5
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 102
+Conclusion générale
+104
+Annexes
+106
+Bibliographie
+116
+Résumé
+117
+Abstract
+119
+Page x
+
+
+===== PAGE 11 =====
+
+TABLE DES FIGURES
+Hazgui Amani & Abdessalem Yosra
+Table des figures
+1
+Page d’accueil de l’application VitalCare . . . . . . . . . . . . . . . . . . . . .
+2
+2
+Logo de l’établissement CHU Tahar Sfar de Mahdia . . . . . . . . . . . . . . .
+3
+3
+Répartition des patients selon la gravité des risques anesthésiques (source :
+données du PFE)
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+4
+Principe de la méthodologie Scrum . . . . . . . . . . . . . . . . . . . . . . . .
+10
+5
+Diagramme général des cas d’utilisation . . . . . . . . . . . . . . . . . . . . .
+20
+6
+Diagramme de Gantt
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+7
+Plateforme Railway utilisée pour le déploiement . . . . . . . . . . . . . . . . .
+26
+8
+Fonctionnement général de l’application . . . . . . . . . . . . . . . . . . . . .
+27
+9
+L’interface Swagger . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+10
+Diagramme d’utilisation générale du sprint 1 « Sécurité et gestion des utilisateurs
+» . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+11
+Diagramme de cas d’utilisation « Authentification » . . . . . . . . . . . . . . .
+33
+12
+Diagramme de séquence « Validation des comptes » . . . . . . . . . . . . . . .
+34
+13
+Diagramme de séquence « Gestion des comptes » . . . . . . . . . . . . . . . .
+35
+14
+Diagramme de séquence « Attribution des rôles » . . . . . . . . . . . . . . . .
+36
+15
+Diagramme de séquence « Détection des tentatives non autorisées »
+. . . . . .
+38
+16
+Diagramme de séquence « Validation des comptes » . . . . . . . . . . . . . . .
+39
+17
+Diagramme de séquence « Déconnexion sécurisée » . . . . . . . . . . . . . . .
+40
+18
+Diagramme de classes du sprint 1 « Sécurité et gestion des utilisateurs » . . . .
+41
+19
+Diagramme de séquence pour le sprint 1 « Sécurité et gestion des utilisateurs »
+42
+20
+Figure de l’interface de connexion . . . . . . . . . . . . . . . . . . . . . . . .
+43
+21
+Interface de connexion avec blocage après trois tentatives infructueuses
+. . . .
+44
+Page xi
+
+
+===== PAGE 12 =====
+
+TABLE DES FIGURES
+Hazgui Amani & Abdessalem Yosra
+22
+Figure de l’interface d’inscription - étape 1
+. . . . . . . . . . . . . . . . . . .
+44
+23
+Figure de l’interface d’inscription - étape 2
+. . . . . . . . . . . . . . . . . . .
+44
+24
+Figure de l’interface d’inscription - étape 3
+. . . . . . . . . . . . . . . . . . .
+45
+25
+Figure de l’interface de validation des comptes
+. . . . . . . . . . . . . . . . .
+45
+26
+Figure de gestion des médecins . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+27
+Figure de l’interface d’attribution des rôles . . . . . . . . . . . . . . . . . . . .
+46
+28
+Interface de surveillance des accès . . . . . . . . . . . . . . . . . . . . . . . .
+47
+29
+Interface des journaux d’activité . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+30
+Interface de déconnexion . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+31
+Interface de modification du compte . . . . . . . . . . . . . . . . . . . . . . .
+48
+32
+Diagramme de cas d’utilisation du sprint 2 « Gestion des dossiers patients » . .
+52
+33
+Diagramme de cas d’utilisation « Création dossier patient » . . . . . . . . . . .
+52
+34
+Diagramme de cas d’utilisation « Consultation et mise à jour du dossier patient » 53
+35
+Diagramme de cas d’utilisation « Prise de décision »
+. . . . . . . . . . . . . .
+54
+36
+Diagramme de classes du sprint 2 « Gestion des dossiers patients » . . . . . . .
+56
+37
+Diagramme de séquence du sprint 2 « Gestion des dossiers patients » . . . . . .
+57
+38
+Formulaire d’identité du patient
+. . . . . . . . . . . . . . . . . . . . . . . . .
+58
+39
+Formulaire clinique - Diagnostic et antécédents (partie 1) . . . . . . . . . . . .
+59
+40
+Formulaire clinique - Diagnostic et antécédents (partie 2) . . . . . . . . . . . .
+59
+41
+Bilans biologiques - Biochimie et hémostasie
+. . . . . . . . . . . . . . . . . .
+59
+42
+Bilans biologiques - Optionnels . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+43
+Scores ASA et NYHA
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+44
+Évaluation - Prothèse dentaire et respiration . . . . . . . . . . . . . . . . . . .
+61
+45
+Capture des photos cliniques - État dentaire . . . . . . . . . . . . . . . . . . .
+61
+46
+Photos manquantes - Progression . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+47
+l’option de prise de photo via la galerie ou la caméra
+. . . . . . . . . . . . . .
+62
+48
+Envoi des photos à l’IA . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+49
+Tableau de bord médecin spécialiste - Liste des patients . . . . . . . . . . . . .
+62
+50
+Tableau de bord anesthésiste - Dossiers
+. . . . . . . . . . . . . . . . . . . . .
+63
+51
+Liste des dossiers nécessitant une consultation . . . . . . . . . . . . . . . . . .
+63
+52
+Liste des dossiers validés . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+53
+Évaluation anesthésique - Score de risque d’intubation
+. . . . . . . . . . . . .
+64
+54
+Évaluation anesthésique - Informations patient et décision . . . . . . . . . . . .
+64
+55
+Rapport d’analyse IA - Critères d’intubation . . . . . . . . . . . . . . . . . . .
+65
+56
+Différents types de classification Mallampati . . . . . . . . . . . . . . . . . . .
+67
+Page xii
+
+
+===== PAGE 13 =====
+
+TABLE DES FIGURES
+Hazgui Amani & Abdessalem Yosra
+57
+Impact de l’extension cervicale sur l’intubation
+. . . . . . . . . . . . . . . . .
+67
+58
+Exemple de la mesure de la bonne ouverture de la bouche . . . . . . . . . . . .
+68
+59
+Pipeline générique de prédiction des modèles CNN pour VitalCare . . . . . . .
+70
+60
+Figures descriptives de la data collectée (Partie 1) . . . . . . . . . . . . . . . .
+76
+61
+Figures descriptives de la data collectée (Partie 2) . . . . . . . . . . . . . . . .
+76
+62
+Figure illustrant l’apprentissage pour le modèle de Mallampati . . . . . . . . .
+77
+63
+Précision du modèle Mllampati . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+64
+Figure illustrant l’étape de préparation d’entraînement de l’extension cervicale .
+78
+65
+Précision du modèle extension cervicale . . . . . . . . . . . . . . . . . . . . .
+78
+66
+Figure d’association d’une paire des photos de l’ouverture de la bouche
+. . . .
+79
+67
+Précision du modèle ouverture de la bouche . . . . . . . . . . . . . . . . . . .
+79
+68
+Figure illustrant la préparation à l’entraînement pour l’état dentaire . . . . . . .
+80
+69
+Précision du modèle état dentaire . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+70
+Schéma illustrant les différentes techniques de traitement de données . . . . . .
+82
+71
+Schéma illustrant la deuxième évaluation
+. . . . . . . . . . . . . . . . . . . .
+83
+72
+Illustration du score ASA . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+86
+73
+Illustration du score NYHA . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+74
+Stade de l’intubation difficile . . . . . . . . . . . . . . . . . . . . . . . . . . .
+88
+75
+Entraînement final . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+90
+76
+Analyse des performances
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+90
+77
+Figure montrant l’évaluation globale . . . . . . . . . . . . . . . . . . . . . . .
+91
+78
+Figure 14 - Exemple de vérification de cohérence pour un médecin anesthésiste
+95
+79
+Exemple de vérification de cohérence pour un médecin anesthésiste
+. . . . . .
+95
+80
+Exemple de vérification de cohérence pour un médecin anesthésiste
+. . . . . .
+95
+81
+Vérification finale de la cohérence entre les composantes . . . . . . . . . . . .
+96
+82
+Vérification finale de la cohérence entre les composantes . . . . . . . . . . . .
+96
+83
+Enregistrement des mots de passe
+. . . . . . . . . . . . . . . . . . . . . . . .
+99
+84
+Paramétrage du serveur . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+85
+Instance PostgreSQL . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 101
+86
+Schémas de maintenance à distance
+. . . . . . . . . . . . . . . . . . . . . . . 102
+87
+Document de consentement éclairé signé par les patients
+. . . . . . . . . . . . 107
+Page xiii
+
+
+===== PAGE 14 =====
+
+LISTE DES TABLEAUX
+Hazgui Amani & Abdessalem Yosra
+Liste des tableaux
+1
+Comparaison des modèles de développement
+. . . . . . . . . . . . . . . . . .
+8
+2
+Besoins fonctionnels par acteur . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+3
+Équipe Scrum du projet VitalCare
+. . . . . . . . . . . . . . . . . . . . . . . .
+16
+4
+User stories : Sécurité et gestion des utilisateurs . . . . . . . . . . . . . . . . .
+18
+5
+Planification des sprints du projet VitalCare . . . . . . . . . . . . . . . . . . .
+19
+6
+Definition of Done : Critères de complétion des tâches
+. . . . . . . . . . . . .
+21
+7
+Comparaison des architectures de deep learning pour l’embedding des images .
+25
+8
+Tableau des user stories du sprint 1 « Sécurité et gestion des utilisateurs »
+. . .
+30
+9
+Description de cas d’utilisation « Authentification » . . . . . . . . . . . . . . .
+34
+10
+Description de cas d’utilisation « Validation des comptes » . . . . . . . . . . .
+35
+11
+Description de cas d’utilisation « Gestion des comptes »
+. . . . . . . . . . . .
+36
+12
+Description de cas d’utilisation « Attribution des rôles » . . . . . . . . . . . . .
+37
+13
+Description de cas d’utilisation « Détection des tentatives non autorisées » . . .
+38
+14
+Description de cas d’utilisation « Consultation des activités des utilisateurs » . .
+39
+15
+Description de cas d’utilisation « Déconnexion sécurisée » . . . . . . . . . . .
+40
+16
+Tableau de backlog du sprint 2 « Gestion des dossiers patients »
+. . . . . . . .
+51
+17
+Description du cas d’utilisation « Création dossier patient » . . . . . . . . . . .
+53
+18
+Description du cas d’utilisation « Consultation et mise à jour du dossier patient » 54
+19
+Description du cas d’utilisation « Prise de décision »
+. . . . . . . . . . . . . .
+55
+20
+Tableau récapitulatif des choix . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+21
+Récapitulatif des résultats des modèles d’intelligence artificielle
+. . . . . . . .
+81
+Page xiv
+
+
+===== PAGE 15 =====
+
+LISTE DES TABLEAUX
+Hazgui Amani & Abdessalem Yosra
+22
+Récapitulatif des tests fonctionnels . . . . . . . . . . . . . . . . . . . . . . . .
+98
+23
+Protocole de capture des cinq photographies cliniques de VitalCare . . . . . . . 108
+24
+Performances des quatre modèles CNN de VitalCare
+. . . . . . . . . . . . . . 108
+25
+Principaux endpoints de l’API REST VitalCare . . . . . . . . . . . . . . . . . 109
+Page xv
+
+
+===== PAGE 16 =====
+
+LISTE DES TABLEAUX
+Hazgui Amani & Abdessalem Yosra
+Liste des acronymes
+AOT
+Ahead-Of-Time
+API
+Application Programming Interface
+ASA
+American Society of Anesthesiologists
+CNN
+Convolutional Neural Network
+CRUD
+Create, Read, Update, Delete
+Dart
+Langage de programmation utilisé par Flutter
+DMI
+Dossier Médical Informatisé
+EPS
+Établissement Public de Santé
+FastAPI
+Framework Python pour la création d’APIs
+Flutter
+Framework mobile de Google
+GitHub
+Plateforme de développement collaboratif
+Google Meet
+Service de visioconférence de Google
+HTTP
+HyperText Transfer Protocol
+IA
+Intelligence Artificielle
+ISIMA
+Institut Supérieur d’Informatique de Mahdia
+JIT
+Just-In-Time
+JSON
+JavaScript Object Notation
+MobileNetV2
+Modèle de réseau de neurones convolutif
+NYHA
+New York Heart Association
+PFE
+Projet de Fin d’Études
+PostgreSQL
+Système de gestion de base de données relationnelle
+Python
+Langage de programmation
+REST
+Representational State Transfer
+Scrum
+Méthodologie agile de gestion de projet
+SQL
+Structured Query Language
+SVM
+Support Vector Machine
+Swagger
+Outil de documentation et de test d’API
+TensorFlow
+Bibliothèque open-source pour le machine learning
+UM
+Université de Monastir
+UML
+Unified Modeling Language
+VitalCare
+Plateforme
+intelligente
+d’assistance
+à
+la
+consultation
+préanesthésique
+WhatsApp
+Application de messagerie instantanée
+Page xvi
+
+
+===== PAGE 17 =====
+
+CHAPITRE 1. INTRODUCTION GÉNÉRALE
+Hazgui Amani & Abdessalem Yosra
+Chapitre
+1
+Introduction générale
+Depuis plusieurs décennies, le secteur de santé change de visage et entre progressivement
+dans une nouvelle ère, impulsée par l’essor contenu des technologies numériques et de
+l’intelligence artificielle [1]. Cette évolution contribue à l’amélioration des pratiques cliniques,
+à l’optimisation des processus hospitaliers et au renforcement de l’aide à la décision médicale.
+Même avec ces avancées, certaines étapes du parcours de soins exigent une évaluation
+rigoureuse surtout en pré-anesthésie.
+Une telle phase repose sur une analyse approfondie de l’état clinique du patient
+afin d’identifier les facteurs de risque et d’anticiper les complications potentielles per et
+post_opératoires. En se basant sur cette évaluation le médecin anesthésiste-réanimateur
+détermine la conduite anesthésique la plus appropriée. Cependant, la variabilité des profils
+patients, la diversité des paramètres cliniques à considérer ainsi que les contraintes temporelles
+inhérentes à certains contextes rendent ce processus complexe et fortement dépendant de
+l’expertise humaine.
+Dans ce cadre, notre projet de fin d’études s’inscrit dans une démarche d’assistance à la
+décision médicale, visant à améliorer la prise en charge lors de l’évaluation pré-anesthésique.
+L’objectif est de concevoir une solution intelligente reposant sur l’exploitation de données
+cliniques structurées, issues d’un questionnaire médical précédé par un consentement éclairé, et
+sur l’analyse automatisée d’images médicales à l’aide de techniques d’intelligence artificielle.
+Cette approche a pour finalité de fournir un outil d’aide permettant de synthétiser les
+Page 1
+
+
+===== PAGE 18 =====
+
+CHAPITRE 1. INTRODUCTION GÉNÉRALE
+Hazgui Amani & Abdessalem Yosra
+informations disponibles et de faciliter l’interprétation clinique, sans substituer le jugement du
+praticien.
+La réalisation a nécessité une immersion dans le milieu hospitalier afin de comprendre
+les pratiques réelles et les contraintes opérationnelles rencontrées par les professionnels de
+santé. Cette observation a permis d’identifier les besoins fonctionnels concrets et d’orienter nos
+choix méthodologiques et techniques adoptés dans le développement de la solution proposée.
+De ce fait, ce rapport présente de manière structurée l’ensemble des étapes du projet, depuis
+l’analyse des besoins jusqu’à l’implémentation de la solution. Il met également en évidence les
+résultats obtenus et les limites rencontrées, avant de proposer des perspectives d’amélioration
+et d’extension dans des travaux futurs.
+FIGURE 1. Page d’accueil de l’application VitalCare
+Page 2
+
+
+===== PAGE 19 =====
+
+CHAPITRE 2. CADRE GÉNÉRAL DU PROJET
+Hazgui Amani & Abdessalem Yosra
+Chapitre
+2
+Cadre général du projet
+Introduction
+Ce chapitre présente le cadre général du projet VitalCare, en exposant l’environnement
+institutionnel,
+la
+problématique
+médicale,
+les
+objectifs
+poursuivis,
+la
+méthode
+de
+développement adoptée ainsi que la solution proposée.
+2.1 Établissement d’accueil
+FIGURE 2. Logo de l’établissement CHU Tahar Sfar de Mahdia
+Page 3
+
+
+===== PAGE 20 =====
+
+CHAPITRE 2. CADRE GÉNÉRAL DU PROJET
+Hazgui Amani & Abdessalem Yosra
+L’EPS Taher Sfar de Mahdia est un établissement hospitalier et universitaire de référence
+en Tunisie [2]. Il a bénéficié récemment d’une modernisation importante avec l’intégration
+d’équipements médicaux avancés.
+2.1.1
+Capacités et services
+L’hôpital dispose d’une capacité d’environ 460 lits et comprend :
+— 11 salles opératoires pleinement fonctionnelles;
+— Des unités de soins intensifs médicales et chirurgicales;
+— Plus de 12 spécialités chirurgicales;
+— Plus de 15 spécialités médicales;
+— Un service continu 24h/24 et 7j/7.
+2.1.2
+Coordonnées de l’établissement
+— Adresse : Avenue Tahar Sfar, Mahdia 5100, Tunisie;
+— Téléphone : +216 73 671 744;
+— Fax : +216 73 671 579;
+— Site web : hopital-taharsfarmahdia.tn.
+2.2 Étude préalable
+2.2.1
+Problématique
+La prise en charge des patients nécessitant une intervention chirurgicale représente un défi
+organisationnel important, en raison du volume élevé de patients accueillis quotidiennement.
+Après la pose de l’indication chirurgicale, le patient doit passer par une consultation de
+pré-anesthésie, dont les délais varient selon la nature de la pathologie.
+Page 4
+
+
+===== PAGE 21 =====
+
+CHAPITRE 2. CADRE GÉNÉRAL DU PROJET
+Hazgui Amani & Abdessalem Yosra
+Cependant, la surcharge des consultations de près-anesthésie est accentuée par la prise en
+charge systématique de patients à faible risque, entrainant une perte de temps importante pour
+les équipes médicales.
+FIGURE 3. Répartition des patients selon la gravité des risques anesthésiques (source :
+données du PFE)
+Cette situation peut affecter l’efficacité globale du service ainsi que la qualité de la prise en
+charge.
+Ainsi, l’intégration d’un système d’aide à la décision apparaît pertinente. Un tel système
+permettrait de mieux classer les patients selon leur niveau de risque anesthésique et d’orienter
+les cas nécessitant une attention particulière, tout en simplifiant le parcours des sujets à faible
+risque.
+2.2.2
+Solution envisagée
+L’intégration d’un système d’aide à la décision apparaît pertinente. Un tel système
+permettrait de :
+— Mieux classer les patients selon leur niveau de risque anesthésique;
+— Orienter les cas nécessitant une attention particulière;
+— Simplifier le parcours des patients à faible risque.
+Page 5
+
+
+===== PAGE 22 =====
+
+CHAPITRE 2. CADRE GÉNÉRAL DU PROJET
+Hazgui Amani & Abdessalem Yosra
+2.3 Étude de l’existant
+2.3.1
+Le logiciel actuel (DMI)
+Le dossier médical informatisé DMI mis en place par le ministère de la Santé propose
+certaines fonctionnalités, notamment :
+— Le partage des résultats des analyses biologiques
+— L’accès aux examens radiologiques (principalement scanners et radiographies standards)
+— Un formulaire de consultation pré-anesthésique pouvant être rempli et imprimé par les
+médecins anesthésistes, disponible uniquement dans les services des urgences et de
+consultation externe
+Cependant, ce système reste limité en termes d’accessibilité et de flexibilité. Il est
+principalement utilisé via une application web, sans véritable extension vers d’autres
+plateformes ou supports mobiles.
+Limites identifiées :
+— Accessibilité et flexibilité limitées;
+— Utilisation principalement via une application web;
+— Absence d’extension vers des supports mobiles.
+2.3.2
+Contraintes logistiques
+Dans de nombreux services, la disponibilité des ordinateurs est insuffisante. Un poste
+informatique est souvent partagé entre plusieurs utilisateurs, ce qui limite l’accès simultané
+aux données.
+Cette contrainte engendre des retards dans la consultation et la mise à jour des informations
+médicales. Par conséquent, cela impacte directement l’efficacité du travail quotidien.
+Il devient donc nécessaire d’augmenter les points d’accès au système afin d’améliorer la
+fluidité du travail et l’accessibilité aux données.
+Page 6
+
+
+===== PAGE 23 =====
+
+CHAPITRE 2. CADRE GÉNÉRAL DU PROJET
+Hazgui Amani & Abdessalem Yosra
+2.4 Présentation du projet VitalCare
+Afin de pallier les insuffisances observées dans le système actuel, nous proposons la
+conception d’une application mobile indépendante, pensée comme un outil complémentaire
+sans dépendance directe à l’existant. Cette autonomie permet d’introduire une solution plus
+agile, accessible en continue et mieux adaptée aux contraintes du terrain.
+Notre objectif était d’apporter un réel aide aux médecins anesthésistes, souvent confronté à
+un nombre important de consultants. En facilitant l’accès rapide aux données essentielles et en
+simplifiant leur gestion, l’application contribue à alléger sa charge de travail et à améliorer son
+efficacité au quotidien.
+Concernant le patient, cette solution permet de limiter le nombre de consultation et de
+réduire les temps d’attente, rendant ainsi le parcours de soins plus fluide et moins contraignant.
+De plus, le médecin spécialiste bénéficie également d’un gain de temps significatif lors
+de la prise en charge. Une meilleure organisation des informations lui permet d’optimiser la
+planification et le déroulement des interventions au bloc opératoire.
+Ainsi, cette approche favorise une coordination plus efficace entre les différents
+intervenants, tout en rendant l’ensemble du système plus réactif, mieux structuré et centré sur
+les besoins réels des utilisateurs.
+2.4.1
+Apports de la solution
+— Pour le médecin anesthésiste :
+— Accès rapide aux données essentielles.
+— Allègement de sa charge de travail.
+— Amélioration de son efficacité au quotidien.
+— Pour le patient :
+— Limitation des déplacements inutiles.
+— Réduction des temps d’attente.
+Page 7
+
+
+===== PAGE 24 =====
+
+CHAPITRE 2. CADRE GÉNÉRAL DU PROJET
+Hazgui Amani & Abdessalem Yosra
+— Parcours de soins plus fluide.
+— Pour le médecin spécialiste :
+— Gain de temps lors de la prise en charge.
+— Optimisation de la planification des interventions.
+Ansi, cette approche favorise une coordination plus efficace entre les différents intervenants,
+tout en rendant l’ensemble du système plus réactif, mieux structuré et centré sur les besoins réels
+des utilisateurs.
+2.5 Méthodologie du travail
+2.5.1
+Comparaison des modèles de développement
+Modèle
+Caractéristiques
+Limites
+Cascade
+Structure linéaire et simplicité
+Rigide face aux changements
+Incrémental
+Livraison
+progressive
+des
+fonctionnalités
+Flexible avec interaction client
+Agile (Scrum)
+Approche
+itérative,
+communication continue
+Adaptation aux besoins évolutifs
+TABLE 1. Comparaison des modèles de développement
+2.5.2
+Rôles clés dans Scrum
+— Product Owner : Il porte la vision globale du produit et veille à ce que celui-ci réponde
+réellement aux besoins des utilisateurs finaux. Son rôle ne se limite pas à définir les
+fonctionnalités : il doit aussi les organiser de manière cohérente en établissant des
+priorités claires dans le backlog. Il prend en compte la valeur métier, les contraintes du
+projet et les retours des parties prenantes pour orienter les choix. À chaque étape, il vérifie
+Page 8
+
+
+===== PAGE 25 =====
+
+CHAPITRE 2. CADRE GÉNÉRAL DU PROJET
+Hazgui Amani & Abdessalem Yosra
+que les éléments livrés correspondent aux attentes définies et qu’ils apportent une réelle
+utilité.
+— Scrum Master : Il agit comme un facilitateur au sein de l’équipe. Sa mission principale
+est de garantir le bon déroulement de la démarche Scrum en instaurant un cadre de
+travail efficace. Il aide l’équipe à rester concentrée sur ses objectifs, identifie les obstacles
+susceptibles de ralentir l’avancement et intervient pour les éliminer. Il joue également un
+rôle d’accompagnement en sensibilisant les membres de l’équipe aux bonnes pratiques
+agiles et en favorisant une dynamique de collaboration saine et productive.
+— Équipe de développement : Composée de membres aux compétences complémentaires,
+elle est responsable de la réalisation concrète. Cette équipe fonctionne de manière
+autonome, en s’organisant elle-même pour atteindre les objectifs fixés lors de chaque
+sprint. Elle prend en charge l’ensemble du processus, depuis la conception jusqu’à la
+livraison des fonctionnalités. Grâce à cette diversité de compétences, elle est capable de
+produire des incréments complets et opérationnels, prêts à être évalués et utilisés.
+2.5.3
+Pilotage du projet avec Scrum
+Le choix de la méthodologie Scrum repose principalement sur la nature évolutive, complexe
+et sensible du domaine médical, ainsi que sur le contexte académique et pédagogique dans
+lequel s’inscrit notre projet. En effet, le développement d’un système d’assistance à la décision
+destiné au domaine de l’anesthésie nécessite une approche capable de concilier rigueur,
+flexibilité et amélioration continue. Contrairement aux modèles de développement classiques,
+souvent rigides face aux changements, Scrum offre une organisation itérative permettant
+d’adapter progressivement le système aux besoins réels identifiés durant les différentes phases
+du projet. Cette capacité d’adaptation est particulièrement importante dans un environnement
+médical où les exigences fonctionnelles peuvent évoluer selon les retours des professionnels
+de santé, les contraintes du terrain ou encore les problématiques découvertes au cours du
+développement.
+Page 9
+
+
+===== PAGE 26 =====
+
+CHAPITRE 2. CADRE GÉNÉRAL DU PROJET
+Hazgui Amani & Abdessalem Yosra
+C’est une méthode Agile conçue pour piloter des projets complexes. Son principe repose
+sur une progression incrémentale du produit à travers des cycles de développement courts
+appelés sprints. Chaque sprint permet de développer, tester et valider un ensemble limité de
+fonctionnalités avant de passer à l’étape suivante. Cette organisation facilite le suivi tout en
+garantissant une amélioration continue. Cette approche a permis de structurer progressivement
+les différents modules.
+L’adoption de Scrum a également permis d’assurer une meilleure maîtrise de la qualité
+du produit développé. En effet, dans un projet médical, la fiabilité des informations et la
+stabilité des fonctionnalités représentent des éléments essentiels, car toute erreur peut avoir
+un impact direct sur l’organisation des soins ou sur la prise en charge du patient. Grâce au
+découpage du développement en plusieurs sprints, il devient possible de tester régulièrement
+les fonctionnalités réalisées, de corriger rapidement les anomalies détectées et d’intégrer
+progressivement les améliorations nécessaires avant la validation finale. Cette méthode favorise
+ainsi une réduction des risques liés aux erreurs de conception ou d’intégration.
+Par ailleurs, ce choix se justifie également par le cadre d’apprentissage dans lequel notre
+projet a été réalisé. En effet VitalCare représente non seulement un travail technique, mais
+également une expérience de gestion de projet collaborative. Scrum a offert un environnement
+de travail structuré permettant de mieux organiser les tâches, de répartir clairement les
+responsabilités et de suivre régulièrement l’avancement du projet.
+FIGURE 4. Principe de la méthodologie Scrum
+Page 10
+
+
+===== PAGE 27 =====
+
+CHAPITRE 2. CADRE GÉNÉRAL DU PROJET
+Hazgui Amani & Abdessalem Yosra
+2.6 Outils collaboratifs
+Certains outils agiles ont été adoptés afin de faciliter la collaboration et d’assurer un suivi
+efficace des différentes tâches de l’équipe.
+D’une part, GitHub a été utilisé comme plateforme principale de gestion du code source.
+Cet outil a permis de centraliser le travail de développement, de suivre l’évolution du projet de
+manière structurée et de gérer les différentes versions de l’application. Grâce à son système de
+gestion de versions, chaque modification du code est tracée, ce qui facilite la coordination entre
+les membres de l’équipe et limite les risques de conflits lors de l’intégration des contributions.
+GitHub a également servi de support pour l’organisation des tâches, notamment à travers la
+gestion des issues et des branches, ce qui a contribué à une meilleure répartition du travail.
+D’autre part, WhatsApp a été utilisé comme moyen de communication rapide entre les
+membres de l’équipe. Cet outil a joué un rôle important dans la coordination quotidienne, en
+permettant des échanges instantanés sur l’avancement des tâches, la résolution de problèmes
+techniques ou encore l’organisation des réunions. Il a ainsi favorisé une communication fluide et
+réactive, essentielle dans un contexte de travail agile où les décisions doivent souvent être prises
+rapidement. Par ailleurs, l’application GoogleMeet a été utilisée pour organiser les réunions à
+distance et les séances de suivi du projet. Cet outil a permis aux membres de l’équipe d’échanger
+de manière plus structurée lors des phases importantes du développement, notamment pour
+discuter des choix techniques, présenter l’avancement des différentes fonctionnalités et prendre
+des décisions collectives. L’utilisation de réunions virtuelles a également facilité la collaboration
+malgré les contraintes de disponibilité ou de distance entre les membres de l’équipe.
+L’utilisation combinée de GitHub, WhatsApp et GoogleMeet a permis d’assurer à la fois
+un suivi rigoureux du développement, une communication rapide ainsi qu’une coordination
+efficace au sein de l’équipe, contribuant ainsi à la bonne progression.
+Page 11
+
+
+===== PAGE 28 =====
+
+CHAPITRE 2. CADRE GÉNÉRAL DU PROJET
+Hazgui Amani & Abdessalem Yosra
+Conclusion
+Ce chapitre a permis de présenter le contexte général ainsi que les problématiques
+rencontrées dans la gestion des consultations pré-anesthésiques. Il a également mis en évidence
+les limites des solutions existantes et les besoins ayant motivé la conception de l’application
+proposée. Enfin, les choix méthodologiques et les outils utilisés durant le développement ont
+été présentés.
+Afin de faciliter la compréhension de la démarche suivie, ce rapport est organisé selon une
+progression logique allant de l’identification du besoin jusqu’à la mise en production de la
+solution. Dans un premier temps, les besoins sont étudiés et analysés afin de définir précisément
+les fonctionnalités attendues et les contraintes. Cette analyse mène à la phase de conception,
+au cours de laquelle les différents composants de la solution sont modélisés et structurés.
+Les fonctionnalités sont implémentées progressivement, en veillant à respecter les choix
+architecturaux établis. Les différents éléments développés sont ensuite intégrés au sein d’une
+application cohérente et fonctionnelle. Enfin, une phase de tests est réalisée pour vérifier le bon
+fonctionnement, détecter d’éventuelles anomalies et valider les exigences initiales. Finalement,
+la solution est déployée pour d’être accessible dans un environnement réel d’utilisation.
+Page 12
+
+
+===== PAGE 29 =====
+
+CHAPITRE 3. SPÉCIFICATION DES BESOINS
+Hazgui Amani & Abdessalem Yosra
+Chapitre
+3
+Spécification des besoins
+Introduction
+La phase de spécification des besoins constitue une étape fondamentale du projet. Elle
+permet d’identifier de manière précise les attentes des différents acteurs du système, notamment
+l’administrateur ainsi que les médecins.
+Cette analyse vise à définir les fonctionnalités essentielles, les contraintes ainsi que les
+objectifs fonctionnels et non fonctionnels de l’application.
+Ce chapitre fond de base solide pour orienter la conception et le développement.
+3.1 Identification des besoins
+3.1.1
+Les acteurs principaux
+— Administrateur : Il joue un rôle essentiel dans le système. Sa mission principale consiste
+à vérifier l’identité de chaque utilisateur afin de garantir la sécurité et la confidentialité des
+dossiers médicaux. Il est également chargé de la gestion des accès, en validant ou refusant
+les demandes d’inscription, et en contrôlant les autorisations attribuées aux différents
+utilisateurs du système.
+Page 13
+
+
+===== PAGE 30 =====
+
+CHAPITRE 3. SPÉCIFICATION DES BESOINS
+Hazgui Amani & Abdessalem Yosra
+— Médecin spécialiste : Il joue un rôle clé dans le processus de prise en charge du patient.
+Sa mission consiste à examiner le patient, à vérifier son historique médical et chirurgical,
+puis à poser l’indication d’une intervention au bloc opératoire. À cette étape, il crée un
+dossier patient et l’enrichit en y associant des informations cliniques ainsi que des photos
+du patient, afin d’assurer un suivi médical complet et structuré.
+— Médecin anesthésiste : Il reçoit une fiche d’anesthésie préopératoire préremplie par
+l’équipe chirurgicale. Celle-ci regroupe les principales informations nécessaires à la prise
+en charge du patient, notamment l’indication opératoire, les antécédents médicaux ainsi
+que l’historique clinique. Elle inclut également l’évaluation des critères d’intubation
+difficile, l’analyse du terrain du patient et l’appréciation de son état cardio-respiratoire.
+Ces éléments permettent d’anticiper les risques anesthésiques et d’adapter la stratégie de
+prise en charge en fonction du profil clinique du patient.
+— Agent IA : C’est un système interne qui analyse automatiquement les cinq photos
+cliniques et génère le rapport de risque d’intubation.
+— Agent BI : c’est un système interne qui calcule les indicateurs de performance et génère
+les alertes analytiques.
+3.1.2
+Les besoins fonctionnels
+Acteurs
+Besoins
+Administrateur
+Gérer les comptes utilisateurs, recevoir des notifications en cas de
+tentatives d’authentification non autorisées, approuver ou refuser
+l’accès suite à une tentative suspecte, mettre à jour et valider
+les informations des médecins, authentifier les utilisateurs et
+sécuriser l’accès à l’application, assurer la confidentialité et la
+sécurité des données médicales
+Suite à la page suivante
+Page 14
+
+
+===== PAGE 31 =====
+
+CHAPITRE 3. SPÉCIFICATION DES BESOINS
+Hazgui Amani & Abdessalem Yosra
+Suite du tableau précédent
+Acteurs
+Besoins
+Médecin spécialiste
+S’authentifier et accéder à son espace personnel, créer un dossier
+patient lors de la première consultation, consulter et mettre à jour
+les informations médicales du patient (antécédents, examens,
+etc.), capturer et envoyer les cinq photographies cliniques
+standardisées, déclencher automatiquement l’analyse IA après
+envoi de la cinquième photo, modifier ou compléter un dossier
+patient existant, consulter la liste des patients
+Médecin anesthésiste
+S’authentifier et accéder à son espace dédié, consulter les
+dossiers patients transmis par les médecins spécialistes, examiner
+la fiche d’anesthésie préopératoire préremplie, ajouter des
+observations et recommandations anesthésiques, demander des
+examens complémentaires si nécessaire, valider la fiche de
+pré-anesthésie ou proposer une éventuelle consultation directe,
+consulter l’historique et les mises à jour des dossiers patients
+Agent IA
+Analyse automatiquement les cinq photos cliniques et génère le
+rapport de risque
+Agent BI
+Calcule les indicateurs de performance et génère les alertes
+analytiques
+TABLE 2. Besoins fonctionnels par acteur
+3.1.3
+Les besoins non fonctionnels
+— Sécurité et confidentialité des données : L’ergonomie de l’interface utilisateur est un
+facteur déterminant pour l’adoption du système par les professionnels de santé. Une
+interface simple, intuitive et bien structurée permet de réduire le temps d’apprentissage
+et de minimiser les erreurs de manipulation. L’objectif est de faciliter la navigation et
+l’accès rapide aux informations essentielles, tout en tenant compte des contraintes de
+Page 15
+
+
+===== PAGE 32 =====
+
+CHAPITRE 3. SPÉCIFICATION DES BESOINS
+Hazgui Amani & Abdessalem Yosra
+charge de travail des utilisateurs médicaux. Une bonne conception ergonomique contribue
+ainsi directement à l’efficacité opérationnelle du système.
+— Convivialité et ergonomie : L’ergonomie de l’interface utilisateur est un facteur
+déterminant pour l’adoption du système par les professionnels de santé. Une interface
+simple, intuitive et bien structurée permet de réduire le temps d’apprentissage et de
+minimiser les erreurs de manipulation. L’objectif est de faciliter la navigation et l’accès
+rapide aux informations essentielles, tout en tenant compte des contraintes de charge
+de travail des utilisateurs médicaux. Une bonne conception ergonomique contribue ainsi
+directement à l’efficacité opérationnelle du système.
+— Performance et disponibilité : La disponibilité est un critère critique : le système doit
+rester accessible en permanence, notamment dans des contextes d’urgence médicale. Des
+mécanismes d’anticiper la redondance doivent donc être envisagés afin de limiter les
+interruptions de service et garantir une continuité opérationnelle.
+3.2 Équipe et rôles
+Nous présentons dans ce paragraphe les acteurs participant au déroulement des différentes
+phases du projet ainsi que les rôles qui leur sont associés.
+La Scrum Team se compose de trois rôles principaux :
+Rôle
+Nom
+Product Owner
+Manaa Rami
+Scrum Master
+Hamdani Mouhamed Tarek
+Équipe de développement
+Hazgui Amani et Abdessalem Yosra
+TABLE 3. Équipe Scrum du projet VitalCare
+Page 16
+
+
+===== PAGE 33 =====
+
+CHAPITRE 3. SPÉCIFICATION DES BESOINS
+Hazgui Amani & Abdessalem Yosra
+3.3 Backlog de produit
+Le backlog de produit est maintenu par le Product Owner (ou le responsable du projet). Il
+sert de référence unique pour toutes les exigences.
+Chaque élément du backlog est appelé user story ou fonctionnalité, décrivant un besoin
+utilisateur de manière simple et compréhensible.
+Ceci constitue un outil central dans la gestion, car il permet de structurer tous de manière
+dynamique. Il repose d’abord sur une logique de priorisation et d’évolution.
+Il s’agit d’un raffinement progressif des éléments prioritaires étant définis avec plus de
+précision que ceux situés en bas de la liste.
+Enfin, il s’inscrit dans une démarche collaborative afin de garantir une meilleure adéquation
+entre les besoins exprimés et le produit final.
+Thème
+En tant que
+Je veux
+Afin de
+Priorité
+Sécurité et
+gestion des
+utilisateurs
+Administrateur
+Authentifier
+et
+valider les comptes
+utilisateurs
+Garantir
+la
+sécurité
+Haute
+Gérer les comptes
+des médecins
+Contrôler
+les
+accès
+à
+l’application
+Haute
+Consulter
+les
+journaux d’activité
+Suivre les actions
+réalisées
+Moyenne
+Recevoir
+des
+alertes
+en
+cas
+de
+tentative
+d’accès
+non autorisée
+Renforcer
+la
+sécurité
+Haute
+Suite à la page suivante
+Page 17
+
+
+===== PAGE 34 =====
+
+CHAPITRE 3. SPÉCIFICATION DES BESOINS
+Hazgui Amani & Abdessalem Yosra
+Suite du tableau précédent
+Thème
+En tant que
+Je veux
+Afin de
+Priorité
+Gestion des
+dossiers patients
+Médecin
+spécialiste
+Créer
+un
+dossier
+patient
+Enregistrer
+les
+informations
+médicales
+du
+patient
+Haute
+Consulter et mettre
+à jour les dossiers
+patients
+Assurer le suivi
+médical
+Haute
+Indiquer la nécessité
+d’un passage au bloc
+opératoire
+Préparer
+la
+prise en charge
+anesthésique
+Haute
+Évaluation
+anesthésique
+Médecin
+anesthésiste
+Consulter
+la
+fiche
+d’anesthésie
+préremplie
+Évaluer
+le
+patient
+avant
+intervention
+Haute
+Contrôler les critères
+d’évaluation
+Sécuriser
+la
+décision
+anesthésique
+Haute
+Discuter le passage
+par la consultation
+Décider
+la
+nécessité
+d’une
+consultation
+directe
+Haute
+TABLE 4. User stories : Sécurité et gestion des utilisateurs
+3.4 Identification des sprints
+Page 18
+
+
+===== PAGE 35 =====
+
+CHAPITRE 3. SPÉCIFICATION DES BESOINS
+Hazgui Amani & Abdessalem Yosra
+Sprint
+Thème
+principal
+Objectif
+Fonctionnalités principales
+Livrable
+Sprint 1
+Sécurité
+et
+gestion
+des
+utilisateurs
+Mettre en place
+la base sécurisée
+Authentification,
+gestion
+médecins, gestion rôles, alertes
+accès, consultation logs
+Système
+d’authentification
++
+gestion
+utilisateurs
+Sprint 2
+Gestion
+des
+dossiers patients
+Assurer
+la
+création
+et
+le
+suivi
+des
+dossiers
+médicaux
+Création dossier, consultation,
+mise
+à
+jour,
+ajout
+infos
+médicales, indication bloc
+Module de gestion
+des
+patients
+opérationnel
+Sprint 3
+Évaluation
+anesthésique
+Préparer
+et
+évaluer
+le
+patient
+avant
+intervention
+Consultation
+fiche
+anesthésie
+préremplie,
+validation
+ou
+consultation directe
+Module anesthésie
+fonctionnel
+Sprint 4
+Intégration
+globale
+du
+système
+Assurer
+la
+cohérence
+du
+parcours patient
+Liaison modules, notifications
+inter-rôles,
+gestion
+statuts
+patients, tests intégration
+Workflow
+patient
+complet
+Sprint 5
+Sécurité avancée
+et finalisation
+Stabiliser
+et
+sécuriser
+l’application
+Évaluation globale, tests finaux,
+préparation déploiement
+Version
+stable
+prête à déployer
+TABLE 5. Planification des sprints du projet VitalCare
+3.5 Diagramme des cas d’utilisation générale
+Ce diagramme permet de représenter les interactions entre les acteurs (utilisateurs) et le
+système. Il décrit les fonctionnalités principales offertes par l’application et leur utilisation selon
+les rôles.
+Page 19
+
+
+===== PAGE 36 =====
+
+CHAPITRE 3. SPÉCIFICATION DES BESOINS
+Hazgui Amani & Abdessalem Yosra
+FIGURE 5. Diagramme général des cas d’utilisation
+3.6 Planning prévisionnel du projet
+Le projet VitalCare s’est déroulé sur une période de quatre mois, couvrant l’ensemble du
+cycle de développement logiciel, de l’analyse des besoins jusqu’au déploiement.
+Ce planning a été organisé de manière progressive afin de garantir une meilleure maîtrise
+des différentes étapes et une intégration cohérente des modules.
+Page 20
+
+
+===== PAGE 37 =====
+
+CHAPITRE 3. SPÉCIFICATION DES BESOINS
+Hazgui Amani & Abdessalem Yosra
+FIGURE 6. Diagramme de Gantt
+3.7 Definition of Done
+TABLE 6. Definition of Done : Critères de complétion des tâches
+Critère
+Condition
+Développement
+Code écrit, respectant les conventions du projet
+Tests
+Scénarios nominaux et cas limites testés
+Intégration
+Fonctionnalité intégrée sans régression
+Validation médicale
+Comportement validé par Ing. Manaa Rami pour les fonctionnalités
+cliniques
+Page 21
+
+
+===== PAGE 38 =====
+
+CHAPITRE 3. SPÉCIFICATION DES BESOINS
+Hazgui Amani & Abdessalem Yosra
+Conclusion
+Ce chapitre a permis de clarifier et de structurer l’ensemble des besoins fonctionnels et non
+fonctionnels.
+Il met en évidence les différentes interactions entre les utilisateurs et l’application, ainsi que
+les exigences liées à la sécurité et la gestion des dossiers patients.
+Ces spécifications constituent un référentiel essentiel pour la suite du projet.
+Page 22
+
+
+===== PAGE 39 =====
+
+CHAPITRE 4. CHOIX TECHNIQUE
+Hazgui Amani & Abdessalem Yosra
+Chapitre
+4
+Choix technique
+4.1 Introduction
+Le choix de l’architecture logicielle est une étape essentielle dans la conception de
+VitalCare. Il influence directement la performance, la fiabilité et l’évolutivité du système.
+Afin de répondre aux exigences liées à la gestion des données médicales et à l’intégration de
+fonctionnalités d’aide à la décision, une architecture en couches a été adoptée. Cette approche
+permet de séparer les différentes responsabilités. Ceci améliore la maintenabilité, la lisibilité et
+la capacité d’évolution.
+4.2 Intérêt du choix
+La séparation des différentes couches de l’architecture permet de structurer l’application
+de manière claire et cohérente, tout en favorisant la modularité. Chaque composant peut être
+développé, testé et amélioré d’une manière indépendante. Cela facilite la maintenance et les
+évolutions futures. Cette approche s’adapte particulièrement bien à un développement itératif
+basé sur Scrum, en permettant l’enrichissement progressif de l’application tout en garantissant
+sa stabilité et sa capacité à répondre à des besoins de plus en plus complexes.
+Page 23
+
+
+===== PAGE 40 =====
+
+CHAPITRE 4. CHOIX TECHNIQUE
+Hazgui Amani & Abdessalem Yosra
+4.3 Les technologies choisies
+4.3.1
+Couche de présentation [3, 4, 5]
+Flutter a été choisi pour le développement de l’interface utilisateur de VitalCare grâce à sa
+capacité à créer des applications mobiles performantes à partir d’une base de code unique. Cette
+technologie permet de concevoir une interface rapide, intuitive et homogène sur différentes
+plateformes. Ces caractéristiques facilitent le développement et la maintenance. L’utilisation du
+langage Dart, du mécanisme de compilation optimisé (JIT et AOT), du typage sécurisé (null
+safety) et de la programmation asynchrone contribue à garantir de bonnes performances, une
+meilleure fiabilité et une expérience utilisateur fluide lors de l’accès aux données médicales.
+4.3.2
+Couche métier [6]
+Le backend de VitalCare repose sur FastAPI, un framework Python performant permettant
+de développer une architecture REST facilitant les échanges entre l’application mobile et le
+serveur. Les données sont échangées au format JSON et les opérations CRUD assurent la
+gestion des principales fonctionnalités du système. La validation automatique des données via
+Pydantic renforce la fiabilité des traitements, tandis que l’approche asynchrone améliore les
+performances en permettant la gestion simultanée de plusieurs requêtes.
+4.3.3
+Couche données
+4.3.3.1
+Base de données [7, 8]
+La gestion des données de VitalCare repose sur PostgreSQL. C’est un système de gestion de
+base de données relationnelle reconnu pour sa fiabilité, sa sécurité et le respect des propriétés
+ACID. Cette base garantit l’intégrité des informations médicales. Son modèle relationnel est
+particulièrement adapté à la structuration des données. Par ailleurs, l’utilisation de Python
+Page 24
+
+
+===== PAGE 41 =====
+
+CHAPITRE 4. CHOIX TECHNIQUE
+Hazgui Amani & Abdessalem Yosra
+facilite l’intégration future de fonctionnalités d’analyse de données et d’aide à la décision
+médicale, tout en assurant une continuité technologique avec le backend FastAPI.
+4.3.3.2
+Modèle d’intelligence artificielle
+MobileNetV2 a été retenu pour trois raisons propres au contexte du projet.
+— Sa taille réduite qui permet de stocker plusieurs modèles sur une même instance sans
+dépasser les contraintes mémoire d’un hébergement standard [9]
+— Son architecture est optimisée pour une inférence rapide sur CPU, ce qui est
+particulièrement adapté à un déploiement sans GPU[9]
+— Ses performances sur des tâches de classification d’images médicales ont déjà été
+documentées dans la littérature récente [10, 11], ce qui renforce sa pertinence pour notre
+cas d’usage
+MobileNetV2 est conçu pour une inférence rapide sur processeur embarqué, avec jusqu’à
+2× moins d’opérations et 30–40% de gain de vitesse sur CPU mobile, tout en conservant une
+bonne précision (Sandler et al., 2018)[9].
+Architecture
+Taille
+Adapté CPU/serveur
+Transfer
+Learning
+Choix
+VGG16
+528 Mo
+Non
+Oui
+Trop lourd
+ResNet50
+102 Mo
+Partiel
+Oui
+Trop lourd
+InceptionV3
+96 Mo
+Partiel
+Oui
+Trop lourd
+MobileNetV2
+˜25 Mo
+Oui
+Oui
+Retenu
+EfficientNetB0
+29 Mo
+Oui
+Oui
+Alternative possible
+TABLE 7. Comparaison des architectures de deep learning pour l’embedding des images
+Python est utilisé pour préparer l’intégration de fonctionnalités avancées, notamment en
+matière d’analyse de données et d’aide à la décision médicale [6].
+Page 25
+
+
+===== PAGE 42 =====
+
+CHAPITRE 4. CHOIX TECHNIQUE
+Hazgui Amani & Abdessalem Yosra
+Grâce à ses nombreuses bibliothèques (NumPy, Pandas, Scikit-learn, TensorFlow), il est
+possible de développer des modèles capables d’exploiter les données du patient pour :
+— Identifier des tendances.
+— Assister le personnel médical.
+— Améliorer la prise de décision.
+L’un des avantages majeurs est la continuité avec le backend FastAPI, ce qui permet
+d’intégrer facilement ces modules sans changer de technologie.
+4.3.4
+Déploiement
+Dans notre projet, le déploiement a été réalisé sur Railway dans le but d’héberger dans un
+même environnement le backend FastAPI et la base de données PostgreSQL, tout en bénéficiant
+d’un redéploiement automatique et à distance à chaque modification du code. Cette solution
+répond à une contrainte pratique du projet, à savoir la nécessité de corriger et livrer rapidement
+les mises à jour sans déplacement sur site [12].
+FIGURE 7. Plateforme Railway utilisée pour le déploiement
+4.4 Architecture de l’application
+Ce schéma présente une vue d’ensemble de l’architecture de VitalCare en mettant en
+évidence les principales couches du système ainsi que les échanges entre elles. Il illustre
+Page 26
+
+
+===== PAGE 43 =====
+
+CHAPITRE 4. CHOIX TECHNIQUE
+Hazgui Amani & Abdessalem Yosra
+la circulation des données et le rôle de chaque composant dans le fonctionnement global
+de l’application, offrant ainsi une compréhension claire de l’organisation et de l’architecture
+adoptées.
+FIGURE 8. Fonctionnement général de l’application
+4.4.1
+Teste [13]
+La phase de test est essentielle pour garantir la fiabilité et la qualité du système développé.
+Dans le cadre de ce projet, Swagger a été utilisé pour valider les APIs grâce à son interface
+interactive permettant d’exécuter et de vérifier les requêtes HTTP. Cet outil a facilité la détection
+des anomalies, la vérification des réponses du serveur ainsi que la documentation des services,
+contribuant ainsi à assurer le bon fonctionnement de l’application.
+Page 27
+
+
+===== PAGE 44 =====
+
+CHAPITRE 4. CHOIX TECHNIQUE
+Hazgui Amani & Abdessalem Yosra
+FIGURE 9. L’interface Swagger
+4.5 Conclusion
+En résumé, cette architecture répond pleinement aux objectifs en combinant performance,
+flexibilité et capacité d’évolution. Elle permet non seulement de structurer efficacement, mais
+aussi d’intégrer de manière naturelle l’Intelligence Artificielle (IA) dans le processus médical,
+ce qui constitue une valeur ajoutée essentielle du projet.
+Page 28
+
+
+===== PAGE 45 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+Chapitre
+5
+Sécurité et gestion des utilisateurs
+5.1 Introduction
+Cette étape joue un rôle essentiel en structurant les fonctionnalités liées à la sécurité et à
+la gestion des utilisateurs. Elle permet de définir clairement les besoins prioritaires, notamment
+l’authentification, la gestion des rôles et le contrôle des accès. Grâce à cette organisation, on
+peut avancer de manière cohérente et sécurisée. Ainsi, ça donne une base solide pour garantir
+la fiabilité et la protection dès les premières phases.
+5.2 Backlog du sprint 1 « Sécurité et gestion des utilisateurs »
+ID
+Utilisateur
+Histoire (User Story)
+Description
+1
+Utilisateur
+En tant qu’utilisateur, je
+veux m’authentifier
+Permettre la connexion sécurisée via
+email et mot de passe.
+2
+Administrateur En
+tant
+qu’administrateur,
+je
+veux
+valider
+les
+comptes
+des
+autres
+utilisateurs
+Vérifier et approuver les nouveaux
+comptes avant leur activation pour
+garantir la sécurité.
+Suite à la page suivante
+Page 29
+
+
+===== PAGE 46 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+Suite du tableau précédent
+ID
+Utilisateur
+Histoire (User Story)
+Description
+3
+Administrateur En
+tant
+qu’administrateur,
+je
+veux
+gérer
+les
+comptes médecins
+Créer, modifier, supprimer et consulter
+les
+comptes
+des
+médecins
+(CRUD
+complet).
+4
+Administrateur En
+tant
+qu’administrateur,
+je veux attribuer des
+rôles aux utilisateurs
+Assigner des rôles (médecin spécialiste,
+médecin anesthésiste) pour contrôler
+l’accès.
+5
+Administrateur En
+tant
+qu’administrateur,
+je
+veux
+détecter
+les
+tentatives d’accès non
+autorisées
+Identifier les connexions suspectes ou
+échouées.
+6
+Administrateur En
+tant
+qu’administrateur,
+je veux consulter les
+journaux d’activité
+Accéder aux logs pour suivre et auditer
+les actions effectuées dans le système.
+7
+Utilisateur
+En tant qu’utilisateur,
+je veux me déconnecter
+en toute sécurité
+Permettre la déconnexion pour protéger
+l’accès au système.
+TABLE 8. Tableau des user stories du sprint 1 « Sécurité et gestion des utilisateurs »
+5.3 Modélisation fonctionnelle
+La modélisation fonctionnelle constitue une étape fondamentale dans la structuration, car
+elle permet de traduire les besoins métier en interactions concrètes entre les acteurs et le logiciel.
+Page 30
+
+
+===== PAGE 47 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+En définissant précisément les cas d’utilisation liés à la sécurité et à la gestion des accès, elle
+offre une vision claire des responsabilités de chaque intervenant, notamment l’administrateur.
+Cette démarche facilite également la communication entre les parties prenantes techniques et
+non techniques, en servant de langage commun compréhensible par tous. Par ailleurs, elle
+anticipe les situations d’exception et les flux alternatifs, ce qui réduit considérablement les
+risques d’anomalies lors du développement. En somme, elle pose les bases d’une architecture
+cohérente, traçable et alignée sur les exigences réelles du projet.
+Les diagrammes de cas d’utilisation élaborés dans ce sprint jouent un rôle central dans la
+compréhension et la délimitation du périmètre fonctionnel du système. Ils mettent en évidence
+de manière visuelle les interactions entre l’administrateur et les différentes fonctionnalités,
+allant de l’authentification à la déconnexion. Grâce à cette représentation graphique, l’équipe
+de développement dispose d’une feuille de route précise qui réduit les ambiguïtés lors de
+l’implémentation. De plus, ces diagrammes facilitent la validation des exigences avec le client,
+en lui permettant de confirmer que les fonctionnalités modélisées correspondent bien à ses
+attentes réelles. Ils constituent ainsi un outil de pilotage indispensable, assurant la cohérence
+entre la vision métier et la réalisation technique tout au long du cycle de développement.
+Page 31
+
+
+===== PAGE 48 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+5.3.1
+Diagrammes de cas d’utilisation général du premier sprint «
+Sécurité et gestion des utilisateurs »
+FIGURE 10. Diagramme d’utilisation générale du sprint 1 « Sécurité et gestion des
+utilisateurs »
+Page 32
+
+
+===== PAGE 49 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+5.3.2
+Raffinement du cas d’utilisation « Authentification »
+FIGURE 11. Diagramme de cas d’utilisation « Authentification »
+5.3.3
+Description textuelle du cas d’utilisation « Authentification »
+Cas d’utilisation
+Authentification
+Acteur
+Utilisateur
+Préconditions
+L’utilisateur possède un compte activé
+Page 33
+
+
+===== PAGE 50 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+Scénario nominal
+1. L’utilisateur accède à la page de connexion
+2. Il saisit son email et mot de passe
+3. Le système vérifie l’accès
+4. L’accès est accordé et l’utilisateur est redirigé vers son
+tableau de bord
+Scénario alternatif
+L’utilisateur a oublié son mot de passe →il clique sur « Mot
+de passe oublié » et reçoit un lien de réinitialisation par email
+Exception
+Email ou mot de passe incorrect →le système affiche un
+message d’erreur et bloque le compte après N tentatives
+échouées
+TABLE 9. Description de cas d’utilisation « Authentification »
+5.3.4
+Raffinement du cas d’utilisation « Validation des comptes »
+FIGURE 12. Diagramme de séquence « Validation des comptes »
+5.3.5
+Description textuelle du cas d’utilisation « Validation des comptes »
+Cas d’utilisation
+Validation des comptes
+Acteur
+Administrateur
+Préconditions
+Un nouveau compte a été créé et est en attente de validation
+Page 34
+
+
+===== PAGE 51 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+Scénario nominal
+1. L’administrateur consulte la liste des comptes en attente
+2. Il sélectionne un compte et vérifie les informations
+3. Il approuve le compte
+4. Le système active le compte et notifie l’utilisateur
+Scénario alternatif
+L’administrateur rejette le compte
+Exception
+Informations insuffisantes ou frauduleuses →le compte est
+suspendu et signalé pour investigation
+TABLE 10. Description de cas d’utilisation « Validation des comptes »
+5.3.6
+Raffinement du cas d’utilisation « Gestion des comptes »
+FIGURE 13. Diagramme de séquence « Gestion des comptes »
+Page 35
+
+
+===== PAGE 52 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+5.3.7
+Description textuelle du cas d’utilisation « Gestion des comptes »
+Cas d’utilisation
+Gestion des comptes
+Acteur
+Administrateur
+Préconditions
+L’administrateur est authentifié et dispose des droits de gestion
+Scénario nominal
+1. L’administrateur accède à la liste des médecins
+2. Il crée, modifie ou consulte un compte médecin
+3. Le système enregistre les modifications
+4. Une confirmation est affichée
+Scénario alternatif
+Suppression d’un compte médecin ayant des dossiers actifs →
+le système archive les données liées
+Exception
+Email déjà utilisé lors de la création →le système signale le
+doublon et bloque l’enregistrement
+TABLE 11. Description de cas d’utilisation « Gestion des comptes »
+5.3.8
+Raffinement du cas d’utilisation « Attribution des rôles »
+FIGURE 14. Diagramme de séquence « Attribution des rôles »
+Page 36
+
+
+===== PAGE 53 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+5.3.9
+Description textuelle du cas d’utilisation « Attribution des rôles »
+Cas d’utilisation
+Attribution des rôles
+Acteur
+Administrateur
+Préconditions
+1. L’administrateur est authentifié et dispose des droits de
+gestion
+2. L’utilisateur cible possède un compte validé et actif
+Scénario nominal
+1. L’administrateur sélectionne un utilisateur
+2. Il choisit un rôle (admin, médecin spécialiste, médecin
+anesthésiste)
+3. Il confirme l’attribution
+4. Le système met à jour les droits d’accès
+Scénario alternatif
+Modification d’un rôle existant →l’ancien rôle est révoqué et
+le nouveau est appliqué immédiatement
+Exception
+Tentative d’attribuer un rôle incompatible ou non autorisé →
+le système bloque l’action
+TABLE 12. Description de cas d’utilisation « Attribution des rôles »
+Page 37
+
+
+===== PAGE 54 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+5.3.10
+Raffinement du cas d’utilisation « Détection des tentatives non
+autorisées »
+FIGURE 15. Diagramme de séquence « Détection des tentatives non autorisées »
+5.3.11
+Description textuelle du cas d’utilisation « Détection des tentatives
+non autorisées »
+Cas d’utilisation
+Détection des tentatives non autorisées
+Acteur
+Administrateur (système automatique)
+Préconditions
+Le système de surveillance est actif et les seuils d’alerte sont
+configurés
+Scénario nominal
+1. Le système surveille en continu les tentatives de
+connexion
+2. Il détecte une activité suspecte (IP inconnue)
+3. Il génère une alerte
+4. L’administrateur est notifié et peut bloquer l’accès
+Scénario alternatif
+Fausse
+alerte
+identifiée
+→
+l’administrateur
+marque
+l’événement comme inoffensif
+Exception
+Attaque par force brute détectée →le compte ciblé est
+verrouillé automatiquement
+TABLE 13. Description de cas d’utilisation « Détection des tentatives non autorisées »
+Page 38
+
+
+===== PAGE 55 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+5.3.12
+Raffinement du cas d’utilisation « Consultation des activités des
+utilisateurs »
+FIGURE 16. Diagramme de séquence « Validation des comptes »
+5.3.13
+Description textuelle du cas d’utilisation « Consultation des
+activités des utilisateurs »
+Cas d’utilisation
+Consultation des activités des utilisateurs
+Acteur
+Administrateur
+Préconditions
+L’administrateur est authentifié avec les droits d’audit
+Scénario nominal
+1. L’administrateur accède au module de journalisation
+2. Il applique des filtres (date, utilisateur, type d’action)
+3. Le système affiche les entrées correspondantes
+4. L’administrateur peut exporter le rapport
+Scénario alternatif
+Aucun résultat pour les filtres appliqués : le système affiche
+un message et propose d’élargir la période de recherche
+Exception
+Volume de logs trop important →le système pagine les
+résultats et propose une exportation en arrière-plan
+TABLE 14. Description de cas d’utilisation « Consultation des activités des utilisateurs »
+Page 39
+
+
+===== PAGE 56 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+5.3.14
+Raffinement du cas d’utilisation « Déconnexion sécurisée »
+FIGURE 17. Diagramme de séquence « Déconnexion sécurisée »
+5.3.15
+Description textuelle du cas d’utilisation « Déconnexion sécurisée
+»
+Cas d’utilisation
+Déconnexion sécurisée
+Acteur
+Utilisateur
+Préconditions
+L’utilisateur est authentifié et dispose d’une session active
+Scénario nominal
+1. L’utilisateur clique sur « Déconnexion »
+2. Le système invalide le token de session
+3. Les données de session sont effacées
+4. L’utilisateur est redirigé vers la page de connexion
+Scénario alternatif
+Session expirée automatiquement après inactivité →le
+système déconnecte l’utilisateur et l’informe à la prochaine
+interaction
+Exception
+Erreur réseau lors de la déconnexion →le système force
+l’expiration côté serveur
+TABLE 15. Description de cas d’utilisation « Déconnexion sécurisée »
+Page 40
+
+
+===== PAGE 57 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+5.4 Modélisation dynamique
+5.4.1
+Diagramme de classes
+FIGURE 18. Diagramme de classes du sprint 1 « Sécurité et gestion des utilisateurs »
+Page 41
+
+
+===== PAGE 58 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+5.4.2
+Diagramme de séquence
+FIGURE 19. Diagramme de séquence pour le sprint 1 « Sécurité et gestion des utilisateurs »
+Page 42
+
+
+===== PAGE 59 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+5.5 Implémentation des fonctionnalités du sprint 1
+5.5.1
+Interface de connexion
+Cette page constitue le point d’entrée du système, proposant un formulaire de saisie des
+identifiants. Elle intègre un mécanisme de gestion des erreurs pour garantir une expérience
+utilisateur fluide et sécurisée.
+L’authentification repose sur un double système de tokens JWT. Le token d’accès est
+valide 60 minutes, il est inclus automatiquement dans chaque requête Flutter via le client
+HTTP centralisé api_client.dart. Le token de rafraîchissement, valide 7 jours, est stocké
+localement via SharedPreferences et permet de renouveler la session sans ressaisie des
+identifiants. Les mots de passe ne sont jamais stockés en clair : bcrypt génère un hachage avec
+sel aléatoire à chaque création de compte.
+FIGURE 20. Figure de l’interface de connexion
+Après trois tentatives de connexion échouées, le compte est automatiquement bloqué
+pendant cinq minutes : ce compteur est stocké directement dans la table "users" sans base de
+cache additionnelle.
+Page 43
+
+
+===== PAGE 60 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+FIGURE 21. Interface de connexion avec blocage après trois tentatives infructueuses
+5.5.2
+Interface d’inscription
+La création du compte médecin passe par 3 étapes, comme montrent les figures ci-dessous :
+FIGURE 22. Figure de l’interface d’inscription - étape 1
+FIGURE 23. Figure de l’interface d’inscription - étape 2
+Page 44
+
+
+===== PAGE 61 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+FIGURE 24. Figure de l’interface d’inscription - étape 3
+5.5.3
+Interface de validation des comptes
+Accessible uniquement à l’administrateur, cette vue présente la liste des comptes en attente
+d’approbation avec leurs informations détaillées. Elle offre des actions d’acceptation ou de rejet
+accompagnées d’un champ de saisie du motif pour toute décision de refus.
+FIGURE 25. Figure de l’interface de validation des comptes
+5.5.4
+Interface de gestion des médecins
+Cette page centralise l’ensemble des opérations CRUD relatives aux comptes médecins,
+avec un tableau récapitulatif et des formulaires dédiés à la création et à la modification. Une
+fonction de recherche et de filtrage permet à l’administrateur de naviguer efficacement parmi
+les entrées existantes.
+Page 45
+
+
+===== PAGE 62 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+FIGURE 26. Figure de gestion des médecins
+5.5.5
+Interface d’attribution des rôles
+Cette interface permet à l’administrateur de consulter le profil d’un utilisateur et d’y associer
+un rôle prédéfini via un menu de sélection intuitif. Toute modification est soumise à une étape
+de confirmation afin d’éviter les attributions accidentelles.
+FIGURE 27. Figure de l’interface d’attribution des rôles
+5.5.6
+Interface de surveillance des accès
+Dédiée à la détection des comportements anormaux, cette vue affiche en temps réel les
+tentatives de connexion suspectes avec leurs métadonnées associées. L’administrateur peut y
+déclencher des actions correctives telles que le blocage d’une adresse IP ou le verrouillage d’un
+compte.
+Page 46
+
+
+===== PAGE 63 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+FIGURE 28. Interface de surveillance des accès
+5.5.7
+Interface des journaux d’activité
+Cette page propose un tableau de bord d’audit présentant l’historique complet des actions
+effectuées dans le système. Des filtres avancés par date, utilisateur et type d’événement
+permettent d’affiner les résultats, avec une option d’exportation pour archivage ou analyse
+externe.
+FIGURE 29. Interface des journaux d’activité
+5.5.8
+Interface de déconnexion
+Il ne s’agit pas d’une page à part entière, mais d’un composant persistant intégré à la barre
+de navigation accessible depuis toutes les interfaces. Son activation déclenche immédiatement
+l’invalidation de la session et redirige l’utilisateur vers la page de connexion.
+Page 47
+
+
+===== PAGE 64 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+FIGURE 30. Interface de déconnexion
+5.5.9
+Interface de modification du compte
+Cette page propose un tableau de bord de mise à jour des informations reliées aux
+utilisateurs. Elle permet la mise à jour du mot de passe ainsi que les autres coordonnées.
+FIGURE 31. Interface de modification du compte
+Page 48
+
+
+===== PAGE 65 =====
+
+CHAPITRE 5. SÉCURITÉ ET GESTION
+Hazgui Amani & Abdessalem Yosra
+5.6 Conclusion
+Les diagrammes de cas d’utilisation élaborés, accompagnés de leurs tableaux descriptifs
+et des interfaces associées, offrent une représentation claire et exploitable des comportements
+attendus de la plateforme. Ce travail de conception ne se limite pas à une simple formalité
+documentaire; il constitue un véritable socle de référence qui guidera les phases de
+développement et de tests à venir. En anticipant les scénarios nominaux, alternatifs et
+exceptionnels, ce sprint garantit une couverture fonctionnelle exhaustive, réduisant ainsi les
+risques d’incohérences lors de l’implémentation. .
+Page 49
+
+
+===== PAGE 66 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+Chapitre
+6
+Gestion des dossiers patients
+6.1 Introduction
+Au cours de cette phase, plusieurs modules ont été développés, notamment la création et
+la mise à jour des dossiers patients ainsi que le processus d’évaluation réalisé par le médecin
+anesthésiste. Une attention particulière a été accordée à la cohérence des données, à la simplicité
+d’utilisation de l’interface et à la structuration du code afin de garantir une application fiable et
+évolutive.
+6.2 Backlog du sprint 2 « Gestion des dossiers patients »
+ID
+Utilisateur
+Histoire
+Description
+1
+Médecin spécialiste
+En tant que médecin
+spécialiste,
+je
+veux
+créer un dossier patient
+Permettre
+la
+création
+d’un
+nouveau
+dossier
+médical
+contenant
+les
+informations
+administratives et médicales de
+base du patient.
+Suite à la page suivante
+Page 50
+
+
+===== PAGE 67 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+Suite du tableau précédent
+ID
+Utilisateur
+Histoire
+Description
+2
+— Médecin
+spécialiste
+— Médecin
+anesthésiste
+En tant que médecin, je
+veux consulter et mettre
+à jour un dossier patient
+Accéder aux dossiers existants
+et
+modifier
+les
+informations
+médicales
+en
+fonction
+de
+l’évolution du patient.
+3
+Médecin
+anesthésiste
+En tant que médecin
+anesthésiste,
+je
+veux
+indiquer
+si
+le
+patient
+nécessite
+une
+consultation réelle ou
+non
+Marquer un patient comme prêt
+ou non pour être opéré
+TABLE 16. Tableau de backlog du sprint 2 « Gestion des dossiers patients »
+Page 51
+
+
+===== PAGE 68 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+6.3 Modélisation fonctionnelle
+6.3.1
+Diagramme de cas d’utilisation général du sprint 2 « Gestion des
+dossiers patients »
+FIGURE 32. Diagramme de cas d’utilisation du sprint 2 « Gestion des dossiers patients »
+6.3.2
+Raffinement du cas d’utilisation « Création dossier patient »
+FIGURE 33. Diagramme de cas d’utilisation « Création dossier patient »
+Page 52
+
+
+===== PAGE 69 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+6.3.3
+Description textuelle du cas d’utilisation « Création dossier patient
+»
+Cas d’utilisation
+Créer un dossier patient
+Acteur
+Médecin spécialiste
+Précondition
+Le médecin est authentifié dans le système
+Scénario nominal
+Le médecin saisit les informations du patient →le système
+enregistre les données →un dossier patient est créé →
+confirmation affichée
+Scénario alternatif
+Certaines informations sont facultatives →le système crée le
+dossier avec les données disponibles
+Exception
+Informations obligatoires manquantes ou invalides →le
+système affiche un message d’erreur et bloque la création
+TABLE 17. Description du cas d’utilisation « Création dossier patient »
+6.3.4
+Raffinement du cas d’utilisation « Consultation et mise à jour du
+dossier patient »
+FIGURE 34. Diagramme de cas d’utilisation « Consultation et mise à jour du dossier patient
+»
+Page 53
+
+
+===== PAGE 70 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+6.3.5
+Description textuelle du cas d’utilisation « Consultation et mise à
+jour du dossier patient »
+Cas d’utilisation
+Consultation et mise à jour du dossier patient
+Acteur
+Médecin spécialiste / Médecin anesthésiste
+Précondition
+Le médecin est authentifié et le dossier patient existe
+Scénario nominal
+Le médecin consulte un dossier →les informations sont
+affichées →il modifie les données →le système enregistre
+les modifications →confirmation
+Scénario alternatif
+Aucune modification n’est faite →le système affiche
+uniquement les informations sans mise à jour
+Exception
+Dossier introuvable ou erreur d’accès →le système affiche un
+message d’erreur
+TABLE 18. Description du cas d’utilisation « Consultation et mise à jour du dossier patient »
+6.3.6
+Raffinement du cas d’utilisation « Prise de décision »
+FIGURE 35. Diagramme de cas d’utilisation « Prise de décision »
+Page 54
+
+
+===== PAGE 71 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+6.3.7
+Description textuelle du cas d’utilisation « Prise de décision »
+Cas d’utilisation
+Prise de décision
+Acteur
+Médecin anesthésiste
+Précondition
+Le dossier patient existe et a été consulté
+Scénario nominal
+L’anesthésiste évalue le patient →analyse les critères
+médicaux →indique si une consultation réelle est nécessaire
+→le système enregistre la décision
+Scénario alternatif
+Le patient ne nécessite pas de consultation réelle →il est
+marqué comme prêt
+Exception
+Données médicales insuffisantes →le système empêche la
+décision et demande des informations complémentaires
+TABLE 19. Description du cas d’utilisation « Prise de décision »
+Page 55
+
+
+===== PAGE 72 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+6.4 Modélisation dynamique
+6.4.1
+Diagramme de classes du sprint 2 « Gestion des dossiers patients »
+FIGURE 36. Diagramme de classes du sprint 2 « Gestion des dossiers patients »
+Page 56
+
+
+===== PAGE 73 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+6.4.2
+Diagramme de séquence du sprint 2 « Gestion des dossiers patients
+»
+FIGURE 37. Diagramme de séquence du sprint 2 « Gestion des dossiers patients »
+Page 57
+
+
+===== PAGE 74 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+6.5 Implémentation des fonctions du sprint 2 « Gestion des
+dossiers patients »
+6.5.1
+Création d’un dossier patient
+Un dossier patient dans VitalCare passe par quatre étapes, il agrège quatre catégories de
+données : Les données d’identité, Les données cliniques, Les scores préanesthésiques et les
+cinq photographies cliniques standardisées associées au dossier. Une fois l’analyse déclenchée,
+le dossier est lié à un rapport IA contenant les quatre scores et la décision finale de l’anesthésiste.
+6.5.1.1
+Étape 1 : Identité - Informations du patient
+FIGURE 38. Formulaire d’identité du patient
+Page 58
+
+
+===== PAGE 75 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+6.5.1.2
+Étape 2 : Clinique - Diagnostic et antécédents
+FIGURE 39. Formulaire clinique - Diagnostic et antécédents (partie 1)
+FIGURE 40. Formulaire clinique - Diagnostic et antécédents (partie 2)
+6.5.1.3
+Étape 3 : Biologie - Bilans optionnels
+FIGURE 41. Bilans biologiques - Biochimie et hémostasie
+Page 59
+
+
+===== PAGE 76 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+FIGURE 42. Bilans biologiques - Optionnels
+6.5.1.4
+Étape 4 : Évaluation - Scores ASA et NYHA
+Une règle métier importante distingue ce que voit le médecin spécialiste de ce qui est stocké
+en base de données. Le spécialiste voit des descriptions simples : "Patient sain" pour ASA I,
+"Stable sous traitement" pour ASA II, "Non stable sous traitement" pour ASA III. La base stocke
+les codes standardisés (ASA I, ASA II, ASA III) que l’anesthésiste reconnaît immédiatement
+dans le rapport. Ce double affichage garantit que l’interface reste accessible pour le spécialiste
+sans sacrifier la rigueur médicale côté anesthésiste[14].
+FIGURE 43. Scores ASA et NYHA
+Page 60
+
+
+===== PAGE 77 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+FIGURE 44. Évaluation - Prothèse dentaire et respiration
+6.5.2
+Capture des photos cliniques
+FIGURE 45. Capture des photos cliniques - État dentaire
+FIGURE 46. Photos manquantes - Progression
+Page 61
+
+
+===== PAGE 78 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+FIGURE 47. l’option de prise de photo via la galerie ou la caméra
+FIGURE 48. Envoi des photos à l’IA
+6.5.3
+Interface médecin spécialiste - Mes patients
+FIGURE 49. Tableau de bord médecin spécialiste - Liste des patients
+Page 62
+
+
+===== PAGE 79 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+6.5.4
+Interface médecin anesthésiste
+6.5.4.1
+Liste des dossiers à évaluer
+FIGURE 50. Tableau de bord anesthésiste - Dossiers
+6.5.4.2
+Dossiers à consulter
+FIGURE 51. Liste des dossiers nécessitant une consultation
+Page 63
+
+
+===== PAGE 80 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+6.5.4.3
+Dossiers validés
+FIGURE 52. Liste des dossiers validés
+6.5.5
+Évaluation anesthésique et décision
+FIGURE 53. Évaluation anesthésique - Score de risque d’intubation
+FIGURE 54. Évaluation anesthésique - Informations patient et décision
+Page 64
+
+
+===== PAGE 81 =====
+
+CHAPITRE 6. GESTION DES DOSSIERS
+Hazgui Amani & Abdessalem Yosra
+FIGURE 55. Rapport d’analyse IA - Critères d’intubation
+6.6 Conclusion
+Ce sprint a permis de concrétiser une partie importante des fonctionnalités du système
+VitalCare, en mettant l’accent sur la gestion des informations patients et le processus de décision
+médicale. Les différents modules développés offrent désormais une base fonctionnelle solide,
+facilitant le suivi des patients ainsi que la collaboration entre les acteurs médicaux.
+Page 65
+
+
+===== PAGE 82 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+Chapitre
+7
+Évaluation anesthésique
+7.1 Introduction
+Dans ce sprint, nous nous sommes concentrés sur le développement de la composante
+intelligence artificielle dédiée à la prédiction automatique des critères pré-anesthésiques.
+L’objectif principal est de concevoir des modèles capables d’analyser et de fournir une
+estimation pour chaque critère.
+7.2 Inspection
+Lors de la consultation pré-anesthésique, l’évaluation du risque d’intubation difficile
+constitue une étape essentielle afin d’anticiper les éventuelles complications liées à la gestion
+des voies aériennes. Cette évaluation repose sur un examen clinique rigoureux permettant à
+l’anesthésiste d’identifier les facteurs pouvant compliquer l’intubation endotrachéale.
+Plusieurs critères sont alors analysés de manière systématique. Parmi les plus importantes :
+— Mallampati : un examen clinique en anesthésie qui sert à prévoir la difficulté d’intubation
+en observant l’oropharynx du patient. Elle classe la visibilité des structures de la bouche
+en plusieurs classes, généralement de I à IV [15].
+Page 66
+
+
+===== PAGE 83 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+FIGURE 56. Différents types de classification Mallampati
+— Extension du cou : désigne l’inclinaison postérieure du rachis cervical qui aide à mieux
+aligner les axes oral, pharyngé et laryngé afin de faciliter la visualisation de la glotte lors
+de l’intubation [16, 17].
+FIGURE 57. Impact de l’extension cervicale sur l’intubation
+— Ouverture de la bouche : on parle de bonne ouverture de bouche quand l’écartement
+inter-incisif est jugé suffisant pour faciliter l’accès aux voies aériennes et la manipulation
+du matériel d’intubation. Généralement évalué par trois travers des doigts du patient [18].
+Page 67
+
+
+===== PAGE 84 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+FIGURE 58. Exemple de la mesure de la bonne ouverture de la bouche
+— État dentaire : est évalué afin de détecter la présence de dents fragiles ou mal
+positionnées pouvant compliquer la procédure ou augmenter le risque de traumatisme.
+7.3 Constitution du dataset
+La collecte des données a été réalisée à l’EPS Taher Sfar Mahdia sur autorisation officielle
+de la direction de l’établissement. Sous la supervision des spécialistes, on a photographié 69
+patients programmés pour une intervention chirurgicale selon un protocole standardisé. Pour
+chaque patient, cinq photographies ont été capturées dans des conditions d’éclairage contrôlées :
+— bouche fermée : référence pour l’ouverture buccale
+— bouche ouverte avec langue tirée : pour le score de Mallampati et l’ouverture buccale
+— état dentaire : pour l’état dentaire
+— profil cou en position en repot et profil cou en extension maximale : référence pour
+l’extension cervicale
+7.4 Conception de la prédiction [1]
+Dans le cadre de la conception des modules de traitement d’images, l’objectif est de
+simuler l’expertise d’un médecin anesthésiste à travers l’analyse automatisée de critères visuels
+Page 68
+
+
+===== PAGE 85 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+pertinents. Cette approche vise à extraire des informations cliniques à partir d’images afin
+d’assister l’évaluation pré-anesthésique de manière fiable et standardisée.
+Des différentes méthodes peuvent être exploitées afin d’analyser les informations visuelles
+et effectuer des opérations de reconnaissance ou de classification. Parmi les techniques les
+plus utilisées, on retrouve les approches basées sur la détection des contours, la segmentation
+d’images, l’analyse des textures et des formes, ainsi que certaines méthodes d’apprentissage
+automatique comme les SVM (Support Vector Machine) ou les arbres de décision. Ces solutions
+ont été largement adoptées dans plusieurs applications de vision par ordinateur grâce à leur
+facilité d’implémentation et à leur coût computationnel relativement réduit [19].
+Malgré leurs avantages, ces méthodes présentent certaines contraintes lorsqu’elles sont
+appliquées au domaine médical. Les images obtenues peuvent varier selon plusieurs paramètres,
+notamment l’éclairage, l’orientation de la prise de vue, la qualité de capture ou encore les
+différences anatomiques entre les patients. Dans ce contexte, les techniques classiques montrent
+parfois des limites en termes de robustesse et de précision. De plus, elles nécessitent souvent
+une étape préalable de sélection manuelle des caractéristiques à analyser, ce qui rend le système
+fortement dépendant de l’intervention humaine et de l’expertise du concepteur [20, 21, 22].
+Afin de dépasser ces limites, notre choix s’est orienté vers les réseaux de neurones
+convolutifs (Convolutional Neural Networks – CNN). Cette approche se distingue par sa
+capacité à apprendre automatiquement les caractéristiques importantes directement à partir des
+images, sans avoir besoin de définir manuellement des critères spécifiques. Les CNN offrent
+ainsi une meilleure adaptation aux variations liées à l’angle de capture, à la luminosité ou aux
+différentes conditions d’acquisition des images [23, 20, 24].
+Par ailleurs, le fonctionnement des CNN repose sur une analyse progressive des éléments
+visuels présents dans l’image, permettant d’identifier automatiquement les détails significatifs.
+Cette manière de procéder se rapproche de l’évaluation réalisée par le médecin anesthésiste lors
+de l’examen clinique, où plusieurs indices visuels sont observés simultanément afin d’estimer le
+risque d’intubation difficile. Ainsi, cette technique permet de reproduire de façon automatisée
+Page 69
+
+
+===== PAGE 86 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+un raisonnement proche de celui du spécialiste tout en améliorant la fiabilité et la capacité
+d’adaptation face à des situations cliniques variées [20, 24, 21].
+FIGURE 59. Pipeline générique de prédiction des modèles CNN pour VitalCare
+7.4.1
+Architecture des modèles entraînés
+Base de transfert MobileNetV2
+Les couches convolutives de MobileNetV2 pré-entraîné sur ImageNet sont partiellement
+gelées : 100 couches sont gelées (leurs poids ne sont pas mis à jour), tandis que 54 couches
+supérieures sont dégelées pour s’adapter au domaine médical [10]. Cette approche permet de
+conserver les caractéristiques visuelles générales (contours, textures, formes) tout en laissant la
+liberté d’adaptation aux spécificités des photographies cliniques.
+Tête de classification personnalisée
+La tête de classification varie selon le modèle :
+Page 70
+
+
+===== PAGE 87 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+— Modèle Mallampati :
+— Couche GlobalAveragePooling2D
+— Couche Dense de 256 neurones avec activation ReLU
+— Dropout à 30% [25]
+— Couche Softmax à 4 classes (I, II, III, IV)
+— Modèles Ouverture buccale, Extension cervicale et État dentaire :
+— Couche GlobalAveragePooling2D
+— Couche Dense de 128 neurones avec activation ReLU
+— Dropout à 40% [25]
+— Couche Softmax à 2 ou 3 classes selon le modèle
+Stratégie d’entraînement
+L’entraînement suit un protocole rigoureux :
+— Division des données :
+— Modèles Extension, Ouverture, État dentaire : 54-55 patients (80%) pour
+l’entraînement, 14-15 patients (20%) pour la validation, avec split stratifié.
+— Modèle Mallampati : 996 images pour l’entraînement (912 externes + 54 EPS + 30
+IV renfort), 243 images pour la validation (229 externes + 14 EPS).
+— Augmentation des données : rotations, décalages, zoom, variations de luminosité. Le
+flip horizontal est activé uniquement pour le modèle État dentaire (en raison de la
+symétrie naturelle des dents) et désactivé pour les autres modèles (asymétrie anatomique
+de la bouche, de la langue et du profil cervical).
+— Optimiseur : Adam avec taux d’apprentissage adaptatif [26] :
+— Modèles Extension, Ouverture, État dentaire (2 phases) : Phase 1 LR = 10−4,
+Phase 2 LR = 10−5
+— Modèle Mallampati (3 phases) : Phase 1 LR = 10−4, Phase 2 LR = 5×10−5, Phase
+3 LR = 5 × 10−6
+Page 71
+
+
+===== PAGE 88 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+— Fonction de perte : entropie croisée catégorielle (categorical cross-entropy)
+— Régularisation : Early stopping sur la précision de validation (val_accuracy) avec
+restauration des meilleurs poids [27].
+— Class weights : pondération équilibrée pour les classes déséquilibrées.
+7.5 Principes et logiques
+Après avoir présenté les principales approches utilisées, il est nécessaire de décrire
+l’environnement de développement adopté pour la réalisation et l’expérimentation du modèle
+proposé : Plusieurs notebooks ont été utilisés afin d’organiser les différentes étapes du travail,
+depuis le prétraitement des données jusqu’à l’entraînement et l’évaluation de chaque modèle.
+7.5.1
+Préparation et structuration des données (Notebook 1 & 2) [1]
+Les premières étapes sont consacrées à la constitution et la validation des données. Cette
+phase joue un rôle fondamental, car elle conditionne directement les performances des modèles.
+Un travail important a été réalisé pour :
+— Organiser les images selon des classes cohérentes
+— Vérifier l’existence et la qualité des fichiers
+— Nettoyer les annotations issues des données cliniques
+La génération de fichiers de labels structurés permet ensuite d’uniformiser l’entrée des
+données pour les différents modèles. Cette homogénéité facilite l’entraînement et réduit les
+risques d’erreurs liées à des incohérences dans les données.
+7.5.2
+Modèle de classification du score de Mallampati (Notebook 3) [5, 1]
+Le notebook dédié à la prédiction du score de Mallampati s’inscrit dans une démarche
+classique de vision basée sur l’apprentissage profond. Son objectif principal est de concevoir
+Page 72
+
+
+===== PAGE 89 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+un modèle capable d’identifier automatiquement le niveau de Mallampati à partir d’une image
+de la cavité buccale.
+Un prétraitement est appliqué aux images afin de garantir une certaine homogénéité. Cela
+inclut notamment le redimensionnement des images, ainsi que la normalisation des valeurs des
+pixels. Ce traitement permet de standardiser les entrées et de faciliter la phase d’apprentissage.
+La construction du modèle repose sur une architecture de type réseau de neurones
+convolutif : Les premières couches du réseau se concentrent sur l’identification de motifs
+simples, comme les contours ou les textures, tandis que les couches plus profondes capturent
+des structures plus complexes liées à la forme de la bouche et à la visibilité des éléments
+anatomiques.
+7.5.3
+Modèle d’analyse de l’extension cervicale (Notebook 4)
+Le notebook dédié à l’évaluation de l’extension cervicale vise à analyser la capacité du
+patient à effectuer un mouvement d’extension du cou à partir de deux images : cou au repos et
+cou en extension. Cette structuration permet de capturer la variation entre deux positions plutôt
+que de considérer une image isolée.
+Un
+prétraitement
+est
+appliqué
+aux
+images
+:
+Celui-ci
+comprend
+notamment
+le
+redimensionnement et la normalisation, afin d’assurer une cohérence dans les données d’entrée
+et de faciliter le processus d’apprentissage.
+Une fois ces représentations obtenues, une mesure de différence est calculée entre elles.
+Cette différence permet d’estimer l’amplitude du mouvement cervical. Plus l’écart entre les
+deux représentations est important, plus l’extension est considérée comme significative.
+La phase d’apprentissage consiste à ajuster le modèle afin qu’il produise des représentations
+cohérentes avec les variations observées dans les données. Le modèle apprend ainsi à capturer
+les changements de posture pertinents pour la tâche.
+Page 73
+
+
+===== PAGE 90 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+7.5.4
+Modèle d’évaluation de l’ouverture de la bouche (Notebook 5)
+Le notebook consacré à l’évaluation de l’ouverture buccale a pour objectif d’estimer la
+capacité d’un patient à ouvrir la bouche à partir de deux images : bouche ouverte et bouche
+fermée.
+Les images sont redimensionnées et normalisées, ce qui permet d’assurer une cohérence
+dans les entrées du modèle et de faciliter l’apprentissage.
+Dans un premier temps, les données sont organisées sous forme de paires. Cette organisation
+permet de capturer directement la variation entre les deux états.
+La phase d’apprentissage permet au modèle d’identifier les variations visuelles pertinentes
+liées à l’ouverture de la bouche. Il apprend ainsi à produire des représentations cohérentes avec
+les changements observés entre les images fermées et ouvertes.
+Une phase d’évaluation est réalisée afin de vérifier la capacité du système à distinguer les
+différents niveaux d’ouverture. Cette étape permet également d’identifier les éventuelles erreurs
+et d’analyser les limites du modèle.
+7.5.5
+Modèle d’analyse de l’état dentaire (Notebook 6)
+Le notebook dédié à l’évaluation de l’état dentaire a pour objectif de déterminer, à partir
+d’une image, si la dentition du patient est dans un état jugé satisfaisant ou non.
+Cette tâche permet de la modéliser comme un problème de classification binaire.
+Dans un premier temps, les données sont préparées en associant chaque image à une
+étiquette indiquant l’état dentaire correspondant. Cette étape est essentielle pour permettre au
+modèle d’apprendre à partir d’exemples annotés.
+Les images subissent ensuite un prétraitement afin d’assurer une certaine homogénéité.
+Cela inclut le redimensionnement des images et la normalisation des valeurs des pixels. Ces
+opérations permettent de standardiser les entrées du modèle et d’améliorer la stabilité de
+l’apprentissage.
+Page 74
+
+
+===== PAGE 91 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+La phase d’entraînement consiste à ajuster les paramètres du modèle en minimisant
+l’erreur entre les prédictions et les labels réels. Ce processus permet au modèle d’améliorer
+progressivement ses performances.
+Une fois entraîné, le modèle est évalué à l’aide d’un ensemble de données de test afin
+de vérifier sa capacité à généraliser. Cette étape permet également d’identifier les éventuelles
+erreurs de classification et d’analyser les limites du système.
+En phase de prédiction, une nouvelle image est fournie au modèle, qui est alors capable de
+produire une décision finale concernant l’état dentaire du patient.
+7.5.6
+Tableau récapitulatif
+Critère
+Type CNN
+Type de output
+Mallampati
+CNN classification
+4 classes
+État dentaire
+CNN classification
+2 classes
+Ouverture buccale
+CNN + comparaison
+Différence entre 2 images
+Extension cervicale
+CNN + comparaison
+Changement posture
+TABLE 20. Tableau récapitulatif des choix
+7.6 Description des données
+L’interprétation montre clairement un déséquilibre entre les différentes catégories cliniques.
+Les situations considérées comme normales ou à faible risque d’intubation sont largement
+majoritaires, tandis que les cas d’intubation difficile restent peu représentés. Cette distribution
+reflète la réalité clinique où les situations complexes sont moins fréquentes.
+Page 75
+
+
+===== PAGE 92 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+FIGURE 60. Figures descriptives de la data collectée (Partie 1)
+FIGURE 61. Figures descriptives de la data collectée (Partie 2)
+Ce déséquilibre a un impact direct sur les performances des modèles d’intelligence
+artificielle. En effet, le modèle apprend principalement à reconnaître les cas les plus fréquents,
+ce qui peut améliorer ses résultats globaux mais réduire sa sensibilité face aux cas rares et
+critiques. Ainsi, il existe un risque que le modèle soit moins performant dans la détection
+des situations d’intubation difficile, pourtant les plus importantes à identifier en pratique
+anesthésique.
+Page 76
+
+
+===== PAGE 93 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+7.7 Apprentissage et Résultats
+7.7.1
+Mallampati
+FIGURE 62. Figure illustrant l’apprentissage pour le modèle de Mallampati
+FIGURE 63. Précision du modèle Mllampati
+Page 77
+
+
+===== PAGE 94 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+7.7.2
+Mobilité cervicale
+FIGURE 64. Figure illustrant l’étape de préparation d’entraînement de l’extension cervicale
+FIGURE 65. Précision du modèle extension cervicale
+Page 78
+
+
+===== PAGE 95 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+7.7.3
+Ouverture de la bouche
+FIGURE 66. Figure d’association d’une paire des photos de l’ouverture de la bouche
+FIGURE 67. Précision du modèle ouverture de la bouche
+Page 79
+
+
+===== PAGE 96 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+7.7.4
+État dentaire
+FIGURE 68. Figure illustrant la préparation à l’entraînement pour l’état dentaire
+FIGURE 69. Précision du modèle état dentaire
+Page 80
+
+
+===== PAGE 97 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+7.7.5
+Récapitulatif
+Modèle
+Classes
+Précision (test)
+Observation
+Mallampati
+I / II / III / IV
+21,4%
+Déséquilibre fort des classes,
+variabilité inter-observateurs
+Ouverture buccale
+Normale / Réduite
+71,4%
+Bonne séparabilité binaire
+Extension cervicale
+Bonne / Réduite
+86,7%
+Meilleure précision grâce aux
+deux photos
+État dentaire
+Bonne / Mauvaise
+80,0%
+Classification binaire robuste
+Moyenne globale
+64,9%
+Sans Mallampati : 79,4%
+TABLE 21. Récapitulatif des résultats des modèles d’intelligence artificielle
+7.7.6
+Impact de la data augmentation
+La data augmentation a joué un rôle déterminant dans la robustesse des modèles face à la
+variabilité des conditions de capture en milieu hospitalier.
+Les
+transformations
+appliquées
+:
+rotations
+aléatoires
+jusqu’à
+20°,
+retournements
+horizontaux, zooms de ±10 % et variations de luminosité ont permis d’exposer les modèles
+à une plus grande diversité de situations sans modifier la signification clinique des images. [28,
+29, 30].
+Sans augmentation, les modèles présentaient des signes de surapprentissage dès les
+premières époques sur l’ensemble de validation. L’augmentation a permis de stabiliser la courbe
+de validation et d’améliorer la généralisation, en particulier pour les modèles d’extension
+cervicale et d’état dentaire qui ont bénéficié d’une amélioration de précision de l’ordre de 8
+à 12 % par rapport aux entraînements sans augmentation.
+Page 81
+
+
+===== PAGE 98 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+FIGURE 70. Schéma illustrant les différentes techniques de traitement de données
+7.7.7
+Discussion sur le modèle Mallampati
+La précision de 21,4% obtenue sur le modèle Mallampati est inférieure à l’aléatoire
+pour une classification à quatre classes (25%) [31]. Les classes III et IV sont naturellement
+rares dans la population chirurgicale générale [32]. Cependant, notre dataset externe de 1141
+images compense cette rareté. Le problème n’est pas la quantité mais la qualité : le dataset
+externe présente un domain shift marqué (provenance inconnue, labels suspects, split original
+déséquilibré 1109/16/16), ce qui explique que la Phase 1 sur 912 images n’atteigne que 26,2%
+à peine au-dessus du hasard. Ce résultat s’explique par la combinaison de trois facteurs.
+Premièrement, le dataset externe, bien que volumineux, présente une qualité hétérogène et un
+domain shift par rapport aux photographies cliniques de l’EPS (différences d’appareil, d’angle,
+de population), limitant le transfert d’apprentissage lors de la phase de pré-entraînement.
+En outre, le fine-tuning sur les 69 patients EPS se heurte à un déséquilibre extrême des
+classes : la classe IV n’est représentée que par un seul patient en entraînement et aucun en
+validation, rendant son apprentissage impossible. Le système de pondération (class weights)
+n’a pas compensé efficacement ce déséquilibre, le poids attribué à la classe IV (0,68) étant
+paradoxalement plus faible que celui de la classe II (0,75) en raison de l’ajout des images
+Page 82
+
+
+===== PAGE 99 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+externes. Et finalement, la matrice de confusion montre que le modèle ne prédit jamais les
+classes I et IV, se rabattant systématiquement sur les classes intermédiaires II et III. Ces résultats
+confirment que l’enrichissement du dataset en classes rares (III et IV) avec des images de qualité
+contrôlée et homogène est la piste d’amélioration prioritaire [33].
+7.8 Deuxième évaluation
+Afin d’évaluer de manière rigoureuse l’efficacité du système VitalCare, nous avons
+volontairement sélectionné des cas complexes et sensibles représentant des situations médicales
+difficiles à gérer. Ce choix avait pour objectif de vérifier la capacité de l’application à détecter
+rapidement les anomalies, les risques potentiels ainsi que les informations critiques pouvant
+influencer la prise en charge du patient. Les tests réalisés ont montré que le système parvient
+à identifier correctement les situations nécessitant une attention particulière, tout en assurant
+une transmission fiable des données entre les différents intervenants médicaux. Cette approche
+a permis de confirmer la robustesse de VitalCare ainsi que son aptitude à améliorer la sécurité
+et le suivi des patients dans des contextes exigeants.
+FIGURE 71. Schéma illustrant la deuxième évaluation
+Page 83
+
+
+===== PAGE 100 =====
+
+CHAPITRE 7. ÉVALUATION ANESTHÉSIQUE
+Hazgui Amani & Abdessalem Yosra
+7.9 Conclusion
+L’ensemble des modèles développés dans ce projet illustre le potentiel de l’intelligence
+artificielle pour l’analyse automatisée d’images médicales. L’approche modulaire adoptée
+permet de traiter efficacement plusieurs paramètres cliniques, tout en mettant en évidence les
+défis liés à la qualité des données et à la robustesse des modèles. Une amélioration progressive
+de ces différents aspects pourrait conduire à un système d’aide à la décision plus fiable et mieux
+adapté aux exigences du domaine médical.
+Page 84
+
+
+===== PAGE 101 =====
+
+CHAPITRE 8. INTÉGRATION GLOBALE
+Hazgui Amani & Abdessalem Yosra
+Chapitre
+8
+Intégration globale
+8.1 Introduction
+L’objectif est d’assurer une cohérence globale et une capacité à fournir une décision
+exploitable dans un contexte réel. Après avoir développé séparément les différents modules,
+notamment ceux liés à l’intelligence artificielle, il devient nécessaire de valider leur
+complémentarité et leur contribution à une évaluation globale du patient.
+Deux approches ont été mises en place :
+— La première consiste à transformer les réponses issues des questionnaires médicaux
+en scores numériques, permettant ainsi une interprétation structurée des informations
+cliniques.
+— La seconde repose sur l’exploitation conjointe des prédictions fournies par les différents
+modèles d’intelligence artificielle, afin d’aboutir à une estimation globale du risque
+d’intubation difficile.
+Cette étape permet ainsi de passer d’une analyse fragmentée à une vision synthétique, en
+combinant à la fois les données cliniques et les résultats issus de l’analyse d’images.
+Page 85
+
+
+===== PAGE 102 =====
+
+CHAPITRE 8. INTÉGRATION GLOBALE
+Hazgui Amani & Abdessalem Yosra
+8.2 Définition des critères
+8.2.1
+ASA - American Society of Anesthesiologists [34, 35]
+Une classification utilisée pour évaluer l’état de santé général d’un patient avant une
+intervention chirurgicale. Il permet de situer le patient sur une échelle allant généralement de I
+à IV (ou plus), en fonction de la présence et de la gravité de maladies systémiques.
+— ASA I : patient sain
+— ASA II : patient avec une atteinte légère
+— ASA III : patient avec une maladie systémique sévère
+— ASA IV : patient avec une pathologie grave mettant en jeu le pronostic vital
+— ASA V : patient moribond
+Ce score est largement utilisé pour estimer le risque anesthésique.
+FIGURE 72. Illustration du score ASA
+Ce score est largement utilisé pour estimer le risque anesthésique.
+8.2.2
+NYHA - New York Heart Association [36, 35]
+Permet d’évaluer le niveau de limitation fonctionnelle liée à une pathologie cardiaque. Elle
+est basée sur la tolérance du patient à l’effort physique.
+Page 86
+
+
+===== PAGE 103 =====
+
+CHAPITRE 8. INTÉGRATION GLOBALE
+Hazgui Amani & Abdessalem Yosra
+— Classe I : aucune limitation
+— Classe II : limitation légère
+— Classe III : limitation marquée
+— Classe IV : symptômes présents même au repos
+Ce critère est important pour apprécier l’état cardiovasculaire du patient.
+FIGURE 73. Illustration du score NYHA
+8.2.3
+Intubation difficile
+L’intubation difficile correspond à une situation dans laquelle l’insertion du tube
+endotrachéal est compliquée, voire impossible, dans des conditions standards.
+Elle peut être liée à plusieurs facteurs, notamment des particularités anatomiques ou
+des limitations fonctionnelles (ouverture buccale réduite, mobilité cervicale limitée, score de
+Mallampati élevé, etc.).
+Page 87
+
+
+===== PAGE 104 =====
+
+CHAPITRE 8. INTÉGRATION GLOBALE
+Hazgui Amani & Abdessalem Yosra
+FIGURE 74. Stade de l’intubation difficile
+L’identification précoce de ce risque est essentielle afin d’anticiper les difficultés et
+d’adapter la prise en charge anesthésique.
+8.3 Scores ASA et NYHA
+Dans ce contexte, le principe consiste à convertir les réponses issues du questionnaire
+médical en scores structurés, notamment les scores ASA et NYHA. Chaque réponse est
+interprétée en fonction de son impact clinique, afin d’orienter le patient vers un niveau de gravité
+correspondant.
+Il est important de préciser que, dans le cadre d’une consultation pré-anesthésique standard,
+le score ASA est limité aux niveaux I, II et III. Les cas plus sévères nécessitant une classification
+supérieure relèvent le plus souvent d’une prise en charge hospitalière spécifique. En revanche,
+le score NYHA conserve l’ensemble de ses quatre classes, allant d’une absence de limitation
+fonctionnelle jusqu’à une symptomatologie présente au repos.
+Cette approche permet d’assurer une évaluation cohérente et adaptée au contexte clinique,
+tout en facilitant l’exploitation des données dans le système.
+Page 88
+
+
+===== PAGE 105 =====
+
+CHAPITRE 8. INTÉGRATION GLOBALE
+Hazgui Amani & Abdessalem Yosra
+8.4 Agrégation des prédictions et cohérence globale : notebook7
+8.4.1
+Principe
+Un mécanisme d’agrégation a été mis en place pour combiner les résultats issus des
+différents modèles d’intelligence artificielle. Plutôt que de se baser sur une seule prédiction,
+le système adopte une approche multi-critères, dans laquelle chaque module contribue à la
+décision finale selon sa pertinence.
+Cette orchestration permet de croiser plusieurs sources d’information, notamment les
+critères visuels (Mallampati, ouverture buccale, extension cervicale, état dentaire). Le rôle du
+module d’agrégation est donc de synthétiser ces résultats en une estimation globale du risque
+d’intubation difficile. Cette décision repose sur un ensemble de règles permettant de pondérer
+l’importance de chaque critère. Par exemple, la présence simultanée de plusieurs facteurs à
+risque peut orienter vers une classification plus élevée.
+En outre, cette approche contribue indirectement à limiter le phénomène de surapprentissage
+(overfitting). En effet, en combinant plusieurs modèles spécialisés plutôt qu’en s’appuyant sur
+un seul modèle global, le système réduit la dépendance à un modèle unique et améliore sa
+capacité de généralisation.
+Ainsi, l’architecture adoptée repose sur une logique d’orchestration des prédictions,
+garantissant à la fois une meilleure robustesse des résultats et une cohérence globale dans
+l’évaluation du patient.
+8.4.2
+Stratégie de scoring du risque global
+Une fonction de synthèse agrège les quatre prédictions en un indicateur de risque clinique
+unique selon une règle de pondération additive.
+La fonction d’agrégation repose sur une logique conservatrice, cohérente avec les
+recommandations d’évaluation de la voie aérienne difficile en anesthésie, qui combinent
+plusieurs critères cliniques tels que le score de Mallampati, l’ouverture buccale, état dentaire
+Page 89
+
+
+===== PAGE 106 =====
+
+CHAPITRE 8. INTÉGRATION GLOBALE
+Hazgui Amani & Abdessalem Yosra
+et l’extension cervicale. Cette approche est justifiée car la littérature insiste sur la nécessité de
+réduire le risque anesthésique et de ne pas sous-estimer une intubation potentiellement difficile
+[37, 38, 39, 40].
+La fonction d’agrégation applique une règle de dominance : si au moins un des quatre
+critères IA classifie un résultat à risque élevé (Mallampati III ou IV, ouverture Réduite, extension
+Réduite, état dentaire Mauvaise), le risque global est difficile. Si aucun critère n’est critique
+mais qu’au moins un est défavorable, le risque est moyen. Si tous les critères sont favorables, le
+risque est facile. Cette règle conservatrice est volontaire : en anesthésie, il vaut mieux surestimer
+le risque que le sous-estimer [39, 40, 38, 37].
+FIGURE 75. Entraînement final
+Le score total est ensuite mappé vers trois niveaux de risque : facile (< 2), moyen (2–4),
+difficile (≥5). La valeur normalisée score_global est bornée à [0, 1] pour la consommation par
+l’API.
+8.4.3
+Évaluation et visualisation
+FIGURE 76. Analyse des performances
+Ces instructions permettent de tracer les courbes d’apprentissage. Techniquement, elles
+servent à :
+Page 90
+
+
+===== PAGE 107 =====
+
+CHAPITRE 8. INTÉGRATION GLOBALE
+Hazgui Amani & Abdessalem Yosra
+— Détecter l’overfitting
+— Analyser la convergence
+— Comparer les phases d’entraînement
+8.5 Évaluation globale
+La page d’évaluation globale, dédiée exclusivement à l’administrateur, offre une vue
+d’ensemble statistique permettant de mesurer la performance et l’utilisation en temps réel.
+Elle regroupe des indicateurs clés tels que le nombre total d’utilisateurs actifs et la répartition
+des rôles. Elle permet également de suivre le taux d’occupation des différentes étapes du flux
+clinique, le nombre de notifications générées, ainsi que les délais moyens de traitement des
+fiches patients. Grâce à ces données, l’administrateur peut identifier les tendances d’utilisation,
+détecter d’éventuels goulots d’étranglement dans le parcours médical et évaluer l’efficacité
+globale de la plateforme afin d’optimiser continuellement les performances et la qualité du
+service.
+FIGURE 77. Figure montrant l’évaluation globale
+8.6 Communication et protocoles
+La communication entre Flutter et le backend conçu avec FastAPI repose sur le protocole
+http. Ce dernier assurant des échanges rapides et structurés entre le client et le serveur : Chaque
+action effectuée par l’utilisateur à travers l’interface déclenche automatiquement une requête
+HTTP vers l’API du backend.
+Page 91
+
+
+===== PAGE 108 =====
+
+CHAPITRE 8. INTÉGRATION GLOBALE
+Hazgui Amani & Abdessalem Yosra
+À la réception de cette requête, le serveur FastAPI analyse les données transmises, applique
+les traitements nécessaires puis communique avec la base de données PostgreSQL afin de
+stocker, modifier ou récupérer les informations demandées. Une fois le traitement terminé, le
+backend retourne une réponse au format JSON. C’est un format léger et facilement exploitable
+par Flutter pour mettre à jour l’interface utilisateur de manière dynamique et fluide.
+Cette architecture permet d’assurer une séparation claire entre le frontend et le backend.
+Ceci facilite la maintenance, l’évolution et la scalabilité de l’application.
+De plus, les échanges entre les différentes composantes sont sécurisés grâce à l’utilisation
+d’un mécanisme d’authentification basé sur les tokens JWT (JSON Web Token). Après une
+connexion réussie, un token unique est généré et transmis à l’utilisateur. Ce dernier est ensuite
+inclus dans l’en-tête de chaque requête envoyée à l’API. Cette action garantit que seuls les
+utilisateurs authentifiés et autorisés peuvent accéder aux données médicales sensibles. Cette
+approche renforce la sécurité globale du système et contribue à la protection de la confidentialité
+des informations des patients.
+8.7 Conclusion
+Ce sprint a permis de passer d’un ensemble de modules indépendants à un système intégré
+capable de gérer un workflow patient complet.
+L’intégration des différents composants, notamment ceux issus des modèles développés
+dans les notebooks, a permis de valider la faisabilité d’une solution cohérente et fonctionnelle.
+Les mécanismes de communication mis en place entre les différents acteurs ainsi que la
+gestion des statuts ont contribué à structurer le parcours patient et à améliorer la coordination
+entre les différentes étapes du processus.
+Cependant, ce travail a également mis en évidence certaines limites, notamment en ce qui
+concerne la dépendance aux données et la nécessité d’optimiser certaines interactions entre
+modules. Ces éléments constituent des pistes d’amélioration pour les évolutions futures du
+système.
+Page 92
+
+
+===== PAGE 109 =====
+
+CHAPITRE 8. INTÉGRATION GLOBALE
+Hazgui Amani & Abdessalem Yosra
+En conclusion, une transition vers une solution globale, prête à être exploitée dans un
+contexte applicatif réel.
+Page 93
+
+
+===== PAGE 110 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+Chapitre
+9
+Sécurité avancée et finalisation
+9.1 Introduction
+L’objectif principal de ce sprint est de préparer une version stable, sécurisée et prête à être
+utilisée dans un environnement réel. Cette phase représente l’étape finale du projet avant le
+déploiement. Elle consiste à vérifier la fiabilité de l’application, corriger les derniers problèmes
+et assurer un niveau de sécurité adapté aux données médicales manipulées par l’application
+VitalCare.
+9.2 Évaluation globale
+L’évaluation globale consiste à analyser le comportement général de l’application afin de
+vérifier que les objectifs définis au début du projet ont été correctement atteints. Cette phase
+nous permet de contrôler la qualité des différentes fonctionnalités développées, d’observer les
+performances, d’évaluer la fluidité d’utilisation ainsi que d’identifier les éventuelles limites
+restantes avant la finalisation de l’application.
+Cette évaluation a porté sur plusieurs composants essentiels, notamment la gestion des
+dossiers patients, le système d’authentification, les notifications, les modules basés sur
+l’intelligence artificielle, ainsi que les interactions entre les différents utilisateurs.
+Page 94
+
+
+===== PAGE 111 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+Une attention particulière a été accordée à la synchronisation entre les différentes
+composantes de l’application. Nous avons notamment vérifié le bon enchaînement des
+opérations depuis la création d’un dossier patient jusqu’au traitement de la fiche
+pré-anesthésique par le médecin anesthésiste. Cette vérification incluait l’enregistrement des
+informations du patient, l’envoi automatique des notifications aux utilisateurs concernés, la
+réception correcte des données au niveau du service d’anesthésie, ainsi que le traitement et
+la validation des fiches médicales. Cette étape nous a permis de confirmer la cohérence des
+échanges entre les modules et d’assurer une continuité correcte du flux de travail médical au
+sein de l’application.
+FIGURE 78. Figure 14 - Exemple de vérification de cohérence pour un médecin anesthésiste
+FIGURE 79. Exemple de vérification de cohérence pour un médecin anesthésiste
+FIGURE 80. Exemple de vérification de cohérence pour un médecin anesthésiste
+9.3 Tests finaux
+Cette étape constitue un moment clé du projet, car elle permet de s’assurer que l’ensemble
+des modules développés fonctionnent de manière cohérente lorsqu’ils sont utilisés ensemble.
+Page 95
+
+
+===== PAGE 112 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+9.3.1
+Tests fonctionnels
+Les tests fonctionnels ont été menés en simulant plusieurs scénarios proches des conditions
+réelles d’utilisation au sein du milieu hospitalier. L’objectif était de vérifier que chaque étape
+du parcours médical s’exécute correctement, depuis l’ajout d’un patient jusqu’au traitement de
+sa fiche pré-anesthésique.
+Nous avons ainsi contrôlé l’enregistrement des informations médicales, la circulation des
+données entre les différents services ainsi que le fonctionnement automatique des notifications
+après certaines actions importantes. Des vérifications ont également été réalisées sur les
+accès des utilisateurs afin de s’assurer que chaque rôle médical dispose uniquement des
+fonctionnalités qui lui sont autorisées. L’ensemble de ces essais nous a permis de confirmer
+la stabilité des échanges entre les modules et le bon fonctionnement global.
+FIGURE 81. Vérification finale de la cohérence entre les composantes
+FIGURE 82. Vérification finale de la cohérence entre les composantes
+9.3.2
+Validation ergonomique
+Lors de la phase d’évaluation, nous ne nous sommes pas limités uniquement au
+fonctionnement technique. Une importance particulière a également été accordée à l’aspect
+visuel et au confort d’utilisation. Nous avons ainsi observé la manière dont les utilisateurs
+Page 96
+
+
+===== PAGE 113 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+interagissent avec les différentes interfaces afin de vérifier que la navigation reste simple, claire
+et adaptée au contexte médical.
+Le choix des couleurs, l’organisation des éléments graphiques ainsi que la disposition
+des informations ont été étudiés afin d’éviter une surcharge visuelle et de rendre l’utilisation
+quotidienne plus fluide pour les équipes médicales. Les teintes utilisées dans l’application ont
+aussi permis de mieux distinguer certaines actions et certains états tout en conservant une
+cohérence avec l’identité graphique générale. Cette phase nous a aidés à améliorer l’ergonomie
+globale et à offrir une expérience utilisateur plus confortable et plus intuitive.
+9.3.3
+Tableau récapitulatif des tests
+Fonctionnalité
+Entrée
+Résultat attendu
+Résultat
+obtenu
+Connexion nominale
+Email + mot de
+passe corrects
+Redirection vers le tableau
+de bord
+Conforme
+Connexion - 3 échecs
+Mauvais mot de
+passe × 3
+Blocage 5 min + message
+explicite
+Conforme
+Création
+dossier
+complet
+Formulaire
+4
+étapes rempli
+Dossier créé, navigation
+vers capture photos
+Conforme
+Upload 5 photos
+5
+fichiers
+JPG
+valides
+Analyse
+IA
+déclenchée,
+notification anesthésiste
+Conforme
+Upload photo invalide
+Fichier PDF
+Erreur
+"Format
+non
+supporté"
+Conforme
+Rapport
+IA
+-
+rôle
+spécialiste
+Ouverture
+du
+rapport
+Rapport visible, colonne
+décision absente
+Conforme
+Rapport
+IA
+-
+rôle
+anesthésiste
+Ouverture
+du
+rapport
+Rapport
++
+colonne
+décision
++
+bouton
+confirmer
+Conforme
+Suite à la page suivante
+Page 97
+
+
+===== PAGE 114 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+Suite du tableau précédent
+Fonctionnalité
+Entrée
+Résultat attendu
+Résultat
+obtenu
+Soumission décision
+"Valider"
+sélectionné
+Statut
+→
+VALIDE,
+notification spécialiste
+Conforme
+Isolation des dossiers
+Spécialiste A →
+dossiers B
+Dossiers
+absents,
+erreur
+403 si accès direct
+Conforme
+TABLE 22. Récapitulatif des tests fonctionnels
+9.3.4
+Tests de sécurité
+Dans le cadre du renforcement de la sécurité, plusieurs mécanismes ont été mis en place
+afin de mieux contrôler les accès et de réduire les risques liés à la gestion des utilisateurs.
+Les privilèges sensibles ont été limités à un rôle de « super administrateur », permettant ainsi
+de centraliser les opérations critiques et d’assurer une meilleure maîtrise des autorisations
+accordées. De plus, la création de ce type de compte ne peut être effectuée que manuellement,
+afin d’éviter toute attribution non contrôlée des droits administratifs.
+Par ailleurs, les utilisateurs disposent de la possibilité de modifier leurs mots de passe
+après authentification. Afin de garantir la confidentialité des informations d’accès, les mots
+de passe ne sont jamais stockés en clair dans la base de données. Ceux-ci sont automatiquement
+chiffrés avant leur enregistrement, ce qui renforce la protection des comptes contre les accès
+non autorisés et les risques de compromission des données sensibles.
+En outre, aucune procédure automatique de récupération des mots de passe oubliés n’a
+été intégrée dans l’application pour des raisons de sécurité. Ainsi, en cas de perte d’accès,
+l’intervention de l’administration devient nécessaire pour la création d’un nouveau compte
+utilisateur. En cas de tentatives de connexion infructueuses répétées (au maximum trois
+tentatives), une période de cinq minutes est nécessaire pour une nouvelle tentative.
+Page 98
+
+
+===== PAGE 115 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+FIGURE 83. Enregistrement des mots de passe
+9.3.5
+Tests de performance
+Les tests de performance ont permis d’évaluer le comportement de l’application dans
+différentes conditions d’utilisation. Nous avons observé la rapidité d’affichage des interfaces,
+le temps nécessaire au traitement des requêtes ainsi que la capacité du système à rester
+stable lorsque plusieurs utilisateurs étaient connectés en même temps. Cette étape nous a
+aidés à repérer certains éléments pouvant ralentir l’exécution de l’application et à apporter
+des améliorations afin de garantir une utilisation plus fluide et plus efficace avant la mise en
+production.
+9.4 Préparation du déploiement
+Dans le cadre du déploiement, nous avons opté pour la plateforme Railway en raison
+de sa capacité à prendre en charge à la fois le backend et la base de données au sein d’un
+même environnement unifié. Ce choix permet de simplifier considérablement l’architecture de
+déploiement, en facilitant la communication entre les services et en réduisant les contraintes de
+configuration.
+Par ailleurs, Railway propose une période d’essai gratuite de 30 jours, ce qui constitue
+un avantage important pour notre projet, car elle offre un cadre idéal pour réaliser une
+démonstration fonctionnelle sans contrainte financière. Cette période nous a permis de tester
+l’ensemble du système dans des conditions proches de la production.
+Enfin, la simplicité d’utilisation de la plateforme ainsi que la facilité de paramétrage
+des services ont également été des critères déterminants. En effet, Railway propose une
+interface intuitive permettant de déployer rapidement les composants de l’application, ce qui
+Page 99
+
+
+===== PAGE 116 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+a grandement facilité la mise en place de VitalCare dans un environnement de test et de
+présentation.
+9.4.1
+Configuration de l’environnement
+Dans ce contexte, plusieurs configurations techniques ont été mises en place afin d’assurer
+un déploiement stable et fonctionnel. Le paramétrage du serveur a consisté à préparer
+l’environnement d’exécution fourni par Railway pour héberger les différents modules. Le
+backend développé avec FastAPI a été déployé via un serveur ASGI (Asynchronous Server
+Gateway Interface), garantissant le traitement efficace des requêtes et la communication fluide
+avec le frontend.
+FIGURE 84. Paramétrage du serveur
+9.4.2
+Sécurisation de l’application
+En parallèle, une instance PostgreSQL a été intégrée à l’environnement Railway afin de
+centraliser et sécuriser les données médicales et administratives. Les paramètres de connexion
+nécessaires (adresse de la base, identifiants et accès) ont été configurés dans le backend pour
+permettre les opérations de gestion des données de manière fiable et sécurisée.
+Page 100
+
+
+===== PAGE 117 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+FIGURE 85. Instance PostgreSQL
+Le backend FastAPI est hébergé sur Railway avec la configuration suivante : un
+Procfile déclarant web: uvicorn main:app –host 0.0.0.0 –port $PORT, un fichier
+railway.json avec builder NIXPACKS [41], et les variables d’environnement SECRET_KEY,
+DATABASE_URL (injectée automatiquement par Railway depuis l’instance PostgreSQL),
+DEBUG=False et UPLOAD_DIR=uploads [42].
+Un point important : la bibliothèque opencv-python a dû être remplacée par
+opencv-python-headless car la version standard nécessite des bibliothèques graphiques
+système absentes des serveurs Railway [43, 44].
+Le principe de maintenance à distance est simple : toute modification poussée sur GitHub
+déclenche automatiquement un nouveau déploiement en moins de cinq minutes.
+9.4.3
+Optimisation finale
+Dans la phase finale, une attention particulière a été accordée à la maintenance et au suivi
+à distance de l’application afin d’assurer sa stabilité et sa continuité de fonctionnement. Des
+Page 101
+
+
+===== PAGE 118 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+améliorations ont été apportées à la gestion des échanges avec la base de données ainsi qu’aux
+mécanismes de surveillance pour faciliter les opérations de correction et de mise à jour à
+distance.
+Enfin, plusieurs interventions ciblées ont permis de limiter les erreurs potentielles et de
+renforcer la fiabilité générale.
+FIGURE 86. Schémas de maintenance à distance
+9.5 Conclusion
+À ce niveau, on a finalisé l’ensemble des fonctionnalités prévues, corrigé les derniers
+dysfonctionnements et amélioré la stabilité globale.
+À ce stade, l’application a été entièrement testée afin de s’assurer de la cohérence entre les
+différents modules ainsi que du bon déroulement des flux entre les acteurs médicaux.
+Les vérifications réalisées ont confirmé la fiabilité de la plateforme, sa sécurité ainsi que
+ses performances dans des conditions d’utilisation proches du réel. Les derniers ajustements
+ont également contribué à optimiser l’expérience utilisateur et à renforcer la robustesse de
+l’application.
+Page 102
+
+
+===== PAGE 119 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+Ainsi, ce sprint clôture le cycle de développement en validant une version stable,
+fonctionnelle et prête à être déployée de VitalCare, répondant aux objectifs fixés au début du
+projet.
+Page 103
+
+
+===== PAGE 120 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+Conclusion générale
+Au terme de notre projet de fin d’études, nous avons eu l’occasion de concevoir et de
+développer une solution d’aide à la décision dans le cadre de l’évaluation pré-anesthésique.
+L’idée principale était de proposer un outil capable d’exploiter à la fois des données cliniques
+issues d’un questionnaire médical et des analyses basées sur l’intelligence artificielle appliquée
+à des images médicales. Cette approche nous a permis d’aborder le problème de manière plus
+complète, en combinant des informations théoriques et des observations visuelles.
+Pour mener à bien ce travail, nous avons adopté une démarche progressive. Nous avons
+commencé par développer des modules séparés, notamment les modèles de prédiction pour
+chaque critère, avant de les regrouper dans un système global. Cette manière de travailler nous
+a aidés à mieux comprendre chaque partie du projet, à identifier les difficultés au fur et à mesure,
+et à ajuster nos choix techniques en fonction des contraintes rencontrées.
+Cependant, au cours de notre projet, plusieurs limites sont apparues. La principale difficulté
+concerne les données, en particulier les images médicales utilisées pour l’entraînement des
+modèles. Leur nombre limité et leur qualité variable ont eu un impact direct sur les performances
+obtenues. De plus, les cas cliniques disponibles ne couvrent pas toutes les situations possibles,
+ce qui peut réduire la fiabilité du système dans certains contextes.
+Nous avons également été confrontés à des contraintes liées au domaine médical,
+notamment en ce qui concerne le consentement des patients et la confidentialité des données.
+Ces aspects sont essentiels, mais ils compliquent l’accès aux données et ralentissent parfois le
+Page 104
+
+
+===== PAGE 121 =====
+
+CHAPITRE 9. SÉCURITÉ ET FINALISATION
+Hazgui Amani & Abdessalem Yosra
+processus de développement. Cela nous a permis de prendre conscience de l’importance des
+questions éthiques dans ce type de projet.
+Par ailleurs, nous pensons que ce genre de solution serait encore plus efficace s’il était
+intégré dans un cadre plus structuré, comme une plateforme centralisée ou un centre de
+développement à l’échelle nationale. Cela permettrait d’avoir accès à des données plus variées,
+d’améliorer les modèles, et de garantir une meilleure cohérence dans les pratiques. Au-delà
+de l’aspect technique, ce projet a été une expérience très enrichissante. Le passage en milieu
+hospitalier nous a permis de mieux comprendre la réalité du terrain et les besoins des
+professionnels de santé. Cela nous a aussi aidés à développer notre esprit critique et notre
+capacité à analyser des situations concrètes.
+Enfin, ce travail nous a permis de renforcer nos compétences, aussi bien en développement
+qu’en conception. Il nous a donné une vision plus claire de ce que représente un projet
+informatique dans le domaine médical, avec ses défis, mais aussi son importance.
+En conclusion, ce projet constitue une première étape vers la mise en place de solutions
+intelligentes dans le domaine de la santé. Même s’il reste des améliorations à apporter, il ouvre
+des perspectives intéressantes pour la suite, notamment en termes d’évolution des modèles et
+d’intégration dans des environnements réels.
+Page 105
+
+
+===== PAGE 122 =====
+
+ANNEXES
+Hazgui Amani & Abdessalem Yosra
+Annexes
+Ce chapitre regroupe les éléments complémentaires du projet VitalCare dont l’insertion
+dans le corps principal du mémoire aurait alourdi la lecture, tout en constituant des preuves
+essentielles du travail technique réalisé.
+Annexe A - Consentement éclairé des patients
+Cette annexe présente le document de consentement éclairé signé par les patients de
+l’EPS Taher Sfar Mahdia, autorisant l’utilisation de leurs photographies cliniques et données
+médicales dans le cadre de ce projet de fin d’études.
+Ce document précise :
+— L’utilisation des images médicales et données cliniques après anonymisation
+— La stricte confidentialité des informations
+— Le caractère volontaire de la participation
+— La possibilité de retirer son consentement à tout moment
+Page 106
+
+
+===== PAGE 123 =====
+
+ANNEXES
+Hazgui Amani & Abdessalem Yosra
+FIGURE 87. Document de consentement éclairé signé par les patients
+Annexe B - Protocole de capture des cinq photos cliniques
+Cette annexe décrit le protocole standardisé établi avec le Dr. Bannou pour la capture des
+cinq photographies cliniques requises par VitalCare.
+Page 107
+
+
+===== PAGE 124 =====
+
+ANNEXES
+Hazgui Amani & Abdessalem Yosra
+N°
+Type
+Critère évalué et positionnement
+1
+Bouche fermée
+Ouverture buccale - patient au repos, lèvres jointes
+2
+Bouche ouverte
+Mallampati + ouverture - bouche grande ouverte, langue tirée
+3
+État dentaire
+Anomalies dentaires - gros plan, bouche entrouverte
+4
+Profil cou repos
+Extension cervicale - profil gauche, tête droite
+5
+Profil cou en extension
+Extension cervicale - profil gauche, tête inclinée en arrière
+TABLE 23. Protocole de capture des cinq photographies cliniques de VitalCare
+Annexe C - Résultats détaillés des modèles CNN
+Cette annexe présente les métriques complètes d’évaluation des quatre modèles CNN
+entraînés sur le dataset de 69 patients de l’EPS Mahdia.
+Modèle
+Classes
+Précision test
+Photos utilisées
+Mallampati
+I / II / III / IV
+21,4 %
+Bouche ouverte
+Ouverture buccale
+Normale / Réduite
+71,4 %
+Bouche ouverte + fermée
+Extension cerv.
+Bonne / Réduite
+86,7 %
+Profil repos + extension
+État dentaire
+Bonne / Mauvaise
+80,0 %
+Photo dentaire
+Moyenne
+64,9 %
+TABLE 24. Performances des quatre modèles CNN de VitalCare
+Annexe D - Documentation des principaux endpoints de l’API
+REST
+Cette
+annexe
+liste
+les
+principaux
+endpoints
+de
+l’API
+FastAPI
+de
+VitalCare,
+accessibles via la documentation Swagger interactive déployée à l’adresse de production
+https://vitalcare-production-833d.up.railway.app/docs.
+Page 108
+
+
+===== PAGE 125 =====
+
+ANNEXES
+Hazgui Amani & Abdessalem Yosra
+Méth.
+Endpoint
+Description
+Rôle requis
+POST
+/api/auth/login
+Authentification (JWT)
+Public
+POST
+/api/auth/register
+Inscription
+Public
+GET
+/api/patients/
+Liste des dossiers
+Tous
+POST
+/api/patients/
+Créer un dossier
+Spécialiste
+PUT
+/api/patients/{id}
+Modifier un dossier
+Spécialiste
+DELETE
+/api/patients/{id}
+Supprimer un dossier
+Spécialiste
+POST
+/api/patients/{id}/photos
+Upload une photo
+Spécialiste
+GET
+/api/patients/{id}/photos
+Liste des photos
+Tous
+POST
+/api/patients/{id}/analyze
+Déclencher l’analyse IA
+Spécialiste
+GET
+/api/patients/{id}/rapport
+Consulter le rapport IA
+Tous
+POST
+/api/patients/{id}/decision
+Soumettre la décision
+Anesthésiste
+GET
+/api/admin/medecins
+Liste des médecins
+Admin
+PUT
+/api/admin/medecins/{id}/valider
+Valider un compte
+Admin
+GET
+/api/bi/kpis
+Indicateurs analytiques
+Admin
+TABLE 25. Principaux endpoints de l’API REST VitalCare
+Annexe E - Extraits de code significatifs
+E.1 - Chargement des modèles CNN au démarrage du serveur
+class VitalCarePredictor:
+def __init__(self):
+models_dir = os.path.join(
+os.path.dirname(__file__), "models"
+)
+print("[IA] Chargement des modèles CNN...")
+self.models = {
+"mallampati": load_model(
+f"{models_dir}/mallampati_final.keras"),
+Page 109
+
+
+===== PAGE 126 =====
+
+ANNEXES
+Hazgui Amani & Abdessalem Yosra
+"ouverture_bouche": load_model(
+f"{models_dir}/ouverture_final.keras"),
+"extension_cervicale": load_model(
+f"{models_dir}/extension_final.keras"),
+"etat_dentaire": load_model(
+f"{models_dir}/dentaire_final.keras"),
+}
+print("[IA] 4 modèles chargés avec succès !")
+predictor = VitalCarePredictor()
+E.2 - Logique de bascule d’URL Flutter (local / production)
+static String get _baseUrl {
+// Mode release sur tablette : URL Railway production
+if (!kDebugMode) {
+return 'https://vitalcare-production-833d.up.railway.app';
+}
+// Mode debug sur navigateur web : localhost
+if (kIsWeb) {
+return 'http://localhost:8000';
+}
+// Mode debug sur émulateur Android : adresse hôte
+return 'http://10.0.2.2:8000';
+}
+E.3 - Règle d’agrégation des scores IA
+def calculer_risque_global(scores: dict) -> str:
+"""
+Page 110
+
+
+===== PAGE 127 =====
+
+ANNEXES
+Hazgui Amani & Abdessalem Yosra
+Règle de dominance conservative :
+si un seul critère est à risque élevé →difficile
+"""
+risques_eleves = [
+scores["mallampati"] in ["III", "IV"],
+scores["ouverture_bouche"] == "Réduite",
+scores["extension_cervicale"] == "Réduite",
+scores["etat_dentaire"] == "Mauvaise",
+]
+if any(risques_eleves):
+return "difficile"
+risques_moyens = [
+scores["mallampati"] == "II",
+]
+if any(risques_moyens):
+return "moyen"
+return "facile"
+Page 111
+
+
+===== PAGE 128 =====
+
+BIBLIOGRAPHIE
+Hazgui Amani & Abdessalem Yosra
+Bibliographie
+[1]
+UNIVERSITÉ DE BBA. Mémoire - Université de BBA. 2026. URL : https://dspace.univ-
+bba.dz/server/api/core/bitstreams/6c2fed9e-0ab5-494c-9d64-539a1efe4e31/content
+(visité le 05/05/2026).
+[2]
+EPS HÔPITAL TAHAR SFAR MAHDIA. EPS Hôpital Tahar Sfar Mahdia. 2026. URL :
+http://hopital-taharsfarmahdia.tn (visité le 23/05/2026).
+[3]
+SWAGGER. Swagger Documentation. 2026. URL : https://swagger.io/docs/ (visité le
+05/05/2026).
+[4]
+SCRIBD. Langage DART. 2026. URL : https://fr.scribd.com/document/666351453/
+Langage-DART (visité le 05/05/2026).
+[5]
+KAGGLE. Mallampati Images Dataset. 2026. URL : https://www.kaggle.com/datasets/
+eatradium/mallampati-imgs (visité le 05/03/2026).
+[6]
+CZ8023. Python Library Documentation. 2026. URL : https://cz8023.cn/book/book/
+python/library.pdf (visité le 03/05/2026).
+[7]
+Multiple AUTHORS. PostgreSQL Library. 2026. URL : https://books.google.tn/books?
+id=gkQVL9pyFVYC (visité le 03/05/2026).
+[8]
+Multiple AUTHORS. FastAPI Library. 2026. URL : https://books.google.tn/books?id=
+WpHhEAAAQBAJ (visité le 03/05/2026).
+Page 112
+
+
+===== PAGE 129 =====
+
+BIBLIOGRAPHIE
+Hazgui Amani & Abdessalem Yosra
+[9]
+Mark SANDLER et al. “MobileNetV2 : Inverted Residuals and Linear Bottlenecks”.
+In : Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition
+(CVPR) (2018). Google Research Blog, p. 4510-4520. URL : https://research.google/
+blog/mobilenetv2-the-next-generation-of-on-device-computer-vision-networks/.
+[10]
+Rami MANNA et OTHERS. “Deep Learning for Medical Image Classification : A
+Comprehensive Review”. In : PMC (PubMed Central) PMC12092329 (2025). URL :
+https://pmc.ncbi.nlm.nih.gov/articles/PMC12092329/ (visité le 24/05/2026).
+[11]
+Andrew G. HOWARD et al. “MobileNetV2 : Inverted Residuals and Linear Bottlenecks”.
+In : arXiv preprint arXiv :2601.16608 (2026). URL : https://arxiv.org/abs/2601.16608
+(visité le 24/05/2026).
+[12]
+RAILWAY. Railway Deployment - VitalCare Project. 2026. URL : https://railway.com/
+deploy/IhHgYS (visité le 24/05/2026).
+[13]
+SWAGGER. Swagger Documentation. 2026. URL : https://swagger.io/docs/ (visité le
+30/04/2026).
+[14]
+SOCIÉTÉ FRANÇAISE D’ANESTHÉSIE ET DE RÉANIMATION (SFAR). Classification
+ASA. 2026. URL : https://sfar.org/scores/asa.php (visité le 25/05/2026).
+[15]
+SFAR. Intubation et extubation du patient en réanimation. 2016. URL : https://sfar.org/
+wp-content/uploads/2016/09/Intubation-et-extubation-du-patient-en-reanimation-
+ANREA.pdf (visité le 30/04/2026).
+[16]
+SFAR. Recommandations SFAR. 2026. URL : https://sfar.org/recommandations/ (visité
+le 30/04/2026).
+[17]
+SFAR. Intubation difficile - Recommandations SFAR. 2017. URL : https : / / sfar. org /
+wp- content/uploads/2017/09/2_RFE- intubation- difficile- SFAR_V2.pdf (visité le
+30/04/2026).
+[18]
+EU OPEN SCI. European Journal of Engineering. 2026. URL : https://www.eu-opensci.
+org/index.php/ejeng/article/view/62740 (visité le 03/05/2026).
+[19]
+MATHWORKS. Image Recognition - MATLAB & Simulink. 2026. URL : https://www.
+mathworks.com/discovery/image-recognition.html (visité le 25/05/2026).
+Page 113
+
+
+===== PAGE 130 =====
+
+BIBLIOGRAPHIE
+Hazgui Amani & Abdessalem Yosra
+[20]
+A3P. IA et diagnostic : analyse d’images médicales. 2026. URL : https://www.a3p.org/ia-
+diagnostic-analyse-images/ (visité le 25/05/2026).
+[21]
+SCIENCEDIRECT. “Prédiction de l’intubation difficile : revue systématique”. In : Annales
+Françaises d’Anesthésie et de Réanimation (2021). URL : https://pdf.sciencedirectassets.
+com/312332/1-s2.0-S0007455121X00185/1-s2.0-S0007455121004227/am.pdf (visité
+le 25/05/2026).
+[22]
+PMC. “Deep learning for medical image analysis : A review”. In : PMC (PubMed
+Central) (2021). URL : https://pmc.ncbi.nlm.nih.gov/articles/PMC8584374/ (visité
+le 25/05/2026).
+[23]
+KALISTEO - CEA. Vision et apprentissage pour l’analyse de scène. 2026. URL : https:
+//kalisteo.cea.fr/index.php/vision-et-apprentissage-pour-lanalyse-de-scene/ (visité le
+25/05/2026).
+[24]
+ÉTS MONTRÉAL. Reconnaissance et interprétation d’images médicales. 2026. URL :
+https://www.etsmtl.ca/actualites/reconnaissance-interpretation-images-medicales (visité
+le 25/05/2026).
+[25]
+Nitish SRIVASTAVA et al. “Dropout : A Simple Way to Prevent Neural Networks from
+Overfitting”. In : JMLR 15 (2014), p. 1929-1958.
+[26]
+Diederik P. KINGMA et Jimmy BA. “Adam : A Method for Stochastic Optimization”. In :
+ICLR (2015).
+[27]
+Lutz PRECHELT. “Early Stopping - But When?” In : Neural Networks : Tricks of the
+Trade. 1998, p. 55-69.
+[28]
+Phillip CHLAP et al. “Data augmentation for medical imaging : A systematic literature
+review”. In : Computers in Biology and Medicine 152 (2022), p. 106391. DOI : 10.1016/
+j.compbiomed.2022.106391. URL : https://www.sciencedirect.com/science/article/abs/
+pii/S001048252201099X (visité le 25/05/2026).
+[29]
+À COMPLÉTER. “Data augmentation techniques”. In : PMC (2023). URL : https://pmc.
+ncbi.nlm.nih.gov/articles/PMC10027281/ (visité le 25/05/2026).
+Page 114
+
+
+===== PAGE 131 =====
+
+BIBLIOGRAPHIE
+Hazgui Amani & Abdessalem Yosra
+[30]
+À COMPLÉTER. “Data augmentation in medical imaging”. In : PubMed (2022). URL :
+https://pubmed.ncbi.nlm.nih.gov/36549032/ (visité le 25/05/2026).
+[31]
+GOOGLE DEVELOPERS. Classification : exactitude, précision, rappel. 2026. URL : https:
+/ / developers . google . com / machine - learning / crash - course / classification / accuracy -
+precision-recall?hl=fr (visité le 24/05/2026).
+[32]
+SCIENCEDIRECT. Mallampati Score - ScienceDirect Topics. 2026. URL : https : / /
+www.sciencedirect.com/topics/medicine- and- dentistry/mallampati- score (visité le
+24/05/2026).
+[33]
+Y. et al. ZHANG. “Machine learning for Mallampati classification : challenges and
+perspectives”. In : Journal of Clinical Anesthesia (2022). URL : https://pubmed.ncbi.
+nlm.nih.gov/36242810/ (visité le 24/05/2026).
+[34]
+HÔPITAL RIVIERA-CHABLAIS. Classification ASA. 2020. URL : https : / / www .
+hopitalrivierachablais.ch/upload/docs/application/pdf/2020-11/dir1/uep_anestheisie_
+classification-asa.pdf (visité le 30/04/2026).
+[35]
+MEDICALCUL. Classification NYHA. 2026. URL : http://medicalcul.free.fr/nyha.html
+(visité le 30/04/2026).
+[36]
+MEDTRONIC. What is a New York Heart Association (NYHA) class? 2026. URL : https:
+//www.medtronic.com/fr-ca/heart-device-answers/search-results/search-result.what-is-
+a-new-york-heart-association-nyha-class.html (visité le 30/04/2026).
+[37]
+BIBLIOSANTÉ. Évaluation du risque anesthésique. 2026. URL : https://bibliosante.ml/
+bitstream/handle/123456789/10340/09M171.pdf?sequence=1&isAllowed=y (visité le
+24/05/2026).
+[38]
+PULSATIONS HUG. Évaluer les risques opératoires. 2026. URL : https://pulsations.hug.
+ch/article/evaluer-les-risques-operatoires#gsc.tab=0 (visité le 24/05/2026).
+[39]
+SOFIA MEDICALISTES. Intubation difficile - Recommandations. 2026. URL : https://
+sofia.medicalistes.fr/spip/IMG/pdf/intub1.pdf (visité le 24/05/2026).
+[40]
+SFMU. Conférence d’experts - Intubation difficile. 2026. URL : https://www.sfmu.org/
+upload/consensus/ce_intubdiff.pdf (visité le 24/05/2026).
+Page 115
+
+
+===== PAGE 132 =====
+
+BIBLIOGRAPHIE
+Hazgui Amani & Abdessalem Yosra
+[41]
+STACK OVERFLOW. How to tell FastAPI which host and port to bind to. 2024. URL :
+https://stackoverflow.com/questions/78868020/how-to-tell-fastapi-which-host-and-
+port-to-bind-to (visité le 24/05/2026).
+[42]
+RAILWAY. PostgreSQL Databases - Railway Docs. 2026. URL : https://docs.railway.
+com/databases/postgresql (visité le 24/05/2026).
+[43]
+PYPI. opencv-python-headless. 2026. URL : https://pypi.org/project/opencv-python-
+headless/ (visité le 24/05/2026).
+[44]
+GITHUB - MIKUBILL/SD-WEBUI-CONTROLNET. Feature : Please use headless package
+of opencv-python. 2023. URL : https://github.com/Mikubill/sd-webui-controlnet/issues/
+1881 (visité le 24/05/2026).
+Page 116
+
+
+===== PAGE 133 =====
+
+BIBLIOGRAPHIE
+Hazgui Amani & Abdessalem Yosra
+Résumé
+Le présent mémoire de Licence s’inscrit dans le cadre d’un stage réalisé à l’Établissement
+Public de Santé Taher Sfar de Mahdia (EPS Mahdia), sous la supervision du l’ingénieur Manaa
+Rami.
+Il porte sur la conception et le développement d’une application mobile de triage
+anesthésique assisté par intelligence artificielle, nommée VitalCare.
+L’objectif principal de ce travail est de réduire les délais et la subjectivité de la
+consultation préanesthésique à l’EPS Mahdia en automatisant l’évaluation des quatre critères
+anatomiques prédicteurs d’intubation difficile : le score de Mallampati, l’ouverture buccale,
+l’extension cervicale et l’état dentaire. La solution permet au médecin spécialiste de constituer
+un dossier patient numérique et de capturer cinq photographies cliniques standardisées,
+analysées automatiquement par des modèles d’intelligence artificielle.
+L’anesthésiste consulte ensuite le rapport généré et rend sa décision à distance, sans examen
+physique systématique.
+La démarche adoptée repose sur la méthode Agile Scrum, organisée en cinq sprints
+couvrant seize semaines de développement, avec des validations régulières auprès du Ing.
+Manaa Rami en qualité de Product Owner.
+La solution développée comprend une application mobile Flutter optimisée pour tablette
+Android, un backend API REST FastAPI sécurisé par authentification JWT avec contrôle
+Page 117
+
+
+===== PAGE 134 =====
+
+BIBLIOGRAPHIE
+Hazgui Amani & Abdessalem Yosra
+d’accès à trois rôles (médecin spécialiste, médecin anesthésiste, administrateur), une base de
+données PostgreSQL, et quatre modèles de réseau de neurones convolutifs (CNN) basés sur
+l’architecture MobileNetV2 avec Transfer Learning, entraînés sur un dataset de 69 patients
+réels de l’EPS Mahdia représentant 345 images cliniques. L’ensemble est déployé sur la
+plateforme Railway pour une maintenance à distance sans intervention sur site.
+Les résultats obtenus montrent des précisions de 21,4 % pour le modèle Mallampati
+(classification difficile à quatre classes sur un corpus limité et déséquilibré), 71,4 % pour
+l’ouverture buccale, 86,7 % pour l’extension cervicale et 80,0 % pour l’état dentaire, soit une
+moyenne globale de 64,9 %.
+Le circuit clinique complet — de la création du dossier jusqu’à la décision anesthésique
+avec notification en temps réel — a été validé fonctionnellement dans des conditions proches
+de l’usage réel.
+Mots-clés : Application mobile, Intelligence artificielle, Anesthésie préopératoire, Vision par
+ordinateur, Flutter, FastAPI, MobileNetV2, Transfer Learning,Intubation difficile, Mallampati.
+Page 118
+
+
+===== PAGE 135 =====
+
+BIBLIOGRAPHIE
+Hazgui Amani & Abdessalem Yosra
+Abstract
+This Bachelor’s thesis was carried out during an internship at the Taher Sfar Public Health
+Establishment of Mahdia (EPS Mahdia), under the supervision of the engineer Manaa Rami.
+It focuses on the design and development of an AI-assisted anesthetic triage mobile
+application, named VitalCare.
+The main objective of this work is to reduce delays and subjectivity in the pre-anesthetic
+consultation at EPS Mahdia by automating the assessment of four anatomical criteria
+predicting difficult intubation : the Mallampati score, mouth opening, cervical extension,
+and dental condition. The solution enables the specialist physician to create a digital patient
+record and capture five standardized clinical photographs, automatically analyzed by artificial
+intelligence models. The anesthesiologist then consults the generated report and makes a remote
+decision, without systematic physical examination.
+The adopted methodology is based on the Agile Scrum framework, organized into five
+sprints covering sixteen weeks of development, with regular validations by Eng. Manaa Rami
+as Product Owner.
+The developed system includes a Flutter mobile application optimized for Android
+tablets, a REST API backend built with FastAPI secured by JWT authentication with
+three-role access control (specialist physician, anesthesiologist, administrator), a PostgreSQL
+database, and four Convolutional Neural Network (CNN) models based on the MobileNetV2
+architecture with Transfer Learning, trained on a dataset of 69 real patients from EPS Mahdia
+Page 119
+
+
+===== PAGE 136 =====
+
+BIBLIOGRAPHIE
+Hazgui Amani & Abdessalem Yosra
+representing 345 clinical images. The entire system is deployed on the Railway cloud platform
+for remote maintenance without on-site intervention.
+The obtained results show accuracies of 21.4 % for the Mallampati model (a difficult
+four-class classification on a limited and imbalanced corpus), 71.4 % for mouth opening,
+86.7 % for cervical extension, and 80.0 % for dental condition, yielding an overall average
+of 64.9 %. The complete clinical workflow — from patient record creation to the anesthetic
+decision with real-time notification — was functionally validated under conditions close to
+actual clinical use.
+Keywords : Mobile application, Artificial intelligence, Pre-operative anesthesia, Computer
+vision, Flutter, FastAPI, MobileNetV2, Transfer Learning, Difficult intubation, Mallampati
+score.
+Page 120
+
+
+===== PAGE 137 =====
+
+17%
+INDICE DE SIMILITUDE 13%
+SOURCES INTERNET
+4%
+PUBLICATIONS
+9%
+COPIES DE L'ÉTUDIANT
+1
+3%
+2
+1%
+3
+1%
+4
+1%
+5
+1%
+6
+<1%
+7
+<1%
+8
+<1%
+9
+<1%
+10
+<1%
+11
+<1%
+12
+<1%
+Hopital
+RAPPORT DE SIMILITUDE
+SOURCES PRINCIPALES
+Submitted to University of Monastir
+Copie de l'étudiant
+content.lib.utah.edu
+Source Internet
+Submitted to University of Manouba
+Copie de l'étudiant
+Submitted to Tunisian Consortium
+Copie de l'étudiant
+Submitted to University of Carthage
+Copie de l'étudiant
+Submitted to University of Jendouba
+Copie de l'étudiant
+theses.hal.science
+Source Internet
+Submitted to Université Virtuelle de Tunis
+Copie de l'étudiant
+tel.archives-ouvertes.fr
+Source Internet
+Submitted to University of Tunis
+Copie de l'étudiant
+www.slideshare.net
+Source Internet
+docplayer.fr
+Source Internet
+dspace.univ-tlemcen.dz
+
+
+===== PAGE 138 =====
+
+13
+<1%
+14
+<1%
+15
+<1%
+16
+<1%
+17
+<1%
+18
+<1%
+19
+<1%
+20
+<1%
+21
+<1%
+22
+<1%
+23
+<1%
+24
+<1%
+25
+<1%
+26
+<1%
+27
+<1%
+Source Internet
+www.assemblee-nationale.fr
+Source Internet
+www.vie-publique.fr
+Source Internet
+Submitted to HEC Montréal
+Copie de l'étudiant
+idoc.pub
+Source Internet
+www.keskeces.com
+Source Internet
+qdoc.tips
+Source Internet
+Submitted to EURIDIS Management
+Copie de l'étudiant
+dl.ummto.dz
+Source Internet
+ijdsa.org
+Source Internet
+www.cours-gratuit.com
+Source Internet
+www.yumpu.com
+Source Internet
+Submitted to Imperial College of Science,
+Technology and Medicine
+Copie de l'étudiant
+de.slideshare.net
+Source Internet
+Submitted to University of Sousse
+Copie de l'étudiant
+
+
+===== PAGE 139 =====
+
+28
+<1%
+29
+<1%
+30
+<1%
+31
+<1%
+32
+<1%
+33
+<1%
+34
+<1%
+35
+<1%
+36
+<1%
+37
+<1%
+38
+<1%
+39
+<1%
+40
+arxiv.org
+Source Internet
+hdl.handle.net
+Source Internet
+www.communique-de-presse.com
+Source Internet
+www.em-consulte.com
+Source Internet
+www2.assemblee-nationale.fr
+Source Internet
+Submitted to Icademie
+Copie de l'étudiant
+dragoii.com
+Source Internet
+medbox.org
+Source Internet
+www.wikiwai.com
+Source Internet
+Amanda Duarte, Francisco Roldan, Miquel
+Tubau, Janna Escur et al. "Wav2Pix: Speech-
+conditioned Face Generation Using
+Generative Adversarial Networks", ICASSP
+2019 - 2019 IEEE International Conference on
+Acoustics, Speech and Signal Processing
+(ICASSP), 2019
+Publication
+Submitted to Universite Saint Joseph
+Copie de l'étudiant
+ar.scribd.com
+Source Internet
+dspace.mit.edu
+Source Internet
+
+
+===== PAGE 140 =====
+
+<1%
+41
+<1%
+42
+<1%
+43
+<1%
+44
+<1%
+45
+<1%
+46
+<1%
+47
+<1%
+48
+<1%
+49
+<1%
+50
+<1%
+51
+<1%
+52
+<1%
+53
+<1%
+es.slideshare.net
+Source Internet
+www.maths-ﬁ.fr
+Source Internet
+researchportal.unamur.be
+Source Internet
+Sveinsson Cepero, Númi. "Automatic Vascular
+Model Construction From Medical Imaging
+Using Deep Learning", University of California,
+Berkeley, 2025
+Publication
+archipel.uqam.ca
+Source Internet
+dokodoc.com
+Source Internet
+repositorio.umariana.edu.co
+Source Internet
+www.mdpi.com
+Source Internet
+www.vs.ch
+Source Internet
+e-biblio.univ-mosta.dz
+Source Internet
+orbi.uliege.be
+Source Internet
+www.oﬀredemploibruxelles.be
+Source Internet
+Submitted to Griﬃth College Dublin
+Copie de l'étudiant
+
+
+===== PAGE 141 =====
+
+54
+<1%
+55
+<1%
+56
+<1%
+57
+<1%
+58
+<1%
+59
+<1%
+60
+<1%
+61
+<1%
+62
+<1%
+63
+<1%
+64
+<1%
+Hayfa Aleid, Amjad Abdulrahman Alkhalaf,
+Aseel Helal Taemees, Hanan Saeed
+Almurished et al. "Framework to Classify and
+Analyze Social Media Content", Social
+Networking, 2018
+Publication
+idl-bnc-idrc.dspacedirect.org
+Source Internet
+jp.guihard.net
+Source Internet
+papyrus.bib.umontreal.ca
+Source Internet
+www.docme.ru
+Source Internet
+www.erudit.org
+Source Internet
+www.sortlist.com
+Source Internet
+2os.io
+Source Internet
+C. Colin. "Prise en charge des voies aériennes
+en anesthésie adulte à l’exception de
+l’intubation diﬃcile", Annales Françaises
+d'Anesthésie et de Réanimation, 2003
+Publication
+Coulombe, Charles. "Support à la Conception
+Intégrée de Manipulateurs Aériens", Ecole
+Polytechnique, Montreal (Canada), 2023
+Publication
+Hajlaoui, Yakin. "Modèles d’apprentissage
+automatique et d’interpolation spatiale
+utilisant les mesures prises durant le forage
+
+
+===== PAGE 142 =====
+
+65
+<1%
+66
+<1%
+67
+<1%
+68
+<1%
+69
+<1%
+70
+<1%
+71
+<1%
+72
+<1%
+73
+<1%
+74
+<1%
+75
+<1%
+76
+<1%
+77
+<1%
+78
+<1%
+dans les mines à ciel ouvert ", Ecole
+Polytechnique, Montreal (Canada)
+Publication
+Submitted to Université de Gafsa
+Copie de l'étudiant
+asampabretigny.blogspot.com
+Source Internet
+comenius.maux.org
+Source Internet
+discovery.ucl.ac.uk
+Source Internet
+docnum.univ-lorraine.fr
+Source Internet
+paperity.org
+Source Internet
+repositsc.nuczu.edu.ua
+Source Internet
+rpdefense.over-blog.com
+Source Internet
+seroinnovation.com
+Source Internet
+www.ccomptes.fr
+Source Internet
+www.diplomatie.gouv.fr
+Source Internet
+www.livebyyourowndesign.com
+Source Internet
+www.mutuelle403.fr
+Source Internet
+www1.sybase.com
+Source Internet
+
+
+===== PAGE 143 =====
+
+79
+<1%
+80
+<1%
+81
+<1%
+82
+<1%
+83
+<1%
+84
+<1%
+85
+<1%
+86
+<1%
+87
+<1%
+88
+<1%
+89
+<1%
+90
+<1%
+91
+<1%
+92
+<1%
+93
+<1%
+Submitted to Alliance School of Advanced
+Computing
+Copie de l'étudiant
+Submitted to University of Tunis El Manar
+Copie de l'étudiant
+core.ac.uk
+Source Internet
+docslide.fr
+Source Internet
+fr.bookimed.com
+Source Internet
+hopital-taharsfarmahdia.tn
+Source Internet
+huggingface.co
+Source Internet
+parislibre.blogs.lalibre.be
+Source Internet
+savoirs.usherbrooke.ca
+Source Internet
+sci.ldubgd.edu.ua
+Source Internet
+tykocinregion.pl
+Source Internet
+vbn.aau.dk
+Source Internet
+www.bts-ig.net
+Source Internet
+www.graﬁati.com
+Source Internet
+www.irit.fr
+Source Internet
+
+
+===== PAGE 144 =====
+
+94
+<1%
+95
+<1%
+96
+<1%
+97
+<1%
+98
+<1%
+99
+<1%
+100
+<1%
+101
+<1%
+102
+<1%
+103
+<1%
+104
+<1%
+105
+<1%
+www.lemagit.fr
+Source Internet
+www.moi-argent.com
+Source Internet
+www.pestana.com
+Source Internet
+Mehdaoui, Hsan Youssef. "Mécanismes
+d’enlèvement et la stabilité des solides du
+DNC-As dans les bioﬁltres passifs en climat
+froid.", Ecole Polytechnique, Montreal
+(Canada)
+Publication
+Sonia Gannouni, Rihab Riahi, Noamen Rebai.
+"Deep learning-based lineament extraction: a
+comparative study of sentinel-1, landsat 9
+imagery", Earth Science Informatics, 2025
+Publication
+archive.org
+Source Internet
+doc.rero.ch
+Source Internet
+doczz.fr
+Source Internet
+ife.ens-lyon.fr
+Source Internet
+manualzz.com
+Source Internet
+oumma.com
+Source Internet
+pastel.archives-ouvertes.fr
+Source Internet
+
+
+===== PAGE 145 =====
+
+106
+<1%
+107
+<1%
+108
+<1%
+109
+<1%
+110
+<1%
+111
+<1%
+112
+<1%
+113
+<1%
+114
+<1%
+115
+<1%
+116
+<1%
+117
+<1%
+118
+<1%
+119
+<1%
+soﬁa.medicalistes.fr
+Source Internet
+thesis.unipd.it
+Source Internet
+transitions2021.sciencesconf.org
+Source Internet
+www.aqis-iqdi.qc.ca
+Source Internet
+www.electravia.fr
+Source Internet
+www.encyclopedie-enligne.com
+Source Internet
+www.ladocumentationfrancaise.fr
+Source Internet
+www.ludovicpassamonti.com
+Source Internet
+www.midi.gouv.qc.ca
+Source Internet
+www.ola.org
+Source Internet
+www.prnewswire.com
+Source Internet
+www.publi-news.fr
+Source Internet
+www.tandfonline.com
+Source Internet
+Dadouchi, Camelia. "Integration de
+contraintes industrielles dans la
+recommandation de produits pour la prise en
+compte de la capacite a repondre a la
+
+
+===== PAGE 146 =====
+
+120
+<1%
+121
+<1%
+122
+<1%
+123
+<1%
+124
+<1%
+125
+<1%
+126
+<1%
+127
+<1%
+128
+<1%
+129
+<1%
+130
+<1%
+131
+<1%
+132
+<1%
+demande", Ecole Polytechnique, Montreal
+(Canada), 2022
+Publication
+Kolcheva, Laura. "Synchronisation en temps
+réel des correspondances de réseaux de
+transports publics.", Ecole Polytechnique,
+Montreal (Canada)
+Publication
+actu.epﬂ.ch
+Source Internet
+constellation.uqac.ca
+Source Internet
+datascience.wp.imt.fr
+Source Internet
+dochero.tips
+Source Internet
+docplayer.net
+Source Internet
+dspace.univ-bba.dz
+Source Internet
+educarest.free.fr
+Source Internet
+espace.etsmtl.ca
+Source Internet
+eu-conf.com
+Source Internet
+fr.slideshare.net
+Source Internet
+gdsc.community.dev
+Source Internet
+grds.ebsi.umontreal.ca
+Source Internet
+
+
+===== PAGE 147 =====
+
+133
+<1%
+134
+<1%
+135
+<1%
+136
+<1%
+137
+<1%
+138
+<1%
+139
+<1%
+140
+<1%
+141
+<1%
+142
+<1%
+143
+<1%
+144
+<1%
+145
+<1%
+libre.enst-bretagne.fr
+Source Internet
+pt.scribd.com
+Source Internet
+raw.githubusercontent.com
+Source Internet
+revue.cder.dz
+Source Internet
+www.citemag.fr
+Source Internet
+www.enssp.dz
+Source Internet
+www.humanitarianreform.org
+Source Internet
+www.ironmountain.ch
+Source Internet
+www.lorientlejour.com
+Source Internet
+www.scoop.it
+Source Internet
+www.sigb.net
+Source Internet
+www.uicnormandie.fr
+Source Internet
+Claire Chapuis, Silvia Calvino-Gunther, Simon
+Mandaroux, Stéphanie Genay, Pierre
+Albaladejo, Pierrick Bedouch. "Les dispositifs
+médicaux dans la prise en charge du patient
+en réanimation adulte", Elsevier BV, 2023
+Publication
+korian.sudsantesociaux.org
+
+
+===== PAGE 148 =====
+
+146
+<1%
+147
+<1%
+148
+<1%
+Exclure les citations
+Arret
+Exclure la bibliographie Arret
+Exclure les
+correspondances
+Arret
+Source Internet
+www.institutmontaigne.org
+Source Internet
+thesesups.ups-tlse.fr
+Source Internet

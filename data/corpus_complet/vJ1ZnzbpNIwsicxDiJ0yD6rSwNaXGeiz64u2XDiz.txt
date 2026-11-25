@@ -1,0 +1,5961 @@
+===== PAGE 1 =====
+
+ 
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de 
+Mahdia 
+ 
+MEMOIRE 
+ 
+N° d’ordre : LCE-IRS-3-2026-
+005  
+Ministère de l’Enseignement Supérieur et 
+de la Recherche Scientifique  
+ 
+ 
+ 
+MEMOIRE  
+                                                 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+                                                 
+ Effectué à 
+ 
+HAT Web Security Labs 
+ 
+ 
+En vue de l’obtention du diplôme de 
+ 
+Licence Computer Engineering : Ingénierie des Réseaux et Systèmes 
+ 
+ 
+Elaboré par : 
+ 
+Mohamed Ali Ayari 
+ 
+     
+Solution d’Analyse Cybersécurité de la surface d’exposition 
+ 
+ 
+ 
+Soutenu le :  15 juin 2026  
+devant le jury composé de : 
+ 
+ 
+Président 
+ : Ines Karchoud 
+Rapporteur 
+ : Wided Bendaoud 
+Encadrant Académique 
+ : Zahra Raddaoui 
+Encadrant Professionnel 
+ : Mohamed Ali Fitouhi 
+ 
+ 
+ 
+Année universitaire 2025-2026 
+
+
+===== PAGE 2 =====
+
+DÉDICACE
+À mes très chers parents,
+Aucune dédicace, aucun mot, aucune phrase ne saurait exprimer
+à leur juste valeur la profonde gratitude et l'immense amour
+que je vous porte dans mon c÷ur.
+À vous, qui avez tout sacrié pour que je puisse avancer,
+qui avez veillé sur moi nuit et jour avec une patience innie,
+qui m'avez appris la valeur du travail, de l'honnêteté et de la persévérance.
+Vos prières ont été mon bouclier, votre amour ma force,
+et vos encouragements le soue qui m'a porté jusqu'ici.
+Ce travail est avant tout le vôtre.
+Puisse Dieu vous accorder longue vie, santé et bonheur
+an que je puisse vous rendre, ne serait-ce qu'une inme partie,
+de tout ce que vous avez donné pour moi.
+À mes chers frères,
+Vous qui avez grandi à mes côtés, qui avez partagé mes rires et mes peines,
+qui m'avez soutenu dans les moments de doute avec votre bonne humeur
+et votre présence précieuse.
+Votre complicité, votre solidarité et vos encouragements constants
+ont été une source de motivation inestimable tout au long de ce parcours.
+Je suis er et chanceux de vous avoir à mes côtés.
+À tous mes amis,
+pour les moments précieux partagés ensemble.
+À tous mes enseignants,
+qui ont enrichi ma formation par leur savoir et leur passion.
+Mohamed Ali Ayari
+ISIMa
+Page 2
+
+
+===== PAGE 3 =====
+
+REMERCIEMENTS
+Au terme de ce travail, je tiens à exprimer ma profonde gratitude à toutes les
+personnes qui ont contribué, de près ou de loin, à la réussite de ce projet de n d'études.
+J'adresse mes plus sincères remerciements à mon encadrant académique, Mme
+Zahra Raddaoui, pour sa disponibilité, ses conseils avisés, sa rigueur scientique
+et sa bienveillance. Son accompagnement tout au long de ce projet a été précieux et a
+profondément enrichi mon travail.
+Je tiens également à remercier vivement mon encadrant professionnel, M. Moha-
+med Ali Fitouhi, pour son accueil chaleureux au sein de HAT Web Security Labs,
+son partage d'expertise en cybersécurité et la conance qu'il m'a accordée durant toute
+la période de stage.
+Mes remerciements s'adressent également à toute l'équipe pédagogique de l'Institut
+Supérieur d'Informatique de Mahdia, ainsi qu'à l'ensemble des enseignants qui ont
+contribué à ma formation tout au long de ces trois années de licence. Leur engagement
+et leur passion ont été essentiels à mon développement académique et personnel.
+Je remercie chaleureusement l'ensemble de l'équipe technique de HAT Web Secu-
+rity Labs, dont la collaboration et la disponibilité ont rendu cette expérience particu-
+lièrement enrichissante.
+Enn, je tiens à exprimer ma reconnaissance aux membres du jury qui me font
+l'honneur d'évaluer ce travail. Leurs remarques constitueront pour moi une véritable
+opportunité de progression et d'enrichissement.
+Avec tout mon respect et ma reconnaissance.
+Mohamed Ali Ayari
+ISIMa
+Page 3
+
+
+===== PAGE 4 =====
+
+LISTE DES ABRÉVIATIONS
+Sigle
+Signication
+API
+Application Programming Interface
+ASM
+Attack Surface Management
+CLI
+Command Line Interface
+CSE
+Custom Search Engine
+CVE
+Common Vulnerabilities and Exposures
+CVSS
+Common Vulnerability Scoring System
+DNS
+Domain Name System
+HIBP
+Have I Been Pwned
+HTML
+HyperText Markup Language
+HTTP(S)
+HyperText Transfer Protocol (Secure)
+IoC
+Indicator of Compromise
+IP
+Internet Protocol
+JSON
+JavaScript Object Notation
+MX
+Mail eXchange (DNS record)
+NS
+Name Server (DNS record)
+NSE
+Nmap Scripting Engine
+OS
+Operating System
+OSCP
+Oensive Security Certied Professional
+OSINT
+Open Source INTelligence
+PFE
+Projet de Fin d'Études
+RBAC
+Role-Based Access Control
+RDAP
+Registration Data Access Protocol
+REST
+Representational State Transfer
+SaaS
+Software as a Service
+SIEM
+Security Information and Event Management
+SMB
+Server Message Block
+ISIMa
+Page 4
+
+
+===== PAGE 5 =====
+
+ISIMa
+Sigle
+Signication
+SMTP
+Simple Mail Transfer Protocol
+SNMP
+Simple Network Management Protocol
+SOA
+Start Of Authority (DNS record)
+SQL
+Structured Query Language
+SSL/TLS
+Secure Sockets Layer / Transport Layer Security
+TXT
+TeXT (DNS record)
+UI
+User Interface
+UML
+Unied Modeling Language
+URL
+Uniform Resource Locator
+VPS
+Virtual Private Server
+VT
+VirusTotal
+WHOIS
+Who Is (protocole d'interrogation des registres)
+XSS
+Cross-Site Scripting
+YAML
+YAML Ain't Markup Language
+ISIMa
+Page 5
+
+
+===== PAGE 6 =====
+
+TABLE DES MATIÈRES
+Dédicace
+2
+Remerciements
+3
+Liste des abréviations
+4
+Introduction Générale
+18
+1
+Cybersécurité, Pentesting et Cadre du Projet
+21
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+1.2
+La cybersécurité dans le monde contemporain
+. . . . . . . . . . . . . .
+22
+1.2.1
+Dénition et enjeux . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+1.2.2
+Typologie des menaces . . . . . . . . . . . . . . . . . . . . . . .
+23
+1.2.3
+Le rôle de la cybersécurité oensive . . . . . . . . . . . . . . . .
+23
+1.3
+Le pentesting : test d'intrusion professionnel . . . . . . . . . . . . . . .
+23
+1.3.1
+Dénition et objectifs . . . . . . . . . . . . . . . . . . . . . . . .
+23
+1.3.2
+Cycle complet d'un test d'intrusion . . . . . . . . . . . . . . . .
+24
+1.4
+Information Gathering : la phase clé . . . . . . . . . . . . . . . . . . . .
+25
+1.4.1
+Importance stratégique . . . . . . . . . . . . . . . . . . . . . . .
+25
+1.4.2
+Reconnaissance passive et reconnaissance active . . . . . . . . .
+25
+1.5
+Cadre du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+1.5.1
+Cadre académique
+. . . . . . . . . . . . . . . . . . . . . . . . .
+26
+1.5.2
+Présentation de l'organisme d'accueil : HAT Web Security Labs
+27
+1.5.3
+Problématique . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+1.5.4
+Étude et critique de l'existant . . . . . . . . . . . . . . . . . . .
+29
+1.5.5
+Solution proposée : CyberScope Pro . . . . . . . . . . . . . . . .
+29
+1.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+2
+Modélisation, Méthodologie et Outils
+32
+ISIMa
+Page 6
+
+
+===== PAGE 7 =====
+
+TABLE DES MATIÈRES
+ISIMa
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+2.2
+Méthodologie de gestion de projet . . . . . . . . . . . . . . . . . . . . .
+33
+2.2.1
+Approche agile
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+2.2.2
+Comparaison avec d'autres méthodologies
+. . . . . . . . . . . .
+33
+2.2.3
+Application au projet : cinq sprints . . . . . . . . . . . . . . . .
+34
+2.2.4
+Backlog produit global . . . . . . . . . . . . . . . . . . . . . . .
+34
+2.3
+Présentation consolidée des outils et concepts du projet . . . . . . . . .
+36
+2.4
+n8n  Plateforme d'orchestration centrale . . . . . . . . . . . . . . . .
+39
+2.4.1
+Dénition et présentation
+. . . . . . . . . . . . . . . . . . . . .
+39
+2.4.2
+Caractéristiques principales
+. . . . . . . . . . . . . . . . . . . .
+39
+2.4.3
+Comparaison avec des solutions similaires . . . . . . . . . . . . .
+40
+2.4.4
+Justication du choix . . . . . . . . . . . . . . . . . . . . . . . .
+40
+2.5
+Architecture générale du système
+. . . . . . . . . . . . . . . . . . . . .
+40
+2.6
+Modélisation UML du système . . . . . . . . . . . . . . . . . . . . . . .
+41
+2.6.1
+Identication des acteurs . . . . . . . . . . . . . . . . . . . . . .
+41
+2.6.2
+Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . . . .
+42
+2.6.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . .
+43
+2.7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+3
+Sprint 1 : Infrastructure et OSINT élémentaire
+44
+Introduction du chapitre . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.1
+Objectif du Sprint 1
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.2
+Backlog du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.3
+Conception et modélisation du Sprint 1 . . . . . . . . . . . . . . . . . .
+45
+3.3.1
+Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . . . .
+45
+3.3.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . .
+46
+3.3.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4
+Sprint 2 : OSINT avancé (passif)
+50
+Introduction du chapitre . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.1
+Objectif du Sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.2
+Backlog du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+ISIMa
+Page 7
+
+
+===== PAGE 8 =====
+
+TABLE DES MATIÈRES
+ISIMa
+4.3
+Conception et modélisation du Sprint 2 . . . . . . . . . . . . . . . . . .
+52
+4.3.1
+Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . . . .
+52
+4.3.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . .
+53
+4.3.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.3.4
+Diagramme d'activité du workow WF-01
+. . . . . . . . . . . .
+56
+4.4
+WF-01 : Workow de Collecte Passive
+. . . . . . . . . . . . . . . . . .
+57
+4.4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+4.4.2
+Vue d'ensemble du workow WF-01 . . . . . . . . . . . . . . . .
+57
+4.4.3
+Description détaillée des n÷uds du WF-01 . . . . . . . . . . . .
+58
+4.4.4
+Synthèse des n÷uds du WF-01
+. . . . . . . . . . . . . . . . . .
+63
+4.4.5
+Résultats observés sur les domaines de test . . . . . . . . . . . .
+63
+4.4.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+5
+Sprint 3 : Collecte active réseau
+65
+Introduction du chapitre . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+5.1
+Objectif du Sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+5.2
+Backlog du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.3
+Conception et modélisation du Sprint 3 . . . . . . . . . . . . . . . . . .
+67
+5.3.1
+Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . . . .
+67
+5.3.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . .
+68
+5.3.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . .
+70
+5.3.4
+Diagramme d'activité du workow WF-02
+. . . . . . . . . . . .
+71
+5.4
+WF-02 : Workow de Collecte Active . . . . . . . . . . . . . . . . . . .
+72
+5.4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+5.4.2
+Vue d'ensemble du workow WF-02 . . . . . . . . . . . . . . . .
+72
+5.4.3
+Description détaillée des n÷uds du WF-02 . . . . . . . . . . . .
+74
+5.4.4
+Synthèse des n÷uds du WF-02
+. . . . . . . . . . . . . . . . . .
+80
+5.4.5
+Résultats observés sur les domaines de test . . . . . . . . . . . .
+80
+5.4.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+6
+Sprint 4 : Threat intelligence et scoring
+82
+Introduction du chapitre . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+ISIMa
+Page 8
+
+
+===== PAGE 9 =====
+
+TABLE DES MATIÈRES
+ISIMa
+6.1
+Objectif du Sprint 4
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+6.2
+Backlog du Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+6.3
+Conception et modélisation du Sprint 4 . . . . . . . . . . . . . . . . . .
+84
+6.3.1
+Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . . . .
+84
+6.3.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . .
+84
+6.3.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . .
+87
+6.3.4
+Diagramme d'activité du workow WF-03
+. . . . . . . . . . . .
+88
+6.4
+WF-03 : Workow d'Analyse et de Détection . . . . . . . . . . . . . . .
+89
+6.4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+6.4.2
+Vue d'ensemble du workow WF-03 . . . . . . . . . . . . . . . .
+90
+6.4.3
+Description détaillée des n÷uds du WF-03 . . . . . . . . . . . .
+90
+6.4.4
+Synthèse des n÷uds du WF-03
+. . . . . . . . . . . . . . . . . .
+94
+6.4.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+94
+7
+Reporting et Orchestrateur
+96
+Introduction du chapitre . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+97
+7.1
+Objectif du Sprint 5
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+97
+7.2
+Backlog du Sprint 5 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+98
+7.3
+Conception et modélisation du Sprint 5 . . . . . . . . . . . . . . . . . .
+98
+7.3.1
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . .
+98
+7.3.2
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . . 100
+7.3.3
+Diagramme d'activité du workow WF-04
+. . . . . . . . . . . . 101
+7.4
+Orchestrateur du pipeline OSINT . . . . . . . . . . . . . . . . . . . . . 103
+7.4.1
+Diagramme de séquence de l'orchestrateur . . . . . . . . . . . . 103
+7.4.2
+Diagramme de classes de l'orchestrateur
+. . . . . . . . . . . . . 104
+7.4.3
+Capture de l'orchestrateur dans n8n . . . . . . . . . . . . . . . . 105
+7.4.4
+Diagramme d'activité de l'orchestrateur . . . . . . . . . . . . . . 105
+7.5
+WF-04 : Workow de Diusion du Rapport
+. . . . . . . . . . . . . . . 106
+7.5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 107
+7.5.2
+Vue d'ensemble du workow WF-04 . . . . . . . . . . . . . . . . 107
+7.5.3
+Description détaillée des n÷uds du WF-04 . . . . . . . . . . . . 108
+ISIMa
+Page 9
+
+
+===== PAGE 10 =====
+
+TABLE DES MATIÈRES
+ISIMa
+7.5.4
+Synthèse des n÷uds du WF-04
+. . . . . . . . . . . . . . . . . . 112
+7.5.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 112
+8
+Application Web Flask
+113
+8.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 114
+8.2
+Architecture multi-rôles (RBAC)
+. . . . . . . . . . . . . . . . . . . . . 114
+8.2.1
+Principe du contrôle d'accès basé sur les rôles
+. . . . . . . . . . 114
+8.2.2
+Diagramme de cas d'utilisation général . . . . . . . . . . . . . . 115
+8.2.3
+Les trois rôles dénis . . . . . . . . . . . . . . . . . . . . . . . . 115
+8.2.4
+Matrice de permissions . . . . . . . . . . . . . . . . . . . . . . . 116
+8.3
+Modèle de données . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 116
+8.3.1
+Entités principales
+. . . . . . . . . . . . . . . . . . . . . . . . . 116
+8.3.2
+Relations entre entités . . . . . . . . . . . . . . . . . . . . . . . 116
+8.3.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . . 117
+8.3.4
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . . 118
+8.4
+Mécanisme de scan asynchrone non-bloquant . . . . . . . . . . . . . . . 120
+8.4.1
+Problème posé par l'exécution synchrone . . . . . . . . . . . . . 121
+8.4.2
+Solution adoptée : thread démon avec timeout . . . . . . . . . . 121
+8.4.3
+Polling AJAX pour le suivi en temps réel . . . . . . . . . . . . . 121
+8.5
+Parser JSON robuste pour l'orchestrateur . . . . . . . . . . . . . . . . . 121
+8.5.1
+Problème posé par les regex non-gourmandes . . . . . . . . . . . 121
+8.5.2
+Solution : parser à profondeur d'accolades
+. . . . . . . . . . . . 122
+8.6
+Génération du rapport HTML enrichi . . . . . . . . . . . . . . . . . . . 122
+8.7
+Tests et résultats expérimentaux . . . . . . . . . . . . . . . . . . . . . . 123
+8.7.1
+Méthodologie de test . . . . . . . . . . . . . . . . . . . . . . . . 123
+8.7.2
+Cas 1  google.com (légitime grande exposition)
+. . . . . . . . 123
+8.8
+Interfaces de l'application par rôle . . . . . . . . . . . . . . . . . . . . . 124
+8.8.1
+Interface Administrateur . . . . . . . . . . . . . . . . . . . . . . 124
+8.8.2
+Interface Manager . . . . . . . . . . . . . . . . . . . . . . . . . . 125
+8.8.3
+Interface Client . . . . . . . . . . . . . . . . . . . . . . . . . . . 125
+8.8.4
+Vue du résultat de scan . . . . . . . . . . . . . . . . . . . . . . . 126
+ISIMa
+Page 10
+
+
+===== PAGE 11 =====
+
+TABLE DES MATIÈRES
+ISIMa
+8.9
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 128
+9
+Conclusion Générale et Perspectives
+130
+9.1
+Bilan du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 130
+9.2
+Contributions originales
+. . . . . . . . . . . . . . . . . . . . . . . . . . 131
+9.3
+Dicultés rencontrées et leçons apprises
+. . . . . . . . . . . . . . . . . 132
+9.4
+Perspectives d'évolution
+. . . . . . . . . . . . . . . . . . . . . . . . . . 132
+9.4.1
+Perspectives à court terme (3 à 6 mois) . . . . . . . . . . . . . . 132
+9.4.2
+Perspectives à moyen terme (6 à 12 mois)
+. . . . . . . . . . . . 133
+9.4.3
+Perspectives à long terme (12 mois et plus) . . . . . . . . . . . . 133
+9.5
+Réexion nale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 133
+Bibliographie
+135
+ISIMa
+Page 11
+
+
+===== PAGE 12 =====
+
+TABLE DES FIGURES
+1.1
+Cycle complet d'un test d'intrusion en huit phases . . . . . . . . . . . .
+24
+1.2
+Logo ociel de l'Institut Supérieur d'Informatique de Mahdia (ISIMa) .
+27
+1.3
+Logo ociel de HAT Web Security Labs
+. . . . . . . . . . . . . . . . .
+28
+2.1
+Logo ociel de n8n . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+2.2
+Architecture générale de CyberScope Pro en quatre zones
+. . . . . .
+41
+2.3
+Diagramme de cas d'utilisation général de CyberScope Pro . . . . . .
+42
+2.4
+Diagramme de classes du modèle de données Flask
+. . . . . . . . . . .
+43
+3.1
+Sprint 1  Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . .
+46
+3.2
+Sprint 1  Diagramme de séquence  Déployer le conteneur n8n 
+. . .
+47
+3.3
+Sprint 1  Diagramme de séquence  Interroger WHOIS  . . . . . . . .
+47
+3.4
+Sprint 1  Diagramme de séquence  Géolocaliser une IP  . . . . . . .
+48
+3.5
+Sprint 1  Diagramme de classe . . . . . . . . . . . . . . . . . . . . . .
+49
+4.1
+Sprint 2  Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . .
+53
+4.2
+Sprint 2  Diagramme de séquence  Extraire e-mails (Hunter.io) 
+. .
+54
+4.3
+Sprint 2  Diagramme de séquence  Détecter secrets GitHub 
+. . . .
+54
+4.4
+Sprint 2  Diagramme de séquence  Agréger les résultats OSINT  . .
+55
+4.5
+Sprint 2  Diagramme de classe . . . . . . . . . . . . . . . . . . . . . .
+56
+4.6
+Diagramme d'activité du WF-01 (Collecte Passive)
+. . . . . . . . . . .
+56
+4.7
+Résultat du workow WF-01 dans l'interface n8n
+. . . . . . . . . . . .
+58
+5.1
+Sprint 3  Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . .
+68
+5.2
+Sprint 3  Diagramme de séquence  Énumérer sous-domaines  . . . .
+69
+5.3
+Sprint 3  Diagramme de séquence  Scanner les ports (Nmap)  . . . .
+69
+5.4
+Sprint 3  Diagramme de séquence  Énumérer SMB et SNMP  . . . .
+70
+5.5
+Sprint 3  Diagramme de classe . . . . . . . . . . . . . . . . . . . . . .
+71
+5.6
+Diagramme d'activité du WF-02 (Collecte Active) . . . . . . . . . . . .
+72
+ISIMa
+Page 12
+
+
+===== PAGE 13 =====
+
+TABLE DES FIGURES
+ISIMa
+5.7
+Résultat du workow WF-02 dans l'interface n8n
+. . . . . . . . . . . .
+73
+6.1
+Sprint 4  Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . .
+84
+6.2
+Sprint 4  Diagramme de séquence  Interroger VirusTotal  . . . . . .
+85
+6.3
+Sprint 4  Diagramme de séquence  Calculer le score multi-axes  . . .
+86
+6.4
+Sprint 4  Diagramme de séquence  Appliquer les règles d'override  .
+87
+6.5
+Sprint 4  Diagramme de classe . . . . . . . . . . . . . . . . . . . . . .
+88
+6.6
+Diagramme d'activité du WF-03 (Analyse et Scoring) . . . . . . . . . .
+89
+6.7
+Résultat du workow WF-03 dans l'interface n8n
+. . . . . . . . . . . .
+90
+7.1
+Sprint 5  Diagramme de séquence  Envoyer le rapport par e-mail 
+.
+99
+7.2
+Sprint 5  Diagramme de séquence  Vérication IA par AI Agent  . . 100
+7.3
+Sprint 5  Diagramme de classe . . . . . . . . . . . . . . . . . . . . . . 101
+7.4
+Diagramme d'activité du WF-04 (Diusion avec AI Agent) . . . . . . . 102
+7.5
+Orchestrateur & WF-04  Diagramme de séquence . . . . . . . . . . . 104
+7.6
+Orchestrateur & WF-04  Diagramme de classes . . . . . . . . . . . . 105
+7.7
+Orchestrateur V3 (asynchrone) dans l'interface n8n . . . . . . . . . . . 105
+7.8
+Orchestrateur  Diagramme d'activité du pipeline OSINT . . . . . . . 106
+7.9
+Résultat du workow WF-04 dans l'interface n8n
+. . . . . . . . . . . . 107
+8.1
+Application Web Flask  Diagramme de cas d'utilisation général . . . 115
+8.2
+Application Web Flask  Diagramme de classes . . . . . . . . . . . . . 118
+8.3
+Application Flask  Diagramme de séquence  S'authentier  . . . . . 119
+8.4
+Application Flask  Diagramme de séquence  Lancer un scan asynchrone 120
+8.5
+Rapport HTML CyberScope reçu par e-mail  En-tête avec badge CRI-
+TICAL, score 71/100 et vérication IA Gemini 2.5 Flash . . . . . . . . 123
+8.6
+Interface Administrateur  CyberScope Pro . . . . . . . . . . . . . . . 124
+8.7
+Interface Manager  CyberScope Pro
+. . . . . . . . . . . . . . . . . . 125
+8.8
+Interface Client  CyberScope Pro . . . . . . . . . . . . . . . . . . . . 125
+8.9
+Vue du rapport de scan (1/3)  Niveau de risque global et scores détaillés126
+8.10 Vue du rapport de scan (2/3)  OSINT passif WF-01 : emails, SSL
+Labs, GitHub . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 127
+ISIMa
+Page 13
+
+
+===== PAGE 14 =====
+
+TABLE DES FIGURES
+ISIMa
+8.11 Vue du rapport de scan (3/3)  Reconnaissance active WF-02 : sous-
+domaines, DNS, ports
+. . . . . . . . . . . . . . . . . . . . . . . . . . . 128
+ISIMa
+Page 14
+
+
+===== PAGE 15 =====
+
+LISTE DES TABLEAUX
+1.1
+Triade CIA et mécanismes de protection associés . . . . . . . . . . . . .
+22
+1.2
+Typologie des acteurs malveillants . . . . . . . . . . . . . . . . . . . . .
+23
+1.3
+Description des huit phases du cycle de pentesting . . . . . . . . . . . .
+24
+1.4
+Reconnaissance passive vs reconnaissance active . . . . . . . . . . . . .
+26
+1.5
+Fiche d'identité de l'organisme d'accueil
+. . . . . . . . . . . . . . . . .
+28
+1.6
+Étude comparative critique des principales solutions existantes . . . . .
+30
+2.1
+Comparaison des principales méthodologies de gestion de projet . . . .
+34
+2.2
+Planication des cinq sprints du projet . . . . . . . . . . . . . . . . . .
+34
+2.3
+Product Backlog global du projet CyberScope Pro . . . . . . . . . . . .
+35
+2.4
+Présentation consolidée des outils et concepts du projet . . . . . . . . .
+36
+2.5
+Comparaison de n8n avec les plateformes d'automatisation concurrentes
+40
+2.6
+Description des zones de l'architecture
+. . . . . . . . . . . . . . . . . .
+41
+2.7
+Acteurs et rôles dans le système . . . . . . . . . . . . . . . . . . . . . .
+42
+3.1
+Backlog du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.1
+Backlog du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.2
+Caractéristiques générales du workow WF-01 . . . . . . . . . . . . . .
+57
+4.3
+N÷ud Webhook Entry du WF-01 . . . . . . . . . . . . . . . . . . . . .
+58
+4.4
+N÷ud Hunter.io du WF-01 . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+4.5
+N÷ud GitHub Code Search du WF-01
+. . . . . . . . . . . . . . . . . .
+59
+4.6
+N÷ud GitHub Secrets Search du WF-01
+. . . . . . . . . . . . . . . . .
+60
+4.7
+N÷ud SSL Labs du WF-01 . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+4.8
+N÷ud Certicate Transparency du WF-01 . . . . . . . . . . . . . . . .
+61
+4.9
+N÷ud Security Headers du WF-01
+. . . . . . . . . . . . . . . . . . . .
+61
+4.10 N÷ud Wayback Machine du WF-01 . . . . . . . . . . . . . . . . . . . .
+62
+4.11 N÷ud Aggregator du WF-01 . . . . . . . . . . . . . . . . . . . . . . . .
+62
+4.12 N÷ud Webhook Response du WF-01 . . . . . . . . . . . . . . . . . . .
+62
+ISIMa
+Page 15
+
+
+===== PAGE 16 =====
+
+LISTE DES TABLEAUX
+ISIMa
+4.13 Synthèse des principaux n÷uds du WF-01
+. . . . . . . . . . . . . . . .
+63
+4.14 Résultats du WF-01 sur les trois domaines de test . . . . . . . . . . . .
+63
+5.1
+Backlog du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.2
+Caractéristiques générales du workow WF-02 . . . . . . . . . . . . . .
+73
+5.3
+N÷ud WHOIS du WF-02
+. . . . . . . . . . . . . . . . . . . . . . . . .
+74
+5.4
+N÷ud IP Geolocation du WF-02
+. . . . . . . . . . . . . . . . . . . . .
+74
+5.5
+N÷ud DNS Records du WF-02
+. . . . . . . . . . . . . . . . . . . . . .
+75
+5.6
+N÷ud Reverse DNS du WF-02 . . . . . . . . . . . . . . . . . . . . . . .
+75
+5.7
+N÷ud HackerTarget Subdomains du WF-02
+. . . . . . . . . . . . . . .
+76
+5.8
+N÷ud crt.sh du WF-02 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+5.9
+N÷ud Subnder du WF-02 . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+5.10 N÷ud Amass du WF-02 . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+5.11 N÷ud dnsx du WF-02
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+5.12 N÷ud dig du WF-02 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+5.13 N÷ud Nmap du WF-02
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+5.14 N÷ud SMB Enumeration du WF-02
+. . . . . . . . . . . . . . . . . . .
+79
+5.15 N÷ud SNMP Enumeration du WF-02 . . . . . . . . . . . . . . . . . . .
+79
+5.16 Synthèse des principaux n÷uds du WF-02
+. . . . . . . . . . . . . . . .
+80
+5.17 Résultats du WF-02 sur les trois domaines de test . . . . . . . . . . . .
+80
+6.1
+Backlog du Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+6.2
+Caractéristiques générales du workow WF-03 . . . . . . . . . . . . . .
+90
+6.3
+N÷ud VirusTotal du WF-03 . . . . . . . . . . . . . . . . . . . . . . . .
+91
+6.4
+N÷ud URLScan.io du WF-03
+. . . . . . . . . . . . . . . . . . . . . . .
+91
+6.5
+N÷ud ThreatFox du WF-03 . . . . . . . . . . . . . . . . . . . . . . . .
+91
+6.6
+N÷ud AbuseIPDB du WF-03
+. . . . . . . . . . . . . . . . . . . . . . .
+92
+6.7
+N÷ud CVE Database du WF-03 . . . . . . . . . . . . . . . . . . . . . .
+92
+6.8
+Synthèse des principaux n÷uds du WF-03
+. . . . . . . . . . . . . . . .
+94
+7.1
+Backlog du Sprint 5 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+98
+7.2
+Caractéristiques générales du workow WF-04 . . . . . . . . . . . . . . 107
+7.3
+N÷ud HTML Generator du WF-04 . . . . . . . . . . . . . . . . . . . . 108
+ISIMa
+Page 16
+
+
+===== PAGE 17 =====
+
+LISTE DES TABLEAUX
+ISIMa
+7.4
+N÷ud AI Agent du WF-04 . . . . . . . . . . . . . . . . . . . . . . . . . 109
+7.5
+N÷ud Gmail Sender du WF-04
+. . . . . . . . . . . . . . . . . . . . . . 111
+7.6
+N÷ud Telegram Notier du WF-04 . . . . . . . . . . . . . . . . . . . . 111
+7.7
+Synthèse des n÷uds du WF-04 . . . . . . . . . . . . . . . . . . . . . . . 112
+8.1
+Matrice de permissions RBAC de l'application . . . . . . . . . . . . . . 116
+8.2
+Champs de l'entité User
+. . . . . . . . . . . . . . . . . . . . . . . . . . 116
+8.3
+Champs de l'entité Project . . . . . . . . . . . . . . . . . . . . . . . . . 117
+8.4
+Champs de l'entité Domain
+. . . . . . . . . . . . . . . . . . . . . . . . 117
+8.5
+Résultats de l'analyse google.com . . . . . . . . . . . . . . . . . . . . . 124
+9.1
+Synthèse des principales dicultés techniques et de leurs solutions . . . 132
+ISIMa
+Page 17
+
+
+===== PAGE 18 =====
+
+INTRODUCTION GÉNÉRALE
+Le monde a profondément changé au cours des dernières décennies. La révolution
+numérique a transformé en profondeur notre manière de vivre, de travailler, de com-
+muniquer et de consommer. Aujourd'hui, la quasi-totalité de nos activités quotidiennes
+repose sur des technologies connectées : les services bancaires, les démarches adminis-
+tratives, la santé, l'éducation, le commerce et même les relations sociales se déroulent
+désormais en grande partie en ligne. La généralisation du télétravail, la migration mas-
+sive des entreprises vers le cloud et la multiplication des objets connectés ont accéléré
+cette dépendance au numérique, faisant des données et des systèmes d'information le
+véritable c÷ur du fonctionnement de notre société moderne.
+Cette transformation, aussi bénéque soit-elle, a un revers : plus nos vies se nu-
+mérisent, plus elles s'exposent. Chaque service en ligne, chaque appareil connecté et
+chaque donnée stockée constitue une cible potentielle pour des acteurs malveillants.
+Les cyberattaques se multiplient, se sophistiquent et touchent aussi bien les grandes
+organisations que les particuliers. Dans ce contexte, la cybersécurité n'est plus une op-
+tion ni un luxe réservé à quelques experts : elle est devenue une nécessité absolue,
+une obligation incontournable pour protéger la vie privée, garantir la continuité des
+activités et préserver la conance dans le monde numérique.
+La cybersécurité regroupe l'ensemble des moyens techniques, organisationnels et
+humains destinés à protéger les systèmes d'information contre les menaces. Parmi ses
+diérentes approches, la cybersécurité oensive occupe une place de plus en plus stra-
+tégique : plutôt que d'attendre passivement une attaque, elle consiste à adopter le point
+de vue de l'attaquant an d'anticiper ses actions. C'est dans cette logique que s'inscrit
+le pentesting (test d'intrusion), une discipline qui simule les techniques d'un attaquant
+réel pour identier de manière proactive les vulnérabilités d'un système avant qu'elles
+ne soient exploitées de manière malveillante [1].
+Tout test d'intrusion commence par une phase fondamentale : l'Information Ga-
+thering (collecte d'informations). Cette étape est déterminante car elle conditionne la
+réussite de toutes les phases suivantes : c'est elle qui permet de cartographier pré-
+cisément la surface d'exposition de la cible, c'est-à-dire l'ensemble des points d'entrée
+numériques par lesquels un attaquant pourrait tenter de pénétrer le système. La collecte
+se décline en deux dimensions complémentaires : la collecte passive, qui exploite des
+sources publiques (OSINT) sans aucune interaction directe avec la cible, et la collecte
+active, qui interroge directement les services exposés pour en révéler les caractéristiques
+techniques.
+ISIMa
+Page 18
+
+
+===== PAGE 19 =====
+
+INTRODUCTION GÉNÉRALE
+ISIMa
+Or, malgré son importance capitale, la phase d'Information Gathering reste aujour-
+d'hui un processus largement manuel, fragmenté et chronophage. L'analyste doit
+jongler entre une multitude d'outils hétérogènes, chacun spécialisé dans un type de
+collecte, puis rassembler et corréler manuellement des résultats dispersés et de formats
+variés. Cette démarche exige une expertise pointue, mobilise un temps considérable et
+reste sujette aux erreurs et aux oublis. À mesure que la surface d'exposition des organi-
+sations s'élargit, cette approche artisanale devient dicilement soutenable. Comment,
+dès lors, automatiser et unier la collecte d'informations  passive et active 
+au sein d'une seule solution capable d'analyser les données recueillies, d'en évaluer le
+niveau de risque et de restituer un rapport clair et exploitable ?
+C'est précisément à cette problématique que répond le présent projet de n d'études,
+intitulé  Solution d'Analyse Cybersécurité de la Surface d'Exposition . La
+solution développée, baptisée CyberScope Pro, propose une plateforme intégrée et
+entièrement automatisée combinant les deux dimensions de la collecte (passive et ac-
+tive), enrichie d'une couche d'analyse multi-axes capable de produire un score de risque
+consolidé. L'orchestration de bout en bout repose sur la plateforme open source n8n [2],
+déployée dans des conteneurs Docker, tandis que l'interaction utilisateur s'eectue via
+une application web Flask multi-rôles. La gestion du projet s'appuie sur la méthodolo-
+gie agile Scrum [3], particulièrement adaptée à la nature itérative de la cybersécurité :
+cinq sprints de deux semaines ont rythmé la conception, le développement et la valida-
+tion expérimentale de la solution sur trois domaines aux prols de risque contrastés.
+Le présent rapport est organisé en huit chapitres, conformément au plan suivant.
+Le premier chapitre pose le cadre théorique et général du projet. Après une in-
+troduction à la cybersécurité et au métier de pentesteur, il détaille les phases du cycle
+de pentesting puis approfondit la phase d'Information Gathering. Il présente ensuite
+l'organisme d'accueil, la problématique adressée et la solution proposée.
+Le deuxième chapitre est consacré à la modélisation et aux outils. Il introduit le
+langage UML, présente la méthode Scrum en justiant son choix par comparaison avec
+d'autres méthodologies, puis décrit en détail les cinq outils techniques structurants du
+projet : Kali Linux, Docker, n8n, Python Flask et LaTeX.
+Les chapitres trois à six sont chacun dédiés à l'un des quatre workows n8n
+constituant le pipeline opérationnel de CyberScope Pro : WF-01 pour la collecte
+passive, WF-02 pour la collecte active, WF-03 pour l'analyse et le scoring, et WF-04
+pour la diusion du rapport. Pour chaque workow, l'ensemble des n÷uds est décrit
+individuellement.
+Le septième chapitre présente l'application web Flask qui sert d'interface utilisa-
+teur uniée à la solution : architecture multi-rôles, modèle de données, mécanismes de
+ISIMa
+Page 19
+
+
+===== PAGE 20 =====
+
+INTRODUCTION GÉNÉRALE
+ISIMa
+scan asynchrone, et résultats des tests sur trois domaines réels.
+Enn, le huitième chapitre synthétise les contributions du projet et trace les
+perspectives d'évolution à court, moyen et long terme.
+Une bibliographie regroupant l'ensemble des références utilisées clôt le présent do-
+cument.
+ISIMa
+Page 20
+
+
+===== PAGE 21 =====
+
+1
+Chapitre
+CYBERSÉCURITÉ, PENTESTING
+ET CADRE DU PROJET
+Sommaire
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+1.2
+La cybersécurité dans le monde contemporain
+. . . . . . . . . . . . . .
+22
+1.2.1
+Dénition et enjeux . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+1.2.2
+Typologie des menaces . . . . . . . . . . . . . . . . . . . . . . .
+23
+1.2.3
+Le rôle de la cybersécurité oensive . . . . . . . . . . . . . . . .
+23
+1.3
+Le pentesting : test d'intrusion professionnel . . . . . . . . . . . . . . .
+23
+1.3.1
+Dénition et objectifs . . . . . . . . . . . . . . . . . . . . . . . .
+23
+1.3.2
+Cycle complet d'un test d'intrusion . . . . . . . . . . . . . . . .
+24
+1.4
+Information Gathering : la phase clé . . . . . . . . . . . . . . . . . . . .
+25
+1.4.1
+Importance stratégique . . . . . . . . . . . . . . . . . . . . . . .
+25
+1.4.2
+Reconnaissance passive et reconnaissance active . . . . . . . . .
+25
+1.5
+Cadre du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+1.5.1
+Cadre académique
+. . . . . . . . . . . . . . . . . . . . . . . . .
+26
+1.5.2
+Présentation de l'organisme d'accueil : HAT Web Security Labs
+27
+1.5.3
+Problématique . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+1.5.4
+Étude et critique de l'existant . . . . . . . . . . . . . . . . . . .
+29
+1.5.5
+Solution proposée : CyberScope Pro . . . . . . . . . . . . . . . .
+29
+1.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+ISIMa
+Page 21
+
+
+===== PAGE 22 =====
+
+CHAPITRE 1. CYBERSÉCURITÉ, PENTESTING ET CADRE DU PROJET
+ISIMa
+1.1
+Introduction
+Ce premier chapitre vise à poser le cadre théorique et général du projet. Avant de
+présenter la solution développée, il convient de dénir clairement les concepts clés sur
+lesquels celle-ci s'appuie : qu'est-ce que la cybersécurité moderne ? Qu'est-ce que le
+pentesting et quelles sont ses diérentes phases ? Pourquoi la phase de collecte d'infor-
+mations (Information Gathering) est-elle aussi déterminante ? Le chapitre commence
+ainsi par introduire la cybersécurité, puis détaille le métier de pentesteur et le cycle
+complet d'un test d'intrusion. Il approfondit ensuite la phase d'Information Gathering,
+en distinguant ses dimensions passive et active. Le contexte du stage et l'organisme
+d'accueil sont ensuite présentés. Enn, l'étude critique de l'existant et la solution pro-
+posée  baptisée CyberScope Pro  viennent clôturer ce chapitre.
+1.2
+La cybersécurité dans le monde contemporain
+1.2.1
+Dénition et enjeux
+La cybersécurité désigne l'ensemble des techniques, outils, processus et bonnes
+pratiques visant à protéger les systèmes informatiques, les réseaux, les programmes et
+les données contre les attaques numériques, les accès non autorisés ou les dommages. Les
+rapports annuels des principaux acteurs du secteur s'accordent sur le constat suivant : le
+coût mondial des cyberattaques se chire désormais en milliers de milliards de dollars,
+et leur fréquence augmente d'année en année avec la numérisation croissante de toutes
+les activités humaines.
+Au c÷ur de la cybersécurité gure la triade CIA, qui regroupe les trois propriétés
+fondamentales à protéger pour tout système d'information :
+Table 1.1 : Triade CIA et mécanismes de protection associés
+Propriété
+Question fondamentale
+Mécanismes de
+protection
+Condentialité
+Les bonnes personnes
+peuvent-elles seules y
+accéder ?
+Chirement, contrôle d'accès
+Intégrité
+Les bonnes personnes
+peuvent-elles seules le
+modier ?
+Hachage, sauvegardes,
+journaux
+Disponibilité
+Les bonnes personnes y
+ont-elles accès quand
+nécessaire ?
+Redondance, sauvegarde,
+plan de continuité
+ISIMa
+Page 22
+
+
+===== PAGE 23 =====
+
+CHAPITRE 1. CYBERSÉCURITÉ, PENTESTING ET CADRE DU PROJET
+ISIMa
+1.2.2
+Typologie des menaces
+Les acteurs malveillants se classent en plusieurs catégories selon leur motivation, leur
+niveau de sophistication et leurs ressources. Le tableau 1.2 en synthétise les principales
+familles.
+Table 1.2 : Typologie des acteurs malveillants
+Type
+Niveau
+de
+menace
+Caractéristiques et exemples
+Pirate individuel
+Modéré
+Motivation souvent nancière ou idéologique.
+Groupe cybercrimi-
+nel
+Élevé
+Organisé, bien nancé, avec division des
+tâches (ex. Lapsus$).
+Menace interne
+Très élevé
+Employé déloyal disposant d'accès légitimes.
+Acteur étatique
+Extrême
+Ressources illimitées, persistance longue
+durée (ex. Lazarus Group).
+1.2.3
+Le rôle de la cybersécurité oensive
+Face à cette diversité des menaces, deux postures se complètent dans toute orga-
+nisation mature : la cybersécurité défensive (Blue Team) qui protège, surveille et
+répond aux incidents, et la cybersécurité oensive (Red Team) qui simule active-
+ment les attaques pour identier les faiblesses avant que les véritables adversaires ne
+les exploitent. C'est dans cette seconde branche que s'inscrit le métier de pentesteur
+(penetration tester), et plus spéciquement le présent projet qui automatise la phase
+initiale d'un test d'intrusion.
+1.3
+Le pentesting : test d'intrusion professionnel
+1.3.1
+Dénition et objectifs
+Un test d'intrusion (penetration test ou pentest) est une simulation contrôlée et
+autorisée d'une cyberattaque, conduite par un professionnel qualié dans le but d'iden-
+tier les vulnérabilités exploitables d'un système informatique avant qu'un attaquant
+réel ne les découvre [4]. Contrairement à un audit de sécurité classique  qui re-
+pose principalement sur la lecture documentaire et l'inspection de congurations 
+le pentest adopte la posture de l'attaquant et tente eectivement d'exploiter les failles
+identiées dans la limite du périmètre contractuel.
+Les objectifs d'un pentest sont multiples : valider l'ecacité des mesures de sécurité
+ISIMa
+Page 23
+
+
+===== PAGE 24 =====
+
+CHAPITRE 1. CYBERSÉCURITÉ, PENTESTING ET CADRE DU PROJET
+ISIMa
+existantes, identier les vecteurs d'intrusion réalistes, prioriser les remédiations selon
+leur criticité opérationnelle, et fournir une preuve concrète de l'exposition au risque
+pour la direction. Le résultat se matérialise généralement par un rapport détaillé conte-
+nant les vulnérabilités découvertes, les preuves d'exploitation (Proof of Concept) et les
+recommandations correctives.
+1.3.2
+Cycle complet d'un test d'intrusion
+Le pentesting suit un cycle méthodologique éprouvé en huit phases successives,
+illustré par la gure 1.1.
+1. Dénition
+du périmètre
+2. Collecte
+d'informations
+3. Détection des
+vulnérabilités
+4. Accès
+initial
+5. Élévation de
+privilèges
+6. Mouvement
+latéral
+7. Rapport
+et analyse
+8. Leçons et
+remédiation
+Phase ciblée par CyberScope Pro
+Figure 1.1 : Cycle complet d'un test d'intrusion en huit phases
+Le tableau 1.3 décrit chacune de ces phases.
+Table 1.3 : Description des huit phases du cycle de pentesting
+Phase
+Description
+1. Dénition du péri-
+mètre
+Cadrage contractuel : cibles autorisées, plages horaires, limites
+éthiques et légales.
+2.
+Collecte
+d'informa-
+tions
+Cartographie de la surface d'attaque par sources ouvertes (OSINT) et
+reconnaissance active.
+3. Détection des vulné-
+rabilités
+Identication des faiblesses (versions obsolètes, congurations
+défaillantes, CVE).
+4. Accès initial
+Exploitation d'une vulnérabilité pour obtenir un premier accès au
+système cible.
+5. Élévation de privi-
+lèges
+Montée des privilèges depuis un utilisateur standard vers les droits
+administrateur.
+6. Mouvement latéral
+Propagation à travers le réseau pour atteindre les actifs critiques.
+7. Rapport et analyse
+Rédaction du livrable détaillant les vulnérabilités, preuves et impact.
+8. Leçons et remédiation
+Recommandations correctives priorisées et accompagnement de la
+remédiation.
+La présente solution CyberScope Pro se concentre sur la deuxième phase  la
+Collecte d'Informations  qui constitue le fondement de toute opération oensive
+réussie. Une cartographie incomplète de la surface d'attaque conduit inéluctablement
+à l'échec des phases ultérieures.
+ISIMa
+Page 24
+
+
+===== PAGE 25 =====
+
+CHAPITRE 1. CYBERSÉCURITÉ, PENTESTING ET CADRE DU PROJET
+ISIMa
+1.4
+Information Gathering : la phase clé
+1.4.1
+Importance stratégique
+La phase d'Information Gathering (collecte d'informations) constitue souvent jus-
+qu'à 60 % du temps total d'un test d'intrusion professionnel. Cette proportion
+considérable s'explique par un principe simple : tout ce qui est découvert pendant cette
+phase devient un vecteur d'attaque potentiel pour les phases suivantes, tandis que tout
+ce qui est manqué reste invisible aux yeux du pentesteur. Le MITRE ATT&CK Fra-
+mework [5] place ainsi la Reconnaissance (TA0043) en tête de toute matrice tactique
+oensive.
+Les informations recherchées durant cette phase sont notamment :
+ Les noms de domaine et sous-domaines de la cible ;
+ Les adresses IP et plages réseau attribuées ;
+ Les services réseau exposés sur Internet et leurs versions ;
+ Les technologies utilisées (serveurs web, frameworks, bases de données) ;
+ Les adresses e-mail des employés (pour l'ingénierie sociale) ;
+ Les fuites de données et identiants compromis ;
+ Les certicats TLS et l'historique d'exposition.
+1.4.2
+Reconnaissance passive et reconnaissance active
+La phase de collecte d'informations se subdivise en deux modalités complémentaires :
+la reconnaissance passive et la reconnaissance active [4]. Le tableau 1.4 présente leurs
+diérences fondamentales.
+1.4.2.1
+Techniques OSINT (Open Source Intelligence)
+La reconnaissance passive s'appuie principalement sur les techniques d'OSINT,
+c'est-à-dire l'exploitation méthodique de sources d'information publiquement acces-
+sibles. Les principales catégories de sources OSINT pertinentes pour un pentest sont :
+ Registres de domaines : WHOIS, RDAP pour identier les propriétaires, dates
+d'expiration et serveurs de noms ;
+ Moteurs de recherche spécialisés : Shodan, Censys pour cartographier les
+services exposés [6, 7] ;
+ Archives Web : Wayback Machine pour retrouver d'anciennes versions de sites ;
+ISIMa
+Page 25
+
+
+===== PAGE 26 =====
+
+CHAPITRE 1. CYBERSÉCURITÉ, PENTESTING ET CADRE DU PROJET
+ISIMa
+Table 1.4 : Reconnaissance passive vs reconnaissance active
+Critère
+Reconnaissance passive
+Reconnaissance active
+Interaction
+avec
+la
+cible
+Aucune
+Directe
+Visibilité côté cible
+Indétectable
+Détectable (logs, IDS, IPS)
+Sources interrogées
+Bases publiques, OSINT, archives
+Services réseau exposés, ports
+ouverts
+Risque légal
+Très faible (sources publiques)
+Encadré strictement par
+autorisation
+Exemples d'outils
+WHOIS, Shodan, Hunter.io,
+GitHub Search
+Nmap, dig, smbclient, snmpwalk
+Avantages principaux
+Discrétion totale, pas
+d'autorisation requise
+Données techniques précises et
+fraîches
+Limites
+Données potentiellement obsolètes
+Détectabilité, autorisation
+indispensable
+ Plateformes de code public : GitHub, GitLab pour découvrir des secrets
+accidentellement divulgués ;
+ Bases de fuites : Have I Been Pwned, Pastebin pour les identiants compromis ;
+ Bases de threat intelligence : VirusTotal, ThreatFox, AbuseIPDB pour la
+réputation [8, 9, 10].
+1.4.2.2
+Énumération réseau active
+La reconnaissance active interroge directement les services exposés et requiert im-
+pérativement une autorisation écrite préalable. Les principaux outils utilisés sont :
+ Nmap [11] : découverte de ports, identication de services et de versions, scripts
+NSE ;
+ Outils DNS (dig, host, dnsx) : énumération des enregistrements DNS ;
+ Outils de découverte de sous-domaines (Subnder, Amass) : énumération
+multi-sources ;
+ Outils protocolaires (smbclient, snmpwalk) : énumération SMB et SNMP.
+1.5
+Cadre du projet
+1.5.1
+Cadre académique
+Le présent projet CyberScope Pro s'inscrit dans le cadre d'une initiative profes-
+sionnelle visant à l'obtention du diplôme de Licence en Ingénierie des Systèmes et
+Réseaux à l'Institut Supérieur d'Informatique de Mahdia (ISIMa), rattaché
+ISIMa
+Page 26
+
+
+===== PAGE 27 =====
+
+CHAPITRE 1. CYBERSÉCURITÉ, PENTESTING ET CADRE DU PROJET
+ISIMa
+à l'Université de Monastir. Il constitue le projet de n d'études (PFE) clôturant trois
+années de formation universitaire en informatique, avec une spécialisation orientée sur
+les systèmes, les réseaux et la cybersécurité.
+Ce projet de n d'études s'étale sur une période de quatre mois, du 1er fé-
+vrier 2026 au 31 mai 2026, conformément au calendrier ociel du PFE de la Li-
+cence ISI&R. Cette période a été structurée selon la méthodologie agile Scrum en cinq
+sprints de deux semaines chacun, complétés par une phase initiale de cadrage et une
+phase nale de rédaction du rapport et de préparation à la soutenance.
+Figure 1.2 : Logo ociel de l'Institut Supérieur d'Informatique de Mahdia (ISIMa)
+L'ISIMa, fondé en 2002, est un établissement public d'enseignement supérieur tu-
+nisien rattaché à l'Université de Monastir. Il forme des étudiants à des diplômes de
+Licence et de Mastère professionnels et de recherche dans les domaines des systèmes
+informatiques, des sciences de l'informatique, du big data, du génie logiciel et de la
+cybersécurité. L'institut entretient des partenariats actifs avec des entreprises tuni-
+siennes et internationales, qui accueillent chaque année les étudiants pour des stages
+de n d'études comme celui qui sous-tend ce mémoire.
+1.5.2
+Présentation de l'organisme d'accueil : HAT Web Security
+Labs
+Pour notre stage de n d'études, nous avons choisi HAT Web Security Labs
+comme entreprise d'accueil. Il s'agit d'une structure spécialisée dans la cybersécurité
+oensive et défensive appliquée aux applications web et aux infrastructures
+numériques. HAT Web Security Labs accompagne ses clients  entreprises, institu-
+tions et administrations  dans l'audit, le test d'intrusion et la sécurisation continue
+de leurs systèmes d'information, en s'appuyant sur des méthodologies éprouvées issues
+des standards internationaux (OWASP, MITRE ATT&CK, NIST).
+L'expertise de HAT Web Security Labs s'articule autour de plusieurs axes complé-
+mentaires : audits techniques de sécurité d'applications web et mobiles, tests d'intrusion
+ISIMa
+Page 27
+
+
+===== PAGE 28 =====
+
+CHAPITRE 1. CYBERSÉCURITÉ, PENTESTING ET CADRE DU PROJET
+ISIMa
+Figure 1.3 : Logo ociel de HAT Web Security Labs
+(pentesting) externes et internes, recherche et qualication de vulnérabilités, accompa-
+gnement à la mise en conformité avec les référentiels de sécurité, et formation pratique
+des équipes techniques aux bonnes pratiques de la cybersécurité oensive. Cet ancrage
+dans la cybersécurité oensive a constitué un environnement particulièrement propice
+à l'élaboration d'une solution comme CyberScope Pro, qui automatise la phase ini-
+tiale de tout audit professionnel : la collecte d'informations sur la surface d'exposition
+d'une cible.
+Dans une démarche d'innovation continue, HAT Web Security Labs s'engage à conce-
+voir des outils et des méthodes évolutifs, capables de s'adapter à un paysage de la
+menace en perpétuelle mutation. L'ambition de l'entreprise est de contribuer à éle-
+ver le niveau global de cybersécurité de l'écosystème numérique tunisien, en mettant
+la technologie et l'expertise au service de la résilience des organisations face aux at-
+taques informatiques. C'est précisément cette philosophie qui a inspiré et soutenu la
+conception de CyberScope Pro tout au long du stage.
+Le tableau 1.5 synthétise l'identité de l'organisme d'accueil.
+Table 1.5 : Fiche d'identité de l'organisme d'accueil
+Champ
+Information
+Nom de l'organisme
+HAT Web Security Labs
+Domaine d'activité
+Cybersécurité oensive et défensive, audits et
+pentesting
+Adresse
+Rue Ahmed Aloulou Imm Sirine B 305,
+Sfax-Tunisie
+Téléphone
+00 216 74 407 136
+Adresse électronique
+manager@hat-websecurity.com
+Site web
+https://www.hat-websecurity.com
+Domaines d'expertise
+Audits web, pentesting, OSINT, threat intelligence,
+formation
+ISIMa
+Page 28
+
+
+===== PAGE 29 =====
+
+CHAPITRE 1. CYBERSÉCURITÉ, PENTESTING ET CADRE DU PROJET
+ISIMa
+1.5.3
+Problématique
+Les organisations méconnaissent fréquemment l'étendue réelle de leur exposition nu-
+mérique. Des informations sensibles  identiants, clés API, documents internes, voire
+fragments de code source  peuvent être librement accessibles sur des dépôts publics,
+des canaux de communication cybercriminels ou via des services tiers, sans que l'or-
+ganisation concernée n'en soit avertie. Parallèlement, les services exposés sur Internet
+présentent fréquemment des vulnérabilités liées à des congurations inappropriées, des
+versions logicielles obsolètes ou une absence d'analyse continue.
+Le marché propose plusieurs solutions partielles  Shodan, Maltego, SpiderFoot,
+theHarvester, Recon-ng, Censys  mais aucune ne combine de manière uniée la col-
+lecte passive et active dans un pipeline entièrement automatisé, doté d'une couche
+d'analyse multi-axes et accessible via une interface multi-rôles. La problématique cen-
+trale du projet se formule ainsi.
+Problématique centrale
+Comment mettre en place une solution automatisée et complète permettant
+de collecter, analyser et synthétiser les informations relatives à la surface
+d'exposition d'une organisation, an d'identier de manière proactive les risques
+de fuites de données, les indicateurs de compromission (IoC) et les vul-
+nérabilités exploitables ?
+1.5.4
+Étude et critique de l'existant
+Plusieurs solutions du marché abordent partiellement cette problématique. Le ta-
+bleau 1.6 en présente une analyse comparative.
+L'analyse révèle plusieurs lacunes communes aux solutions existantes : absence d'in-
+tégration uniée passif + actif, manque d'automatisation de bout en bout, absence
+de synthèse multi-axes des risques, coût élevé des solutions commerciales avancées, et
+expertise technique pointue requise pour exploiter chaque outil isolément.
+1.5.5
+Solution proposée : CyberScope Pro
+Face aux limitations identiées, la solution proposée  baptisée CyberScope Pro
+ repose sur quatre composantes principales orchestrées de bout en bout :
+1. Collecte passive (OSINT) : interrogation de sources publiques (WHOIS, Gi-
+tHub, Hunter.io, Wayback Machine, SSL Labs, Certicate Transparency, Security
+Headers) sans interaction directe avec la cible ;
+ISIMa
+Page 29
+
+
+===== PAGE 30 =====
+
+CHAPITRE 1. CYBERSÉCURITÉ, PENTESTING ET CADRE DU PROJET
+ISIMa
+Table 1.6 : Étude comparative critique des principales solutions existantes
+Solution
+Points forts
+Points faibles
+Auto.
+Synthèse
+Shodan
+Moteur puissant, API
+riche
+Avancé payant, pas de
+collecte active
+API
+✗
+Maltego
+Visualisation
+graphique, intégrations
+Complexe, coûteux
+Limitée
+✗
+SpiderFoot
+Open source, 200+
+sources
+Résultats bruités, peu
+de corrélation
+Bonne
+Partielle
+Recon-ng
+Modulaire, scriptable
+Conguration
+manuelle par module
+Partielle
+✗
+theHarvester
+Simple et ecace
+Sources et types de
+données limités
+✗
+✗
+Censys
+Précis sur les
+certicats TLS
+Quota API restreint
+API
+✗
+CyberScope Pro
+Pipeline unié
+passif + actif,
+scoring multi-axes,
+rapports
+automatisés,
+dashboard
+multi-rôles
+Dépendance APIs
+gratuites
+Complète
+✓
+2. Collecte active : énumération directe par Nmap, dig, dnsx, Subnder, Amass
+v4, smbclient et snmpwalk ;
+3. Analyse et scoring multi-axes : interrogation des bases de threat intelligence
+(VirusTotal, URLScan, ThreatFox, AbuseIPDB), corrélation CVE, et calcul d'un
+score de risque consolidé avec règles d'override ;
+4. Diusion et reporting : génération d'un rapport HTML enrichi puis diusion
+automatique par e-mail Gmail OAuth2, accessible également via une interface
+web Flask multi-rôles.
+L'orchestration intégrale repose sur la plateforme open source n8n, déployée dans
+des conteneurs Docker, ce qui garantit la reproductibilité et facilite le déploiement sur
+diverses infrastructures.
+1.6
+Conclusion
+Ce premier chapitre a posé le cadre théorique du projet en introduisant les concepts
+fondamentaux de la cybersécurité moderne et en détaillant le métier de pentesteur. Le
+cycle complet d'un test d'intrusion en huit phases a été présenté, avec un accent par-
+ticulier sur la phase d'Information Gathering qui constitue le périmètre opérationnel
+de la solution. L'organisme d'accueil, la problématique adressée et la solution proposée
+CyberScope Pro ont ensuite été présentés. Le chapitre suivant détaillera la modé-
+ISIMa
+Page 30
+
+
+===== PAGE 31 =====
+
+CHAPITRE 1. CYBERSÉCURITÉ, PENTESTING ET CADRE DU PROJET
+ISIMa
+lisation conceptuelle du projet : langage UML, méthodologie Scrum et présentation
+détaillée des cinq outils techniques structurants.
+ISIMa
+Page 31
+
+
+===== PAGE 32 =====
+
+2
+Chapitre
+MODÉLISATION,
+MÉTHODOLOGIE ET OUTILS
+Sommaire
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+2.2
+Méthodologie de gestion de projet . . . . . . . . . . . . . . . . . . . . .
+33
+2.2.1
+Approche agile
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+2.2.2
+Comparaison avec d'autres méthodologies
+. . . . . . . . . . . .
+33
+2.2.3
+Application au projet : cinq sprints . . . . . . . . . . . . . . . .
+34
+2.2.4
+Backlog produit global . . . . . . . . . . . . . . . . . . . . . . .
+34
+2.3
+Présentation consolidée des outils et concepts du projet . . . . . . . . .
+36
+2.4
+n8n  Plateforme d'orchestration centrale . . . . . . . . . . . . . . . .
+39
+2.4.1
+Dénition et présentation
+. . . . . . . . . . . . . . . . . . . . .
+39
+2.4.2
+Caractéristiques principales
+. . . . . . . . . . . . . . . . . . . .
+39
+2.4.3
+Comparaison avec des solutions similaires . . . . . . . . . . . . .
+40
+2.4.4
+Justication du choix . . . . . . . . . . . . . . . . . . . . . . . .
+40
+2.5
+Architecture générale du système
+. . . . . . . . . . . . . . . . . . . . .
+40
+2.6
+Modélisation UML du système . . . . . . . . . . . . . . . . . . . . . . .
+41
+2.6.1
+Identication des acteurs . . . . . . . . . . . . . . . . . . . . . .
+41
+2.6.2
+Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . . . .
+42
+2.6.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . .
+43
+2.7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+ISIMa
+Page 32
+
+
+===== PAGE 33 =====
+
+CHAPITRE 2. MODÉLISATION, MÉTHODOLOGIE ET OUTILS
+ISIMa
+2.1
+Introduction
+Ce chapitre présente l'ensemble du cadre conceptuel et méthodologique du projet. Il
+commence par introduire le langage de modélisation UML, qui structure la conception
+du système. Il détaille ensuite la méthodologie agile Scrum adoptée pour la gestion du
+projet, en justiant ce choix par comparaison avec d'autres méthodologies de gestion de
+projet logiciel. La section centrale du chapitre approfondit les cinq outils technologiques
+structurants du projet : Kali Linux, Docker, n8n, Python Flask et LaTeX. Pour
+chacun, sont présentés une dénition, ses caractéristiques principales, une comparaison
+avec ses concurrents et la justication de son choix dans le contexte du projet. Le
+chapitre se termine par la présentation de l'architecture générale du système en quatre
+zones fonctionnelles et des principaux artefacts UML (cas d'utilisation, diagramme de
+séquence, diagramme de classes).
+2.2
+Méthodologie de gestion de projet
+2.2.1
+Approche agile
+Plutôt que de suivre un plan rigide du début à la n (modèle dit en  cascade ),
+la méthodologie agile propose une gestion de projet dynamique et évolutive. Très
+répandue dans le développement logiciel moderne, elle repose sur des cycles courts
+et répétitifs appelés itérations, où chaque étape produit une version fonctionnelle du
+produit. Grâce à des échanges réguliers avec le client, l'équipe peut ajuster ses priorités
+au fur et à mesure des retours, assurant ainsi une meilleure adéquation entre le produit
+nal et les attentes réelles.
+L'approche agile encourage la transparence, la réactivité et une collaboration
+étroite au sein de l'équipe. Elle est formalisée par le Manifeste Agile de 2001 qui pose
+quatre valeurs fondamentales : les individus et leurs interactions plus que les proces-
+sus et les outils ; un logiciel opérationnel plus qu'une documentation exhaustive ; la
+collaboration avec les clients plus que la négociation contractuelle ; l'adaptation au
+changement plus que le suivi d'un plan.
+2.2.2
+Comparaison avec d'autres méthodologies
+Plusieurs méthodologies de gestion de projet logiciel ont été étudiées avant de retenir
+Scrum. Le tableau 2.1 présente leurs caractéristiques comparées.
+ISIMa
+Page 33
+
+
+===== PAGE 34 =====
+
+CHAPITRE 2. MODÉLISATION, MÉTHODOLOGIE ET OUTILS
+ISIMa
+Table 2.1 : Comparaison des principales méthodologies de gestion de projet
+Critère
+Scrum
+Kanban
+XP
+Cascade
+(Waterfall)
+Nature
+Itérative
+Continue
+Itérative
+Linéaire
+séquentielle
+Itération
+Sprints xes (14
+sem.)
+Flux continu
+Sprints courts
+Phases
+successives
+Adaptation
+au
+changement
+Élevée
+Très élevée
+Très élevée
+Très faible
+Documentation
+Légère
+Légère
+Très légère
+Lourde
+Réunions
+Structurées (4
+cérémonies)
+Légères
+Pratiques
+techniques fortes
+Limitées
+Adapté
+aux
+PFE
+✓
+✓
+✗
+Sur-dimensionné
+Communauté
+française
+Très active
+Active
+Active
+Très active
+2.2.3
+Application au projet : cinq sprints
+Le projet a été découpé en cinq sprints de deux semaines, conformément au
+tableau 2.2.
+Table 2.2 : Planication des cinq sprints du projet
+Sprint
+Objectif
+Livrable
+Sprint 1
+Infrastructure et OSINT élémentaire
+Container n8n opérationnel, modules
+WHOIS et géolocalisation IP
+fonctionnels
+Sprint 2
+OSINT avancé (passif)
+WF-01 complet (Hunter, GitHub,
+Wayback, SSL Labs, Cert Transparency,
+Headers)
+Sprint 3
+Collecte active réseau
+WF-02 complet (Nmap, DNS,
+sous-domaines, SMB, SNMP)
+Sprint 4
+Threat intelligence et scoring
+WF-03 complet avec scoring multi-axes
+Sprint 5
+Reporting et application web
+WF-04 + application Flask + tests sur
+trois domaines
+2.2.4
+Backlog produit global
+Le Product Backlog consolidé du projet recense l'ensemble des user stories priorisées
+par valeur métier. Le tableau 2.3 présente ce backlog dans son intégralité.
+ISIMa
+Page 34
+
+
+===== PAGE 35 =====
+
+CHAPITRE 2. MODÉLISATION, MÉTHODOLOGIE ET OUTILS
+ISIMa
+Table 2.3 : Product Backlog global du projet CyberScope Pro
+ID
+Sprint
+User Story
+Priorité
+Pts
+US-01
+Sprint 1
+En tant qu'admin, je veux déployer le conteneur n8n per-
+sonnalisé pour orchestrer les workows.
+Haute
+5
+US-02
+Sprint 1
+En tant qu'admin, je veux congurer Docker Compose pour
+orchestrer n8n + Redis.
+Haute
+3
+US-03
+Sprint 1
+En tant qu'analyste, je veux interroger WHOIS et IP-API
+pour identier le propriétaire d'un domaine.
+Haute
+3
+US-04
+Sprint 2
+En tant qu'analyste, je veux extraire les emails associés à
+un domaine via Hunter.io.
+Haute
+5
+US-05
+Sprint 2
+En tant qu'analyste, je veux détecter les références GitHub
+publiques d'un domaine.
+Haute
+5
+US-06
+Sprint 2
+En tant qu'analyste, je veux détecter les secrets exposés sur
+GitHub.
+Critique
+8
+US-07
+Sprint 2
+En tant qu'analyste, je veux analyser la posture TLS via
+SSL Labs.
+Moyenne
+3
+US-08
+Sprint 2
+En tant qu'analyste, je veux interroger Wayback Machine
+pour récupérer les archives historiques.
+Moyenne
+3
+US-09
+Sprint 3
+En tant qu'analyste, je veux énumérer les sous-domaines
+via HackerTarget, crt.sh, Subnder et Amass.
+Haute
+8
+US-10
+Sprint 3
+En tant qu'analyste, je veux scanner les ports ouverts via
+Nmap.
+Haute
+5
+US-11
+Sprint 3
+En tant qu'analyste, je veux eectuer une résolution DNS
+exhaustive.
+Haute
+5
+US-12
+Sprint 3
+En tant qu'analyste, je veux énumérer les services SMB et
+SNMP.
+Moyenne
+3
+US-13
+Sprint 4
+En tant qu'analyste, je veux interroger VirusTotal pour
+qualier la réputation.
+Critique
+5
+US-14
+Sprint 4
+En tant qu'analyste, je veux interroger ThreatFox et Abu-
+seIPDB.
+Haute
+5
+US-15
+Sprint 4
+En tant qu'analyste, je veux corréler avec les CVE référen-
+cées.
+Haute
+5
+US-16
+Sprint 4
+En tant qu'analyste, je veux calculer un score multi-axes
+(Leak/Compromise/Vuln).
+Critique
+8
+US-17
+Sprint 4
+En tant qu'analyste, je veux que le score CRITICAL soit
+déclenché par des règles d'override métier.
+Critique
+5
+US-18
+Sprint 5
+En tant qu'utilisateur, je veux recevoir un rapport HTML
+enrichi par e-mail.
+Haute
+5
+Suite à la page suivante
+ISIMa
+Page 35
+
+
+===== PAGE 36 =====
+
+CHAPITRE 2. MODÉLISATION, MÉTHODOLOGIE ET OUTILS
+ISIMa
+Suite du tableau 2.3
+ID
+Sprint
+User Story
+Priorité
+Pts
+US-19
+Sprint 5
+En tant qu'admin, je veux gérer les comptes utilisateurs
+(CRUD).
+Haute
+5
+US-20
+Sprint 5
+En tant qu'utilisateur, je veux m'authentier sur l'applica-
+tion web.
+Haute
+3
+US-21
+Sprint 5
+En tant que manager, je veux créer des projets et y assigner
+des clients.
+Haute
+5
+US-22
+Sprint 5
+En tant que client, je veux lancer un scan sur mes domaines
+autorisés.
+Haute
+5
+US-23
+Sprint 5
+En tant qu'utilisateur, je veux consulter l'historique de mes
+scans.
+Moyenne
+3
+US-24
+Sprint 5
+En tant qu'utilisateur, je veux que le scan soit asynchrone
+(non-bloquant).
+Haute
+8
+US-25
+Sprint 5
+En tant qu'utilisateur, je veux recevoir des alertes Telegram
+en cas de niveau CRITICAL.
+Faible
+3
+2.3
+Présentation consolidée des outils et concepts
+du projet
+Cette section regroupe, dans un tableau de synthèse unique, les six outils et
+concepts structurants du projet : UML, Scrum, Kali Linux, Docker, Python Flask
+et LaTeX/Overleaf. Pour chacun gurent sa dénition, son rôle dans le projet, une
+comparaison synthétique avec ses concurrents et la justication de son choix. L'outil
+n8n est présenté dans une section dédiée distincte (2.4) en raison de son rôle archi-
+tectural majeur.
+Table 2.4 : Présentation consolidée des outils et concepts du projet
+Logo
+Aspect
+Description
+UML
+Dénition
+UML (Unied Modeling Language) est un langage de modélisa-
+tion graphique normalisé par l'OMG en 1997, issu de la fusion
+des méthodes Booch, OMT et OOSE. Il propose treize types de
+diagrammes pour représenter la structure et le comportement
+d'un système orienté objet.
+Suite du tableau à la page suivante
+ISIMa
+Page 36
+
+
+===== PAGE 37 =====
+
+CHAPITRE 2. MODÉLISATION, MÉTHODOLOGIE ET OUTILS
+ISIMa
+Suite du tableau 2.4  page précédente
+Logo
+Aspect
+Description
+Rôle
+dans
+le
+projet
+UML est utilisé pour documenter le diagramme de cas d'uti-
+lisation, les diagrammes de séquence, le diagramme de classes
+et les diagrammes d'activité du système CyberScope Pro.
+Comparaison
+Préféré à SysML (trop complexe pour un PFE logiciel) et au
+BPMN (orienté processus métier plutôt que conception objet).
+UML reste la référence académique.
+Justication
+Standard académique et industriel largement enseigné dans le
+cursus tunisien, assurant une compréhension partagée par le
+jury et une couverture complète des aspects statiques et dyna-
+miques.
+Scrum
+Dénition
+Scrum est un framework agile organisant le travail en sprints
+itératifs courts (1 à 4 semaines) avec des cérémonies structurées
+(Planning, Daily, Review, Retrospective). Il repose sur trois
+piliers : transparence, inspection et adaptation.
+Rôle
+dans
+le
+projet
+Méthodologie de gestion du projet, qui a été découpé en cinq
+sprints de deux semaines avec un Product Backlog de 25 user
+stories priorisées.
+Comparaison
+Préféré à Kanban (ux continu sans rythme imposé), à XP
+(trop axé sur les pratiques de code) et au cycle en cascade
+(rigidité incompatible avec l'évolutivité de la cybersécurité).
+Justication
+Adapté à un projet PFE évolutif grâce à ses livraisons incré-
+mentales démontrables, son outillage gratuit abondant et son
+enseignement systématique dans le cursus universitaire.
+Kali Linux
+Dénition
+Kali Linux est une distribution GNU/Linux basée sur Debian,
+dédiée à l'audit de sécurité et aux tests d'intrusion. Elle est
+maintenue depuis 2013 par Oensive Security et compte plus
+de 600 outils pré-installés.
+Rôle
+dans
+le
+projet
+Système d'exploitation hôte de la machine de développement,
+fournissant en natif les outils CLI (Nmap, dig, smbclient,
+snmpwalk) utilisés par les workows actifs.
+Comparaison
+Préféré à Parrot OS (communauté FR moins active), Bla-
+ckArch (trop orienté experts) et Ubuntu (aucun outil de pentest
+pré-installé, nécessitant une installation manuelle longue).
+Justication
+Présence native des outils, compatibilité ocielle avec la certi-
+cation OSCP suivie en parallèle, et orientation cybersécurité
+oensive cohérente avec la nature du projet.
+Suite du tableau à la page suivante
+ISIMa
+Page 37
+
+
+===== PAGE 38 =====
+
+CHAPITRE 2. MODÉLISATION, MÉTHODOLOGIE ET OUTILS
+ISIMa
+Suite du tableau 2.4  page précédente
+Logo
+Aspect
+Description
+Docker
+Dénition
+Docker est une plateforme de conteneurisation logicielle
+créée en 2013, basée sur les cgroups et namespaces du noyau
+Linux. Elle empaquette les applications et leurs dépendances
+dans des unités portables et autonomes appelées conteneurs.
+Rôle
+dans
+le
+projet
+Orchestre les trois conteneurs du projet (n8n, Redis, Flask)
+via Docker Compose, garantissant la reproductibilité parfaite
+de l'environnement entre développement et déploiement.
+Comparaison
+Préféré à Podman (écosystème moins mature), LXC/LXD
+(sur-dimensionné pour le mono-machine) et VirtualBox (em-
+preinte mémoire 10 fois plus lourde, démarrage très lent).
+Justication
+Standard industriel de la conteneurisation, image ocielle
+n8nio/n8n disponible, Docker Compose natif et empreinte mé-
+moire compatible avec 8 Go de RAM.
+Python
+Flask
+Dénition
+Flask est un micro-framework web Python créé en 2010
+par Armin Ronacher, basé sur Werkzeug et Jinja2. Il privilégie
+un noyau minimaliste enrichi par un riche écosystème d'exten-
+sions modulaires.
+Rôle
+dans
+le
+projet
+Développement de l'interface web multi-rôles (Admin, Mana-
+ger, Client) permettant aux utilisateurs d'interagir avec le pi-
+peline CyberScope Pro et de consulter les rapports HTML.
+Comparaison
+Préféré à Django (sur-dimensionné pour 12 routes et 3 mo-
+dèles), FastAPI (orienté API pure sans templates HTML) et
+Express.js (langage JavaScript moins maîtrisé).
+Justication
+Adéquation parfaite à l'échelle du projet, gestion native de l'in-
+terface web et des endpoints AJAX, écosystème francophone
+abondant et empreinte mémoire faible.
+LaTeX /
+Overleaf
+Dénition
+LaTeX est un système de composition typographique créé en
+1985 par Leslie Lamport, basé sur le moteur TeX de Knuth.
+Overleaf est un éditeur LaTeX en ligne collaboratif lancé en
+2012, fournissant un environnement TeX Live complet dans le
+navigateur.
+Rôle
+dans
+le
+projet
+Rédaction du présent rapport avec gestion automatique des ré-
+férences croisées, de la bibliographie BibTeX, des gures TikZ
+et de la table des matières.
+Comparaison
+Préféré à MS Word (rendu variable selon la version), Google
+Docs (qualité typographique limitée pour 100 pages) et Typst
+(standard émergent encore peu mature).
+Suite du tableau à la page suivante
+ISIMa
+Page 38
+
+
+===== PAGE 39 =====
+
+CHAPITRE 2. MODÉLISATION, MÉTHODOLOGIE ET OUTILS
+ISIMa
+Suite du tableau 2.4  page précédente
+Logo
+Aspect
+Description
+Justication
+Standard académique incontesté des mémoires scientiques,
+qualité typographique professionnelle perceptible et environ-
+nement zéro-installation via Overleaf.
+2.4
+n8n  Plateforme d'orchestration centrale
+2.4.1
+Dénition et présentation
+n8n est une plateforme d'automatisation de workows open source, créée en
+2019 par Jan Oberhauser. Conçue comme une alternative auto-hébergeable aux ser-
+vices cloud commerciaux Zapier et Make (anciennement Integromat), n8n permet d'or-
+chestrer visuellement des ux de traitement entre APIs, bases de données, scripts et
+outils en ligne de commande [2]. Dans le cadre de ce projet, nous avons utilisé n8n
+comme moteur d'orchestration central, hébergeant les quatre workows (passif, actif,
+analyse, diusion) qui constituent le pipeline complet de CyberScope Pro.
+Figure 2.1 : Logo ociel de n8n
+2.4.2
+Caractéristiques principales
+ Interface visuelle de conception de workows par glisser-déposer ;
+ Plus de 400 intégrations natives (APIs REST, bases de données, services cloud) ;
+ Auto-hébergement via Docker (gratuit) ou ore cloud payante ;
+ N÷uds Code permettant l'exécution de JavaScript ou Python en ligne ;
+ N÷uds Execute Command pour exécuter des commandes système ;
+ Déclenchement par webhook, planication cron ou événement ;
+ Versionnement et exportation des workows en JSON.
+ISIMa
+Page 39
+
+
+===== PAGE 40 =====
+
+CHAPITRE 2. MODÉLISATION, MÉTHODOLOGIE ET OUTILS
+ISIMa
+2.4.3
+Comparaison avec des solutions similaires
+Table 2.5 : Comparaison de n8n avec les plateformes d'automatisation concurrentes
+Critère
+n8n
+Zapier
+Make
+Apache
+Airow
+Modèle
+Self-hosted ou
+cloud
+Cloud
+uniquement
+Cloud
+uniquement
+Self-hosted
+Coût
+Gratuit
+(self-hosted)
+≥20$/mois
+Payant
+Gratuit
+Interface
+Visuelle
+Visuelle
+Visuelle
+Code Python
+Code custom
+JavaScript /
+Python
+Limité
+Limité
+Python complet
+Exécution CLI
+✓
+✗
+✗
+✓
+Cible utilisateur
+Développeurs
+Non-techniques
+Non-techniques
+Data engineers
+2.4.4
+Justication du choix
+Cinq raisons motivent le choix de n8n :
+1. Auto-hébergement gratuit, élimination du coût d'abonnement cloud ;
+2. Interface visuelle abaissant la barrière d'entrée par rapport à Apache Airow
+qui exige du code Python pur ;
+3. Support natif des n÷uds Execute Command, indispensables pour intégrer
+Nmap, Subnder et Amass ;
+4. Écriture de code JavaScript inline pour le Scoring Engine sans recours à un
+service externe ;
+5. Exportation des workows en JSON facilitant le versionnement Git et la
+documentation académique.
+2.5
+Architecture générale du système
+L'architecture de CyberScope Pro s'organise en quatre zones fonctionnelles
+clairement séparées : les utilisateurs, l'application Flask hébergée localement sur Kali
+Linux, l'orchestration OSINT assurée par n8n dans Docker, et les services externes. La
+gure 2.2 présente cette architecture.
+ISIMa
+Page 40
+
+
+===== PAGE 41 =====
+
+CHAPITRE 2. MODÉLISATION, MÉTHODOLOGIE ET OUTILS
+ISIMa
+Figure 2.2 : Architecture générale de CyberScope Pro en quatre zones
+Table 2.6 : Description des zones de l'architecture
+N°
+Zone
+Rôle
+1
+Utilisateurs
+Les trois rôles (Admin, Manager, Client) accèdent à
+l'application via HTTPS sur le port 5000
+2
+Application Flask (Kali)
+Couche web (authentication, tableaux de bord, rapports)
+et couche logique (routes, scan asynchrone, parseurs), base
+SQLite
+3
+Orchestration (n8n / Docker)
+Orchestrateur recevant le webhook, exécutant le pipeline et
+renvoyant les résultats par callback
+4
+Services externes
+APIs OSINT, Google Gemini (analyse IA) et serveur
+SMTP (diusion du rapport)
+2.6
+Modélisation UML du système
+2.6.1
+Identication des acteurs
+Quatre acteurs interagissent avec le système, dont un acteur système (n8n) qui agit
+de manière autonome lors des scans. Le tableau 2.7 précise leurs rôles respectifs.
+ISIMa
+Page 41
+
+
+===== PAGE 42 =====
+
+CHAPITRE 2. MODÉLISATION, MÉTHODOLOGIE ET OUTILS
+ISIMa
+Table 2.7 : Acteurs et rôles dans le système
+Acteur
+Rôles
+Administrateur
+Gérer les utilisateurs, gérer les clés API, superviser tous les projets
+Manager (Analyste)
+Créer des projets, ajouter des domaines cibles, assigner aux clients
+Client
+Lancer un scan sur ses domaines autorisés, consulter le rapport
+Système n8n
+Exécuter les workows, agréger les résultats, calculer le scoring, envoyer le
+rapport
+2.6.2
+Diagramme de cas d'utilisation
+La gure 2.3 présente le diagramme général de cas d'utilisation, illustrant les inter-
+actions entre les acteurs et les principales fonctionnalités du système.
+Figure 2.3 : Diagramme de cas d'utilisation général de CyberScope Pro
+ISIMa
+Page 42
+
+
+===== PAGE 43 =====
+
+CHAPITRE 2. MODÉLISATION, MÉTHODOLOGIE ET OUTILS
+ISIMa
+2.6.3
+Diagramme de classes
+Le modèle de données SQLAlchemy de l'application Flask comprend trois entités
+principales reliées par des associations de type one-to-many.
+Figure 2.4 : Diagramme de classes du modèle de données Flask
+2.7
+Conclusion
+Ce chapitre a précisé la structure méthodologique du projet (Scrum sur cinq sprints),
+introduit le langage UML, et détaillé les cinq outils technologiques structurants : Kali
+Linux, Docker, n8n, Python Flask et LaTeX. Pour chaque outil, une comparaison avec
+ses concurrents et la justication de son choix ont été présentées. L'architecture géné-
+rale en quatre zones fonctionnelles et les principaux artefacts UML (cas d'utilisation,
+classes) viennent compléter cette modélisation conceptuelle. Les chapitres suivants pré-
+senteront la modélisation détaillée par sprint, chacun désormais en tant que chapitre
+dédié, puis la description des quatre workows n8n.
+ISIMa
+Page 43
+
+
+===== PAGE 44 =====
+
+3
+Chapitre
+SPRINT 1 : INFRASTRUCTURE
+ET OSINT ÉLÉMENTAIRE
+Sommaire
+Introduction du chapitre . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.1
+Objectif du Sprint 1
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.2
+Backlog du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.3
+Conception et modélisation du Sprint 1 . . . . . . . . . . . . . . . . . .
+45
+3.3.1
+Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . . . .
+45
+3.3.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . .
+46
+3.3.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . .
+48
+Introduction du chapitre
+Ce chapitre approfondit la modélisation conceptuelle du premier sprint du projet
+en présentant les artefacts UML détaillés : le Sprint Backlog associé, un diagramme
+de cas d'utilisation circonscrit au sprint, les principaux diagrammes de séquence,
+et le diagramme de classe de la portion du modèle ajoutée durant le sprint. Cette
+approche par sprint, alignée sur les bonnes pratiques Scrum, permet de visualiser la
+construction incrémentale du système et la traçabilité de chaque exigence à son implé-
+mentation.
+Les diagrammes respectent les conventions UML standards : les relations  in-
+clude  et  extend  sont représentées par des èches pointillées étiquetées ; les
+généralisations (entre acteurs ou entre classes) par des èches triangulaires pleines ; les
+multiplicités (1, 0..*, 1..*) sont indiquées aux extrémités des associations de classes ;
+ISIMa
+Page 44
+
+
+===== PAGE 45 =====
+
+CHAPITRE 3. SPRINT 1 : INFRASTRUCTURE ET OSINT ÉLÉMENTAIRE
+ISIMa
+et les compositions (♦) sont distinguées des agrégations (♢) selon la force du lien entre
+conteneur et contenu.
+3.1
+Objectif du Sprint 1
+Le premier sprint pose les fondations techniques du projet. Son objectif principal
+est de mettre en place l'infrastructure conteneurisée (Docker + Docker Compose
++ image n8n personnalisée) et d'implémenter les premiers n÷uds OSINT élémentaires
+(WHOIS via RDAP et géolocalisation IP). Ce sprint produit le  squelette opération-
+nel  sur lequel les sprints suivants viendront greer leurs workows spécialisés.
+3.2
+Backlog du Sprint 1
+Table 3.1 : Backlog du Sprint 1
+ID
+User Story
+Priorité Pts
+US-
+01
+Déployer le conteneur n8n personnalisé sur Kali Linux.
+Haute
+5
+US-
+02
+Congurer Docker Compose pour orchestrer n8n + Redis.
+Haute
+3
+US-
+03
+Implémenter le n÷ud WHOIS via RDAP.
+Haute
+3
+US-
+26
+Implémenter le n÷ud IP Geolocation (ip-api.com).
+Haute
+3
+US-
+27
+Mettre en place les variables d'environnement et secrets API.
+Haute
+2
+3.3
+Conception et modélisation du Sprint 1
+Cette section présente les artefacts UML produits durant le sprint, depuis le dia-
+gramme de cas d'utilisation jusqu'au diagramme de classes. Pour chaque artefact, le
+texte descriptif précède la gure correspondante an de faciliter la compréhension.
+3.3.1
+Diagramme de cas d'utilisation
+Ce diagramme illustre les cinq fonctionnalités du Sprint 1, réparties entre deux
+acteurs. L'Admin gère la mise en place de l'infrastructure (conteneur n8n, Docker
+Compose, variables d'environnement, clés API) tandis que l'Analyste interagit avec
+ISIMa
+Page 45
+
+
+===== PAGE 46 =====
+
+CHAPITRE 3. SPRINT 1 : INFRASTRUCTURE ET OSINT ÉLÉMENTAIRE
+ISIMa
+les premiers n÷uds OSINT. La relation include entre  Déployer le conteneur n8n 
+et  Congurer Docker Compose  indique que la conguration de Docker Compose
+est une étape obligatoire du déploiement.
+Figure 3.1 : Sprint 1  Diagramme de cas d'utilisation
+3.3.2
+Diagrammes de séquence
+Les diagrammes de séquence ci-dessous illustrent les principales interactions chro-
+nologiques durant l'exécution du sprint.
+ISIMa
+Page 46
+
+
+===== PAGE 47 =====
+
+CHAPITRE 3. SPRINT 1 : INFRASTRUCTURE ET OSINT ÉLÉMENTAIRE
+ISIMa
+3.3.2.1
+Déployer le conteneur n8n
+Ce diagramme retrace les neuf messages échangés lors du déploiement de la pile
+applicative. L'Admin lance la commande de démarrage, Docker Compose lit la con-
+guration YAML, télécharge l'image Redis ocielle, construit l'image n8n personnalisée
+puis démarre les conteneurs. Le retour nal conrme que la pile est opérationnelle sur
+le port 5678.
+Figure 3.2 : Sprint 1  Diagramme de séquence  Déployer le conteneur n8n 
+3.3.2.2
+Interroger WHOIS
+L'Analyste envoie une requête HTTP au webhook n8n, qui transmet la demande au
+n÷ud WHOIS. Ce dernier interroge le service public rdap.org qui retourne le JSON
+RDAP standardisé. Les données sont enrichies et renvoyées à l'utilisateur avec un code
+200.
+Figure 3.3 : Sprint 1  Diagramme de séquence  Interroger WHOIS 
+3.3.2.3
+Géolocaliser une IP
+Le n÷ud Geo prend en entrée une adresse IP (issue du WHOIS précédent) et inter-
+roge l'API publique ip-api.com. Le service renvoie un objet JSON contenant le pays,
+ISIMa
+Page 47
+
+
+===== PAGE 48 =====
+
+CHAPITRE 3. SPRINT 1 : INFRASTRUCTURE ET OSINT ÉLÉMENTAIRE
+ISIMa
+l'ISP, les coordonnées géographiques et le code AS de l'IP, données ensuite consolidées
+dans le dataset de retour.
+Figure 3.4 : Sprint 1  Diagramme de séquence  Géolocaliser une IP 
+3.3.3
+Diagramme de classes
+Ce diagramme structurel modélise les trois entités centrales du Sprint 1. La classe
+Conteneur n8n est en relation de composition (♦) avec les n÷uds techniques (NoeudWhois,
+NoeudGeoIP), traduisant le cycle de vie partagé : la suppression du conteneur entraîne
+la disparition de ses n÷uds. Les classes DomainInfo et GeoData sont produites par les
+n÷uds et représentent les structures de données enrichies retournées.
+ISIMa
+Page 48
+
+
+===== PAGE 49 =====
+
+CHAPITRE 3. SPRINT 1 : INFRASTRUCTURE ET OSINT ÉLÉMENTAIRE
+ISIMa
+Figure 3.5 : Sprint 1  Diagramme de classe
+ISIMa
+Page 49
+
+
+===== PAGE 50 =====
+
+4
+Chapitre
+SPRINT 2 : OSINT AVANCÉ
+(PASSIF)
+Sommaire
+Introduction du chapitre . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.1
+Objectif du Sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.2
+Backlog du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.3
+Conception et modélisation du Sprint 2 . . . . . . . . . . . . . . . . . .
+52
+4.3.1
+Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . . . .
+52
+4.3.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . .
+53
+4.3.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.3.4
+Diagramme d'activité du workow WF-01
+. . . . . . . . . . . .
+56
+4.4
+WF-01 : Workow de Collecte Passive
+. . . . . . . . . . . . . . . . . .
+57
+4.4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+4.4.2
+Vue d'ensemble du workow WF-01 . . . . . . . . . . . . . . . .
+57
+4.4.3
+Description détaillée des n÷uds du WF-01 . . . . . . . . . . . .
+58
+4.4.4
+Synthèse des n÷uds du WF-01
+. . . . . . . . . . . . . . . . . .
+63
+4.4.5
+Résultats observés sur les domaines de test . . . . . . . . . . . .
+63
+4.4.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+ISIMa
+Page 50
+
+
+===== PAGE 51 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+Introduction du chapitre
+Ce chapitre approfondit la modélisation conceptuelle du sprint en présentant les ar-
+tefacts UML détaillés : le Sprint Backlog associé, un diagramme de cas d'utilisa-
+tion circonscrit au sprint, les principaux diagrammes de séquence, le diagramme
+de classe de la portion du modèle ajoutée durant le sprint, ainsi que le diagramme
+d'activité du workow produit. Cette approche par sprint, alignée sur les bonnes
+pratiques Scrum, permet de visualiser la construction incrémentale du système et la
+traçabilité de chaque exigence à son implémentation.
+Les diagrammes respectent les conventions UML standards : les relations  in-
+clude  et  extend  sont représentées par des èches pointillées étiquetées ; les
+généralisations (entre acteurs ou entre classes) par des èches triangulaires pleines ; les
+multiplicités (1, 0..*, 1..*) sont indiquées aux extrémités des associations de classes ;
+et les compositions (♦) sont distinguées des agrégations (♢) selon la force du lien entre
+conteneur et contenu.
+4.1
+Objectif du Sprint 2
+Le Sprint 2 livre le workow WF-01 complet, dédié à la collecte passive d'in-
+formations. Il intègre les sept sources OSINT principales : Hunter.io (e-mails), GitHub
+Code Search (références), GitHub Secrets Search (motifs sensibles), Wayback Machine
+(archives), SSL Labs (posture TLS), Certicate Transparency (sous-domaines) et Se-
+curity Headers (en-têtes HTTP).
+ISIMa
+Page 51
+
+
+===== PAGE 52 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+4.2
+Backlog du Sprint 2
+Table 4.1 : Backlog du Sprint 2
+ID
+User Story
+Priorité Pts
+US-
+04
+Extraire les e-mails associés à un domaine via Hunter.io.
+Haute
+5
+US-
+05
+Détecter les références GitHub publiques d'un domaine.
+Haute
+5
+US-
+06
+Détecter les secrets exposés sur GitHub.
+Critique
+8
+US-
+07
+Analyser la posture TLS via SSL Labs.
+Moyenne 3
+US-
+08
+Interroger la Wayback Machine pour les archives historiques.
+Moyenne 3
+US-
+29
+Vérier les en-têtes de sécurité HTTP (Security Headers).
+Moyenne 3
+US-
+30
+Agréger l'ensemble des sorties en un dataset JSON consolidé.
+Haute
+5
+4.3
+Conception et modélisation du Sprint 2
+Cette section présente les artefacts UML produits durant le sprint, depuis le dia-
+gramme de cas d'utilisation jusqu'au diagramme d'activité du workow. Pour chaque
+artefact, le texte descriptif précède la gure correspondante an de faciliter la compré-
+hension.
+4.3.1
+Diagramme de cas d'utilisation
+Ce diagramme illustre l'architecture du WF-01. Le cas central  Collecter données
+OSINT  inclut systématiquement les six sources principales via la relation include.
+La détection de secrets GitHub est en relation d'extend avec la recherche Gi-
+tHub : elle s'exécute de manière conditionnelle, uniquement si la recherche initiale
+renvoie des résultats. L'agrégation nale est elle aussi obligatoirement incluse.
+ISIMa
+Page 52
+
+
+===== PAGE 53 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+Figure 4.1 : Sprint 2  Diagramme de cas d'utilisation
+4.3.2
+Diagrammes de séquence
+Les diagrammes de séquence ci-dessous illustrent les principales interactions chro-
+nologiques entre les composants du système durant l'exécution du sprint.
+4.3.2.1
+Extraire e-mails (Hunter.io)
+Le n÷ud Hunter interroge l'API api.hunter.io/v2/domain-search avec la clé
+API stockée en variable d'environnement. Le service retourne une liste d'adresses e-mail
+enrichies (prénom, nom, fonction, score de conance, prol LinkedIn quand disponible).
+Ces données sont ensuite intégrées au dataset consolidé par le n÷ud Aggregator.
+ISIMa
+Page 53
+
+
+===== PAGE 54 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+Figure 4.2 : Sprint 2  Diagramme de séquence  Extraire e-mails (Hunter.io) 
+4.3.2.2
+Détecter secrets GitHub
+Le n÷ud Secrets interroge l'API de recherche de code GitHub, puis applique un
+ltrage par expressions régulières (tokens AWS, clés Stripe, mots de passe en clair,
+etc.) pour ne conserver que les motifs réellement sensibles. Si plus de 1000 secrets sont
+détectés, ce signal déclenchera plus tard l'override CRITICAL au WF-03.
+Figure 4.3 : Sprint 2  Diagramme de séquence  Détecter secrets GitHub 
+ISIMa
+Page 54
+
+
+===== PAGE 55 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+4.3.2.3
+Agréger les résultats OSINT
+Ce diagramme utilise le fragment combiné par (UML 2.x) pour matérialiser l'exé-
+cution parallèle des cinq sources OSINT. Le webhook déclenche simultanément les cinq
+n÷uds qui interrogent leurs APIs respectives. L'Aggregator collecte les retours au fur et
+à mesure, et produit en sortie un dataset JSON consolidé après réception de l'ensemble
+des résultats.
+Figure 4.4 : Sprint 2  Diagramme de séquence  Agréger les résultats OSINT 
+4.3.3
+Diagramme de classes
+Ce diagramme structurel applique le patron Stratégie : la classe abstraite OSINTSource
+dénit le contrat commun (méthode query) que toutes les sources implémentent. Les
+classes concrètes (HunterSource, GitHubSource, SSLLabsSource) héritent de cette
+classe abstraite, comme le matérialise la èche triangulaire pleine (notation UML pour
+la généralisation). L'Aggregator est en relation d'agrégation (♢, lien faible) avec les
+sources : il les utilise temporairement mais ne les possède pas.
+ISIMa
+Page 55
+
+
+===== PAGE 56 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+Figure 4.5 : Sprint 2  Diagramme de classe
+4.3.4
+Diagramme d'activité du workow WF-01
+Le WF-01 suit le motif classique fork-join : après validation du domaine, les sept
+sources OSINT sont déclenchées en parallèle via la barre de fork ; après réception de
+l'ensemble des résultats, la barre de join synchronise les ux avant l'agrégation nale.
+Une boucle de vérication permet de signaler les sources éventuellement défaillantes
+sans bloquer l'exécution.
+Figure 4.6 : Diagramme d'activité du WF-01 (Collecte Passive)
+ISIMa
+Page 56
+
+
+===== PAGE 57 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+4.4
+WF-01 : Workow de Collecte Passive
+4.4.1
+Introduction
+Ce chapitre décrit en détail le premier workow du pipeline de CyberScope Pro :
+WF-01  Collecte Passive. Ce workow constitue la première étape opérationnelle
+du système et a pour mission de collecter un maximum d'informations sur la cible sans
+interaction directe avec ses systèmes. La collecte s'eectue exclusivement à partir de
+sources publiques (Open Source Intelligence, OSINT), ce qui présente l'avantage majeur
+d'être à la fois indétectable côté cible et juridiquement sans restriction. Ce chapitre
+commence par une vue d'ensemble du workow, puis détaille successivement chacun
+de ses vingt-neuf n÷uds.
+4.4.2
+Vue d'ensemble du workow WF-01
+4.4.2.1
+Caractéristiques générales
+Le workow WF-01 se déclenche par un webhook HTTP qui reçoit en entrée le do-
+maine cible à analyser. Il interroge ensuite en parallèle sept sources OSINT distinctes,
+agrège les résultats au format JSON, puis retourne un dataset consolidé. Le tableau 4.2
+en synthétise les caractéristiques.
+Table 4.2 : Caractéristiques générales du workow WF-01
+Caractéristique
+Valeur
+Identiant interne
+WF-01 Passive Recon
+Nombre de n÷uds
+29
+Mode d'exécution
+Parallèle (fan-out)
+Durée moyenne
+Environ 60 secondes
+Webhook d'entrée
+POST /webhook/cyberscope-wf01
+Format de sortie
+JSON dataset consolidé
+Sources interrogées
+7 (Hunter, GitHub Code, GitHub Secrets, Wayback, SSL
+Labs, Certicate Transparency, Security Headers)
+Authentication
+Aucune (sources publiques) ou clés API selon la source
+ISIMa
+Page 57
+
+
+===== PAGE 58 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+Figure 4.7 : Résultat du workow WF-01 dans l'interface n8n
+4.4.3
+Description détaillée des n÷uds du WF-01
+Cette section décrit individuellement chacun des principaux n÷uds du workow
+WF-01, en précisant pour chacun : son type, son rôle, la source interrogée, les données
+retournées et un exemple de sortie observée lors des tests.
+4.4.3.1
+Webhook Entry  Point d'entrée
+Table 4.3 : N÷ud Webhook Entry du WF-01
+Attribut
+Valeur
+Type
+Webhook (déclencheur HTTP)
+URL d'écoute
+POST /webhook/cyberscope-wf01
+Méthode HTTP
+POST
+Format payload
+JSON : {"domain": "exemple.com", "scan_id": "..."}
+Authentication
+Optionnelle (Bearer token)
+Rôle
+Réception de la requête de scan, déclenchement du fan-out vers les sources
+OSINT
+Ce n÷ud constitue le point d'entrée HTTP du workow. Il reçoit la requête de scan
+envoyée par l'orchestrateur (script Bash ou application Flask), extrait le domaine cible
+du corps de la requête, puis transmet ce domaine en parallèle à l'ensemble des n÷uds
+de collecte OSINT. Il s'agit du seul n÷ud du workow déclenché de manière externe ;
+tous les autres sont activés par propagation des données.
+4.4.3.2
+Hunter.io  Recherche d'adresses e-mail
+Hunter.io est un service spécialisé dans la collecte d'adresses e-mail professionnelles
+à partir de sources publiques (sites corporate, signatures d'articles, dépôts publics,
+ISIMa
+Page 58
+
+
+===== PAGE 59 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+Table 4.4 : N÷ud Hunter.io du WF-01
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+API Hunter.io v2
+Endpoint
+api.hunter.io/v2/domain-search
+Authentication
+Clé API (variable d'environnement HUNTER_API_KEY)
+Rôle
+Collecte des adresses e-mail professionnelles publiques associées au domaine
+Données retournées
+Liste d'e-mails avec prénom/nom, fonction, séniorité, prol LinkedIn et
+score de conance
+etc.) [12]. Pour chaque e-mail identié, le service fournit un score de conance (de
+0 à 100), ainsi que des métadonnées enrichies : prénom, nom, fonction, département,
+séniorité et lien vers le prol LinkedIn lorsque disponible. Cette information constitue
+un point d'entrée précieux pour les pentesteurs en phase d'ingénierie sociale.
+Lors des tests sur google.com, ce n÷ud a permis d'identier dix cadres exécutifs
+(Director, Head of, etc.) avec leurs prols LinkedIn associés.
+4.4.3.3
+GitHub Code Search  Recherche de code source
+Table 4.5 : N÷ud GitHub Code Search du WF-01
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+API GitHub REST v3
+Endpoint
+api.github.com/search/code
+Authentication
+Token GitHub (variable GITHUB_TOKEN)
+Rôle
+Recherche de code source mentionnant le domaine cible sur les dépôts
+publics GitHub
+Données retournées
+Nombre total de références, liste des dépôts, fragments de code, chemins de
+chiers
+Ce n÷ud interroge l'API de recherche GitHub pour identier l'ensemble des frag-
+ments de code public mentionnant le domaine cible (dans des URLs hardcodées, des
+congurations, des commentaires, etc.). Le nombre de références constitue un indica-
+teur indirect de la visibilité publique de l'organisation dans les communautés de
+développeurs.
+Lors des tests, google.com a généré 1 728 512 références, tandis que lufix.to (do-
+maine malveillant) n'en a généré que 48  prol typique d'une infrastructure criminelle
+qui évite les empreintes publiques.
+ISIMa
+Page 59
+
+
+===== PAGE 60 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+Table 4.6 : N÷ud GitHub Secrets Search du WF-01
+Attribut
+Valeur
+Type
+HTTP Request + ltrage regex
+Source
+API GitHub REST v3
+Endpoint
+api.github.com/search/code avec ltres ciblés
+Authentication
+Token GitHub
+Rôle
+Détection de motifs ressemblant à des secrets (clés API, mots de passe)
+Données retournées
+Nombre de motifs suspects, échantillons d'occurrences
+4.4.3.4
+GitHub Secrets Search  Détection de secrets
+Ce n÷ud eectue une recherche ciblée sur des motifs caractéristiques de secrets
+potentiellement exposés : tokens d'API (api_key=, secret=, password=), clés AWS
+(AKIA...), tokens GitHub (ghp_...), tokens Stripe (sk_live_...), etc. Les résultats
+sont ltrés par expression régulière côté client pour éviter les faux positifs courants.
+Ce n÷ud constitue l'un des indicateurs les plus critiques du Scoring Engine : un
+nombre de secrets supérieur à 1000 force automatiquement le niveau de risque à CRI-
+TICAL. Lors des tests, google.com a aché 3 096 motifs suspects (volume historique
+massif de code public), tandis que esprit.tn en a aché 29  signal préoccupant
+pour une institution académique.
+4.4.3.5
+SSL Labs  Analyse de la posture TLS
+Table 4.7 : N÷ud SSL Labs du WF-01
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+API Qualys SSL Labs
+Endpoint
+api.ssllabs.com/api/v3/analyze
+Authentication
+Aucune (service public)
+Rôle
+Évaluation de la conguration TLS/SSL du domaine cible
+Données retournées
+Note globale (A à F), versions de protocoles, suites de chirement,
+vulnérabilités connues
+L'analyse SSL Labs évalue la robustesse de la conguration TLS d'un serveur. Ce
+n÷ud interroge l'API publique de Qualys SSL Labs pour obtenir une note synthétique
+(de A à F) ainsi que le détail des protocoles supportés, des suites de chirement et
+des vulnérabilités éventuelles (POODLE, BEAST, Heartbleed). Une conguration TLS
+faible (protocoles obsolètes, certicats expirés) constitue un point d'exposition majeur.
+En raison de la durée de l'analyse, le résultat peut être indiqué comme  analyse en
+cours  lorsque l'évaluation n'est pas encore terminée côté Qualys.
+ISIMa
+Page 60
+
+
+===== PAGE 61 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+4.4.3.6
+Certicate Transparency  Découverte de sous-domaines
+Table 4.8 : N÷ud Certicate Transparency du WF-01
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+Journaux de transparence des certicats (crt.sh)
+Endpoint
+crt.sh/?q=%25.domaine&output=json
+Authentication
+Aucune (service public)
+Rôle
+Énumération passive des sous-domaines via les certicats émis
+Données retournées
+Liste des noms de domaine gurant dans les certicats SSL publics
+Les journaux de transparence des certicats (Certicate Transparency) recensent
+publiquement tous les certicats SSL émis par les autorités de certication. Ce n÷ud
+interroge crt.sh an d'extraire l'ensemble des noms de domaine (y compris les sous-
+domaines) pour lesquels un certicat a été délivré. Cette technique passive révèle sou-
+vent des sous-domaines internes ou de pré-production exposés par inadvertance, sans
+aucune interaction directe avec la cible.
+4.4.3.7
+Security Headers  Analyse des en-têtes HTTP
+Table 4.9 : N÷ud Security Headers du WF-01
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+En-têtes de réponse HTTP du domaine cible
+Endpoint
+Requête HEAD/GET sur le domaine
+Authentication
+Aucune
+Rôle
+Vérication de la présence des en-têtes de sécurité
+Données retournées
+Présence/absence de HSTS, CSP, X-Frame-Options,
+X-Content-Type-Options
+Les en-têtes de sécurité HTTP constituent une première ligne de défense côté naviga-
+teur. Ce n÷ud analyse les en-têtes renvoyés par le domaine cible pour vérier la présence
+de mécanismes essentiels : Strict-Transport-Security (HSTS), Content-Security-Policy
+(CSP), X-Frame-Options et X-Content-Type-Options. L'absence de ces en-têtes si-
+gnale une surface d'exposition accrue aux attaques de type clickjacking, injection de
+contenu ou rétrogradation de protocole.
+4.4.3.8
+Wayback Machine  Archives Web historiques
+La Wayback Machine archive depuis 1996 plusieurs centaines de milliards de pages
+Web. Ce n÷ud interroge son API pour récupérer la liste des captures historiques du
+ISIMa
+Page 61
+
+
+===== PAGE 62 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+Table 4.10 : N÷ud Wayback Machine du WF-01
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+Internet Archive Wayback Machine
+Endpoint
+archive.org/wayback/available
+Authentication
+Aucune (service public)
+Rôle
+Récupération d'instantanés historiques du domaine cible
+Données retournées
+URLs des captures archivées, dates et statuts HTTP
+domaine cible. Ces archives permettent souvent de découvrir des fonctionnalités ob-
+solètes mais encore exposées, des sous-domaines anciens, des versions de congu-
+rations désormais sensibles, ou des traces d'événements de sécurité antérieurs (dégu-
+rations, redirections suspectes).
+4.4.3.9
+Aggregator  Fusion des résultats
+Table 4.11 : N÷ud Aggregator du WF-01
+Attribut
+Valeur
+Type
+Code (JavaScript)
+Source
+Sortie des sept n÷uds OSINT précédents
+Rôle
+Consolidation des sept sorties JSON en un dataset unié
+Données retournées
+JSON consolidé : {hunter, github, pastebin, wayback, subdomains,
+ahmia}
+L'agrégateur reçoit en entrée les sorties JSON de chacune des sept sources OSINT,
+normalise leur structure (gestion des erreurs, valeurs manquantes, formats hétérogènes)
+et fusionne le tout en un dataset cohérent. Ce dataset consolidé constitue la sortie
+principale du WF-01 et sera transmis aux workows suivants (WF-02 puis WF-03).
+En cas d'indisponibilité d'une source (quota dépassé, erreur réseau), un objet vide est
+inséré pour préserver la cohérence de la structure.
+4.4.3.10
+Webhook Response  Renvoi de la sortie
+Table 4.12 : N÷ud Webhook Response du WF-01
+Attribut
+Valeur
+Type
+Respond to Webhook
+Code HTTP
+200 OK (succès) ou 500 (erreur)
+Format réponse
+JSON consolidé
+Rôle
+Renvoi du dataset consolidé à l'orchestrateur appelant
+Ce n÷ud nal clôt le workow en renvoyant à l'appelant initial (script orchestrateur
+ou application Flask) la réponse HTTP contenant le dataset consolidé. Le code retour
+ISIMa
+Page 62
+
+
+===== PAGE 63 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+HTTP 200 indique le succès du workow, tandis qu'un code 500 signale une erreur
+ayant interrompu l'exécution.
+4.4.4
+Synthèse des n÷uds du WF-01
+Le tableau 4.13 récapitule l'ensemble des principaux n÷uds du workow WF-01.
+Table 4.13 : Synthèse des principaux n÷uds du WF-01
+N÷ud
+Type
+Finalité
+Webhook Entry
+Webhook
+Point d'entrée HTTP du workow
+Hunter.io
+HTTP
+Recherche d'adresses e-mail professionnelles
+GitHub Code Search
+HTTP
+Comptage des références de code public
+GitHub Secrets Search
+HTTP
+Détection de secrets potentiellement exposés
+SSL Labs
+HTTP
+Analyse de la posture TLS du domaine
+Certicate Transparency
+HTTP
+Découverte passive de sous-domaines (crt.sh)
+Wayback Machine
+HTTP
+Récupération des archives Web historiques
+Security Headers
+HTTP
+Vérication des en-têtes de sécurité HTTP
+Aggregator
+Code (JS)
+Fusion JSON des résultats multi-sources
+Webhook Response
+Respond
+Renvoi du dataset consolidé
+4.4.5
+Résultats observés sur les domaines de test
+Le tableau 4.14 présente une synthèse des résultats observés lors de l'exécution du
+WF-01 sur les trois domaines de validation.
+Table 4.14 : Résultats du WF-01 sur les trois domaines de test
+Indicateur
+google.com
+lux.to
+esprit.tn
+E-mails
+Hun-
+ter.io
+10 cadres
+0
+10 cadres
+GitHub
+réfé-
+rences
+1 728 512
+48
+1 372
+GitHub secrets
+3 096
+0
+29
+Sous-domaines
+(Wayback
+(ar-
+chives)
+Multiples
+Faible
+Multiples
+Ces résultats illustrent la capacité de WF-01 à dresser un portrait OSINT
+contrasté selon le prol du domaine : grande surface publique pour google.com, in-
+frastructure criminelle discrète pour lufix.to, exposition modérée mais préoccupante
+pour esprit.tn (notamment 29 secrets potentiels).
+ISIMa
+Page 63
+
+
+===== PAGE 64 =====
+
+CHAPITRE 4. SPRINT 2 : OSINT AVANCÉ (PASSIF)
+ISIMa
+4.4.6
+Conclusion
+Ce chapitre a détaillé l'ensemble des n÷uds composant le workow WF-01 dédié
+à la collecte passive. Cette première étape du pipeline interroge sept sources OSINT
+distinctes (Hunter.io, GitHub Code, GitHub Secrets, Wayback Machine, SSL Labs,
+Certicate Transparency, Security Headers) en parallèle, avant d'agréger les résultats
+en un dataset JSON consolidé. Les résultats sur les trois domaines de test ont conrmé
+la pertinence des indicateurs collectés, en particulier la détection des secrets GitHub qui
+constitue l'un des signaux d'alerte les plus opérationnels. Le chapitre suivant détaillera
+le workow WF-02 dédié à la collecte active, qui complète la collecte passive par une
+énumération directe des services exposés.
+ISIMa
+Page 64
+
+
+===== PAGE 65 =====
+
+5
+Chapitre
+SPRINT 3 : COLLECTE ACTIVE
+RÉSEAU
+Sommaire
+Introduction du chapitre . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+5.1
+Objectif du Sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+5.2
+Backlog du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.3
+Conception et modélisation du Sprint 3 . . . . . . . . . . . . . . . . . .
+67
+5.3.1
+Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . . . .
+67
+5.3.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . .
+68
+5.3.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . .
+70
+5.3.4
+Diagramme d'activité du workow WF-02
+. . . . . . . . . . . .
+71
+5.4
+WF-02 : Workow de Collecte Active . . . . . . . . . . . . . . . . . . .
+72
+5.4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+5.4.2
+Vue d'ensemble du workow WF-02 . . . . . . . . . . . . . . . .
+72
+5.4.3
+Description détaillée des n÷uds du WF-02 . . . . . . . . . . . .
+74
+5.4.4
+Synthèse des n÷uds du WF-02
+. . . . . . . . . . . . . . . . . .
+80
+5.4.5
+Résultats observés sur les domaines de test . . . . . . . . . . . .
+80
+5.4.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+ISIMa
+Page 65
+
+
+===== PAGE 66 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+Introduction du chapitre
+Ce chapitre approfondit la modélisation conceptuelle du sprint en présentant les ar-
+tefacts UML détaillés : le Sprint Backlog associé, un diagramme de cas d'utilisa-
+tion circonscrit au sprint, les principaux diagrammes de séquence, le diagramme
+de classe de la portion du modèle ajoutée durant le sprint, ainsi que le diagramme
+d'activité du workow produit. Cette approche par sprint, alignée sur les bonnes
+pratiques Scrum, permet de visualiser la construction incrémentale du système et la
+traçabilité de chaque exigence à son implémentation.
+Les diagrammes respectent les conventions UML standards : les relations  in-
+clude  et  extend  sont représentées par des èches pointillées étiquetées ; les
+généralisations (entre acteurs ou entre classes) par des èches triangulaires pleines ; les
+multiplicités (1, 0..*, 1..*) sont indiquées aux extrémités des associations de classes ;
+et les compositions (♦) sont distinguées des agrégations (♢) selon la force du lien entre
+conteneur et contenu.
+5.1
+Objectif du Sprint 3
+Le Sprint 3 livre le workow WF-02 complet, dédié à la collecte active. Il inter-
+roge directement les services exposés via Nmap, dig, dnsx, Subnder, Amass, smbclient
+et snmpwalk. La principale innovation architecturale de ce sprint est l'adoption d'une
+chaîne séquentielle (au lieu du fan-out parallèle initialement envisagé) an de ga-
+rantir la abilité d'exécution des outils CLI dans n8n.
+ISIMa
+Page 66
+
+
+===== PAGE 67 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+5.2
+Backlog du Sprint 3
+Table 5.1 : Backlog du Sprint 3
+ID
+User Story
+Priorité Pts
+US-
+09
+Énumérer les sous-domaines via HackerTarget, crt.sh, Subnder et
+Amass.
+Haute
+8
+US-
+10
+Scanner les ports ouverts via Nmap.
+Haute
+5
+US-
+11
+Eectuer une résolution DNS exhaustive.
+Haute
+5
+US-
+12
+Énumérer les services SMB et SNMP.
+Moyenne 3
+US-
+31
+Restructurer WF-02 en chaîne séquentielle.
+Critique
+5
+US-
+32
+Construire l'image Docker n8n custom avec les outils CLI.
+Critique
+8
+5.3
+Conception et modélisation du Sprint 3
+Cette section présente les artefacts UML produits durant le sprint, depuis le dia-
+gramme de cas d'utilisation jusqu'au diagramme d'activité du workow WF-02. Pour
+chaque artefact, le texte descriptif précède la gure correspondante an de faciliter la
+compréhension.
+5.3.1
+Diagramme de cas d'utilisation
+Ce diagramme illustre l'architecture du WF-02. Le cas central  Scanner la cible ,
+déclenché par l'Analyste, inclut systématiquement trois étapes (énumération de sous-
+domaines, résolution DNS, scan de ports Nmap) via la relation include. Les énu-
+mérations SMB et SNMP sont en relation d'extend avec le scan de ports : elles ne
+s'exécutent que si Nmap a détecté les ports 445 (SMB) ou 161 (SNMP) ouverts. L'Ad-
+min gère séparément la chaîne séquentielle d'exécution et la construction de l'image
+Docker personnalisée.
+ISIMa
+Page 67
+
+
+===== PAGE 68 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+Figure 5.1 : Sprint 3  Diagramme de cas d'utilisation
+5.3.2
+Diagrammes de séquence
+Les diagrammes de séquence ci-dessous illustrent les principales interactions chro-
+nologiques entre les composants du système durant l'exécution du sprint.
+5.3.2.1
+Énumérer sous-domaines
+Le workow interroge successivement trois sources d'énumération : HackerTarget
+(API HTTP), crt.sh (Certicate Transparency), et Subnder (outil CLI). Les listes
+retournées sont ensuite consolidées et dédupliquées dans le webhook avant retour à
+l'Analyste.
+ISIMa
+Page 68
+
+
+===== PAGE 69 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+Figure 5.2 : Sprint 3  Diagramme de séquence  Énumérer sous-domaines 
+5.3.2.2
+Scanner les ports (Nmap)
+Le n÷ud Nmap invoque la commande nmap -F -Pn qui envoie des paquets TCP
+SYN aux 100 ports les plus courants. La cible répond par SYN/ACK pour les ports
+ouverts, ce que Nmap interprète et structure en un résultat JSON renvoyé à l'Analyste.
+Figure 5.3 : Sprint 3  Diagramme de séquence  Scanner les ports (Nmap) 
+5.3.2.3
+Énumérer SMB et SNMP
+Ce diagramme utilise deux fragments combinés alt pour matérialiser les exécu-
+tions conditionnelles. L'énumération SMB n'est lancée que si le port 445 est détecté
+ouvert ; symétriquement, l'énumération SNMP n'est lancée que si le port 161 répond.
+ISIMa
+Page 69
+
+
+===== PAGE 70 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+Figure 5.4 : Sprint 3  Diagramme de séquence  Énumérer SMB et SNMP 
+5.3.3
+Diagramme de classes
+Le diagramme reprend le patron Stratégie : trois scanners spécialisés (SubdomainScanner,
+PortScanner, ProtocolScanner) héritent de la classe abstraite ActiveScanner. La
+classe ScanResult agrège les sorties de tous les scanners au format JSON sérialisable.
+ISIMa
+Page 70
+
+
+===== PAGE 71 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+Figure 5.5 : Sprint 3  Diagramme de classe
+5.3.4
+Diagramme d'activité du workow WF-02
+Le WF-02 suit une chaîne séquentielle stricte (par opposition au fan-out du
+WF-01). Cette décision architecturale garantit la abilité d'exécution des outils CLI
+dans n8n. Deux points de décision permettent d'exécuter conditionnellement smbclient
+ISIMa
+Page 71
+
+
+===== PAGE 72 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+et snmpwalk uniquement si les ports correspondants sont détectés ouverts par Nmap.
+Figure 5.6 : Diagramme d'activité du WF-02 (Collecte Active)
+5.4
+WF-02 : Workow de Collecte Active
+5.4.1
+Introduction
+Ce chapitre décrit en détail le second workow du pipeline de CyberScope Pro :
+WF-02  Collecte Active. Contrairement à WF-01 qui se contente d'interroger des
+sources publiques sans interaction directe avec la cible, WF-02 eectue une énuméra-
+tion technique directe des services exposés sur Internet. Il s'agit ici de déterminer
+l'infrastructure réseau réelle de la cible : adresses IP, sous-domaines eectifs, services
+exposés, ports ouverts, congurations DNS et bannières applicatives. Ce chapitre com-
+mence par justier le choix architectural de la chaîne séquentielle adopté pour WF-02,
+puis décrit individuellement chacun de ses dix-huit n÷uds.
+5.4.2
+Vue d'ensemble du workow WF-02
+5.4.2.1
+Caractéristiques générales
+Le workow WF-02 se déclenche également par un webhook HTTP. Mais à la dif-
+férence de WF-01 qui exécute ses sources en parallèle, WF-02 enchaîne ses n÷uds
+en chaîne séquentielle stricte : chaque n÷ud attend la n du précédent avant de
+s'exécuter.
+5.4.2.2
+Justication de la chaîne séquentielle
+Une approche initiale de WF-02 reposait sur un fan-out parallèle similaire à WF-
+01, suivi de quatorze n÷uds Merge pour réagréger les résultats. Cette approche s'est
+révélée défaillante en pratique. Plusieurs problèmes ont été observés :
+ Les n÷uds Merge de n8n ne synchronisaient pas correctement les sorties asyn-
+chrones des outils CLI qui ont des durées d'exécution très variables (nmap prend
+30 s, whois prend 1 s) ;
+ISIMa
+Page 72
+
+
+===== PAGE 73 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+Table 5.2 : Caractéristiques générales du workow WF-02
+Caractéristique
+Valeur
+Identiant interne
+WF-02 Active Recon
+Nombre de n÷uds
+18
+Mode d'exécution
+Séquentiel (chaîne stricte)
+Durée moyenne
+Environ 300 secondes (5 minutes)
+Webhook d'entrée
+POST /webhook/cyberscope-wf02
+Format de sortie
+JSON dataset avec sous-domaines, DNS, Nmap,
+SMB, SNMP
+Outils CLI utilisés
+9 (host, dig, dnsx, Subnder, Amass, Nmap,
+smbclient, snmpwalk, etc.)
+APIs externes utilisées
+4 (RDAP, ip-api, HackerTarget, crt.sh)
+ Le workow se terminait prématurément en environ 345 millisecondes avec des
+valeurs nulles dans la majorité des champs ;
+ Les outils CLI lancés simultanément se concurrençaient sur les ressources réseau,
+dégradant la abilité.
+La solution adoptée consiste à enchaîner les n÷uds en série : chaque outil ter-
+mine son exécution avant que le suivant ne démarre. Cette approche augmente la durée
+totale (5 minutes au lieu de 1 minute) mais garantit la abilité et la complétude
+des résultats. Le débit n'est pas un facteur limitant dans ce contexte d'audit ponctuel.
+Figure 5.7 : Résultat du workow WF-02 dans l'interface n8n
+ISIMa
+Page 73
+
+
+===== PAGE 74 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+5.4.3
+Description détaillée des n÷uds du WF-02
+5.4.3.1
+Webhook Entry  Point d'entrée
+Identique au n÷ud Webhook Entry du WF-01 dans son principe, ce n÷ud écoute
+sur l'URL /webhook/cyberscope-wf02 et reçoit en entrée le domaine cible. Il transmet
+ensuite ce domaine au premier n÷ud de la chaîne (WHOIS).
+5.4.3.2
+WHOIS via RDAP  Informations de domaine
+Table 5.3 : N÷ud WHOIS du WF-02
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+RDAP (Registration Data Access Protocol) via rdap.org
+Endpoint
+rdap.org/domain/<domain>
+Authentication
+Aucune
+Rôle
+Récupération des informations de propriété et d'enregistrement du domaine
+Données retournées
+Registrar, dates de création/expiration, statut, serveurs de noms
+autoritaires, contacts
+Le protocole RDAP est le successeur moderne de WHOIS, normalisé par l'IETF et
+structuré en JSON (au contraire du WHOIS historique qui utilise un format texte non
+standardisé). Ce n÷ud interroge rdap.org, agrégateur public qui redirige automati-
+quement vers le serveur RDAP approprié selon le TLD du domaine. Les informations
+collectées incluent notamment le registrar (qui renseigne sur la juridiction), les dates
+clés (création, expiration, dernière mise à jour), et le statut technique du domaine.
+Lors des tests, ce n÷ud a permis d'identier que lufix.to était enregistré auprès
+du  Government of Kingdom of Tonga , juridiction oshore typiquement utilisée par
+les infrastructures criminelles.
+5.4.3.3
+IP Geolocation  Localisation géographique
+Table 5.4 : N÷ud IP Geolocation du WF-02
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+API ip-api.com
+Endpoint
+ip-api.com/json/<domain>
+Authentication
+Aucune (45 requêtes/minute en gratuit)
+Rôle
+Géolocalisation de l'IP principale du domaine
+Données retournées
+Pays, ville, ISP, organisation, latitude/longitude, code AS
+ISIMa
+Page 74
+
+
+===== PAGE 75 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+Ce n÷ud résout d'abord le domaine en adresse IP, puis interroge l'API ip-api.com
+pour obtenir la géolocalisation et l'ISP associés. L'information est utile à plusieurs
+égards : identication du pays d'hébergement (cohérence avec l'activité supposée de
+l'organisation), reconnaissance de l'ISP (CDN, hébergeur, fournisseur cloud), et dé-
+tection d'incohérences (par exemple, une organisation tunisienne hébergée chez un
+fournisseur asiatique non standard).
+5.4.3.4
+DNS Records  Enregistrements DNS
+Table 5.5 : N÷ud DNS Records du WF-02
+Attribut
+Valeur
+Type
+Execute Command
+Outil utilisé
+host (paquet dnsutils)
+Rôle
+Récupération exhaustive des enregistrements DNS
+Données retournées
+Records A, AAAA, MX, NS, TXT, SOA, CNAME
+Ce n÷ud invoque l'utilitaire host en mode complet pour récupérer l'ensemble des
+enregistrements DNS du domaine. Les types d'enregistrements collectés sont :
+ A et AAAA : adresses IPv4 et IPv6 ;
+ MX : serveurs de messagerie ;
+ NS : serveurs de noms autoritaires ;
+ TXT : enregistrements textuels (SPF, DKIM, vérications de propriété) ;
+ SOA : informations de la zone DNS (administrateur, numéro de série) ;
+ CNAME : alias.
+5.4.3.5
+Reverse DNS  Résolution inverse
+Table 5.6 : N÷ud Reverse DNS du WF-02
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+API HackerTarget
+Endpoint
+api.hackertarget.com/reversedns
+Rôle
+Identication d'autres domaines partageant la même IP (vhosts virtuels)
+Ce n÷ud eectue la résolution inverse : étant donné l'IP du domaine cible, il identie
+l'ensemble des autres domaines hébergés sur la même adresse IP. Cette information
+est cruciale pour détecter la présence de vhosts virtuels qui pourraient révéler une
+infrastructure mutualisée plus large que celle visible directement.
+ISIMa
+Page 75
+
+
+===== PAGE 76 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+5.4.3.6
+HackerTarget Subdomains  Énumération de sous-domaines
+Table 5.7 : N÷ud HackerTarget Subdomains du WF-02
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+API HackerTarget
+Endpoint
+api.hackertarget.com/hostsearch
+Authentication
+Aucune (quota gratuit limité)
+Rôle
+Découverte de sous-domaines en complément des autres outils
+Données retournées
+Liste de sous-domaines avec leurs adresses IP résolues
+HackerTarget agrège plusieurs sources OSINT (DNS, certicats SSL, archives) pour
+fournir une liste de sous-domaines associés à un domaine cible. Intégré au WF-02 (col-
+lecte active), ce n÷ud complète l'énumération réalisée par crt.sh, Subnder et Amass,
+et croise ses résultats avec ceux des autres sources an de maximiser la couverture. Bien
+que limité à 50 résultats en accès gratuit, ce service ore une énumération rapide
+et able. Lors des tests sur google.com, ce n÷ud a remonté 51 sous-domaines.
+5.4.3.7
+crt.sh  Recherche dans les certicats SSL
+Table 5.8 : N÷ud crt.sh du WF-02
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+crt.sh (Certicate Transparency log de Sectigo)
+Endpoint
+crt.sh/?q=%.<domain>&output=json
+Authentication
+Aucune
+Rôle
+Découverte de sous-domaines via les certicats SSL émis
+Données retournées
+Liste de sous-domaines apparaissant dans des certicats publics
+Le Certicate Transparency (CT) est une initiative de Google visant à rendre pu-
+blics tous les certicats SSL émis par les autorités de certication reconnues. crt.sh
+agrège ces logs et permet leur interrogation. Cette source est particulièrement pré-
+cieuse car elle révèle des sous-domaines qui ne sont pas indexés par les moteurs pu-
+blics : sous-domaines de pré-production, environnements de staging, services internes
+accidentellement exposés.
+5.4.3.8
+Subnder  Énumération multi-sources
+Subnder est l'un des outils open source les plus utilisés pour l'énumération de
+sous-domaines. Il agrège plus de trente sources OSINT (Censys, Shodan, VirusTotal,
+ISIMa
+Page 76
+
+
+===== PAGE 77 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+Table 5.9 : N÷ud Subnder du WF-02
+Attribut
+Valeur
+Type
+Execute Command
+Outil utilisé
+subfinder (ProjectDiscovery, écrit en Go) [13]
+Rôle
+Énumération passive de sous-domaines depuis 30+ sources OSINT
+Données retournées
+Liste consolidée et dédupliquée de sous-domaines
+GitHub, etc.) et produit une liste consolidée. L'outil a été compilé depuis ses sources
+Go lors de la construction de l'image Docker n8n personnalisée.
+Lors des tests sur lufix.to, Subnder a remonté 21 sous-domaines, démontrant
+que même une infrastructure malveillante laisse des traces dans les sources OSINT.
+5.4.3.9
+Amass  Reconnaissance approfondie
+Table 5.10 : N÷ud Amass du WF-02
+Attribut
+Valeur
+Type
+Execute Command
+Outil utilisé
+amass v4 (OWASP, écrit en Go) [14]
+Mode utilisé
+enum -passive (sans interaction directe)
+Rôle
+Cartographie approfondie de la surface d'attaque
+Données retournées
+Sous-domaines + relations (DNS, ASN, certicats)
+Amass est le framework OSINT phare du projet OWASP. Sa version 4 introduit
+un moteur d'inférence permettant non seulement d'énumérer les sous-domaines mais
+aussi de cartographier les relations entre actifs (graphes DNS, ASN, certicats SSL
+associés). Dans le contexte du projet, Amass est utilisé en mode passif (-passive) pour
+rester en cohérence avec la philosophie de la collecte WF-02.
+5.4.3.10
+dnsx  Résolution DNS rapide
+Table 5.11 : N÷ud dnsx du WF-02
+Attribut
+Valeur
+Type
+Execute Command
+Outil utilisé
+dnsx (ProjectDiscovery) [13]
+Rôle
+Résolution DNS massive et rapide
+Données retournées
+Mappage sous-domaine →IP, types d'enregistrements
+dnsx est un résolveur DNS massivement parallèle écrit en Go. Il prend en entrée
+la liste consolidée de sous-domaines produite par les n÷uds précédents et résout en
+quelques secondes des centaines d'entrées vers leurs adresses IP. Cette résolution est
+ISIMa
+Page 77
+
+
+===== PAGE 78 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+indispensable pour la phase suivante (Nmap) qui scanne les IP plutôt que les noms de
+domaine.
+5.4.3.11
+dig  Interrogation DNS approfondie
+Table 5.12 : N÷ud dig du WF-02
+Attribut
+Valeur
+Type
+Execute Command
+Outil utilisé
+dig (paquet dnsutils)
+Rôle
+Interrogation DNS approfondie sur enregistrements ANY
+Données retournées
+Sortie textuelle structurée des enregistrements DNS
+dig (Domain Information Groper) est l'outil de référence des administrateurs DNS.
+Il ore un contrôle plus n que host : interrogation d'un serveur DNS spécique,
+demande de tous types d'enregistrements via la requête ANY, mode trace pour suivre
+la résolution itérative depuis la racine. Sa sortie textuelle est conservée intégralement
+et achée dans l'onglet DNS du rapport HTML nal.
+5.4.3.12
+Nmap  Scan de ports et de services
+Table 5.13 : N÷ud Nmap du WF-02
+Attribut
+Valeur
+Type
+Execute Command
+Outil utilisé
+nmap [11]
+Mode utilisé
+Scan rapide (-F) sans test de ping (-Pn)
+Rôle
+Identication des ports ouverts et des services exposés
+Données retournées
+Liste de ports ouverts, services, versions, sortie textuelle complète
+Nmap est l'outil de référence absolu en matière d'énumération réseau. Le mode
+rapide retenu (-F) scanne uniquement les 100 ports les plus courants, ce qui constitue
+un compromis acceptable entre exhaustivité et durée d'exécution dans le contexte d'un
+audit automatisé. Le drapeau -Pn désactive la vérication préalable par ping, ce qui
+permet de détecter des hôtes derrière des pare-feux qui ltrent ICMP. La sortie textuelle
+complète est conservée et achée dans le rapport HTML nal.
+5.4.3.13
+SMB Enumeration
+Si Nmap détecte un service SMB (port 445), ce n÷ud invoque smbclient pour tenter
+une énumération anonyme des partages disponibles. La présence de partages accessibles
+sans authentication constitue un signal de risque majeur car elle peut exposer des
+ISIMa
+Page 78
+
+
+===== PAGE 79 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+Table 5.14 : N÷ud SMB Enumeration du WF-02
+Attribut
+Valeur
+Type
+Execute Command
+Outil utilisé
+smbclient (paquet samba-common)
+Rôle
+Vérication de partages SMB exposés
+Données retournées
+Liste des partages accessibles ou message  no SMB 
+données sensibles ou permettre des mouvements latéraux. Dans la majorité des cas
+(cibles publiques bien congurées), le résultat est l'absence de service SMB exposé.
+5.4.3.14
+SNMP Enumeration
+Table 5.15 : N÷ud SNMP Enumeration du WF-02
+Attribut
+Valeur
+Type
+Execute Command
+Outil utilisé
+snmpwalk (paquet snmp)
+Community testée
+public (par défaut)
+Rôle
+Vérication de service SNMP exposé avec conguration par défaut
+Si un service SNMP est détecté (port 161 UDP), ce n÷ud tente une interrogation
+avec la community string par défaut public. La présence d'un agent SNMP accessible
+avec cette conguration constitue une vulnérabilité historique fréquente sur les équi-
+pements réseau (routeurs, imprimantes, équipements industriels) et peut révéler des
+informations système précieuses : version de l'OS, utilisateurs connectés, processus en
+cours, congurations réseau.
+5.4.3.15
+Aggregator  Fusion des résultats
+Identique en principe au n÷ud Aggregator du WF-01, mais traitant les sorties hé-
+térogènes des outils CLI (formats texte) qu'il normalise au format JSON. Ce n÷ud
+eectue notamment la déduplication nale des sous-domaines collectés depuis les mul-
+tiples sources (HackerTarget, crt.sh, Subnder, Amass).
+5.4.3.16
+Webhook Response  Renvoi du dataset actif
+Renvoie le dataset actif consolidé à l'orchestrateur appelant. Le dataset ainsi produit
+complète celui obtenu par WF-01 et constitue ensemble la matière première analysée
+par le workow suivant (WF-03).
+ISIMa
+Page 79
+
+
+===== PAGE 80 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+5.4.4
+Synthèse des n÷uds du WF-02
+Table 5.16 : Synthèse des principaux n÷uds du WF-02
+N÷ud
+Type
+Finalité
+Webhook Entry
+Webhook
+Point d'entrée HTTP
+WHOIS (RDAP)
+HTTP
+Récupération des informations de domaine (registrar,
+dates)
+IP Geolocation
+HTTP
+Localisation géographique de l'adresse IP
+DNS Records
+ExecCmd
+Récupération exhaustive des enregistrements DNS
+Reverse DNS
+HTTP
+Résolution inverse via HackerTarget
+HackerTarget Subs
+HTTP
+Énumération de sous-domaines
+crt.sh SSL
+HTTP
+Sous-domaines via certicats SSL publics
+Subnder
+ExecCmd
+Énumération multi-sources de sous-domaines
+Amass
+ExecCmd
+Reconnaissance OSINT approfondie
+dnsx
+ExecCmd
+Résolution DNS rapide en masse
+dig
+ExecCmd
+Interrogation DNS approfondie
+Nmap Scan
+ExecCmd
+Identication de ports ouverts et services
+SMB Enumeration
+ExecCmd
+Vérication des partages SMB
+SNMP Enumeration
+ExecCmd
+Vérication du service SNMP
+Aggregator
+Code (JS)
+Fusion JSON séquentielle
+Webhook Response
+Respond
+Renvoi du dataset actif
+5.4.5
+Résultats observés sur les domaines de test
+Table 5.17 : Résultats du WF-02 sur les trois domaines de test
+Indicateur
+google.com
+lux.to
+esprit.tn
+IP principale
+142.250.80.78
+N/A (intermittent)
+193.95.99.197
+Pays / ISP
+USA / Google LLC
+N/A
+Tunisie / ATI
+Registrar
+MarkMonitor
+Government of Tonga
+
+Sous-domaines
+(Subnder)
+120 918
+21
+27
+Sous-domaines
+(Amass)
+1
+1
+5
+DNS records
+21
+Faibles
+Multiples
+Nmap
+(ports
+ouverts)
+80, 443
+0 hosts up
+
+SMB / SNMP
+Aucun
+Aucun
+Aucun
+Ces résultats illustrent l'ecacité de WF-02 à cartographier précisément l'in-
+frastructure technique de la cible. Le cas de lufix.to montre que même une infra-
+ISIMa
+Page 80
+
+
+===== PAGE 81 =====
+
+CHAPITRE 5. SPRINT 3 : COLLECTE ACTIVE RÉSEAU
+ISIMa
+structure malveillante en cours de takedown (Nmap signale 0 hosts up) reste détectable
+via les sources OSINT de sous-domaines.
+5.4.6
+Conclusion
+Ce chapitre a détaillé l'ensemble des n÷uds composant le workow WF-02 dédié
+à la collecte active. Cette deuxième étape du pipeline complète la collecte passive
+en interrogeant directement l'infrastructure de la cible : informations de domaine via
+RDAP, géolocalisation IP, énumération DNS exhaustive, découverte multi-sources de
+sous-domaines (HackerTarget, crt.sh, Subnder, Amass), résolution DNS massive via
+dnsx, scan de ports via Nmap, et vérications protocolaires SMB et SNMP. Le choix
+architectural d'une chaîne séquentielle stricte garantit la abilité des résultats au prix
+d'une durée d'exécution plus longue. Le chapitre suivant détaillera le workow WF-03
+dédié à l'analyse et à la détection, qui exploite les datasets produits par WF-01 et
+WF-02 pour calculer un score de risque consolidé.
+ISIMa
+Page 81
+
+
+===== PAGE 82 =====
+
+6
+Chapitre
+SPRINT 4 : THREAT
+INTELLIGENCE ET SCORING
+Sommaire
+Introduction du chapitre . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+6.1
+Objectif du Sprint 4
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+6.2
+Backlog du Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+6.3
+Conception et modélisation du Sprint 4 . . . . . . . . . . . . . . . . . .
+84
+6.3.1
+Diagramme de cas d'utilisation
+. . . . . . . . . . . . . . . . . .
+84
+6.3.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . .
+84
+6.3.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . .
+87
+6.3.4
+Diagramme d'activité du workow WF-03
+. . . . . . . . . . . .
+88
+6.4
+WF-03 : Workow d'Analyse et de Détection . . . . . . . . . . . . . . .
+89
+6.4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+6.4.2
+Vue d'ensemble du workow WF-03 . . . . . . . . . . . . . . . .
+90
+6.4.3
+Description détaillée des n÷uds du WF-03 . . . . . . . . . . . .
+90
+6.4.4
+Synthèse des n÷uds du WF-03
+. . . . . . . . . . . . . . . . . .
+94
+6.4.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+94
+Introduction du chapitre
+Ce chapitre approfondit la modélisation conceptuelle du sprint en présentant les ar-
+tefacts UML détaillés : le Sprint Backlog associé, un diagramme de cas d'utilisa-
+ISIMa
+Page 82
+
+
+===== PAGE 83 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+tion circonscrit au sprint, les principaux diagrammes de séquence, le diagramme
+de classe de la portion du modèle ajoutée durant le sprint, ainsi que le diagramme
+d'activité du workow produit. Cette approche par sprint, alignée sur les bonnes
+pratiques Scrum, permet de visualiser la construction incrémentale du système et la
+traçabilité de chaque exigence à son implémentation.
+Les diagrammes respectent les conventions UML standards : les relations  in-
+clude  et  extend  sont représentées par des èches pointillées étiquetées ; les
+généralisations (entre acteurs ou entre classes) par des èches triangulaires pleines ; les
+multiplicités (1, 0..*, 1..*) sont indiquées aux extrémités des associations de classes ;
+et les compositions (♦) sont distinguées des agrégations (♢) selon la force du lien entre
+conteneur et contenu.
+6.1
+Objectif du Sprint 4
+Le Sprint 4 livre le workow WF-03 complet, dédié à l'analyse et la détection.
+Il enrichit le dataset consolidé issu des sprints précédents en interrogeant cinq sources
+de threat intelligence (VirusTotal, URLScan.io, ThreatFox, AbuseIPDB, NVD/CVE)
+et applique le Scoring Engine multi-axes développé en JavaScript dans un n÷ud Code
+de n8n.
+6.2
+Backlog du Sprint 4
+Table 6.1 : Backlog du Sprint 4
+ID
+User Story
+Priorité Pts
+US-
+13
+Interroger VirusTotal pour qualier la réputation.
+Critique
+5
+US-
+14
+Interroger ThreatFox et AbuseIPDB.
+Haute
+5
+US-
+15
+Corréler avec les CVE référencées.
+Haute
+5
+US-
+16
+Calculer un score multi-axes (Leak/Compromise/Vuln).
+Critique
+8
+US-
+17
+Implémenter les règles d'override CRITICAL.
+Critique
+5
+ISIMa
+Page 83
+
+
+===== PAGE 84 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+6.3
+Conception et modélisation du Sprint 4
+Cette section présente les artefacts UML produits durant le sprint, depuis le dia-
+gramme de cas d'utilisation jusqu'au diagramme d'activité du workow WF-03. Pour
+chaque artefact, le texte descriptif précède la gure correspondante an de faciliter la
+compréhension.
+6.3.1
+Diagramme de cas d'utilisation
+L'analyse globale d'une cible décompose en six sous-cas tous obligatoirement exécu-
+tés (include) : quatre interrogations de sources de threat intelligence (VirusTotal,
+URLScan, ThreatFox, AbuseIPDB), une corrélation avec les CVE, et le calcul nal du
+score multi-axes consolidé.
+Figure 6.1 : Sprint 4  Diagramme de cas d'utilisation
+6.3.2
+Diagrammes de séquence
+Les diagrammes de séquence ci-dessous illustrent les principales interactions chro-
+nologiques entre les composants du système durant l'exécution du sprint.
+ISIMa
+Page 84
+
+
+===== PAGE 85 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+6.3.2.1
+Interroger VirusTotal
+Le n÷ud VT interroge l'API VirusTotal qui consolide les verdicts de plus de soixante
+moteurs antivirus. Le compteur malicious alimente directement le score Compromise
+du Scoring Engine, et déclenche l'override CRITICAL s'il est strictement positif.
+Figure 6.2 : Sprint 4  Diagramme de séquence  Interroger VirusTotal 
+6.3.2.2
+Calculer le score multi-axes
+Le Scoring Engine calcule trois scores élémentaires en interne (Leak, Compromise,
+Vuln) via trois appels récursifs (auto-appels), puis applique les règles d'override pour
+déterminer le niveau de risque nal selon la formule pondérée 0,30 × L + 0,35 × C +
+0,35 × V .
+ISIMa
+Page 85
+
+
+===== PAGE 86 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+Figure 6.3 : Sprint 4  Diagramme de séquence  Calculer le score multi-axes 
+6.3.2.3
+Appliquer les règles d'override
+Ce diagramme utilise le fragment combiné alt pour matérialiser la cascade de
+règles d'override. Les trois premières branches forcent CRITICAL en cas de signaux
+forts (VirusTotal, ThreatFox, secrets > 1000). En l'absence de ces signaux, le niveau
+est déterminé par les seuils numériques classiques.
+ISIMa
+Page 86
+
+
+===== PAGE 87 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+Figure 6.4 : Sprint 4  Diagramme de séquence  Appliquer les règles d'override 
+6.3.3
+Diagramme de classes
+Trois sources de threat intelligence (VirusTotalSource, ThreatFoxSource, AbuseIPDBSource)
+héritent de ThreatIntelSource. Le ScoringEngine utilise (dépendance uses) ces
+sources sans les posséder, mais contient (composition, ♦) ses propres règles d'override
+dont le cycle de vie lui est strictement lié.
+ISIMa
+Page 87
+
+
+===== PAGE 88 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+Figure 6.5 : Sprint 4  Diagramme de classe
+6.3.4
+Diagramme d'activité du workow WF-03
+Le WF-03 combine fork-join (interrogations parallèles des sources TI), calculs sé-
+quentiels (corrélation CVE puis trois scores élémentaires), et cascade de décisions (over-
+ride CRITICAL prioritaire, sinon classement par seuils numériques). Tous les chemins
+convergent vers le renvoi du niveau nal.
+ISIMa
+Page 88
+
+
+===== PAGE 89 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+Figure 6.6 : Diagramme d'activité du WF-03 (Analyse et Scoring)
+6.4
+WF-03 : Workow d'Analyse et de Détection
+6.4.1
+Introduction
+Ce chapitre décrit en détail le troisième workow du pipeline de CyberScope Pro :
+WF-03  Analyse et Détection. Ce workow constitue le c÷ur analytique de la
+solution. Il reçoit en entrée les datasets produits par WF-01 (collecte passive) et WF-
+02 (collecte active), interroge plusieurs sources de threat intelligence pour qualier la
+dangerosité du domaine, puis applique un Scoring Engine multi-axes qui calcule un
+score de risque consolidé. Ce score, complété par des règles d'override métier, détermine
+le niveau de risque nal attribué à la cible (LOW, MEDIUM, HIGH ou CRITICAL).
+ISIMa
+Page 89
+
+
+===== PAGE 90 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+Table 6.2 : Caractéristiques générales du workow WF-03
+Caractéristique
+Valeur
+Identiant interne
+WF-03 Analysis & Detection
+Nombre de n÷uds
+16
+Mode d'exécution
+Mixte (parallèle pour les sources, séquentiel
+pour le scoring)
+Durée moyenne
+Environ 30 secondes
+Webhook d'entrée
+POST /webhook/cyberscope-wf03
+Sources de threat intelligence
+5 (VirusTotal, URLScan, ThreatFox,
+AbuseIPDB, NVD/CVE)
+Sortie principale
+Niveau de risque + scores
+Leak/Compromise/Vuln + détections
+6.4.2
+Vue d'ensemble du workow WF-03
+Figure 6.7 : Résultat du workow WF-03 dans l'interface n8n
+6.4.3
+Description détaillée des n÷uds du WF-03
+6.4.3.1
+Webhook Entry  Réception du dataset agrégé
+Ce n÷ud reçoit en entrée le dataset consolidé issu de la fusion des sorties de WF-01
+et WF-02. Il extrait les indicateurs nécessaires aux interrogations de threat intelligence
+(domaine, IPs, sous-domaines) avant de propager l'exécution vers les n÷uds suivants.
+6.4.3.2
+VirusTotal  Réputation antivirus
+VirusTotal est l'agrégateur de scanners antivirus le plus utilisé au monde. Il consolide
+les verdicts de plus de soixante moteurs (Kaspersky, ESET, Microsoft, etc.) pour four-
+ISIMa
+Page 90
+
+
+===== PAGE 91 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+Table 6.3 : N÷ud VirusTotal du WF-03
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+API VirusTotal v3 (Google / Chronicle)
+Endpoint
+virustotal.com/api/v3/domains/<domain> [8]
+Authentication
+Clé API (variable VIRUSTOTAL_API_KEY)
+Rôle
+Vérication de la réputation antivirus du domaine
+Données retournées
+Compteurs malicious, suspicious, harmless, catégories
+nir un score de consensus sur la dangerosité d'un domaine. Le compteur malicious
+(nombre d'antivirus signalant le domaine comme malveillant) constitue l'un des indica-
+teurs les plus déterminants du Scoring Engine : un seul antivirus signalant la cible sut
+à déclencher l'override CRITICAL. Lors des tests, lufix.to a obtenu 10 détections
+malicious.
+6.4.3.3
+URLScan.io  Comptage de scans publics
+Table 6.4 : N÷ud URLScan.io du WF-03
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+API URLScan.io [15]
+Endpoint
+urlscan.io/api/v1/search/
+Rôle
+Comptage des mentions et scans publics du domaine
+Données retournées
+Nombre total de scans, dates des scans récents
+URLScan.io archive et indexe publiquement chaque scan d'URL eectué sur sa pla-
+teforme. Le nombre cumulé de scans constitue un indicateur de visibilité du do-
+maine dans la communauté de la cybersécurité. Un nombre élevé peut traduire soit
+une popularité légitime (cas de google.com avec 10 000+ mentions), soit un domaine
+fréquemment investigué pour activité suspecte.
+6.4.3.4
+ThreatFox abuse.ch  Indicateurs de compromission
+Table 6.5 : N÷ud ThreatFox du WF-03
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+API ThreatFox de abuse.ch [9]
+Endpoint
+threatfox-api.abuse.ch/api/v1/
+Rôle
+Récupération d'IoC associés à des familles de malwares
+Données retournées
+Liste d'IoC : domaines, IPs, hashes liés à des campagnes connues
+ISIMa
+Page 91
+
+
+===== PAGE 92 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+ThreatFox est un service communautaire de partage d'indicateurs de compro-
+mission (IoC) associés à des campagnes de malware actives. La présence du domaine
+cible (ou d'une de ses IPs) dans la base ThreatFox constitue un signal très fort : elle
+indique une participation avérée à des activités malveillantes documentées. Comme
+pour VirusTotal, un seul IoC sut à déclencher l'override CRITICAL.
+6.4.3.5
+AbuseIPDB  Réputation IP
+Table 6.6 : N÷ud AbuseIPDB du WF-03
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+API AbuseIPDB v2 [10]
+Endpoint
+api.abuseipdb.com/api/v2/check
+Authentication
+Clé API
+Rôle
+Évaluation de la réputation des adresses IP via signalements
+communautaires
+Données retournées
+Score de conance d'abus (0100), nombre de rapports, catégories
+AbuseIPDB centralise les signalements d'adresses IP malveillantes eectués par des
+administrateurs système du monde entier (tentatives de brute force, spam, scans mal-
+veillants, etc.). Pour chaque IP interrogée, le service renvoie un Abuse Condence Score
+compris entre 0 et 100, ainsi que le nombre total de signalements et les catégories d'abus
+rapportées. Un score supérieur à 50 contribue signicativement au score de Compro-
+mise.
+6.4.3.6
+CVE Database  Corrélation avec les vulnérabilités
+Table 6.7 : N÷ud CVE Database du WF-03
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+National Vulnerability Database (NVD) du NIST
+Endpoint
+services.nvd.nist.gov/rest/json/cves
+Rôle
+Recherche de CVE associées aux services et versions identiés par Nmap
+Données retournées
+Liste de CVE : identiant, score CVSS, description, statut
+La National Vulnerability Database est la base de référence mondiale pour les CVE
+(Common Vulnerabilities and Exposures). Ce n÷ud croise les versions de services dé-
+tectées par Nmap dans le WF-02 (par exemple  Apache 2.4.41 ) avec les CVE réfé-
+rencées pour ces versions. Chaque CVE est accompagnée de son score CVSS [16], qui
+en quantie la gravité.
+ISIMa
+Page 92
+
+
+===== PAGE 93 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+6.4.3.7
+Scoring Engine  algorithme central
+Le n÷ud Scoring Engine constitue le c÷ur analytique de CyberScope Pro. Im-
+plémenté en JavaScript dans un n÷ud Code de n8n, il calcule trois scores élémentaires
+puis un score global pondéré, et applique enn les règles d'override métier qui déter-
+minent le niveau de risque nal.
+Calcul des trois scores élémentaires
+Trois scores élémentaires sont calculés indé-
+pendamment.
+Score de fuite (Leak)
+Il agrège les indicateurs liés à la divulgation publique d'in-
+formations sensibles : présence d'e-mails professionnels Hunter.io, références de code
+GitHub, et secrets potentiellement exposés. Ce score traduit la  découverte d'identité 
+eectuée par un attaquant en phase de reconnaissance.
+Score de compromission (Compromise)
+Il reète les signaux forts de menace
+active : ags VirusTotal, IoC ThreatFox, et score d'abus AbuseIPDB. Ce score tra-
+duit la probabilité que le domaine participe ou soit lié à des activités malveillantes
+documentées.
+Score de vulnérabilité (Vuln)
+Il traduit l'étendue de la surface d'attaque exploi-
+table : nombre de sous-domaines découverts, CVE associées aux services détectés, et
+volume de fuites de code étendues. Ce score quantie le  potentiel d'exploitation  de
+la cible.
+Formule de pondération du score global
+Le score global est calculé selon la
+pondération suivante :
+Scoreglobal = 0,30 × Leak + 0,35 × Compromise + 0,35 × Vuln
+(6.1)
+Cette pondération accorde une importance équivalente aux deux axes les plus ac-
+tionnables (compromission et vulnérabilité), tandis que les fuites  souvent moins
+immédiatement exploitables  pèsent légèrement moins.
+Règles d'override CRITICAL
+Le Scoring Engine applique ensuite quatre règles
+successives pour déterminer le niveau de risque nal, dont une règle d'override priori-
+taire qui force le niveau CRITICAL en présence de signaux forts :
+ISIMa
+Page 93
+
+
+===== PAGE 94 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+ Override prioritaire : si vt_malicious > 0 ou threatfox_iocs > 0 ou github_secrets >
+niveau forcé à CRITICAL ;
+ Sinon, si Scoreglobal ≥75 : CRITICAL ;
+ Sinon, si Scoreglobal ≥50 : HIGH ;
+ Sinon, si Scoreglobal ≥25 : MEDIUM ;
+ Sinon : LOW.
+Cet override permet de capturer les cas où un score arithmétique modéré masque
+une menace réelle. Par exemple, le domaine lufix.to ache un score arithmétique
+de seulement 25/100 (peu de surface, peu de fuites) mais est correctement reclassé en
+CRITICAL grâce aux 10 détections VirusTotal.
+6.4.3.8
+Webhook Response  Renvoi des résultats analytiques
+Ce n÷ud nal renvoie à l'orchestrateur appelant le résultat consolidé du WF-03 :
+niveau de risque, scores élémentaires, détections par source, et liste des règles d'override
+déclenchées.
+6.4.4
+Synthèse des n÷uds du WF-03
+Table 6.8 : Synthèse des principaux n÷uds du WF-03
+N÷ud
+Type
+Finalité
+Webhook Entry
+Webhook
+Réception du dataset consolidé
+VirusTotal
+HTTP
+Vérication de réputation antivirus
+URLScan.io
+HTTP
+Comptage des mentions et scans publics
+ThreatFox abuse.ch
+HTTP
+Récupération des IoC
+AbuseIPDB
+HTTP
+Évaluation de la réputation IP
+CVE Database
+HTTP
+Corrélation avec les vulnérabilités connues
+Scoring Engine
+Code (JS)
+Calcul des trois scores et application des règles
+Webhook Response
+Respond
+Renvoi du niveau de risque et des détections
+6.4.5
+Conclusion
+Ce chapitre a détaillé l'ensemble des n÷uds composant le workow WF-03 dédié
+à l'analyse et à la détection. Cette troisième étape du pipeline interroge cinq sources
+de threat intelligence (VirusTotal, URLScan.io, ThreatFox, AbuseIPDB, NVD/CVE)
+puis applique un Scoring Engine multi-axes qui calcule trois scores élémentaires (Leak,
+Compromise, Vuln) avant de produire un score global pondéré. Les règles d'override
+ISIMa
+Page 94
+
+
+===== PAGE 95 =====
+
+CHAPITRE 6. SPRINT 4 : THREAT INTELLIGENCE ET SCORING
+ISIMa
+permettent de garantir qu'aucun signal critique ne soit masqué par un score arithmé-
+tique modéré. Le chapitre suivant détaillera le workow WF-04 dédié à la diusion du
+rapport nal.
+ISIMa
+Page 95
+
+
+===== PAGE 96 =====
+
+7
+Chapitre
+REPORTING ET
+ORCHESTRATEUR
+Sommaire
+Introduction du chapitre . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+97
+7.1
+Objectif du Sprint 5
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+97
+7.2
+Backlog du Sprint 5 . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+98
+7.3
+Conception et modélisation du Sprint 5 . . . . . . . . . . . . . . . . . .
+98
+7.3.1
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . .
+98
+7.3.2
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . . 100
+7.3.3
+Diagramme d'activité du workow WF-04
+. . . . . . . . . . . . 101
+7.4
+Orchestrateur du pipeline OSINT . . . . . . . . . . . . . . . . . . . . . 103
+7.4.1
+Diagramme de séquence de l'orchestrateur . . . . . . . . . . . . 103
+7.4.2
+Diagramme de classes de l'orchestrateur
+. . . . . . . . . . . . . 104
+7.4.3
+Capture de l'orchestrateur dans n8n . . . . . . . . . . . . . . . . 105
+7.4.4
+Diagramme d'activité de l'orchestrateur . . . . . . . . . . . . . . 105
+7.5
+WF-04 : Workow de Diusion du Rapport
+. . . . . . . . . . . . . . . 106
+7.5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 107
+7.5.2
+Vue d'ensemble du workow WF-04 . . . . . . . . . . . . . . . . 107
+7.5.3
+Description détaillée des n÷uds du WF-04 . . . . . . . . . . . . 108
+7.5.4
+Synthèse des n÷uds du WF-04
+. . . . . . . . . . . . . . . . . . 112
+7.5.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 112
+ISIMa
+Page 96
+
+
+===== PAGE 97 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+Introduction du chapitre
+Ce chapitre approfondit la modélisation conceptuelle du sprint en présentant les ar-
+tefacts UML détaillés : le Sprint Backlog associé, un diagramme de cas d'utilisa-
+tion circonscrit au sprint, les principaux diagrammes de séquence, le diagramme
+de classe de la portion du modèle ajoutée durant le sprint, ainsi que le diagramme
+d'activité du workow produit. Cette approche par sprint, alignée sur les bonnes
+pratiques Scrum, permet de visualiser la construction incrémentale du système et la
+traçabilité de chaque exigence à son implémentation.
+Les diagrammes respectent les conventions UML standards : les relations  in-
+clude  et  extend  sont représentées par des èches pointillées étiquetées ; les
+généralisations (entre acteurs ou entre classes) par des èches triangulaires pleines ; les
+multiplicités (1, 0..*, 1..*) sont indiquées aux extrémités des associations de classes ;
+et les compositions (♦) sont distinguées des agrégations (♢) selon la force du lien entre
+conteneur et contenu.
+7.1
+Objectif du Sprint 5
+Le Sprint 5 nalise le projet en livrant le workow WF-04 (génération du rapport
+HTML et diusion par e-mail Gmail) et l'application web Flask multi-rôles avec
+authentication, gestion des projets, scan asynchrone et consultation des rapports.
+ISIMa
+Page 97
+
+
+===== PAGE 98 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+7.2
+Backlog du Sprint 5
+Table 7.1 : Backlog du Sprint 5
+ID
+User Story
+Priorité Pts
+US-
+18
+Recevoir un rapport HTML enrichi par e-mail.
+Haute
+5
+US-
+19
+Gérer les comptes utilisateurs (CRUD).
+Haute
+5
+US-
+20
+S'authentier sur l'application web.
+Haute
+3
+US-
+21
+Créer des projets et y assigner des clients.
+Haute
+5
+US-
+22
+Lancer un scan sur ses domaines autorisés.
+Haute
+5
+US-
+23
+Consulter l'historique de mes scans.
+Moyenne 3
+US-
+24
+Scan asynchrone (non-bloquant).
+Haute
+8
+US-
+25
+Alertes Telegram en cas de niveau CRITICAL.
+Faible
+3
+US-
+33
+Intégrer un AI Agent (Google Gemini 2.5 Flash) pour vérier la
+véracité des données avant diusion.
+Haute
+8
+7.3
+Conception et modélisation du Sprint 5
+Cette section présente les artefacts UML produits durant le sprint, depuis le dia-
+gramme de cas d'utilisation jusqu'au diagramme d'activité du workow WF-04. Pour
+chaque artefact, le texte descriptif précède la gure correspondante an de faciliter la
+compréhension.
+7.3.1
+Diagrammes de séquence
+Les diagrammes de séquence ci-dessous illustrent les principales interactions chro-
+nologiques entre les composants du système durant l'exécution du sprint.
+7.3.1.1
+Envoyer le rapport par e-mail
+Le n÷ud HTMLGenerator construit le rapport HTML auto-portant (CSS inliné) à
+partir du dataset consolidé, puis le n÷ud Gmail invoque l'API OAuth2 pour expédier
+ISIMa
+Page 98
+
+
+===== PAGE 99 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+l'e-mail au destinataire conguré dans le projet.
+Figure 7.1 : Sprint 5  Diagramme de séquence  Envoyer le rapport par e-mail 
+7.3.1.2
+Vérication IA par AI Agent (Gemini)
+Ce diagramme illustre l'intervention de l'AI Agent dans le pipeline de diusion.
+Une fois le rapport HTML généré, le n÷ud AIAgent invoque l'API Gemini trois fois suc-
+cessives correspondant aux trois phases de validation : vérication de cohérence interne,
+croisement des sources, et détection d'anomalies. Le dataset retourné par l'AIAgent ne
+contient que les données identiées comme correctes, qui sont ensuite transmises
+simultanément à Gmail (pour le rapport e-mail) et à l'application Flask (pour mise à
+jour de la base de données).
+ISIMa
+Page 99
+
+
+===== PAGE 100 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+Figure 7.2 : Sprint 5  Diagramme de séquence  Vérication IA par AI Agent 
+7.3.2
+Diagramme de classes
+Ce diagramme distingue rigoureusement agrégation et composition :
+ User ♢ Project : agrégation (losange vide) car un projet peut théoriquement
+exister sans son créateur (transfert de propriété possible) ;
+ Project ♦ Domain : composition (losange plein) car un domaine n'a aucun
+sens hors d'un projet et est supprimé en cascade.
+Les multiplicités précisent les cardinalités : un utilisateur peut créer 0 à plusieurs pro-
+jets, un projet contient 1 à plusieurs domaines. La classe AIAgent intervient dans la
+chaîne de traitement entre HTMLGenerator et les sorties (GmailSender et FlaskCallback)
+pour réaliser la vérication IA des données. Elle dispose de trois méthodes spécialisées
+correspondant aux trois phases de validation (cohérence, croisement, anomalies) et
+transmet le dataset épuré simultanément aux deux canaux de diusion.
+ISIMa
+Page 100
+
+
+===== PAGE 101 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+Figure 7.3 : Sprint 5  Diagramme de classe
+7.3.3
+Diagramme d'activité du workow WF-04
+Le WF-04 clôt le pipeline en générant le rapport HTML enrichi puis en l'envoyant
+par Gmail OAuth2 et à l'application Flask. L'intégration d'un AI Agent basé sur
+Google Gemini 2.5 Flash constitue l'innovation principale de ce workow. Cet
+agent IA réalise trois phases successives de validation (cohérence interne, croisement
+des sources, détection d'anomalies) et ltre le dataset pour ne conserver que les don-
+nées vériées comme correctes. Le système intègre également un mécanisme de retry
+automatique (trois tentatives espacées de cinq secondes) et un fallback transparent
+qui transmet les données originales avec un avertissement explicite si l'API Gemini
+est temporairement indisponible. Cette architecture résiliente garantit que le pipeline
+ne s'interrompt jamais, même en cas de défaillance externe. Trois points de décision
+contrôlent le ux : la susance des données après ltrage, le succès de l'envoi e-mail,
+et le niveau de risque déclenchant ou non une notication Telegram complémentaire.
+ISIMa
+Page 101
+
+
+===== PAGE 102 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+Figure 7.4 : Diagramme d'activité du WF-04 (Diusion avec AI Agent)
+ISIMa
+Page 102
+
+
+===== PAGE 103 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+7.4
+Orchestrateur du pipeline OSINT
+L'orchestrateur constitue le chef d'orchestre du pipeline OSINT. Déployé dans n8n,
+il reçoit la demande de scan envoyée par l'application Flask sous la forme d'un webhook
+contenant le domaine cible, l'identiant du projet et l'URL de rappel (callback_url).
+Il répond immédiatement an d'éviter tout dépassement de délai, puis exécute séquen-
+tiellement les quatre workows (WF-01 à WF-04). À l'issue du pipeline, il renvoie
+l'ensemble des résultats à Flask via un appel de rappel (callback).
+Le fonctionnement asynchrone est essentiel : un scan complet dure de trois à cinq
+minutes. Une exécution synchrone bloquerait l'interface et provoquerait une expira-
+tion de la connexion. L'orchestrateur découple donc le déclenchement (immédiat) du
+traitement (en arrière-plan).
+7.4.1
+Diagramme de séquence de l'orchestrateur
+Le diagramme de la gure 7.5 illustre le déroulement complet : depuis le webhook
+envoyé par Flask jusqu'au callback nal, en passant par l'exécution des quatre workows
+et la diusion du rapport.
+ISIMa
+Page 103
+
+
+===== PAGE 104 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+Figure 7.5 : Orchestrateur & WF-04  Diagramme de séquence
+7.4.2
+Diagramme de classes de l'orchestrateur
+Le modèle objet de la gure 7.6 fait apparaître l'orchestrateur, les workows, le
+moteur de scoring, l'agent d'intelligence articielle et le diuseur.
+ISIMa
+Page 104
+
+
+===== PAGE 105 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+Figure 7.6 : Orchestrateur & WF-04  Diagramme de classes
+7.4.3
+Capture de l'orchestrateur dans n8n
+Figure 7.7 : Orchestrateur V3 (asynchrone) dans l'interface n8n
+7.4.4
+Diagramme d'activité de l'orchestrateur
+Le diagramme d'activité ci-dessous illustre le ux d'exécution complet de l'orches-
+trateur. Depuis la réception du webhook Flask jusqu'au callback nal, l'orchestrateur
+répond immédiatement (mode asynchrone), exécute séquentiellement les quatre work-
+ISIMa
+Page 105
+
+
+===== PAGE 106 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+ows (WF-01 à WF-04), consolide le dataset complet, puis renvoie le résultat à Flask
+et met à jour le statut du domaine en base de données.
+Figure 7.8 : Orchestrateur  Diagramme d'activité du pipeline OSINT
+7.5
+WF-04 : Workow de Diusion du Rapport
+ISIMa
+Page 106
+
+
+===== PAGE 107 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+7.5.1
+Introduction
+Ce chapitre décrit le quatrième et dernier workow du pipeline de CyberScope
+Pro : WF-04  Diusion du Rapport. Une fois la collecte eectuée par WF-
+01 et WF-02, et l'analyse réalisée par WF-03, il reste à matérialiser le résultat
+sous une forme exploitable par l'utilisateur nal. C'est précisément le rôle de WF-04 :
+générer un rapport HTML enrichi (thème sombre cybersécurité avec badges, tableaux
+et barres de progression) puis le diuser automatiquement par e-mail Gmail OAuth2 et,
+optionnellement, par notication Telegram. Bien que court (cinq n÷uds seulement), ce
+workow clôt opérationnellement le pipeline et délivre la valeur métier au destinataire.
+7.5.2
+Vue d'ensemble du workow WF-04
+Table 7.2 : Caractéristiques générales du workow WF-04
+Caractéristique
+Valeur
+Identiant interne
+WF-04 Reporting & Alerts
+Nombre de n÷uds
+6
+Mode d'exécution
+Séquentiel
+Durée moyenne
+Environ 8 secondes (dont 3 sec pour l'AI Agent)
+Webhook d'entrée
+POST /webhook/cyberscope-wf04
+Format du rapport
+HTML enrichi (thème sombre, Bootstrap-like)
+Canaux de diusion
+Gmail (obligatoire) + Telegram (optionnel)
+Modèle IA
+Google Gemini 2.5 Flash
+Figure 7.9 : Résultat du workow WF-04 dans l'interface n8n
+ISIMa
+Page 107
+
+
+===== PAGE 108 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+7.5.3
+Description détaillée des n÷uds du WF-04
+7.5.3.1
+Webhook Entry  Réception du résultat consolidé
+Ce n÷ud reçoit en entrée le résultat consolidé issu des trois workows précédents :
+niveau de risque, scores élémentaires, détections par source de threat intelligence et
+données contextuelles (e-mails Hunter, sous-domaines, sortie Nmap). Il transmet l'en-
+semble au générateur HTML.
+7.5.3.2
+HTML Generator  Génération du rapport
+Table 7.3 : N÷ud HTML Generator du WF-04
+Attribut
+Valeur
+Type
+Code (JavaScript)
+Rôle
+Génération du rapport HTML enrichi à partir du dataset consolidé
+Sortie
+Chaîne HTML auto-portante (CSS inline)
+Sections principales
+En-tête avec badge de risque, tableau de bord, sections détaillées par
+source, signature
+Ce n÷ud implémente la logique de templating HTML en JavaScript pur. Le rapport
+généré présente une structure visuelle hiérarchisée avec un en-tête contenant un badge
+de risque coloré (rouge pour CRITICAL, orange pour HIGH, jaune pour MEDIUM,
+vert pour LOW), un tableau de bord de quatre cartes statistiques principales (score
+global, e-mails identiés, sous-domaines découverts, secrets GitHub détectés), puis des
+sections détaillées pour chaque source de données.
+L'ensemble du CSS est inliné directement dans le HTML an de garantir un rendu
+dèle dans tous les clients de messagerie (Gmail, Outlook, Apple Mail, etc.) qui dé-
+pouillent fréquemment les feuilles de style externes pour des raisons de sécurité.
+ISIMa
+Page 108
+
+
+===== PAGE 109 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+7.5.3.3
+AI Agent  Vérication intelligente par Gemini
+Table 7.4 : N÷ud AI Agent du WF-04
+Attribut
+Valeur
+Type
+HTTP Request (API Google Gemini)
+Modèle
+Gemini 2.5 Flash (gemini-2.5-flash)
+Endpoint
+https://generativelanguage.googleapis.com/v1beta/models/
+gemini-2.5-flash:generateContent
+Authentication
+Clé API via header x-goog-api-key
+Conguration
+thinkingBudget=0, maxOutputTokens=16384
+Résilience
+Retry automatique (3 tentatives, 5s) + fallback transparent
+Mode
+Validation et ltrage avant diusion
+Rôle
+Vérication de véracité et cohérence des données
+L'AI Agent constitue l'innovation principale du workow WF-04. Inséré entre la
+génération du rapport brut et son envoi par e-mail, ce n÷ud invoque l'API de Google
+Gemini pour soumettre l'ensemble du dataset consolidé (résultats des trois workows
+précédents) à une vérication approfondie par intelligence articielle. Le modèle Ge-
+mini 2.5 Flash a été retenu pour quatre raisons décisives : sa gratuité (mille cinq
+cents requêtes journalières incluses), sa rapidité (une à trois secondes par validation),
+son support natif du JSON structuré via le paramètre responseMimeType, et sa
+disponibilité depuis la Tunisie sans nécessité de VPN. Plusieurs ajustements tech-
+niques ns ont été nécessaires pour optimiser l'intégration : la désactivation du mode
+de réexion interne (thinkingBudget=0) qui consommait inutilement environ quatre
+mille tokens, l'augmentation de maxOutputTokens à seize mille trois cent quatre-vingt-
+quatre an de garantir la complétude du JSON retourné, et l'injection dynamique de
+la date système courante dans le prompt pour éviter les faux positifs sur les dates
+récentes.
+La validation eectuée par l'AI Agent s'articule en trois étapes complémen-
+taires. Premièrement, une vérication de cohérence interne contrôle la plausibi-
+lité de chaque donnée prise isolément : le format de l'adresse IP est-il valide ? La date
+de création du domaine est-elle réaliste (ni dans le futur, ni avant 1985) ? Le pays géo-
+localisé correspond-il à l'ISP déclaré ? Les numéros de port sont-ils dans la plage valide
+(1 à 65535) ?
+Deuxièmement, une validation croisée des sources compare les informations rap-
+portées par les diérentes APIs pour détecter les incohérences. Si VirusTotal signale un
+domaine malveillant mais qu'aucune autre source (ThreatFox, URLScan, AbuseIPDB)
+ne conrme cette détection, le signal isolé est jugé suspect. Inversement, lorsque plu-
+ISIMa
+Page 109
+
+
+===== PAGE 110 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+sieurs sources convergent sur le même verdict, la donnée est marquée comme  conr-
+mée  avec un niveau de conance élevé.
+Troisièmement, une détection d'anomalies repère les valeurs aberrantes suscep-
+tibles d'indiquer un dysfonctionnement d'API ou une hallucination : compteurs impro-
+bables (par exemple un nombre de sous-domaines supérieur à dix mille), chaînes de ca-
+ractères contenant des marqueurs de fausses données ( test ,  lorem ,  example.com ,
+identiants par défaut), ou champs vides anormaux dans des structures qui devraient
+être renseignées.
+À l'issue de ces trois étapes, l'AI Agent produit un dataset ltré ne contenant que
+les données vériées comme correctes. Les données identiées comme erronées ou
+non ables sont exclues du rapport nal transmis à Gmail et à l'application Flask, ac-
+compagnées d'un journal de validation détaillant les motifs d'exclusion. Cette approche
+garantit que le destinataire ne reçoit que de l'information able et actionnable,
+conformément aux exigences professionnelles d'un audit de cybersécurité.
+Dés techniques rencontrés et solutions
+L'intégration de l'AI Agent a fait l'objet
+de plusieurs itérations de débogage qui illustrent les dés pratiques du prompt engi-
+neering en production. Le premier dé concernait la consommation excessive de
+tokens : le modèle Gemini 2.5 utilisait par défaut un mode de réexion interne (thin-
+king mode) qui consommait près de quatre mille tokens avant de générer la réponse,
+provoquant la troncature du JSON retourné. La désactivation explicite de ce mode via
+thinkingBudget=0 a libéré la totalité du budget de tokens pour la réponse utile.
+Le deuxième dé portait sur le contexte temporel du modèle : Gemini rejetait
+systématiquement les dates de 2025 et 2026 en les qualiant de  dates dans le futur ,
+en raison de la date de ses données d'entraînement. La solution a consisté à injecter
+dynamiquement la date système courante dans le prompt, en précisant explicitement
+la plage de validité ( toute date entre 1985 et aujourd'hui est valide ). Cette tech-
+nique de contextualisation temporelle est un patron de conception standard du prompt
+engineering moderne.
+Le troisième dé concernait la résilience aux pannes : l'API Gemini retournait
+parfois des erreurs HTTP 503 ( Service Unavailable ) lors des pics d'usage gratuit.
+Un mécanisme de retry automatique a été activé au niveau du n÷ud HTTP Request
+de n8n, avec trois tentatives espacées de cinq secondes. En cas d'échec total, un fallback
+transparent transmet les données originales accompagnées d'un avertissement explicite,
+garantissant que le pipeline ne s'interrompt jamais.
+Résultats expérimentaux
+L'AI Agent a été testé en conditions réelles sur le pi-
+peline complet appliqué au domaine google.com. Sur un total de cent un champs
+ISIMa
+Page 110
+
+
+===== PAGE 111 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+vériés (incluant adresses IP, dates, scores, sous-domaines, e-mails et indicateurs de
+menaces), Gemini a validé l'intégralité du dataset avec un score de conance global de
+100 % et zéro rejet. La latence moyenne mesurée pour la phase de validation IA était
+de l'ordre de trois secondes, ce qui représente un surcoût négligeable par rapport à la
+durée totale d'un scan (cinq à dix minutes). Ces résultats valident la pertinence du
+choix architectural et la robustesse du système.
+7.5.3.4
+Gmail Sender  Envoi par e-mail OAuth2
+Table 7.5 : N÷ud Gmail Sender du WF-04
+Attribut
+Valeur
+Type
+Gmail (n÷ud natif n8n)
+Authentication
+OAuth2 (client ID, client secret, refresh token)
+Destinataire
+Adresse e-mail congurée dans le projet
+Format
+HTML
+Rôle
+Envoi automatique du rapport au destinataire
+L'envoi par Gmail repose sur le protocole OAuth2 plutôt que sur l'authentication
+SMTP classique. Cette approche présente trois avantages majeurs : elle évite le stockage
+de mots de passe en clair, contourne les restrictions imposées par Google pour les
+applications de moindre conance, et fournit un refresh token permanent qui dispense
+de toute saisie manuelle d'identiants. Le rapport HTML est inséré dans le corps du
+message avec un objet automatiquement généré au format  [CyberScope] Rapport
+pour <domaine>  Niveau <RISK> .
+7.5.3.5
+Telegram Notier  Alerte optionnelle
+Table 7.6 : N÷ud Telegram Notier du WF-04
+Attribut
+Valeur
+Type
+HTTP Request
+Source
+API Bot Telegram
+Endpoint
+api.telegram.org/bot<TOKEN>/sendMessage
+Activation
+Optionnelle (déclenchée uniquement si niveau CRITICAL)
+Rôle
+Notication temps réel d'alerte critique
+Pour les niveaux de risque CRITICAL, un message de notication synthétique est
+également envoyé sur un canal Telegram dédié. Ce canal complémentaire permet une
+réaction rapide en mobilité, sans nécessiter l'ouverture du client de messagerie. Le
+message Telegram contient les indicateurs critiques (score, niveau, raison de l'override)
+et un lien vers le rapport complet hébergé dans l'application Flask.
+ISIMa
+Page 111
+
+
+===== PAGE 112 =====
+
+CHAPITRE 7. REPORTING ET ORCHESTRATEUR
+ISIMa
+7.5.3.6
+Webhook Response  Statut de diusion
+Ce n÷ud nal renvoie à l'orchestrateur le statut de diusion : succès de l'envoi e-
+mail, succès optionnel de la notication Telegram, ou erreur en cas de problème de
+transmission. Le script orchestrateur peut alors mettre à jour le statut du domaine en
+base de données.
+7.5.4
+Synthèse des n÷uds du WF-04
+Table 7.7 : Synthèse des n÷uds du WF-04
+N÷ud
+Type
+Finalité
+Webhook Entry
+Webhook
+Réception du résultat consolidé
+HTML Generator
+Code (JS)
+Génération du rapport HTML enrichi
+AI Agent
+HTTP
+Vérication IA (Gemini) et ltrage des données
+Gmail Sender
+Gmail
+Envoi par e-mail Gmail OAuth2
+Telegram Notier
+HTTP
+Alerte optionnelle vers canal Telegram
+Webhook Response
+Respond
+Renvoi du statut de diusion
+7.5.5
+Conclusion
+Ce chapitre a décrit l'ensemble des n÷uds composant le workow WF-04 dédié à
+la diusion du rapport. Cette quatrième et dernière étape du pipeline matérialise le
+résultat consolidé sous la forme d'un rapport HTML enrichi, vérié par un AI Agent
+basé sur Google Gemini 2.5 Flash qui ltre les données erronées ou incohérentes
+pour ne diuser que les informations ables, puis transmis automatiquement par e-mail
+Gmail OAuth2 et, en cas de niveau CRITICAL, par notication Telegram. L'introduc-
+tion d'un agent IA constitue la principale innovation de ce workow : elle garantit la
+qualité et la véracité de l'information délivrée au destinataire, un critère essentiel pour
+un livrable professionnel d'audit cybersécurité. La mise en ÷uvre a nécessité plusieurs
+itérations de prompt engineering pour optimiser la abilité et la performance du sys-
+tème, illustrant les dés pratiques d'intégration de l'intelligence articielle générative
+en environnement de production. Avec la n de WF-04, le pipeline n8n est entière-
+ment décrit. Le chapitre suivant présentera l'application web Flask qui sert d'interface
+utilisateur uniée à l'ensemble de cette infrastructure.
+ISIMa
+Page 112
+
+
+===== PAGE 113 =====
+
+8
+Chapitre
+APPLICATION WEB FLASK
+Sommaire
+8.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 114
+8.2
+Architecture multi-rôles (RBAC)
+. . . . . . . . . . . . . . . . . . . . . 114
+8.2.1
+Principe du contrôle d'accès basé sur les rôles
+. . . . . . . . . . 114
+8.2.2
+Diagramme de cas d'utilisation général . . . . . . . . . . . . . . 115
+8.2.3
+Les trois rôles dénis . . . . . . . . . . . . . . . . . . . . . . . . 115
+8.2.4
+Matrice de permissions . . . . . . . . . . . . . . . . . . . . . . . 116
+8.3
+Modèle de données . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 116
+8.3.1
+Entités principales
+. . . . . . . . . . . . . . . . . . . . . . . . . 116
+8.3.2
+Relations entre entités . . . . . . . . . . . . . . . . . . . . . . . 116
+8.3.3
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . . 117
+8.3.4
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . . 118
+8.4
+Mécanisme de scan asynchrone non-bloquant . . . . . . . . . . . . . . . 120
+8.4.1
+Problème posé par l'exécution synchrone . . . . . . . . . . . . . 121
+8.4.2
+Solution adoptée : thread démon avec timeout . . . . . . . . . . 121
+8.4.3
+Polling AJAX pour le suivi en temps réel . . . . . . . . . . . . . 121
+8.5
+Parser JSON robuste pour l'orchestrateur . . . . . . . . . . . . . . . . . 121
+8.5.1
+Problème posé par les regex non-gourmandes . . . . . . . . . . . 121
+8.5.2
+Solution : parser à profondeur d'accolades
+. . . . . . . . . . . . 122
+8.6
+Génération du rapport HTML enrichi . . . . . . . . . . . . . . . . . . . 122
+8.7
+Tests et résultats expérimentaux . . . . . . . . . . . . . . . . . . . . . . 123
+8.7.1
+Méthodologie de test . . . . . . . . . . . . . . . . . . . . . . . . 123
+8.7.2
+Cas 1  google.com (légitime grande exposition)
+. . . . . . . . 123
+ISIMa
+Page 113
+
+
+===== PAGE 114 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+8.8
+Interfaces de l'application par rôle . . . . . . . . . . . . . . . . . . . . . 124
+8.8.1
+Interface Administrateur . . . . . . . . . . . . . . . . . . . . . . 124
+8.8.2
+Interface Manager . . . . . . . . . . . . . . . . . . . . . . . . . . 125
+8.8.3
+Interface Client . . . . . . . . . . . . . . . . . . . . . . . . . . . 125
+8.8.4
+Vue du résultat de scan . . . . . . . . . . . . . . . . . . . . . . . 126
+8.9
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 128
+8.1
+Introduction
+Ce chapitre présente la couche applicative de CyberScope Pro : l'application
+web développée en Python avec le micro-framework Flask, qui sert d'interface uti-
+lisateur uniée à l'ensemble du pipeline n8n. Cette application répond à plusieurs
+besoins essentiels qui ne pouvaient être traités directement par n8n : gestion multi-rôles
+avec contrôle d'accès, persistance des projets et historique des scans, déclenchement
+asynchrone des analyses sans gel du navigateur, et présentation enrichie des résultats
+au-delà du simple e-mail. Le chapitre détaille successivement l'architecture multi-rôles
+RBAC, le modèle de données SQLAlchemy, le mécanisme de scan asynchrone non-
+bloquant, le parser JSON robuste développé pour exploiter la sortie de l'orchestrateur,
+la génération du rapport HTML enrichi, et enn les résultats expérimentaux obtenus
+sur trois domaines de test.
+8.2
+Architecture multi-rôles (RBAC)
+8.2.1
+Principe du contrôle d'accès basé sur les rôles
+Le contrôle d'accès basé sur les rôles (Role-Based Access Control, RBAC) est un
+modèle de sécurité dans lequel les permissions sont attribuées non pas directement à
+chaque utilisateur, mais à des rôles abstraits auxquels les utilisateurs sont rattachés.
+Ce modèle simplie considérablement la gestion des permissions à grande échelle et
+facilite la conformité aux principes de moindre privilège.
+ISIMa
+Page 114
+
+
+===== PAGE 115 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+8.2.2
+Diagramme de cas d'utilisation général
+Le diagramme ci-dessous présente une vue globale des interactions entre les trois
+acteurs (Admin, Manager, Client) et les fonctionnalités de l'application. Chaque cas
+d'utilisation inclut (include) l'authentication préalable, garantissant que toute ac-
+tion nécessite une session valide.
+Figure 8.1 : Application Web Flask  Diagramme de cas d'utilisation général
+8.2.3
+Les trois rôles dénis
+L'application Flask de CyberScope Pro dénit trois rôles aux responsabilités clai-
+rement séparées :
+ Admin : super-utilisateur disposant de tous les droits, notamment la gestion des
+comptes utilisateurs ;
+ Manager : responsable d'audit, créant des projets et les assignant à des clients ;
+ Client : destinataire nal, restreint aux scans et rapports sur ses propres do-
+ISIMa
+Page 115
+
+
+===== PAGE 116 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+maines.
+8.2.4
+Matrice de permissions
+Le tableau 8.1 synthétise les permissions associées à chaque rôle.
+Table 8.1 : Matrice de permissions RBAC de l'application
+Action
+Description
+Admin
+Manager
+Client
+Gérer les utilisateurs
+Créer
+/
+supprimer
+un
+compte
+✓
+✗
+✗
+Créer un projet
+Initier un projet de scan
+✓
+✓
+✗
+Assigner un projet
+Lier un projet à un client
+✓
+✓
+✗
+Gérer un domaine
+Ajouter ou supprimer un
+domaine cible
+✓
+✓
+✗
+Lancer un scan
+Déclencher le pipeline
+✓
+✓
+✓∗
+Consulter le rapport
+Voir le rapport HTML dé-
+taillé
+✓
+✓
+✓∗
+∗Le client est restreint aux domaines des projets qui lui sont assignés (ownership check).
+8.3
+Modèle de données
+8.3.1
+Entités principales
+Le modèle de données SQLAlchemy comprend trois entités principales : User, Project
+et Domain. Chacune dispose d'un identiant primaire numérique (Primary Key) et de
+clés étrangères (Foreign Key) pour matérialiser les associations.
+Table 8.2 : Champs de l'entité User
+Champ
+Type
+Description
+id
+Integer (PK)
+Identiant unique de l'utilisateur
+username
+String(80) unique
+Nom d'utilisateur de connexion
+password
+String(200)
+Empreinte du mot de passe (hachage Werkzeug)
+role
+String(20)
+Rôle parmi : admin, manager, client
+created_at
+DateTime
+Date de création du compte
+8.3.2
+Relations entre entités
+Trois associations structurent ce modèle :
+ User  Project (créateur) : un manager peut créer plusieurs projets ; chaque
+projet est créé par un seul utilisateur ;
+ISIMa
+Page 116
+
+
+===== PAGE 117 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+Table 8.3 : Champs de l'entité Project
+Champ
+Type
+Description
+id
+Integer (PK)
+Identiant unique du projet
+name
+String(120)
+Nom descriptif du projet
+created_by
+Integer (FK User)
+Référence vers l'utilisateur créateur (Manager)
+assigned_to
+Integer (FK User)
+Référence vers le client assigné
+created_at
+DateTime
+Date de création du projet
+Table 8.4 : Champs de l'entité Domain
+Champ
+Type
+Description
+id
+Integer (PK)
+Identiant unique du domaine
+url
+String(200)
+Domaine cible (ex. example.com)
+project_id
+Integer (FK Pro-
+ject)
+Référence vers le projet parent
+status
+String(20)
+Statut : pending, scanning, completed, failed
+last_scan
+DateTime
+Date du dernier scan eectué
+report_html
+Text
+JSON sérialisé du rapport complet
+ User  Project (assigné) : un projet peut être assigné à un client ; un client
+peut se voir assigner plusieurs projets ;
+ Project  Domain : un projet contient plusieurs domaines cibles ; chaque
+domaine appartient à un seul projet (cascade de suppression).
+8.3.3
+Diagramme de classes
+Le diagramme ci-dessous présente le modèle de données complet de l'application
+Flask, incluant les trois entités SQLAlchemy (User, Project, Domain), le service de
+scan asynchrone (ScanService, ThreadDemon), le parser JSON robuste et le générateur
+de rapport HTML enrichi. Les relations d'agrégation (♢) et de composition (♦) ainsi
+que les dépendances (uses) matérialisent les interactions entre ces composants.
+ISIMa
+Page 117
+
+
+===== PAGE 118 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+Figure 8.2 : Application Web Flask  Diagramme de classes
+8.3.4
+Diagrammes de séquence
+Les diagrammes de séquence ci-dessous illustrent les deux interactions chronolo-
+giques principales de l'application Flask : l'authentication et le déclenchement du
+scan asynchrone.
+8.3.4.1
+S'authentier
+L'utilisateur accède à la page de login, soumet ses identiants qui sont vériés par
+Flask-Login. Le mot de passe est haché côté serveur et comparé à l'empreinte stockée.
+Si la vérication réussit, la session est créée et l'utilisateur est redirigé vers son tableau
+de bord.
+ISIMa
+Page 118
+
+
+===== PAGE 119 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+Figure 8.3 : Application Flask  Diagramme de séquence  S'authentier 
+8.3.4.2
+Lancer un scan asynchrone
+Ce diagramme utilise deux fragments combinés : le fragment async matérialise le
+thread démon qui exécute le pipeline en arrière-plan ; le fragment loop matérialise
+le polling AJAX côté navigateur qui interroge le statut toutes les 5 secondes. Cette
+architecture évite tout gel du navigateur pendant les 5 à 10 minutes du scan.
+ISIMa
+Page 119
+
+
+===== PAGE 120 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+Figure 8.4 : Application Flask  Diagramme de séquence  Lancer un scan asynchrone 
+8.4
+Mécanisme de scan asynchrone non-bloquant
+ISIMa
+Page 120
+
+
+===== PAGE 121 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+8.4.1
+Problème posé par l'exécution synchrone
+L'exécution complète d'un scan dure typiquement entre cinq et dix minutes. Une
+exécution synchrone (où la requête HTTP attend la n du scan avant de répondre)
+poserait trois problèmes majeurs : le navigateur déclencherait un timeout après soixante
+à cent vingt secondes, l'utilisateur ne pourrait rien faire d'autre pendant l'attente, et un
+éventuel reverse-proxy en amont (Nginx, Cloudare) couperait également la connexion.
+8.4.2
+Solution adoptée : thread démon avec timeout
+La solution retenue consiste à lancer le scan dans un l d'exécution (thread)
+démon Python séparé. Lorsque l'utilisateur clique sur le bouton  Lancer le scan ,
+l'application Flask exécute la séquence suivante :
+1. Vérication des permissions RBAC du demandeur ;
+2. Mise à jour du statut du domaine en base de données (pending →scanning) ;
+3. Lancement d'un thread démon qui invoquera l'orchestrateur du pipeline complet ;
+4. Redirection immédiate de l'utilisateur vers le tableau de bord avec un message
+ash informatif.
+Le thread d'arrière-plan dispose d'un timeout de neuf cents secondes (15 minutes)
+au-delà duquel le statut bascule automatiquement à failed. À chaque étape, le statut
+est mis à jour en base, ce qui permet à un endpoint AJAX de retourner régulièrement
+l'état actualisé pour rafraîchir l'interface.
+8.4.3
+Polling AJAX pour le suivi en temps réel
+Une route AJAX /domain/status/<id> retourne le statut courant du domaine au
+format JSON. Le tableau de bord interroge cette route toutes les cinq secondes pour
+rafraîchir dynamiquement les indicateurs visuels (icône de chargement, badge de statut)
+sans recharger la page entière.
+8.5
+Parser JSON robuste pour l'orchestrateur
+8.5.1
+Problème posé par les regex non-gourmandes
+Le script orchestrateur run_cyberscope.sh produit une sortie textuelle contenant
+plusieurs blocs JSON séparés par du texte décoratif (titres, séparateurs, indicateurs de
+ISIMa
+Page 121
+
+
+===== PAGE 122 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+progression). Une approche initiale fondée sur une expression régulière non-gourmande
+s'est révélée défaillante en pratique. Le motif \{.*?\} s'arrêtait au premier crochet
+fermant rencontré, ce qui cassait sur tout JSON contenant des objets ou des tableaux
+imbriqués (par exemple la liste des e-mails Hunter.io qui contient elle-même des sous-
+objets).
+8.5.2
+Solution : parser à profondeur d'accolades
+La solution adoptée est un parser à profondeur d'accolades (balanced-braces
+parser). L'algorithme parcourt la chaîne caractère par caractère en maintenant un
+compteur de profondeur : il est incrémenté à chaque accolade ouvrante  {  et dé-
+crémenté à chaque accolade fermante  } . Un drapeau supplémentaire détecte si le
+caractère courant se trouve à l'intérieur d'une chaîne JSON entre guillemets, auquel
+cas les accolades doivent être ignorées (cas des accolades littérales dans les valeurs
+textuelles). Lorsque la profondeur revient à zéro, un bloc JSON complet vient d'être
+identié et il est ajouté à la liste des résultats.
+Cette approche garantit la robustesse face aux structures imbriquées arbi-
+trairement profondes et aux échappements de guillemets, tout en restant linéaire
+en temps d'exécution et triviale à expliquer.
+8.6
+Génération du rapport HTML enrichi
+Le rapport HTML produit par l'application Flask reprend la structure du rapport
+généré par n8n mais l'enrichit avec les données complètes du dataset (au lieu de
+simples résumés). Les principales sections achées comprennent :
+ En-tête avec badge de risque coloré (rouge, orange, jaune, vert) ;
+ Tableau de bord de quatre cartes statistiques (score, e-mails, sous-domaines,
+secrets GitHub) ;
+ Email Intelligence : liste exhaustive des e-mails Hunter.io avec conance, dé-
+partement, séniorité et lien LinkedIn ;
+ Subdomain Discovery : liste complète des sous-domaines avec leurs adresses
+IP ;
+ DNS Intelligence : cinq onglets (A, Dig, Reverse, MX, dnsx) avec la sortie
+complète ;
+ Nmap Scan : sortie complète délable avec coloration syntaxique légère ;
+ Risk Scores Breakdown : barres de progression colorées Leak / Compromise
+ISIMa
+Page 122
+
+
+===== PAGE 123 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+/ Vuln / Global ;
+ Security Detections : huit cartes (VirusTotal, Suspicious, ThreatFox, URLS-
+can, CVE, AbuseIPDB, GitHub Secrets, HIBP) ;
+ Raw Intelligence : JSON brut complet, exportable via bouton de copie.
+Figure 8.5 : Rapport HTML CyberScope reçu par e-mail  En-tête avec badge CRITI-
+CAL, score 71/100 et vérication IA Gemini 2.5 Flash
+8.7
+Tests et résultats expérimentaux
+8.7.1
+Méthodologie de test
+La validation expérimentale s'appuie sur le domaine google.com, domaine légitime
+à très grande surface d'exposition, choisi pour évaluer la capacité du Scoring Engine
+à traiter un prol de grande organisation. Le pipeline complet a été déclenché et les
+résultats stockés en base de données.
+8.7.2
+Cas 1  google.com (légitime grande exposition)
+Interprétation.
+Bien que google.com ne soit pas malveillant (zéro détection Vi-
+rusTotal), l'override github_secrets > 1000 est légitimement déclenché : la quantité
+massive de secrets potentiellement exposés sur le code public constitue en soi un risque
+opérationnel majeur. Cette détection illustre la pertinence des règles métier qui
+complètent le calcul arithmétique pur.
+ISIMa
+Page 123
+
+
+===== PAGE 124 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+Table 8.5 : Résultats de l'analyse google.com
+Métrique
+Valeur observée
+Niveau de risque
+CRITICAL
+Score global
+42 à 47 sur 100
+Détecteur d'override
+github_secrets > 1000 (3 096 détectés)
+Adresse IP
+142.250.80.78 (Mountain View, États-Unis)
+ISP / Registrar
+Google LLC / MarkMonitor Inc.
+E-mails Hunter.io
+10 cadres exécutifs avec prols LinkedIn
+Sous-domaines découverts
+51 (HackerTarget) + 1 (crt.sh) + Subnder + 1 (Amass)
+Records DNS
+21 enregistrements A, AAAA, MX, NS, TXT, SOA, CAA
+Scan Nmap
+80/tcp open http | 443/tcp open https
+VirusTotal
+0 malicious / 0 suspicious
+GitHub
+1 728 512 références, 3 096 secrets potentiels
+Statut diusion
+E-mail HTML envoyé avec succès
+8.8
+Interfaces de l'application par rôle
+Cette section présente les captures d'écran des trois interfaces de l'application Flask,
+correspondant aux trois rôles dénis dans la matrice RBAC, ainsi que la vue du rapport
+de résultat de scan.
+8.8.1
+Interface Administrateur
+L'interface Administrateur ore une vue globale du système : tableau de bord ré-
+capitulatif, gestion complète des utilisateurs (création, modication, suppression), et
+suivi de l'activité récente de l'ensemble des scans eectués sur la plateforme.
+Figure 8.6 : Interface Administrateur  CyberScope Pro
+ISIMa
+Page 124
+
+
+===== PAGE 125 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+8.8.2
+Interface Manager
+L'interface Manager permet la création et la gestion des projets d'audit, l'assigna-
+tion des projets aux clients, et la consultation synthétique des résultats de scan pour
+l'ensemble des domaines sous supervision.
+Figure 8.7 : Interface Manager  CyberScope Pro
+8.8.3
+Interface Client
+L'interface Client est restreinte aux projets qui lui sont assignés par un Manager.
+Le client peut consulter les domaines de ses projets, déclencher un scan sur ses propres
+domaines (contrôle ownership check), et accéder aux rapports correspondants.
+Figure 8.8 : Interface Client  CyberScope Pro
+ISIMa
+Page 125
+
+
+===== PAGE 126 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+8.8.4
+Vue du résultat de scan
+La page de résultat de scan présente le rapport complet généré par le pipeline Cy-
+berScope Pro : badge de niveau de risque, tableau de bord de quatre cartes statis-
+tiques, décomposition des scores par axe (Leak, Compromise, Vuln, Global) et synthèse
+des détections de sécurité par source.
+Figure 8.9 : Vue du rapport de scan (1/3)  Niveau de risque global et scores détaillés
+ISIMa
+Page 126
+
+
+===== PAGE 127 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+Figure 8.10 : Vue du rapport de scan (2/3)  OSINT passif WF-01 : emails, SSL Labs,
+GitHub
+ISIMa
+Page 127
+
+
+===== PAGE 128 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+Figure 8.11 : Vue du rapport de scan (3/3)  Reconnaissance active WF-02 : sous-
+domaines, DNS, ports
+8.9
+Conclusion
+Ce chapitre a présenté la couche applicative de CyberScope Pro : l'application
+web Flask qui sert d'interface utilisateur uniée à l'ensemble du pipeline n8n. L'archi-
+tecture multi-rôles RBAC, le modèle de données SQLAlchemy à trois entités, le scan
+asynchrone via thread démon, le parser JSON à profondeur d'accolades et la génération
+ISIMa
+Page 128
+
+
+===== PAGE 129 =====
+
+CHAPITRE 8. APPLICATION WEB FLASK
+ISIMa
+du rapport HTML enrichi constituent les contributions techniques principales. La vali-
+dation expérimentale sur trois domaines aux prols contrastés a conrmé la pertinence
+opérationnelle de la solution. Le chapitre suivant et dernier dressera le bilan général
+du projet et tracera ses perspectives d'évolution.
+ISIMa
+Page 129
+
+
+===== PAGE 130 =====
+
+9
+Chapitre
+CONCLUSION GÉNÉRALE ET
+PERSPECTIVES
+Sommaire
+9.1
+Bilan du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 130
+9.2
+Contributions originales
+. . . . . . . . . . . . . . . . . . . . . . . . . . 131
+9.3
+Dicultés rencontrées et leçons apprises
+. . . . . . . . . . . . . . . . . 132
+9.4
+Perspectives d'évolution
+. . . . . . . . . . . . . . . . . . . . . . . . . . 132
+9.4.1
+Perspectives à court terme (3 à 6 mois) . . . . . . . . . . . . . . 132
+9.4.2
+Perspectives à moyen terme (6 à 12 mois)
+. . . . . . . . . . . . 133
+9.4.3
+Perspectives à long terme (12 mois et plus) . . . . . . . . . . . . 133
+9.5
+Réexion nale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 133
+9.1
+Bilan du projet
+Le présent projet de n d'études a abouti à la conception, au développement et à la
+validation expérimentale d'une solution complète d'analyse cybersécurité de la surface
+d'exposition  baptisée CyberScope Pro. Cette solution répond à un besoin opéra-
+tionnel concret et croissant : permettre à une organisation de connaître et de maîtriser
+son exposition numérique face à des menaces toujours plus diverses et sophistiquées.
+CyberScope Pro se distingue des solutions existantes par son approche intégrée
+combinant deux dimensions complémentaires de la phase d'Information Gathering : la
+collecte passive (OSINT) et la collecte active (énumération réseau). L'orchestration via
+n8n élimine la nécessité d'interventions manuelles répétitives et permet une surveillance
+ISIMa
+Page 130
+
+
+===== PAGE 131 =====
+
+CHAPITRE 9. CONCLUSION GÉNÉRALE ET PERSPECTIVES
+ISIMa
+continue à coût marginal nul. Le Scoring Engine multi-axes, complété par des règles
+d'override métier, fournit une synthèse compréhensible y compris par un décideur non-
+technique.
+Sur le plan méthodologique, l'adoption rigoureuse du framework Scrum sur cinq
+sprints de deux semaines a permis une gestion de projet ecace, avec des livraisons
+incrémentales validées à chaque Sprint Review. Cette méthodologie a démontré sa per-
+tinence particulière dans un domaine aussi évolutif que la cybersécurité, où les sources,
+APIs et techniques se renouvellent en permanence.
+La validation expérimentale sur trois domaines aux prols contrastés  google.com
+(légitime à grande exposition), lufix.to (malveillant connu) et esprit.tn (institution
+académique)  a conrmé la capacité de la solution à discriminer correctement
+les types de risques. Notamment, le cas lufix.to (score arithmétique 25/100 mais 10
+détections VirusTotal) illustre l'importance opérationnelle des règles métier qui forcent
+le niveau CRITICAL en présence de signaux forts.
+9.2
+Contributions originales
+Au-delà de l'agrégation d'outils OSINT existants, le projet a produit plusieurs
+contributions techniques originales :
+ Image Docker n8n personnalisée basée sur Debian, intégrant la totalité
+des outils CLI de reconnaissance (Nmap, Subnder, Amass v4, dnsx, smbclient,
+snmpwalk, enum4linux), facilement réutilisable pour d'autres projets ;
+ Architecture en chaîne séquentielle pour la collecte active  décision contre-
+intuitive (le fan-out parallèle est plus naturel) mais nécessaire pour garantir la
+abilité d'exécution des outils CLI dans n8n ;
+ Parser JSON à profondeur d'accolades robuste aux structures imbriquées,
+palliant les limitations des approches naïves par expression régulière ;
+ Application Flask multi-rôles RBAC avec scan asynchrone non-bloquant
+via thread démon, modèle réutilisable pour toute application web déclenchant
+des tâches longues ;
+ Scoring Engine multi-axes avec règles d'override qui combine pondération
+arithmétique et détection de signaux critiques pour produire un niveau de risque
+opérationnellement pertinent.
+ISIMa
+Page 131
+
+
+===== PAGE 132 =====
+
+CHAPITRE 9. CONCLUSION GÉNÉRALE ET PERSPECTIVES
+ISIMa
+Table 9.1 : Synthèse des principales dicultés techniques et de leurs solutions
+Diculté
+Symptôme
+Solution
+Image n8n  Hardened Al-
+pine 
+Pas de gestionnaire de paquets
+Image Debian custom avec
+apt-get
+Bug d'expression n8n
+Erreurs sur URLs et commandes
+Réécriture en syntaxe
+d'expression complète
+Architecture WF-02 fan-
+out
+Sortie en 345 ms avec valeurs
+nulles
+Restructuration en chaîne
+séquentielle
+Parser JSON regex non-
+gourmande
+Échec sur tableaux imbriqués
+Parser à profondeur d'accolades
+9.3
+Dicultés rencontrées et leçons apprises
+Au-delà de ces obstacles techniques, le projet a permis de tirer plusieurs leçons
+méthodologiques importantes : (1) la valeur d'une approche itérative qui confronte
+rapidement les hypothèses techniques à la réalité d'exécution ; (2) l'importance de do-
+cumenter rigoureusement les choix architecturaux non-évidents (ainsi du choix séquen-
+tiel pour WF-02) ; (3) la nécessité d'enrichir systématiquement les calculs purement
+arithmétiques par des règles métier capturant l'expertise du domaine.
+9.4
+Perspectives d'évolution
+Plusieurs pistes d'évolution se dessinent, classées par horizon temporel.
+9.4.1
+Perspectives à court terme (3 à 6 mois)
+ Intégration de modèles d'intelligence articielle pour la classication auto-
+matique des fuites détectées (vrais positifs vs faux positifs sur les secrets GitHub
+notamment), en s'appuyant sur des modèles de langage spécialisés en sécurité ;
+ Persistance des historiques dans une base de données dédiée (PostgreSQL)
+an de visualiser l'évolution du score de risque dans le temps et de détecter les
+variations signicatives ;
+ Tableau de bord temps réel avec WebSocket pour le suivi des scans en cours
+sans rafraîchissement manuel ;
+ Internationalisation de l'interface (français, anglais, arabe) pour élargir la base
+d'utilisateurs.
+ISIMa
+Page 132
+
+
+===== PAGE 133 =====
+
+CHAPITRE 9. CONCLUSION GÉNÉRALE ET PERSPECTIVES
+ISIMa
+9.4.2
+Perspectives à moyen terme (6 à 12 mois)
+ Extension multi-tenant permettant la surveillance simultanée de plusieurs or-
+ganisations cibles avec isolation stricte des données ;
+ Notications proactives sur les changements signicatifs (nouveaux sous-domaines,
+certicats SSL nouvellement émis, nouveaux secrets détectés) via Slack, Microsoft
+Teams ou e-mail ;
+ Intégration de sources additionnelles : Shodan (sous abonnement), Censys,
+Have I Been Pwned API, sources de darkweb commerciales ;
+ Module de remédiation guidée proposant automatiquement des actions cor-
+rectives priorisées en fonction des risques identiés.
+9.4.3
+Perspectives à long terme (12 mois et plus)
+ Intégration avec des plateformes SIEM (Splunk, ELK, Graylog) via syslog
+ou API REST, transformant CyberScope Pro en source de threat intelligence
+pour les centres opérationnels de sécurité (SOC) ;
+ Cartographie graphique interactive des actifs et des relations (similaire à
+Maltego mais intégrée nativement) pour faciliter l'investigation par les analystes ;
+ Modèles prédictifs entraînés sur les historiques pour anticiper les variations de
+risque d'une organisation ;
+ Certication produit et passage à un modèle commercial (édition communau-
+taire et édition entreprise).
+9.5
+Réexion nale
+Au-delà des livrables techniques, ce projet a constitué une expérience formatrice
+particulièrement riche. L'apprentissage par essai et erreur des subtilités de n8n (syn-
+taxe d'expressions, contrainte de fan-out, gestion des images Docker), la conception
+itérative du Scoring Engine, et la confrontation aux limites des outils OSINT gratuits
+ont profondément ancré une compréhension pratique de la cybersécurité défensive mo-
+derne.
+La découverte fortuite, lors des tests, de vingt-neuf motifs de type secret sur le
+domaine esprit.tn souligne enn une réalité plus large : la maîtrise de la surface
+d'exposition n'est pas un problème résolu, même pour des organisations qui en ont
+conscience. Outils, méthodes et culture doivent évoluer de concert, et c'est précisément
+cette dynamique que CyberScope Pro contribue, modestement mais concrètement,
+ISIMa
+Page 133
+
+
+===== PAGE 134 =====
+
+CHAPITRE 9. CONCLUSION GÉNÉRALE ET PERSPECTIVES
+ISIMa
+à soutenir.
+Ce projet de n d'études constitue à la fois l'aboutissement d'un cursus universitaire
+de trois années et le point de départ d'un parcours professionnel dans la cybersécurité
+oensive. Les compétences techniques acquises (Docker, n8n, Flask, OSINT, scoring de
+risque) et les réexes méthodologiques développés (Scrum, documentation rigoureuse,
+validation expérimentale) constitueront un socle solide pour les dés professionnels à
+venir.
+ISIMa
+Page 134
+
+
+===== PAGE 135 =====
+
+BIBLIOGRAPHIE
+[1] OWASP Foundation, Attack surface management cheat sheet, 2024.
+[2] n8n GmbH, n8n documentation : Workow automation, 2024.
+[3] K. Schwaber and J. Sutherland, The Scrum guide, 2020.
+[4] M. Bazzell, Open Source Intelligence Techniques. IntelTechniques Media, 9 ed.,
+2023.
+[5] MITRE Corporation, MITRE ATT&CK : Reconnaissance tactic (TA0043),
+2024.
+[6] J. Matherly, Complete Guide to Shodan. Leanpub, 2017.
+[7] Z. Durumeric et al., A search engine backed by internet-wide scanning, in Pro-
+ceedings of ACM CCS, pp. 542553, 2015.
+[8] Google / Chronicle, VirusTotal API v3 documentation, 2024.
+[9] abuse.ch, ThreatFox : IOC database API, 2024.
+[10] AbuseIPDB, AbuseIPDB API documentation, 2024.
+[11] G. Lyon, Nmap Network Scanning. Nmap Project, 2009.
+[12] Hunter.io, Hunter.io API documentation, 2024.
+[13] Project Discovery, Subnder and dnsx : Fast passive subdomain enumeration,
+2024.
+[14] OWASP Amass Project, Amass v4 : In-depth attack surface mapping, 2024.
+[15] urlscan.io, urlscan.io API documentation, 2024.
+[16] FIRST, CVSS v3.1 specication document, 2019.
+ISIMa
+Page 135
+
+
+===== PAGE 136 =====

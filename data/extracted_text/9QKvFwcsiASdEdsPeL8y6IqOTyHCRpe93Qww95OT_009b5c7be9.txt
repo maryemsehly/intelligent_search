@@ -1,0 +1,4586 @@
+===== PAGE 1 =====
+
+ 
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de 
+Mahdia 
+ 
+MEMOIRE 
+ 
+N° d’ordre: MP-EXR-2-2025-
+012  
+Ministère de l’Enseignement Supérieur et 
+de la Recherche Scientifique  
+ 
+ 
+ 
+MEMOIRE  
+                                                 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+                                                 
+ Effectué à 
+ 
+Ooredoo Tunisie 
+ 
+ 
+En vue de l’obtention du diplôme de 
+ 
+ 
+ 
+Elaboré par : 
+ 
+BEN MASSEOUD HADIL 
+ 
+     
+Développement d’une plateforme centralisée de gestion des demandes 
+d’infrastructure avec approche Devops 
+ 
+ 
+ 
+Soutenu le :  13 décembre 2025  
+devant le  jury composé de : 
+ 
+ 
+Président 
+ : Ghannay Sana 
+Rapporteur 
+ : Ines Ben Hassine 
+Encadrant Académique 
+ : Bessem Zaabar 
+Encadrant Professionnel 
+: Fatma Bouzid 
+ 
+ 
+ 
+Année universitaire  2025-2026 
+
+
+===== PAGE 2 =====
+
+Dédicaces
+Isi Mahdiaw
+Page i
+
+
+===== PAGE 3 =====
+
+À mon père Khmais, qui a toujours su me guider, me soutenir et me montrer le bon chemin.
+Son amour, sa patience et ses sacrifices pour mon éducation sont inestimables. Je lui dois
+énormément et je lui suis profondément reconnaissant.
+À ma chère mère Khadija, lumière de mes jours et source de ma force. Merci pour ton
+affection infinie, tes prières et ton dévouement sans limite. Rien n’aurait été possible sans ton
+amour et ta présence réconfortante.
+À mes frères Bilel et Mohamed, ainsi qu’à leurs épouses, pour leur soutien moral, leurs
+encouragements et leurs précieux conseils tout au long de mon parcours.
+À ma petite nièce Basboussa, dont la présence apporte joie et douceur à notre famille.
+À mes amis, pour leur soutien constant, leurs encouragements et les moments partagés qui
+ont illuminé ces années d’étude.
+À vous tous,
+Je dédie ce travail.
+Hadil Ben Masseoud
+Isi Mahdia
+Page ii
+
+
+===== PAGE 4 =====
+
+Remerciements
+Je remercie Dieu le Tout-Puissant de m’avoir accordé la force, la patience et
+la détermination nécessaires pour mener à bien ce travail et surmonter les
+difficultés rencontrées.
+J’exprime ma profonde gratitude à M. Bassem Zaaber, mon encadrant
+académique, pour son accompagnement, ses orientations et la qualité de son
+suivi tout au long de ce projet. Mes remerciements s’adressent également à
+Mme Fatma Bouzid, mon encadrante au sein de l’entreprise Ooredoo, pour sa
+disponibilité, son soutien et ses précieux conseils durant la période du stage.
+Je tiens aussi à remercier les membres du jury : Mme Sana Ghanai,
+présidente, pour l’honneur qu’elle me fait en évaluant ce travail, ainsi que
+Mme Ines Ben Hssin, rapporteure, pour sa lecture attentive, ses remarques
+constructives et sa contribution à l’amélioration de ce mémoire.
+J’exprime également ma reconnaissance envers l’ensemble des enseignants de
+l’ISIMA, dont les efforts, le professionnalisme et l’engagement ont largement
+contribué à ma formation au cours de ces années d’études.
+Enfin, j’adresse mes sincères remerciements à ma famille pour son soutien
+inconditionnel, tant moral que matériel, et pour sa présence bienveillante qui
+m’a accompagné tout au long de mon parcours.
+Isi Mahdiaw
+Page iii
+
+
+===== PAGE 5 =====
+
+TABLE DES MATIÈRES
+LISTE DES FIGURES
+xii
+LISTE DES ABRÉVIATIONS
+xiii
+INTRODUCTION GÉNÉRALE
+xv
+1
+Présentation générale
+2
+1.1
+INTRODUCTION . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Présentation de l’organisme d’accueil . . . . . . . . . . . . . .
+3
+1.3
+Présentation du projet
+. . . . . . . . . . . . . . . . . . . . . .
+4
+1.3.1
+Cadre du Projet : . . . . . . . . . . . . . . . . . . . . .
+4
+1.3.2
+Problématique : . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.3
+Étude de l’existant :
+. . . . . . . . . . . . . . . . . . .
+6
+1.3.4
+Critique de l’existant : . . . . . . . . . . . . . . . . . .
+7
+1.3.5
+Solution proposée : . . . . . . . . . . . . . . . . . . . .
+7
+1.4
+Framework et méthodologie de conception . . . . . . . . . . . .
+8
+1.4.1
+Méthodologie de travail
+. . . . . . . . . . . . . . . . .
+8
+1.4.2
+Méthodologie Agile Scrum . . . . . . . . . . . . . . . .
+8
+1.4.3
+Pourquoi Scrum? . . . . . . . . . . . . . . . . . . . . .
+9
+1.4.4
+Outils utilisés pour la gestion de projet Scrum . . . . . .
+10
+1.4.5
+Principaux termes et rôles dans la méthodologie Scrum .
+11
+1.5
+Méthode de conception UML . . . . . . . . . . . . . . . . . . .
+12
+1.6
+CONCLUSION . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2
+ÉTAT DE L’ART
+14
+Isi Mahdiaw
+Page iv
+
+
+===== PAGE 6 =====
+
+TABLE DES MATIÈRES
+2.1
+INTRODUCTION . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.2
+Approche DevOps . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.2.1
+Origine du DevOps . . . . . . . . . . . . . . . . . . . .
+16
+2.2.2
+Présentation du DevOps . . . . . . . . . . . . . . . . .
+17
+2.2.3
+Pratiques DevOps
+. . . . . . . . . . . . . . . . . . . .
+18
+2.2.4
+Avantages de l’approche DevOps
+. . . . . . . . . . . .
+19
+2.3
+Approche DevSecOps . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.3.1
+Intégration de la sécurité . . . . . . . . . . . . . . . . .
+20
+2.3.2
+Cycle de vie DevSecOps . . . . . . . . . . . . . . . . .
+21
+2.3.3
+Les avantages de l’approche DevSecOps
+. . . . . . . .
+22
+2.4
+DevOps vs DevSecOps
+. . . . . . . . . . . . . . . . . . . . . .
+22
+2.5
+Virtualisation VS Conteneurisation . . . . . . . . . . . . . . . .
+23
+2.6
+Cloud Computing . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.6.1
+Présentation
+. . . . . . . . . . . . . . . . . . . . . . .
+24
+2.6.2
+Services du Cloud Computing . . . . . . . . . . . . . .
+24
+2.6.3
+Les types de cloud computing
+. . . . . . . . . . . . . .
+25
+2.6.4
+Avantages du cloud computing . . . . . . . . . . . . . .
+25
+2.7
+Combinaison DevOps et Cloud . . . . . . . . . . . . . . . . . .
+25
+2.8
+Infrastructure as Code (IaC) . . . . . . . . . . . . . . . . . . .
+25
+2.8.1
+Principes de l’IaC
+. . . . . . . . . . . . . . . . . . . .
+25
+2.8.2
+Avantages du IaC . . . . . . . . . . . . . . . . . . . . .
+26
+2.9
+Supervision et Observabilité
+. . . . . . . . . . . . . . . . . . .
+26
+2.10 Étude comparative des outils à utiliser . . . . . . . . . . . . . .
+26
+2.10.1 Outils d’Analyse du code . . . . . . . . . . . . . . . . .
+26
+2.10.2 Outils d’Intégration continue . . . . . . . . . . . . . . .
+27
+2.10.3 Outils de monitoring . . . . . . . . . . . . . . . . . . .
+27
+2.10.4 Les outils DevOps pour le déploiement continu (CD) . .
+28
+2.10.5 Outils d’orchestration de containers . . . . . . . . . . .
+28
+2.10.6 Solution de conteneurisation adoptée
+. . . . . . . . . .
+29
+2.10.7 Comparaison des Outils de Sécurité . . . . . . . . . . .
+29
+Isi Mahdia
+Page v
+
+
+===== PAGE 7 =====
+
+TABLE DES MATIÈRES
+2.10.8 Comparaison entre les outils de sécurité applicative
+. .
+29
+2.10.9 Choix de la plateforme cloud . . . . . . . . . . . . . . .
+30
+2.11 Analyse choix technique . . . . . . . . . . . . . . . . . . . . . .
+30
+2.11.1 Présentation de Microsoft Azure . . . . . . . . . . . . .
+30
+2.11.2 Pourquoi Microsoft Azure? . . . . . . . . . . . . . . . .
+31
+2.11.3 Les services Microsoft Azure . . . . . . . . . . . . . . .
+31
+2.12 Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3
+Analyse et Spécifications des Besoins
+33
+3.1
+INTRODUCTION . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.2
+Analyse de besoins
+. . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.2.1
+Besoin fonctionnel . . . . . . . . . . . . . . . . . . . .
+34
+3.2.2
+Besoins non fonctionnels
+. . . . . . . . . . . . . . . .
+36
+3.2.3
+Identification des acteurs . . . . . . . . . . . . . . . . .
+37
+3.3
+Pilotage de projet avec SCRUM
+. . . . . . . . . . . . . . . . .
+38
+3.3.1
+Équipe et rôles . . . . . . . . . . . . . . . . . . . . . .
+38
+3.3.2
+Le Backlog du produit
+. . . . . . . . . . . . . . . . . .
+38
+3.3.3
+Planification de Sprint . . . . . . . . . . . . . . . . . .
+41
+3.4
+Cas d’utilisation . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+3.4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . .
+42
+3.4.2
+Diagramme de cas d’utilisation globale de système . . .
+43
+3.5
+Architecture Globale
+. . . . . . . . . . . . . . . . . . . . . . .
+43
+3.5.1
+Application Frontend et Backend . . . . . . . . . . . . .
+45
+3.5.2
+Infrastructure automatisée (IaC) . . . . . . . . . . . . .
+45
+3.5.3
+Pipeline CI/CD (DevSecOps)
+. . . . . . . . . . . . . .
+46
+3.5.4
+Supervision et Monitoring . . . . . . . . . . . . . . . .
+46
+3.6
+Environnement de développement
+. . . . . . . . . . . . . . . .
+47
+3.6.1
+Environnement matériel
+. . . . . . . . . . . . . . . . .
+47
+3.6.2
+Environnement logiciel et technologies utilisées . . . . .
+48
+3.6.2.1
+Outils de développement . . . . . . . . . . . .
+48
+Isi Mahdia
+Page vi
+
+
+===== PAGE 8 =====
+
+TABLE DES MATIÈRES
+3.6.2.2
+Outils de contrôle de version et de collaboration
+. . . . . . . . . . . . . . . . . . . . . . . . .
+49
+3.6.2.3
+Environnements d’Exécution
+. . . . . . . . .
+49
+3.6.2.4
+Conteneurisation et CI/CD
+. . . . . . . . . .
+50
+3.6.2.5
+Orchestration
+. . . . . . . . . . . . . . . . .
+51
+3.6.2.6
+Qualité et Sécurité . . . . . . . . . . . . . . .
+51
+3.6.2.7
+Outils d’automatisation de l’infrastructure . .
+52
+3.6.2.8
+Base de Données . . . . . . . . . . . . . . . .
+52
+3.6.2.9
+Outils de surveillance et d’observabilité
+. . .
+53
+3.7
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4
+Release 1 :
+54
+4.1
+INTRODUCTION . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.2
+Release Backlog . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.3
+Sprint 1 – Gestion des utilisateurs (Authentication) . . . . . . .
+56
+4.3.1
+Sprint Backlog :
+. . . . . . . . . . . . . . . . . . . . .
+56
+4.3.2
+Spécification fonctionnelle . . . . . . . . . . . . . . . .
+56
+4.3.2.1
+Diagramme de cas d’utilisation . . . . . . . .
+57
+4.3.2.2
+Description textuelle de cas d’utilisation . . .
+57
+4.3.3
+Conception . . . . . . . . . . . . . . . . . . . . . . . .
+60
+4.3.4
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . .
+61
+4.4
+Sprint 2 – Création et Validation des demandes . . . . . . . . .
+63
+4.4.1
+Sprint Backlog :
+. . . . . . . . . . . . . . . . . . . . .
+63
+4.4.2
+Spécification fonctionnelle . . . . . . . . . . . . . . . .
+64
+4.4.2.1
+Diagramme de cas d’utilisation . . . . . . . .
+64
+4.4.2.2
+Description textuelle de cas d’utilisation . . .
+64
+4.4.3
+Conception . . . . . . . . . . . . . . . . . . . . . . . .
+67
+4.4.4
+Diagramme de classe de Release
+. . . . . . . . . . . .
+68
+4.5
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+4.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+70
+Isi Mahdia
+Page vii
+
+
+===== PAGE 9 =====
+
+TABLE DES MATIÈRES
+5
+Release 2 :Automatisation, Déploiement Continu et Monitoring
+71
+5.1
+INTRODUCTION . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+5.2
+Release Backloge . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+5.3
+Sprint 1 : Infrastructure as Code (IaC) . . . . . . . . . . . . . .
+73
+5.3.1
+Sprint Backlog – Sprint 1 . . . . . . . . . . . . . . . . .
+74
+5.3.2
+Architecture fonctionnelle du Sprint IaC . . . . . . . . .
+75
+5.3.3
+Déclenchement automatisé via Terraform Cloud
+. . . .
+77
+5.3.3.1
+Création du workspace Terraform Cloud . . .
+77
+5.3.3.2
+Connexion au repository GitHub . . . . . . .
+78
+5.3.3.3
+Structure du dossier Terraform dans le projet .
+79
+5.3.3.4
+Automatisation via Workspaces API, Variables
+API et Runs API . . . . . . . . . . . . . . . .
+80
+5.3.4
+Conception . . . . . . . . . . . . . . . . . . . . . . . .
+81
+5.3.5
+Avantages de l’approche adoptée
+. . . . . . . . . . . .
+81
+5.3.6
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . .
+82
+5.4
+Sprint 2 : CI/CD (Jenkins, Docker, ArgoCD) . . . . . . . . . . .
+82
+5.4.1
+Sprint Backlog – Sprint 2 . . . . . . . . . . . . . . . . .
+83
+5.4.2
+Automatisation complète du cycle CI/CD
+. . . . . . . .
+84
+5.4.3
+Architecture générale de la chaîne CI/CD . . . . . . . .
+85
+5.4.4
+Installation et configuration de Jenkins
+. . . . . . . . .
+86
+5.4.5
+Analyse qualité sécurité (SonarQube, OWASP,Nmap) . .
+90
+5.4.6
+Construction et push des images Docker . . . . . . . . .
+91
+5.4.7
+Mise en place du Pipeline CD (ArgoCD et AKS)
+. . . .
+91
+5.4.8
+Déploiement GitOps automatisé . . . . . . . . . . . . .
+93
+5.5
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+94
+5.5.1
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . .
+94
+5.6
+Sprint 3 : Monitoring et Supervision . . . . . . . . . . . . . . .
+95
+5.6.1
+Sprint Backlog – Sprint 3 . . . . . . . . . . . . . . . . .
+95
+5.6.2
+Architecture de la solution de monitoring . . . . . . . .
+97
+5.6.3
+Conception . . . . . . . . . . . . . . . . . . . . . . . .
+97
+5.6.4
+Réalisation du sprint . . . . . . . . . . . . . . . . . . .
+98
+Isi Mahdia
+Page viii
+
+
+===== PAGE 10 =====
+
+TABLE DES MATIÈRES
+5.7
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+CONCLUSION GÉNÉRALE
+101
+Bibliographie
+103
+Isi Mahdia
+Page ix
+
+
+===== PAGE 11 =====
+
+LISTE DES FIGURES
+1.1
+Logo Ooredoo Tunisie
+. . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Organisation d’un projet selon Scrum
+. . . . . . . . . . . . . .
+9
+1.3
+Les rôles et artefacts dans la méthode Scrum
+. . . . . . . . . .
+12
+2.1
+Le cycle DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.2
+Principes clés de l’approche DevSecOps . . . . . . . . . . . . .
+20
+2.3
+Le cycle de vie DevOps . . . . . . . . . . . . . . . . . . . . . .
+22
+2.4
+Schéma comparatif : Virtualisation vs Conteneurisation . . . . .
+23
+2.5
+Les trois modèles de services Cloud
+. . . . . . . . . . . . . . .
+24
+3.1
+Planification de Sprint
+. . . . . . . . . . . . . . . . . . . . . .
+42
+3.2
+Les trois modèles de services Cloud
+. . . . . . . . . . . . . . .
+43
+3.3
+Architecture Globale de la Solution
+. . . . . . . . . . . . . . .
+44
+3.4
+Postman . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+3.5
+IntelliJ IDEA
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+3.6
+Visual Studio Code
+. . . . . . . . . . . . . . . . . . . . . . . .
+48
+3.7
+Android Studio
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+3.8
+git . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+3.9
+github . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+3.10 flutter
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+3.11 Springboot . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+3.12 Docker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+3.13 Docker hub . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+3.14 Jenkins
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+3.15 Argocd . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+Isi Mahdiaw
+Page x
+
+
+===== PAGE 12 =====
+
+LISTE DES FIGURES
+3.16 AKS . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+3.17 Kubernetes
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+3.18 Nmap
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+3.19 OWASP ZAP
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+3.20 SonarQube
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+3.21 Nessus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+3.22 Terraform . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+3.23 MongoDB . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+3.24 Prometheus . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+3.25 Azure Monitoring . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.1
+Diagramme des cas d’utilisation du premier sprint
+. . . . . . .
+57
+4.2
+Diagramme de sequance de -creer un compte . . . . . . . . . .
+60
+4.3
+Diagramme de sequance de - S’authentifier
+. . . . . . . . . . .
+60
+4.4
+Diagramme de sequance de - Réinitialiser mot de passe . . . . .
+61
+4.5
+Interfaces réalisées d’authentification . . . . . . . . . . . . . .
+61
+4.6
+Interfaces réalisées du Réinitialiser mot de passe . . . . . . . .
+62
+4.7
+Interfaces réalisées du création un compte
+. . . . . . . . . . .
+62
+4.8
+Diagramme de cas d’utilisatio . . . . . . . . . . . . . . . . . .
+64
+4.9
+Diagramme de séquence d’ajout de demande
+. . . . . . . . . .
+67
+4.10 Diagramme de séquence de gestion des demandes
+. . . . . . .
+67
+4.11 Diagramme de classe . . . . . . . . . . . . . . . . . . . . . . .
+68
+4.12 Interface Demandeur . . . . . . . . . . . . . . . . . . . . . . .
+68
+4.13 Interface Support . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.14 Interface Cloud . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+4.15 Interface de création de demande
+. . . . . . . . . . . . . . . .
+69
+4.16 Interface de validation de demande
+. . . . . . . . . . . . . . .
+70
+4.17 Interface de création de demande
+. . . . . . . . . . . . . . . .
+70
+5.1
+Architecture de IaC . . . . . . . . . . . . . . . . . . . . . . . .
+76
+5.2
+Titre de figure . . . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+Isi Mahdia
+Page xi
+
+
+===== PAGE 13 =====
+
+LISTE DES FIGURES
+5.3
+Fichier Variable de terraform . . . . . . . . . . . . . . . . . . .
+78
+5.4
+Fichier output de Terraform . . . . . . . . . . . . . . . . . . . .
+79
+5.5
+Fichier variable Terraform . . . . . . . . . . . . . . . . . . . .
+79
+5.6
+structure de File Terraform . . . . . . . . . . . . . . . . . . . .
+80
+5.7
+le main de Terraform . . . . . . . . . . . . . . . . . . . . . . .
+80
+5.8
+Diagramme de l’Infrastructure as Code
+. . . . . . . . . . . . .
+81
+5.9
+Déploiement de l’application sur Azure
+. . . . . . . . . . . . .
+82
+5.10 Installation de jenkins
+. . . . . . . . . . . . . . . . . . . . . .
+86
+5.11 Installation de Docker
+. . . . . . . . . . . . . . . . . . . . . .
+86
+5.12 Docker File Backend
+. . . . . . . . . . . . . . . . . . . . . . .
+87
+5.13 Docker File frontend
+. . . . . . . . . . . . . . . . . . . . . . .
+87
+5.14 Configuration des plugins
+. . . . . . . . . . . . . . . . . . . .
+88
+5.15 Docker File frontend
+. . . . . . . . . . . . . . . . . . . . . . .
+89
+5.16 Le pipeline CI
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+5.17 Plugin OWASP Scanner installé
+. . . . . . . . . . . . . . . . .
+90
+5.18 console output de Nmap . . . . . . . . . . . . . . . . . . . . . .
+91
+5.19 .Installation d’ArgoCD sur AKS
+. . . . . . . . . . . . . . . . .
+92
+5.20 Exposition du dashboard ArgoCD
+. . . . . . . . . . . . . . . .
+92
+5.21 Connexion de GitHub à ArgoCD . . . . . . . . . . . . . . . . .
+92
+5.22 Création d’une Application ArgoCD . . . . . . . . . . . . . . .
+93
+5.23 Diagramme de pipeline CI/CD . . . . . . . . . . . . . . . . . .
+94
+5.24 Déploiement de l’application sur Azure
+. . . . . . . . . . . . .
+95
+5.25 Architecture de la solution de monitoring
+. . . . . . . . . . . .
+97
+5.26 Diagramme du processus de monitoring . . . . . . . . . . . . .
+98
+5.27 Déploiement de l’application sur Azure
+. . . . . . . . . . . . .
+98
+5.28 Tableau de bord de supervision . . . . . . . . . . . . . . . . . .
+99
+Isi Mahdia
+Page xii
+
+
+===== PAGE 14 =====
+
+LISTE DES ABRÉVIATIONS
+CD Continuous Integration
+CI Continuous Integration
+AKS Azure Kubernetes Service
+IaaS Infrastructure as a Service
+PaaS Plateform as a Service
+SaaS Software as a Service
+OWASP Open Web Application Security Project
+YAML Yet Another Markup Languag
+Isima Institut supérieur d’informatique mahdia
+API Interface de Programmation d’Application
+DevOps Development and Operations
+DevSecOps Development, Security, and Operations
+IaC Infrastructure as Code
+DevSecOps Development, Security, and Operations
+IoT Internet of Things
+PO Product Owner
+UML Unified Modeling Language
+Isi Mahdiaw
+Page xiii
+
+
+===== PAGE 15 =====
+
+LISTE DES ABRÉVIATIONS
+VM Virtual Machine
+Isi Mahdia
+Page xiv
+
+
+===== PAGE 16 =====
+
+INTRODUCTION GÉNÉRALE
+Dans un paysage numérique en constante évolution, rythmé par des exigences
+croissantes en matière d’agilité, de performance et de rapidité, les entreprises
+sont amenées à repenser en profondeur leurs méthodes de gestion des services
+informatiques. La gestion des demandes d’infrastructure
+— telles que la création de machines virtuelles, l’allocation de ressources, la
+configuration réseau ou encore la mise à disposition de services spécifiques
+— occupe une place centrale dans le fonctionnement des systèmes
+d’information. Pourtant, dans de nombreuses organisations, ces demandes
+sont encore traitées de manière manuelle, via des échanges d’e-mails, des
+feuilles Excel ou des processus non centralisés, ce qui entraîne des lenteurs, un
+manque de traçabilité, des difficultés de coordination entre équipes et une
+exposition accrue aux erreurs humaines.
+Pour répondre à ces défis, l’approche DevOps s’est imposée comme un
+paradigme incontournable. DevOps vise à rapprocher les équipes de
+développement (Dev) et d’exploitation (Ops) en instaurant une culture de
+collaboration, d’automatisation et d’amélioration continue. Elle s’appuie sur
+des pratiques telles que l’intégration et le déploiement continus (CI/CD),
+l’automatisation des tests, la surveillance proactive, la gestion de
+Isi Mahdiaw
+Page xv
+
+
+===== PAGE 17 =====
+
+INTRODUCTION GÉNÉRALE
+configuration et l’Infrastructure as Code (IaC). En adoptant ces pratiques, les
+organisations gagnent en rapidité, en fiabilité et en cohérence, tout en
+garantissant une meilleure qualité logicielle et opérationnelle.
+C’est dans ce contexte que s’inscrit notre projet de fin d’études, réalisé au sein
+d’Ooredoo Tunisie, dans le cadre de l’obtention du Master Professionnel en
+Expertise Réseaux à l’Institut Supérieur d’Informatique de Mahdia. L’objectif
+principal du projet est de moderniser, structurer et automatiser le processus de
+gestion des demandes d’infrastructure internes, en remplaçant un
+fonctionnement manuel et dispersé par une plateforme centralisée,
+automatisée et entièrement traçable, conçue selon les principes DevOps.
+La plateforme développée permet aux utilisateurs internes
+— qu’il s’agisse des équipes de développement, d’exploitation ou de support
+— de soumettre leurs demandes d’infrastructure et de suivre leur état en temps
+réel. Chaque demande est ensuite analysée et validée par l’équipe Cloud
+Engineering, chargée de vérifier la conformité aux règles de gouvernance
+ainsi que la disponibilité des ressources. Une fois la demande approuvée, le
+provisioning est exécuté de manière entièrement automatisée grâce à
+l’utilisation de Terraform pour le déploiement de l’infrastructure et d’Ansible
+pour la configuration des machines, garantissant une standardisation, une
+reproductibilité et une traçabilité complètes.
+Afin de soutenir cette automatisation, une chaîne CI/CD complète a été mise
+en place, reposant sur Jenkins, Docker, GitHub et ArgoCD, afin d’assurer le
+build, l’analyse de sécurité, la génération d’images Docker et le déploiement
+Isi Mahdia
+Page xvi
+
+
+===== PAGE 18 =====
+
+INTRODUCTION GÉNÉRALE
+continu vers un cluster Kubernetes (Azure Kubernetes Service – AKS). Dans
+une optique DevSecOps, des outils de sécurité tels que SonarQube, OWASP,
+Nmap ou Nessus ont été intégrés, afin de renforcer la sécurité tout au long du
+cycle de développement logiciel et de garantir une conformité proactive.
+La supervision et l’observabilité constituent également un volet essentiel du
+projet. À travers l’intégration de Prometheus, Grafana et des services de
+monitoring Azure, la plateforme offre une visibilité en temps réel sur l’état de
+santé des services, les métriques d’exécution des machines virtuelles
+provisionnées, les performances du cluster et les éventuelles anomalies
+opérationnelles. Cette couche d’observabilité permet une détection précoce
+des incidents, un diagnostic rapide et une amélioration continue de la qualité
+de service.
+Enfin, le projet introduit une orchestration complète entre le backend et
+Terraform Cloud, incluant la génération dynamique des variables Terraform,
+l’appel automatique des opérations Plan/Apply, la récupération des outputs et
+la mise à jour automatique de la base de données. Cette automatisation permet
+de réduire considérablement la charge de travail des équipes Support et Cloud,
+tout en améliorant les délais de traitement et la cohérence du provisioning.
+À travers ce rapport, il est démontré que l’adoption des pratiques DevOps
+— notamment l’Infrastructure as Code, l’automatisation CI/CD, la
+conteneurisation, le monitoring continu et la sécurité intégrée
+— permet de transformer et d’optimiser le cycle de traitement des demandes
+d’infrastructure chez Ooredoo Tunisie. Le document présente également
+Isi Mahdia
+Page xvii
+
+
+===== PAGE 19 =====
+
+INTRODUCTION GÉNÉRALE
+l’architecture globale de la solution, les modèles de conception, les workflows
+automatisés, les outils utilisés ainsi que les principaux résultats obtenus. Cette
+démarche s’inscrit dans la continuité des bonnes pratiques DevOps largement
+reconnues dans l’industrie logicielle.
+Pour structurer cette étude, le présent mémoire est organisé comme suit :
+Chapitre 1 : Présentation de l’entreprise d’accueil, analyse de l’existant et
+formulation de la problématique.
+Chapitre 2 : Présentation de l’état de l’art couvrant le DevOps, le DevSecOps,
+le cloud computing, la virtualisation, la conteneurisation, l’IaC et le
+monitoring.
+Chapitre 3 : Analyse et spécification des besoins, modélisation UML et
+description de l’architecture globale de la solution.
+Chapitre 4 : Description de la Release 1, incluant l’authentification, la gestion
+des demandes et les principales interfaces implémentées.
+Chapitre 5 : Présentation de la Release 2, consacrée à l’IaC, au CI/CD, au
+monitoring et à l’automatisation complète du provisioning.
+Ce mémoire se conclut par une synthèse des résultats obtenus, suivie de
+perspectives d’amélioration et d’évolution visant à enrichir et étendre la
+plateforme dans le futur.
+Isi Mahdia
+Page 1
+
+
+===== PAGE 20 =====
+
+Chapitre
+1
+Présentation générale
+Sommaire
+1.1
+INTRODUCTION . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Présentation de l’organisme d’accueil
+. . . . . . . . . . . . . .
+3
+1.3
+Présentation du projet
+. . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3.1
+Cadre du Projet : . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3.2
+Problématique : . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.3
+Étude de l’existant : . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.3.4
+Critique de l’existant : . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.3.5
+Solution proposée : . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.4
+Framework et méthodologie de conception
+. . . . . . . . . . .
+8
+1.4.1
+Méthodologie de travail
+. . . . . . . . . . . . . . . . . . . . . .
+8
+1.4.2
+Méthodologie Agile Scrum . . . . . . . . . . . . . . . . . . . . .
+8
+1.4.3
+Pourquoi Scrum ? . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.4.4
+Outils utilisés pour la gestion de projet Scrum . . . . . . . . . .
+10
+1.4.5
+Principaux termes et rôles dans la méthodologie Scrum . . . . .
+11
+1.5
+Méthode de conception UML . . . . . . . . . . . . . . . . . . .
+12
+1.6
+CONCLUSION . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+Isi Mahdiaw
+Page 2
+
+
+===== PAGE 21 =====
+
+PRÉSENTATION GÉNÉRALE
+1.1 INTRODUCTION
+Dans ce chapitre, nous commencerons par présenter l’entreprise dans laquelle
+s’est déroulé notre stage de fin d’études. Nous poursuivrons par une analyse de
+l’état actuel des méthodes de travail en place. Enfin, nous nous intéresserons
+aux frameworks et à la méthodologie de conception adoptés, en exposant les
+motivations qui ont guidé notre choix.
+1.2 Présentation de l’organisme d’accueil
+Ooredoo Tunisie est une entreprise tunisienne spécialisée dans les
+télécommunications, créée en 2002. Elle fait partie du groupe international
+Ooredoo, qui opère dans plusieurs pays au Moyen-Orient, en Afrique du Nord
+et en Asie. L’entreprise propose des services de téléphonie mobile, internet
+haut débit, solutions digitales et services aux entreprises, avec pour objectif de
+connecter les individus et les organisations à travers des technologies
+innovantes.
+FIGURE 1.1 – Logo Ooredoo Tunisie
+Activités de l’organisme :
+Téléphonie mobile et internet haut débit :
+Isi Mahdia
+Page 3
+
+
+===== PAGE 22 =====
+
+PRÉSENTATION GÉNÉRALE
+• Fourniture de services mobiles prépayés et postpayés pour les
+particuliers.
+• Déploiement et gestion des réseaux 3G, 4G et 5G pour garantir la
+couverture et la qualité du service.
+Solutions digitales et services aux entreprises :
+• Mise à disposition de solutions cloud, IoT, et services numériques
+pour les PME et grandes entreprises.
+• Développement de plateformes et applications pour améliorer
+l’expérience client et la gestion interne des entreprises.
+Innovation et technologies :
+• Adoption de technologies avancées pour optimiser les services et
+l’infrastructure réseau.
+• Mise en place de solutions intelligentes de suivi, analyse et
+automatisation pour améliorer la performance et la satisfaction
+client.
+1.3 Présentation du projet
+1.3.1
+Cadre du Projet :
+Ce projet s’inscrit dans le cadre de la préparation du stage de fin d’études
+pour l’obtention du Master Professionnel en Expertise Réseaux à l’Institut
+Supérieur d’Informatique Mahdia.
+Isi Mahdia
+Page 4
+
+
+===== PAGE 23 =====
+
+PRÉSENTATION GÉNÉRALE
+Le projet a été réalisé au sein de l’entreprise Ooredoo Tunisie, plus
+précisément au département Infrastructure & Cloud Engineering, dans un
+environnement professionnel réel. Il répond à des problématiques concrètes
+liées à la gestion des demandes d’infrastructure et à la nécessité d’automatiser
+les workflows internes pour améliorer la productivité, la traçabilité et la
+qualité du service.
+1.3.2
+Problématique :
+Actuellement, le processus de gestion des demandes d’infrastructure chez
+Ooredoo Tunisie se fait de manière partiellement manuelle, reposant sur des
+échanges d’e-mails, des fichiers internes et des communications non
+centralisées. Cette méthode entraîne plusieurs difficultés majeures,
+notamment :
+• Absence de traçabilité claire des demandes d’infrastructure.
+• Absence de visibilité sur les délais de traitement.
+• Indicateurs de performance non fiables concernant les délais, les
+ressources et les prises en charge.
+• Données non centralisées et parfois incohérentes.
+• Manque d’automatisation dans la création et la configuration des
+ressources cloud.
+Cette situation peut conduire à des retards, des erreurs humaines, une faible
+coordination entre les équipes (Cloud, Support, Dev) et une performance
+globale difficile à mesurer et à améliorer.
+Isi Mahdia
+Page 5
+
+
+===== PAGE 24 =====
+
+PRÉSENTATION GÉNÉRALE
+1.3.3
+Étude de l’existant :
+À l’heure actuelle, la gestion des demandes d’infrastructure chez Ooredoo se
+fait principalement :
+• Par emails entre les équipes.
+• À travers des documents manuels.
+• Via des échanges informels sur des outils internes.
+• Sans système centralisé pour suivre l’évolution d’une demande.
+Cette méthode représente plusieurs limites :
+Manque de traçabilité :
+−Impossible de suivre précisément les délais de traitement.
+−Historique des demandes non structuré et difficile d’accès.
+Manque de visibilité et fiabilité des données :
+−Les informations ne sont pas centralisées.
+−Difficulté à avoir des données fiables et complètes.
+Automatisation insuffisante :
+−Le provisioning des machines se fait uniquement par scripts locaux
+ou manuellement.
+−Absence d’intégration d’un pipeline DevOps utilisant IaC
+(Terraform, Ansible).
+Isi Mahdia
+Page 6
+
+
+===== PAGE 25 =====
+
+PRÉSENTATION GÉNÉRALE
+1.3.4
+Critique de l’existant :
+Le système actuel présente plusieurs limites importantes :
+−Documentation manuelle et non uniformisée, ce qui complique le
+suivi.
+−Données incohérentes ou incomplètes, rendant les indicateurs
+difficiles à interpréter.
+−Absence d’un tableau de bord pour visualiser les demandes en temps
+réel.
+−Absence d’automatisation, ce qui augmente les risques d’erreurs
+humaines.
+−Aucune centralisation, rendant la communication entre équipes lente
+et inefficace.
+Ces limitations montrent la nécessité d’une solution digitale moderne et
+automatisée.
+1.3.5
+Solution proposée :
+Dans ce contexte, nous proposons de mettre en place une plateforme web
+centralisée permettant la gestion complète des demandes d’infrastructure. La
+solution permettra notamment de :
+−Améliorer la communication entre les différentes équipes techniques.
+−Centraliser toutes les demandes dans un seul système fiable et
+structuré.
+−Automatiser le provisioning des infrastructures via Terraform et
+Ansible.
+−Réduire l’utilisation de documents manuels et d’emails.
+Isi Mahdia
+Page 7
+
+
+===== PAGE 26 =====
+
+PRÉSENTATION GÉNÉRALE
+−Assurer la traçabilité complète : temps de traitement, état de chaque
+demande, actions réalisées.
+−Optimiser la performance opérationnelle grâce à des indicateurs
+fiables et mis à jour automatiquement.
+−Fournir un tableau de bord clair pour suivre les demandes en temps
+réel.
+Cette solution permettra à Ooredoo Tunisie d’améliorer l’efficacité de son
+workflow interne et de garantir des délais plus courts et plus fiables dans la
+gestion des demandes d’infrastructure.
+1.4 Framework et méthodologie de conception
+1.4.1
+Méthodologie de travail
+La méthodologie constitue un élément essentiel dans la gestion de tout projet.
+Il demeure toutefois nécessaire de choisir celle qui s’adapte le mieux au
+contexte afin d’en assurer une gestion efficace. Dans le cadre de ce travail à
+caractère évaluatif, la méthodologie Scrum s’est avérée la plus appropriée
+pour répondre à ces exigences.
+1.4.2
+Méthodologie Agile Scrum
+La méthode Scrum est considéré comme un Framework de gestion de projet,
+c’est la méthode la plus utilisée parmi les autres méthodes agiles existantes.
+En effet, le terme Scrum est apparu pour la première fois en 1986. Il a été
+publié par "Hirotaka Takeuchi" et "Ikujiro Nonaka" et il décrit une nouvelle
+Isi Mahdia
+Page 8
+
+
+===== PAGE 27 =====
+
+PRÉSENTATION GÉNÉRALE
+approche plus rapide et plus flexible du développement de nouveaux produits.
+Cette méthode a été comparée à une union de rugby, dont le principe de base,
+est que toute l’équipe avance ensemble et est prête à se réorienter au fur et à
+mesure de l’avancement.[1]
+1.4.3
+Pourquoi Scrum?
+Trois raisons pour lesquelles Scrum est idéal pour les développeurs :
+• La méthodologie Scrum facilite la compréhension du projet en le
+décomposant en tâches et en petites parties pouvant être réalisées de manière
+itérative. Ces itérations sont appelées
+« sprints ».
+• L’équipe de développement maîtrise la charge de travail accomplie et reçoit
+rapidement des retours (feedbacks), ce qui permet d’orienter efficacement les
+étapes suivantes.
+• Scrum favorise une concentration claire, encourage le travail collaboratif et
+limite les distractions.
+FIGURE 1.2 – Organisation d’un projet selon Scrum
+Isi Mahdia
+Page 9
+
+
+===== PAGE 28 =====
+
+PRÉSENTATION GÉNÉRALE
+1.4.4
+Outils utilisés pour la gestion de projet Scrum
+Nous avons réalisé une étude comparative des principaux outils de gestion de
+projet Scrum afin de choisir la solution la plus adaptée à notre projet. Cette
+analyse a porté sur Trello et Jira.
+TABLE 1.1 – Comparaison entre Trello et Jira
+Critère
+Trello
+Jira
+Simplicité
+Très simple et intuitif
+Plus complexe, nécessite un
+apprentissage
+Suivi des tâches
+Tableaux et cartes Kanban
+Workflow détaillé et rapports
+Adaptabilité
+Idéal pour petits projets
+Pour projets complexes et
+grandes équipes
+Collaboration
+Facile et rapide
+Avancée
+avec
+rôles
+et
+permissions
+Coût
+Gratuit pour les fonctions de
+base
+Version
+gratuite
+limitée,
+abonnement payant pour plus
+D’après cette étude, Trello a été choisi pour notre projet en raison de sa
+simplicité, de sa flexibilité et de sa facilité d’utilisation pour le suivi des tâches
+et la gestion des sprints.
+Isi Mahdia
+Page 10
+
+
+===== PAGE 29 =====
+
+PRÉSENTATION GÉNÉRALE
+1.4.5
+Principaux termes et rôles dans la méthodologie Scrum
+TABLE 1.2 – La méthodologie Scrum
+Mot-clé
+Définition
+Product
+Owner
+(PO)
+Représentant des clients et utilisateurs dans le projet. Il a
+une vision globale du produit, définit la feuille de route et
+priorise les fonctionnalités pour assurer que le produit final
+réponde aux besoins des utilisateurs.
+Scrum Master
+Membre de l’équipe chargé de promouvoir l’organisation,
+la productivité et l’amélioration continue de l’équipe. Il
+facilite les processus Scrum et supprime les obstacles
+rencontrés par l’équipe.
+Développeurs
+Équipe de développement responsable de livrer à la fin de
+chaque Sprint un incrément fonctionnel et potentiellement
+livrable du produit.
+Sprint
+Période itérative, généralement de 2 à 4 semaines, durant
+laquelle un ensemble de fonctionnalités est développé et
+validé. Chaque Sprint a un objectif précis et un ensemble
+de User Stories à réaliser.
+Product Backlog
+Liste priorisée de toutes les exigences fonctionnelles et non
+fonctionnelles du projet, maintenue par le Product Owner.
+Sprint Backlog
+Liste des User Stories sélectionnées pour être réalisées
+durant un Sprint spécifique. Il représente le travail à
+accomplir par l’équipe de développement pendant ce Sprint.
+Isi Mahdia
+Page 11
+
+
+===== PAGE 30 =====
+
+PRÉSENTATION GÉNÉRALE
+FIGURE 1.3 – Les rôles et artefacts dans la méthode Scrum
+1.5 Méthode de conception UML
+Le langage UML peut être défini comme un outil de modélisation graphique et
+textuelle permettant de comprendre et de décrire les besoins, de définir et
+documenter les systèmes, de concevoir des architectures logicielles, d’élaborer
+des solutions et de fournir des annotations explicatives.
+1.6 CONCLUSION
+Dans ce premier chapitre, nous avons présenté notre projet en le situant dans
+son contexte global, en décrivant l’entité d’accueil, en analysant l’existant et
+en identifiant la problématique à résoudre. Nous avons également exposé la
+solution proposée ainsi que la méthodologie de travail retenue.
+Isi Mahdia
+Page 12
+
+
+===== PAGE 31 =====
+
+PRÉSENTATION GÉNÉRALE
+Dans le chapitre suivant, nous aborderons de manière théorique l’approche
+DevOps, l’approche DevSecOps ainsi que le Cloud Computing. Nous
+procéderons ensuite à une analyse comparative des principaux outils utilisés.
+Isi Mahdia
+Page 13
+
+
+===== PAGE 32 =====
+
+ÉTAT DE L’ART
+Chapitre
+2
+ÉTAT DE L’ART
+Sommaire
+2.1
+INTRODUCTION . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.2
+Approche DevOps . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.2.1
+Origine du DevOps . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.2.2
+Présentation du DevOps . . . . . . . . . . . . . . . . . . . . . .
+17
+2.2.3
+Pratiques DevOps
+. . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.2.4
+Avantages de l’approche DevOps . . . . . . . . . . . . . . . . .
+19
+2.3
+Approche DevSecOps . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.3.1
+Intégration de la sécurité . . . . . . . . . . . . . . . . . . . . . .
+20
+2.3.2
+Cycle de vie DevSecOps . . . . . . . . . . . . . . . . . . . . . .
+21
+2.3.3
+Les avantages de l’approche DevSecOps
+. . . . . . . . . . . . .
+22
+2.4
+DevOps vs DevSecOps
+. . . . . . . . . . . . . . . . . . . . . . .
+22
+2.5
+Virtualisation VS Conteneurisation . . . . . . . . . . . . . . . .
+23
+2.6
+Cloud Computing
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.6.1
+Présentation . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.6.2
+Services du Cloud Computing . . . . . . . . . . . . . . . . . . .
+24
+2.6.3
+Les types de cloud computing . . . . . . . . . . . . . . . . . . .
+25
+2.6.4
+Avantages du cloud computing
+. . . . . . . . . . . . . . . . . .
+25
+2.7
+Combinaison DevOps et Cloud
+. . . . . . . . . . . . . . . . . .
+25
+2.8
+Infrastructure as Code (IaC) . . . . . . . . . . . . . . . . . . . .
+25
+2.8.1
+Principes de l’IaC
+. . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.8.2
+Avantages du IaC . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+2.9
+Supervision et Observabilité . . . . . . . . . . . . . . . . . . . .
+26
+2.10 Étude comparative des outils à utiliser . . . . . . . . . . . . . .
+26
+2.10.1 Outils d’Analyse du code
+. . . . . . . . . . . . . . . . . . . . .
+26
+2.10.2 Outils d’Intégration continue
+. . . . . . . . . . . . . . . . . . .
+27
+2.10.3 Outils de monitoring . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.10.4 Les outils DevOps pour le déploiement continu (CD) . . . . . .
+28
+2.10.5 Outils d’orchestration de containers . . . . . . . . . . . . . . . .
+28
+2.10.6 Solution de conteneurisation adoptée . . . . . . . . . . . . . . .
+29
+2.10.7 Comparaison des Outils de Sécurité . . . . . . . . . . . . . . . .
+29
+Isi Mahdia
+Page 14
+
+
+===== PAGE 33 =====
+
+2.10.8 Comparaison entre les outils de sécurité applicative . . . . . . .
+29
+2.10.9 Choix de la plateforme cloud
+. . . . . . . . . . . . . . . . . . .
+30
+2.11 Analyse choix technique
+. . . . . . . . . . . . . . . . . . . . . .
+30
+2.11.1 Présentation de Microsoft Azure
+. . . . . . . . . . . . . . . . .
+30
+2.11.2 Pourquoi Microsoft Azure ?
+. . . . . . . . . . . . . . . . . . . .
+31
+2.11.3 Les services Microsoft Azure . . . . . . . . . . . . . . . . . . . .
+31
+2.12 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+Isi Mahdiaw
+Page 15
+
+
+===== PAGE 34 =====
+
+ÉTAT DE L’ART
+2.1 INTRODUCTION
+Ce chapitre présente l’état de l’art des concepts et technologies qui constituent
+la base de notre projet. Nous y discuterons de la démarche DevOps et de son
+évolution vers DevSecOps, ainsi que des concepts d’intégration et de
+déploiement continus (CI/CD).
+Nous aborderons ensuite des technologies telles que la virtualisation et la
+conteneurisation, le cloud computing ainsi que l’Infrastructure as Code (IaC).
+Enfin, nous mettrons en lumière les mécanismes de supervision et de
+monitoring, essentiels pour garantir la performance et la sécurité des
+systèmes.
+2.2 Approche DevOps
+2.2.1
+Origine du DevOps
+Avant l’émergence de DevOps, les équipes de développement logiciel (Dev) et
+les équipes opérationnelles (Ops) travaillaient de manière séparée. Les
+développeurs écrivaient et testaient le code, puis le livraient aux équipes
+d’exploitation pour le déploiement et la maintenance. Cette séparation
+entraînait souvent des problèmes de communication, des retards dans les mises
+en production et des difficultés à résoudre rapidement les incidents [2]. Pour
+résoudre ces problématiques, l’approche DevOps est née au début des années
+2000, dans le but de favoriser la collaboration entre développement et
+Isi Mahdia
+Page 16
+
+
+===== PAGE 35 =====
+
+ÉTAT DE L’ART
+opérations, d’automatiser les processus et d’accélérer le cycle de vie des
+logiciels tout en améliorant leur qualité.
+2.2.2
+Présentation du DevOps
+DevOps est une approche opérationnelle et culturelle qui vise à améliorer la
+collaboration entre les équipes de développement logiciel (Dev) et les équipes
+d’exploitation (Ops), en réduisant les frictions organisationnelles
+traditionnelles [6] . L’objectif principal est de diminuer le délai entre la
+demande d’un changement ou d’une nouvelle fonctionnalité et sa mise en
+production, tout en maintenant un haut niveau de qualité et en optimisant les
+coûts. Cette méthode combine automatisation des processus, intégration
+continue, déploiement automatisé et surveillance constante pour permettre aux
+équipes de travailler de manière coordonnée et efficace. Elle favorise ainsi la
+livraison de produits logiciels fiables, évolutifs et adaptés aux besoins des
+utilisateurs, tout en réduisant les erreurs humaines et en accélérant le cycle de
+développement.
+FIGURE 2.1 – Le cycle DevOps
+Isi Mahdia
+Page 17
+
+
+===== PAGE 36 =====
+
+ÉTAT DE L’ART
+2.2.3
+Pratiques DevOps
+DevOps constitue un ensemble de bonnes pratiques visant à répondre au
+besoin croissant d’industrialisation et de standardisation des systèmes
+d’information. Cette approche a pour objectif d’automatiser les différentes
+tâches du cycle de développement d’une application ou d’un logiciel, tout en
+garantissant :
+−Un développement et des tests continus
+−Une intégration et une mise en œuvre constantes
+−Une surveillance permanente et une validation continue de la qualité
+opérationnelle.
+Les pratiques DevOps permettent d’améliorer et d’automatiser de manière
+continue les processus, en se concentrant sur différentes phases du cycle de
+développement [8] :
+−Développement continu : Il inclut souvent des mécanismes de
+gestion des versions afin de planifier et d’organiser le codage.
+−Tests continus : Les tests automatisés sont exécutés dans
+l’environnement DevOps afin de réduire les régressions, de renforcer
+la confiance dans le projet et d’accélérer la livraison du code en
+production.
+−Intégration continue : Cette pratique regroupe des outils de gestion
+de configuration, de test et de développement pour contrôler la mise
+en production des différentes parties du code.
+−Livraison continue : Elle permet d’automatiser la publication des
+modifications de code dans un environnement intermédiaire ou de
+préproduction.
+Isi Mahdia
+Page 18
+
+
+===== PAGE 37 =====
+
+ÉTAT DE L’ART
+−Déploiement continu : Une fois que tous les tests et exigences métier
+sont satisfaits, le logiciel est prêt à être déployé en production.
+−Surveillance continue : Cette étape implique le suivi permanent du
+code en cours d’exécution ainsi que de l’infrastructure qui le
+supporte.
+−Infrastructure-as-Code (IaC) : Cette pratique consiste à
+automatiser la mise à disposition de l’infrastructure nécessaire au
+déploiement des logiciels.
+2.2.4
+Avantages de l’approche DevOps
+L’approche DevOps offre de nombreux avantages, tant pour les organisations
+que pour les équipes de développement. Parmi ceux-ci, on peut notamment
+citer :
+TABLE 2.1 – Principaux avantages du DevOps
+Avantage DevOps
+Définition
+Livraison
+rapide
+et
+continue
+Permet de déployer les mises à jour rapidement et
+régulièrement.
+Amélioration
+de
+la
+qualité logicielle
+Réduit les erreurs et augmente la fiabilité du logiciel.
+Meilleure collaboration
+Favorise l’échange efficace entre équipes Dev et Ops.
+Réduction des risques
+Diminue les incidents grâce à des tests et contrôles continus.
+Automatisation
+des
+tâches
+Automatise les processus répétitifs pour gagner du temps.
+Flexibilité et scalabilité
+Permet d’adapter facilement l’infrastructure et les services
+selon les besoins.
+Isi Mahdia
+Page 19
+
+
+===== PAGE 38 =====
+
+ÉTAT DE L’ART
+2.3 Approche DevSecOps
+DevSecOps, acronyme de développement, sécurité et opérations, est un cadre
+qui intègre la sécurité à toutes les phases du cycle de vie du développement
+logiciel.
+Les organisations adoptent cette approche pour réduire le risque de déployer
+du code comportant des failles de sécurité. Grâce à la collaboration,
+l’automatisation et des processus clairement définis, les équipes partagent la
+responsabilité de la sécurité, au lieu de la reporter à la fin, moment où les
+problèmes peuvent s’avérer beaucoup plus difficiles et coûteux à résoudre.
+DevSecOps est un élément essentiel d’une stratégie de sécurité multicloud.[7]
+FIGURE 2.2 – Principes clés de l’approche DevSecOps
+2.3.1
+Intégration de la sécurité
+Traditionnellement, les tests de sécurité étaient réalisés à la fin du cycle de
+développement. Le concept de DevSecOps consiste à intégrer les mesures de
+Isi Mahdia
+Page 20
+
+
+===== PAGE 39 =====
+
+ÉTAT DE L’ART
+sécurité à chaque étape du cycle de développement, plutôt qu’en fin de
+processus.
+2.3.2
+Cycle de vie DevSecOps
+Le cycle de vie DevSecOps consiste à intégrer la sécurité à chaque étape du
+développement logiciel, favorisant ainsi une gestion proactive des risques.
+TABLE 2.2 – Phases et outils typiques du cycle DevOps
+Phase
+Description courte
+Outils typiques
+Plan
+Définition des besoins métier.
+Azure DevOps, Jira, Trello
+Code
+Développement du code source.
+Git
+Build
+Compilation et génération des artefacts.
+Gradle,
+Maven,
+Sonatype
+Nexus
+Test
+Exécution des tests automatisés.
+JUnit, Selenium
+Release
+Génération des versions.
+Jenkins, GitLab CI/CD
+Deploy
+Déploiement en production.
+Kubernetes, Docker
+Operate
+Gestion des performances.
+Prometheus, Grafana
+Monitor
+Surveillance continue.
+Grafana, Prometheus
+Isi Mahdia
+Page 21
+
+
+===== PAGE 40 =====
+
+ÉTAT DE L’ART
+FIGURE 2.3 – Le cycle de vie DevOps
+2.3.3
+Les avantages de l’approche DevSecOps
+TABLE 2.3 – Principaux bénéfices du DevSecOps
+Bénéfice DevSecOps
+Description courte
+Sécurité renforcée
+Les failles sont détectées et corrigées dès les premières
+étapes.
+Accélération
+des
+livraisons
+L’intégration automatisée permet de livrer rapidement.
+Culture de responsabilité
+Chaque membre devient acteur de la sécurité.
+2.4 DevOps vs DevSecOps
+DevOps vise à renforcer la collaboration entre les équipes de développement
+et d’exploitation. DevSecOps étend cette approche en intégrant les pratiques
+de sécurité dès les premières étapes du cycle de développement.
+Isi Mahdia
+Page 22
+
+
+===== PAGE 41 =====
+
+ÉTAT DE L’ART
+2.5 Virtualisation VS Conteneurisation
+La virtualisation consiste à créer plusieurs machines virtuelles (VM) sur un
+même serveur physique. La conteneurisation utilise des conteneurs légers
+partageant le même OS hôte.
+TABLE 2.4 – Comparaison entre la virtualisation et la conteneurisation
+Critère
+Virtualisation (VM)
+Conteneurisation (Containers)
+Isolation
+Chaque VM possède son propre
+OS
+Partage du même OS hôte
+Ressources
+Lourde (CPU, RAM, stockage)
+Légère et optimisée
+Démarrage
+Lent (minutes)
+Rapide (secondes)
+Portabilité
+Moyenne
+Élevée
+Outils courants
+VMware, VirtualBox
+Docker, Kubernetes
+FIGURE 2.4 – Schéma comparatif : Virtualisation vs Conteneurisation
+Isi Mahdia
+Page 23
+
+
+===== PAGE 42 =====
+
+ÉTAT DE L’ART
+2.6 Cloud Computing
+2.6.1
+Présentation
+Le cloud computing désigne la fourniture de services informatiques via
+Internet (serveurs, stockage, bases de données, etc.).[8]
+2.6.2
+Services du Cloud Computing
+−IaaS (Infrastructure as a Service) : Fournit des ressources informatiques
+brutes. [20]
+−PaaS (Platform as a Service) : Environnement de développement
+complet. [21]
+−SaaS (Software as a Service) : Applications accessibles via le web. [22]
+FIGURE 2.5 – Les trois modèles de services Cloud
+Isi Mahdia
+Page 24
+
+
+===== PAGE 43 =====
+
+ÉTAT DE L’ART
+2.6.3
+Les types de cloud computing
+1. Cloud public : Ressources gérées par un fournisseur tiers.
+2. Cloud privé : Ressources dédiées à une seule organisation.
+3. Cloud hybride : Combinaison des deux précédents.
+2.6.4
+Avantages du cloud computing
+−Réduction des coûts (pay-as-you-go).
+−Scalabilité et élasticité.
+−Haute disponibilité.
+2.7 Combinaison DevOps et Cloud
+Le Cloud Computing complète l’approche DevOps en offrant des
+environnements flexibles. La combinaison permet l’automatisation des
+pipelines CI/CD et le provisionnement via l’IaC.
+2.8 Infrastructure as Code (IaC)
+2.8.1
+Principes de l’IaC
+L’IaC permet de gérer l’infrastructure via des fichiers de configuration.
+−Approche déclarative : Spécifie l’état final (ex : Terraform).
+−Approche impérative : Spécifie les commandes à exécuter (ex : Ansible).
+Isi Mahdia
+Page 25
+
+
+===== PAGE 44 =====
+
+ÉTAT DE L’ART
+2.8.2
+Avantages du IaC
+Automatisation,
+cohérence,
+reproductibilité et suivi des changements.
+2.9 Supervision et Observabilité
+La supervision (Monitoring) surveille l’état des systèmes (Prometheus).
+L’observabilité utilise logs, métriques et traces pour comprendre le
+fonctionnement interne.
+2.10 Étude comparative des outils à utiliser
+Dans cette section, nous comparerons les outils pour choisir les plus adaptés.
+2.10.1
+Outils d’Analyse du code
+Le tableau suivant compare SonarQube, Scrutinizer et Codacy.
+TABLE 2.5 – Comparaison entre SonarQube, Scrutinizer et Codacy
+Critère
+SonarQube
+Scrutinizer
+Codacy
+Open Source
+Oui
+Non
+Non
+Licence
+Gratuit
+Payant
+Payant
+Langages
+20+
+7
+11
+Communauté
+Large
+Moyenne
+Faible
+Isi Mahdia
+Page 26
+
+
+===== PAGE 45 =====
+
+ÉTAT DE L’ART
+SonarQube est retenu pour sa gratuité et son support open source.
+2.10.2
+Outils d’Intégration continue
+Pour choisir une solution CI, nous comparons Jenkins, Travis CI et CircleCI.
+TABLE 2.6 – Comparaison entre Jenkins, Travis CI et CircleCI
+Critère
+Jenkins
+Travis CI
+CircleCI
+Type
+Open Source
+Hébergé
+Hébergé
+Configuration
+Complexe
+Simple (.yaml)
+Simple (.yaml)
+Plugins
+Très riche
+Limité
+Moyen
+Coût
+Gratuit
+Payant
+(version
+ent.)
+Freemium
+Jenkins est retenu pour sa richesse en plugins et son caractère open source.
+2.10.3
+Outils de monitoring
+Nous comparons Prometheus, Azure Monitoring, Kibana et Nagios.
+TABLE 2.7 – Comparaison des outils de monitoring
+Aspect
+Prometheus
+Azure Mon.
+Kibana
+Nagios
+Fonction
+Métriques
+Monitoring
+Cloud
+Visualisation
+Alertes
+Simplicité
+Oui
+Oui
+Non
+Non
+Points forts
+Communauté
+Intégration Azure
+Puissant
+Dashboards
+Isi Mahdia
+Page 27
+
+
+===== PAGE 46 =====
+
+ÉTAT DE L’ART
+Prometheus associé à Azure Monitoring est la solution retenue.
+2.10.4
+Les outils DevOps pour le déploiement continu (CD)
+Comparaison entre Argo CD, Jenkins X et Flux.
+TABLE 2.8 – Comparaison entre Argo CD, Jenkins X et Flux
+Critère
+Argo CD
+Jenkins X
+Flux
+Facilité
+Interface intuitive
+CLI
+CLI
+Support K8s
+Natif
+Conçu pour
+Fort
+Popularité
+Très populaire
+En progression
+Populaire
+Argo CD est retenu.
+2.10.5
+Outils d’orchestration de containers
+Comparaison entre Kubernetes et Docker Swarm.
+TABLE 2.9 – Comparaison entre Kubernetes et Docker Swarm
+Critères
+Kubernetes
+Docker Swarm
+Installation
+Complexe (kubeadm)
+Simple
+Évolutivité
+Haute (5000 nœuds)
+Moyenne (2000 nœuds)
+GUI
+Dashboard inclus
+Non natif
+Kubernetes est retenu.
+Isi Mahdia
+Page 28
+
+
+===== PAGE 47 =====
+
+ÉTAT DE L’ART
+2.10.6
+Solution de conteneurisation adoptée
+Comparaison Docker, Rocket et LXC.
+TABLE 2.10 – Comparaison : Docker vs Rocket vs LXC
+Critère
+Docker
+Rocket
+LXC/LXD
+Daemon centralisé
+Oui
+Non
+Oui
+Utilisation
+App
+App
+OS complet
+Simplicité
+Oui
+Oui
+Non
+Compatibilité
+Docker images
+OCI
+OCI
+Docker est l’outil retenu.
+2.10.7
+Comparaison des Outils de Sécurité
+Comparaison entre Nessus et Nmap.
+TABLE 2.11 – Comparaison entre Nessus et Nmap
+Critère
+Nessus
+Nmap
+Type
+Scanner vulnérabilités
+Scanner ports/réseau
+Interface
+Web/GUI
+CLI
+2.10.8
+Comparaison entre les outils de sécurité applicative
+Comparaison OWASP Dependency-Check et Invicti.
+TABLE 2.12 – Comparaison entre OWASP Dependency-Check et Invicti
+Critère
+OWASP Dep-Check
+Invicti
+Licence
+Open Source
+Commercial
+Modes de scan
+Actif, passif
+Actif, passif
+Isi Mahdia
+Page 29
+
+
+===== PAGE 48 =====
+
+ÉTAT DE L’ART
+2.10.9
+Choix de la plateforme cloud
+Comparaison Azure vs AWS.
+TABLE 2.13 – Comparaison entre Azure et AWS
+Fonctionnalité
+Azure
+AWS
+Calcul
+VM, AKS, Functions
+EC2, ECS, Lambda
+Stockage
+Blob, Disk
+S3, EBS
+Bases de données
+SQL DB, Cosmos
+RDS, DynamoDB
+Azure est retenu.
+2.11 Analyse choix technique
+2.11.1
+Présentation de Microsoft Azure
+Microsoft Azure est une plateforme de cloud computing proposée par
+Microsoft, offrant un large éventail de services tels que le calcul, le stockage,
+la mise en réseau et l’analytique. Elle permet de développer, déployer et gérer
+des applications à l’échelle mondiale grâce à son réseau de centres de
+données. Azure supporte de nombreux langages, outils et frameworks, et
+propose des modèles IaaS, PaaS et SaaS, ce qui en fait une solution flexible
+pour l’hébergement de machines virtuelles, la gestion de bases de données,
+l’IA, l’IoT et d’autres services avancés. La plateforme s’intègre naturellement
+avec l’écosystème Microsoft, notamment Office 365 et Active Directory.[11]
+Isi Mahdia
+Page 30
+
+
+===== PAGE 49 =====
+
+ÉTAT DE L’ART
+2.11.2
+Pourquoi Microsoft Azure?
+Microsoft Azure constitue une plateforme cloud de référence grâce à :
+• La richesse de ses services : solutions complètes pour le calcul, le stockage,
+l’IA et bien plus.
+• Son évolutivité : adaptation rapide des ressources selon la charge.
+• Sa présence mondiale : un vaste réseau de centres de données garantissant
+performance et disponibilité.
+• Sa sécurité renforcée : mécanismes avancés de protection et conformité aux
+normes internationales.
+• Son intégration native avec l’écosystème Microsoft.
+•Ses capacités hybrides : prise en charge des environnements cloud et
+on-premise.
+•Sa flexibilité tarifaire permettant d’optimiser les coûts.
+• Son innovation continue dans les domaines de l’IA et du machine learning.
+• Ses outils dédiés aux développeurs et son large écosystème applicatif.
+• Son support entreprise adapté aux applications critiques.
+2.11.3
+Les services Microsoft Azure
+Microsoft Azure propose un ensemble riche et structuré de services couvrant
+l’ensemble des besoins cloud modernes. Ses offres incluent des solutions de
+calcul (machines virtuelles, Azure Functions, AKS), des services de stockage
+Isi Mahdia
+Page 31
+
+
+===== PAGE 50 =====
+
+ÉTAT DE L’ART
+pour données structurées et non structurées, ainsi que des bases de données
+entièrement managées. Azure fournit également des outils avancés de mise en
+réseau, des services d’intelligence artificielle et de machine learning, et des
+plateformes d’analyse de données à grande échelle. La sécurité, la
+gouvernance et la gestion des ressources sont assurées par des services dédiés,
+tandis que des solutions IoT, DevOps, migration et sauvegarde complètent
+l’écosystème.
+Cet ensemble cohérent permet aux organisations de construire, déployer et
+administrer des applications cloud de manière efficace et sécurisée.
+2.12 Conclusion
+Dans ce chapitre, nous avons identifié et analysé les besoins fonctionnels et
+non fonctionnels du système, tout en sélectionnant les outils et technologies les
+plus adaptés à la réalisation du projet. Cette étape a permis d’établir une base
+solide pour la conception et l’implémentation de la solution. Le chapitre
+suivant sera consacré à la Release 1, où nous présenterons en détail le
+processus de mise en œuvre, les premières réalisations techniques ainsi que les
+résultats obtenus.
+Isi Mahdia
+Page 32
+
+
+===== PAGE 51 =====
+
+Chapitre
+3
+Analyse et Spécifications des Besoins
+Sommaire
+3.1
+INTRODUCTION . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.2
+Analyse de besoins . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.2.1
+Besoin fonctionnel
+. . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.2.2
+Besoins non fonctionnels
+. . . . . . . . . . . . . . . . . . . . .
+36
+3.2.3
+Identification des acteurs . . . . . . . . . . . . . . . . . . . . . .
+37
+3.3
+Pilotage de projet avec SCRUM
+. . . . . . . . . . . . . . . . .
+38
+3.3.1
+Équipe et rôles . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.3.2
+Le Backlog du produit
+. . . . . . . . . . . . . . . . . . . . . .
+38
+3.3.3
+Planification de Sprint . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.4
+Cas d’utilisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+3.4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+3.4.2
+Diagramme de cas d’utilisation globale de système
+. . . . . . .
+43
+3.5
+Architecture Globale
+. . . . . . . . . . . . . . . . . . . . . . . .
+43
+3.5.1
+Application Frontend et Backend . . . . . . . . . . . . . . . . .
+45
+3.5.2
+Infrastructure automatisée (IaC) . . . . . . . . . . . . . . . . .
+45
+3.5.3
+Pipeline CI/CD (DevSecOps) . . . . . . . . . . . . . . . . . . .
+46
+3.5.4
+Supervision et Monitoring . . . . . . . . . . . . . . . . . . . . .
+46
+3.6
+Environnement de développement
+. . . . . . . . . . . . . . . .
+47
+3.6.1
+Environnement matériel . . . . . . . . . . . . . . . . . . . . . .
+47
+3.6.2
+Environnement logiciel et technologies utilisées
+. . . . . . . . .
+48
+3.7
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+Isi Mahdiaw
+Page 33
+
+
+===== PAGE 52 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+3.1 INTRODUCTION
+Ce chapitre est dédié à l’analyse et à la spécification des besoins du système.
+Nous y définirons les exigences fonctionnelles et non fonctionnelles, ainsi que
+les acteurs et leurs interactions à travers les cas d’utilisation. L’organisation
+du projet selon la méthodologie Scrum sera également présentée, notamment
+le backlog et la planification des sprints. Enfin, nous introduirons
+l’architecture globale de la solution et les principaux outils techniques
+mobilisés, constituant la base de la conception à venir.
+3.2 Analyse de besoins
+Cette section a pour objectif de constituer la base du recueil des besoins du
+système à développer. Afin de clarifier les attentes des utilisateurs de notre
+application, nous présenterons à la fois les besoins fonctionnels et les besoins
+non fonctionnels.
+3.2.1
+Besoin fonctionnel
+Il s’agit des fonctionnalités attendues du système, définissant le comportement
+attendu en termes d’entrées et de sorties. Les principaux besoins fonctionnels
+de notre projet sont présentés dans le tableau ci dessous
+Isi Mahdia
+Page 34
+
+
+===== PAGE 53 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+TABLE 3.1 – Analyse des besoins
+Acteur
+Description
+Besoins Fonctionnels
+Client
+Utilisateur
+final
+qui
+soumet des demandes
+de VMs.
+Se
+connecter
+de
+manière
+sécurisée
+(authentification).
+Créer une demande de VM (CPU, RAM,
+disque, OS, justification...).
+Suivre l’état de la demande.
+Recevoir des notifications automatiques.
+Consulter l’historique des demandes.
+Équipe
+Cloud
+Vérifie les ressources
+disponibles et valide les
+demandes.
+Vérifier la disponibilité des ressources.
+Vérifier la conformité avec les règles internes.
+Ajouter les informations réseau.
+Valider ou rejeter une demande.
+Notifier le client.
+Transmettre les demandes validées au Support.
+Équipe
+Support
+Exécute
+le
+provisionnement
+des VMs.
+Lancer le provisioning automatique (Terraform
+).
+Suivre l’état technique de la VM.
+Envoyer un retour d’exécution.
+Adminis-
+trateur
+Gère
+la
+plateforme
+et
+supervise
+les
+opérations.
+Gérer les utilisateurs et rôles.
+Superviser les KPIs.
+Consulter les rapports d’audit.
+Superviser Grafana.
+Assurer la conformité.
+Isi Mahdia
+Page 35
+
+
+===== PAGE 54 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+Acteur
+Description
+Besoins Fonctionnels
+Pipeline
+CI/CD
+(Jenkins)
+Automatisation
+du
+développement et des
+déploiements.
+Build + tests.
+Déploiement automatique Kubernetes.
+Intégration GitHub.
+Rapports d’exécution.
+ArgoCD
+Déploiement
+continu
+AKS.
+Synchronisation automatique.
+Mises à jour continues.
+Rollback.
+Sécurité
+Analyse et protection
+du code.
+Analyse SonarQube.
+Scans vulnérabilités (Nmap, OWASP, Nessus).
+Validation sécurité.
+Monitoring
+(Prometheus
+& Grafana)
+Surveillance continue.
+Collecte des métriques.
+Dashboards CPU/RAM/erreurs.
+Alerting.
+3.2.2
+Besoins non fonctionnels
+• Performances : Le système doit pouvoir gérer de vastes volumes de données
+et fournir des résultats de détection de fraudes en temps réel
+• Sécurité : La confidentialité et l’intégrité des données doivent être assurées
+par le système, tout en protégeant les utilisateurs contre les accès non
+autorisés.
+• Maintenance : Le code doit être clair pour permettre des évolutions ou
+améliorations futures.
+Isi Mahdia
+Page 36
+
+
+===== PAGE 55 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+• Fiabilité : le système doit fonctionner de manière fiable et sécurisée en
+garantissant l’intégrité des données.
+3.2.3
+Identification des acteurs
+Une personne, un matériel ou un logiciel peut être considéré comme un acteur
+qui interagit avec le système afin de réaliser une ou plusieurs fonctions liées à
+la situation d’utilisation. Nous avons repéré les acteurs suivants pour notre
+système :
+Les principaux acteurs identifiés dans le cadre de notre projet sont :
+• Client interne : Utilisateur interne qui accède à la plateforme pour soumettre
+une demande d’infrastructure via un formulaire en ligne. Après l’envoi, il peut
+consulter l’état d’avancement de sa demande jusqu’à son traitement final.
+• Équipe Cloud : Responsable de la validation technique et stratégique des
+demandes. Elle évalue la disponibilité des ressources et veille à la conformité
+avec les règles de gouvernance de l’organisation. Elle peut également
+déclencher des workflows d’exécution.
+• Équipe Support : En charge du provisionnement et de la mise en service des
+ressources demandées (machines virtuelles, réseau, etc.). Elle exécute les
+workorders générés automatiquement et configure les environnements selon les
+besoins.
+• Administrateur de la plateforme : Supervise l’ensemble du système. Il gère
+les rôles et les droits des utilisateurs, configure les règles de gouvernance et
+Isi Mahdia
+Page 37
+
+
+===== PAGE 56 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+assure la surveillance des performances de la plateforme via des tableaux de
+bord et des indicateurs clés .
+3.3 Pilotage de projet avec SCRUM
+3.3.1
+Équipe et rôles
+Scrum master : Mme. Fatma Bouzid
+Product owner : M. Bassem Zaabar
+Team Member : Hadil Ben Masseoud
+3.3.2
+Le Backlog du produit
+Pour réaliser un projet Scrum, il faut définir le produit Backlog qui est une
+liste priorisée des tâches.
+Isi Mahdia
+Page 38
+
+
+===== PAGE 57 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+TABLE 3.2 – Backlog du produit : Histoires utilisateurs, priorités et rangs
+Thème
+Histoires utilisateurs
+Priorité
+Rang
+Utilisateur
+En tant qu’utilisateur, je veux créer un
+compte afin d’accéder à la plateforme et
+soumettre mes demandes.
+Haute
+1
+En tant qu’utilisateur, je veux m’authentifier
+afin d’accéder à mon espace personnel et
+gérer mes demandes.
+Haute
+2
+En tant qu’utilisateur, je veux réinitialiser
+mon mot de passe afin de pouvoir me
+reconnecter.
+Moyenne
+3
+En tant qu’utilisateur, je veux soumettre une
+demande de création de VM afin que mes
+besoins soient pris en charge.
+Haute
+4
+En tant qu’utilisateur, je veux suivre l’état
+de ma demande afin d’être informé de son
+avancement.
+Haute
+5
+AdminCloud
+Engineering
+En tant qu’admin cloud, je veux vérifier les
+règles de gouvernance sur chaque demande
+afin d’assurer la conformité.
+Haute
+6
+En tant qu’admin cloud, je veux créer et
+enregistrer la demande afin de formaliser le
+processus.
+Haute
+7
+En tant qu’admin cloud, je veux valider ou
+refuser les ressources nécessaires afin de
+garantir leur disponibilité.
+Haute
+8
+Isi Mahdia
+Page 39
+
+
+===== PAGE 58 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+Thème
+Histoires utilisateurs
+Priorité
+Rang
+En tant qu’admin cloud, je veux attribuer les
+adresses IP et réseau afin que la VM soit
+correctement configurée.
+Moyenne
+9
+AdminSupport
+En
+tant
+qu’admin
+support,
+je
+veux
+provisionner les ressources afin de créer les
+machines virtuelles demandées.
+Haute
+11
+En tant qu’admin support, je veux exécuter
+un workorder pour mettre en place les
+services nécessaires.
+Haute
+12
+En
+tant
+qu’admin
+support,
+je
+veux
+utiliser
+Terraform
+pour
+créer
+les
+VM
+automatiquement.
+Moyenne
+13
+En tant qu’admin support, je veux utiliser
+Ansible
+pour
+configurer
+les
+machines
+provisionnées.
+Moyenne
+14
+AdminPlateforme
+En tant qu’admin plateforme, je veux définir
+les règles de gouvernance afin de cadrer le
+processus.
+Moyenne
+15
+En tant qu’admin plateforme, je veux gérer
+les accès et permissions afin d’assurer une
+bonne gestion des rôles.
+Moyenne
+16
+En
+tant
+qu’admin
+plateforme,
+je
+veux
+consulter
+les
+KPIs
+afin
+de
+suivre
+la
+performance globale du système.
+Moyenne
+17
+En tant qu’admin plateforme, je veux gérer
+les rôles et permissions afin d’assurer un
+contrôle strict des actions utilisateur.
+Moyenne
+18
+Isi Mahdia
+Page 40
+
+
+===== PAGE 59 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+Thème
+Histoires utilisateurs
+Priorité
+Rang
+Monitoring
+/
+Dashboard
+En tant qu’admin ou utilisateur, je veux
+visualiser un tableau de bord des statuts des
+demandes et VMs.
+Haute
+19
+En tant qu’admin ou utilisateur, je veux
+visualiser
+les
+métriques
+des
+VMs
+via
+Prometheus et Grafana.
+Moyenne
+20
+Déploiement
+Application
+En tant que développeur/DevOps, je veux
+déployer le frontend et backend via Docker
+afin qu’ils soient opérationnels.
+Haute
+21
+En tant que développeur/DevOps, je veux
+automatiser le déploiement avec Jenkins et
+ArgoCD sur Kubernetes.
+Haute
+22
+3.3.3
+Planification de Sprint
+Le découpage en releases consiste à segmenter un projet logiciel en versions
+successives ou livrables intermédiaires. Chaque release constitue une étape
+importante du cycle de développement, matérialisant une progression
+fonctionnelle ou technique du produit.
+Isi Mahdia
+Page 41
+
+
+===== PAGE 60 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+FIGURE 3.1 – Planification de Sprint
+3.4 Cas d’utilisation
+3.4.1
+Introduction
+Un cas d’utilisation décrit, en génie logiciel, la manière dont un acteur
+interagit avec un système pour atteindre un objectif donné. Il formalise une
+séquence d’actions représentative du comportement attendu du système et
+constitue ainsi un outil essentiel pour spécifier ses exigences fonctionnelles.
+Isi Mahdia
+Page 42
+
+
+===== PAGE 61 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+3.4.2
+Diagramme de cas d’utilisation globale de système
+FIGURE 3.2 – Les trois modèles de services Cloud
+3.5 Architecture Globale
+L’architecture globale de la plateforme repose sur une intégration cohérente
+entre les couches de développement applicatif, d’automatisation Infrastructure
+as Code (IaC), de pipeline DevSecOps CI/CD et de supervision. Elle suit une
+approche moderne orientée Cloud et DevOps, permettant d’assurer
+l’automatisation complète, la scalabilité, la sécurité et la traçabilité des
+opérations internes liées à la gestion des demandes d’infrastructure.
+Isi Mahdia
+Page 43
+
+
+===== PAGE 62 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+La solution s’articule autour de quatre blocs principaux :
+(1) l’application Frontend/Backend.
+(2) l’automatisation IaC.
+(3) le pipeline CI/CD.
+(4) le système de monitoring et supervision.
+FIGURE 3.3 – Architecture Globale de la Solution
+Isi Mahdia
+Page 44
+
+
+===== PAGE 63 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+3.5.1
+Application Frontend et Backend
+La plateforme est accessible via une interface web développée en Flutter,
+utilisée par les clients internes pour soumettre, suivre et gérer les demandes de
+machines virtuelles.
+Le backend, développé avec Spring Boot, expose des API REST permettant :
+l’authentification et la gestion des utilisateurs,
+la création et le suivi des demandes,
+l’automatisation des processus de provisioning via Terraform Cloud et Ansible,
+l’intégration avec les systèmes CI/CD et monitoring.
+Toutes les données sont stockées dans une base MongoDB, garantissant
+flexibilité et rapidité d’accès.
+3.5.2
+Infrastructure automatisée (IaC)
+L’infrastructure cloud est entièrement gérée de manière automatisée grâce à
+l’Infrastructure as Code.
+Terraform Cloud prend en charge le provisioning des ressources Azure
+(machines virtuelles, réseaux, IPs...). Les runs Terraform (plan/apply) sont
+lancés automatiquement depuis le backend.
+Ansible assure la configuration des machines créées (installation des services,
+configuration système, accès SSH, packages, paramétrage réseau...).
+Isi Mahdia
+Page 45
+
+
+===== PAGE 64 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+Cette intégration permet de réduire totalement les interventions manuelles et
+garantit des environnements reproductibles, traçables et cohérents.
+3.5.3
+Pipeline CI/CD (DevSecOps)
+La plateforme adopte une chaîne CI/CD complète, intégrant qualité, sécurité
+et déploiement automatisé.
+GitHub héberge le code source.
+Jenkins assure le Build, les tests, l’analyse SonarQube, les scans
+OWASP/Nmap, la création d’images Docker et le push vers Docker Hub.[16]
+ArgoCD, basé sur une approche GitOps, déploie automatiquement les images
+sur le cluster Kubernetes (AKS) dès la mise à jour du repository.
+Cette pipeline assure une mise en production rapide, sécurisée et continue,
+tout en offrant un suivi complet des exécutions.
+3.5.4
+Supervision et Monitoring
+Pour garantir la performance, la disponibilité et la stabilité du système, une
+couche de supervision moderne est mise en place :
+Prometheus collecte les métriques de l’application, du cluster Kubernetes et
+des machines provisionnées,
+Cette supervision permet de détecter rapidement les incidents et de maintenir
+un haut niveau de qualité de service.
+Isi Mahdia
+Page 46
+
+
+===== PAGE 65 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+3.6 Environnement de développement
+3.6.1
+Environnement matériel
+Dans le tableau suivant, nous exposons les caractéristiques d’ordinateur
+utilisé pour le développement de notre application :
+Configuration de la machine hôte
+TABLE 3.3 – Caractéristiques de la machine utilisée
+Composant
+Détails
+Type de PC
+Portable Asus
+Propriétaire
+Hadil Ben Masseoud
+RAM
+8 Go
+Processeur
+Intel Core i3
+Disque dur
+500 Go
+Système d’exploitation
+Windows 10 Professionnel
+Configuration des machines virtuelles
+TABLE 3.4 – Caractéristiques de la machine virtuelle VMCI
+Caractéristiques
+VMCI
+Nom de la machine
+VMCI
+Système d’exploitation
+Linux (Ubuntu 22.04 LTS)
+Taille
+Standard B2ms
+vCPUs
+2
+Mémoire (RAM)
+8 Go
+Disque
+30 Go SSD
+Plateforme
+Microsoft Azure
+Configuration réseau des machines
+Isi Mahdia
+Page 47
+
+
+===== PAGE 66 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+TABLE 3.5 – Adresse IP publique de la machine virtuelle
+Machine virtuelle
+Nom
+Adresse IP publique
+VMCI
+VMCI
+48.220.33.106
+3.6.2
+Environnement logiciel et technologies utilisées
+3.6.2.1
+Outils de développement
+FIGURE 3.4 –
+Postman
+FIGURE 3.5 – IntelliJ
+IDEA
+FIGURE 3.6 – Visual
+Studio Code
+FIGURE 3.7 –
+Android Studio
+• Visual Studio Code – Éditeur de code principal utilisé pour le développement
+des applications.
+• IntelliJ IDEA – IDE utilisé pour le développement côté backend avec Spring
+Boot.
+• Postman – Outil pour tester les APIs REST et vérifier les endpoints backend.
+• Android Studio – IDE pour le développement Flutter, incluant l’émulateur
+Android pour tester les applications mobiles
+Isi Mahdia
+Page 48
+
+
+===== PAGE 67 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+3.6.2.2
+Outils de contrôle de version et de collaboration
+FIGURE 3.8 – git
+FIGURE 3.9 – github
+• Git – Système de gestion de versions décentralisé pour suivre les
+modifications du code.
+• GitHub – Plateforme de collaboration pour héberger le code et gérer les
+branches et pull requests.
+3.6.2.3
+Environnements d’Exécution
+FIGURE 3.10 – flutter FIGURE 3.11 –
+Springboot
+• Flutter SDK [17] – Kit de développement pour créer des applications
+mobiles multiplateformes (iOS et Android) avec Dart.
+• Dart [18] – Langage de programmation utilisé pour le développement
+Flutter.
+• Java JDK [19] – Environnement d’exécution pour exécuter les applications
+Spring Boot côté backend.
+Isi Mahdia
+Page 49
+
+
+===== PAGE 68 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+• Spring Boot [20] – Framework Java pour créer et exécuter facilement des
+applications backend autonomes.
+3.6.2.4
+Conteneurisation et CI/CD
+FIGURE 3.12 –
+Docker
+FIGURE 3.13 –
+Docker hub
+FIGURE 3.14 –
+Jenkins
+FIGURE 3.15 –
+Argocd
+• Docker – Outil de conteneurisation permettant d’empaqueter les applications
+et leurs dépendances.[12]
+• Jenkins – Serveur d’intégration continue pour automatiser les builds, tests et
+déploiements.
+Docker Hub – Registre de conteneurs en ligne pour stocker, partager et
+distribuer les images Docker.[12]
+• Argo CD – Outil GitOps pour déployer automatiquement les applications
+dans Kubernetes en synchronisant les manifests avec un dépôt Git.[17]
+Isi Mahdia
+Page 50
+
+
+===== PAGE 69 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+3.6.2.5
+Orchestration
+FIGURE 3.16 – AKS
+FIGURE 3.17 –
+Kubernetes
+• Kubernetes – Système d’orchestration pour déployer, gérer et scaler des
+conteneurs sur plusieurs machines.[13]
+• AKS (Azure Kubernetes Service) – Service Kubernetes managé par Microsoft
+Azure, permettant de déployer et gérer des clusters Kubernetes sans se soucier
+de l’infrastructure sous-jacente.
+3.6.2.6
+Qualité et Sécurité
+FIGURE 3.18 – Nmap
+FIGURE 3.19 –
+OWASP ZAP
+FIGURE 3.20 –
+SonarQube
+FIGURE 3.21 –
+Nessus
+• SonarQube – Analyse statique du code pour détecter les bugs, vulnérabilités
+et problèmes de qualité.[19]
+• OWASP ZAP – Outil pour effectuer des tests de sécurité automatisés sur les
+applications web.
+Isi Mahdia
+Page 51
+
+
+===== PAGE 70 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+• Nmap – Outil d’analyse réseau permettant de scanner les ports, détecter les
+services actifs et examiner la surface d’exposition d’un serveur.
+• Nessus – Scanner de vulnérabilités avancé permettant d’identifier des failles
+critiques, des erreurs de configuration et des risques de sécurité à travers
+l’infrastructure.
+3.6.2.7
+Outils d’automatisation de l’infrastructure
+FIGURE 3.22 –
+Terraform
+• Terraform – Provisionnement de l’infrastructure en tant que code (IaC) pour
+créer et gérer des ressources cloud.
+3.6.2.8
+Base de Données
+FIGURE 3.23 –
+MongoDB
+• MongoDB – Base de données NoSQL utilisée pour stocker les données de
+l’application.
+Isi Mahdia
+Page 52
+
+
+===== PAGE 71 =====
+
+ANALYSE ET SPÉCIFICATIONS DES BESOINS
+3.6.2.9
+Outils de surveillance et d’observabilité
+FIGURE 3.24 –
+Prometheus
+FIGURE 3.25 – Azure
+Monitoring
+• Prometheus– Collecte et stockage des métriques pour la surveillance des
+applications et serveurs.[22]
+• Azure Monitoring – Visualisation des métriques, création de dashboards et
+suivi en temps réel via Azure Monitor.
+3.7 Conclusion
+Dans ce chapitre, nous avons défini les besoins fonctionnels et non
+fonctionnels, décrit l’architecture globale du système et présenté les outils
+mobilisés pour le développement. Cette analyse a permis de poser les bases
+nécessaires à la conception et à la cohérence technique du projet. Le chapitre
+suivant portera sur Release 1 du projet, structurée en deux sprints : le premier
+consacré à l’authentification (inscription, connexion, récupération de mot de
+passe) et le second à la création et au suivi des demandes de machines
+virtuelles.
+Isi Mahdia
+Page 53
+
+
+===== PAGE 72 =====
+
+Chapitre
+4
+Release 1 :
+Sommaire
+4.1
+INTRODUCTION . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.2
+Release Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.3
+Sprint 1 – Gestion des utilisateurs (Authentication)
+. . . . .
+56
+4.3.1
+Sprint Backlog :
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+4.3.2
+Spécification fonctionnelle . . . . . . . . . . . . . . . . . . . . .
+56
+4.3.3
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+4.3.4
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+4.4
+Sprint 2 – Création et Validation des demandes . . . . . . . .
+63
+4.4.1
+Sprint Backlog :
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+4.4.2
+Spécification fonctionnelle . . . . . . . . . . . . . . . . . . . . .
+64
+4.4.3
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+4.4.4
+Diagramme de classe de Release
+. . . . . . . . . . . . . . . . .
+68
+4.5
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+4.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+70
+Isi Mahdiaw
+Page 54
+
+
+===== PAGE 73 =====
+
+RELEASE 1 :
+4.1 INTRODUCTION
+Cette Release 1 pose les bases de la plateforme en deux sprints. Le premier
+sprint porte sur l’authentification, incluant l’inscription, la connexion et la
+récupération de mot de passe afin d’assurer un accès sécurisé. Le second
+sprint est consacré à la création et au suivi des demandes de machines
+virtuelles, permettant aux utilisateurs de soumettre leurs besoins et de suivre
+leur avancement. Cette release fournit les fondations essentielles pour les
+étapes de validation, d’automatisation et de déploiement prévues dans les
+releases suivantes.
+4.2 Release Backlog
+TABLE 4.1 – Plan des sprints
+Sprint
+Fonctionnalités principales
+Détails
+Sprint 1
+Gestion
+des
+utilisateurs
+(Authentication)
+−Inscription et authentification
+−Validation des données
+−Réinitialisation du mot de
+passe
+Sprint 2
+Création
+et
+suivi
+des
+demandes
+−Création de demande
+−Suivi des statuts (En attente,
+Validée, Refusée...)
+−Validation/refus par Admin
+Cloud avec notification
+Isi Mahdia
+Page 55
+
+
+===== PAGE 74 =====
+
+RELEASE 1 :
+4.3 Sprint 1 – Gestion des utilisateurs (Authentication)
+Objectif : Mettre en place les fonctionnalités permettant aux utilisateurs
+d’accéder à la plateforme .
+4.3.1
+Sprint Backlog :
+TABLE 4.2 – Backlog : User Stories d’authentification
+Items
+User Story
+Description
+PrioritéDurée
+S’inscrir
+Création
+de
+compte
+En tant qu’utilisateur, je veux créer un
+compte afin d’accéder à la plateforme
+et soumettre mes demandes.
+1
+3 jours
+S’authentifier
+Connexion
+En
+tant
+qu’utilisateur,
+je
+veux
+m’authentifier
+afin
+d’accéder
+à
+mon espace personnel et gérer mes
+demandes.
+1
+3 jours
+Mot de passe
+Réinitialisation
+En
+tant
+qu’utilisateur,
+je
+veux
+réinitialiser mon mot de passe si
+je l’ai oublié afin de pouvoir me
+reconnecter.
+2
+3 jours
+4.3.2
+Spécification fonctionnelle
+Cette section expose le diagramme des cas d’utilisation élaboré à partir du
+backlog du premier sprint, ainsi qu’une description détaillée de chacun de ces
+cas.
+Isi Mahdia
+Page 56
+
+
+===== PAGE 75 =====
+
+RELEASE 1 :
+4.3.2.1
+Diagramme de cas d’utilisation
+FIGURE 4.1 – Diagramme des cas d’utilisation du premier sprint
+4.3.2.2
+Description textuelle de cas d’utilisation
+TABLE 4.3 – Cas d’utilisation : Créer un compte
+Élément
+Description
+Titre
+Créer un compte
+Acteur
+Utilisateur
+Résumé
+Permet à un utilisateur de créer un compte pour accéder à la
+plateforme et soumettre ses demandes.
+Précondition
+L’utilisateur n’a pas encore de compte.
+Scénario nominal
+1. L’utilisateur accède à la page d’inscription.
+2. Le système affiche le formulaire.
+3. L’utilisateur saisit les informations nécessaires.
+4. L’utilisateur clique sur « S’inscrire ».
+5. Les informations sont envoyées à la base de données.
+6. Le système confirme la création et redirige vers la
+page de connexion.
+Enchaînement
+alternatif
+Si les informations sont invalides ou si l’email existe déjà,
+le système affiche un message d’erreur et permet de corriger
+les informations.
+Postconditions
+L’utilisateur a un compte valide et peut se connecter.
+Isi Mahdia
+Page 57
+
+
+===== PAGE 76 =====
+
+RELEASE 1 :
+Cas d’utilisation : « S’authentifier »
+TABLE 4.4 – Cas d’utilisation : S’authentifier
+Élément
+Description
+Titre
+S’authentifier
+Acteur
+Utilisateur
+Résumé
+Permet à un utilisateur de s’authentifier pour accéder à son
+espace personnel.
+Précondition
+L’utilisateur a déjà créé un compte.
+Scénario nominal
+1. Affichage de la page d’authentification.
+2. Le système affiche le formulaire.
+3. L’utilisateur saisit son UserName et son mot de passe.
+4. L’utilisateur clique sur « Connexion ».
+5. Les paramètres sont envoyés à la base de données
+pour vérification.
+6. Le système ouvre l’espace utilisateur correspondant.
+Enchaînement
+alternatif
+En cas d’identifiants incorrects (email ou mot de passe),
+le système affiche un message d’erreur puis réaffiche le
+formulaire.
+Postconditions
+L’utilisateur est authentifié et peut accéder à son espace
+personnel.
+Isi Mahdia
+Page 58
+
+
+===== PAGE 77 =====
+
+RELEASE 1 :
+Cas d’utilisation : « Réinitialiser mot de passe »
+TABLE 4.5 – Cas d’utilisation : Réinitialiser mot de passe
+Élément
+Description
+Titre
+Réinitialiser mot de passe
+Acteur
+Utilisateur
+Résumé
+Permet à un utilisateur de réinitialiser son mot de passe
+oublié.
+Précondition
+L’utilisateur a déjà un compte avec un email valide.
+Scénario nominal
+1. L’utilisateur clique sur « Mot de passe oublié ».
+2. Le système affiche le formulaire.
+3. L’utilisateur saisit son email et clique sur « Envoyer
+OTP ».
+4. Le système envoie un code OTP par email.
+5. L’utilisateur saisit le code OTP et le nouveau mot de
+passe.
+6. Le système valide et met à jour le mot de passe dans
+la base de données.
+Enchaînement
+alternatif
+Si le code OTP est incorrect ou expiré, le système affiche un
+message d’erreur et propose de renvoyer un nouveau code.
+Postconditions
+L’utilisateur peut se reconnecter avec son nouveau mot de
+passe.
+Isi Mahdia
+Page 59
+
+
+===== PAGE 78 =====
+
+RELEASE 1 :
+4.3.3
+Conception
+FIGURE 4.2 – Diagramme de sequance de -creer un compte
+FIGURE 4.3 – Diagramme de sequance de - S’authentifier
+Isi Mahdia
+Page 60
+
+
+===== PAGE 79 =====
+
+RELEASE 1 :
+FIGURE 4.4 – Diagramme de sequance de - Réinitialiser mot de passe
+‘
+4.3.4
+Réalisation
+FIGURE 4.5 – Interfaces réalisées d’authentification
+Isi Mahdia
+Page 61
+
+
+===== PAGE 80 =====
+
+RELEASE 1 :
+FIGURE 4.6 – Interfaces réalisées du Réinitialiser mot de passe
+FIGURE 4.7 – Interfaces réalisées du création un compte
+Isi Mahdia
+Page 62
+
+
+===== PAGE 81 =====
+
+RELEASE 1 :
+4.4 Sprint 2 – Création et Validation des demandes
+Objectif : Permettre aux utilisateurs de créer une demande d’infrastructure et
+de suivre son avancement.
+4.4.1
+Sprint Backlog :
+TABLE 4.6 – Backlog : User Stories – Gestion des demandes
+Items
+User Story
+Description
+Priorité Durée
+Gestion
+de
+demandes
+Ajouter
+une
+demande de VM
+En
+tant
+qu’utilisateur,
+je
+veux
+soumettre une demande de création
+de VM afin que mes besoins en
+infrastructure soient pris en charge.
+1
+3
+jours
+Gestion
+de
+demandes
+Suivre l’état de
+ma demande
+En tant qu’utilisateur, je veux suivre
+l’état de ma demande afin de savoir
+si elle est en attente, validée, refusée
+ou en exécution.
+1
+2
+jours
+Gestion
+de
+demandes
+Valider/refuser
+une
+demande,
+ajouter
+IP
+et
+réseau,
+envoyer
+au support
+En
+tant
+qu’Admin
+Cloud,
+je
+veux gérer les demandes afin de
+valider
+ou
+refuser,
+ajouter
+une
+IP et un réseau, et envoyer les
+demandes validées au support pour
+configuration et déploiement.
+1
+6
+jours
+Isi Mahdia
+Page 63
+
+
+===== PAGE 82 =====
+
+RELEASE 1 :
+4.4.2
+Spécification fonctionnelle
+Dans cette section, nous présentons le diagramme des cas d’utilisation élaboré
+à partir du backlog du deuxième sprint, suivi d’une description détaillée de
+chaque cas d’utilisation.
+Diagramme des cas d’utilisation du deuxième sprint
+4.4.2.1
+Diagramme de cas d’utilisation
+FIGURE 4.8 – Diagramme de cas d’utilisatio
+4.4.2.2
+Description textuelle de cas d’utilisation
+Cas d’utilisation : « Ajouter une demande de VM »
+Isi Mahdia
+Page 64
+
+
+===== PAGE 83 =====
+
+RELEASE 1 :
+TABLE 4.7 – Cas d’utilisation : Ajouter une demande de VM
+Élément
+Description
+Titre
+Ajouter une demande de VM
+Acteur
+Utilisateur
+Résumé
+Permet à un utilisateur de soumettre une demande de
+création de VM afin que ses besoins en infrastructure soient
+pris en charge.
+Précondition
+L’utilisateur est authentifié et dispose d’un accès à son
+espace personnel.
+Scénario nominal
+1. L’utilisateur accède à la page de création de demande.
+2. Le système affiche le formulaire.
+3. L’utilisateur saisit les informations nécessaires (type
+de VM, ressources, descriptions...).
+4. L’utilisateur clique sur « Soumettre ».
+5. Le système enregistre la demande dans la base de
+données.
+6. Le système confirme la création de la demande et
+l’ajoute au tableau de suivi.
+Enchaînement
+alternatif
+Si les champs sont incorrects ou incomplets, le système
+affiche un message d’erreur et permet de corriger la
+demande.
+Postconditions
+La demande est enregistrée et peut être suivie par
+l’utilisateur.
+Isi Mahdia
+Page 65
+
+
+===== PAGE 84 =====
+
+RELEASE 1 :
+Cas d’utilisation : « Gestion de demandes »
+TABLE 4.8 – Cas d’utilisation : Gestion de demandes – Admin Cloud
+Élément
+Description
+Titre
+Gestion de demandes (Valider/Refuser, Ajouter IP/Réseau,
+Envoi au support)
+Acteur
+Admin Cloud
+Résumé
+Permet à l’Admin Cloud de gérer les demandes en les
+validant ou refusant. Si la demande est validée, l’Admin
+peut ajouter une IP et un réseau puis envoyer la demande
+au support pour configuration et déploiement. Si elle est
+refusée, un message est envoyé à l’utilisateur.
+Précondition
+L’Admin Cloud est authentifié et la demande existe dans le
+système.
+Scénario nominal
+1. L’Admin Cloud sélectionne une demande.
+2. Le système affiche les options de décision.
+3. L’Admin choisit de valider ou refuser.
+4. Si validée :
+−L’Admin ajoute l’IP et le réseau.
+−Le système envoie la demande au support pour
+configuration.
+5. Si refusée :
+−Le système envoie un message à l’utilisateur
+pour l’informer.
+6. Le système met à jour le statut de la demande.
+Enchaînement
+alternatif
+Si l’Admin Cloud ne prend pas de décision ou si la demande
+n’existe pas, le système affiche un message d’erreur.
+Postconditions
+Le statut de la demande est mis à jour, la configuration est
+envoyée au support si validée, ou un message est envoyé à
+l’utilisateur si refusée.
+Isi Mahdia
+Page 66
+
+
+===== PAGE 85 =====
+
+RELEASE 1 :
+4.4.3
+Conception
+FIGURE 4.9 – Diagramme de séquence d’ajout de demande
+FIGURE 4.10 – Diagramme de séquence de gestion des demandes
+Isi Mahdia
+Page 67
+
+
+===== PAGE 86 =====
+
+RELEASE 1 :
+4.4.4
+Diagramme de classe de Release
+FIGURE 4.11 – Diagramme de classe
+4.5 Réalisation
+FIGURE 4.12 – Interface Demandeur
+Isi Mahdia
+Page 68
+
+
+===== PAGE 87 =====
+
+RELEASE 1 :
+FIGURE 4.13 – Interface Support
+FIGURE 4.14 – Interface Cloud
+FIGURE 4.15 – Interface de création de demande
+Isi Mahdia
+Page 69
+
+
+===== PAGE 88 =====
+
+RELEASE 1 :
+FIGURE 4.16 – Interface de validation de demande
+FIGURE 4.17 – Interface de création de demande
+4.6 Conclusion
+Ce chapitre a présenté la Release 1 de la plateforme, couvrant
+l’authentification des utilisateurs et la gestion des demandes de machines
+virtuelles, avec des spécifications et interfaces établissant un socle fonctionnel
+solide. Cette base prépare les prochaines étapes. Le chapitre suivant se
+concentrera sur l’Infrastructure as Code (IaC), l’intégration et livraison
+continues (CI/CD), ainsi que le monitoring, pour automatiser, déployer et
+superviser efficacement la solution.
+Isi Mahdia
+Page 70
+
+
+===== PAGE 89 =====
+
+Chapitre
+5
+Release 2 :Automatisation, Déploiement
+Continu et Monitoring
+Sommaire
+5.1
+INTRODUCTION . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+5.2
+Release Backloge . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+5.3
+Sprint 1 : Infrastructure as Code (IaC)
+. . . . . . . . . . . . .
+73
+5.3.1
+Sprint Backlog – Sprint 1
+. . . . . . . . . . . . . . . . . . . . .
+74
+5.3.2
+Architecture fonctionnelle du Sprint IaC . . . . . . . . . . . . .
+75
+5.3.3
+Déclenchement automatisé via Terraform Cloud . . . . . . . . .
+77
+5.3.4
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+5.3.5
+Avantages de l’approche adoptée
+. . . . . . . . . . . . . . . . .
+81
+5.3.6
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+5.4
+Sprint 2 : CI/CD (Jenkins, Docker, ArgoCD)
+. . . . . . . . .
+82
+5.4.1
+Sprint Backlog – Sprint 2
+. . . . . . . . . . . . . . . . . . . . .
+83
+5.4.2
+Automatisation complète du cycle CI/CD . . . . . . . . . . . .
+84
+5.4.3
+Architecture générale de la chaîne CI/CD . . . . . . . . . . . .
+85
+5.4.4
+Installation et configuration de Jenkins . . . . . . . . . . . . . .
+86
+5.4.5
+Analyse qualité sécurité (SonarQube, OWASP,Nmap)
+. . . . .
+90
+5.4.6
+Construction et push des images Docker . . . . . . . . . . . . .
+91
+5.4.7
+Mise en place du Pipeline CD (ArgoCD et AKS) . . . . . . . .
+91
+5.4.8
+Déploiement GitOps automatisé
+. . . . . . . . . . . . . . . . .
+93
+5.5
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+94
+5.5.1
+Réalisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+94
+5.6
+Sprint 3 : Monitoring et Supervision . . . . . . . . . . . . . . .
+95
+5.6.1
+Sprint Backlog – Sprint 3
+. . . . . . . . . . . . . . . . . . . . .
+95
+5.6.2
+Architecture de la solution de monitoring
+. . . . . . . . . . . .
+97
+5.6.3
+Conception . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+97
+5.6.4
+Réalisation du sprint . . . . . . . . . . . . . . . . . . . . . . . .
+98
+5.7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 100
+Isi Mahdiaw
+Page 71
+
+
+===== PAGE 90 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+5.1 INTRODUCTION
+La Release 2 a pour objectif d’automatiser et de fiabiliser les opérations
+techniques de la plateforme. Elle introduit l’Infrastructure as Code, met en
+place un pipeline CI/CD complet et déploie un système de monitoring via
+Prometheus. Cette release permet d’améliorer la rapidité des déploiements, de
+réduire les erreurs humaines et d’assurer une supervision continue des
+services.
+5.2 Release Backloge
+TABLE 5.1 – Backloge de Release 2
+Sprint
+Fonctionnalités principales
+Tâches techniques principales
+Sprint
+1
+—
+IaC
+(Terraform
+et
+Ansible)
+−Automatisation du provisioning
+via Terraform Cloud
+−Exécution
+automatique
+des
+configurations via Ansible
+−Intégration IaC avec le backend
+−Consommation
+API
+Terraform
+Cloud
+−Génération
+dynamique
+des
+variables
+Terraform
+depuis
+backend
+−Appel
+Ansible
+(SSH/Runner)
+depuis backend
+−Création modules Terraform (VM,
+réseau...)
+−Exécution
+playbooks
+Ansible
+(installation services)
+−Gestion logs + états d’exécution
+Isi Mahdia
+Page 72
+
+
+===== PAGE 91 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+Sprint
+Fonctionnalités principales
+Tâches techniques principales
+Sprint 2 — CI/CD
+(Jenkins,
+Docker,
+ArgoCD)
+−Mise en place pipeline CI/CD
+complet
+−Analyse
+sécurité
+(OWASP,
+SonarQube)
+−Build & push d’image Docker
+−Déploiement
+automatique
+sur
+cluster
+−Création Jenkinsfile (build, test,
+sonar)
+−Intégration SonarQube + Quality
+Gate
+−Scan OWASP (Nmap/Nikto)
+−Build
+image
+Docker
++
+push
+registry
+−Déclenchement
+ArgoCD
+après
+push
+−Synchronisation
+déploiements
+avec AKS
+Sprint
+3
+—
+Monitoring
+(Prometheus)
+−Mise
+en
+place
+monitoring
+applicatif & infrastructure
+−Collecte métriques backend &
+cluster
+−Dashboards de supervision
+−Installation Prometheus
+−Exposition metrics Spring Boot
+(Azure Monitoring + Prometheus)
+−Configuration alerting
+−Intégration
+logs
+IaC/CI/CD
+si
+nécessaire
+5.3 Sprint 1 : Infrastructure as Code (IaC)
+Objectif :L’objectif est d’automatiser complètement le provisioning de
+l’infrastructure cloud à travers l’utilisation de Terraform Cloud et Ansible,
+intégrés directement au backend Spring Boot. Cette automatisation permet de
+garantir rapidité, cohérence et traçabilité.
+Isi Mahdia
+Page 73
+
+
+===== PAGE 92 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+5.3.1
+Sprint Backlog – Sprint 1
+TABLE 5.2 – Backlog de Sprint 1
+Item
+User Story
+Description
+Priorité
+Durée
+Provisionnement
+automatique
+Génération
+du
+plan Terraform
+En tant qu’administrateur Support,
+je veux générer automatiquement un
+plan Terraform afin de préparer le
+déploiement de la machine virtuelle.
+1
+3
+jours
+Provisionnement
+automatique
+Exécution
+du
+Apply Terraform
+En tant qu’administrateur Support,
+je
+veux
+exécuter
+automatiquement
+l’apply Terraform afin de déployer
+la machine virtuelle sans intervention
+manuelle.
+1
+3
+jours
+Intégration
+Backend
+–
+Terraform Cloud
+Appel
+à
+l’API
+Terraform Cloud
+En tant que backend, je veux appeler
+les APIs de Terraform Cloud pour
+lancer les runs (Plan/Apply) et suivre
+leur état d’exécution.
+1
+4
+jours
+Gestion
+des
+variables
+Génération
+automatique
+des
+variables
+Terraform
+En tant qu’administrateur Support,
+je veux que les variables Terraform
+(CPU, RAM, OS, réseau...) soient
+générées automatiquement selon la
+demande de l’utilisateur.
+1
+2
+jours
+Suivi d’exécution
+Suivi de l’état du
+run Terraform
+En tant qu’équipe Support, je veux
+suivre
+l’état
+d’un
+run
+(en
+cours,
+terminé, échoué) afin d’avoir une
+visibilité sur le provisioning.
+1
+2
+jours
+Isi Mahdia
+Page 74
+
+
+===== PAGE 93 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+Item
+User Story
+Description
+Priorité
+Durée
+Outputs
+Terraform
+Récupération des
+outputs
+En tant que backend, je veux récupérer
+les outputs Terraform (IP, ID de
+la VM...) ,afin de mettre à jour
+automatiquement
+les
+informations
+associées à la demande dans la base de
+données.
+2
+2
+jours
+5.3.2
+Architecture fonctionnelle du Sprint IaC
+Le processus IaC mis en œuvre adopte une logique entièrement automatisée,
+articulée autour des étapes suivantes :
+Collecte et génération dynamique des paramètres
+L’utilisateur final saisit les caractéristiques de la machine virtuelle (CPU,
+RAM, système d’exploitation, nom, réseau...).
+Le backend Spring Boot transforme ces informations en variables Terraform
+entièrement dynamiques.
+Déclenchement automatisé du run Terraform Cloud
+Le backend consomme l’API officielle de Terraform Cloud pour :
+créer un run,
+lancer l’étape de plan,
+exécuter automatiquement l’étape apply dès validation.
+Provisioning automatique sur Microsoft Azure
+Isi Mahdia
+Page 75
+
+
+===== PAGE 94 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+Terraform Cloud interagit avec Azure pour :
+créer la VM,
+configurer le réseau (VNet, IP publique),
+gérer le stockage et les clés SSH,
+générer les outputs nécessaires au backend.
+Mise à jour de la base de données et suivi en temps réel
+Le backend collecte et stocke :
+L’état d’exécution du processus Terraform.
+la sortie détaillée du Plan et de l’Apply.
+les outputs (IP, ID VM, clé générée...).
+FIGURE 5.1 – Architecture de IaC
+Isi Mahdia
+Page 76
+
+
+===== PAGE 95 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+5.3.3
+Déclenchement automatisé via Terraform Cloud
+Pour automatiser entièrement le provisioning de l’infrastructure Azure, le
+projet utilise Terraform Cloud comme plateforme centrale d’exécution.
+Contrairement à une exécution en ligne de commande (CLI) réalisée depuis un
+poste local, Terraform Cloud offre un environnement :
+• lsécurisé et isolé,
+• lindépendant de la machine de l’utilisateur,
+• lversionné et entièrement traçable,
+capable d’être appelé automatiquement par le backend ou par GitHub.
+5.3.3.1
+Création du workspace Terraform Cloud
+Un workspace dédié a été créé dans Terraform Cloud afin de stocker les
+fichiers Terraform, gérer les variables Azure et historiser les runs. Cette
+séparation garantit une isolation complète entre le backend et le provisioning
+de l’infrastructure.
+Isi Mahdia
+Page 77
+
+
+===== PAGE 96 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+FIGURE 5.2 – Titre de figure
+5.3.3.2
+Connexion au repository GitHub
+Le workspace est connecté au dépôt GitHub contenant les fichiers Terraform.
+Chaque modification du dossier déclenche automatiquement un Terraform
+Plan, puis un Terraform Apply après validation, remplaçant ainsi les
+commandes locales et assurant une exécution centralisée et fiable.
+FIGURE 5.3 – Fichier Variable de terraform
+Isi Mahdia
+Page 78
+
+
+===== PAGE 97 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+5.3.3.3
+Structure du dossier Terraform dans le projet
+La structure des fichiers d’infrastructure est organisée de manière claire et
+cohérente, comme montré dans l’image ci-dessous, afin de faciliter la
+compréhension et la gestion du projet.
+FIGURE 5.4 – Fichier output de Terraform
+FIGURE 5.5 – Fichier variable Terraform
+Isi Mahdia
+Page 79
+
+
+===== PAGE 98 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+FIGURE 5.6 – structure de File Terraform
+FIGURE 5.7 – le main de Terraform
+5.3.3.4
+Automatisation via Workspaces API, Variables API et Runs API
+Le backend interagit avec Terraform Cloud via son API officielle, ce qui
+permet d’orchestrer entièrement le cycle de vie de l’infrastructure. Grâce aux
+Workspaces API, il sélectionne l’environnement cible, tandis que les Variables
+API assurent l’injection dynamique des paramètres nécessaires. Enfin, les
+Runs API déclenchent automatiquement le processus plan →apply. Ce
+mécanisme permet ainsi de créer une machine virtuelle directement depuis
+l’application, sans intervention humaine.[14]
+Isi Mahdia
+Page 80
+
+
+===== PAGE 99 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+5.3.4
+Conception
+FIGURE 5.8 – Diagramme de l’Infrastructure as Code
+5.3.5
+Avantages de l’approche adoptée
+L’intégration IaC implémentée dans cette Release se distingue par plusieurs
+points forts :
+Automatisation totale
+Aucune étape manuelle : la création d’une VM se fait en un seul clic depuis
+l’interface utilisateur.
+Adaptation dynamique
+Les paramètres Terraform sont générés à la volée selon les choix de
+l’utilisateur.
+Traçabilité complète
+Chaque run est :
+Isi Mahdia
+Page 81
+
+
+===== PAGE 100 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+−enregistré dans Terraform Cloud,
+−journalisé dans la base de données,
+−associé à un historique des logs Ansible.
+Séparation propre des responsabilités
+−Le backend pilote la logique métier.
+−Terraform gère l’infrastructure.
+−Ansible applique la configuration.
+Réduction drastique des erreurs humaines
+Tout est standardisé, reproductible et versionné.
+5.3.6
+Réalisation
+FIGURE 5.9 – Déploiement de l’application sur Azure
+5.4 Sprint 2 : CI/CD (Jenkins, Docker, ArgoCD)
+Objectif : Mettre en place un pipeline CI/CD entièrement automatisé
+permettant de construire et tester l’application, d’analyser la qualité et la
+sécurité du code, de générer et publier l’image Docker, puis d’assurer son
+déploiement automatique via ArgoCD.
+Isi Mahdia
+Page 82
+
+
+===== PAGE 101 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+5.4.1
+Sprint Backlog – Sprint 2
+TABLE 5.3 – Backlog détaillé — Pipeline CI/CD
+Item
+User Story
+Description
+Priorité Durée
+Pipeline CI
+Build
+automatique
+En tant que développeur, je veux que
+le
+système
+compile
+automatiquement
+l’application à chaque push pour garantir
+l’intégration continue.
+1
+2 jours
+Pipeline CI
+Tests
++
+Qualité
+En tant que développeur, je veux exécuter
+automatiquement
+les
+tests
+unitaires
+et analyser la qualité du code avec
+SonarQube afin d’assurer la stabilité du
+projet.
+1
+2 jours
+Sécurité
+Analyse
+de
+vulnérabilités
+En tant qu’équipe DevOps, je veux
+exécuter un scan de sécurité (OWASP,
+Nmap/Nikto)
+afin
+de
+détecter
+les
+vulnérabilités avant le déploiement.
+1
+2 jours
+Docker
+Build image
+En tant que DevOps, je veux générer
+automatiquement
+une
+image
+Docker
+de
+l’application
+afin
+de
+garantir
+un
+environnement
+d’exécution
+reproductible.
+1
+2 jours
+Docker Registry
+Push image
+En tant que pipeline CI/CD, je veux
+pousser l’image Docker vers le registry
+afin
+qu’elle
+soit
+disponible
+pour
+le
+déploiement.
+1
+1 jour
+Isi Mahdia
+Page 83
+
+
+===== PAGE 102 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+Item
+User Story
+Description
+Priorité Durée
+ArgoCD
+Déploiement
+automatique
+En tant que DevOps, je veux que ArgoCD
+détecte la nouvelle image Docker et
+déploie
+automatiquement
+l’application
+sur le cluster Kubernetes.
+1
+3 jours
+ArgoCD
+Synchronisation
+& Rollback
+En
+tant
+qu’administrateur,
+je
+veux
+synchroniser l’état souhaité avec l’état
+réel du cluster et pouvoir effectuer un
+rollback en cas d’erreur.
+2
+2 jours
+Logs
+&
+Reporting
+Rapport
+pipeline
+En tant que développeur, je veux recevoir
+un rapport d’exécution (succès/échec)
+pour suivre la qualité des builds et des
+déploiements.
+2
+1 jour
+5.4.2
+Automatisation complète du cycle CI/CD
+Dans la continuité de l’automatisation apportée par l’Infrastructure as Code,
+la Release 2 inclut également la mise en place d’une chaîne CI/CD complète
+permettant d’automatiser entièrement le cycle de développement,
+d’intégration, de contrôle qualité, de construction d’images et de déploiement
+en production. Cette automatisation repose sur un ensemble cohérent d’outils :
+Jenkins, SonarQube, Docker, Docker Hub et ArgoCD connectés à un cluster
+Azure Kubernetes Service (AKS). Cette approche garantit :
+• une livraison continue, rapide et sécurisée,
+• une haute qualité du code,
+Isi Mahdia
+Page 84
+
+
+===== PAGE 103 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+• des déploiements reproductibles et traçables,
+• une réduction majeure des erreurs humaines.
+5.4.3
+Architecture générale de la chaîne CI/CD
+La chaîne CI/CD adoptée repose sur deux pipelines distincts mais
+complémentaires :
+1. Pipeline CI (Jenkins)
+Il assure :
+• la récupération automatique du code depuis GitHub,
+• la compilation du backend et du frontend,
+• l’exécution des tests unitaires,
+• l’analyse qualité (SonarQube),
+• l’analyse sécurité (OWASP Dependency Check, Nmap),
+• la construction des images Docker,leur publication sur Docker Hub.
+2. Pipeline CD (ArgoCD)
+ArgoCD, basé sur GitOps, assure automatiquement :
+• la détection d’un changement dans les manifests Kubernetes,
+• l’application du déploiement sur le cluster AKS,
+• le suivi de l’état des applications,
+• les rollbacks automatiques en cas d’échec.
+3.Flux global de la chaîne CI/CD
+Isi Mahdia
+Page 85
+
+
+===== PAGE 104 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+• Développeur →GitHub : push du code
+• Jenkins détecte le commit →exécute CI
+• Docker Hub reçoit les images générées
+• Kubernetes mis à jour dans Git
+• ArgoCD détecte le changement
+• Déploiement automatique sur AKS
+5.4.4
+Installation et configuration de Jenkins
+Installation de Jenkins
+FIGURE 5.10 – Installation de jenkins
+1.Installation de Docker pour Jenkins
+FIGURE 5.11 – Installation de Docker
+2. Création des Images Docker
+Isi Mahdia
+Page 86
+
+
+===== PAGE 105 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+FIGURE 5.12 – Docker File Backend
+FIGURE 5.13 – Docker File frontend
+3.Configuration des plugins essentiels
+Durant la configuration de Jenkins, plusieurs plugins essentiels ont été
+installés afin d’assurer le bon fonctionnement du pipeline CI/CD. Ces plugins
+permettent l’intégration avec GitHub, l’analyse qualité, la conteneurisation
+Docker et l’exécution des analyses de sécurité.
+Isi Mahdia
+Page 87
+
+
+===== PAGE 106 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+FIGURE 5.14 – Configuration des plugins
+• GitHub Integration : permet à Jenkins de récupérer le code depuis GitHub.
+• Pipeline : permet d’exécuter des pipelines déclarés dans un Jenkinsfile.
+• Docker Pipeline : permet à Jenkins de construire des images Docker.
+• SonarQube Scanner : permet l’analyse qualité du code.
+OWASP Dependency Check : détecte les librairies vulnérables (sécurité).
+Afin de permettre à Jenkins d’interagir avec les différents services externes,
+plusieurs credentials ont été configurés dans le tableau de bord Jenkins . Ces
+identifiants sont indispensables pour automatiser les étapes du pipeline.
+Token GitHub : utilisé pour cloner le repository et déclencher le pipeline.
+Token Docker Hub : permet de pousser les images Docker générées par
+Jenkins.
+Token SonarQube : permet de lancer les analyses qualité.
+Service principal Azure (AKS) : permet d’interagir avec le cluster Kubernetes.
+Isi Mahdia
+Page 88
+
+
+===== PAGE 107 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+FIGURE 5.15 – Docker File frontend
+Le pipeline CI est défini dans un fichier Jenkinsfile stocké dans le repository
+GitHub. L’image ci-dessous décrit les différentes étapes du pipeline exécutées
+automatiquement à chaque commit.
+FIGURE 5.16 – Le pipeline CI
+Structure du pipeline CI
+Stage 1 : Checkout →Récupération du code depuis GitHub
+Stage 2 : Build Test →Compilation backend + build frontend
+Stage 3 : SonarQube →Analyse qualité du code
+Stage 4 : Security Scan →Analyse sécurité (OWASP, Nikto, Nmap)
+Stage 5 : Docker Build →Construction des images Docker
+Isi Mahdia
+Page 89
+
+
+===== PAGE 108 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+Stage 6 : Docker Push →Publication sur Docker Hub
+5.4.5
+Analyse qualité sécurité (SonarQube, OWASP,Nmap)
+Le pipeline intègre une étape dédiée à la qualité et à la sécurité du code.
+L’outil SonarQube analyse les métriques suivantes :[19]
+• bugs
+• vulnérabilités
+• duplications
+• mauvaises pratiques (code smells)
+• couverture des tests
+OWASP Dependency Check : analyse des dépendances Java
+Cette étape repose sur l’utilisation d’OWASP Dependency-Check pour
+analyser les dépendances du projet et détecter les vulnérabilités connues. Afin
+d’assurer le bon déroulement de cette phase dans notre pipeline Jenkins,
+plusieurs actions de configuration doivent être réalisées au préalable.[20]
+FIGURE 5.17 – Plugin OWASP Scanner installé
+Nmap : scan des ports après déploiement
+Isi Mahdia
+Page 90
+
+
+===== PAGE 109 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+Cette étape exploite Nmap pour analyser le réseau, détecter les hôtes actifs,
+identifier les ports ouverts et repérer d’éventuelles vulnérabilités. Dans notre
+pipeline Jenkins, une étape dédiée est ajoutée au Jenkinsfile pour exécuter ce
+scan Nmap . La figure 1.14 présente le résultat et la sortie console générée
+lors de son exécution.
+FIGURE 5.18 – console output de Nmap
+5.4.6
+Construction et push des images Docker
+Chaque service (backend et frontend) est conteneurisé via un Dockerfile.
+Jenkins utilise Docker Pipeline pour construire automatiquement les images et
+les publier dans Docker Hub.
+1.Construction des images Docker
+2.Tagging
+5.4.7
+Mise en place du Pipeline CD (ArgoCD et AKS)
+ArgoCD a été installé dans le cluster AKS afin d’assurer un déploiement
+continu basé sur la logique GitOps. Il surveille en permanence le repository
+Git contenant les manifests Kubernetes et synchronise automatiquement les
+changements vers le cluster.[18]
+Isi Mahdia
+Page 91
+
+
+===== PAGE 110 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+Étapes :
+1.Installation d’ArgoCD sur AKS
+FIGURE 5.19 – .Installation d’ArgoCD sur AKS
+2.Exposition du dashboard ArgoCD
+FIGURE 5.20 – Exposition du dashboard ArgoCD
+3.Connexion de GitHub à ArgoCD
+FIGURE 5.21 – Connexion de GitHub à ArgoCD
+4.Création d’une Application ArgoCD
+Isi Mahdia
+Page 92
+
+
+===== PAGE 111 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+FIGURE 5.22 – Création d’une Application ArgoCD
+5.4.8
+Déploiement GitOps automatisé
+Grâce à GitOps, le déploiement est totalement automatisé :
+1.Jenkins génère une nouvelle image Docker.
+2.Kubernetes est mis à jour avec cette nouvelle image.
+3.ArgoCD détecte le changement dans GitHub.
+4.ArgoCD synchronise automatiquement la configuration avec AKS.
+5.Le cluster effectue un rolling update, garantissant zéro interruption.
+6.En cas d’échec, un rollback automatique est déclenché.
+Isi Mahdia
+Page 93
+
+
+===== PAGE 112 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+5.5 Conception
+FIGURE 5.23 – Diagramme de pipeline CI/CD
+5.5.1
+Réalisation
+Les tests réalisés confirment le fonctionnement complet de la chaîne CI/CD.
+Les différentes captures d’écran montrent les étapes du pipeline, le succès du
+Quality Gate, la présence des images Docker sur Docker Hub, ainsi que la
+synchronisation et le déploiement automatique via ArgoCD sur AKS.
+Isi Mahdia
+Page 94
+
+
+===== PAGE 113 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+FIGURE 5.24 – Déploiement de l’application sur Azure
+5.6 Sprint 3 : Monitoring et Supervision
+L’objectif de ce sprint est d’intégrer un système de monitoring complet en
+configurant Prometheus et Azure Monitor, d’acheminer les métriques vers le
+backend et de développer un tableau de bord Flutter permettant leur
+visualisation en temps réel. Des tests d’affichage sont ensuite réalisés pour
+valider le module.
+5.6.1
+Sprint Backlog – Sprint 3
+TABLE 5.4 – Backlog détaillé — Monitoring IaC (Prometheus & Azure Monitoring)
+Item
+User Story
+Description
+Priorité
+Durée
+Collecte
+métriques IaC
+Récupération
+des métriques
+VM
+En tant que système de monitoring, je
+veux collecter les métriques des VMs
+créées (CPU, RAM, disponibilité) via
+Azure Monitoring afin de surveiller l’état
+du provisioning.
+1
+2 jours
+Isi Mahdia
+Page 95
+
+
+===== PAGE 114 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+Prometheus
+Scraping
+Scraping
+du
+backend IaC
+En tant que DevOps, je veux permettre
+à Prometheus de scraper les métriques
+du backend (états Terraform, exécution
+Ansible, logs IaC) pour suivre l’exécution
+des pipelines IaC.
+1
+2 jours
+Backend
+Monitoring
+API
+Centralisation
+des données
+En tant que backend, je veux recevoir
+les métriques de Prometheus et Azure
+Monitoring afin d’unifier les données
+dans une API dédiée au monitoring IaC.
+1
+3 jours
+Visualisation
+Frontend
+Dashboard
+IaC
+pour
+Admin
+En
+tant
+qu’Admin
+Cloud,
+je
+veux
+visualiser dans le frontend les indicateurs
+des VMs (statut, performances, erreurs
+IaC) pour superviser facilement tous les
+déploiements.
+1
+3 jours
+Alerting IaC
+Alerte
+en
+cas
+d’échec
+provisioning
+En
+tant
+qu’administrateur,
+je
+veux
+être
+alerté
+en
+cas
+d’erreur
+dans
+Terraform/Ansible
+ou
+si
+la
+VM
+ne
+répond pas après provisioning.
+2
+2 jours
+Export
+Prometheus →
+Backend
+Transmission
+automatique
+En tant que système de monitoring, je
+veux envoyer au backend les métriques
+clés (latence provisioning, succès/échec,
+temps d’exécution) afin de les exploiter
+dans l’UI.
+2
+2 jours
+Cartes
+&
+Graphiques UI
+Interface
+graphique
+Monitoring
+En tant qu’utilisateur admin, je veux
+voir des cartes, graphiques et jauges
+concernant le provisioning afin d’avoir
+une vision claire des ressources.
+3
+2 jours
+Isi Mahdia
+Page 96
+
+
+===== PAGE 115 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+5.6.2
+Architecture de la solution de monitoring
+L’architecture de monitoring s’appuie sur une chaîne intégrée reliant
+l’infrastructure Azure, Prometheus et le backend applicatif. Après la création
+automatique des machines virtuelles via Terraform, celles-ci exposent leurs
+métriques système, que Prometheus collecte périodiquement. Parallèlement,
+Azure Monitor fournit des indicateurs complémentaires sur l’état des
+ressources cloud. L’ensemble de ces données est ensuite transmis au backend,
+qui les traite et les met à disposition du frontend pour une visualisation en
+temps réel. Cette architecture assure un suivi centralisé, fiable et continu des
+performances des machines virtuelles.
+FIGURE 5.25 – Architecture de la solution de monitoring
+5.6.3
+Conception
+Le diagramme montre comment les métriques des VM et de l’IaC sont
+collectées, centralisées, envoyées à Prometheus, puis affichées dans le
+dashboard, avec alertes en cas de problème.
+Isi Mahdia
+Page 97
+
+
+===== PAGE 116 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+FIGURE 5.26 – Diagramme du processus de monitoring
+5.6.4
+Réalisation du sprint
+Intégration de Prometheus Cette étape couvre l’installation de Prometheus, la
+configuration des jobs de scraping et la collecte automatique des métriques
+des machines virtuelles créées via Terraform.
+FIGURE 5.27 – Déploiement de l’application sur Azure
+Isi Mahdia
+Page 98
+
+
+===== PAGE 117 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+Exploitation d’Azure Monitor L’exploitation d’Azure Monitor passe par
+l’activation des métriques Azure, permettant de récupérer automatiquement les
+logs et indicateurs générés par les ressources cloud. Ces informations sont
+ensuite intégrées au backend grâce à l’API Azure, offrant une visibilité
+complète sur l’état et la performance des machines virtuelles.
+Traitement des données dans le backend Le backend assure le traitement
+centralisé des données de supervision en recevant les métriques collectées par
+Prometheus et en intégrant celles provenant d’Azure Monitor. Ces
+informations sont ensuite agrégées, normalisées et mises à disposition sous
+forme d’endpoints REST, permettant au frontend ou à tout autre service d’y
+accéder facilement pour l’affichage et l’analyse.
+Affichage en temps réel dans le frontend Le frontend offre un affichage en
+temps réel des métriques essentielles telles que l’utilisation du CPU, de la
+mémoire, du disque et du réseau. Les données sont rafraîchies
+automatiquement pour garantir une visualisation instantanée de l’état des
+machines virtuelles. Des indicateurs d’état, comme UP ou DOWN, permettent
+également de détecter rapidement la disponibilité et la santé de chaque
+ressource.
+FIGURE 5.28 – Tableau de bord de supervision
+Isi Mahdia
+Page 99
+
+
+===== PAGE 118 =====
+
+RELEASE 2 :AUTOMATISATION, DÉPLOIEMENT CONTINU ET MONITORING
+5.7 Conclusion
+Cette Release a consolidé l’environnement DevOps en automatisant le
+provisioning, le déploiement et le monitoring de l’infrastructure. L’intégration
+cohérente des outils IaC, CI/CD et de supervision garantit désormais des
+opérations plus fiables, maîtrisées et observables. Elle constitue ainsi une base
+robuste pour les évolutions futures du système.
+Isi Mahdia
+Page 100
+
+
+===== PAGE 119 =====
+
+CONCLUSION GÉNÉRALE
+Ce projet a permis de concevoir et de mettre en place une plateforme moderne
+et automatisée dédiée à la gestion des demandes d’infrastructure au sein
+d’Ooredoo Tunisie. En partant d’un processus initialement manuel, fragmenté
+et peu traçable, notre travail a apporté une solution centralisée, fiable et
+entièrement intégrée aux bonnes pratiques DevOps et DevSecOps. L’étude de
+l’existant a mis en évidence plusieurs limites majeures : absence de traçabilité,
+manque de visibilité sur les délais, données dispersées, coordination
+insuffisante entre équipes et faible niveau d’automatisation. Pour répondre à
+ces difficultés, la plateforme développée introduit un workflow complet,
+structuré et sécurisé, couvrant la soumission, le traitement, la validation et
+l’exécution automatique des demandes d’infrastructure. L’intégration de
+l’Infrastructure as Code via Terraform associée à une chaîne CI/CD complète
+basée sur Jenkins, Docker, GitHub et ArgoCD, a permis d’automatiser le
+provisioning et d’assurer une standardisation optimale des environnements.
+Les aspects sécurité ont été intégrés tout au long du cycle de développement
+grâce à des outils DevSecOps tels que SonarQube, OWASP, Nmap ou Nessus.
+Par ailleurs, la mise en place d’une couche de supervision et d’observabilité,
+basée sur Prometheus, Grafana et les services Azure, renforce la visibilité
+Isi Mahdiaw
+Page 101
+
+
+===== PAGE 120 =====
+
+CONCLUSION GÉNÉRALE
+opérationnelle et garantit une réaction rapide face aux anomalies. Les
+résultats obtenus démontrent que l’adoption des pratiques DevOps transforme
+significativement le mode de gestion des infrastructures internes : réduction
+des délais de traitement, diminution des erreurs humaines, meilleure
+coordination entre équipes, amélioration de la
+performance et conformité accrue. La plateforme contribue également à une
+gestion plus stratégique des ressources cloud et à un pilotage efficace des
+indicateurs opérationnels. En perspective, plusieurs axes d’amélioration
+peuvent être envisagés, notamment l’ajout de nouvelles catégories de
+demandes, l’intégration avancée de l’IA pour optimiser les ressources,
+l’automatisation complète du cycle de validation ou encore l’extension de la
+plateforme aux besoins multi-cloud. Ces évolutions permettraient d’enrichir
+davantage la solution et d’accompagner Ooredoo Tunisie dans sa transition
+vers une infrastructure toujours plus agile, intelligente et sécurisée.
+Ce travail confirme ainsi l’apport essentiel des méthodologies DevOps et
+DevSecOps dans la modernisation des infrastructures et ouvre la voie à de
+nouvelles opportunités d’innovation pour les équipes techniques.
+Isi Mahdia
+Page 102
+
+
+===== PAGE 121 =====
+
+BIBLIOGRAPHIE
+Bibliographie
+[1] Atlassian, Qu’est-ce que Scrum? Un guide du framework Agile.
+Disponible sur : https://www.atlassian.com/fr/agile/scrum (Consulté le
+06/12/2025).
+[2] Schwaber, K. et Sutherland, J., The Scrum Guide. Disponible sur :
+https://scrumguides.org/ (Consulté le 06/12/2025).
+[3] Takeuchi, H. et Nonaka, I., The New New Product Development Game,
+Harvard Business Review, 1986.
+[4] OMG (Object Management Group), Unified Modeling Language (UML)
+Specification. Disponible sur : https://www.omg.org/spec/UML/
+(Consulté le 06/12/2025).
+[5] IBM, Diagrammes de cas d’utilisation : Définition et utilisation.
+Disponible sur :
+https://www.ibm.com/docs/fr/rsm/7.5.0?topic=diagrams-use-case
+(Consulté le 06/12/2025).
+[6] GitLab, Que signifie DevOps? Culture et Pratiques. Disponible sur :
+https://about.gitlab.com/fr-fr/topics/devops/ (Consulté le 06/12/2025).
+Isi Mahdia
+Page 103
+
+
+===== PAGE 122 =====
+
+BIBLIOGRAPHIE
+[7] Microsoft, Qu’est-ce que DevSecOps? Définition et bonnes pratiques.
+Disponible sur : https://www.microsoft.com/fr-fr/security/business/
+security-101/what-is-devsecops (Consulté le 06/12/2025).
+[8] Microsoft Azure, Qu’est-ce que le cloud computing?. Disponible sur :
+https://azure.microsoft.com/fr-fr/resources/cloud-computing-dictionary/
+what-is-cloud-computing/ (Consulté le 06/12/2025).
+[9] Red Hat, IaaS, PaaS, SaaS : Les différences expliquées. Disponible sur :
+https:
+//www.redhat.com/fr/topics/cloud-computing/iaas-vs-paas-vs-saas
+(Consulté le 06/12/2025).
+[10] HashiCorp, What is Infrastructure as Code (IaC)?. Disponible sur :
+https://developer.hashicorp.com/terraform/intro (Consulté le
+06/12/2025).
+[11] Microsoft, Présentation de Azure et de ses services. Disponible sur :
+https://azure.microsoft.com/fr-fr/overview/ (Consulté le 06/12/2025).
+[12] Docker Inc., Docker Overview and Documentation. Disponible sur :
+https://docs.docker.com/get-started/overview/ (Consulté le 06/12/2025).
+[13] The Kubernetes Authors, Kubernetes Documentation. Disponible sur :
+https://kubernetes.io/docs/home/ (Consulté le 06/12/2025).
+[14] HashiCorp, Terraform Cloud API Documentation. Disponible sur :
+https://developer.hashicorp.com/terraform/cloud-docs/api-docs
+(Consulté le 06/12/2025).
+[15] Disponible sur : https://docs.ansible.com/ (Consulté le 06/12/2025).
+Isi Mahdia
+Page 104
+
+
+===== PAGE 123 =====
+
+BIBLIOGRAPHIE
+[16] Jenkins Project, Jenkins User Documentation. Disponible sur :
+https://www.jenkins.io/doc/ (Consulté le 06/12/2025).
+[17] Argo Project, Argo CD - Declarative GitOps for Kubernetes. Disponible
+sur : https://argo-cd.readthedocs.io/ (Consulté le 06/12/2025).
+[18] OpenGitOps, GitOps Principles and Definitions. Disponible sur :
+https://opengitops.dev/ (Consulté le 06/12/2025).
+[19] SonarSource, SonarQube Documentation : Code Quality and Security.
+Disponible sur : https://docs.sonarqube.org/latest/ (Consulté le
+06/12/2025).
+[20] OWASP, OWASP Dependency-Check Project. Disponible sur :
+https://owasp.org/www-project-dependency-check/ (Consulté le
+06/12/2025).
+[21] Lyon, G., Nmap Network Scanning : The Official Nmap Project Guide.
+Disponible sur : https://nmap.org/book/man.html (Consulté le
+06/12/2025).
+[22] Prometheus Authors, Prometheus Monitoring System Documentation.
+Disponible sur : https://prometheus.io/docs/ (Consulté le 06/12/2025).
+[23] Grafana Labs, Grafana Documentation. Disponible sur :
+https://grafana.com/docs/grafana/latest/ (Consulté le 06/12/2025).
+[24] Microsoft, Azure Monitor Overview and Documentation. Disponible sur :
+https://learn.microsoft.com/en-us/azure/azure-monitor/ (Consulté le
+06/12/2025).
+Isi Mahdia
+Page 105
+
+
+===== PAGE 124 =====
+
+Développement d’une plateforme centralisée de gestion des demandes d’infrastructure avec
+approche Devops
+Ben Masseoud Hadil
+Résumé :
+Ce mémoire présente la conception d’une plateforme centralisée pour automatiser la gestion
+des demandes d’infrastructure au sein d’Ooredoo Tunisie. En s’appuyant sur les pratiques
+DevOps, DevSecOps, l’Infrastructure as Code (IaC), et une chaîne CI/CD, la solution
+remplace un processus manuel et non traçable par un système fiable, sécurisé et entièrement
+automatisé. Grâce à Terraform, Jenkins, Docker, ArgoCD, ainsi qu’à une supervision via
+Prometheus, Grafana et Azure, la plateforme améliore la rapidité, la traçabilité et la qualité
+du provisioning. Le projet démontre l’apport essentiel de l’automatisation et de l’observabilité
+pour moderniser la gestion des infrastructures cloud.
+Mots clés : DevOps, DevSecOps, Infrastructure as Code, CI/CD, Terraform,
+Monitoring, Cloud Computing.
+Abstract :
+This thesis introduces the development of a centralized platform to automate infrastructure
+request management at Ooredoo Tunisia. Using DevOps, DevSecOps, Infrastructure as Code
+(IaC), and a complete CI/CD pipeline, the solution replaces a manual and non- traceable
+workflow with a secure, reliable, and fully automated system. Through Terraform, Jenkins,
+Docker, ArgoCD, and monitoring tools such as Prometheus, Grafana, and Azure, the platform
+enhances speed, traceability, and provisioning quality. The project demonstrates the key role of
+automation and observability in modern cloud infrastructure management.
+Key-words : DevOps, DevSecOps, Infrastructure as Code, CI/CD, Terraform,
+Monitoring, Cloud Computing.

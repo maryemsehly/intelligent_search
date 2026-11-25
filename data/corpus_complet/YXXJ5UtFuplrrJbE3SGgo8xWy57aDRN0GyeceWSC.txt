@@ -1,0 +1,4002 @@
+===== PAGE 1 =====
+
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de Mahdia 
+ 
+MEMOIRE 
+ 
+N° d’ordre : LCS-GLSI-3-2026-072  
+ 
+Ministère de l’Enseignement 
+Supérieur et de la Recherche 
+Scientifique  
+ 
+ 
+ 
+MÉMOIRE  
+                                                 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+                                                 
+ Effectué à 
+ 
+Hôpital Universitaire  Farhat-Hached 
+ 
+ 
+En vue de l’obtention du diplôme de 
+ 
+ 
+          Licence Computer Science : Génie Logiciel et Système d'Information  
+ 
+ 
+Elaboré par : 
+ 
+Chihaoui Mohsen, Ihsen Ben Brahim 
+ 
+     
+Développement d’un système intelligent d’aide au diagnostic précoce de la maladie 
+d’Alzheimer à partir d’images IRM 
+ 
+ 
+ 
+Soutenu le :  15 juin 2026  
+devant le jury composé de : 
+ 
+ 
+Président 
+ : Gharsellaoui Chawki 
+Rapporteur 
+ : Marrakchi Sirine 
+Encadrant Académique 
+ : Walid Hassairi 
+Encadrant Professionnel 
+ : Saida Ouaja 
+ 
+ 
+ 
+Année universitaire 2025-2026 
+ 
+ 
+
+
+===== PAGE 2 =====
+
+Dédicaces
+Je dédie ce travail...
+À mon très cher père, Tarek Ben Brahim, grâce à qui et à ses sacrifices j’ai pu
+atteindre ce jour, celui où je peux enfin le rendre très fier de moi. Tu représentes pour
+moi une source de motivation, de force et de patience. Merci de m’avoir soutenu et
+d’avoir cru en moi tout au long de mon parcours.
+À ma très chère mère, Fatiha Ben Brahim, qui a toujours été présente pour moi,
+m’a soutenu et encouragé à poursuivre mes rêves. Ta présence dans ma vie est une
+source de réconfort et de motivation. Merci pour ton amour inconditionnel et ta
+patience infinie.
+À ma très chère grand-mère, je ne pourrai jamais exprimer à quel point je t’aime. Tu
+es la source de ma joie et de mon bonheur.
+À mon très cher frère Mohamed Fakhri ainsi qu’à mes très chères sœurs Zeineb
+,Siwar et Anwar, qui ont toujours été présents pour moi, m’ont soutenu et encouragé
+à poursuivre mes rêves. Merci pour votre amour et votre soutien inconditionnels.
+À mes neveux, Mohamed Ali et Yassin, dont la présence m’encourage à continuer
+et dont les sourires m’apportent force et bonheur chaque jour.
+À tous mes amis, qui ont été une source de soutien et d’encouragement tout au long
+de mon parcours. Merci pour votre amitié et votre présence dans ma vie.
+À toutes les personnes qui m’ont soutenu et encouragé à poursuivre mes rêves, votre
+aide a été précieuse et je vous en suis profondément reconnaissant.
+Ihsen Ben Brahim
+
+
+===== PAGE 3 =====
+
+Dédicaces
+Je dédie ce travail avec une profonde gratitude à ma famille, qui a toujours été mon
+plus grand soutien et ma source d’inspiration.
+À mes parents, pour leur amour infini, leurs sacrifices et leurs encouragements
+quotidiens. Votre confiance et votre soutien indéfectible ont rendu ce projet possible.
+À mes sœurs, pour leur tendresse, leur complicité et la sérénité qu’elles m’apportent
+au quotidien.
+À l’ensemble de ma famille, pour avoir toujours cru en mes capacités et m’avoir
+soutenu à chaque instant.
+À mes précieux amis, qui ont partagé mes rires, mes doutes et mes réussites tout au
+long de ce parcours. Merci pour votre soutien constant et votre amitié fidèle.
+Que ce travail soit le reflet de mon amour, de mon respect et de ma sincère
+reconnaissance.
+Mohsen Chihaoui
+
+
+===== PAGE 4 =====
+
+Remerciements
+Nous tenons tout d’abord à remercier Dieu, qui nous a donné le courage, la force et
+la patience indispensables pour mener à bien ce projet.
+Nous adressons nos sincères remerciements à notre encadrant académique, Mr.
+Walid Hassairi, pour son suivi attentif, ses précieux conseils et ses remarques construc-
+tives tout au long de ce travail. Son accompagnement a été d’une grande aide pour
+l’aboutissement de ce projet.
+Nous tenons également à remercier notre encadrante professionnelle, Mme Saida
+Ouaja, pour son accueil, sa disponibilité et son encadrement au sein de l’Hôpital
+Farhat-Hached de Sousse. Ses orientations et son soutien ont largement contribué à la
+réussite de ce stage.
+Nous remercions les médecins pour leur disponibilité, leur écoute et leur aide pré-
+cieuse. Ils ont toujours pris le temps de répondre à nos questions et à nos préoccupations,
+ce qui nous a beaucoup aidés tout au long de notre stage.
+Nous exprimons notre profonde gratitude à tous nos enseignants de l’ISIMA,
+pour la qualité de leur enseignement, leur disponibilité et les compétences techniques et
+humaines qu’ils nous ont transmises tout au long de notre formation.
+Enfin, nous remercions les membres du jury pour avoir accepté d’évaluer ce travail
+ainsi que pour le temps et l’attention qu’ils y consacrent.
+
+
+===== PAGE 5 =====
+
+Table des matières
+Introduction générale
+14
+1
+Cadre général du projet
+16
+1.1
+Présentation de l’organisme d’accueil . . . . . . . . . . . . . . . . . . .
+17
+1.1.1
+Hôpital Farhat-Hached de Sousse . . . . . . . . . . . . . . . . .
+17
+1.1.2
+Structure organisationnelle EPS FARHAT HACHED :
+. . . . .
+18
+1.1.3
+Structure organisationnelle du centre informatique du ministère
+de la Santé
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+1.1.4
+I.1.4 Activités . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+1.2
+Présentation du projet . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+1.2.1
+Contexte générale . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+1.2.2
+Étude de l’existant et critique . . . . . . . . . . . . . . . . . . .
+26
+1.2.3
+Collecte des besoins (Questionnaire)
+. . . . . . . . . . . . . . .
+30
+1.2.4
+Problématique . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+1.3
+Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+1.4
+Méthodologie de travail . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+1.4.1
+Choix méthodologique . . . . . . . . . . . . . . . . . . . . . . .
+34
+1.4.2
+Pourquoi Scrum . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+1.5
+Langage de Modélisation . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+2
+Gestion de projet : Analyse et Planification
+39
+2.1
+Identification des acteurs de notre application
+. . . . . . . . . . . . . .
+40
+2.2
+Étude des besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+2.2.1
+Les besoins fonctionnels
+. . . . . . . . . . . . . . . . . . . . . .
+41
+2.2.2
+Les Besoins non fonctionnels . . . . . . . . . . . . . . . . . . . .
+42
+2.3
+Diagrammes de cas d’utlisation globale : . . . . . . . . . . . . . . . . .
+42
+2.4
+Gestion de Projet avec Scrum . . . . . . . . . . . . . . . . . . . . . . .
+43
+2.4.1
+Identification des rôles . . . . . . . . . . . . . . . . . . . . . . .
+44
+2.4.2
+Backlog du produit : . . . . . . . . . . . . . . . . . . . . . . . .
+44
+2.4.3
+Planification des sprints
+. . . . . . . . . . . . . . . . . . . . . .
+46
+2.4.4
+Diagramme de Gantt : . . . . . . . . . . . . . . . . . . . . . . .
+46
+2.5
+Environnement de travail
+. . . . . . . . . . . . . . . . . . . . . . . . .
+47
+2.5.1
+Choix des technologies :
+. . . . . . . . . . . . . . . . . . . . . .
+47
+5
+
+
+===== PAGE 6 =====
+
+Table des matières
+2.5.2
+Choix des logiciels : . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+2.6
+Présentation des Données : . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+2.6.1
+Jeu de données pour la segmentation de l’hippocampe : . . . . .
+54
+2.6.2
+Jeu de données pour la classification : . . . . . . . . . . . . . . .
+54
+2.7
+Architecture de l’application : . . . . . . . . . . . . . . . . . . . . . . .
+54
+3
+Le premier Sprint — Authentification et Gestion des utilisateurs
+57
+3.1
+Planification du Sprint :
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+3.1.1
+Objectif du Sprint 1 : . . . . . . . . . . . . . . . . . . . . . . . .
+58
+3.1.2
+Backlog du Sprint 1 : . . . . . . . . . . . . . . . . . . . . . . . .
+59
+3.2
+Analyse et conception : . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+3.2.1
+Identification des acteurs : . . . . . . . . . . . . . . . . . . . . .
+59
+3.2.2
+Diagramme de cas d’utilisation du sprint 1 : . . . . . . . . . . .
+60
+3.2.3
+Description textuelle du cas d’utilisation « S’authentifier » :
+. .
+61
+3.2.4
+Description textuelle du cas d’utilisation « Soumettre une de-
+mande d’accès » . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+3.2.5
+Description textuelle du cas d’utilisation « Consulter les demandes
+d’accès » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+3.2.6
+Description textuelle du cas d’utilisation « Valider ou rejeter une
+demande » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+3.2.7
+Description textuelle du cas d’utilisation « Créer un compte
+médecin » : . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+3.2.8
+Description textuelle du cas d’utilisation « Gérer un compte
+médecin » : . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+3.2.9
+Description textuelle du cas d’utilisation « Consulter les statis-
+tiques globales » : . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+3.3
+Conception : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+3.3.1
+Les diagrammes de séquence du Sprint 1 :
+. . . . . . . . . . . .
+69
+3.3.2
+Diagramme de classe :
+. . . . . . . . . . . . . . . . . . . . . . .
+72
+3.4
+Réalisation : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+3.4.1
+Pages d’authentification : . . . . . . . . . . . . . . . . . . . . . .
+72
+3.4.2
+Interface tableau de bord administrateur :
+. . . . . . . . . . . .
+75
+3.4.3
+Interface d’ajout médecin : . . . . . . . . . . . . . . . . . . . . .
+76
+4
+Le deuxième Sprint — Analyse IRM et Génération des rapports
+78
+4.1
+Planification du Sprint :
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+79
+4.1.1
+Objectif du Sprint 2 : . . . . . . . . . . . . . . . . . . . . . . . .
+79
+4.1.2
+Backlog du Sprint 2 : . . . . . . . . . . . . . . . . . . . . . . . .
+80
+4.2
+Analyse et conception : . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+4.2.1
+Diagramme des cas d’utilisation : . . . . . . . . . . . . . . . . .
+81
+6
+
+
+===== PAGE 7 =====
+
+Table des matières
+4.2.2
+Description textuelle du cas d’utilisation « Lancer une analyse »
+82
+4.2.3
+Description textuelle du cas d’utilisation « Remplir les données
+cliniques »
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+4.2.4
+Description textuelle du cas d’utilisation « Charger un fichier
+IRM et lancer l’analyse »
+. . . . . . . . . . . . . . . . . . . . .
+84
+4.2.5
+Description textuelle du cas d’utilisation « Consulter les résultats
+» . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+86
+4.2.6
+Description textuelle du cas d’utilisation « Télécharger le rapport
+PDF clinique » . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+4.3
+Conception : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+4.3.1
+Les diagrammes de séquence du Sprint 2 :
+. . . . . . . . . . . .
+88
+4.3.2
+Diagramme de classe :
+. . . . . . . . . . . . . . . . . . . . . . .
+90
+4.4
+Présentation des modules d’Intelligence Artificielle dans notre application : 91
+4.4.1
+Objectifs des modules intelligents :
+. . . . . . . . . . . . . . . .
+91
+4.4.2
+Module de segmentation hippocampale : . . . . . . . . . . . . .
+91
+4.4.3
+Module de classification du stade d’Alzheimer :
+. . . . . . . . .
+96
+4.4.4
+Pipeline d’analyse intégré : . . . . . . . . . . . . . . . . . . . . . 102
+4.5
+Réalisation : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 104
+4.5.1
+Interface remplir les données cliniques : . . . . . . . . . . . . . . 104
+4.5.2
+Interface charger l’image IRM : . . . . . . . . . . . . . . . . . . 105
+4.5.3
+Interface des résultats d’analyse : . . . . . . . . . . . . . . . . . 105
+4.5.4
+Exemple d’un rapport PDF :
+. . . . . . . . . . . . . . . . . . . 108
+5
+Le troisième Sprint — Gestion des dossiers patients
+112
+5.1
+Planification du Sprint :
+. . . . . . . . . . . . . . . . . . . . . . . . . . 113
+5.1.1
+Objectif du Sprint 3 : . . . . . . . . . . . . . . . . . . . . . . . . 113
+5.1.2
+Backlog du Sprint 3 : . . . . . . . . . . . . . . . . . . . . . . . . 114
+5.2
+Analyse et conception : . . . . . . . . . . . . . . . . . . . . . . . . . . . 114
+5.2.1
+Diagramme de cas d’utilisation du sprint 3 : . . . . . . . . . . . 114
+5.2.2
+Description textuelle du cas d’utilisation« Rechercher un patient » :115
+5.2.3
+Description textuelle du cas d’utilisation« Consulter l’historique
+des analyses » : . . . . . . . . . . . . . . . . . . . . . . . . . . . 116
+5.2.4
+Description du cas d’utilisation : « Supprimer un dossier patient »117
+5.3
+Conception : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 117
+5.3.1
+Diagramme de séquence — « Consulter l’historique des analyses » :118
+5.3.2
+Diagramme de séquence — « Supprimer un dossier patient » : . 119
+5.3.3
+Diagramme de classe :
+. . . . . . . . . . . . . . . . . . . . . . . 120
+5.4
+Réalisation : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 121
+5.4.1
+Interface recherche d’un patient :
+. . . . . . . . . . . . . . . . . 121
+7
+
+
+===== PAGE 8 =====
+
+Table des matières
+5.4.2
+Interface de consultation de l’historique des analyses : . . . . . . 121
+5.4.3
+Interface confirmation de suppression : . . . . . . . . . . . . . . 122
+Conclusion générale
+124
+Bibliographie
+126
+Résumé
+128
+Abstract
+129
+8
+
+
+===== PAGE 9 =====
+
+Table des figures
+1.1
+Vue d’ensemble de l’hôpital. . . . . . . . . . . . . . . . . . . . . . . . .
+17
+1.2
+Organigramme de l’hôpital Farhat Hached . . . . . . . . . . . . . . . .
+18
+1.3
+Organigramme de C.I.M.S . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+1.4
+Comparaison neuroanatomique : Cerveau sain versus Cerveau atteint de
+la maladie d’Alzheimer. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+1.5
+Interface de la platforme Neurophet AQUA AD. . . . . . . . . . . . . .
+27
+1.6
+Interface de la plateforme BrainSee (Darmiyan). . . . . . . . . . . . . .
+28
+1.7
+Synthèse des résultats du questionnaire exploratoire réalisé avec l’Hôpital
+Farhat Hachad de Sousse.
+. . . . . . . . . . . . . . . . . . . . . . . . .
+32
+1.8
+représente le processus Scrum et ses principales phases. . . . . . . . . .
+37
+1.9
+Logo UML . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+2.1
+Diagrammes de cas d’utlisation globale . . . . . . . . . . . . . . . . . .
+43
+2.2
+Diagramme de Gantt . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+2.3
+Logo TypeScript
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+2.4
+Logo Python
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+2.5
+Logo React
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+2.6
+Logo Flask . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+2.7
+logo Tailwind CSS
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+2.8
+Logo Node.js
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+2.9
+Logo SQLite . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+2.10 Caption
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+2.11 Logo NumPy
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+2.12 Logo Matplotlib . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+2.13 Logo ReportLab . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+2.14 Logo Git . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+2.15 Logo Vite . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+2.16 Logo Visual Studio Code . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+2.17 Logo Google Colab . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+2.18 Logo GitHub
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+2.19 Logo Overleaf . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+2.20 Architecture de l’application
+. . . . . . . . . . . . . . . . . . . . . . .
+55
+9
+
+
+===== PAGE 10 =====
+
+Table des figures
+3.1
+Diagramme de cas d’utilisation du sprint 1 . . . . . . . . . . . . . . . .
+60
+3.2
+Diagramme de séquence "Soumettre une demande d’accè" . . . . . . . .
+69
+3.3
+Diagramme de séquence "S’authentifier"
+. . . . . . . . . . . . . . . . .
+70
+3.4
+Diagramme de séquence "Approuver ou rejeter une demande"
+. . . . .
+71
+3.5
+Diagramme de classe de sprint 1 . . . . . . . . . . . . . . . . . . . . . .
+72
+3.6
+Interface « Connexion »
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+3.7
+Interface « Inscription »
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+3.8
+Interface de confirmation d’envoi de la demande d’accès . . . . . . . . .
+75
+3.9
+Interface tableau de bord administrateur :
+. . . . . . . . . . . . . . . .
+76
+3.10 Interface d’ajout médecin
+. . . . . . . . . . . . . . . . . . . . . . . . .
+77
+4.1
+Diagramme des cas d’utilisation de sprint 2 . . . . . . . . . . . . . . . .
+81
+4.2
+Diagramme de séquence "Lancer l’analyse " : . . . . . . . . . . . . . . .
+88
+4.3
+Diagramme de séquence — " Télécharger le rapport PDF " . . . . . . .
+89
+4.4
+Diagramme de classe de sprint 2 . . . . . . . . . . . . . . . . . . . . . .
+90
+4.5
+Architecture du réseau nnU-Net
+. . . . . . . . . . . . . . . . . . . . .
+92
+4.6
+Commande d’entraînement nnU-Net
+. . . . . . . . . . . . . . . . . . .
+93
+4.7
+Évolution des métriques de segmentation au cours de l’entraînement . .
+94
+4.8
+Code d’inférence nnU-Net
+. . . . . . . . . . . . . . . . . . . . . . . . .
+94
+4.9
+Calcul des volumes hippocampaux à partir du masque de segmentation
+95
+4.10 Classification report du modèle XGBoost sur le jeu de test . . . . . . . 100
+4.11 Fusion des scores clinique et XGBoost pour la prédiction finale . . . . . 101
+4.12 Diagramme de séquence du pipeline d’analyse intégré . . . . . . . . . . 103
+4.13 Interface de saisie des données cliniques . . . . . . . . . . . . . . . . . . 104
+4.14 Interface de mise à jour des données cliniques
+. . . . . . . . . . . . . . 105
+4.15 Interface d’upload du fichier IRM . . . . . . . . . . . . . . . . . . . . . 105
+4.16 Interface des résultats d’analyse pour un patient prédit comme normal
+106
+4.17 Interface des résultats d’analyse pour un patient prédit comme MCI . . 107
+4.18 Interface des résultats d’analyse pour un patient prédit comme Alzheimer108
+5.1
+Diagramme de cas d’utilisation du sprint 3 : . . . . . . . . . . . . . . . 114
+5.2
+Diagramme de séquence "Consulter l’historique des analyses"
+. . . . . 118
+5.3
+Diagramme de séquence "Supprimer un dossier patient "
+. . . . . . . . 119
+5.4
+Diagramme de classe sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . 120
+5.5
+Interface du sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . 121
+5.6
+Interface de consultation de l’historique des analyses
+. . . . . . . . . . 122
+5.7
+Interface de confirmation de suppression d’un dossier patient
+. . . . . 123
+10
+
+
+===== PAGE 11 =====
+
+Liste des tableaux
+1.1
+Comparaison des solutions existantes . . . . . . . . . . . . . . . . . . .
+30
+1.2
+Comparaison entre les méthodes classiques et les méthodes agiles
+. . .
+35
+2.1
+Backlog du produit . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+2.2
+Tableau 5. Planification des sprints . . . . . . . . . . . . . . . . . . . .
+46
+3.1
+Backlog du 1er sprint . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+3.2
+Description du cas d’utilisation « S’authentifier »
+. . . . . . . . . . . .
+61
+3.3
+Description du cas d’utilisation « Soumettre une demande d’accès » . .
+62
+3.4
+Description du cas d’utilisation « Consulter les demandes d’accès »
+. .
+63
+3.5
+Description du cas d’utilisation « Valider ou rejeter une demande »
+. .
+65
+3.6
+Description du cas d’utilisation « Créer un compte médecin »
+. . . . .
+66
+3.7
+Description du cas d’utilisation « Désactiver / Réactiver / Supprimer un
+médecin » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+3.8
+Description du cas d’utilisation « Consulter les statistiques globales » .
+68
+4.1
+Backlog Sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+4.2
+Description du cas d’utilisation « Lancer une analyse » . . . . . . . . .
+82
+4.3
+Description du cas d’utilisation « Remplir les données cliniques »
+. . .
+83
+4.4
+Description du cas d’utilisation « Charger un fichier IRM et lancer
+l’analyse » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+85
+4.5
+Description du cas d’utilisation « Consulter les résultats »
+. . . . . . .
+86
+4.6
+Description du cas d’utilisation « Télécharger le rapport PDF clinique »
+87
+4.7
+Objectifs des modules intelligents intégrés à NeuroDetect AI . . . . . .
+91
+4.8
+Classification de la sévérité selon le z-score . . . . . . . . . . . . . . . .
+95
+4.9
+Pipeline de prétraitement des données OASIS-1
+. . . . . . . . . . . . .
+97
+4.10 Features construites lors de l’étape d’ingénierie . . . . . . . . . . . . . .
+98
+4.11 Hyperparamètres optimaux du modèle XGBoost . . . . . . . . . . . . .
+99
+4.12 Avantages et limites des modules intelligents intégrés
+. . . . . . . . . . 103
+5.1
+Backlog du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 114
+5.2
+Description du cas d’utilisation : Rechercher un patient . . . . . . . . . 115
+5.3
+Description du cas d’utilisation : Consulter l’historique des analyses . . 116
+5.4
+Description du cas d’utilisation : Supprimer un dossier patient . . . . . 117
+11
+
+
+===== PAGE 12 =====
+
+Liste des Acronymes
+MA Maladie d’Alzheimer
+AD Alzheimer’s Disease
+MCI Mild Cognitive Impairment
+MMSE Mini-Mental State Examination
+CDR Clinical Dementia Rating
+CDR-SB Clinical Dementia Rating - Sum of Boxes
+DSM-5 Diagnostic and Statistical Manual of Mental Disorders, 5th
+edition
+FDA Food and Drug Administration
+ESP Établissement Public de Santé
+IRM Imagerie par Résonance Magnétique
+TEP Tomographie par Émission de Positons
+PET Positron Emission Tomography
+DICOM Digital Imaging and Communications in Medicine
+NIfTI Neuroimaging Informatics Technology Initiative
+3D Trois Dimensions
+2D Deux Dimensions
+ADNI Alzheimer’s Disease Neuroimaging Initiative
+OASIS Open Access Series of Imaging Studies
+MCD Medical Segmentation Decathlon
+IA Intelligence Artificielle
+CNN Convolutional Neural Network
+12
+
+
+===== PAGE 13 =====
+
+Liste des tableaux
+nnunet nnU-Net v2no-new-U-Net version 2
+Swin-UNet Swin Transformer based U-Net
+MedT Medical Transformer
+XGBoost eXtreme Gradient Boosting
+SMOTE Synthetic Minority Over-sampling Technique
+ROC Receiver Operating Characteristic
+AUC Area Under the Curve
+nWBV Normalized Whole Brain Volume
+eTIV Estimated Total Intracranial Volume
+API Application Programming Interface
+REST REpresentational State Transfer
+JWT JSON Web Token
+PDF Portable Document Format
+UML Unified Modeling Language
+VPN Virtual Private Network
+GPU Graphics Processing Unit
+CPU Central Processing Unit
+CIN Carte d’Identité Nationale
+13
+
+
+===== PAGE 14 =====
+
+Introduction générale
+La maladie d’Alzheimer est aujourd’hui l’une des pathologies les plus
+préoccupantes à l’échelle mondiale. Son évolution progressive et souvent
+silencieuse rend le diagnostic précoce difficile, alors que c’est précisément
+à ce stade que la prise en charge peut faire la plus grande différence.
+Dans ce contexte, les professionnels de santé se retrouvent souvent
+face à des outils insuffisants ou trop complexes pour une utilisation
+quotidienne. Le diagnostic repose encore largement sur l’analyse manuelle
+d’images médicales et sur l’expérience individuelle du praticien, ce qui
+peut introduire des variations et ralentir la prise de décision. C’est à
+partir de ce constat, observé directement au sein de l’hôpital Farhat
+Hached de Sousse, que notre projet a pris forme.
+Notre objectif a été de concevoir une plateforme web intelligente,
+NeuroDetect AI, capable d’assister les médecins dans l’analyse des
+IRM cérébrales et dans l’évaluation du stade de la maladie. L’applica-
+tion propose une interface simple et accessible, pensée pour s’intégrer
+naturellement dans la pratique médicale .
+Pour mener à bien ce développement, nous avons adopté la méthode
+Scrum, qui nous a permis d’avancer de manière progressive et organisée,
+en livrant à chaque sprint un ensemble de fonctionnalités testées et opé-
+rationnelles. Ce rapport retrace l’ensemble de cette démarche, structurée
+comme suit :
+Le premier chapitre présente le cadre général du projet : l’organisme
+d’accueil, la problématique étudiée, l’analyse des solutions existantes,
+ainsi que la méthodologie de travail adoptée.
+Le deuxième chapitre est consacré à la gestion de projet : identifi-
+cation des besoins, planification des sprints, choix de l’architecture et de
+l’environnement technologique.
+14
+
+
+===== PAGE 15 =====
+
+Introduction générale
+Le troisième chapitre couvre le premier sprint, dédié à l’authentifi-
+cation et à la gestion des utilisateurs de la plateforme.
+Le quatrième chapitre présente le deuxième sprint, qui constitue
+le cœur fonctionnel de l’application : l’analyse des IRM, les modules
+d’intelligence artificielle et la génération des rapports cliniques.
+Le cinquième chapitre détaille le troisième sprint, centré sur la
+gestion des dossiers patients .
+15
+
+
+===== PAGE 16 =====
+
+Chapitre 1
+Cadre général du projet
+
+
+===== PAGE 17 =====
+
+Chapitre 1. Cadre général du projet
+Introduction
+Dans ce chapitre, nous commencerons par présenter l’organisme d’ac-
+cueil où se déroule notre Projet de Fin d’Études, à savoir l’hôpital Farhat
+Hached de Sousse.Nous poursuivrons par une étude approfondie et une
+analyse critique de la maladie d’Alzheimer, en mettant en lumière les
+enjeux liés à la segmentation de l’hippocampe et à la classification des
+stades de la pathologie. Dans ce contexte, nous soulignerons également
+l’importance du questionnaire exploratoire que nous avons élaboré et
+diffusé auprès des médecins, afin de recueillir leurs besoins et attentes,
+et ainsi proposer une solution adaptée et efficace.Nous terminons par la
+présentation de la méthodologie de travail adoptée pour la réalisation du
+projet.
+1.1
+Présentation de l’organisme d’accueil
+1.1.1
+Hôpital Farhat-Hached de Sousse
+L’hôpital Farhat Hached de Sousse est un établissement hospitalier
+public de référence en Tunisie. Il a été fondé suite au décret n°91-1844 du
+2 décembre 1991, et porte le nom du militant syndicaliste Farhat Hached,
+figure emblématique du mouvement national tunisien.
+Figure 1.1 – Vue d’ensemble de l’hôpital.
+17
+
+
+===== PAGE 18 =====
+
+Chapitre 1. Cadre général du projet
+1.1.2
+Structure organisationnelle EPS FARHAT HACHED :
+Figure 1.2 – Organigramme de l’hôpital Farhat Hached
+L’organigramme illustre la structure organisationnelle de l’hôpital. À
+son sommet se trouve le Conseil d’Administration, suivi de la Direction
+18
+
+
+===== PAGE 19 =====
+
+Chapitre 1. Cadre général du projet
+Générale, qui assure la coordination entre les différentes directions et
+services.
+L’établissement est structuré en plusieurs directions principales, cha-
+cune ayant des missions bien définies :
+— La Direction des Affaires Financières et de la Comptabilité gère
+les aspects financiers de l’hôpital, à travers des sous-directions
+telles que la comptabilité, le service ordonnancement et le service
+financier.
+— La Direction des Services Généraux et de la Maintenance prend
+en charge l’entretien des bâtiments, les réseaux techniques, les
+équipements biomédicaux ainsi que les services hôteliers.
+— La Direction de l’Approvisionnement est responsable de la gestion
+des achats et des stocks.
+— La Direction de la Gestion des Malades : regroupe les services
+d’admission, de facturation et d’action sociale.
+— La Direction des Ressources Humaines : s’occupe de la gestion du
+personnel, notamment la paie, la formation et les affaires adminis-
+tratives.
+D’autres entités transversales, telles que la Direction du Système
+d’Information, le Service d’Audit Interne et le Service du Secrétariat
+Permanent des Marchés, viennent compléter cette organisation.
+19
+
+
+===== PAGE 20 =====
+
+Chapitre 1. Cadre général du projet
+1.1.3
+Structure organisationnelle du centre informatique du
+ministère de la Santé
+Figure 1.3 – Organigramme de C.I.M.S
+En parallèle de la structure générale de l’hôpital, une organisation
+spécifique a été mise en place pour gérer les aspects techniques et le
+système d’information. Cette structure relève directement de la Direction
+Générale et comprend plusieurs directions et services spécialisés.
+— Direction des Affaires Administratives et Financières :
+— Affaires Administratives :
+— Service des ressources humaines : gestion des dossiers du per-
+sonnel, suivi des congés, absences, recrutements et formations.
+— Service des moyens communs : gestion du matériel, des four-
+nitures et des locaux.
+— Affaires Financières :
+— Service financier : réalisation des opérations budgétaires et
+préparation des rapports financiers.
+— Service comptabilité : saisie comptable, suivi des écritures et
+20
+
+
+===== PAGE 21 =====
+
+Chapitre 1. Cadre général du projet
+préparation des bilans.
+— Direction des Études et du Développement :
+— Division du développement :
+— Service développement du SI : développement et maintenance
+des logiciels, intégration de nouvelles fonctionnalités.
+— Service des études : analyse des besoins, rédaction des cahiers
+des charges.
+— Service d’architecture du SI : définition de l’architecture tech-
+nique, cohérence des solutions.
+— Service de maintenance et de documentation du SI : mise à
+jour de la documentation technique, maintenance des outils
+informatiques.
+— Direction de l’Exploitation, du Soutien, des Réseaux et de
+la Sécurité :
+— Exploitation et gestion des sites :
+— Service gestion des sites : installation, entretien des équipe-
+ments, interventions en cas de panne.
+— Service exploitation : surveillance des systèmes, automatisa-
+tion des tâches.
+— Réseaux et sécurité :
+— Service réseaux et sécurité : configuration des équipements
+(switch, routeur, VPN), mise en place de protections informa-
+tiques.
+— Soutien technique et maintenance :
+— Service maintenance : assistance aux utilisateurs, réparations
+techniques, remplacement de matériel.
+— Service des marchés :
+— La préparation des appels d’offres.
+— La gestion des achats liés aux projets techniques et informatiques.
+— Le suivi des contrats avec les fournisseurs.
+21
+
+
+===== PAGE 22 =====
+
+Chapitre 1. Cadre général du projet
+1.1.4
+I.1.4 Activités
+— Direction Générale :
+— Supervise toutes les directions.
+— Prend les décisions stratégiques importantes.
+— Département de coordination technique et gestion :
+— Coordonne les projets entre les directions.
+— Suit l’avancement des activités et organise les ressources.
+— Direction des Affaires Administratives et Financières :
+— Division des Affaires Administratives :
+— Gère les ressources humaines.
+— S’occupe des moyens logistiques et des services internes.
+— Service des ressources humaines :
+— Gère les dossiers du personnel.
+— Suit les congés, absences, recrutements et formations.
+— Service des moyens communs :
+— Gère le matériel, les fournitures et les locaux.
+— Division des Affaires Financières :
+— Prépare le budget et en suit l’exécution.
+— Assure la gestion des dépenses et des recettes.
+— Service financier :
+— Réalise les opérations budgétaires.
+— Prépare les rapports financiers.
+— Service comptabilité :
+— Saisie comptable et suivi des écritures.
+— Préparation des bilans et états financiers.
+— Direction des Études et du Développement :
+— Division Développement :
+— Étudie les besoins des utilisateurs.
+— Planifie les nouveaux projets.
+— Service développement du SI :
+— Développe et maintient les logiciels.
+22
+
+
+===== PAGE 23 =====
+
+Chapitre 1. Cadre général du projet
+— Intègre de nouvelles fonctionnalités.
+— Service des études :
+— Analyse les besoins fonctionnels.
+— Rédige les cahiers des charges.
+— Service architecture du SI :
+— Définit la structure technique des systèmes.
+— Veille à la cohérence entre les différentes solutions utilisées.
+— Service maintenance et documentation du SI :
+— Met à jour les documents techniques.
+— Assure la maintenance des outils informatiques.
+— Service maintenance :
+— Effectue les réparations techniques.
+— Assure le bon fonctionnement du matériel informatique.
+— Service des marchés :
+— Prépare les appels d’offres.
+— Gère les achats liés aux projets techniques et informatiques.
+— Suit les contrats avec les fournisseurs.
+— Direction de l’exploitation, du soutien, des réseaux et de
+la sécurité :
+— Division exploitation et gestion des sites :
+— Gère les sites informatiques.
+— Suit le fonctionnement des équipements sur le terrain.
+— Service gestion des sites :
+— Installe et entretient les équipements.
+— Intervient en cas de panne ou de besoin.
+— Service exploitation :
+— Surveille les systèmes en fonctionnement.
+— Automatise certaines tâches répétitives.
+— Division réseaux et sécurité :
+— Met en place et gère les infrastructures réseau.
+— Assure la sécurité informatique.
+23
+
+
+===== PAGE 24 =====
+
+Chapitre 1. Cadre général du projet
+— Service réseaux et sécurité :
+— Configure les équipements réseau (switch, routeurs, VPN,
+etc.).
+— Met en place des protections contre les attaques informatiques.
+— Division soutien technique et maintenance :
+— Fournit une assistance aux utilisateurs.
+— Répare les équipements et remplace les pièces défectueuses.
+1.2
+Présentation du projet
+Cette section présente les éléments fondamentaux de notre projet. Nous
+commençons tout d’abord par poser le contexte général afin de mieux
+comprendre le cadre de l’étude. Ensuite, nous passons à l’analyse des
+solutions existantes. Nous présentons également un questionnaire réalisé
+au sein de l’hôpital Farhat Hached, qui nous a permis de mieux cerner
+les besoins sur le terrain. Par la suite, nous abordons la problématique
+étudiée, avant de terminer par la présentation détaillée de la solution
+proposée dans le cadre de ce travail.
+1.2.1
+Contexte générale
+La maladie d’Alzheimer (MA) représente un défi majeur pour les socié-
+tés du monde entier. Ce trouble neurologique progressif est principalement
+caractérisé par des troubles de la mémoire.
+Avec le vieillissement de la population, l’incidence de la maladie d’Alz-
+heimer devrait augmenter considérablement.
+Selon les statistiques du Rapport mondial sur la maladie d’Alzheimer,
+ce problème est d’une importance capitale. Actuellement, plus de 55
+millions de personnes ont reçu un diagnostic de maladie d’Alzheimer, et
+les projections suggèrent que ce chiffre pourrait atteindre 78 millions d’ici
+2030[1]
+Au-delà de ces chiffres alarmants, la maladie impose un fardeau éco-
+nomique et social considérable. Les coûts directs et indirects liés à la
+24
+
+
+===== PAGE 25 =====
+
+Chapitre 1. Cadre général du projet
+prise en charge des patients atteignent des centaines de milliards de
+dollars chaque année , tandis que les aidants familiaux supportent une
+charge physique et psychologique souvent sous-estimée . Pourtant, mal-
+gré cette urgence sanitaire, les outils diagnostiques actuels peinent à
+identifier la maladie dans ses stades précoces, alors que les interventions
+thérapeutiques seraient les plus efficaces.[2]
+Sur le plan biologique, la maladie d’Alzheimer se traduit par l’accu-
+mulation de deux types de lésions dans le cerveau. D’un côté, des dépôts
+de protéines bêta-amyloïdes qui s’accumulent entre les neurones sous
+forme de plaques. De l’autre, des enchevêtrements de protéines Tau qui
+se forment à l’intérieur même des cellules nerveuses. Ensemble, ces deux
+mécanismes finissent par provoquer la mort progressive des neurones et
+l’atrophie de certaines régions du cerveau.[3]
+L’hippocampe est l’une des premières régions à en faire les frais.
+Cette petite structure, logée au cœur du lobe temporal et essentielle à
+la formation des souvenirs, commence à se dégrader bien avant que les
+symptômes ne deviennent visibles pour le patient ou son entourage. Ce qui
+est intéressant, c’est que cette atrophie est déjà détectable sur une IRM
+à ce stade, ce qui fait de l’hippocampe un indicateur particulièrement
+précieux pour évaluer l’évolution de la maladie. C’est précisément cette
+région que notre système analyse, segmente et mesure, pour donner
+au médecin une information concrète et objectivable sur l’état de son
+patient.[4][5]
+25
+
+
+===== PAGE 26 =====
+
+Chapitre 1. Cadre général du projet
+Figure 1.4 – Comparaison neuroanatomique : Cerveau sain versus Cerveau atteint de la
+maladie d’Alzheimer.
+Même pour un médecin expérimenté, le diagnostic de la maladie
+d’Alzheimer ne peut pas être établi facilement. En pratique, les cliniciens
+utilisent des tests cognitifs tels que le MMSE et le CDR pour évaluer l’état
+mental du patient, ainsi que l’analyse d’images par IRM afin d’observer
+d’éventuelles altérations structurelles du cerveau. Il s’agit d’une méthode
+admise, mais elle repose principalement sur l’œil et la main du praticien.
+Le problème, toutefois, est que les premiers signaux de la maladie se
+déploient si subtilement — en vérité à un certain moment au sein de
+l’hippocampe — qu’ils peuvent être négligés, quelle que soit la minutie
+avec laquelle la « photo » a été examinée. Cette analyse est également
+chronophage et dépend du spécialiste en charge de l’isolement, ce qui
+génère en réalité des diagnostics non reproductibles.
+1.2.2
+Étude de l’existant et critique
+Plusieurs solutions ont été développées dans la littérature scientifique
+et dans l’industrie pour répondre à ce problème. On peut les regrouper
+en deux catégories.
+26
+
+
+===== PAGE 27 =====
+
+Chapitre 1. Cadre général du projet
+Outils commerciaux disponibles
+Afin de mieux situer les solutions existantes, une analyse approfondie a
+été menée en prenant en compte plusieurs critères essentiels, notamment
+les années de développement, les jeux de données utilisés, les approches
+algorithmiques adoptées ainsi que leur niveau de performance et leurs
+limites dans un contexte réel.
+Neurophet AQUA AD Plus, approuvé par la FDA en 2026, repré-
+sente une solution avancée basée sur une approche multimodale combinant
+des images IRM et PET. Les données utilisées proviennent de bases cli-
+niques complexes, similaires à ADNI dataset, intégrant plusieurs modalités
+d’imagerie ainsi que des informations cliniques. Sur le plan technique, ce
+système repose sur des modèles de deep learning, notamment des réseaux
+de neurones convolutifs (CNN) 3D pour la segmentation des structures
+cérébrales, ainsi que des architectures multimodales permettant la fusion
+des données IRM et PET.
+Bien que cette approche soit performante et innovante, elle présente
+plusieurs contraintes importantes. Le recours au PET scan implique un
+coût élevé, une accessibilité limitée et une exposition aux radiations. De
+plus, les résultats générés sont souvent complexes et difficiles à interpréter,
+car ils sont présentés sous forme de tableaux et de scores nécessitant une
+analyse supplémentaire par le clinicien. Cette complexité peut nuire à
+l’efficacité en pratique médicale. .[6]
+Figure 1.5 – Interface de la platforme Neurophet AQUA AD.
+27
+
+
+===== PAGE 28 =====
+
+Chapitre 1. Cadre général du projet
+BrainSee (Darmiyan), approuvé par la FDA en 2024, constitue
+l’un des premiers outils commerciaux basés sur l’intelligence artificielle
+pour la prédiction de la progression de la Alzheimer’s disease. Ce système
+s’appuie sur des données propriétaires, généralement inspirées de bases
+publiques telles que ADNI dataset, et combine des images IRM cérébrales
+avec des données cliniques, notamment les scores cognitifs comme le
+MMSE et le CDR-SB.
+Sur le plan algorithmique, BrainSee repose sur des modèles avancés
+de machine learning et de deep learning, incluant des architectures de
+réseaux de neurones convolutifs (CNN) pour l’analyse des images IRM,
+ainsi que des modèles multimodaux permettant la fusion des données
+cliniques et d’imagerie.
+Malgré ses performances intéressantes en termes de prédiction, cet outil
+présente une limite majeure liée à son manque d’explicabilité. En effet,
+il fournit principalement un score global sans proposer de visualisation
+anatomique ni d’interprétation des régions cérébrales impliquées. Cette
+approche dite « boîte noire » peut réduire la confiance des cliniciens et
+limiter son utilisation dans la prise de décision médicale. [7].
+Figure 1.6 – Interface de la plateforme BrainSee (Darmiyan).
+Approches par deep learning dans la littérature récente :
+Du côté de la recherche académique, les années 2024-2025 marquent
+un tournant dans l’analyse de la maladie d’Alzheimer grâce aux tech-
+28
+
+
+===== PAGE 29 =====
+
+Chapitre 1. Cadre général du projet
+niques de deep learning appliquées aux images IRM. Les travaux récents
+exploitent des architectures avancées comme CNN, U-Net, Swin-UNet et
+Medical Transformer, et atteignent des scores Dice supérieurs à 92% en
+segmentation[8]., ainsi qu’une précision dépassant 90% en classification.
+Toutefois, ces solutions restent majoritairement confinées à des environ-
+nements expérimentaux et se heurtent à des contraintes de déploiement
+clinique : temps de calcul élevés, ressources matérielles importantes et
+absence d’interfaces adaptées aux praticiens.[9]
+29
+
+
+===== PAGE 30 =====
+
+Chapitre 1. Cadre général du projet
+Table 1.1 – Comparaison des solutions existantes
+Critère
+Neurophet AQUA
+AD Plus
+BrainSee
+(Dar-
+miyan)
+Approches
+aca-
+démiques
+(Deep
+Learning)
+Année
+2026 (FDA)
+2024 (FDA)
+2024–2025
+Type
+Commercial (IRM +
+PET)
+Commercial (IRM +
+données cliniques)
+Recherche académique
+(IRM 2D/3D)
+Datasets utilisés
+Bases
+multimodales
+propriétaires (inspirées
+de ADNI)
+Données propriétaires
+inspirées de ADNI
+ADNI, OASIS, Medi-
+cal Segmentation De-
+cathlon (Task04 Hip-
+pocampus)
+Algorithmes
+Deep learning multi-
+modal (CNN 3D, fu-
+sion IRM/PET)
+Machine Learning et
+Deep Learning multi-
+modal (CNN + don-
+nées cliniques)
+CNN,
+U-Net,
+Swin-
+UNet, MedT
+Segmentation
+Automatique, globale
+Non détaillée
+Précise (hippocampe,
+Dice > 0.90)
+Classification
+Oui (multimodale)
+Oui (prédiction de pro-
+gression)
+Oui (précision souvent
+> 90%)
+Explicabilité
+Limitée (résultats nu-
+mériques complexes)
+Faible
+(score
+global
+sans visualisation)
+Bonne (heatmaps, vi-
+sualisations)
+Temps de traite-
+ment
+Variable (dépend du
+PET et des données)
+Relativement long
+Variable
+(souvent
+élevé, GPU requis)
+Interface
+Desktop, complexe
+Web simple
+Prototypes (peu d’in-
+terfaces utilisateur)
+Avis utilisateurs
+Performant mais coû-
+teux et peu accessible
+Accessible
+mais
+manque
+de
+transpa-
+rence
+Prometteur mais diffi-
+cile à déployer clinique-
+ment
+Note critique
+Innovant mais peu ac-
+cessible
+Accessible mais « boîte
+noire »
+Performant
+mais
+li-
+mité au cadre acadé-
+mique
+1.2.3
+Collecte des besoins (Questionnaire)
+Au cours de notre stage à l’hôpital Farhat Hachad de Sousse, nous avons
+conçu un questionnaire thématique qui aborde les éléments fondamentaux
+de la maladie d’Alzheimer. Cette tâche a été accomplie en partenariat
+30
+
+
+===== PAGE 31 =====
+
+Chapitre 1. Cadre général du projet
+avec le département clinique et le département de radiologie, en sollicitant
+directement des praticiens de ces deux services. Le but était de solliciter
+leur compétence pour confirmer les aspects essentiels discutés et améliorer
+la validité scientifique de notre initiative.
+Objectif du questionnaire
+Ce questionnaire a pour objectif de synthétiser les connaissances de
+base sur la maladie d’Alzheimer et de relier les concepts théoriques
+aux données pratiques exploitées dans le projet. Il constitue un outil
+exploratoire et méthodologique permettant d’identifier les éléments les
+plus pertinents pour la conception du système de détection.
+Questions principales
+— Quelle partie du cerveau est la plus touchée ?
+L’hippocampe, impliqué dans la mémoire et l’apprentissage, est la
+région la plus affectée par l’atrophie.
+— Quels sont les facteurs de risque ?
+L’âge avancé, les antécédents familiaux, le manque d’activité phy-
+sique et mentale, ainsi que les maladies cardiovasculaires.
+— Existe-t-il des maladies présentant des symptômes simi-
+laires ?
+Oui, notamment la démence vasculaire, la dépression et la carence
+en vitamine B12.
+— La maladie peut-elle apparaître à un âge précoce ?
+Rarement, mais une forme précoce peut survenir avant 65 ans,
+parfois dès 40 ou 50 ans.
+— Quel plan d’imagerie est le plus pertinent pour étudier
+l’hippocampe ?
+Le plan coronal est le plus adapté, car il permet une visualisation
+directe de la forme et du volume de l’hippocampe. Les plans axial
+et sagittal complètent l’analyse pour une meilleure précision.
+31
+
+
+===== PAGE 32 =====
+
+Chapitre 1. Cadre général du projet
+Analyse des résultats
+Les réponses recueillies auprès des médecins des services clinique et
+radiologique ont permis de confirmer plusieurs points essentiels :
+— L’hippocampe est unanimement identifiée comme la région cérébrale
+la plus touchée.
+— Les principaux facteurs de risque sont liés à l’âge, aux antécédents
+familiaux et aux maladies cardiovasculaires.
+— Les maladies présentant des symptômes similaires compliquent le
+diagnostic différentiel.
+— La forme précoce de la maladie reste rare mais possible dès 40–50
+ans.
+— Le plan coronal est privilégié pour l’étude de l’hippocampe en
+imagerie IRM.
+Figure 1.7 – Synthèse des résultats du questionnaire exploratoire réalisé avec l’Hôpital
+Farhat Hachad de Sousse.
+Ce questionnaire constitue une étape exploratoire essentielle du pro-
+jet. Il a permis de valider les choix méthodologiques et de renforcer la
+pertinence scientifique du travail en s’appuyant sur l’expertise médicale
+de l’Hôpital Farhat Hachad de Sousse.
+32
+
+
+===== PAGE 33 =====
+
+Chapitre 1. Cadre général du projet
+1.2.4
+Problématique
+Malgré les avancées technologiques, plusieurs défis persistent :
+— La segmentation manuelle de l’hippocampe est longue et dépend
+de l’expert ;
+— Le calcul précis du volume nécessite des outils spécialisés souvent
+coûteux et peu accessibles ;
+— La détermination du stade de la maladie peut varier selon l’inter-
+prétation du clinicien ;
+— Les systèmes existants ne fournissent aucune explication visuelle sur
+les zones atrophiées, rendant la décision clinique difficile à valider ;
+— Les solutions actuelles sont souvent complexes et non accessibles
+via une interface simple dédiée aux médecins.
+La problématique principale de ce projet est donc la suivante :
+Comment concevoir un système intelligent capable de segmen-
+ter automatiquement l’hippocampe à partir d’images IRM 3D,
+d’estimer son volume avec précision et de déterminer le stade
+de la maladie d’Alzheimer, tout en fournissant une explication
+visuelle des régions atrophiées directement sur l’image, et en
+offrant une interface web accessible aux professionnels de santé ?
+1.3
+Solution proposée
+Afin de répondre aux défis identifiés, une plateforme web intelligente
+dédiée à l’aide au diagnostic de la maladie d’Alzheimer a été conçue.
+Cette solution repose sur les fonctionnalités suivantes :
+— Automatisation de l’analyse des images IRM cérébrales en se concen-
+trant sur l’hippocampe ;
+— Segmentation automatique de l’hippocampe à partir d’images IRM
+3D grâce à des techniques d’intelligence artificielle ;
+— Calcul du volume hippocampique et estimation du degré d’atrophie
+à partir de mesures quantitatives ;
+33
+
+
+===== PAGE 34 =====
+
+Chapitre 1. Cadre général du projet
+— Classification du stade de la maladie d’Alzheimer (sain, MCI, Alz-
+heimer) en s’appuyant sur les données d’imagerie et les données
+cliniques ;
+— Visualisation explicable des résultats via la superposition des zones
+affectées directement sur l’image IRM ;
+— Mise à disposition d’une interface web sécurisée permettant la
+gestion des utilisateurs (administrateur, médecin) ;
+— Gestion des dossiers patients avec accès à l’historique des analyses ;
+— Génération automatique de rapports détaillés au format PDF.
+Cette solution se distingue par son caractère automatisé, explicable et
+accessible, offrant aux professionnels de santé un outil simple et efficace
+pour assister le diagnostic de la maladie d’Alzheimer.
+1.4
+Méthodologie de travail
+L’ une des étapes les plus importantes pour mener à bien un travail est
+de choisir la bonne façon de procéder. C’est pourquoi nous considérons
+le choix de la méthodologie de travail la mieux adaptée à notre travail
+comme une étape importante pour assurer une bonne organisation des
+tâches.
+1.4.1
+Choix méthodologique
+Afin de sélectionner la méthodologie la plus adaptée à notre projet, une
+comparaison a été réalisée entre les méthodes classiques et les méthodes
+agiles.
+34
+
+
+===== PAGE 35 =====
+
+Chapitre 1. Cadre général du projet
+Table 1.2 – Comparaison entre les méthodes classiques et les méthodes agiles
+Critère
+Méthodes
+classiques
+(Cycle en cascade)
+Méthodes agiles (Scrum)
+Organisation
+Séquentielle et linéaire
+Itérative et incrémentale
+Flexibilité
+Faible, changements diffi-
+ciles à intégrer
+Élevée, adaptation continue
+Gestion des chan-
+gements
+Complexe une fois le projet
+lancé
+Intégrée naturellement au
+processus
+Communication
+Limitée et formelle
+Continue et collaborative
+Documentation
+Abondante et détaillée
+Allégée et orientée vers les
+besoins
+Gestion
+des
+risques
+Découverte tardive des pro-
+blèmes
+Détection précoce grâce aux
+sprints
+Pour notre projet, nous avons choisi une méthode du type AGILE,
+plus particuliè- rement SCRUM.
+1.4.2
+Pourquoi Scrum
+Nous avons opté pour la méthode SCRUM,car elle repose sur des
+cycles de développement courts, ce qui nous a permis de prioriser les
+tâches essentielles, de gérer efficacement les imprévus et de livrer, à
+chaque étape, une version utilisable de notre application. Le choix de
+SCRUM a donc parfaitement répondu aux exigences de notre projet, en
+nous permettant de garantir à la fois la qualité du produit final et la
+satisfaction des utilisateurs.
+Définition
+Scrum est une méthodologie agile largement utilisée dans le déve-
+loppement logiciel. Elle repose sur un processus itératif et incrémen-
+tal, permettant aux équipes de s’adapter rapidement aux changements.
+Contrairement aux méthodes traditionnelles qui fixent les exigences pour
+maîtriser le temps et les coûts, Scrum fixe ces derniers pour mieux contrô-
+ler les exigences.Ce framework encourage une forte collaboration entre
+35
+
+
+===== PAGE 36 =====
+
+Chapitre 1. Cadre général du projet
+l’équipe de développement et le client ou son représentant, assurant une
+livraison progressive et pertinente du produit .[10]
+Les rôles dans Scrum
+— Product Owner :Responsable de la gestion du backlog produit,
+il définit les
+priorités des fonctionnalités à développer et veille à ce que
+l’équipe de développement crée des produits qui répondent aux
+besoins des utilisateurs et des parties prenantes.
+— Scrum Master :Facilite l’application de Scrum, aide l’équipe
+à surmonter les obstacles et à améliorer ses pratiques. Il veille
+également à ce que les processus Scrum soient suivis correctement.
+— Équipe de Développement :Groupe de professionnels qui tra-
+vaillent ensemble pour créer le produit. L’équipe est auto-organisée
+et interdisciplinaire, ce qui signifie qu’elle possède toutes les compé-
+tences nécessaires pour réaliser le produit sans dépendre d’autres
+équipes.
+Le processus de Scrum :
+Le processus Scrum débute par une vision claire du produit, généra-
+lement fournie par l’entreprise ou le client, et traduite sous forme d’un
+ensemble de fonctionnalités classées par ordre de priorité. Ces fonction-
+nalités constituent le Product Backlog, une liste évolutive gérée par le
+Product Owner, représentant du client.
+Le développement s’organise ensuite en sprints, c’est-à-dire des itéra-
+tions de durée fixe (généralement entre une et quatre semaines), durant
+lesquelles l’équipe de développement se concentre sur un sous-ensemble
+des fonctionnalités à implémenter.
+La durée du sprint reste constante tout au long du projet afin de créer
+une cadence régulière de travail. Lors de la réunion de Sprint Planning,
+l’équipe sélectionne les éléments du Product Backlog qu’elle estime pou-
+voir réaliser durant le sprint, en tenant compte de leur complexité et
+36
+
+
+===== PAGE 37 =====
+
+Chapitre 1. Cadre général du projet
+du temps disponible. Ces éléments sont ensuite détaillés sous forme de
+tâches dans un document appelé Sprint Backlog, qui sert de guide de
+travail tout au long de l’itération.
+L’objectif de Scrum est de livrer,a la fin de cahque sprint,un incrément
+fonctionnel du produit,permettant de recueillir des retours réguliers et
+d’orienter les prochaines étapes de dveloppement selon les priorités et les
+besoins réels.
+Figure 1.8 – représente le processus Scrum et ses principales phases.
+1.5
+Langage de Modélisation
+UML (Unified Modeling Language) est un langage de modélisation
+visuelle riche et stan- dardisé, conçu pour améliorer la communication
+au sein de l’équipe et avec les interve- nants. Nous l’avons utilisé avec
+l’outil StarUML pour créer nos diagrammes.[11]
+Figure 1.9 – Logo UML
+37
+
+
+===== PAGE 38 =====
+
+Chapitre 1. Cadre général du projet
+Conclusion
+Dans ce chapitre, nous avons exposé le contexte global de notre projet.
+Nous avons commencé par présenter l’entité d’accueil et le cadre de
+l’étude. Nous avons par la suite établi une problématique et étudié les
+solutions disponibles pour en déceler les contraintes. Finalement, nous
+avons exposé la solution suggérée ainsi que l’approche mise en œuvre
+pour la concrétisation de ce projet.
+Le chapitre suivant sera consacré à l’analyse détaillée et à la spécifica-
+tion des besoins fonctionnels et non fonctionnels du système, ainsi qu’à
+l’identification des acteurs et à la présentation des environnements de
+travail.
+38
+
+
+===== PAGE 39 =====
+
+Chapitre 2
+Gestion de projet : Analyse et
+Planification
+
+
+===== PAGE 40 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+Introduction
+Dans ce chapitre, nous allons procéder à l’identification des besoins
+fonctionnels et non fonctionnels, tout en définissant les acteurs principaux
+du système. Cette étape nous permettra de construire un Product Backlog
+cohérent, base de toute planification agile via les sprints. Enfin, nous
+présenterons les choix architecturaux et technologiques adoptés pour la
+conception et la mise en œuvre de l’application, en tenant compte des
+contraintes du projet et des meilleures pratiques du développement web.
+2.1
+Identification des acteurs de notre application
+Un acteur est un individu ou un système informatique qui établit une
+interaction avec le système en échangeant des messages pour accomplir
+une mission. Les acteurs impliqués dans notre projet incluent :
+— Administrateur : C’est la personne avec la plus haute autorité sur
+la plateforme. Il supervise l’ensemble des comptes médecins, valide
+ou rejette les demandes d’accès, et suit les statistiques globales des
+analyses réalisées.
+— Visiteur : Il s’agit des utilisateurs non authentifiés qui consultent
+la landing page de la plateforme.
+— Médecin :Il peut soumettre une demande d’accès via le formulaire
+dédié. Une fois validé par l’administrateur, il accède aux fonction-
+nalités principales de la plateforme : gestion des dossiers patients,
+chargement des IRM, consultation des résultats d’analyse et télé-
+chargement des rapports PDF cliniques.
+2.2
+Étude des besoins
+Dans cette section, nous allons fournir une description détaillée des
+besoins fonctionnels et non fonctionnels de la plateforme, pour déterminer
+de manière précise les fonctionnalités essentielles et les contraintes à
+respecter pour garantir son bon fonctionnement.
+40
+
+
+===== PAGE 41 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+2.2.1
+Les besoins fonctionnels
+Visiteur :
+— Consulter la page d’accueil de la plateforme et découvrir ses fonc-
+tionnalités.
+Médecin :
+— Soumettre une demande d’accès en renseignant leurs informations
+professionnelles .
+— Se connecter et accéder à leur tableau de bord personnel.
+— Rechercher un patient par nom, CIN ou numéro de dossier.
+— Créer un dossier patient en saisissant les données cliniques
+— Charger un fichier IRM (.nii / .nii.gz) et lancer l’analyse automa-
+tique
+— Relancer une nouvelle analyse sur un patient existant en mettant à
+jour ses données cliniques et en chargeant un nouvel IRM.
+— Consulter les résultats de segmentation hippocampique et le stade
+prédit avec son score de confiance.
+— Consulter l’historique de toutes les analyses d’un patient et télé-
+charger n’importe quel rapport passé.
+— Supprimer un dossier patient ainsi que toutes ses analyses associées.
+Administrateur :
+— Se connecter et accéder au dashboard d’administration.
+— Consulter les demandes d’accès en attente et approuver ou rejeter
+chaque candidature.
+— Créer directement un compte médecin sans passer par le formulaire
+de demande.
+— Gérer les comptes médecins actifs et inactifs : désactiver ou réactiver
+un compte.
+— Supprimer un médecin avec suppression en cascade de tous ses
+patients et analyses associées.
+— Consulter les statistiques globales de la plateforme : nombre de
+médecins actifs, total des patients, total des analyses
+41
+
+
+===== PAGE 42 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+2.2.2
+Les Besoins non fonctionnels
+Sécurité :Assurer la protection des créations et des informations
+personnelles.
+Ergonomie :Concevoir une application intuitive, simple et accessible
+à tous les utilisateurs.
+Performance :Assurer une utilisation fluide de la plateforme avec
+des temps de réponse rapides.
+Maintenance : Assurer un code clair, organisé et maintenable afin
+de simplifier les mises à jour et la correction des anomalies.
+2.3
+Diagrammes de cas d’utlisation globale :
+Le diagramme de cas d’utilisation globale offre une vue d’ensemble
+des interactions clés entre les acteurs et le système.
+42
+
+
+===== PAGE 43 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+Figure 2.1 – Diagrammes de cas d’utlisation globale
+2.4
+Gestion de Projet avec Scrum
+Cette section présente la gestion de projet selon la méthodologie Scrum.
+Nous avons commencé par définir les différents rôles associés à Scrum,
+puis élaboré le backlog. Enfin, nous avons organisé la composition des
+43
+
+
+===== PAGE 44 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+sprints afin de structurer le déroulement du développement
+2.4.1
+Identification des rôles
+Dans le cadre de notre projet, nous avons attribué les rôles Scrum
+comme suit :
+— Scrum Master : Mr. Walid Hassairi
+— Product Owner : Mdm Saida Ouaja
+— Equipe de développement : Mlle. Ihsen Ben Brahim et Mr.
+Mohsen Chihaoui .
+2.4.2
+Backlog du produit :
+Le tableau 2.1 présente le backlog du produit , qui répertorie de
+manière détaillée les fonctionnalités et les tâches prioritaires à réaliser.
+L’utilisateur peut être un visiteur, un médecin ou un administrateur.
+Table 2.1 – Backlog du produit
+User
+ID
+User story
+Priorité
+Administrateur
+1
+En tant qu’Administrateur, je vais
+m’authentifier
+1
+2
+En tant qu’Administrateur, je peux
+consulter les demandes d’accès en at-
+tente
+3
+En tant qu’Administrateur, je vais va-
+lider ou rejeter une demande de mé-
+decin
+4
+En tant qu’Administrateur, je peux
+créer un compte médecin directement
+5
+En tant qu’Administrateur, je peux
+désactiver, réactiver ou supprimer un
+médecin
+44
+
+
+===== PAGE 45 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+User
+ID
+User story
+Priorité
+6
+En tant qu’Administrateur, je peux
+consulter les statistiques globales
+Médecin
+7
+En tant que Médecin, je peux sou-
+mettre une demande d’accès médecin
+2
+8
+En tant que Médecin, je vais m’au-
+thentifier
+9
+En tant que Médecin, je peux recher-
+cher un patient
+10
+En tant que médecin, je peux lancer
+une analyse pour un nouveau patient
+ou pour un patient déjà enregistré
+11
+En tant que médecin, je peux remplir
+les données cliniques du patient
+12
+En tant que Médecin, je peux charger
+un fichier IRM et lancer l’analyse
+13
+En tant que Médecin, je peux consul-
+ter les résultats
+14
+En tant que Médecin, je peux téléchar-
+ger le rapport PDF clinique
+15
+En tant que Médecin, je peux consul-
+ter l’historique des analyses
+16
+En tant que Médecin, je peux suppri-
+mer un dossier patient
+Visiteur
+17
+En tant que Visiteur, je peux consul-
+ter la page d’accueil
+3
+45
+
+
+===== PAGE 46 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+2.4.3
+Planification des sprints
+Table 2.2 – Tableau 5. Planification des sprints
+Sprint
+User story
+Nom du User story
+Période
+Sprint 1
+User story 1
+Authentification administrateur
+4 semaines
+User story 2
+Consulter les demandes d’accès en attente
+User story 3
+Valider ou rejeter une demande de médecin
+User story 4
+Créer un compte médecin
+User story 5
+Désactiver / réactiver / supprimer un médecin
+User story 6
+Consulter les statistiques globales
+User story 7
+Authentification médecin
+User story 17
+Soumettre une demande d’accès médecin
+Sprint 2
+User story 9
+Lancer une analyse pour un nouveau patient
+ou un patient déjà enregistré
+4 semaines
+User story 10
+Remplir les données cliniques du patient
+User story 11
+Charger un fichier IRM et lancer l’analyse
+User story 12
+Consulter les résultats
+User story 13
+Télécharger le rapport PDF clinique
+Sprint 3
+User story 8
+Rechercher un patient
+4 semaines
+User story 14
+Consulter l’historique des analyses
+User story 15
+Supprimer un dossier patient
+2.4.4
+Diagramme de Gantt :
+Le diagramme de Gantt est un outil essentiel pour planifier et suivre
+les différentes étapes du développement de l’application. Il offre une
+46
+
+
+===== PAGE 47 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+vision globale des tâches à réaliser, ce qui facilite la gestion des ressources,
+permet de repérer rapidement les difficultés éventuelles et d’ajuster le
+calendrier en conséquence .
+Figure 2.2 – Diagramme de Gantt
+2.5
+Environnement de travail
+Cette partie sert à représenter les différents environnements matériels
+et logiciels ainsi que les outils de développement et de contrôle à utiliser
+afin de bien accomplir notre travail.
+2.5.1
+Choix des technologies :
+Langages de programmation :
+— TypeScript : Langage de programmation basé sur JavaScript, enri-
+chi d’un système de typage statique. Dans notre projet, TypeScript
+est utilisé côté frontend pour garantir la fiabilité du code et réduire
+les erreurs lors du développement.[12]
+Figure 2.3 – Logo TypeScript
+47
+
+
+===== PAGE 48 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+— Python : Langage de programmation largement utilisé dans l’in-
+formatique scientifique et le développement web. Dans notre projet,
+Python est utilisé pour développer le backend ainsi que les services
+d’intelligence artificielle dédiés à l’analyse IRM.[13]
+Figure 2.4 – Logo Python
+Frameworks et Bibliothèques :
+— React : Bibliothèque JavaScript pour la création d’interfaces utili-
+sateurs interactives. React est utilisé dans notre projet pour déve-
+lopper la partie frontend, permettant de rendre l’application rapide
+et réactive grâce à son modèle de mise à jour basé sur un DOM
+virtuel.[14]
+Figure 2.5 – Logo React
+— Flask : Micro-framework Python léger utilisé pour développer
+les API REST du backend. Il intègre les fonctionnalités de ges-
+tion des routes, de l’authentification et des services d’intelligence
+artificielle.[15]
+48
+
+
+===== PAGE 49 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+Figure 2.6 – Logo Flask
+— Tailwind CSS : Framework CSS utilitaire utilisé pour concevoir
+une interface utilisateur moderne et responsive.[16]
+Figure 2.7 – logo Tailwind CSS
+Environnements d’exécution
+— Node.js est un environnement d’exécution JavaScript multiplate-
+forme conçu pour créer des applications réseau rapides et évolu-
+tives.[17]
+Figure 2.8 – Logo Node.js
+Base de données :
+— PostgreSQL : Système de gestion de base de données relationnel
+robuste et performant. Dans notre projet, PostgreSQL est utilisé
+49
+
+
+===== PAGE 50 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+pour stocker les données des médecins, des patients et des analyses
+via SQLAlchemy.[18]
+Figure 2.9 – Logo SQLite
+Bibliothèques IA et traitement des données
+— PyTorch 1.13 :Framework de deep learning. Nous l’utilisons pour
+implémenter et entraîner nos architectures .[19]
+Figure 2.10 – Caption
+— NumPy : Bibliothèque Python pour le calcul numérique, utilisée
+pour le traitement des données volumétriques issues des fichiers
+IRM.[20]
+Figure 2.11 – Logo NumPy
+— Matplotlib : Bibliothèque Python de visualisation de données,
+50
+
+
+===== PAGE 51 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+utilisée pour générer les coupes coronales colorées avec les overlays
+hippocampiques affichés dans les résultats d’analyse.[21]
+Figure 2.12 – Logo Matplotlib
+— ReportLab : Bibliothèque Python dédiée à la génération de fi-
+chiers PDF, utilisée pour produire les rapports cliniques complets
+téléchargeables après chaque analyse.[22]
+Figure 2.13 – Logo ReportLab
+Système de gestion de versions
+— Système de contrôle de version décentralisé utilisé pour suivre les
+modifications du code source et gérer les branches du projet.[23]
+Figure 2.14 – Logo Git
+2.5.2
+Choix des logiciels :
+Outils de développement
+51
+
+
+===== PAGE 52 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+— Vite : est un outil moderne de développement utilisé pour la
+construction et le déploiement d’applications web front-end. Il per-
+met un démarrage rapide du projet et un rechargement instantané
+des modifications grâce à son système optimisé de compilation.
+Dans notre projet, nous avons utilisé Vite afin d’améliorer les per-
+formances du développement de l’interface utilisateur basée sur
+React.[24]
+Figure 2.15 – Logo Vite
+— Visual Studio Code : Éditeur de code source utilisé pour le
+développement de notre projet. Il offre des fonctionnalités telles
+que la complétion de code, le débogage intégré et un large éventail
+d’extensions pour faciliter le travail de développement.[25]
+Figure 2.16 – Logo Visual Studio Code
+— Google Colab : Environnement de développement en ligne basé
+sur Jupyter Notebook, fourni par Google. Dans notre projet, Google
+Colab est utilisé pour entraîner les modèles d’intelligence artificielle
+de segmentation hippocampique et de classification, en exploitant
+les ressources GPU mises à disposition gratuitement par la plate-
+52
+
+
+===== PAGE 53 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+forme.[26]
+Figure 2.17 – Logo Google Colab
+Services en ligne
+— GitHub : Plateforme de développement collaboratif qui héberge
+notre code source et facilite le suivi des versions ainsi que la gestion
+des tâches du projet.[27]
+Figure 2.18 – Logo GitHub
+— Overleaf : Éditeur LaTeX en ligne pour la rédaction collaborative
+du rapport .[28]
+Figure 2.19 – Logo Overleaf
+53
+
+
+===== PAGE 54 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+2.6
+Présentation des Données :
+À la suite de notre exploration théorique et méthodologique, nous
+avons identifié deux jeux de données complémentaires, particulièrement
+adaptés à nos objectifs.
+2.6.1
+Jeu de données pour la segmentation de l’hippocampe :
+Pour la première étape, dédiée à la segmentation de l’hippocampe sur
+des images IRM cérébrales, nous avons choisi le jeu de données Task04
+Hippocampus du Medical Segmentation Decathlon. Ce dataset
+contient des volumes IRM 3D du cerveau, accompagnés de masques de
+segmentation réalisés par des experts. Il est particulièrement adapté
+à l’entraînement de modèles de segmentation 3D , car il fournit des
+annotations précises de la région de l’hippocampe, zone clé dans l’étude
+de l’atrophie liée à la maladie d’Alzheimer
+2.6.2
+Jeu de données pour la classification :
+Pour la deuxième étape, dédiée à la classification du stade de la maladie
+d’Alzheimer, nous avons utilisé le jeu de données OASIS (Open Access
+Series of Imaging Studies) . Ce dataset contient de données cliniques et
+démographiques, incluant notamment le score MMSE, l’âge et le niveau
+d’éducation des patients. Il est particulièrement adapté à l’entraînement
+de modèles de classification, car il fournit des labels cliniques permettant
+de distinguer les sujets sains des patients atteints de troubles cognitifs
+légers ou de la maladie d’Alzheimer.
+2.7
+Architecture de l’application :
+La conception de notre application repose sur une architecture 3-tiers
+complétée par des micro-services dédiés à l’intelligence artificielle, afin
+d’assurer la modularité, la scalabilité et la maintenabilité de la plateforme.
+54
+
+
+===== PAGE 55 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+— Tier 1 : Présentation Développé en React avec TypeScript, il
+constitue l’interface à travers laquelle le médecin interagit avec la
+plateforme : consultation des dossiers patients, upload des fichiers
+IRM et visualisation des résultats d’analyse.
+— Tier 2 : Logique métier Fondé sur Flask et Python, il constitue le
+cœur de la logique applicative en mettant à disposition du frontend
+des API REST pour la gestion des patients, des analyses et de
+l’administration.
+— Tier 3 : Représente la base de données PostgreSQL qui stocke les
+données des médecins, des patients et l’historique des analyses.
+Cette architecture 3-tiers est enrichie par deux micro-services IA auto-
+nomes : un service de segmentation hippocampique qui mesure les
+volumes cérébraux à partir des fichiers IRM, et un service de classifi-
+cation qui prédit le stade de la maladie. Cette séparation garantit la
+modularité et permet de faire évoluer chaque modèle indépendamment.
+Figure 2.20 – Architecture de l’application
+55
+
+
+===== PAGE 56 =====
+
+Chapitre 2.
+Gestion de projet : Analyse et Planification
+Conclusion :
+Dans ce chapitre, nous avons spécifié nos besoins fonctionnels et non
+fonctionnels ainsi que les acteurs de notre solution, cette étude nous a
+donné une vision plus claire sur la finalité du projet, aussi nous avons
+exposé notre backlog du produit et l’architecture à adopter. Dans le
+chapitre suivant, nous allons entamer le sprint 1.
+56
+
+
+===== PAGE 57 =====
+
+Chapitre 3
+Le premier Sprint —
+Authentification et Gestion des
+utilisateurs
+
+
+===== PAGE 58 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+Introduction :
+Après avoir décrit notre environnement de travail, nous allons détailler
+le processus de réalisation des sprints en commençant par le premier sprint.
+Nous commençons tout d’abord par présenter le Backlog de ce sprint.
+Ensuite, nous présentons la spécification des besoins, la constitution
+des diagrammes et nous terminons cette étude par la présentation des
+interfaces réalisées.
+3.1
+Planification du Sprint :
+3.1.1
+Objectif du Sprint 1 :
+L’objectif de ce premier sprint est de poser les bases techniques du
+projet et de mettre en place les premières interactions avec les utilisateurs.
+Ce sprint dure 30 jours et couvre quatre axes principaux :
+— Mettre en place l’interface d’authentification permettant aux méde-
+cins et à l’administrateur de se connecter de manière sécurisée via
+un token JWT.
+— Développer le système de gestion des demandes d’accès, permettant
+à un médecin de soumettre une candidature et à l’administrateur
+de l’approuver ou de la rejeter.
+— Implémenter la gestion des comptes médecins, offrant à l’adminis-
+trateur la possibilité de créer, désactiver, réactiver ou supprimer
+un compte.
+— Intégrer le tableau de bord statistiques permettant à l’adminis-
+trateur de suivre en temps réel le nombre de médecins actifs, de
+patients et d’analyses réalisées sur la plateforme ainsi que le nombre
+des demandes en attente.
+Ce sprint a pour but de construire les fondations techniques et fonc-
+tionnelles essentielles, en commençant par les éléments qui conditionnent
+l’accès à l’ensemble des autres fonctionnalités de la plateforme.
+58
+
+
+===== PAGE 59 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+3.1.2
+Backlog du Sprint 1 :
+Table 3.1 – Backlog du 1er sprint
+Sprint
+User
+ID
+User story
+Complexité
+Sprint 1
+Visiteur
+17
+En tant que visiteur, je souhaite consul-
+ter la page d’accueil.
+Faible
+Médecin
+7
+En tant que médecin, je souhaite sou-
+mettre une demande d’accès médecin.
+Élevée
+8
+En tant que médecin, je veux m’authen-
+tifier.
+Élevée
+Administrateur
+1
+En tant qu’administrateur, je veux
+m’authentifier.
+Élevée
+2
+En tant qu’administrateur, je souhaite
+consulter les demandes d’accès en at-
+tente.
+Moyenne
+3
+En tant qu’administrateur, je souhaite
+valider ou rejeter une demande de mé-
+decin.
+Moyenne
+4
+En tant qu’administrateur, je souhaite
+créer un compte médecin directement.
+Moyenne
+5
+En tant qu’administrateur, je souhaite
+désactiver, réactiver ou supprimer un
+médecin.
+Moyenne
+6
+En tant qu’administrateur, je souhaite
+consulter les statistiques globales de la
+plateforme.
+Moyenne
+3.2
+Analyse et conception :
+3.2.1
+Identification des acteurs :
+Dans notre plateforme, un visiteur peut consulter la page d’accueil.
+S’il souhaite rejoindre la plateforme, il soumet une demande d’accès en
+tant que médecin. Après approbation par l’administrateur, il obtient
+le statut de médecin, ce qui lui permet de s’authentifier et d’accéder aux
+fonctionnalités principales de la plateforme..
+59
+
+
+===== PAGE 60 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+3.2.2
+Diagramme de cas d’utilisation du sprint 1 :
+Figure 3.1 – Diagramme de cas d’utilisation du sprint 1
+60
+
+
+===== PAGE 61 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+3.2.3
+Description textuelle du cas d’utilisation « S’authentifier
+» :
+Table 3.2 – Description du cas d’utilisation « S’authentifier »
+Titre
+S’authentifier
+Objectif
+Permettre à l’administrateur ou au médecin de s’au-
+thentifier pour accéder aux fonctionnalités de la
+plateforme.
+Acteurs
+Médecin, Administrateur
+Description de l’enchainement
+Pré-condition
+L’utilisateur doit posséder un compte actif et être
+sur la page de connexion.
+Post-condition
+L’utilisateur est authentifié et redirigé vers son ta-
+bleau de bord.
+Scénario normal
+1. L’utilisateur accède à l’interface d’authentifica-
+tion.
+2. L’utilisateur saisit son adresse e-mail et son mot
+de passe.
+3. L’utilisateur clique sur « Se connecter ».
+4. Le système vérifie les identifiants.
+5. Le système génère un token JWT.
+6. L’utilisateur est redirigé vers son tableau de bord
+(admin ou médecin selon le rôle).
+Scénario alterna-
+tif
+1. Si les identifiants sont incorrects : le système
+affiche un message d’erreur.
+2. Si le compte est désactivé : le système affiche «
+Compte désactivé, contactez l’administrateur ».
+3. Si des champs sont vides : le système affiche «
+Veuillez remplir tous les champs ».
+3.2.4
+Description textuelle du cas d’utilisation « Soumettre
+une demande d’accès »
+61
+
+
+===== PAGE 62 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+Table 3.3 – Description du cas d’utilisation « Soumettre une demande d’accès »
+Titre
+Soumettre une demande d’accès
+Objectif
+Permettre à médecin potentiel de soumettre une
+demande d’accès à la plateforme.
+Acteurs
+Médecin
+Description de l’enchaînement
+Pré-condition
+Le médecin doit être sur la page d’inscription.
+Post-
+condition
+La demande est enregistrée en base de données avec
+le statut « en attente ».
+Scénario
+nor-
+mal
+1. Le médecin accède à la page « Demander l’accès ».
+2. Le système affiche le formulaire d’inscription.
+3. Le médecin remplit le formulaire :
+— Nom et prénom.
+— Adresse e-mail.
+— Numéro de téléphone.
+— Spécialité.
+— Mot de passe.
+4. Le médecin clique sur « Soumettre ».
+5. Le système vérifie les données saisies.
+6. Le système enregistre la demande avec le statut
+« en_attente ».
+7. Le système affiche un message de confirmation.
+62
+
+
+===== PAGE 63 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+Scénario alter-
+natif
+1. Si l’email est déjà utilisé : le système affiche «
+Un compte existe déjà avec cet email ».
+2. Si des champs obligatoires sont vides : le système
+affiche un message d’erreur par champ manquant.
+3. Si le mot de passe contient moins de 8 caractères :
+le système affiche « Le mot de passe doit contenir
+au moins 8 caractères ».
+4. Si les mots de passe ne correspondent pas : le sys-
+tème affiche « Les mots de passe ne correspondent
+pas ».
+5. Si le médecin ne certifie pas être professionnel de
+santé : le système affiche « Vous devez certifier être
+professionnel de santé ».
+3.2.5
+Description textuelle du cas d’utilisation « Consulter les
+demandes d’accès »
+Table 3.4 – Description du cas d’utilisation « Consulter les demandes d’accès »
+Titre
+Consulter les demandes d’accès en attente
+Objectif
+Permettre à l’administrateur de consulter la liste
+des demandes de médecins en attente de traitement.
+Acteurs
+Administrateur
+Description de l’enchaînement
+Pré-condition
+L’administrateur doit être authentifié.
+Post-
+condition
+La liste des demandes en attente est affichée.
+63
+
+
+===== PAGE 64 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+Scénario
+nor-
+mal
+1. L’administrateur accède au tableau de bord
+d’administration.
+2. Le système récupère toutes les demandes avec le
+statut « en_attente ».
+3. Le système affiche la liste avec :
+— Nom et prénom.
+— Adresse e-mail.
+— Numéro de téléphone.
+— Spécialité.
+— Date de soumission.
+64
+
+
+===== PAGE 65 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+3.2.6
+Description textuelle du cas d’utilisation « Valider ou
+rejeter une demande »
+Table 3.5 – Description du cas d’utilisation « Valider ou rejeter une demande »
+Titre
+Valider ou rejeter une demande de médecin
+Objectif
+Permettre à l’administrateur d’approuver ou de re-
+jeter une demande d’accès soumise par un médecin.
+Acteurs
+Administrateur
+Description de l’enchainement
+Pré-condition
+L’administrateur est authentifié et au moins une
+demande est en attente.
+Post-condition
+La demande est traitée (approuvée ou rejetée) et le
+statut mis à jour en base de données.
+Scénario normal
+1. L’administrateur consulte la liste des demandes
+en attente.
+2. L’administrateur examine les informations du
+candidat.
+3. L’administrateur clique sur « Approuver » ou «
+Rejeter ».
+4. Le système met à jour le statut de la demande.
+5. Si approuvée : le système crée automatiquement
+un compte médecin actif.
+65
+
+
+===== PAGE 66 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+3.2.7
+Description textuelle du cas d’utilisation « Créer un
+compte médecin » :
+Table 3.6 – Description du cas d’utilisation « Créer un compte médecin »
+Titre
+Créer un compte médecin
+Objectif
+Permettre à l’administrateur de créer directement
+un compte médecin sans passer par une demande
+d’accès.
+Acteurs
+Administrateur
+Description de l’enchainement
+Pré-condition
+L’administrateur est authentifié.
+Post-condition
+Un nouveau compte médecin actif est créé et dispo-
+nible dans la liste des médecins.
+Scénario normal
+1. L’administrateur clique sur « Nouveau médecin
+».
+2. Le système affiche un formulaire de création.
+3. L’administrateur remplit :
+— Nom et prénom.
+— Adresse e-mail.
+— Mot de passe.
+4. L’administrateur clique sur « Créer le compte ».
+5. Le système vérifie les données.
+6. Le système crée le compte avec le rôle « médecin
+» et le statut actif.
+Scénario alterna-
+tif
+1. Si l’email est déjà utilisé : le système affiche «
+Cette adresse email est déjà utilisée ».
+2. Si des champs sont vides : le système affiche un
+message d’erreur.
+66
+
+
+===== PAGE 67 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+3.2.8
+Description textuelle du cas d’utilisation « Gérer un
+compte médecin » :
+Table 3.7 – Description du cas d’utilisation « Désactiver / Réactiver / Supprimer un
+médecin »
+Titre
+Gérer un compte médecin
+Objectif
+Permettre à l’administrateur de désactiver, réactiver
+ou supprimer définitivement un compte médecin.
+Acteurs
+Administrateur
+Description de l’enchainement
+Pré-condition
+L’administrateur est authentifié et au moins un mé-
+decin existe dans le système.
+Post-condition
+Le compte médecin est mis à jour ou supprimé défi-
+nitivement de la base de données.
+Scénario normal
+—
+Désactiver
+/
+Réactiver
+1. L’administrateur consulte la liste des médecins.
+2. L’administrateur clique sur « Désactiver » ou «
+Activer ».
+3. Le système bascule le statut actif/inactif du
+compte.
+Scénario normal
+— Supprimer
+1. L’administrateur clique sur l’icône de suppression.
+2. Le système affiche une demande de confirmation.
+3. L’administrateur confirme.
+4. Le système supprime le médecin ainsi que tous
+ses patients et analyses (suppression en cascade).
+67
+
+
+===== PAGE 68 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+3.2.9
+Description textuelle du cas d’utilisation « Consulter les
+statistiques globales » :
+Table 3.8 – Description du cas d’utilisation « Consulter les statistiques globales »
+Titre
+Consulter les statistiques globales
+Objectif
+Permettre à l’administrateur de consulter une vue
+d’ensemble des activités de la plateforme.
+Acteurs
+Administrateur
+Description de l’enchainement
+Pré-condition
+L’administrateur est authentifié.
+Post-condition
+Les statistiques sont affichées.
+Scénario normal
+1. L’administrateur accède au tableau de bord.
+2. Le système calcule et affiche :
+— Nombre de médecins actifs.
+— Nombre total d’analyses réalisées.
+— Nombre total de patients.
+— Nombre total de demandes en attente
+Scénario alterna-
+tif
+2.a. Si aucune donnée n’existe : le système affiche
+les compteurs à zéro.
+3.3
+Conception :
+Dans cette section de conception, nous présentons tous les diagrammes
+élaborés pour le premier sprint, afin de représenter les interactions entre la
+structure et les éléments du système. Les schémas de séquences illustrent
+la progression des cas d’utilisation majeurs.
+Cependant, le diagramme de classes représente les relations entre les
+entités majeures.
+68
+
+
+===== PAGE 69 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+3.3.1
+Les diagrammes de séquence du Sprint 1 :
+Diagramme de séquence — « Soumettre une demande d’accès » :
+Figure 3.2 – Diagramme de séquence "Soumettre une demande d’accè"
+69
+
+
+===== PAGE 70 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+Diagramme de séquence — « S’authentifier » :
+Figure 3.3 – Diagramme de séquence "S’authentifier"
+70
+
+
+===== PAGE 71 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+Diagramme de séquence — « Approuver ou rejeter une demande »
+Figure 3.4 – Diagramme de séquence "Approuver ou rejeter une demande"
+71
+
+
+===== PAGE 72 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+3.3.2
+Diagramme de classe :
+Figure 3.5 – Diagramme de classe de sprint 1
+3.4
+Réalisation :
+Dans cette partie, nous allons présenter les interfaces développées
+durant ce sprint.
+3.4.1
+Pages d’authentification :
+Cette section présente les interfaces utilisateur dédiées à l’authentifi-
+cation, comprenant les pages de connexion et d’inscription.
+La figure 3.6 montre l’interface de connexion standard .
+72
+
+
+===== PAGE 73 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+Figure 3.6 – Interface « Connexion »
+La figure 3.7 présente l’interface d’inscription destinée aux médecins
+souhaitant rejoindre la plateforme. Le formulaire demande les informa-
+tions suivantes : nom, prénom, adresse e-mail, numéro de téléphone,
+spécialité médicale et mot de passe (avec confirmation). Il comporte
+également une case à cocher obligatoire par laquelle le candidat atteste
+être un professionnel de santé en exercice à l’Hôpital Farhat Hached de
+Sousse et certifie de l’exactitude des informations fournies. Un bouton de
+validation permet d’envoyer le formulaire lorsque tous les champs sont
+correctement remplis.
+73
+
+
+===== PAGE 74 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+Figure 3.7 – Interface « Inscription »
+La figure 3.8 affiche l’interface de confirmation d’envoi de la demande
+d’accès. Après avoir soumis le formulaire d’inscription, le médecin voit
+ce message indiquant que sa demande a été reçue et est en attente de
+validation par l’administrateur.
+74
+
+
+===== PAGE 75 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+Figure 3.8 – Interface de confirmation d’envoi de la demande d’accès
+3.4.2
+Interface tableau de bord administrateur :
+La figure 3.9 montre le tableau de bord d’administration qui donne
+à l’administrateur une vue d’ensemble de l’activité de la plateforme.
+Il montre les statistiques globales en temps réel : le nombre de méde-
+cins actifs, le nombre total d’analyses réalisées ,le nombre de patients
+enregistrés et nombre de demandes en attente. Depuis cette interface,
+l’administrateur peut aussi traiter les demandes d’accès en cours en les
+accepter ou les refuser, et gérer les comptes existants en les activant, les
+désactivant ou les supprimant définitivement.
+75
+
+
+===== PAGE 76 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+Figure 3.9 – Interface tableau de bord administrateur :
+3.4.3
+Interface d’ajout médecin :
+La figure 3.10 présente l’interface d’ajout d’un médecin, réservée
+aux administrateurs de la plateforme. Le formulaire ne demande que
+l’essentiel : nom, prénom, adresse mail et mot de passe. Après avoir rempli
+les champs, l’administrateur a la possibilité de confirmer l’enregistrement
+grâce au bouton de validation ou d’abandonner la saisie en cliquant sur
+le bouton d’annulation.
+76
+
+
+===== PAGE 77 =====
+
+Chapitre 3.
+Le premier Sprint — Authentification et Gestion des utilisateurs
+Figure 3.10 – Interface d’ajout médecin
+Conclusions
+Ce chapitre nous a permis de présenter notre premier sprint. Nous
+avons commencé par décrire les différentes fonctionnalités, ensuite nous
+avons fait une description détaillée des cas d’utilisation, et leur diagramme
+de séquence, nous avons terminé par l’affichage de notre produit. Dans le
+chapitre suivant, nous allons détailler le sprint 2 qui est consacré à la
+77
+
+
+===== PAGE 78 =====
+
+Chapitre 4
+Le deuxième Sprint — Analyse IRM
+et Génération des rapports
+
+
+===== PAGE 79 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Introduction :
+Dans ce chapitre, nous aborderons le deuxième sprint de notre projet,
+qui constitue le cœur fonctionnel de la plateforme. Il couvre le workflow
+complet d’analyse IRM : de la création du dossier patient et du charge-
+ment du fichier IRM, jusqu’au traitement automatique par les services
+d’intelligence artificielle et la génération du rapport PDF clinique. Ce
+sprint représente la valeur ajoutée principale de NeuroDetect AI, en
+combinant une interface médicale intuitive avec des modèles dédiés à la
+détection de la maladie d’Alzheimer.
+4.1
+Planification du Sprint :
+4.1.1
+Objectif du Sprint 2 :
+L’objectif du Sprint 2 est d’implémenter le flux complet d’analyse
+neurologique : permettre au médecin de lancer une analyse IRM pour un
+nouveau patient ou un patient déjà enregistré, de saisir ou mettre à jour
+ses données cliniques, de soumettre un fichier IRM au moteur d’intelli-
+gence artificielle pour la segmentation hippocampique et la prédiction du
+stade (Normal, MCI ou Alzheimer), puis de consulter les résultats et de
+télécharger un rapport PDF clinique structuré.
+79
+
+
+===== PAGE 80 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+4.1.2
+Backlog du Sprint 2 :
+Table 4.1 – Backlog Sprint 2
+Sprint
+User
+ID
+User story
+Complexité
+Sprint 2
+Médecin
+9
+En tant que médecin, je souhaite lancer
+une analyse pour un nouveau patient
+ou un patient déjà enregistré.
+Moyenne
+10
+En tant que médecin, je souhaite remplir
+les données cliniques du patient.
+Moyenne
+11
+En tant que médecin, je souhaite char-
+ger un fichier IRM et cliquer sur le bou-
+ton "Lancer l’analyse".
+Élevée
+12
+En tant que médecin, je souhaite consul-
+ter les résultats de l’analyse.
+Moyenne
+13
+En tant que médecin, je souhaite télé-
+charger le rapport PDF clinique.
+Moyenne
+80
+
+
+===== PAGE 81 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+4.2
+Analyse et conception :
+4.2.1
+Diagramme des cas d’utilisation :
+Figure 4.1 – Diagramme des cas d’utilisation de sprint 2
+81
+
+
+===== PAGE 82 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+4.2.2
+Description textuelle du cas d’utilisation « Lancer une
+analyse »
+Table 4.2 – Description du cas d’utilisation « Lancer une analyse »
+Titre
+Lancer une analyse
+Objectif
+Permettre au médecin de démarrer une nouvelle
+analyse IRM pour un nouveau patient ou un patient
+déjà enregistré.
+Acteurs
+Médecin
+Description de l’enchainement
+Pré-condition
+Le médecin est authentifié et se trouve sur le tableau
+de bord.
+Post-
+condition
+Le médecin est redirigé vers le formulaire adapté
+selon le chemin choisi.
+Scénario
+nor-
+mal
+1. Le médecin accède au tableau de bord.
+2. Il choisit entre deux options : « + Nouveau patient
+» ou « Analyser » sur un patient existant.
+-S’il clique « + Nouveau patient » : il est redirigé
+vers le formulaire de saisie complet.
+-S’il clique « Analyser » : il est redirigé vers le
+formulaire de mise à jour des données variables.
+Scénario alter-
+natif
+1. Si aucun patient n’existe dans la liste : seul le
+bouton « + Nouveau patient » est disponible.
+4.2.3
+Description textuelle du cas d’utilisation « Remplir les
+données cliniques »
+82
+
+
+===== PAGE 83 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Table 4.3 – Description du cas d’utilisation « Remplir les données cliniques »
+Titre
+Remplir les données cliniques
+Objectif
+Permettre au médecin de saisir ou de mettre à jour
+les données cliniques d’un patient avant de lancer
+l’analyse IRM, afin d’aider à la prédiction du stade
+de la maladie.
+Acteurs
+Médecin
+Description de l’enchainement
+Pré-condition
+Le médecin est authentifié et a choisi de lancer une
+analyse depuis le tableau de bord.
+Post-
+condition
+Les données cliniques sont enregistrées ou mises à
+jour ; le médecin est redirigé vers l’upload IRM.
+83
+
+
+===== PAGE 84 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Scénario
+nor-
+mal
+1. Le médecin accède au formulaire de données cli-
+niques.
+2. Si le médecin a cliqué sur « + Nouveau patient
+» :
+2.1. Le système affiche un formulaire vierge en 3
+étapes (Données Cliniques →IRM →Résultats).
+2.2. Le médecin saisit les données d’identification :
+nom du patient, CIN.
+2.3. Il saisit les informations : âge, sexe, niveau d’édu-
+cation .
+2.4. Il saisit l’évaluation cognitive : score MMSE .
+Sinon (patient existant — bouton « Analyser ») :
+2.1. Le système affiche les données fixes du patient
+(dossier, CIN, sexe, éducation) verrouillées et non
+modifiables.
+2.2. Le médecin met à jour les données variables :
+âge
+2.3. Il met à jour l’évaluation cognitive : score MMSE
+3. Le médecin clique sur « Continuer vers l’upload
+IRM ».
+Scénario alter-
+natif
+1. Si un champ obligatoire est vide : le bouton reste
+grisé et un message d’erreur s’affiche.
+2. Si l’âge saisi est inférieur à 50 : le système affiche
+« Cette valeur doit être supérieure ou égale à 50 ».
+3. Si le CIN est déjà enregistré en base de données : le
+système affiche un message indiquant que ce patient
+existe déjà(pour un nouvelle patient )
+4.2.4
+Description textuelle du cas d’utilisation « Charger un
+fichier IRM et lancer l’analyse »
+84
+
+
+===== PAGE 85 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Table 4.4 – Description du cas d’utilisation « Charger un fichier IRM et lancer l’analyse »
+Titre
+Charger un fichier IRM et lancer l’analyse
+Objectif
+Permettre au médecin de soumettre un fichier IRM
+au moteur d’analyse IA pour obtenir une segmenta-
+tion hippocampique et une prédiction du stade de
+la maladie.
+Acteurs
+Médecin
+Description de l’enchainement
+Pré-condition
+Les données cliniques du patient ont été validées.
+Post-
+condition
+L’analyse est enregistrée en base de données ; le
+médecin est redirigé vers les résultats.
+Scénario
+nor-
+mal
+1. Le médecin se trouve à l’étape « IRM » du step-
+per.
+2. Il dépose un fichier au format NIfTI (.nii ou .nii.gz,
+taille max 50 Mo).
+3. Il clique sur « Lancer l’analyse ».
+4. Le système valide le format et la taille du fichier.
+5. Le moteur IA effectue la segmentation hippocam-
+pique et calcule les volumes.
+6. Le système prédit le stade (Normal, MCI , Alz-
+heimer ) avec un niveau de confiance.
+7. L’analyse est sauvegardée et le médecin est redi-
+rigé vers les résultats.
+Scénario alter-
+natif
+1. Si le fichier est dans un format invalide : le système
+affiche un message d’erreur.
+2. Si le fichier dépasse 50 Mo : le système bloque
+l’upload et informe le médecin.
+3. Si le traitement IA échoue : le système affiche un
+message d’erreur avec invitation à réessayer.
+85
+
+
+===== PAGE 86 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+4.2.5
+Description textuelle du cas d’utilisation « Consulter les
+résultats »
+Table 4.5 – Description du cas d’utilisation « Consulter les résultats »
+Titre
+Consulter les résultats
+Objectif
+Permettre au médecin de visualiser les résultats de
+l’analyse IRM avec les métriques hippocampiques
+et la prédiction du stade de la maladie.
+Acteurs
+Médecin
+Description de l’enchainement
+Pré-condition
+L’analyse IRM a été réalisée avec succès.
+Post-
+condition
+Le médecin a pris connaissance des résultats et peut
+télécharger le rapport PDF.
+Scénario
+nor-
+mal
+1. Le système affiche le tableau de bord des résul-
+tats.
+2. Le médecin consulte le pourcentage d’atrophie
+hippocampique avec le volume hippocamiques de
+patient contre le volume normale d un patient nor-
+male .
+3. Il consulte le stade prédit avec le niveau de
+confiance.
+4. Il consulte le résumé clinique du patient et la
+recommandation automatique.
+5. Il visualise l’IRM colorisée générée par le système.
+86
+
+
+===== PAGE 87 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+4.2.6
+Description textuelle du cas d’utilisation « Télécharger
+le rapport PDF clinique »
+Table 4.6 – Description du cas d’utilisation « Télécharger le rapport PDF clinique »
+Titre
+Télécharger le rapport PDF clinique
+Objectif
+Permettre au médecin de générer et télécharger un
+rapport PDF structuré contenant les résultats de
+l’analyse.
+Acteurs
+Médecin
+Description de l’enchainement
+Pré-condition
+Les résultats de l’analyse sont affichés.
+Post-
+condition
+Le rapport PDF est téléchargé sur le poste du mé-
+decin.
+Scénario
+nor-
+mal
+1. Le médecin clique sur « Télécharger le rapport
+PDF ».
+2. Le système génère le rapport (ReportLab) incluant
+les informations du patient, les résultats d’analyse
+et l’IRM colorisée.
+3. Le fichier est téléchargé automatiquement sous le
+nom rapport_neurodetect_<id>.pdf.
+Scénario alter-
+natif
+1. Si la génération échoue : le système affiche « Er-
+reur lors de la génération du rapport PDF. Veuillez
+réessayer. »
+4.3
+Conception :
+Dans cette section, nous présentons la conception du deuxième sprint.
+87
+
+
+===== PAGE 88 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+4.3.1
+Les diagrammes de séquence du Sprint 2 :
+Diagramme de séquence — « Lancer l’analyse » :
+Figure 4.2 – Diagramme de séquence "Lancer l’analyse " :
+88
+
+
+===== PAGE 89 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Diagramme de séquence — « Télécharger le rapport PDF » :
+Figure 4.3 – Diagramme de séquence — " Télécharger le rapport PDF "
+89
+
+
+===== PAGE 90 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+4.3.2
+Diagramme de classe :
+Figure 4.4 – Diagramme de classe de sprint 2
+90
+
+
+===== PAGE 91 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+4.4
+Présentation des modules d’Intelligence Artifi-
+cielle dans notre application :
+La plateforme NeuroDetect AI intègre deux modules d’intelligence
+artificielle : un module de segmentation hippocampique basé sur l’ap-
+prentissage profond (nnU-Net), et un module de classification du stade
+d’Alzheimer combinant des seuils cliniques validés et un classifieur XG-
+Boost. Ces deux modules, reliés dans un pipeline unique, automatisent
+l’analyse des IRM cérébrales et aident le médecin à poser un diagnostic
+précoce.
+4.4.1
+Objectifs des modules intelligents :
+Table 4.7 – Objectifs des modules intelligents intégrés à NeuroDetect AI
+Module
+Objectifs principaux
+Segmentation
+hippo-
+campale (nnU-Net)
+— Détecter et délimiter les régions hippocampales
+antérieure et postérieure sur les IRM NIfTI
+— Calculer les volumes en mm3 et en ml
+— Quantifier l’atrophie par rapport aux normes po-
+pulationnelles
+Classification du stade
+(XGBoost + Score cli-
+nique)
+— Prédire le stade de démence (Normal, MCI, Alz-
+heimer)
+— Fournir un score de confiance
+— Combiner les biomarqueurs IRM avec les données
+cliniques du patient
+4.4.2
+Module de segmentation hippocampale :
+Présentation du module :
+Le Module 1 est responsable de la détection et de la mesure volumé-
+trique de l’hippocampe, structure cérébrale la plus précocement affectée
+par la maladie d’Alzheimer. Il reçoit en entrée un fichier IRM au format
+NIfTI (.nii ou .nii.gz) et produit un masque de segmentation multi-classes
+91
+
+
+===== PAGE 92 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+tridimensionnel distinguant l’hippocampe antérieur (label 1) et postérieur
+(label 2), accompagné d’un ensemble de métriques cliniques normalisées
+selon les valeurs de référence de Jack et al. (2010), interpolées par âge et
+sexe.[29]
+Choix du modèle de segmentation :
+Le nnU-Net v2 (No-New-Net) est un framework de deep learning
+destiné à la segmentation d’images médicales. Il repose sur l’architecture
+U-Net, une variante particulière des réseaux de neurones convolutifs
+(CNN – Convolutional Neural Networks) destinée à la segmentation
+sémantique.
+Les CNN permettent d’extraire des caractéristiques hiérarchiques à
+partir des images de façon automatique, tandis que l’architecture U-Net
+permet d’améliorer la précision de localisation grâce à une structure en
+encodeur–décodeur avec des connexions de type skip connections. Cela
+permet de conserver les détails spatiaux importants, indispensables à
+l’analyse des structures cérébrales fines comme l’hippocampe.
+Figure 4.5 – Architecture du réseau nnU-Net
+Dans ce projet, nnU-Net automatise la configuration optimale de
+92
+
+
+===== PAGE 93 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+l’architecture U-Net (prétraitement, patch size, normalisation et augmen-
+tation des données), ce qui en fait un modèle de référence pour les tâches
+de segmentation biomédicale.
+Le modèle est entraîné en configuration 3D full-resolution(3d-fullres),
+ce qui permet de traiter directement les volumes IRM complets au format
+NIfTI sans perte d’information spatiale. Il produit une segmentation
+précise de l’hippocampe antérieur et postérieur selon les labels définis
+dans le MSD Task 4.
+Figure 4.6 – Commande d’entraînement nnU-Net
+Résultats de la segmentation :
+Le modèle nnU-Net présente d’excellentes performances de segmen-
+tation sur les IRM cérébrales. L’évolution des courbes d’entraînement
+montre une convergence stable, avec une perte qui diminue progressi-
+vement et un pseudo Dice qui augmente jusqu’à environ 0.89, ce qui
+indique que la segmentation de l’hippocampe est précise et robuste.
+Ces résultats montrent que le modèle est capable d’apprendre ef-
+ficacement les structures anatomiques tout en conservant une bonne
+généralisation sur les données de validation.
+Voici l’évolution des métriques au cours de l’entraînement :
+93
+
+
+===== PAGE 94 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Figure 4.7 – Évolution des métriques de segmentation au cours de l’entraînement
+Inférence et calcul volumétrique :
+L’inférence est effectuée par la fonction nnUNetPredictor qui peut
+travailler directement sur les volumes IRM en mémoire sans générer de
+fichiers temporaires.
+Figure 4.8 – Code d’inférence nnU-Net
+94
+
+
+===== PAGE 95 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Les volumes sont calculés en multipliant le nombre de voxels par la
+taille d’un voxel en mm3 :
+Figure 4.9 – Calcul des volumes hippocampaux à partir du masque de segmentation
+Quantification de l’atrophie :
+Une fois le volume de l’hippocampe calculé, on obtient les métriques
+d’atrophie en comparant les valeurs du patient aux normes d’une popula-
+tion saine. Le z-score indique combien d’écarts-types la mesure diffère de
+la moyenne. On utilise ensuite cette différence afin de classer la sévérité
+de l’atrophie (légère, modérée ou sévère) par rapport à des seuils établis
+cliniquement dans la littérature.
+z = Vmesur´e −Vr´ef´erence
+σr´ef´erence
+Les seuils de sévérité de l’atrophie sont basés sur les critères de Schel-
+tens et al. (Lancet 2016)[scheltens2016visual] :
+Table 4.8 – Classification de la sévérité selon le z-score
+z-score
+Sévérité
+z > −1.0
+Normale
+−1.5 < z ≤−1.0
+Légère
+−2.0 < z ≤−1.5
+Modérée
+z ≤−2.0
+Sévère
+Visualisation IRM avec overlay de segmentation :
+Le module produit automatiquement une figure haute résolution conte-
+nant deux rangées de coupes coronales : en haut, les coupes IRM brutes ;
+95
+
+
+===== PAGE 96 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+en bas, les masques de segmentation colorés (rouge = hippocampe anté-
+rieur, bleu = hippocampe postérieur).
+4.4.3
+Module de classification du stade d’Alzheimer :
+Présentation du module :
+Le Module 2 prédit le stade de la maladie d’Alzheimer à partir des
+données cliniques et des métriques hippocampiques fournies par le Mo-
+dule 1. Il s’appuie sur une approche hybride combinant un score clinique
+basé sur des seuils médicaux publiés (pondéré à 80 %) et un modèle de
+classification XGBoost entraîné sur la cohorte OASIS-1 (pondéré à 20
+%). Le résultat final est une probabilité étalonnée qui permet de classer
+le patient dans l’un des trois stades suivants : Normal, MCI, Alzheimer.
+Dataset : OASIS-1 :
+Le modèle XGBoost est entraîné sur la cohorte OASIS-1 (Open Access
+Series of Imaging Studies) . La variable cible est définie à partir du score
+CDR (Clinical Dementia Rating) : CDR > 0 est considéré comme positif
+(Dément), CDR = 0 comme négatif (Normal).
+Prétraitement des données :
+Le pipeline de prétraitement suit les étapes décrites dans le tableau
+suivant :
+96
+
+
+===== PAGE 97 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Table 4.9 – Pipeline de prétraitement des données OASIS-1
+Étape
+Opération
+Détail
+1.
+Charge-
+ment
+Lecture
+CSV
+OASIS-1
+Sélection baseline uniquement (Visit
+= 1)
+2. Nettoyage
+Suppression
+co-
+lonnes inutiles
+Subject ID, MRI ID, Hand, Visit,
+MR Delay, Group
+3. Cible
+CDR →target bi-
+naire
+CDR > 0 →1 (Dément), CDR = 0
+→0 (Normal)
+4. Encodage
+M/F
+→
+gen-
+der_encoded
+M = 1, F = 0
+5. Imputation
+Valeurs
+man-
+quantes
+Remplacement par la médiane de
+chaque colonne numérique
+Ingénierie des features :
+À partir des données brutes du dataset, plusieurs variables dérivées
+ont été créées afin d’améliorer la capacité du modèle à détecter les signes
+de la maladie d’Alzheimer. La principale amélioration de cette version est
+l’ajout d’un proxy du volume hippocampique, estimé à partir du volume
+cérébral total (eTIV×nWBV). Une mesure d’atrophie hippocampique
+normalisée a également été calculée en utilisant des valeurs de référence
+issues de la littérature médicale.
+97
+
+
+===== PAGE 98 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Table 4.10 – Features construites lors de l’étape d’ingénierie
+Catégorie
+Feature
+Description
+Démographique
+Age
+Âge du patient
+Cognitive
+MMSE
+Score Mini-Mental State Examination
+(0–30)
+Volumétrique
+nWBV
+Normalized Whole Brain Volume
+Volumétrique
+eTIV
+Estimated Total Intracranial Volume
+Éducation
+EDUC
+Années d’éducation (converties depuis
+l’échelle ordinale)
+Socio-
+économique
+SES
+Statut socio-économique
+Démographique
+gender_encoded
+Sexe encodé binaire (1 = Homme, 0 =
+Femme)
+Cognitive
+mmse_severity
+Catégorie DSM-5 : 0 = normal, 1 =
+MCI, 2 = démence
+Réserve
+cogni-
+tive
+cognitive_reserve
+EDUC × MMSE / 100
+Volumétrique
+brain_atrophy
+Score d’atrophie cérébrale = 1−nWBV
+Hippocampique
+⋆
+hippo_vol_ref
+Volume de référence normé par âge et
+sexe (Jack et al. 2010)
+Hippocampique
+⋆
+hippo_vol_proxy
+Volume estimé : eTIV × nWBV ×
+0, 0025 × 1000
+Hippocampique
+⋆
+hippo_atrophy_pct
+Atrophie = (ref −proxy)/ref × 100,
+clippé à 0
+Sélection des features (SelectKBest)
+Après la création des différentes variables, une étape de sélection des
+features est appliquée avec la méthode SelectKBest et le critère Mutual
+Information. Cette méthode permet d’identifier les variables les plus
+utiles pour distinguer les patients déments des patients normaux.
+Parmi les features sélectionnées, la variable hippo_atrophy_pct appa-
+raît parmi les plus importantes, ce qui confirme l’intérêt du biomarqueur
+98
+
+
+===== PAGE 99 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+hippocampique dans la détection de la démence.
+Partitionnement et rééquilibrage
+Le dataset est divisé en trois ensembles stratifiés :
+— 70 % pour l’entraînement,
+— 15 % pour la validation,
+— 15 % pour le test.
+Comme les classes sont déséquilibrées, la technique SMOTE (Synthetic
+Minority Over-sampling Technique) est appliquée uniquement sur le jeu
+d’entraînement afin d’éviter toute fuite d’information.
+Entraînement du modèle XGBoost
+Le modèle XGBoost est optimisé avec RandomizedSearchCV, qui teste
+plusieurs combinaisons d’hyperparamètres afin de trouver la meilleure
+configuration.
+L’évaluation est réalisée avec une validation croisée à 3 plis en maximisant
+le score F1 de la classe positive (Dément).
+Table 4.11 – Hyperparamètres optimaux du modèle XGBoost
+Hyperparamètre
+Valeur retenue
+Rôle
+max_depth
+5
+Profondeur maximale des arbres
+learning_rate
+0,05
+Taux d’apprentissage
+n_estimators
+200
+Nombre d’arbres
+min_child_weight
+1
+Poids minimal d’un nœud enfant
+subsample
+0,8
+Fraction des données par arbre
+colsample_bytree
+0,9
+Fraction des features par arbre
+reg_alpha
+1,0
+Régularisation L1
+reg_lambda
+1,0
+Régularisation L2
+99
+
+
+===== PAGE 100 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Évaluation du modèle :
+Figure 4.10 – Classification report du modèle XGBoost sur le jeu de test
+Le modèle XGBoost obtient de bonnes performances avec 91% d’ac-
+curacy, un F1-score de 0.89 et un ROC-AUC de 0.88. Il arrive à bien
+détecter les cas de démence tout en limitant les erreurs de prédiction. Ces
+résultats montrent que combiner les données IRM (hippocampe) avec les
+données cliniques améliore la détection de la maladie d’Alzheimer.
+Approche hybride de la prédiction
+Afin de rendre la prédiction plus fiable, nous avons utilisé une ap-
+proche hybride combinant un score clinique et un modèle d’apprentissage
+automatique.
+Le modèle final combine :
+— un score clinique basé sur des règles médicales validées (MMSE et
+atrophie hippocampique),
+— et la prédiction du modèle XGBoost.
+Le score clinique est plus important (80%) car il repose sur des critères
+médicaux établis dans la littérature (DSM-5 et Scheltens et al.), tandis
+que le modèle XGBoost (20%) apporte une correction basée sur les
+données.
+100
+
+
+===== PAGE 101 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+La probabilité finale est calculée comme suit :
+Pfinal = 0.80 × Pclinique + 0.20 × PXGBoost
+Enfin, cette probabilité est convertie en un stade clinique (Normal,
+MCI, Démence) selon des seuils définis.
+Figure 4.11 – Fusion des scores clinique et XGBoost pour la prédiction finale
+101
+
+
+===== PAGE 102 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+4.4.4
+Pipeline d’analyse intégré :
+Enchaînement des modules :
+Le pipeline d’analyse commence par la segmentation de l’IRM avec
+nnU-Net afin d’extraire les structures cérébrales et les biomarqueurs
+comme le volume hippocampique. Ensuite, ces résultats sont combinés
+aux données cliniques du patient pour effectuer une classification avec
+XGBoost et le score clinique afin de prédire le stade de la maladie. Enfin,
+une image IRM annotée est générée avec un overlay de la segmentation
+et de la prédiction, puis les résultats sont enregistrés dans la base de
+données et envoyés au frontend pour affichage.
+Diagramme de séquence :
+Le diagramme de séquence ci-dessous illustre les échanges entre les
+composants lors d’une analyse complète, depuis l’upload de l’IRM jusqu’à
+l’affichage des résultats sur le tableau de bord clinique.
+102
+
+
+===== PAGE 103 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Figure 4.12 – Diagramme de séquence du pipeline d’analyse intégré
+Limites et évaluation des modules intelligents :
+Table 4.12 – Avantages et limites des modules intelligents intégrés
+Module
+Points forts
+Limites identifiées
+Segmentation nnU-
+Net
+Segmentation
+anatomique
+précise ; volumes quantita-
+tifs
+fiables ;
+visualisation
+haute résolution avec over-
+lay coloré
+Nécessite un fichier NIfTI
+complet ; temps d’inférence
+sur CPU (30–60s) ; sensibi-
+lité à la qualité de l’IRM
+d’entrée
+Classification
+XG-
+Boost + score cli-
+nique
+Interprétable cliniquement ;
+seuils fondés sur des réfé-
+rences scientifiques publiées
+(DSM-5, Scheltens) ; robuste
+sur petits datasets
+OASIS-1 limité à 235 sujets ;
+biais résiduel sur l’âge ; né-
+cessite un ré-entraînement
+sur une cohorte plus large
+pour améliorer la précision
+103
+
+
+===== PAGE 104 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+4.5
+Réalisation :
+Dans cette partie, nous allons présenter les interfaces développées
+durant ce sprint .
+4.5.1
+Interface remplir les données cliniques :
+La figure 4.13 présente l’interface de saisie des données cliniques d’un
+nouveau patient. Elle est organisée en trois sections : l’identification du
+patient (nom et CIN), les informations démographiques (âge et sexe) et
+l’évaluation cognitive (score MMSE et niveau d’éducation).
+Figure 4.13 – Interface de saisie des données cliniques
+La figure 4.14 présente l’interface de mise à jour des données cliniques
+d’un patient existant .
+104
+
+
+===== PAGE 105 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Figure 4.14 – Interface de mise à jour des données cliniques
+4.5.2
+Interface charger l’image IRM :
+La figure 4.15 présente l’interface d’upload du fichier IRM, correspon-
+dant à la deuxième étape du processus d’analyse.
+Figure 4.15 – Interface d’upload du fichier IRM
+4.5.3
+Interface des résultats d’analyse :
+La figure 4.16,4.17 et 4.18 présentent l’interface des résultats d’analyse,
+constituant la troisième et dernière étape du processus.
+105
+
+
+===== PAGE 106 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Figure 4.16 – Interface des résultats d’analyse pour un patient prédit comme normal
+106
+
+
+===== PAGE 107 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Figure 4.17 – Interface des résultats d’analyse pour un patient prédit comme MCI
+107
+
+
+===== PAGE 108 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Figure 4.18 – Interface des résultats d’analyse pour un patient prédit comme Alzheimer
+4.5.4
+Exemple d’un rapport PDF :
+La figure ci-dessous présente un exemple de rapport PDF clinique
+généré automatiquement par la plateforme NeuroDetect AI à l’issue
+d’une analyse. Ce rapport récapitule les informations du patient, les
+résultats de la segmentation hippocampique, le stade prédit ainsi que la
+recommandation médicale associée.
+108
+
+
+===== PAGE 109 =====
+
+NeuroDetect AI — Confidentiel — Usage médical réservé
+Page 1
+NeuroDetect AI
+Rapport d'Analyse IRM — Détection Précoce de la Maladie d'Alzheimer
+Date du rapport :
+28/05/2026  17:07
+Date de l'analyse :
+28/05/2026  11:58
+Référence analyse :
+#00043
+Informations Patient
+N° Dossier :
+ND-202605-94CD60DC
+Nom complet :
+Ihsen Ben Brahim
+CIN :
+12345678
+Sexe :
+Féminin
+Âge :
+67 ans
+Scores Cliniques
+Score
+Valeur
+Interprétation
+MMSE
+28
+Normal
+Résultats Volumétriques Hippocampaux
+Mesure
+Valeur
+Volume hippocampe antérieur
+2134.0 mm³
+Volume hippocampe postérieur
+1709.0 mm³
+Volume total
+3843.0 mm³  (3.84 mL)
+Pourcentage d'atrophie
+0.0 %
+Z-score normatif
++3.66
+Sévérité de l'atrophie
+Normale
+Imagerie IRM — Segmentation Hippocampale
+
+
+===== PAGE 110 =====
+
+NeuroDetect AI — Confidentiel — Usage médical réservé
+Page 2
+Coupes coronales — segmentation hippocampale générée par NeuroDetect AI. Les zones colorées représentent les hippocampes
+gauche (G) et droit (D) détectés.
+Classification IA — Stade Prédit
+Stade Prédit
+Normal
+Indice de Confiance
+86.9 %
+Recommandation Clinique
+Aucun signe d'atrophie hippocampale significative détecté. Les volumes hippocampaux sont dans les
+limites normales pour l'âge du patient. Un suivi annuel de routine est recommandé.
+Ce rapport est généré automatiquement par NeuroDetect AI à titre d'aide au diagnostic. Il ne remplace pas l'avis d'un médecin
+qualifié. Toute décision thérapeutique doit être prise par un professionnel de santé habilité.
+
+
+===== PAGE 111 =====
+
+Chapitre 4. Le deuxième Sprint — Analyse IRM et Génération des rapports
+Conclusion :
+Ce chapitre nous a permis de présenter notre deuxième sprint. Nous
+avons commencé par décrire les différentes fonctionnalités couvertes,
+ensuite nous avons réalisé une description détaillée des cas d’utilisation
+accompagnée de leurs diagrammes de séquence et de classe. Nous avons
+également présenté les deux modules d’intelligence artificielle intégrés
+dans la plateforme, à savoir le module de segmentation hippocampale et
+le module de classification du stade de la maladie, ainsi que le pipeline
+d’analyse qui les relie. Dans le chapitre suivant, nous allons détailler le
+troisième et dernier sprint, consacré à la gestion des dossiers patients.
+111
+
+
+===== PAGE 112 =====
+
+Chapitre 5
+Le troisième Sprint — Gestion des
+dossiers patients
+
+
+===== PAGE 113 =====
+
+Chapitre 5. Le troisième Sprint — Gestion des dossiers patients
+Introduction :
+Après avoir présenté le deuxième sprint dédié à l’analyse IRM, nous
+abordons dans ce chapitre le troisième sprint, consacré à la gestion des
+dossiers patients. Nous commençons par exposer le backlog de ce sprint.
+Ensuite, nous présentons la spécification des besoins, la constitution
+des diagrammes et nous terminons cette étude par la présentation des
+interfaces réalisées.
+5.1
+Planification du Sprint :
+5.1.1
+Objectif du Sprint 3 :
+Ce troisième sprint porte sur la mise en place de la gestion des dossiers
+patients au sein de la plateforme NeuroDetect AI. Il s’articule autour de
+quatre axes principaux :
+— Offrir au médecin la possibilité de rechercher un patient rapidement
+en filtrant par nom, CIN ou numéro de dossier en temps réel.
+— Donner accès à l’historique complet des analyses d’un patient,
+avec visualisation des résultats et téléchargement du rapport PDF
+associé.
+— Permettre la suppression définitive d’un dossier patient ainsi que
+l’ensemble de ses analyses associées, après confirmation explicite
+de l’utilisateur.
+113
+
+
+===== PAGE 114 =====
+
+Chapitre 5. Le troisième Sprint — Gestion des dossiers patients
+5.1.2
+Backlog du Sprint 3 :
+Table 5.1 – Backlog du Sprint 3
+Sprint
+Utilisateur
+ID
+User story
+Complexité
+Sprint 3
+Médecin
+9
+En tant que médecin, je souhaite rechercher
+un patient.
+Moyenne
+15
+En tant que médecin, je souhaite consulter
+l’historique des analyses d’un patient.
+Moyenne
+16
+En tant que médecin, je souhaite supprimer
+un dossier patient.
+Moyenne
+5.2
+Analyse et conception :
+5.2.1
+Diagramme de cas d’utilisation du sprint 3 :
+Figure 5.1 – Diagramme de cas d’utilisation du sprint 3 :
+114
+
+
+===== PAGE 115 =====
+
+Chapitre 5. Le troisième Sprint — Gestion des dossiers patients
+5.2.2
+Description textuelle du cas d’utilisation« Rechercher
+un patient » :
+Table 5.2 – Description du cas d’utilisation : Rechercher un patient
+Titre
+Rechercher un patient
+Objectif
+Permettre au médecin de retrouver rapidement un dossier
+patient parmi sa liste.
+Acteurs
+Médecin
+Description de l’enchaînement
+Pré-condition
+Le médecin doit être authentifié et au moins un dossier
+patient doit exister.
+Post-condition
+La liste des patients est filtrée et affiche uniquement les
+résultats correspondants à la saisie.
+Scénario normal
+1. Le médecin accède à la liste de ses patients.
+2. Le système affiche tous les dossiers patients du
+médecin.
+3. Le médecin saisit un terme dans le champ « Re-
+chercher par nom, CIN ou n° dossier. . . ».
+4. Le système filtre en temps réel les patients dont
+le nom, le CIN ou le numéro de dossier contient
+le terme saisi.
+5. Le système affiche la liste des résultats correspon-
+dants.
+Scénario alternatif
+Si aucun patient ne correspond : le système affiche «
+Aucun résultat».
+115
+
+
+===== PAGE 116 =====
+
+Chapitre 5. Le troisième Sprint — Gestion des dossiers patients
+5.2.3
+Description textuelle du cas d’utilisation« Consulter
+l’historique des analyses » :
+Table 5.3 – Description du cas d’utilisation : Consulter l’historique des analyses
+Titre
+Consulter l’historique des analyses
+Objectif
+Permettre au médecin de consulter l’ensemble des ana-
+lyses réalisées pour un patient et de suivre l’évolution de
+sa condition.
+Acteurs
+Médecin
+Description de l’enchaînement
+Pré-condition
+Le médecin doit être authentifié et le dossier patient doit
+exister.
+Post-condition
+La liste des analyses du patient est affichée avec leurs
+résultats.
+Scénario normal
+1. Le médecin accède à la fiche d’un patient.
+2. Le médecin clique sur le bouton « Rapport » du
+dossier.
+3. Le système récupère les analyses associées à ce
+patient.
+4. Le système affiche la liste avec pour chaque ana-
+lyse :
+— La date de l’analyse.
+— Le stade prédit (Normal / MCI / Alzheimer).
+— Le pourcentage d’atrophie.
+— Le niveau de confiance.
+5. Le médecin peut télécharger le rapport PDF d’une
+analyse en cliquant sur le bouton de télécharge-
+ment.
+Scénario alternatif
+Si le patient n’a aucune analyse : le système affiche «
+Aucun rapport disponible pour ce patient ».
+116
+
+
+===== PAGE 117 =====
+
+Chapitre 5. Le troisième Sprint — Gestion des dossiers patients
+5.2.4
+Description du cas d’utilisation : « Supprimer un dossier
+patient »
+Table 5.4 – Description du cas d’utilisation : Supprimer un dossier patient
+Titre
+Supprimer un dossier patient
+Objectif
+Permettre au médecin de supprimer définitivement un
+dossier patient ainsi que toutes ses analyses associées.
+Acteurs
+Médecin
+Description de l’enchaînement
+Pré-condition
+Le médecin doit être authentifié et le dossier patient doit
+lui appartenir.
+Post-condition
+Le dossier patient et l’ensemble de ses analyses sont
+supprimés définitivement de la base de données.
+Scénario normal
+1. Le médecin clique sur l’icône de suppression du
+dossier patient.
+2. Le système affiche une demande de confirmation :
+« Supprimer le patient [Nom] ? Tous ses rapports
+seront effacés. »
+3. Le médecin confirme la suppression.
+4. Le système supprime en cascade toutes les ana-
+lyses du patient.
+5. Le système supprime le dossier patient.
+6. Le système met à jour la liste des patients affichée.
+Scénario alternatif
+1. Si le médecin annule la confirmation : aucune
+action n’est effectuée.
+5.3
+Conception :
+Dans cette section, nous présentons la conception du troisième sprint.
+117
+
+
+===== PAGE 118 =====
+
+Chapitre 5. Le troisième Sprint — Gestion des dossiers patients
+5.3.1
+Diagramme de séquence — « Consulter l’historique des
+analyses » :
+Figure 5.2 – Diagramme de séquence "Consulter l’historique des analyses"
+118
+
+
+===== PAGE 119 =====
+
+Chapitre 5. Le troisième Sprint — Gestion des dossiers patients
+5.3.2
+Diagramme de séquence — « Supprimer un dossier pa-
+tient » :
+Figure 5.3 – Diagramme de séquence "Supprimer un dossier patient "
+119
+
+
+===== PAGE 120 =====
+
+Chapitre 5. Le troisième Sprint — Gestion des dossiers patients
+5.3.3
+Diagramme de classe :
+Figure 5.4 – Diagramme de classe sprint 3
+120
+
+
+===== PAGE 121 =====
+
+Chapitre 5. Le troisième Sprint — Gestion des dossiers patients
+5.4
+Réalisation :
+Dans cette section, nous allons exposer les interfaces créées au cours
+de ce sprint.
+5.4.1
+Interface recherche d’un patient :
+La figure 5.5 présente la fonctionnalité de recherche intégrée au ta-
+bleau de bord. La saisie d’un terme dans la barre de recherche filtre
+dynamiquement la liste des patients par nom, CIN ou numéro de dossier,
+et n’affiche que les résultats correspondants en temps réel.
+Figure 5.5 – Interface du sprint 3
+5.4.2
+Interface de consultation de l’historique des analyses :
+La figure 5.6 présente l’interface d’historique des analyses d’un patient.
+Elle affiche la liste des analyses réalisées pour ce patient, avec les détails
+de chaque analyse et un bouton de téléchargement du rapport PDF
+associé.
+121
+
+
+===== PAGE 122 =====
+
+Chapitre 5. Le troisième Sprint — Gestion des dossiers patients
+Figure 5.6 – Interface de consultation de l’historique des analyses
+5.4.3
+Interface confirmation de suppression :
+La figure 5.7 illustre la boîte de dialogue de confirmation affichée
+lorsque le médecin clique sur l’icône de suppression d’un dossier patient.
+Un message d’avertissement précise que l’ensemble des rapports associés
+au patient seront également effacés de manière irréversible. Le médecin
+peut confirmer l’action en cliquant sur « OK » ou l’annuler via le bouton
+« Annuler ».
+122
+
+
+===== PAGE 123 =====
+
+Chapitre 5. Le troisième Sprint — Gestion des dossiers patients
+Figure 5.7 – Interface de confirmation de suppression d’un dossier patient
+Conclusion :
+Ce chapitre nous a permis de présenter notre troisième et dernier
+sprint. Nous avons commencé par décrire les fonctionnalités de gestion des
+dossiers patients, ensuite nous avons réalisé une description détaillée des
+cas d’utilisation ainsi que leurs diagrammes de séquence et de classe. Nous
+avons terminé par la présentation des interfaces réalisées. Ce sprint clôture
+le développement de la plateforme NeuroDetect AI, dont la conclusion
+générale synthétise l’ensemble du travail accompli et les perspectives
+envisagées.
+123
+
+
+===== PAGE 124 =====
+
+Conclusion générale
+La santé est l’un des domaines où la technologie peut avoir l’impact le
+plus concret et le plus humain. Aujourd’hui, l’intelligence artificielle ouvre
+des perspectives réelles pour aider les médecins à mieux diagnostiquer,
+plus tôt, et avec davantage de précision. C’est dans cet esprit que s’inscrit
+le projet que nous avons mené tout au long de ce stage.
+L’objectif de ce rapport est de présenter la plateforme web que nous
+avons développée dans le cadre de notre stage de fin d’études à l’hôpital
+Farhat Hached de Sousse. Cette plateforme a été conçue pour accompa-
+gner les médecins dans le diagnostic de la maladie d’Alzheimer, en leur
+offrant un outil simple, fiable et accessible.
+Ce stage nous a permis d’améliorer considérablement nos connaissances
+techniques, mais aussi de découvrir ce que signifie travailler sur un projet
+qui a une utilité réelle. Nous avons appris à collaborer, à écouter les besoins
+des utilisateurs, et à faire des choix en tenant compte de contraintes
+concrètes.
+D’un point de vue personnel, cette expérience a représenté bien plus
+qu’un exercice académique. Elle nous a appris à gérer l’incertitude, à
+persévérer face aux obstacles, et à comprendre que la réussite d’un
+projet repose autant sur la communication et l’organisation que sur les
+compétences techniques. Nous avons également renforcé notre sens des
+responsabilités et notre capacité à travailler en équipe de manière efficace.
+Pour conclure, l’application que nous avons développée constitue une
+première étape vers une solution intelligente d’aide au diagnostic précoce
+de la maladie d’Alzheimer. Toutefois, plusieurs axes d’amélioration res-
+tent envisageables. Nous prévoyons notamment d’optimiser davantage
+les modèles d’intelligence artificielle afin d’améliorer leurs performances,
+de mettre en place un tableau de bord permettant le suivi de l’évolution
+124
+
+
+===== PAGE 125 =====
+
+Conclusion générale
+cognitive des patients au fil du temps, ainsi que de développer un espace
+dédié aux familles pour faciliter le suivi à distance et renforcer l’accom-
+pagnement des patients. Nous sommes convaincus que ce travail, même
+imparfait, pose les fondations d’une solution qui peut réellement changer
+quelque chose dans la pratique médicale quotidienne.
+125
+
+
+===== PAGE 126 =====
+
+Bibliographie
+[1]
+https://www.alzint.org/u/World-Alzheimer-Report-2021.pdf. Consulté le
+1 avril 2026.
+[2]
+https://doi.org/10.37765/ajmc.2022.89236. Consulté le 29 mai 2026.
+[3]
+https://doi.org/10.1001/jamaneurol.2013.5847. Consulté le 29 mai 2026.
+[4]
+https://doi.org/10.1007/s13205-022-03123-4. Consulté le 14 avril 2026.
+[5]
+https://theconversation.com/alzheimer-une-nouvelle-etude-etablit-
+un - lien - entre - le - declin - cognitif - et - la - taille - dune - zone - du -
+cerveau-218552. Consulté le 14 avril 2026.
+[6]
+https://xtalks.com/neurophets-ai-software-for-alzheimers-disease-
+imaging-is-fda-cleared-4633/. Consulté le 4 avril 2026.
+[7]
+https://www.alzforum.org/news/research-news/fda-approves-brainsee-
+ai-software-purportedly-predicts-ad. Consulté le 4 avril 2026.
+[8]
+https://doi.org/10.1186/s40001-025-03204-z. Consulté le 29 mai 2026.
+[9]
+https://doi.org/10.3390/diagnostics15202559. Consulté le 4 avril 2026.
+[10]
+https://www.atlassian.com/fr/agile/scrum. Consulté le 2 avril 2026.
+[11]
+https://www.ionos.fr/digitalguide/sites- internet/developpement-
+web/uml-un-langage-de-modelisation-pour-la-programmation-orientee-
+objet/. Consulté le 2 avril 2026.
+[12]
+https://www.typescriptlang.org/. Consulté le 29 mai 2026.
+[13]
+https://www.python.org/community/logos/. Consulté le 27 mai 2026.
+[14]
+https://react.dev/. Consulté le 29 mai 2026.
+[15]
+https://flask.palletsprojects.com/en/stable/. Consulté le 29 mai 2026.
+[16]
+https://tailwindcss.com/. Consulté le 29 mai 2026.
+[17]
+https://nodejs.org/fr. Consulté le 29 mai 2026.
+[18]
+https://www.postgresql.org/. Consulté le 29 mai 2026.
+[19]
+https://pytorch.org/. Consulté le 29 mai 2026.
+[20]
+https://numpy.org/. Consulté le 29 mai 2026.
+126
+
+
+===== PAGE 127 =====
+
+Bibliographie
+[21]
+https://matplotlib.org/. Consulté le 29 mai 2026.
+[22]
+https://www.reportlab.com/. Consulté le 29 mai 2026.
+[23]
+https://git-scm.com/. Consulté le 29 mai 2026.
+[24]
+https://vite.dev/. Consulté le 29 mai 2026.
+[25]
+https://code.visualstudio.com/. Consulté le 29 mai 2026.
+[26]
+https://colab.research.google.com/. Consulté le 29 mai 2026.
+[27]
+https://github.com/. Consulté le 29 mai 2026.
+[28]
+https://www.overleaf.com/. Consulté le 29 mai 2026.
+[29]
+https://doi.org/10.1016/j.jalz.2016.12.007. Consulté le 29 mai 2026.
+127
+
+
+===== PAGE 128 =====
+
+Résumé
+La maladie d’Alzheimer est l’une des pathologies neurodégénératives
+les plus répandues dans le monde, dont le diagnostic précoce reste un défi
+majeur pour les professionnels de santé. Dans ce contexte, nous avons
+développé NeuroDetect AI, une plateforme web intelligente d’aide au
+diagnostic, réalisée dans le cadre d’un stage de fin d’études à l’hôpital
+Farhat Hached de Sousse.
+La plateforme repose sur deux modules d’intelligence artificielle : un
+modèle de segmentation de l’hippocampe basé sur nnU-Net v2, et
+un module de classification du stade de la maladie combinant un score
+clinique validé et un classifieur XGBoost. Elle offre aux médecins une
+interface web sécurisée permettant de soumettre des fichiers IRM, de
+consulter les résultats d’analyse et de télécharger des rapports cliniques au
+format PDF. Le développement a suivi la méthodologie Scrum, organisé
+en trois sprints successifs.
+Mots-clés : Maladie d’Alzheimer, IRM, segmentation hippocampique,
+intelligence artificielle, nnU-Net, XGBoost, plateforme web, diagnostic
+assisté.
+128
+
+
+===== PAGE 129 =====
+
+Abstract
+Alzheimer’s disease is one of the most widespread neurodegenerative
+disorders worldwide, and its early diagnosis remains a major challenge
+for healthcare professionals. In this context, we developed NeuroDetect
+AI, an intelligent web-based diagnostic assistance platform, built as part
+of an internship at Farhat Hached Hospital in Sousse.
+The platform relies on two artificial intelligence modules : a hippo-
+campus segmentation model based on nnU-Net v2, and a disease stage
+classification module combining a validated clinical score with an XG-
+Boost classifier. It provides physicians with a secure web interface to
+submit MRI files, view analysis results and download clinical reports
+in PDF format. The development followed the Scrum methodology,
+organized into three successive sprints.
+Keywords : Alzheimer’s disease, MRI, hippocampus segmentation, ar-
+tificial intelligence, nnU-Net, XGBoost, web platform, computer-aided
+diagnosis.
+129
+
+
+===== PAGE 130 =====

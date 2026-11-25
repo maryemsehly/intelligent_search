@@ -1,0 +1,3490 @@
+===== PAGE 1 =====
+
+​University of Monastir​
+​Higher Institute of Computer Science​
+​of Mahdia​
+​Faculty of Economics and Management of​
+​Mahdia​
+​Order Number: LBC-BI-3-2026-022​
+​Tunisian Republic​
+​Ministry of Higher Education and​
+​Scientific Research​
+​D​ISSERTATION​​OF​​G​RADUATION​
+​Presented at​
+​Higher Institute of Computer Science of Mahdia​
+​Carried out at​
+​Gamefy Academy​
+​In view of obtaining the diploma of​
+​Bachelor’s Degree in Business Computing: Business Intelligence​
+​Prepared by:​
+​Mediouni Sarra​
+​Automated Data Pipeline and Analytics Application for Gamefy Academy​
+​Defended on:11 June 2026​
+​before the jury composed of:​
+​President​
+​: Riadh Hadj M’tir​
+​Reviewer​
+​: Hafedh Boukthir​
+​Academic Supervisor​
+​:​​Sofien Boutaib​
+​Industrial Supervisor​
+​: Aymen Jadallah​
+​Academic Year:​ ​2025-2026​
+
+
+===== PAGE 2 =====
+
+Dedication
+To my dear parents,
+for their endless love, their sacrifices, and their constant support through every step of
+my life.
+To my brothers and sister,
+for their encouragement and for always standing by my side.
+To all my friends,
+for the good moments we shared and for being there whenever I needed them.
+To everyone who supported me, in one way or another,
+along this journey.
+I dedicate this work.
+
+
+===== PAGE 3 =====
+
+Acknowledgements
+I want to thank my academic supervisor, Mr. Sofien Boutaib, for his guidance
+throughout the internship. He spent real time on the work and pushed me to be more
+precise about the technical decisions. His feedback shaped the model choices and the
+schema design.
+I also thank Mr. Aymen Jadallah, owner of Gamefy Academy. He trusted me with
+the data of the centre and sat through every sprint review. His comments were direct
+and grounded in how the centre runs every day. The Members page was redesigned
+after his first feedback.
+I thank the jury members for taking the time to evaluate this work.
+Finally, I thank my family for their support during a project that turned out to be
+longer and harder than I had expected.
+2
+
+
+===== PAGE 4 =====
+
+Contents
+Dedication
+1
+Acknowledgements
+2
+List of Acronyms
+9
+General Introduction
+10
+1
+General Context of the Project
+11
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.2
+Host Organisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.2.1
+Gamefy Academy . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.2.2
+Organisational Structure . . . . . . . . . . . . . . . . . . . . . .
+11
+1.2.3
+Services Provided . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.3
+Project Presentation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.3.1
+General Context
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.3.2
+Analysis of the Existing System . . . . . . . . . . . . . . . . . .
+13
+1.3.3
+Criticism of the Current System . . . . . . . . . . . . . . . . . .
+13
+1.3.4
+Problem Statement . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+1.3.5
+Proposed Solution
+. . . . . . . . . . . . . . . . . . . . . . . . .
+14
+1.4
+Methodology
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+1.4.1
+The GIMSI Method . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+1.4.2
+Scrum Methodology
+. . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.4.3
+The Scrum Team . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.4.4
+Adopted Methodology
+. . . . . . . . . . . . . . . . . . . . . . .
+17
+1.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2
+Sprint 1: Preparation and Data Warehouse
+19
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.2
+Requirements Specification . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.2.1
+Identification of System Actors
+. . . . . . . . . . . . . . . . . .
+19
+2.2.2
+Functional Requirements . . . . . . . . . . . . . . . . . . . . . .
+20
+2.2.3
+Non-Functional Requirements . . . . . . . . . . . . . . . . . . .
+20
+2.2.4
+Requirements Modelling . . . . . . . . . . . . . . . . . . . . . .
+20
+2.3
+Product Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.4
+Project Schedule and Sprint Planning . . . . . . . . . . . . . . . . . . .
+23
+2.4.1
+Sprint Durations
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.4.2
+Sprint Goals and Deliverables . . . . . . . . . . . . . . . . . . .
+23
+2.4.3
+Gantt Chart . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.5
+Technical Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.5.1
+Layered Design . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.5.2
+Technology Stack . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.6
+Data Warehouse Design
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.6.1
+Data Collection . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3
+
+
+===== PAGE 5 =====
+
+GamefyDB
+CONTENTS
+2.6.2
+Key Performance Indicators . . . . . . . . . . . . . . . . . . . .
+25
+2.6.3
+Design Approaches . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+2.7
+Multidimensional Modelling . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.7.1
+Conceptual Model Analysis
+. . . . . . . . . . . . . . . . . . . .
+27
+2.7.2
+Choice of Conceptual Model . . . . . . . . . . . . . . . . . . . .
+29
+2.7.3
+Logical Model . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+2.7.4
+Output Tables . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+2.8
+Work Environment . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+2.8.1
+Hardware Environment . . . . . . . . . . . . . . . . . . . . . . .
+31
+2.8.2
+Software Environment
+. . . . . . . . . . . . . . . . . . . . . . .
+31
+2.9
+ETL Pipeline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+2.10 Power BI as a Research Tool . . . . . . . . . . . . . . . . . . . . . . . .
+36
+2.11 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3
+Sprint 2: Authentication and Sessions
+39
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.2
+Requirements Specification . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.2.1
+Sprint Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.2.2
+Interface Prototypes
+. . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.3
+Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+3.3.1
+Use Case Diagrams . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+3.3.2
+Use Case Scenario Descriptions
+. . . . . . . . . . . . . . . . . .
+40
+3.3.3
+Sequence Diagrams . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.4
+Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+3.4.1
+Class Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+3.4.2
+Database Schema . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.5
+Implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.5.1
+Backend Endpoints . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.5.2
+Login Page
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.5.3
+Change Password . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.5.4
+Session Management . . . . . . . . . . . . . . . . . . . . . . . .
+46
+3.5.5
+Security and Limitations . . . . . . . . . . . . . . . . . . . . . .
+46
+3.5.6
+Tests . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+3.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4
+Sprint 3: Interactive Dashboards
+48
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.2
+Requirements Specification . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.2.1
+Sprint Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.2.2
+Interface Prototypes
+. . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.3
+Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.3.1
+Use Case Diagrams . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.3.2
+Use Case Scenario Descriptions
+. . . . . . . . . . . . . . . . . .
+51
+4.4
+Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.4.1
+Class Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.4.2
+Database Schema . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.5
+Implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.5.1
+System Architecture
+. . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.5.2
+Backend . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4
+
+
+===== PAGE 6 =====
+
+GamefyDB
+CONTENTS
+4.5.3
+Frontend Dashboards . . . . . . . . . . . . . . . . . . . . . . . .
+56
+4.5.4
+Settings and Upload
+. . . . . . . . . . . . . . . . . . . . . . . .
+58
+4.5.5
+Tests . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+4.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5
+Sprint 4: Forecasts, Analytics and Chatbot
+60
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.2
+Requirements Specification . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.2.1
+Sprint Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.2.2
+Interface Prototypes
+. . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.3
+Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.3.1
+Use Case Diagrams . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.3.2
+Use Case Scenario Descriptions
+. . . . . . . . . . . . . . . . . .
+62
+5.4
+Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.4.1
+Class Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.4.2
+Database Schema . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+5.5
+Implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+5.5.1
+System Architecture
+. . . . . . . . . . . . . . . . . . . . . . . .
+64
+5.5.2
+Time Series Fundamentals . . . . . . . . . . . . . . . . . . . . .
+65
+5.5.3
+Forecasting Models . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+5.5.4
+Performance Evaluation
+. . . . . . . . . . . . . . . . . . . . . .
+71
+5.5.5
+Member Segmentation . . . . . . . . . . . . . . . . . . . . . . .
+73
+5.5.6
+Anomaly Detection . . . . . . . . . . . . . . . . . . . . . . . . .
+76
+5.5.7
+Peak Hours and Stock Replenishment . . . . . . . . . . . . . . .
+77
+5.5.8
+Forecasts Dashboard . . . . . . . . . . . . . . . . . . . . . . . .
+77
+5.5.9
+Conversational Assistant . . . . . . . . . . . . . . . . . . . . . .
+79
+5.5.10 Tests . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+5.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+82
+General Conclusion
+83
+Bibliography
+83
+5
+
+
+===== PAGE 7 =====
+
+List of Figures
+1.1
+Gamefy Academy logo. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.2
+Organisational chart of Gamefy Academy.
+. . . . . . . . . . . . . . . .
+12
+1.3
+Main phases of GIMSI. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+1.4
+The Scrum process. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.5
+Scrum roles. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.6
+The hybrid methodology: GIMSI guides the Business Intelligence design,
+and Scrum runs the build across the four sprints.
+. . . . . . . . . . . .
+17
+2.1
+Global use case diagram for GamefyDB.
+. . . . . . . . . . . . . . . . .
+21
+2.2
+Project Gantt chart.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.3
+The Inmon data warehouse approach. . . . . . . . . . . . . . . . . . . .
+26
+2.4
+The Kimball data warehouse approach. . . . . . . . . . . . . . . . . . .
+27
+2.5
+Star schema model. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.6
+Snowflake schema model. . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.7
+Galaxy schema model. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+2.8
+Conceptual model of the GamefyDB data warehouse. . . . . . . . . . .
+30
+2.9
+Data and machine learning tools.
+. . . . . . . . . . . . . . . . . . . . .
+31
+2.10 Backend tools. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+2.11 Frontend tools.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+2.12 Tooling.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+2.13 Class diagram for the ETL pipeline (Sprint 1). . . . . . . . . . . . . . .
+33
+2.14 Sequence diagram of one ETL run.
+. . . . . . . . . . . . . . . . . . . .
+34
+2.15 Power BI, used for prototyping and KPI validation. . . . . . . . . . . .
+37
+2.16 Power BI Sales prototype page.
+. . . . . . . . . . . . . . . . . . . . . .
+37
+3.1
+Mock-up of the login screen. . . . . . . . . . . . . . . . . . . . . . . . .
+40
+3.2
+Use case diagram for the authentication features.
+. . . . . . . . . . . .
+40
+3.3
+Sequence diagram for the “Sign in” use case. . . . . . . . . . . . . . . .
+42
+3.4
+Sequence diagram for the “Change password” use case.
+. . . . . . . . .
+43
+3.5
+Class diagram for Sprint 2. . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+3.6
+The login interface. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.7
+The change-password dialog. . . . . . . . . . . . . . . . . . . . . . . . .
+46
+3.8
+Login test: correct credentials versus wrong credentials. . . . . . . . . .
+47
+4.1
+App mock-up of the Sales dashboard. . . . . . . . . . . . . . . . . . . .
+49
+4.2
+Use case diagram for the View Dashboard functionality. . . . . . . . . .
+50
+4.3
+Use case diagram for the Manage Cashiers functionality.
+. . . . . . . .
+50
+4.4
+Use case diagram for the Upload CSV functionality. . . . . . . . . . . .
+50
+4.5
+Class diagram for Sprint 3. . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.6
+Dashboard backend and frontend architecture. . . . . . . . . . . . . . .
+55
+4.7
+Sales dashboard page.
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+4.8
+Settings page for managing cashier accounts. . . . . . . . . . . . . . . .
+58
+4.9
+CSV upload page. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.1
+Mock-up of the forecasts page. . . . . . . . . . . . . . . . . . . . . . . .
+61
+6
+
+
+===== PAGE 8 =====
+
+GamefyDB
+LIST OF FIGURES
+5.2
+Use case diagram for the View Forecasts Dashboard functionality. . . .
+61
+5.3
+Use case diagram for the Interact with Chatbot functionality. . . . . . .
+62
+5.4
+Class diagram for Sprint 4. . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+5.5
+Forecasts and chatbot architecture. . . . . . . . . . . . . . . . . . . . .
+65
+5.6
+70/30 time-ordered split of the monthly revenue series. The dashed line
+marks the train/test boundary.
+. . . . . . . . . . . . . . . . . . . . . .
+67
+5.7
+Holt-Winters forecast for monthly revenue. . . . . . . . . . . . . . . . .
+68
+5.8
+Holt-Winters forecast for monthly sessions. . . . . . . . . . . . . . . . .
+68
+5.9
+XGBoost forecast for monthly revenue. . . . . . . . . . . . . . . . . . .
+69
+5.10 XGBoost forecast for monthly sessions. . . . . . . . . . . . . . . . . . .
+69
+5.11 SARIMA forecast for monthly revenue. . . . . . . . . . . . . . . . . . .
+70
+5.12 SARIMA forecast for monthly sessions. . . . . . . . . . . . . . . . . . .
+70
+5.13 Prophet forecast for monthly revenue. . . . . . . . . . . . . . . . . . . .
+71
+5.14 Prophet forecast for monthly sessions. . . . . . . . . . . . . . . . . . . .
+71
+5.15 MAE, RMSE and wMAPE for the four models on the two series. . . . .
+73
+5.16 Elbow method for choosing the number of clusters.
+. . . . . . . . . . .
+74
+5.17 Number of members per segment (four K-Means clusters).
+. . . . . . .
+75
+5.18 Revenue contribution per segment.
+. . . . . . . . . . . . . . . . . . . .
+75
+5.19 Forecasts page.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+5.20 Chatbot side panel inside the web application. . . . . . . . . . . . . . .
+81
+7
+
+
+===== PAGE 9 =====
+
+List of Tables
+1.1
+Data quality issues found in the source files. . . . . . . . . . . . . . . .
+13
+2.1
+Priority-tier product backlog.
+. . . . . . . . . . . . . . . . . . . . . . .
+21
+2.2
+Sprint schedule. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.3
+Source files and their contents. . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.4
+KPI groups and their measures. . . . . . . . . . . . . . . . . . . . . . .
+25
+2.5
+Output tables of the GamefyDB galaxy schema. . . . . . . . . . . . . .
+30
+2.6
+A few fields before and after cleaning. . . . . . . . . . . . . . . . . . . .
+35
+2.7
+Per-file cleaning summary. . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+2.8
+Terminal type breakdown. . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+2.9
+Foreign key rules for fact_transaction.
+. . . . . . . . . . . . . . . . . .
+36
+3.1
+Sprint 2 backlog.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.2
+Scenario description of the “Sign in” use case.
+. . . . . . . . . . . . . .
+41
+3.3
+Scenario description of the “Change password” use case. . . . . . . . . .
+41
+4.1
+Sprint 3 backlog.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.2
+Scenario description of the View Dashboard use case. . . . . . . . . . .
+51
+4.3
+Scenario description of the Manage Cashiers use case. . . . . . . . . . .
+51
+4.4
+Scenario description of the Upload CSV use case.
+. . . . . . . . . . . .
+52
+4.5
+Output tables and row counts. . . . . . . . . . . . . . . . . . . . . . . .
+54
+5.1
+Sprint 4 backlog.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.2
+Scenario description of the View Forecasts Dashboard use case. . . . . .
+62
+5.3
+Scenario description of the Interact with Chatbot use case. . . . . . . .
+63
+5.4
+Model evaluation on the 70/30 time-ordered split. Bold marks the best
+model per series.
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+8
+
+
+===== PAGE 10 =====
+
+List of Acronyms
+ADF
+Augmented Dickey-Fuller
+API
+Application Programming Interface
+BI
+Business Intelligence
+BOM
+Byte Order Mark
+CSV
+Comma-Separated Values
+DAX
+Data Analysis Expressions
+ETL
+Extract, Transform, Load
+FK
+Foreign Key
+GIMSI
+Generalised Information Management System Integration
+JSON
+JavaScript Object Notation
+JWT
+JSON Web Token
+KPI
+Key Performance Indicator
+MAE
+Mean Absolute Error
+MoM
+Month-over-Month
+REST
+Representational State Transfer
+RFM
+Recency, Frequency, Monetary
+RMSE
+Root Mean Squared Error
+SARIMA
+Seasonal AutoRegressive Integrated Moving Average
+SPA
+Single-Page Application
+SQL
+Structured Query Language
+TND
+Tunisian Dinar
+UI
+User Interface
+VIP
+Very Important Person
+wMAPE
+Weighted Mean Absolute Percentage Error
+XGB
+Extreme Gradient Boosting
+9
+
+
+===== PAGE 11 =====
+
+General Introduction
+Gamefy Academy is a gaming centre in La Soukra, in the northern suburbs of Tunis.
+Players rent time on its gaming terminals, buy drinks and snacks at the counter, and
+the regulars belong to a loyalty programme. From the day the centre opened, the point
+of sale software recorded all of it: every session played, every cash payment and every
+item sold. By the time I arrived for my internship, almost a year of that history had
+piled up in Excel files on a local drive, and not a single tool was reading any of it.
+The owner ran the centre on instinct and daily experience, setting prices, staffing
+and stock without looking at the numbers. The data existed, but it played no part in
+the decisions.
+The project set out to close that gap. The deliverable is a web application that
+the owner opens in a browser. Behind it sit an ETL pipeline that reads the raw Excel
+exports, a star schema that holds the clean data, the forecasting and segmentation
+modules, and an embedded chatbot. Power BI was used early on, only to prototype the
+dashboards and confirm the KPI definitions with the owner.
+The source data proved messier than it first appeared. The files opened correctly in
+Excel, but reading them in Python surfaced encoding errors, unusual number formats,
+and columns shifted by merged cells. None of this was documented anywhere, and
+resolving it took a large part of the work.
+The project was managed with a hybrid approach that combines two methods.
+GIMSI, a Business Intelligence method, guided the data and dashboard design: it starts
+from the owner’s goals and the KPIs before any chart is built. Scrum organised the
+build itself, since a data project rarely shows its real shape until the files are opened,
+and the room to adapt between sprints matters more than a fixed plan. The work was
+split into four sprints, one for preparation and three that each end with a working piece
+the owner can use.
+The report follows these sprints. Chapter 1 presents the host centre, the existing
+system and the solution I propose. Chapter 2 is Sprint 1, the preparation and the
+data warehouse: the requirements, the backlog, the schedule, the architecture, the
+dimensional model, the ETL pipeline that builds the star schema, and a short note
+about Power BI. Chapter 3 is Sprint 2, which delivers the login screen and the session
+system. Chapter 4 is Sprint 3, which delivers the backend, the three dashboards, the
+upload page and the settings page. Chapter 5 is Sprint 4, which delivers the forecasts,
+the member segmentation, the anomaly alerts and the chatbot. A general conclusion
+closes the report.
+10
+
+
+===== PAGE 12 =====
+
+Chapter 1
+General Context of the Project
+1.1
+Introduction
+This first chapter introduces the project. I present the gaming centre where I did my
+internship, and the situation I found there at the start. From there I move to what
+already existed, what was missing, and what I proposed to build. The last part describes
+how I ran the project.
+1.2
+Host Organisation
+This section presents the organisation, its structure, and the services it provides.
+1.2.1
+Gamefy Academy
+Opened in 2025, the centre sits in La Soukra, Tunis and caters to a young clientele
+looking for a good gaming setup in a social setting. Its floor mixes high-end PC stations,
+two PlayStation 5 consoles, a private VIP booth and a small snack bar. Figure 1.1
+shows the centre’s logo.
+Figure 1.1: Gamefy Academy logo.
+1.2.2
+Organisational Structure
+Operations are run by a small team. Five cashier accounts handle all customer-facing
+activity: taktek, yassine, youssef, monta and guds. A shared cashier account is used
+during shift hand-offs. An admin account is reserved for the owner. Each cashier covers
+one or more terminals during a shift. They open sessions, ring up snack purchases and
+process member top-ups.
+Every customer-facing action is logged by the centre’s point of sale software. The
+software exports four Excel reports on demand: cash transactions, gaming sessions,
+stock movements and loyalty members. Figure 1.2 shows how the team is organised.
+11
+
+
+===== PAGE 13 =====
+
+GamefyDB
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+Figure 1.2: Organisational chart of Gamefy Academy.
+1.2.3
+Services Provided
+The centre runs sixteen active terminals split into three categories.
+• Standard PC workstations (GAMEFY01 to GAMEFY10). Ten gaming
+computers. Sessions are billed by duration and tagged Standard, Member, Free,
+Time Limited or Administrator.
+• PlayStation 5 consoles (PS5 (1) and PS5 (2)). Two console stations, managed
+the same way as the PCs.
+• VIP booth (GAMEFY-VIP). A private room at a higher hourly rate, available
+by reservation.
+• Administrative workstations (three DESKTOP machines). Used by staff for
+back-office work. They appear in the session data under the Administrator type.
+The snack bar sells drinks and cookies. The same point of sale also rings up small
+accessories like USB keys and headsets. A loyalty program offers regular customers
+reduced rates and tracks their cumulative spend and time.
+1.3
+Project Presentation
+The purpose of this project is to analyse the existing system, identify its limitations,
+and propose a solution that better meets the organisation’s needs.
+1.3.1
+General Context
+This work is the final-year project for the Bachelor’s degree in Business Computing with
+a Business Intelligence specialisation at the Higher Institute of Computer Science of
+Mahdia (ISIMA), University of Monastir. The internship lasted four months at Gamefy
+12
+
+
+===== PAGE 14 =====
+
+GamefyDB
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+Academy. It was supervised by an academic supervisor from ISIMA and by the centre’s
+owner.
+The project sits between data engineering and business analytics. The starting point
+is four raw Excel files. The end product is a web application that can be run again
+and again, turning those files into clean data, dashboards, forecasts and a chatbot the
+owner can talk to in plain language.
+1.3.2
+Analysis of the Existing System
+When I arrived at Gamefy, the data workflow was very simple. The point of sale
+software exported four .xls files on demand, and those files were saved to a local folder
+with nothing further done to them: no pipeline processed them and no dashboard
+showed them.
+If the owner wanted to know which cashier had the best month, which terminal was
+the most popular, or whether revenue was going up, the only option was to open the
+right Excel file and build a pivot table by hand. This almost never happened: the effort
+of going from a question to an answer was too high, so the analysis was done only in
+special cases. The data piled up but was not used.
+1.3.3
+Criticism of the Current System
+Looking at the files in detail brought up a second layer of problems. These data quality
+issues were not visible from inside Excel. They made the automated processing much
+harder than it should have been. Table 1.1 lists what I found.
+Table 1.1: Data quality issues found in the source files.
+Issue
+Description
+Page-break
+arte-
+facts
+The export inserts a Page X/Y row, two blank rows
+and a full header repetition roughly every 40 data
+rows.
+Non-standard num-
+bers
+TND amounts use a narrow no-break space as the
+thousands separator and a comma as the decimal
+separator. Standard parsers reject both.
+Merged-cell shift
+Merged cells shift the column index where data ac-
+tually lands. Automatic header detection becomes
+unreliable.
+Missing
+cashier
+names
+Sub-total rows carry a generic label in the cashier
+column instead of the actual account name.
+Inconsistent totals
+Some session and stock rows have recorded totals that
+do not match the sum of their components.
+Footer rows
+The members file ends with a Report Result: row
+that contains numeric totals in what looks like a data
+position.
+None of these issues were written down anywhere. Each one was found by opening
+real rows from the files and seeing why the script kept breaking.
+13
+
+
+===== PAGE 15 =====
+
+GamefyDB
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+1.3.4
+Problem Statement
+Gamefy collects detailed operational data every day. It gets almost no value from it.
+The question this project tries to answer is:
+How can these raw Excel exports, full of formatting issues, be turned into
+a clean, reliable dataset that the owner can actually use to look at the past
+and plan for the next months?
+The word reliable matters. A one-time manual clean is not a solution. The centre
+needs a process that can be re-run whenever the files change.
+1.3.5
+Proposed Solution
+The proposed solution is GamefyDB. It is built in five layers and runs from a single
+command.
+1. An ETL pipeline reads the four source files, strips every formatting artefact,
+corrects missing cashier names, types the columns correctly and builds a six-table
+star schema.
+2. A forecasting module compares four time-series models: Prophet, SARIMA,
+Holt-Winters and XGBoost. Two of them accept a weather regressor from the
+Open-Meteo API.
+3. A segmentation module groups members into four behavioural profiles using
+K-Means and produces a continuous loyalty score per member.
+4. An anomaly detector flags days where revenue, session volume or member activity
+was unusual relative to the same day of the week.
+5. A web application brings everything together: a login screen, dashboards, forecasts,
+an upload page, a settings page and an embedded chatbot. The web application
+is the final product.
+A Power BI report was built early in the project to prototype the dashboard layout
+and to agree on the KPI definitions with the owner. Chapter 2 explains how it fed into
+the web application.
+The real data came in two batches. The first export covered six months. A second
+export added the rest, bringing the real window to about eleven months (June 2025 to
+April 2026). Even that is not enough for a seasonal model to learn a full yearly pattern,
+so a synthetic generator was used on top to extend the history further. It samples from
+the real daily revenue pool and applies Ramadan, Eid, monthly and weather multipliers.
+Without this step the time-series models would not have enough history to learn a
+yearly cycle.
+1.4
+Methodology
+The method you choose matters more than it looks. It changes how you deal with a
+problem that turns up halfway through, and how often the owner sees real progress. I
+used two. GIMSI is a Business Intelligence method, and it guided the data and the
+dashboard side. For running the actual build, week to week, I used Scrum.
+14
+
+
+===== PAGE 16 =====
+
+GamefyDB
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+1.4.1
+The GIMSI Method
+GIMSI is a step-by-step method made for decision support and Business Intelligence
+work [8]. It tries to cover the whole road, from the first look at the business down to
+the day the system goes live.
+Objectives
+The method tries to:
+• organise the work in a way that can be repeated
+• keep the needs, the design and the final result in line with each other
+• link the technical work to the goals of the company
+• save what was learned during the project so it can be used again later
+Main Phases
+GIMSI splits the work into five sequential phases, shown in Figure 1.3.
+1. Preliminary study.
+2. Opportunity study.
+3. Detailed study.
+4. Implementation.
+5. Permanent improvement.
+Figure 1.3: Main phases of GIMSI.
+Advantages and Limits
+What GIMSI does well is keep the business framing tied to the technical detail, so the
+phases lower the risk of building something that runs but answers the wrong question.
+Where it struggles is with moving targets. It expects you to pin the requirements down
+and write them at the start, and with raw exports you usually cannot, because you do
+not yet know how clean the source files are.
+15
+
+
+===== PAGE 17 =====
+
+GamefyDB
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+1.4.2
+Scrum Methodology
+Scrum is an agile method built on short cycles called sprints [4]. Each one closes the
+same way: you ship a working result, you review it with the owner, and you take a
+short honest look back at what went well and what did not.
+Key Principles
+The team has three roles, shown in Figure 1.5. The Product Owner owns the backlog
+and decides what gets done first. The Scrum Master keeps the process moving along,
+and the Development Team builds the product. A set of regular meetings gives the
+work its rhythm: the Sprint Planning, the Daily Scrum, the Sprint Review and the
+Sprint Retrospective, and together they form the cycle shown in Figure 1.4. They let
+the owner see progress at fixed points instead of waiting until the end.
+Figure 1.4: The Scrum process.
+Figure 1.5: Scrum roles.
+Advantages
+On this project the real advantage of Scrum was room to react. When the data work
+turned up half a dozen quality problems that nobody had written down before, I could
+fold them into the sprint without the whole plan falling over.
+1.4.3
+The Scrum Team
+The Scrum team was small and clearly defined. The Product Owner was Mr. Aymen
+Jadallah, owner of Gamefy Academy and the professional supervisor of the internship.
+He set the priorities, provided the data exports, and reviewed the result at the end of
+each sprint to confirm that it matched how the centre runs day to day. The Scrum
+Master role was held by the academic supervisor, Mr. Sofien Boutaib, who guided
+the process, kept each sprint on track, and reviewed the technical decisions along the
+way. The development team was the author, Sarra Mediouni, who carried out the full
+build: cleaning the data, designing the data warehouse, and developing the pipeline,
+16
+
+
+===== PAGE 18 =====
+
+GamefyDB
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+the dashboards, the forecasting models and the chatbot. Work moved between these
+roles in the usual Scrum rhythm, with the Product Owner confirming priorities and the
+Scrum Master giving direction at each review.
+1.4.4
+Adopted Methodology
+The project did not follow a single method. It used a hybrid approach that puts GIMSI
+and Scrum together, each on the part it handles best.
+Scrum ran the build. The reason was simple. At the start of the internship I did not
+know what the data problems would be, so planning everything up front was not safe.
+Scrum let me open the real files, fix what I found, and only settle the schema once the
+cleaning held up. Sprint 1 prepared the work and built the data warehouse. Then three
+build sprints followed, each delivering a working piece of the product to the owner.
+GIMSI guided the Business Intelligence work. The concrete thing I took from it is
+its core chain: start from the owner’s goals, turn them into a chosen set of KPIs, and
+only then build the dashboards that answer them. The KPI work in Sprint 1 followed
+exactly that order, and the KPI table in that sprint is the deliverable it produced. I
+drew on this GIMSI principle rather than running its five phases as a strict sequence,
+since a strict sequence needs stable requirements and mine were not settled at the start.
+In short, GIMSI shaped what to build and in what order, while Scrum controlled
+how it was built, sprint by sprint. Together they make up the hybrid model this project
+followed. Figure ?? shows how the two methods fit together.
+Figure 1.6: The hybrid methodology: GIMSI guides the Business Intelligence design,
+and Scrum runs the build across the four sprints.
+1.5
+Conclusion
+Gamefy Academy had the data but not the tools to use it. In this chapter I presented
+the centre, the system that already existed, and the gap that my work tries to fill. I also
+17
+
+
+===== PAGE 19 =====
+
+GamefyDB
+CHAPTER 1. GENERAL CONTEXT OF THE PROJECT
+explained the hybrid method behind the project, GIMSI for the Business Intelligence
+design and Scrum for the build, run as one preparation sprint and then three build
+sprints. The next chapter, Chapter 2, is about the preparation work that I did before
+writing any code.
+18
+
+
+===== PAGE 20 =====
+
+Chapter 2
+Sprint 1: Preparation and Data
+Warehouse
+2.1
+Introduction
+Sprint 1 is the preparation sprint, four weeks long. Nothing comes out of it that the
+owner can open and look at, yet everything that follows leans on it. This is where I set
+the actors, the requirements, a priority backlog, the schedule, the architecture and the
+data model. It ends with the ETL pipeline, the part that turns the raw exports into
+the clean star schema every later sprint reads from. Because this sprint has no feature
+for the end user, it does not have its own use cases per feature. The global use case
+diagram below covers the whole system, and the pipeline is shown through its data
+model and its class and sequence diagrams.
+To write good requirements I had to open every source file and look at the real rows.
+The members file alone took me almost one full day. In the end the problem was not
+my code but the default Excel reader on Windows, which could not even open the file.
+2.2
+Requirements Specification
+Who uses the system, what it has to do, the qualities it must keep: this part covers all
+three. It ends with one use case diagram for the whole system.
+2.2.1
+Identification of System Actors
+GamefyDB has two actors who use the application. The data they read is produced
+upstream by the point of sale software, which is a separate system rather than an actor
+of GamefyDB.
+The Administrator is the main user, and in practice this is the owner or manager
+of the centre. The administrator logs in, reads the dashboards day to day, checks the
+forecasts and the anomaly alerts when planning ahead, uploads fresh data exports,
+manages the cashier accounts, and talks to the conversational assistant for quick
+questions during a shift.
+The Cashier is the second application actor. A cashier account in the web app
+signs in and sees only the dashboard pages the administrator has turned on. This is
+the cashier’s only direct link to GamefyDB.
+The data itself comes from a separate system. Cashiers run the point of sale during
+their shift, and it is that point of sale software, not GamefyDB, that records the activity
+and produces the exports the administrator later uploads. So the cashier feeds the data
+indirectly, through the point of sale, rather than by acting on GamefyDB. To keep the
+use case diagram honest, only the direct application role is drawn as an actor.
+I acted as the data analyst and developer during the internship: I built the pipeline,
+validated the output and added features as the requirements changed. I did that during
+19
+
+
+===== PAGE 21 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+the build, so it does not count as an actor of the running application and stays out of
+the use case diagrams.
+2.2.2
+Functional Requirements
+The functional requirements describe what the system must do. They come from the
+problems listed in Chapter 1 and were checked against the real source files.
+1. Let a user log in with an email and a password and keep a stable session.
+2. Read the four source files without encoding errors.
+3. Strip every page-break artefact from each file.
+4. Parse TND amounts written with a no-break space and a comma.
+5. Parse all datetime columns into proper datetime objects.
+6. Convert duration strings like Xh Y min into minutes.
+7. Correct missing cashier names by propagating known accounts.
+8. Build four dimension tables and two fact tables, then export them as CSV.
+9. Show Sales, Sessions and Members KPIs in interactive web dashboards.
+10. Let the administrator upload fresh CSVs and manage cashier accounts.
+11. Forecast revenue and session volume using Prophet, SARIMA, Holt-Winters and
+XGBoost.
+12. Segment loyalty members into four profiles using K-Means.
+13. Flag days where activity was statistically unusual.
+14. Answer plain-language questions through an embedded chatbot grounded in real
+database queries.
+2.2.3
+Non-Functional Requirements
+The non-functional requirements set the qualities the system has to keep while it does
+that work. Each one below was treated as a constraint on the build, not a feature to
+add.
+1. Security. Passwords are stored hashed. Sessions use HttpOnly cookies so a script
+cannot read them.
+2. Correctness. No artefact row, header row or sub-total row may appear in any
+output table.
+3. Reproducibility. The same input files must produce the same output every
+time.
+4. Portability. No hard-coded paths. The pipeline must run on Windows and
+Linux.
+5. Maintainability. Column index mappings are defined explicitly in each loader
+so a format change can be fixed in one place.
+6. Testability. The parsing, cleaning, segmentation, anomaly and weather modules
+are covered by an automated test suite.
+2.2.4
+Requirements Modelling
+Figure 2.1 shows the use case diagram for the whole system, before it is split into
+sprints.
+20
+
+
+===== PAGE 22 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+Figure 2.1: Global use case diagram for GamefyDB.
+The actors sit on the left of the system boundary. The administrator is the broadest
+user: they log in, read every dashboard, upload new data, manage the accounts and use
+the assistant. The cashier signs in to read the dashboard pages turned on for them, and
+can use the assistant for those same pages only. The daily exports that feed the system
+are produced by the point of sale the cashiers operate, so that software sits upstream of
+GamefyDB rather than on the diagram. Every action starts with authentication.
+2.3
+Product Backlog
+Everything we have to build is listed here, ordered by priority. Table 2.1 gives the full
+backlog, and each user story in it is tied to the sprint where it gets done.
+Table 2.1: Priority-tier product backlog.
+Priority
+Feature
+User Story
+Tasks
+Sprint
+Notes
+High
+Data
+Warehouse
+As an
+administrator, I
+want clean,
+structured data
+behind the app.
+ETL pipeline,
+galaxy/star schema,
+CSV outputs.
+1
+Foundation
+High
+Authentication
+As a user, I want
+to log in securely.
+Cookie session,
+password hashing,
+form validation.
+2
+Core product
+High
+Dashboards
+As an
+administrator, I
+want to see Sales
+KPIs in a web app.
+Sales dashboard
+(React).
+3
+Core product
+21
+
+
+===== PAGE 23 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+Priority
+Feature
+User Story
+Tasks
+Sprint
+Notes
+High
+Dashboards
+As an
+administrator, I
+want to see
+Sessions KPIs.
+Sessions dashboard
+(React).
+3
+Core product
+High
+Dashboards
+As an
+administrator, I
+want to see
+Members KPIs.
+Members dashboard
+(React).
+3
+Core product
+High
+Admin
+As an
+administrator, I
+want to manage
+cashiers.
+Settings page:
+create, edit and
+delete cashier
+accounts.
+3
+Operational
+Medium
+Admin
+As an
+administrator, I
+want to upload
+fresh CSVs.
+Upload page,
+validation, atomic
+table swap.
+3
+Operational
+High
+Analytics
+As an
+administrator, I
+want revenue
+forecasts.
+Prophet, SARIMA,
+Holt-Winters,
+XGBoost
+comparison.
+4
+Planning tool
+High
+Analytics
+As an
+administrator, I
+want session
+volume forecasts.
+Same models on
+sessions.
+4
+Planning tool
+Medium
+Analytics
+As an
+administrator, I
+want member
+segmentation.
+K-Means clustering,
+loyalty score.
+4
+Insights
+Medium
+Analytics
+As an
+administrator, I
+want anomaly
+alerts.
+Day-of-week Z-score,
+severity levels.
+4
+Alerts
+Medium
+Analytics
+As an
+administrator, I
+want a
+conversational
+assistant.
+Streamlit chatbot,
+function-calling
+loop, Gemini.
+4
+Q&A tool
+Low
+Analytics
+As an
+administrator, I
+want peak hours
+and days.
+Analysis module,
+consumption rate.
+4
+Insights
+Low
+Data
+As an
+administrator, I
+want per-item
+stock
+replenishment.
+Consumption-rate
+analysis.
+4
+Planning
+The High items are the product itself. Without them there is nothing to ship.
+Medium items add useful depth, and Low items are good to have when there is time.
+Every High and Medium story is tied to a specific sprint.
+22
+
+
+===== PAGE 24 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+2.4
+Project Schedule and Sprint Planning
+The work runs over four sprints of three to four weeks each, so the product grows step
+by step. This section outlines the timeline and what each sprint produces.
+2.4.1
+Sprint Durations
+Table 2.2 shows the schedule. It runs from the start of February to the middle of May
+2026. The report itself was written in parallel with the sprints, not after them, so the
+dates below cover the build work.
+Table 2.2: Sprint schedule.
+Sprint
+Start
+End
+Sprint 1: Preparation and Data Warehouse
+(4 weeks)
+02/02/2026
+27/02/2026
+Sprint 2: Authentication and Sessions (3
+weeks)
+02/03/2026
+20/03/2026
+Sprint 3: Interactive Dashboards (4 weeks)
+23/03/2026
+17/04/2026
+Sprint 4: Forecasts, Analytics and Chatbot
+(4 weeks)
+20/04/2026
+15/05/2026
+2.4.2
+Sprint Goals and Deliverables
+Each sprint ends with something the owner can use. The list below pairs every sprint
+with the deliverable it produces.
+• Sprint 1: Preparation and Data Warehouse (4 weeks). Deliverable: the
+requirements, the prioritised backlog, the schedule, the galaxy schema, and the
+ETL pipeline that turns the raw exports into the clean star schema the rest of
+the project reads.
+• Sprint 2: Authentication and Sessions (3 weeks). Deliverable: a login page
+and a session system. Before anyone sees a dashboard, they log in securely.
+• Sprint 3: Interactive Dashboards (4 weeks). Deliverable: the backend over
+the star schema, the three React dashboards (Sales, Sessions, Members), a CSV
+upload page and a settings page for managing cashiers.
+• Sprint 4: Forecasts, Analytics and Chatbot (4 weeks). Deliverable: the
+forecasting models, the member segmentation, the anomaly alerts, the Forecasts
+dashboard and the chatbot.
+2.4.3
+Gantt Chart
+Figure 2.2 shows the matching Gantt chart across the four sprints, from the start of
+February to the middle of May 2026.
+23
+
+
+===== PAGE 25 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+Figure 2.2: Project Gantt chart.
+2.5
+Technical Architecture
+The global design follows the data itself. It travels from the point of sale exports,
+through the pipeline, and into the dashboards and the forecasts.
+2.5.1
+Layered Design
+The design is flat on purpose. The source layer is the four Excel files in the input
+folder, plus a cached weather file and a set of synthetic extended files used to give
+the time-series models enough history. The processing layer is a small set of Python
+modules: one for the ETL, one for the forecasters, one for the segmenter and one for
+the anomaly detector. The output layer is two folders. One holds the star schema. The
+other holds the analytics outputs. The web application and the chatbot both read from
+those folders.
+The ETL is kept in one file instead of being split into four files for read, clean,
+transform and export. This was on purpose. The cleaning depends on how each source
+file is built. Putting it into a generic cleaner would add more code without making it
+clearer.
+2.5.2
+Technology Stack
+The stack has three parts. A Python layer does the data work: the ETL, the forecasting,
+the segmentation and the anomaly detection. A FastAPI backend loads the star schema
+into DuckDB and serves it as JSON. A React single-page application calls the backend
+and draws the dashboards, with a Streamlit chatbot embedded inside it. In production
+the three parts run behind a single domain: the backend serves the built React files, the
+24
+
+
+===== PAGE 26 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+API answers under /api, and the chatbot is proxied under its own path, so the owner
+reaches everything from one URL. The full list of tools and versions is in Section 2.8.2.
+2.6
+Data Warehouse Design
+Three things come together here: where the data comes from, the KPIs the owner asked
+for, and the model that stores them.
+2.6.1
+Data Collection
+The source data is four .xls files exported by the centre’s point of sale software. They
+cover activity from June 2025 through April 2026. Table 2.3 lists them.
+Table 2.3: Source files and their contents.
+File
+Contents
+cash.xls
+One row per cash transaction. Cashier, datetime,
+type, payment method, category, TND amount.
+session.xls
+One row per gaming session. Cashier, terminal,
+session type, duration, revenue split into usage,
+orders, USB data and discount.
+stock.xls
+One row per stock movement. Cashier, datetime,
+item, category, direction, quantity, unit price, total.
+member.xls
+One row per loyalty member. Cumulative statistics.
+2.6.2
+Key Performance Indicators
+The KPIs were defined during Sprint 1 in discussion with the owner, who acted as
+Product Owner. They fall into four descriptive groups plus a forward-looking group.
+Table 2.4 lists them.
+Table 2.4: KPI groups and their measures.
+Group
+KPIs
+Revenue
+Total income, total expenses, net income, revenue by
+payment method, revenue by cashier, revenue by cate-
+gory, MoM change, average transaction value.
+Sessions
+Total session count, average duration, free-vs-paid split,
+total discount, session revenue by terminal.
+Stock
+Total units sold per item, total snack bar revenue, average
+unit price, current stock level.
+Members
+Active members, average spend per member, total session
+duration, loyalty score distribution.
+Forward
+Revenue forecast, session volume forecast, peak-hour
+profile, per-item restocking, anomaly flags.
+25
+
+
+===== PAGE 27 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+Total expenses and net income come from the cash file itself, not from a separate
+accounting feed. The pipeline reads the transaction type on each cash row and treats
+the outgoing rows, mainly discounts, as expenses. Total income minus that figure gives
+net income. Because the source only records these outgoing rows, the expense view is
+limited to what the point of sale captures and does not include costs the centre pays
+outside the till, such as rent or salaries.
+The loyalty score in the Members group is built from spend and engagement only.
+It has no recency component, so it is not an RFM score. The full definition is given
+with the segmentation work in Sprint 4.
+2.6.3
+Design Approaches
+Inmon Approach
+Bill Inmon’s approach is top-down [3]. You begin by building one big, fully normalised
+warehouse for the whole company, then carve smaller data marts out of it, one per
+subject. Normalisation stops the same data from being stored twice. The catch is real,
+though: you have to design the entire warehouse before a single report can come out of
+it. Figure 2.3 shows the shape of this approach.
+Figure 2.3: The Inmon data warehouse approach.
+Kimball Approach
+Ralph Kimball’s approach goes the other way, bottom-up [2]. Each business process is
+modelled as its own star schema first, and the marts are stitched together later through
+shared dimensions. The payoff is speed: usable output reaches the analysts much sooner.
+Figure 2.4 shows the shape of this approach.
+26
+
+
+===== PAGE 28 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+Figure 2.4: The Kimball data warehouse approach.
+Adopted Approach
+I went with Kimball. With only four business areas, one location and a short timeline,
+building a full normalised warehouse first would have eaten the whole internship before
+a single dashboard appeared. Bottom-up let me check each output table against the
+real data as I built it, and fix things before moving on. The shared cashier and terminal
+dimensions give the links between areas that Kimball asks for.
+2.7
+Multidimensional Modelling
+Three modelling patterns are worth weighing here, and one of them, the galaxy schema,
+fits GamefyDB best. The next paragraphs say why.
+2.7.1
+Conceptual Model Analysis
+A conceptual model gives a high-level view of the data and how its parts connect, before
+any real table is built. Three patterns are common in data warehousing, and I looked
+at each one against the GamefyDB data.
+• Star schema. One central fact table surrounded by dimension tables that are
+not split any further. It is simple to read and fast to query, and Power BI works
+well on top of it. Its limit is that it covers one business process at a time.
+• Snowflake schema. An extension of the star, where each dimension is broken
+into several linked tables. This lowers redundancy and keeps the data tidy, but it
+adds joins and makes the queries heavier.
+27
+
+
+===== PAGE 29 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+• Galaxy schema, also called a fact constellation. Several fact tables that share
+the same dimensions. It can describe more than one business process at once,
+which is what a centre with both sales and gaming sessions needs.
+Figure 2.5 shows the star schema, Figure 2.6 the snowflake schema, and Figure 2.7
+the galaxy schema.
+Figure 2.5: Star schema model.
+Figure 2.6: Snowflake schema model.
+28
+
+
+===== PAGE 30 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+Figure 2.7: Galaxy schema model.
+2.7.2
+Choice of Conceptual Model
+Of the three, the galaxy schema fits GamefyDB best. A star schema would push the two
+activities, cash transactions and gaming sessions, into one fact table or into two separate
+stars that no longer share their common dimensions. A snowflake would normalise
+dimensions that do not need it, since they are small and rarely change, and it would
+only add joins to every query. The galaxy keeps one shared set of dimensions and gives
+each activity its own fact table.
+Two fact tables (fact_transaction and fact_session) share three dimensions (dim_cashier,
+dim_terminal, dim_member). The item dimension is used only by the transaction fact.
+Stock movements and the per-member totals were folded into the item and member
+dimensions during the build. The reason is simple: stock only moves in one direction
+(out, when sold), and the members file gives a running total per member instead of
+one row per event. Adding fact tables for them would not have brought any new
+information.
+Figure 2.8 shows the full conceptual model.
+29
+
+
+===== PAGE 31 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+Figure 2.8: Conceptual model of the GamefyDB data warehouse.
+2.7.3
+Logical Model
+The galaxy model in Figure 2.8 maps directly to the tables that store the data. The
+two fact tables sit in the centre, the four dimensions around them, and foreign keys
+link each fact row to its dimensions. A transaction row points to a cashier and, where
+it applies, to a terminal, an item and a member. A session row does the same, without
+the item.
+2.7.4
+Output Tables
+Table 2.5 lists the six output tables and their key columns.
+Table 2.5: Output tables of the GamefyDB galaxy schema.
+Type
+Table
+Key columns
+Dim
+dim_cashier
+cashier_id, cashier_name
+Dim
+dim_terminal
+terminal_id, terminal, type
+Dim
+dim_item
+item_id, item, category, unit_price
+Dim
+dim_member
+member_id, username, totals
+Fact
+fact_transaction
+FKs (cashier, terminal, item, member), date, amount
+Fact
+fact_session
+FKs (cashier, terminal, member), duration, total
+2.8
+Work Environment
+Below are the hardware and software tools I relied on to build the system.
+30
+
+
+===== PAGE 32 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+2.8.1
+Hardware Environment
+The whole system was built and run on a single laptop. Its main specifications are
+listed below.
+• Machine: Lenovo laptop, model 83DV.
+• Processor: Intel Core i7-13650HX, 14 cores, 20 threads.
+• RAM: 32 GB.
+• Storage: 500 GB MSI M450 SSD and 512 GB Micron NVMe SSD.
+• GPU: NVIDIA GeForce RTX 4050 Laptop.
+• Operating system: Windows 11 Pro.
+2.8.2
+Software Environment
+I chose the tools below for their stability, their community support and their fit with
+the architecture. They are grouped by role, with the logos of each group shown after its
+list: the data and machine learning tools in Figure 2.9, the backend tools in Figure 2.10,
+the frontend tools in Figure 2.11 and the supporting tooling in Figure 2.12.
+Data and machine learning.
+• Python 3.14: main language for the ETL, the machine learning and the FastAPI
+backend.
+• Pandas 3.0.3: reads the source files and runs every table operation [5].
+• NumPy 2.4.6: numeric arrays behind the machine learning code [9].
+• openpyxl 3.1.5: reads modern Excel files [24].
+• xlrd 2.0.2: reads the legacy Excel format, needed for the members file [25].
+• Statsmodels 0.14.6: runs the ADF stationarity test [11].
+• pmdarima 2.1.1: auto-ARIMA for choosing the SARIMA parameters.
+• Prophet 1.3.0: additive time-series model that handles gaps on its own [1].
+• scikit-learn 1.8.0: K-Means segmentation, feature scaling and metrics [16].
+• XGBoost 3.2.0: gradient-boosting forecaster with lag and calendar features [10].
+• Matplotlib 3.10.9: draws the forecast, segmentation and anomaly figures.
+Figure 2.9: Data and machine learning tools.
+Backend.
+• FastAPI 0.136.1: REST API framework, with type hints and dependency
+injection [12].
+• DuckDB 1.5.3: in-process SQL engine over the star-schema CSV tables [13].
+• Google Gemini (gemini-3-flash-preview): language model behind the con-
+versational assistant [18].
+• Streamlit 1.57.0: hosts the chatbot interface, embedded in the React app.
+31
+
+
+===== PAGE 33 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+• Pytest 9.0.3: test suite for the parsing, cleaning and analytics code.
+Figure 2.10: Backend tools.
+Frontend.
+• React 19.2: the single-page application [19].
+• Vite 7.3: fast dev server and a small production build [20].
+• TypeScript: type safety across the React code [21].
+• React Router, React Query, react-hook-form, zod: routing, server state,
+forms and validation.
+• Recharts: chart library for the KPI tiles and charts.
+• shadcn/ui: component library copied into the project for free styling [22].
+• bun: fast JavaScript package manager [23].
+Figure 2.11: Frontend tools.
+Tooling.
+• Git and GitHub: version control and remote repository.
+• Visual Studio Code: main code editor for the project.
+• Figma: interface prototypes, agreed with the owner before coding.
+Figure 2.12: Tooling.
+2.9
+ETL Pipeline
+The galaxy schema is only useful once it holds clean data, so the pipeline that fills it is
+built here, in the preparation sprint, before any feature reads from it. Everything that
+follows, from the dashboards to the forecasts, depends on this output being correct.
+The pipeline follows the classic three-stage pattern: extract, transform and load. The
+four source files are read one by one. Each is cleaned by its own loader. The four clean
+tables are then combined into the six output tables of the galaxy schema, and written
+to the publish folder as CSV.
+32
+
+
+===== PAGE 34 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+The pipeline is one Python module. Figure 2.13 shows its main functions and the six
+output tables they build. The load_and_clean_* functions read and clean each source
+file, the shared helpers (parse_amount, parse_duration, is_header_row, fill_cashier)
+do the row-level cleaning, and build_star_schema turns the four clean tables into the
+four dimensions and two fact tables. The fact tables hold the foreign keys back to the
+dimensions. Figure 2.14 shows the order of calls during one full run.
+Figure 2.13: Class diagram for the ETL pipeline (Sprint 1).
+33
+
+
+===== PAGE 35 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+Figure 2.14: Sequence diagram of one ETL run.
+Reading the files.
+All four files are read without a declared header. The whole sheet
+is loaded as a raw table with numbered columns. Automatic header detection cannot
+be used because merged cells move the data to different columns than expected. For
+example, in the cash file the title of the category column is at one index, but the actual
+category values sit at a different one. The only way to know the right position is to
+look at real rows. The map of column indices is built once per file from this check. This
+is the most fragile part of the pipeline. If the point of sale software ever changes the
+export format, these indices have to be checked again.
+Handling the members file.
+The members file will not open with the default
+Python Excel reader on Windows. It throws a charmap encoding error before the first
+row is read. The fix uses a lower-level Excel reader that opens the sheet without trying
+to convert the characters. The cleaning then runs row by row.
+Removing page-break artefacts.
+The export software adds a page-break group
+every 40 rows or so: a Page X/Y label, two empty rows and a full copy of the headers.
+A header-row check runs on every row first. It tests three things: the value is empty,
+the value equals the word Cashier (the first column header in every file), or the value
+looks like the date pattern used in the page-marker rows. Any row that matches on its
+main column is dropped.
+34
+
+
+===== PAGE 36 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+Parsing TND amounts.
+The TND amount format is the most unusual issue. A
+value like 1 745,44 TND looks normal in Excel. The space between 1 and 745 is a narrow
+no-break space (Unicode U+202F), not a regular space. Standard parsers reject it. This
+issue took about half a day to identify. Plain str.strip() left the strings the same
+length, and I found the cause only after pasting a value into a Unicode inspector and
+seeing the U+202F codepoint. After that the fix was easy: the parser removes every
+kind of space, drops the TND suffix, replaces the comma with a period, and turns the
+result into a number. If the conversion still fails, the value is marked as missing and
+handled later.
+Parsing durations.
+Durations are stored as strings: 1h 29 min, 30 min or sometimes
+just a number. The duration parser cuts the string on the h if there is one, turns the
+hours into minutes, adds the rest and returns the total in minutes. Table 2.6 shows a
+few fields before and after cleaning.
+Table 2.6: A few fields before and after cleaning.
+Field
+Raw value
+Cleaned value
+Amount
+1 745,44 TND
+1745.44
+Duration
+1h 29 min
+89 (minutes)
+Missing amount
+(empty)
+category median value
+Missing type
+(empty)
+inferred from the category
+Per-file cleaning.
+Table 2.7 lists what was found in each file and how it was handled.
+Table 2.7: Per-file cleaning summary.
+File
+Issues
+Solution
+Cash
+Missing type, amount,
+date or payment.
+Type
+inferred
+from
+category.
+Amount filled with category me-
+dian.
+Date forward-filled.
+Pay-
+ment defaulted to Cash.
+Sessions
+Sub-total rows.
+Totals
+not matching sum of
+components.
+Noise labels filtered. Total recom-
+puted when the gap exceeds 0.01
+TND.
+Stock
+Missing quantity, unit
+price or total.
+Mutual imputation from the two
+present values.
+Members
+Footer row. Missing first
+names.
+Member ID coerced to numeric,
+footer fails and is dropped. First
+name filled from username.
+Dimension tables.
+All cashier names are collected from the three transaction tables,
+sorted and given an ID starting at one, which gives five rows in dim_cashier. The
+terminal dimension is built from the sessions file: each unique pair of terminal name
+and type gives one row, for 16 terminals in total (Table 2.8). The stock table is grouped
+by item name into dim_item, keeping the first category seen, the median unit price,
+35
+
+
+===== PAGE 37 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+the total quantity sold and the total revenue, for 17 items. The cleaned members table
+is used directly as dim_member, with 66 rows.
+Table 2.8: Terminal type breakdown.
+Type
+Count
+Standard PC
+10
+PlayStation
+2
+VIP booth
+1
+Administrative (DESKTOP)
+3
+Fact tables.
+fact_transaction has one row per cash register event, with foreign keys
+filled in only when they apply (Table 2.9). It has 3 971 rows after cleaning. fact_session
+has one row per gaming session, with the cashier and terminal looked up by name and a
+member ID only on Member sessions. It keeps all the money columns and the duration
+in minutes, for 6 285 rows.
+Table 2.9: Foreign key rules for fact_transaction.
+Foreign key
+Assignment rule
+cashier_id
+Always assigned by name lookup.
+terminal_id
+Assigned only for Computer Incomes and Playstation
+Incomes categories. Null otherwise.
+item_id
+Assigned only for Order Incomes rows (snack bar
+sales). Closest item by unit price is used as a proxy.
+member_id
+Assigned only for Member Transactions rows. Null
+otherwise.
+CSV export.
+Each table is written as a CSV with UTF-8-BOM encoding. The
+BOM is needed on Windows. Without it, Excel and the dashboards read the special
+characters wrong in French names and in the usernames.
+Module structure.
+The pipeline is a single Python module. It has one loader per
+source file, a small set of shared cleaning helpers (parse-amount, parse-duration, the
+header-row check and the cashier-name fill), and a schema builder that turns the four
+clean tables into the six output tables. Keeping it in one file matches the cleaning logic,
+which is specific to each source file rather than generic. The schema builder collects the
+dimensions, assigns the surrogate keys, resolves every foreign key on the two fact tables
+and writes the six CSV files.
+2.10
+Power BI as a Research Tool
+During the dashboard work, Power BI [6] (Figure 2.15) was used to check the KPI
+definitions, written as DAX measures [7], and to prototype the dashboard layout. The
+final dashboards were built in React as the delivered product.
+36
+
+
+===== PAGE 38 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+Figure 2.15: Power BI, used for prototyping and KPI validation.
+Why Power BI for prototyping.
+Power BI loads the six CSV tables and draws
+charts in minutes, without writing any frontend code. That made it the fastest way to
+put numbers in front of the owner and to agree on what each KPI should mean before
+building anything for real.
+The pages built.
+Three pages were prototyped in Power BI: Sales, Sessions and
+Members. They showed the revenue split, the cashier and terminal breakdowns, the
+session counts and durations, and the member spending tiers. The owner reviewed them
+and corrected several KPI definitions. The Members page in particular was redesigned
+after his first feedback. Figure 2.16 shows the Sales page. The Sessions and Members
+pages were prototyped the same way.
+Figure 2.16: Power BI Sales prototype page.
+How it fed into the web application.
+The data model from Power BI (the
+relationships between the facts and the dimensions, and the KPI measures) carried
+straight over to the React dashboards in Sprint 3. The React pages replicate the Power
+BI layout, but as an interactive web application that anyone on the team can open in a
+browser.
+Why Power BI is not the deliverable.
+The Power BI file only opens on the
+machine where it is saved. It cannot host the login, the upload page or the chatbot.
+The owner asked for one URL that does everything, so the delivered product is the web
+application. The Power BI pages were the research step that fixed the KPI definitions
+before the React build.
+37
+
+
+===== PAGE 39 =====
+
+GamefyDB
+CHAPTER 2. SPRINT 1: PREPARATION AND DATA WAREHOUSE
+2.11
+Conclusion
+At the end of Sprint 1 the scope is defined, the backlog is prioritised, and the architecture
+is chosen. I chose Kimball over Inmon, a galaxy schema over a snowflake, and one single
+pipeline file over separate stage files. The three choices come from the same idea: the
+project is small, the data quality is not known yet, and the time is short. To add extra
+layers at the start would only slow everything. Sprint 2 starts with the authentication.
+38
+
+
+===== PAGE 40 =====
+
+Chapter 3
+Sprint 2: Authentication and Sessions
+3.1
+Introduction
+Before a user can open any dashboard, they have to sign in first. So this sprint builds
+only the sign-in, and nothing comes before it. It adds the login page, the sign-out, and
+a way for a signed-in user to change their password.
+I open with the sprint backlog.
+The analysis comes next: the use cases, one
+descriptive table each, and the sequence diagrams. Then the design, with the class
+diagram and the database tables. The last step is building it and checking that the
+sign-in actually holds.
+3.2
+Requirements Specification
+The sprint backlog comes first, followed by the first screen mock-up for the features of
+this sprint.
+3.2.1
+Sprint Backlog
+Table 3.1 lists the stories taken from the product backlog for this sprint.
+Table 3.1: Sprint 2 backlog.
+Id
+User Story
+Priority
+2.1
+As a user, I want to sign in with my email and
+password.
+High
+2.2
+As a user, I want to sign out.
+Medium
+2.3
+As a user, I want to change my password after I sign
+in.
+Medium
+2.4
+As an administrator, I want each account to carry a
+role so a cashier only sees the pages I allow.
+High
+3.2.2
+Interface Prototypes
+Before the analysis, here is a mock-up of the main screen for this sprint. Figure 3.1
+shows the login screen.
+39
+
+
+===== PAGE 41 =====
+
+GamefyDB
+CHAPTER 3. SPRINT 2: AUTHENTICATION AND SESSIONS
+Figure 3.1: Mock-up of the login screen.
+3.3
+Analysis
+I work through the use cases here, describe each one in a table, and draw the sequence
+diagrams.
+3.3.1
+Use Case Diagrams
+A use case diagram maps how the actors deal with the application. Figure 3.2 shows
+the use cases for this sprint: a user signs in, signs out, and changes their password.
+Figure 3.2: Use case diagram for the authentication features.
+3.3.2
+Use Case Scenario Descriptions
+Each use case is now written out step by step, with its actors, its conditions and the
+alternative paths. Table 3.2 describes the “Sign in” use case and Table 3.3 describes the
+“Change password” use case.
+40
+
+
+===== PAGE 42 =====
+
+GamefyDB
+CHAPTER 3. SPRINT 2: AUTHENTICATION AND SESSIONS
+Table 3.2: Scenario description of the “Sign in” use case.
+Use case: Sign in
+Name
+Sign in
+Actor(s)
+User (administrator or cashier)
+Precondition
+The user has an account created by the administra-
+tor.
+Postcondition
+The user has an active session.
+Main scenario
+1. The user opens the application.
+2. The system shows the login page.
+3. The user types the email and the password.
+4. The user clicks “Login”.
+5. The system checks the data and opens the dash-
+board.
+Alternative
+The email or the password is wrong. The system
+shows an error and clears the form.
+Extension
+Change password.
+Table 3.3: Scenario description of the “Change password” use case.
+Use case: Change password
+Name
+Change password
+Actor(s)
+Any signed-in user
+Precondition
+The user is signed in.
+Postcondition
+The password is changed.
+Main scenario
+1. The user opens the password dialog.
+2. The user types the current password.
+3. The user types the new password twice.
+4. The user clicks “Update password”.
+5. The system checks the current password and saves
+the new one.
+Alternative
+The current password is wrong, or the two new pass-
+words do not match. The system shows an error and
+keeps the old password.
+3.3.3
+Sequence Diagrams
+A sequence diagram traces the order of the messages between the parts of the system.
+Figure 3.3 shows the messages for the “Sign in” use case, and Figure 3.4 shows the
+messages for the “Change password” use case.
+41
+
+
+===== PAGE 43 =====
+
+GamefyDB
+CHAPTER 3. SPRINT 2: AUTHENTICATION AND SESSIONS
+Figure 3.3: Sequence diagram for the “Sign in” use case.
+42
+
+
+===== PAGE 44 =====
+
+GamefyDB
+CHAPTER 3. SPRINT 2: AUTHENTICATION AND SESSIONS
+Figure 3.4: Sequence diagram for the “Change password” use case.
+3.4
+Design
+The class diagram comes next, along with the database tables the features of this sprint
+use.
+3.4.1
+Class Diagram
+A class diagram gives a static view of the system: the classes, what they hold, what
+they do, and how they connect. Figure 3.5 shows the classes for this sprint.
+43
+
+
+===== PAGE 45 =====
+
+GamefyDB
+CHAPTER 3. SPRINT 2: AUTHENTICATION AND SESSIONS
+Figure 3.5: Class diagram for Sprint 2.
+The classes link together as follows. The auth router uses the UserManager to check
+a sign-in and to change a password. The UserManager reads and writes the User rows.
+The AuthBackend (a cookie transport plus a JWT strategy) writes the cookie at sign-in
+and reads it back on every later request to find the current User.
+3.4.2
+Database Schema
+The features of this sprint use a single table. The fields are listed below.
+• User: (id, email, hashed_password, is_active, is_superuser, is_verified, role)
+3.5
+Implementation
+Now to how the sprint was built: the FastAPI endpoints, the React login page, the
+password change dialog, and the cookie session.
+3.5.1
+Backend Endpoints
+The auth router gives four endpoints.
+• POST /auth/login. Checks the email and password and sets the session cookie.
+• POST /auth/logout. Clears the session.
+44
+
+
+===== PAGE 46 =====
+
+GamefyDB
+CHAPTER 3. SPRINT 2: AUTHENTICATION AND SESSIONS
+• GET /auth/me. Returns the current user with the role.
+• POST /auth/change-password. Checks the current password, then saves the new
+one for the signed-in user.
+The password is always checked against a stored hash, never against a plain-text
+value. The same current-user check is reused on every protected route, so the sign-in
+logic is written once.
+3.5.2
+Login Page
+The login page uses react-hook-form with zod for the checks. There are two fields, email
+and password, and bad input is caught in the browser before any request goes out. A
+wrong email or password shows the error the backend sends back. Nothing is kept in
+local storage. The session lives only in the cookie. Figure 3.6 shows the login interface.
+Figure 3.6: The login interface.
+3.5.3
+Change Password
+A signed-in user gets a default password when the owner creates the account. The user
+can keep that password or set a new one. A “Password” button in the top bar opens a
+small dialog (Figure 3.7). The user types the current password and the new password
+twice. The backend checks the current password before it saves the new one. If the
+current password is wrong, or the two new passwords do not match, the dialog shows
+an error and keeps the old password.
+45
+
+
+===== PAGE 47 =====
+
+GamefyDB
+CHAPTER 3. SPRINT 2: AUTHENTICATION AND SESSIONS
+Figure 3.7: The change-password dialog.
+3.5.4
+Session Management
+The session uses a cookie marked HttpOnly, Secure, and SameSite. HttpOnly means a
+script in the browser cannot read the cookie, which stops a common way of stealing a
+session. The cookie was chosen over a token in local storage because the web app and
+the API share the same domain in production.
+Each account carries a role, either admin or cashier. The admin account is the
+owner. A cashier account is limited to the pages the owner turns on. The frontend
+hides the menu items a user is not allowed to see, and the backend still runs the same
+check on every request.
+3.5.5
+Security and Limitations
+A few security choices are worth stating plainly, along with what was left out. Passwords
+are stored only as hashes, never in plain text. The session cookie is marked SameSite,
+which blocks the basic cross-site request forgery case where another site tries to post to
+the API on the user’s behalf. User input never reaches a raw SQL string: the endpoints
+run fixed queries over the star schema, and the chatbot can only call a fixed set of tools
+rather than write its own SQL, so there is no place to inject a query.
+What is missing is just as important for an honest account. There is no rate limiting
+on the login endpoint, so nothing yet slows down a script that tries many passwords in
+a row. The app is also meant for one small trusted team on a local network, not for the
+open internet. Adding login rate limiting and a lockout after repeated failures is the
+first hardening step before any wider deployment.
+3.5.6
+Tests
+The login, logout, current-user, and change-password endpoints were tested with both
+right and wrong input. The login form was checked by hand for empty fields, a bad
+46
+
+
+===== PAGE 48 =====
+
+GamefyDB
+CHAPTER 3. SPRINT 2: AUTHENTICATION AND SESSIONS
+email, and a wrong password. The password dialog was checked for a wrong current
+password and for two new passwords that do not match.
+The login test is the most important one, since every other page depends on it.
+Figure 3.8 shows it as a sequence diagram. With the right credentials the test expects
+a 204 reply and a session cookie. With a wrong password it expects a 400 reply and no
+cookie, so a bad login can never open a session.
+Figure 3.8: Login test: correct credentials versus wrong credentials.
+3.6
+Conclusion
+This sprint delivers the sign-in, the sign-out and the password change. The administrator
+can now reach the web app, and every page after this one can suppose a known user,
+signed in, with a known role. The cashier accounts created here are the same ones that
+the next sprint will switch on and off for each dashboard page. Now that the access is
+ready, the dashboards come next.
+47
+
+
+===== PAGE 49 =====
+
+Chapter 4
+Sprint 3: Interactive Dashboards
+4.1
+Introduction
+Sprint 3 is the moment where the cleaned data finally becomes screens. Reading from
+the star schema built in Sprint 1 (Section 2.9), it delivers the backend, the three React
+dashboards (Sales, Sessions, Members), a page to upload CSV files, and a settings page
+to manage the cashiers. It was a heavy sprint, mostly because making each chart agree
+with the raw files took more checking than drawing the charts.
+I start with the sprint backlog. Then I look at the use cases and describe each one
+in a table. After that comes the design, with the class diagram and the database tables.
+At the end I build the sprint and check that it works. The pipeline is already done, so
+here the work is about turning its output into screens that the administrator can read.
+4.2
+Requirements Specification
+The sprint backlog comes first, then the first mock-ups of the screens I have to build.
+4.2.1
+Sprint Backlog
+Table 4.1 lists the stories assigned to this sprint.
+Table 4.1: Sprint 3 backlog.
+Id
+User Story
+Priority
+3.1
+As an administrator, I want to see Sales KPIs in a
+web app.
+High
+3.2
+As an administrator, I want to see Sessions KPIs.
+High
+3.3
+As an administrator, I want to see Members KPIs.
+High
+3.4
+As an administrator, I want to manage cashiers.
+High
+3.5
+As an administrator, I want to upload fresh CSVs.
+Medium
+4.2.2
+Interface Prototypes
+Before building, the dashboard pages were drawn as app mock-ups so the layout could
+be agreed with the owner. Figure 4.1 shows the Sales mock-up. The Sessions and
+Members pages were designed the same way.
+48
+
+
+===== PAGE 50 =====
+
+GamefyDB
+CHAPTER 4. SPRINT 3: INTERACTIVE DASHBOARDS
+Figure 4.1: App mock-up of the Sales dashboard.
+4.3
+Analysis
+Here I take the use cases for this sprint and write each one out, first as a diagram and
+then as a step-by-step table. The dashboard pages share one read-only path, so this
+sprint stays at the use case and scenario level and does not repeat a sequence diagram
+for each page.
+4.3.1
+Use Case Diagrams
+The use case diagram lays out who does what with the system. The administrator
+reads the dashboards, manages the cashier accounts and uploads fresh data. The data
+that is uploaded is inherited from the cashiers’ work, since the daily exports come from
+their shifts. A cashier reads only the dashboard pages the administrator has turned on.
+Figure 4.2 shows the view dashboard use case: the administrator opens each dashboard
+page, every view first authenticates and then checks the page permission, and the
+cashier reaches only the pages that permission allows. Figure 4.3 shows the manage
+cashiers use case, and Figure 4.4 shows the upload CSV use case. To keep this sprint
+readable, the scenario table below is written for the Sales dashboard. The Sessions and
+Members dashboards follow the same path.
+49
+
+
+===== PAGE 51 =====
+
+GamefyDB
+CHAPTER 4. SPRINT 3: INTERACTIVE DASHBOARDS
+Figure 4.2: Use case diagram for the View Dashboard functionality.
+Figure 4.3: Use case diagram for the Manage Cashiers functionality.
+Figure 4.4: Use case diagram for the Upload CSV functionality.
+50
+
+
+===== PAGE 52 =====
+
+GamefyDB
+CHAPTER 4. SPRINT 3: INTERACTIVE DASHBOARDS
+4.3.2
+Use Case Scenario Descriptions
+Each use case is now written out step by step, with its actors, its conditions and
+the alternative paths. Table 4.2 describes the view dashboard use case (for the Sales
+dashboard as the example), Table 4.3 the manage cashiers use case, and Table 4.4 the
+upload CSV use case.
+Table 4.2: Scenario description of the View Dashboard use case.
+Use case: View the Sales dashboard
+Name
+View the Sales dashboard (the Sessions and Members
+dashboards work the same way)
+Actor(s)
+Administrator, Cashier (on allowed pages)
+Precondition
+The user is signed in and has permission for the page.
+Postcondition
+The dashboard shows the KPIs and charts for the
+selected area.
+Main scenario
+1. The user opens the Sales dashboard page.
+2. The page requests the KPIs and the chart datasets
+at the same time.
+3. The backend checks the user’s permission.
+4. The backend queries DuckDB and returns JSON.
+5. React renders the KPI tiles and the charts.
+Alternative
+A user without permission for the page sees a 403
+placeholder instead of the data.
+Table 4.3: Scenario description of the Manage Cashiers use case.
+Use case: Manage Cashiers
+Name
+Manage Cashiers
+Actor(s)
+Administrator
+Precondition
+The administrator is signed in.
+Postcondition
+The cashier list reflects the change, and the affected
+account’s access updates on its next sign-in.
+Main scenario
+1. The administrator opens the settings page.
+2. The page shows the current cashier list.
+3. The administrator adds, modifies or deletes a
+cashier account.
+4. The backend saves the change.
+5. The list refreshes with the new state.
+Alternative
+Deleting an account asks for confirmation first.
+A duplicate email is rejected with an inline error.
+51
+
+
+===== PAGE 53 =====
+
+GamefyDB
+CHAPTER 4. SPRINT 3: INTERACTIVE DASHBOARDS
+Table 4.4: Scenario description of the Upload CSV use case.
+Use case: Upload CSV
+Name
+Upload CSV
+Actor(s)
+Administrator
+Precondition
+The administrator is signed in. The parent tables
+already exist.
+Postcondition
+The chosen table holds the new rows, and the
+dashboards reflect them on the next page load.
+Main scenario
+1. The administrator opens the Uploads page.
+2. The administrator picks a CSV file and a table
+kind.
+3. The backend checks the header columns.
+4. The rows are loaded into a temporary table.
+5. The column types are checked.
+6. The temporary table replaces the live table in one
+transaction.
+7. A success message confirms the new row count.
+Alternative
+(a) Wrong header: the missing columns are listed.
+(b) Empty file: an empty-file error is shown.
+(c) Missing parent table: the missing parents are
+listed.
+(d) File too large: a size-limit error is shown.
+4.4
+Design
+Next come the class diagram and the database tables this sprint uses.
+4.4.1
+Class Diagram
+The class diagram is the static picture of the code: which classes exist, their fields and
+methods, and the links between them. Figure 4.5 shows the classes for this sprint: a
+DuckDBStore that loads the CSV tables and answers SQL queries, the chart and upload
+routers that call it, a permissions service that decides what a cashier may see, and the
+User and CashierPermissions models that gate access.
+52
+
+
+===== PAGE 54 =====
+
+GamefyDB
+CHAPTER 4. SPRINT 3: INTERACTIVE DASHBOARDS
+Figure 4.5: Class diagram for Sprint 3.
+4.4.2
+Database Schema
+The cleaned data is organised into a star schema. The fact tables sit in the centre
+and the dimensions sit around them, which suits analytics queries. The model is the
+galaxy schema chosen in Sprint 1 (Figure 2.8). Two fact tables (fact_transaction and
+fact_session) share the cashier, terminal and member dimensions. The item dimension
+is used only by the transaction fact. Table 4.5 shows the six output tables and their
+final row counts.
+53
+
+
+===== PAGE 55 =====
+
+GamefyDB
+CHAPTER 4. SPRINT 3: INTERACTIVE DASHBOARDS
+Table 4.5: Output tables and row counts.
+Type
+Table
+Rows
+Dim
+dim_cashier
+5
+Dim
+dim_member
+66
+Dim
+dim_item
+17
+Dim
+dim_terminal
+16
+Fact
+fact_transaction
+3 971
+Fact
+fact_session
+6 285
+4.5
+Implementation
+Now to how the sprint was put together: the system architecture, the data pipeline,
+the backend, the dashboards, the settings page and the upload page.
+4.5.1
+System Architecture
+Figure 4.6 lays out the flow. The star schema is already on disk, produced by the
+Sprint 1 pipeline (Section 2.9). At startup the backend loads the six CSV tables into
+DuckDB. The routers (KPIs, charts for cash, sessions and members, uploads, admin)
+then serve them as JSON, and the React app draws the dashboards.
+54
+
+
+===== PAGE 56 =====
+
+GamefyDB
+CHAPTER 4. SPRINT 3: INTERACTIVE DASHBOARDS
+Figure 4.6: Dashboard backend and frontend architecture.
+4.5.2
+Backend
+The FastAPI backend loads the star schema into DuckDB at startup and exposes each
+area as a set of REST endpoints. FastAPI uses Python type hints, so the request
+and response shapes are the same Pydantic models used elsewhere in the code. Its
+dependency injection made it easy to write the auth and permission checks once and
+reuse them on every route. DuckDB gives real SQL over the star schema without
+running a separate database. The first version used pandas group-by inside the request,
+which worked but was repetitive, and DuckDB turned each chart endpoint into a single
+SQL query.
+The API is split into routers, one per area.
+• kpis. The headline numbers (total revenue, sessions, active members).
+• charts_cash, charts_sessions, charts_members. Each one serves its KPIs
+plus three breakdowns.
+• uploads. Accepts a CSV and replaces a DuckDB table in one transaction.
+• admin. Account and permission management.
+Every chart router goes through a permission check. A user without the sales
+permission cannot read the cash KPI endpoint even if they know the URL. The admin
+55
+
+
+===== PAGE 57 =====
+
+GamefyDB
+CHAPTER 4. SPRINT 3: INTERACTIVE DASHBOARDS
+router backs the settings page: GET /api/admin/cashiers lists the accounts, POST
+creates one, PUT /{id} edits one and DELETE /{id} removes one.
+4.5.3
+Frontend Dashboards
+The dashboards replicate the Power BI prototypes, but as an interactive web application.
+They are all built the same way, so this section follows one of them, the Sales dashboard,
+from end to end. The Sessions and Members dashboards repeat the same pattern on
+their own data. The Forecasts dashboard belongs to the next sprint and is not covered
+here.
+Each dashboard is a React component that fetches data from the backend and draws
+charts with Recharts. The routes are defined in one file: the login page is public, and
+everything else sits under a protected route guarded by the user’s permissions, inside
+an app shell. The shell has two fixed parts. The IconRail is the narrow vertical bar on
+the left, holding one icon per page so the user can jump between dashboards in one
+click. The TopBar runs across the top and shows the page title, a search box, a light or
+dark theme switch and the user menu for signing out. Every dashboard page renders
+inside this shell.
+The Sales page shows total revenue and total transactions as KPI tiles, then revenue
+over time, revenue by category, revenue by terminal and a top-items treemap. It opens
+by firing the KPI request and the chart requests at the same time, shows a loading
+state, then renders the tiles and charts once the JSON comes back. The KPI totals
+here are larger than the Power BI figures in Section 2.10. That is not a bug. The
+two screenshots were taken on different data: Power BI was captured on the real data
+only, while this page was captured after the synthetic-extended files were loaded. That
+extension is the same one used for the forecasts, and its limits are discussed in Sprint 4.
+Figure 4.7 shows the Sales dashboard page.
+56
+
+
+===== PAGE 58 =====
+
+GamefyDB
+CHAPTER 4. SPRINT 3: INTERACTIVE DASHBOARDS
+Figure 4.7: Sales dashboard page.
+The Sessions and Members dashboards rely on the same component, the same data
+flow and the same permission check. Only the endpoints and the chart set change. The
+57
+
+
+===== PAGE 59 =====
+
+GamefyDB
+CHAPTER 4. SPRINT 3: INTERACTIVE DASHBOARDS
+Sessions page shows the session count, the average duration and the free-versus-paid
+split, then sessions by type, sessions by terminal and the top members by duration.
+The Members page shows the active member count, the average spend per member and
+the total session duration, then a member breakdown, the distribution by tier, the top
+members by spend and the balance utilisation. Because the build is identical, their
+screenshots are not repeated here.
+4.5.4
+Settings and Upload
+The admin manages cashier accounts through a settings page. The page lists the current
+cashiers, with a form to create a new account, an edit action for the name, email and
+role, and a delete action that asks for confirmation first. The same per-page permission
+settings used across the app decide which pages a cashier role can see. Figure 4.8 shows
+this page.
+Figure 4.8: Settings page for managing cashier accounts.
+The upload page accepts one CSV per table kind. The user drops a file into the
+drop zone, picks the kind and submits. The frontend posts to the upload endpoint, and
+the chart endpoints pick up the new data on the next refetch with no server restart.
+Figure 4.9 shows the upload page.
+58
+
+
+===== PAGE 60 =====
+
+GamefyDB
+CHAPTER 4. SPRINT 3: INTERACTIVE DASHBOARDS
+Figure 4.9: CSV upload page.
+4.5.5
+Tests
+Each loader was run against the real source files. Row counts after artefact removal
+matched the expected data rows. No missing values remained in any mandatory column.
+Session totals matched recomputed values within 0.01 TND. Stock totals matched
+quantity times unit price within 0.01 TND. There were no orphan foreign keys in either
+fact table. Total revenue from fact_transaction matched the raw cash file for a sampled
+one-month period.
+On the web app, every KPI matched its Power BI value up to rounding, and the
+charts rendered correctly with the real data. The settings page created, edited and
+deleted accounts. The upload flow replaced a table and the dashboards showed the new
+rows on the next page load. Two test accounts (sales only, sessions only) confirmed that
+the menu items, the routes and the API endpoints all blocked access the same way.
+One limit is left open. The upload page replaces a whole table at once rather than
+merging new rows, so a partial export would overwrite the full table. The column-index
+map in the pipeline is still tied to the current export format and would need checking if
+the point of sale software changes.
+4.6
+Conclusion
+This sprint delivers the dashboards that the owner uses every day. He can now read
+the sales, the sessions and the members figures in his browser, refresh the data with an
+upload page, and manage the cashier accounts. But all of this only shows what already
+happened. The forecasts come after, in Sprint 4, together with the segmentation and
+the chatbot.
+59
+
+
+===== PAGE 61 =====
+
+Chapter 5
+Sprint 4: Forecasts, Analytics and
+Chatbot
+5.1
+Introduction
+This sprint delivers the forecasting models, the member segmentation, the anomaly
+detection, the Forecasts dashboard and the conversational assistant that answers
+questions in simple language.
+The cleaned star schema only tells me what already happened. This sprint is the
+one that tries to look ahead. It is also the sprint where I had to stop and rethink.
+My first SARIMA run on the six-month export gave a smooth curve with confidence
+intervals, and at the beginning it looked convincing, until I understood that the model
+had not really seen one full year. Even after the second batch of exports brought the
+real window to about eleven months, the same problem stayed. That is what pushed
+me toward the synthetic generator, and toward being more careful about what the
+comparison actually shows.
+5.2
+Requirements Specification
+The sprint backlog opens this part, followed by the first mock-up of the screen.
+5.2.1
+Sprint Backlog
+Table 5.1 lists the stories assigned to this sprint.
+Table 5.1: Sprint 4 backlog.
+Id
+User Story
+Priority
+4.1
+As an administrator, I want revenue forecasts.
+High
+4.2
+As an administrator, I want session volume forecasts.
+High
+4.3
+As an administrator, I want member segmentation.
+Medium
+4.4
+As an administrator, I want anomaly alerts.
+Medium
+4.5
+As an administrator, I want a conversational assis-
+tant.
+Medium
+4.6
+As an administrator, I want peak hours and days.
+Low
+4.7
+As an administrator, I want per-item stock replen-
+ishment.
+Low
+5.2.2
+Interface Prototypes
+Before the analysis, we show a mock-up of the forecasts page for this sprint. Figure 5.1
+shows the layout.
+60
+
+
+===== PAGE 62 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Figure 5.1: Mock-up of the forecasts page.
+5.3
+Analysis
+Here the use cases get a closer look, each described in a table.
+5.3.1
+Use Case Diagrams
+Here the use case diagram shows which user can reach which feature. The administrator
+reads the forecasts through a dedicated dashboard. The assistant is open to any signed-
+in user through a side panel: the administrator can ask about every page, while a
+cashier can only ask about the dashboards they have permission to see. Figure 5.2
+shows the view forecasts use case, and Figure 5.3 shows the chatbot use case.
+Figure 5.2: Use case diagram for the View Forecasts Dashboard functionality.
+61
+
+
+===== PAGE 63 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Figure 5.3: Use case diagram for the Interact with Chatbot functionality.
+5.3.2
+Use Case Scenario Descriptions
+Each use case is now written out step by step, with its actors, its conditions and
+the alternative paths. Table 5.2 describes the view forecasts dashboard use case and
+Table 5.3 describes the interact with chatbot use case.
+Table 5.2: Scenario description of the View Forecasts Dashboard use case.
+Use case: View Forecasts Dashboard
+Name
+View Forecasts Dashboard
+Actor(s)
+Administrator
+Precondition
+The user is signed in. The analytics CSVs have been
+produced by the pipeline.
+Postcondition
+The administrator sees the revenue and session fore-
+casts and the flagged days.
+Main scenario
+1. The administrator opens the Forecasts page.
+2. The page requests the forecast and anomaly data.
+3. The backend returns the CSV-backed series.
+4. React draws the revenue and session lines with
+their range bands.
+5. The anomaly flags appear on the daily chart.
+Alternative
+If a forecast file is missing, the page shows a short
+note instead of an empty chart.
+62
+
+
+===== PAGE 64 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Table 5.3: Scenario description of the Interact with Chatbot use case.
+Use case: Interact with Chatbot
+Name
+Interact with Chatbot
+Actor(s)
+User (administrator or cashier)
+Precondition
+The user is signed in. The Google API is reachable.
+The data context is loaded.
+Postcondition
+The user has a written answer grounded in real
+database queries, limited to the pages they may see.
+Main scenario
+1. The user opens the chatbot side panel.
+2. The user types or speaks a question.
+3. The agent checks the user’s page permissions and
+keeps only the data they may see.
+4. The agent sends the prompt and the tool list to
+Google.
+5. Google returns a tool call.
+6. The agent runs the matching tool.
+7. The tool returns real data.
+8. The agent sends the data back to Google.
+9. Google returns the written answer and, if useful,
+a chart.
+10. The panel shows the answer and the chart.
+Alternative
+(a) A cashier asks about a page they cannot see:
+the assistant answers only from the pages they are
+allowed.
+(b) The tool call fails: the assistant says it could not
+retrieve the data.
+(c) No tool matches: the assistant says it cannot
+answer that with the data available.
+(d) The API is unreachable: a short error is shown.
+5.4
+Design
+This part covers the class diagram and the tables the sprint touches.
+5.4.1
+Class Diagram
+For this sprint the class diagram is really a map of a few modules. Figure 5.4 shows the
+modules for this sprint: a forecaster, a segmenter, an anomaly_detector and a chatbot
+agent that runs the function-calling loop. The first three write their results to the
+analytics CSV outputs, and the agent reads those same outputs as its data context.
+63
+
+
+===== PAGE 65 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Figure 5.4: Class diagram for Sprint 4.
+5.4.2
+Database Schema
+This sprint adds no new dimension or fact tables. It reads the star schema built in
+Sprint 1 and writes its results as CSV files in the output folder. The output files are
+the member segments, the loyalty scores, the anomalies, the peak hours by hour, the
+peak hours by day, and the stock replenishment rates. Both the Forecasts dashboard
+and the chatbot read from these files.
+5.5
+Implementation
+Now to how I built the sprint: the system architecture, the forecasting models, the
+member segmentation, the anomaly detection, the Forecasts dashboard and the conver-
+sational assistant.
+5.5.1
+System Architecture
+Figure 5.5 lays out the flow. The analytics pipeline writes the forecast, segment and
+anomaly CSVs, FastAPI serves them, and both the Forecasts dashboard and the chatbot
+read from there. The chatbot is a Streamlit app served under /chatbot and shown in
+the SPA as a side panel through an iframe.
+64
+
+
+===== PAGE 66 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Figure 5.5: Forecasts and chatbot architecture.
+5.5.2
+Time Series Fundamentals
+Forecasting needs an understanding of trend, seasonality and noise. This section covers
+the time series basics, the stationarity check, the data preparation and the train-test
+split used for every model.
+Time Series Concepts
+A time series is a list of values measured at fixed time steps. It is usually split into
+three parts.
+• Trend (Tt). The general direction of the series over a long period.
+• Seasonal pattern (St). The regular ups and downs that come back at the same
+time each year, month or week.
+• Leftover (ϵt). The random part that the trend and the seasonal pattern do not
+explain.
+Stationarity Study
+Before fitting a model, the series should be checked for stationarity. A series is stationary
+when its mean and variance stay the same over time. Most classical models need a
+stationary series to give reliable forecasts.
+Graphical method.
+The series is plotted with a centred rolling mean, and checked
+for drift or seasonal swings.
+65
+
+
+===== PAGE 67 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+ADF test.
+The Augmented Dickey-Fuller test gives a yes/no answer based on a
+p-value. It uses two hypotheses.
+• H0: the series has a unit root. It is non-stationary.
+• H1: the series has no unit root. It is stationary.
+If the p-value is below 0.05, H0 is rejected and the series is treated as stationary.
+The test was run on the two monthly series used for forecasting: revenue and session
+count. The adfuller call returned p-values well above 0.05 on both the raw and
+log-transformed series, so the series are treated as non-stationary.
+Stabilization.
+When a series fails the test, a stabilization step is applied. The
+transform is the log of (1 + yt) followed by a first difference:
+˜yt = log(1 + yt),
+∆˜yt = ˜yt −˜yt−1.
+The log step shrinks the variance. The first difference removes any leftover trend.
+This transform is used only for the Holt-Winters input. SARIMA already differences
+the series through its d and D orders, Prophet handles the trend on its own, and
+XGBoost does not need a stationary input. Applying the transform to all four would
+mean differencing the series twice for SARIMA, which is not wanted.
+Exploratory Analysis and Data Preparation
+The star schema has one row per transaction or per session. Forecasting needs one
+value per time step. Three preparation steps were applied.
+Daily and monthly grouping.
+For revenue and session forecasting, the transaction
+tables are grouped by calendar day and summed. The daily series is then grouped into
+months for the long-range comparison.
+Scaling for segmentation.
+K-Means uses distances between points, so features with
+larger numbers take over the distance computation. The three behavioural features
+were scaled to the same range before fitting.
+Extending the history.
+The real data came in two parts: six months at first, then
+a second batch that brought the real window to about eleven months (June 2025 to
+April 2026). That is still under one full year, so a generator extends the history by
+sampling from the real daily revenue values and applying Ramadan, Eid, monthly and
+weather multipliers, since eleven months is not enough for the seasonal models to pick
+up a yearly cycle. Running the model comparison on this extended history is still worth
+doing. It is not proof that one model beats another on the real centre. What it does
+is exercise the whole forecasting pipeline end to end and leave behind tested, working
+code that will run on the real series unchanged once a second year of data is available.
+66
+
+
+===== PAGE 68 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Train and Test Split
+The accuracy of the forecasts is measured on a 70/30 split done in time order. The first
+70% of the months is used for training, and the last 30% is kept aside for testing. The
+split has to be in time order. A random split would let the model train on future data
+and test on past data, which would make the results look better than they really are.
+Figure 5.6 shows the split on the monthly revenue series. The dashed line marks where
+training ends and testing begins.
+Figure 5.6: 70/30 time-ordered split of the monthly revenue series. The dashed line
+marks the train/test boundary.
+All four models below were trained on the same training part and tested on the
+same test part, so the comparison is fair.
+5.5.3
+Forecasting Models
+Four models were trained and compared: Holt-Winters, XGBoost, SARIMA and
+Prophet. Each has its strengths, and the best one is chosen per series. The sprint tried
+many runs with different splits, horizons and feature sets before settling on the version
+shown here. The test window also overlaps with Ramadan, when the centre runs on a
+different schedule, which affected the test scores.
+Holt-Winters
+Holt-Winters is triple exponential smoothing [14, 15]: it tracks a series that carries a
+trend and a season at the same time. I used the additive version, with a monthly season
+and a straight-line trend, fitted on the training part of the revenue and session series.
+Figures 5.7 and 5.8 show the result. The forecast carries the trend and the monthly
+season forward in a smooth way that matches the recent years.
+67
+
+
+===== PAGE 69 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Figure 5.7: Holt-Winters forecast for monthly revenue.
+Figure 5.8: Holt-Winters forecast for monthly sessions.
+XGBoost
+XGBoost is a gradient-boosting model: it grows decision trees one after another, each
+new tree patching the mistakes of the ones before it. It was never meant for time series,
+but you can reshape the problem into an ordinary supervised one. I pulled time features
+from the dates (month, year and day of the year), then added short rolling averages and
+lag features: the value one step back, and the value at the same point a year earlier.
+Figures 5.9 and 5.10 show the result. XGBoost catches the big seasonal swings. The
+shape is right, but the level drifts on the long horizon, because each prediction is fed
+back as the next lag and the error builds up.
+68
+
+
+===== PAGE 70 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Figure 5.9: XGBoost forecast for monthly revenue.
+Figure 5.10: XGBoost forecast for monthly sessions.
+SARIMA
+SARIMA adds a seasonal part to ARIMA. It fits the two KPIs studied here, since
+both show a monthly cycle. The model uses two groups of parameters: (p, d, q) for the
+non-seasonal part and (P, D, Q, m) for the seasonal part, with m = 12 for a yearly cycle.
+These orders were not set by hand. They were chosen by pmdarima’s auto-ARIMA,
+which runs a stepwise search over the parameter ranges with one seasonal difference
+fixed (D = 1) and keeps the combination with the best score. For the monthly series
+the search settled on (1, 1, 1) for the non-seasonal part and (1, 1, 1, 12) for the seasonal
+part. Figures 5.11 and 5.12 show the result. SARIMA gives a smooth continuation of
+both series and follows the trend and the cycle correctly.
+69
+
+
+===== PAGE 71 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Figure 5.11: SARIMA forecast for monthly revenue.
+Figure 5.12: SARIMA forecast for monthly sessions.
+Prophet
+Prophet was added as a fourth model because it handles uneven data on its own [1].
+The series is split as y(t) = T(t) + S(t) + ϵt, where T(t) is a trend made of straight
+pieces, S(t) is a seasonal part built from Fourier terms, and ϵt is the leftover noise.
+Prophet returns 80% confidence intervals by default, and the dashboards use those
+bounds as the planning range. Figures 5.13 and 5.14 show the result.
+70
+
+
+===== PAGE 72 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Figure 5.13: Prophet forecast for monthly revenue.
+Figure 5.14: Prophet forecast for monthly sessions.
+Weather Regressor
+Prophet and XGBoost both accept extra input features. A small client calls the Open-
+Meteo API [17] for the daily Tunis weather, saves the result locally and exposes two
+features: the daily maximum temperature and the daily rainfall. They are kept as
+optional regressors for the two models that accept them. The effect on accuracy was
+small and was not measured as a separate figure, so the weather features are reported
+as a modelling option rather than a proven gain. The synthetic generator never puts
+weather directly into its multipliers, so the same signal is not counted twice during
+training.
+5.5.4
+Performance Evaluation
+The models are evaluated on the same 70/30 split using MAE, RMSE and wMAPE.
+The results show which model works best for revenue and which for sessions.
+71
+
+
+===== PAGE 73 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Evaluation Metrics
+Three measures are used together, each reading the error in a different way. The first
+two stay in the unit of the data, while the third puts it on a percentage scale.
+• MAE (Mean Absolute Error): the average of the absolute differences between
+the predicted and the real values. Given in the same unit as the data.
+• RMSE (Root Mean Squared Error): the square root of the average of the squared
+errors. A single very bad prediction has a bigger effect on the score.
+• wMAPE (Weighted Mean Absolute Percentage Error): the total absolute error
+divided by the total of the real values, given as a percentage. It puts the MAE on
+a percentage scale, so a score can be read across series with different sizes. The
+plain MAPE was avoided on purpose, because the centre has many near-zero days
+and dividing by a tiny value makes the plain MAPE explode. As a rough guide, a
+wMAPE under 20% is treated as good and under 50% as usable.
+Threats to Validity
+These scores come with a real limit that shapes what they mean. Because the history
+is mostly synthetic, the comparison really measures how well each algorithm recovers a
+pattern it was already given. How much money actually comes in next year is another
+matter, and answering it would take a second year of real data. Once that data exists,
+the same code would give forecasts the owner could act on.
+The real data window is about eleven months, built in two parts. A seasonal model
+needs at least twelve months to learn a yearly pattern, so even the full real window
+is short. To run the comparison at all, the monthly series were extended with the
+synthetic generator, so the yearly pattern the models learn is, in large part, the pattern
+the generator puts in. The XGBoost result on sessions sits in the same trap: one of its
+strongest features is the value at the same point in the previous year, and with under
+a year of real data that lag is mostly synthetic. The test window also overlaps with
+Ramadan, when the centre runs on a different schedule. The numbers below let me
+compare the methods against each other on the same data. They say very little about
+how far off next year’s revenue would really be.
+One more limit is in the method, not the data. Each model is scored on a single
+70/30 split rather than on rolling-origin cross-validation, where the split is moved
+forward step by step and the model is re-scored at each position. Rolling-origin would
+give a steadier estimate, but with so few months it would leave almost no training data
+in the early folds, so a single time-ordered split was the more honest choice here. With
+a second year of data, moving to rolling-origin folds is the natural next step.
+Results and Interpretation
+Table 5.4 reports the scores on the two extended series. Figure 5.15 shows the MAE,
+RMSE and wMAPE visually.
+72
+
+
+===== PAGE 74 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Table 5.4: Model evaluation on the 70/30 time-ordered split. Bold marks the best
+model per series.
+Series
+Model
+MAE
+RMSE
+wMAPE (%)
+Revenue (TND)
+SARIMA
+84.86
+100.19
+4.7
+Holt-Winters
+95.00
+108.65
+5.2
+Prophet
+110.63
+130.44
+6.1
+XGBoost
+114.71
+137.60
+6.3
+Sessions
+XGBoost
+142.63
+157.91
+6.6
+Holt-Winters
+203.50
+227.07
+9.4
+SARIMA
+220.37
+243.67
+10.2
+Prophet
+303.51
+334.76
+14.1
+Figure 5.15: MAE, RMSE and wMAPE for the four models on the two series.
+The best model is not the same on both series. SARIMA wins on revenue: the
+monthly revenue series has a clean trend and a twelve-month seasonal pattern, which
+is what a seasonal ARIMA(1,1,1)(1,1,1,12) is built for. Holt-Winters is close behind
+on revenue and stays in the same range on sessions. XGBoost wins on sessions, where
+the counts move more sharply month to month and the calendar features pick that up
+better than the smoother models. On revenue, though, those calendar features add
+little, and XGBoost comes out the weakest there. Prophet is the weakest on sessions,
+because its piecewise linear trend reacts slowly to the sharp month-to-month moves.
+Read as wMAPE, every model lands in the good band: the revenue forecasts sit near
+5% and the session forecasts stay under 15%, so even the weakest of them tracks the
+real series closely.
+For the web application, the chosen model is SARIMA for revenue and XGBoost
+for sessions. Prophet is kept available for the daily series used by the chatbot, because
+it handles gaps on its own and returns confidence intervals without extra work. The
+limits in the Threats to Validity section apply to all three.
+5.5.5
+Member Segmentation
+Rather than treating all customers the same, we group them by behaviour: Heavy
+Users, Casual Spenders, Regulars and Light Users. This segmentation guides how the
+owner treats each group.
+73
+
+
+===== PAGE 75 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Objective
+The goal is to put members into groups based on how they behave, so the owner can
+treat each group differently.
+Feature Selection
+Two features were used: total spend and total session time. Two other features were
+dropped after looking at the data, because they were zero for almost every member:
+USB top-up (zero for everyone) and snack bar spend (a value for only two of the 66
+members). Keeping them only added noise and pulled the clusters apart in a way that
+did not reflect real behaviour. Spend and session time are both heavily skewed, with
+a few members far above the rest, so each feature was log-scaled before fitting. That
+stops a handful of big spenders from deciding the whole split on their own.
+The segmentation has a clear scope limit. The point of sale exports do not give a
+reliable per-member visit history, so I could not compute a recency feature (days since
+last visit). Total spend is monetary and total session time is engagement. There is no
+recency signal here, so I stopped short of calling it RFM. It groups members by spend
+and engagement, the part of the data I actually trust.
+Choice of k
+The elbow method was used to choose the number of clusters. The plot shows the inertia
+inside the clusters against k, and the bend in the curve is at k = 4 (Figure 5.16). With
+the log-scaled features the four groups come out at a sensible spread: 6 Heavy Users,
+18 Regulars, 30 Casual Spenders and 12 Light Users (Figure 5.17). Most members sit
+in the middle tiers, which matches what the owner expects.
+The silhouette score was also computed to check how well the clusters separate. It
+came out around 0.59, which is acceptable for a dataset this small: the four tiers are
+distinct enough to be useful without claiming perfectly sharp boundaries. The owner
+confirmed that the Heavy Users and Regulars groups match what he sees day to day.
+With only 66 members the segment sizes should still be read as a guide, not as exact
+figures.
+Figure 5.16: Elbow method for choosing the number of clusters.
+74
+
+
+===== PAGE 76 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Segment Labels
+After fitting, the four clusters were ranked by average total spend and named as
+spend-and-engagement tiers. The labels are:
+• Heavy Users. Highest total TND and longest session time. A small group of
+top members.
+• Regulars. Upper-middle spend and time. The recurring core of paying members.
+• Casual Spenders. Lower-middle spend and shorter visits. The largest group:
+members who come now and then and spend a modest amount.
+• Light Users. Lowest spend and time. Members who visited rarely.
+Figure 5.17 shows how many members fall into each segment. Figure 5.18 shows the
+revenue contribution of each segment.
+Figure 5.17: Number of members per segment (four K-Means clusters).
+Figure 5.18: Revenue contribution per segment.
+75
+
+
+===== PAGE 77 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Continuous Loyalty Score
+Next to the four segments, the segmenter also gives each member a loyalty label. Two
+scores are computed using quartiles: one on total spend (m score) and one on total
+session time (f score). One naming note matters here. In the classic RFM model the f
+stands for frequency, the number of visits. The source data gives no reliable per-visit
+count for members, so the f score here measures total session time instead, and the
+recency part of RFM is dropped entirely. The score is therefore an FM score, spend and
+engagement only, not an RFM score. Adding the two parts gives an FM score between
+2 and 8, which is turned into four tiers: Bronze (2 or 3), Silver (4 or 5), Gold (6 or 7)
+and Platinum (8). These tiers are shown on the Members page, with a filter to look at
+one tier at a time. The chatbot uses the same tiers when the owner asks for the best
+customers.
+5.5.6
+Anomaly Detection
+Some days are unusual, quieter or busier than normal. Anomaly detection flags these
+days so the owner knows when something unexpected happened.
+Objective and Approach
+The detector flags days where one of three KPIs is far from the normal value for that
+day of the week. A simple global Z-score would flag every Saturday as unusual, because
+Saturdays are always busier. That is a normal pattern, not an anomaly. It is more
+useful to ask whether this particular Saturday was unusual next to other Saturdays.
+The algorithm groups the days by day of the week, computes the mean and the standard
+deviation inside each group, and scores each day as:
+Z = x −µweekday
+σweekday
+.
+Each group needs at least four observations to be scored, that is at least four of the
+same weekday on record. In practice this bar only bites on a nearly empty database:
+once a few months of daily data are in, every weekday already has dozens of records,
+so no real day is skipped for want of history. Four points is still a low bar, though.
+With that few values the standard deviation is not stable, so the scores from the very
+first weeks of data are not very reliable. Raising the bar to 8 or 10 observations, or
+swapping the standard deviation for the median absolute deviation, would make those
+early scores more trustworthy. This is a known weak point of the current version.
+The Z-score also assumes each weekday group is roughly bell-shaped around its
+mean. Daily revenue is usually right-skewed, with a few busy days well above the
+rest, so the score is treated as a practical ranking of unusual days rather than a strict
+statistical test. The median absolute deviation mentioned above would also help here,
+since it reacts less to that skew.
+Severity Levels
+Days where |Z| ≥2.0 are flagged, with two levels:
+• Mild: 2.0 ≤|Z| < 3.0. Noticeably unusual.
+76
+
+
+===== PAGE 78 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+• Severe: |Z| ≥3.0. Highly unusual.
+The direction (above or below normal) is saved on its own, so the owner can tell
+a strong day from a weak one. Three series are watched: daily revenue, daily session
+count and daily member activity, where daily member activity is the number of member
+transactions recorded on that day.
+Output
+The output is a CSV sorted by absolute Z-score, from the highest down, so the most
+extreme day comes first. The Forecasts dashboard shows the flags as popups on top of
+the daily revenue chart.
+5.5.7
+Peak Hours and Stock Replenishment
+Two smaller analytics outputs round out the sprint.
+Peak hours and days.
+The transactions are grouped by hour of the day and by day
+of the week to show when the centre is busiest. The missing hours 8 and 9 are normal,
+since the centre only opens at 10 AM.
+Per-item stock replenishment.
+For each snack-bar item, a consumption rate is
+computed from the quantity sold over time, which gives a simple suggested refill rate.
+The suggested rate matched the owner’s own habit for the items that sell the fastest.
+5.5.8
+Forecasts Dashboard
+The Forecasts page shows the revenue and session predictions side by side, with anomaly
+flags over the historical data.
+Dashboard Layout
+The page reads the CSV files written by the analytics step and draws the revenue and
+session lines together with their range bands. The revenue chart uses the SARIMA
+forecast and the sessions chart uses the XGBoost forecast, the two winners from the
+model comparison. Below the lines, bar charts show the peak hours of the day and the
+peak days of the week, and an anomaly table lists the flagged dates with their severity
+and direction. Figure 5.19 shows the Forecasts page.
+77
+
+
+===== PAGE 79 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Figure 5.19: Forecasts page.
+Frontend Components
+The page is built from a small set of React components: a forecast chart drawn with
+Recharts error bands, an anomaly table and a peak-hours chart. They read from the
+78
+
+
+===== PAGE 80 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+chart endpoints through the same typed client used by the other dashboards.
+5.5.9
+Conversational Assistant
+The chatbot is embedded in the web app as a side panel. When the owner asks a
+question, a function-calling loop queries the data and generates a data-grounded answer.
+Why Embed Streamlit
+Rebuilding the voice input, the chart rendering and the language switching in React
+would have taken weeks for no real gain. Streamlit is started with a base URL path,
+Vite proxies that path, and the SPA shows the chatbot in a side panel through an
+iframe. For the user it looks like one app.
+Function-Calling Loop
+The first version asked Gemini to write both an answer and a chart spec in one prompt.
+It often made up numbers that were not in the data, gave forecasts for series the system
+never forecast, and asked for charts on columns that did not exist.
+The new version turns the agent into a function-calling loop. It uses the gemini-3-flash-preview
+model, given a small set of tools that link directly to the chart and KPI endpoints.
+Gemini calls a tool, the agent runs the matching endpoint, real data comes back, and
+only then can Gemini give a final answer. The made-up answers went away, and every
+reply can now be checked against the dashboards.
+Tools
+The agent exposes a small set of tools, each backed by a real query:
+• get_revenue_forecast(days_ahead)
+• get_session_forecast(days_ahead)
+• get_top_members(limit)
+• get_anomalies(severity)
+• get_member_segment(member_id)
+The assistant works on its own shared data context. This holds the three star-schema
+tables it needs (the two fact tables and the member dimension) together with the six
+analytics-output CSVs (member segments, loyalty scores, anomalies, peak hours by
+hour, peak hours by day, and stock replenishment), nine tables in total, all written by
+the same pipeline that feeds the dashboards.
+There are five tools but nine tables, so not every table has its own tool yet. The
+five cover the questions the owner asked most during testing: forecasts, top members,
+anomalies and a member’s segment. Peak hours and stock replenishment came up less
+often, so they are left in the context for now without a dedicated tool. Adding a tool is
+a small change, since each one is just a thin wrapper over a query that already exists,
+so the set can grow as new questions come up.
+79
+
+
+===== PAGE 81 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Multilingual Support
+The assistant supports English, French and Arabic. The UI strings are translated, the
+prompt is sent to the model in the selected language, and the voice input uses the
+browser speech API in the same language.
+Threats to Validity
+The biggest risk with the assistant is a confident wrong answer. In the first version,
+during testing, the assistant once returned a detailed answer about “the forecast for
+member count in July” when the system never produces such a forecast. The number was
+made up entirely, but the wording sounded so natural that it almost passed unnoticed.
+So I rebuilt it as a function-calling loop: the model can only answer after a tool
+has returned real numbers, so every figure can be traced back to a query and checked
+against the dashboards. That makes the risk smaller, but it is still possible. The model
+can still word a correct number poorly or pick a less relevant tool, so the answers are
+best treated as a quick first look at the data rather than a stand-in for the dashboards.
+Figure 5.20 shows the assistant panel embedded in the web application.
+80
+
+
+===== PAGE 82 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+Figure 5.20: Chatbot side panel inside the web application.
+5.5.10
+Tests
+At the end of this sprint, the owner can ask “what should my forecast be?” and get
+a data-grounded answer. The forecasts are visible on a dashboard, the anomalies are
+81
+
+
+===== PAGE 83 =====
+
+GamefyDB
+CHAPTER 5. SPRINT 4: FORECASTS, ANALYTICS AND CHATBOT
+flagged, and the segmentation guides strategy.
+The four-week revenue forecast came out close to the last four weeks of real data, in
+both size and direction. The peak-hour profile lined up with the opening hours, and
+the suggested refill rate fit the owner’s habit for the fastest-selling items. The member
+silhouette score was around 0.59, acceptable for a member base this small, and the
+owner agreed that the Heavy Users and Regulars segments matched what he sees. The
+top flagged days corresponded to real events: a public holiday, a promo weekend, a
+quiet day. Every chatbot answer could be traced back to a query.
+One limit is left open. The synthetic generator extends only eleven months of real
+data, and the test window overlaps Ramadan. The forecasts work best as a rough
+planning range. The exact figures, with the history this short, I would not lean on yet.
+5.6
+Conclusion
+Sprint 4 finishes the analytics side of the project. The owner can now read the revenue
+and session forecasts, see which members count the most, find the days that were not
+normal, and ask the assistant questions in simple language. The forecasts keep the limit
+I explained above, but the code behind them will only get better when a second year
+of real data arrives. With this sprint done, the web application covers everything the
+owner asked for.
+82
+
+
+===== PAGE 84 =====
+
+General Conclusion
+Over four sprints, this project turned a year of unused activity data from Gamefy
+Academy into a web application the owner now opens every day. What started as Excel
+files sitting on a local drive became a working tool that reports on sales, sessions and
+members, forecasts the months ahead, and answers plain questions in writing.
+• Sprint 1: Preparation and Data Warehouse. Requirements, a priority
+backlog, the architecture, the dimensional model and the ETL pipeline that builds
+the star schema.
+• Sprint 2: Authentication and Sessions. A login page and a session system
+with per-user roles.
+• Sprint 3: Interactive Dashboards. The backend, the three React dashboards,
+the upload page and the settings page.
+• Sprint 4: Forecasts, Analytics and Chatbot. The forecasting models, the
+segmentation, the anomaly alerts, the Forecasts dashboard and the conversational
+assistant.
+The harder parts of the project were rarely the models. A narrow no-break space
+hidden inside the money amounts cost about half a day before it was found. The
+member segmentation started as an RFM model and was renamed once it became clear
+the data held no recency information. The chatbot returned invented figures until it
+was rebuilt as a function-calling loop that reads the database before it answers. The
+forecasting comparison runs mostly on synthetic data, so it shows how well each model
+recovers a known pattern rather than how the next year will turn out. A real measure
+of future error will need a second year of data.
+The structure of the system held up well. The ETL, the analytics and the web
+application stayed as separate layers that talk through CSV files and a JSON API,
+which kept each part easy to test and to change. The hybrid method suited the work:
+GIMSI kept the design tied to the owner’s goals, and Scrum left room to absorb the
+data problems that only appeared once the files were opened.
+Several directions remain open. The pipeline could connect straight to the centre’s
+point of sale database so the dashboards refresh on their own, and a second year of
+real data would let the forecasts learn the yearly cycle and handle Ramadan correctly.
+As it stands, the project already does its main job: it gives the owner one place to
+see what the centre is doing and what is coming next, in numbers rather than by
+instinct. Building it brought together the data engineering, the analytics and the web
+development studied across the degree, and tied them to a real business that depends
+on the result.
+83
+
+
+===== PAGE 85 =====
+
+Bibliography
+[1] Taylor, S.J. and Letham, B. (2018). Forecasting at scale. The American Statistician,
+72(1), 37–45.
+[2] Kimball, R. and Ross, M. (2013). The Data Warehouse Toolkit. 3rd edition. Wiley.
+[3] Inmon, W.H. (2005). Building the Data Warehouse. 4th edition. Wiley.
+[4] Schwaber, K. and Sutherland, J. (2020). The Scrum Guide. Scrum.org.
+[5] McKinney, W. (2010). Data Structures for Statistical Computing in Python. Proc.
+9th Python in Science Conference, 56–61.
+[6] Microsoft
+Corporation
+(2024).
+Power
+BI
+documentation.
+https://learn.
+microsoft.com/power-bi/ (accessed June 2026).
+[7] Ferrari, A. and Russo, M. (2019). The Definitive Guide to DAX. 2nd edition.
+Microsoft Press.
+[8] Fernandez, A. (2013). Les nouveaux tableaux de bord des managers: Le projet
+décisionnel dans sa totalité. 6th edition. Eyrolles, Paris.
+[9] Harris, C.R. et al. (2020). Array programming with NumPy. Nature, 585, 357–362.
+[10] Chen, T. and Guestrin, C. (2016). XGBoost: A Scalable Tree Boosting System.
+Proc. 22nd ACM SIGKDD, 785–794.
+[11] Dickey, D.A. and Fuller, W.A. (1979). Distribution of the Estimators for Au-
+toregressive Time Series With a Unit Root. Journal of the American Statistical
+Association, 74, 427–431.
+[12] Ramírez, S. (2024). FastAPI documentation. https://fastapi.tiangolo.com/
+(accessed June 2026).
+[13] Raasveldt, M. and Mühleisen, H. (2019). DuckDB: an embeddable analytical
+database. Proc. of the 2019 ACM SIGMOD.
+[14] Holt, C.C. (1957). Forecasting Seasonals and Trends by Exponentially Weighted
+Moving Averages. ONR Memorandum 52, Carnegie Institute of Technology.
+Reprinted in International Journal of Forecasting, 20 (2004), 5–10.
+[15] Winters, P.R. (1960). Forecasting Sales by Exponentially Weighted Moving Aver-
+ages. Management Science, 6(3), 324–342.
+[16] Pedregosa, F. et al. (2011). Scikit-learn: Machine Learning in Python. Journal of
+Machine Learning Research, 12, 2825–2830.
+[17] Zippenfenig,
+P.
+(2023).
+Open-Meteo.com
+Weather
+API.
+Open-Meteo.
+https://open-meteo.com/.
+84
+
+
+===== PAGE 86 =====
+
+GamefyDB
+BIBLIOGRAPHY
+[18] Google DeepMind (2026). Gemini 3 Flash Preview model card. https://ai.google.
+dev/gemini-api/docs/models/gemini-3-flash-preview (accessed June 2026).
+[19] Meta Open Source. React documentation. https://react.dev/ (accessed June
+2026).
+[20] Vite contributors. Vite documentation. https://vite.dev/ (accessed June 2026).
+[21] Microsoft Corporation. TypeScript documentation. https://www.typescriptlang.
+org/ (accessed June 2026).
+[22] shadcn/ui documentation. https://ui.shadcn.com/ (accessed June 2026).
+[23] Oven. Bun documentation. https://bun.sh/ (accessed June 2026).
+[24] Gazoni,
+E.
+and
+Clark,
+C.
+openpyxl
+documentation.
+https://openpyxl.
+readthedocs.io/ (accessed June 2026).
+[25] xlrd documentation. https://xlrd.readthedocs.io/ (accessed June 2026).
+85
+
+
+===== PAGE 87 =====
+
+
+
+===== PAGE 88 =====
+
+
+
+===== PAGE 89 =====
+
+
+
+===== PAGE 90 =====
+
+
+
+===== PAGE 91 =====
+
+
+
+===== PAGE 92 =====
+
+
+
+===== PAGE 93 =====
+
+
+
+===== PAGE 94 =====

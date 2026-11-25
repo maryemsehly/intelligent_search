@@ -1,0 +1,2867 @@
+===== PAGE 1 =====
+
+République Tunisienne
+Université de Monastir
+Institut Supérieur d’Informatique de
+Mahdia
+MEMOIRE
+N° d’ordre : LCE-IRS-3-2026-
+016
+Ministère de l’Enseignement Supérieur et
+de la Recherche Scientifique
+MEMOIRE
+Présenté à
+Institut Supérieur d’Informatique de Mahdia
+Effectué à
+Poulina Group Holding
+En vue de l’obtention du diplôme de
+Licence Computer Engineering : Ingénierie des Réseaux et Systèmes
+Licence Computer Engineering : Ingénierie des Réseaux et Systèmes
+Elaboré par :
+Yassine Benelhadj Boubaker, Aymen Ben Younes
+Conception et implémentation d'une plateforme SOC pour la détection et la
+réponse automatisée aux cybermenaces
+Soutenu le : 12 juin 2026
+devant le jury composé de :
+Président
+: Khlif Houda
+Rapporteur
+: Ghannay Sana
+Encadrant Académique
+: Najoua Achoura
+Encadrant Professionnel
+: Bassem Romdhani
+Année universitaire 2025-2026
+
+
+===== PAGE 2 =====
+
+Dédicace
+Je dédie ce rapport à toutes les personnes qui ont été des piliers de soutien
+tout au long de mon parcours académique et personnel.
+Avant tout, je tiens à exprimer ma plus profonde gratitude à ma chère
+mère, Aïda Hamandi. Merci pour ton amour inconditionnel, ta patience
+infinie et tes encouragements constants. Merci pour tous les sacrifices que
+tu as consentis afin de m’offrir les meilleures conditions possibles pour
+réussir. Je n’oublierai jamais les nuits durant lesquelles tu veillais pour
+prendre soin de moi, ni tous les efforts que tu as fournis au fil des années.
+Ton soutien indéfectible a toujours été une source de force et de motivation
+dans ma vie.
+J’adresse également mes plus sincères remerciements à mon père, Hosni,
+qui a toujours veillé à répondre à mes besoins et à me fournir les moyens
+nécessaires pour poursuivre mes études dans les meilleures conditions.
+Merci pour ton soutien constant, tes sacrifices et pour le temps que tu as
+consacré à mon éducation.
+À mes deux chers frères, Mohib et Ahmed, merci d’avoir toujours été
+présents à mes côtés dans les moments importants de ma vie.
+Je remercie également l’ensemble de ma famille ainsi que tous mes amis
+pour leur affection, leur confiance et leur soutien tout au long de cette
+aventure.
+À toutes ces personnes, je dédie humblement ce travail en témoignage de
+ma reconnaissance et de mon profond respect.
+Yassine Benelhadj Boubaker
+
+
+===== PAGE 3 =====
+
+Dédicace
+À mon père Chedly et à ma mère Nejia, pour leur amour inconditionnel,
+leurs sacrifices sans fin et leur soutien indéfectible tout au long de mon
+parcours. Vous avez été ma source de force et ma lumière dans les moments
+les plus difficiles. Ce travail est le fruit de vos encouragements et de votre
+confiance en moi.
+À mes deux frères, Marwen et Nabil, pour leur présence, leur soutien et
+les moments de joie partagés. Merci d’avoir toujours été à mes côtés.
+À toute ma famille et à mes amis, pour leur affection et leurs
+encouragements qui m’ont accompagné tout au long de cette aventure.
+À toutes ces personnes chères à mon cœur, je dédie humblement ce travail
+en témoignage de ma profonde gratitude et de mon respect.
+Aymen Ben Younes
+
+
+===== PAGE 4 =====
+
+Remerciements
+Nous tenons à adresser nos remerciements les plus chaleureux à nos chers parents,
+dont le soutien indéfectible, les sacrifices consentis et les encouragements quotidiens nous
+ont accompagnés tout au long de notre parcours universitaire.
+Nos sincères remerciements s’adressent à Madame Najoua Achoura, notre encadrante
+académique, pour la qualité de son encadrement, sa disponibilité, ses orientations perti-
+nentes ainsi que ses précieux conseils méthodologiques qui ont grandement contribué à la
+réalisation de ce travail.
+Nous exprimons également notre vive reconnaissance à Monsieur Bassem Romdhani,
+notre encadrant professionnel au sein de Poulina Group Holding, pour sa confiance, le
+partage de son expertise terrain et l’environnement professionnel stimulant qu’il nous a
+offert durant toute la période du stage.
+Nos remerciements vont aussi à l’ensemble de l’équipe technique de Poulina Group
+Holding pour leur accueil bienveillant, leur disponibilité et leur volonté constante de par-
+tager leurs connaissances pratiques en matière de cybersécurité et d’administration des
+systèmes.
+Nous remercions également le corps enseignant de l’Institut Supérieur d’Informatique
+de Mahdia pour la qualité de la formation dispensée durant ces trois années, formation
+qui a constitué le socle de compétences nécessaire à la réussite de ce projet.
+Enfin, nous tenons à exprimer notre profonde gratitude aux membres du jury qui
+ont accepté d’évaluer ce travail et dont les remarques contribueront, sans aucun doute, à
+l’enrichir.
+4
+
+
+===== PAGE 5 =====
+
+Table des matières
+Remerciements
+4
+Glossaire
+12
+Introduction générale
+13
+1
+Présentation et cadre du projet
+1
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1
+1.2
+Présentation de l’organisme d’accueil . . . . . . . . . . . . . . . . . . . . .
+1
+1.2.1
+Poulina Group Holding . . . . . . . . . . . . . . . . . . . . . . . . .
+1
+1.2.2
+Mission et activité du département IT/Sécurité
+. . . . . . . . . . .
+2
+1.2.3
+Cadre du stage
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.3
+Présentation du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.3.1
+Critique de l’existant et problématique . . . . . . . . . . . . . . . .
+2
+1.3.2
+Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.3.3
+Objectifs de la solution . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.4
+Choix de la méthodologie . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.4.1
+Comparaison cascade vs Scrum
+. . . . . . . . . . . . . . . . . . . .
+4
+1.4.2
+Méthodologie choisie . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.5
+Langage de modélisation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.6
+Analyse des risques du projet
+. . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+2
+Architecture et spécification des besoins
+7
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+2.2
+Architecture générale du système
+. . . . . . . . . . . . . . . . . . . . . . .
+7
+2.3
+Wazuh . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.3.1
+Présentation générale . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.3.2
+Choix de Wazuh face aux alternatives . . . . . . . . . . . . . . . . .
+8
+2.3.3
+Architecture interne
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.3.4
+Règles et décodeurs . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.3.5
+Intégration MITRE ATT&CK . . . . . . . . . . . . . . . . . . . . .
+9
+2.3.6
+Réponse active Wazuh . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.3.7
+Règles personnalisées . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.4
+n8n : automatisation et organisation
+. . . . . . . . . . . . . . . . . . . . .
+9
+2.4.1
+Rôle du moteur d’automatisation . . . . . . . . . . . . . . . . . . .
+9
+2.4.2
+Choix de n8n face aux alternatives
+. . . . . . . . . . . . . . . . . .
+10
+2.4.3
+Concepts clés . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.4.4
+Pertinence dans notre architecture . . . . . . . . . . . . . . . . . . .
+10
+2.4.5
+Données extraites et utilisées par le workflow . . . . . . . . . . . . .
+10
+2.4.6
+Matrice de décision du workflow . . . . . . . . . . . . . . . . . . . .
+11
+2.5
+Suricata : détection d’intrusion réseau . . . . . . . . . . . . . . . . . . . . .
+11
+2.5.1
+Choix de Suricata face aux alternatives . . . . . . . . . . . . . . . .
+11
+2.5.2
+Rôle de Suricata dans notre architecture . . . . . . . . . . . . . . .
+12
+2.6
+Telegram : notification en temps réel
+. . . . . . . . . . . . . . . . . . . . .
+12
+2.6.1
+Utilisation de Telegram pour les notifications . . . . . . . . . . . . .
+12
+5
+
+
+===== PAGE 6 =====
+
+TABLE DES MATIÈRES
+2.7
+Stack offensive : Kali Linux et DVWA . . . . . . . . . . . . . . . . . . . . .
+13
+2.7.1
+Kali Linux . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.7.2
+DVWA . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.8
+Stack web : développement de l’application SOC . . . . . . . . . . . . . . .
+13
+2.8.1
+Node.js et Express
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.8.2
+PostgreSQL . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.8.3
+Socket.io et React . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.8.4
+Nginx et PM2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.8.5
+OpenSearch et Wazuh Indexer . . . . . . . . . . . . . . . . . . . . .
+14
+2.8.6
+Recharts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.8.7
+Vite et React Router . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.8.8
+node-ssh . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.8.9
+Prometheus Node Exporter
+. . . . . . . . . . . . . . . . . . . . . .
+15
+2.9
+Outils de développement et de rédaction . . . . . . . . . . . . . . . . . . .
+15
+2.9.1
+Visual Studio Code . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.9.2
+Overleaf . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.9.3
+VirtualBox
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.9.4
+Postman . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.9.5
+Draw.io
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.10 Comparaison avec les solutions existantes . . . . . . . . . . . . . . . . . . .
+17
+2.11 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3
+Mise en place de l’environnement technique
+18
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.2
+Architecture matérielle et plan d’adressage . . . . . . . . . . . . . . . . . .
+18
+3.2.1
+Composition de notre architecture . . . . . . . . . . . . . . . . . . .
+18
+3.2.2
+Justification de la séparation Internet/Lab . . . . . . . . . . . . . .
+18
+3.3
+Création des machines virtuelles . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.3.1
+Création VMs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.3.2
+Configuration réseau interne de chaque VM
+. . . . . . . . . . . . .
+18
+3.4
+Installation et configuration de Wazuh
+. . . . . . . . . . . . . . . . . . . .
+18
+3.4.1
+Récupération du script d’installation . . . . . . . . . . . . . . . . .
+18
+3.4.2
+Configuration réseau de la VM Wazuh
+. . . . . . . . . . . . . . . .
+19
+3.4.3
+Adaptation du fichier config.yml . . . . . . . . . . . . . . . . . . . .
+19
+3.4.4
+Génération des certificats . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.4.5
+Déploiement de l’indexer . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.4.6
+Déploiement du serveur Wazuh
+. . . . . . . . . . . . . . . . . . . .
+21
+3.4.7
+Déploiement du dashboard . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.4.8
+Réinitialisation du mot de passe admin . . . . . . . . . . . . . . . .
+22
+3.5
+Déploiement des agents Wazuh
+. . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.5.1
+Agent sur le serveur web (Ubuntu)
+. . . . . . . . . . . . . . . . . .
+22
+3.5.2
+Configuration de l’intégration webhook vers n8n . . . . . . . . . . .
+23
+3.6
+Installation de n8n . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+3.6.1
+Configuration réseau de la VM n8n . . . . . . . . . . . . . . . . . .
+23
+3.6.2
+Préparation de la VM
+. . . . . . . . . . . . . . . . . . . . . . . . .
+23
+3.6.3
+Création du service systemd . . . . . . . . . . . . . . . . . . . . . .
+24
+3.6.4
+Sécurisation du cookie . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.7
+Installation de Suricata sur le serveur web
+. . . . . . . . . . . . . . . . . .
+24
+6
+
+
+===== PAGE 7 =====
+
+TABLE DES MATIÈRES
+3.8
+Installation de Prometheus Node Exporter . . . . . . . . . . . . . . . . . .
+25
+3.8.1
+Téléchargement du binaire . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.8.2
+Extraction et installation du binaire . . . . . . . . . . . . . . . . . .
+25
+3.8.3
+Création du service systemd et démarrage
+. . . . . . . . . . . . . .
+25
+3.9
+Installation du serveur web et de DVWA . . . . . . . . . . . . . . . . . . .
+26
+3.9.1
+Configuration réseau de la VM serveur web . . . . . . . . . . . . . .
+26
+3.9.2
+Stack LAMP
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3.9.3
+Activation des modules Apache . . . . . . . . . . . . . . . . . . . .
+26
+3.9.4
+Déploiement de DVWA . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.9.5
+Configuration de la base MySQL
+. . . . . . . . . . . . . . . . . . .
+27
+3.9.6
+Création du compte d’administration distant pour la SOC App
+. .
+27
+3.10 Installation de la SOC App
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.10.1 Stack applicative . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.10.2 Création de la base et de l’utilisateur SOC . . . . . . . . . . . . . .
+28
+3.10.3 Installation de Redis et Nginx . . . . . . . . . . . . . . . . . . . . .
+29
+3.10.4 Installation de PM2 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.11 Tests de connectivité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.11.1 Test de connexion réseau . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.11.2 Agent Wazuh actif dans le dashboard . . . . . . . . . . . . . . . . .
+30
+3.12 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+4
+Conception et Implémentation
+32
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.2
+Planification . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.2.1
+Identification des acteurs . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.2.2
+Besoins fonctionnels
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.2.3
+Besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.2.4
+Cas d’utilisation principaux . . . . . . . . . . . . . . . . . . . . . .
+33
+4.3
+Architecture logicielle . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+4.3.1
+Vue d’ensemble . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+4.4
+Architecture du serveur SOC . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+4.4.1
+Rôle du serveur central . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+4.4.2
+Mécanisme de blocage à distance
+. . . . . . . . . . . . . . . . . . .
+35
+4.4.3
+Contrôle d’accès . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+4.5
+Implémentation du frontend . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+4.5.1
+Page de connexion
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+4.5.2
+Vue d’ensemble (Overview)
+. . . . . . . . . . . . . . . . . . . . . .
+37
+4.5.3
+Gestion des IPs . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+4.6
+Modules de la SOC App . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.6.1
+Navigation et organisation de l’interface
+. . . . . . . . . . . . . . .
+39
+4.6.2
+Gestion des agents Wazuh . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.6.3
+Détection de vulnérabilités (CVE) . . . . . . . . . . . . . . . . . . .
+40
+4.6.4
+Supervision système en temps réel (Server Monitor) . . . . . . . . .
+41
+4.7
+Mécanismes de réponses
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.7.1
+Blocage temporisé et escalade automatique . . . . . . . . . . . . . .
+42
+4.7.2
+Isolation du serveur web . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.7.3
+Schéma de base de données
+. . . . . . . . . . . . . . . . . . . . . .
+43
+4.8
+Sécurité de l’application SOC
+. . . . . . . . . . . . . . . . . . . . . . . . .
+43
+7
+
+
+===== PAGE 8 =====
+
+TABLE DES MATIÈRES
+4.9
+Workflow n8n . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.9.1
+Vue d’ensemble du workflow . . . . . . . . . . . . . . . . . . . . . .
+43
+4.9.2
+Diagramme de séquence — chaîne complète d’une alerte
+. . . . . .
+44
+4.9.3
+Code de normalisation . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.9.4
+Notifications Telegram . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.10 Tests et validation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.10.1 Scénario 1 : bruteforce SSH
+. . . . . . . . . . . . . . . . . . . . . .
+45
+4.10.2 Scénario 2 : injection SQL . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.10.3 Scénario 3 : scan nmap . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.10.4 Scénario 4 : scan de vulnérabilités web avec Nikto . . . . . . . . . .
+49
+4.10.5 Scénario 5 : détection FIM — modification d’un fichier système
+. .
+50
+4.10.6 Scénario 6 : détection de vulnérabilités sur le serveur web . . . . . .
+51
+4.10.7 Couverture MITRE ATT&CK . . . . . . . . . . . . . . . . . . . . .
+52
+4.10.8 Récapitulatif des performances mesurées . . . . . . . . . . . . . . .
+52
+4.11 Difficultés rencontrées et solutions apportées . . . . . . . . . . . . . . . . .
+52
+4.11.1 Intégration Wazuh / OpenSearch . . . . . . . . . . . . . . . . . . .
+52
+4.11.2 Blocage automatique sans faux positifs . . . . . . . . . . . . . . . .
+52
+4.11.3 Communication en temps réel avec WebSocket . . . . . . . . . . . .
+53
+4.11.4 Persistance des blocs iptables après redémarrage . . . . . . . . . . .
+53
+4.12 Recommandations pour la mise en production . . . . . . . . . . . . . . . .
+53
+4.13 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+Conclusion générale
+54
+Webographie
+56
+8
+
+
+===== PAGE 9 =====
+
+Table des figures
+1.1
+Logo de Poulina Group Holding . . . . . . . . . . . . . . . . . . . . . . . .
+1
+1.2
+Filiales de Poulina Group Holding réparties par secteur d’activité
+. . . . .
+2
+1.3
+Phases du modèle en cascade
+. . . . . . . . . . . . . . . . . . . . . . . . .
+5
+2.1
+Vue globale de l’architecture du système de supervision SOC . . . . . . . .
+7
+2.2
+logo de wazuh . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.3
+Logo de n8n . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.4
+Logo de Suricata
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.5
+Logo de Telegram . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.6
+Logo de Kali Linux . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.7
+Logo de Visual Studio Code . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.8
+Logo de Overleaf
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.9
+Logo de VirtualBox . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.10 Logo de Postman . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.11 Logo de Draw.io . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.1
+Téléchargement du script d’installation Wazuh . . . . . . . . . . . . . . . .
+19
+3.2
+Édition du fichier init.yaml de Wazuh . . . . . . . . . . . . . . . . . . . . .
+19
+3.3
+Édition du fichier config.yml de Wazuh . . . . . . . . . . . . . . . . . . . .
+20
+3.4
+Génération des fichiers de configuration et certificats Wazuh
+. . . . . . . .
+20
+3.5
+Installation du Wazuh Indexer (node-1) . . . . . . . . . . . . . . . . . . . .
+21
+3.6
+Démarrage du cluster Wazuh Indexer . . . . . . . . . . . . . . . . . . . . .
+21
+3.7
+Installation du Wazuh Manager . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.8
+Installation du Wazuh Dashboard et récupération du mot de passe admin .
+22
+3.9
+Réinitialisation du mot de passe admin Wazuh . . . . . . . . . . . . . . . .
+22
+3.10 Téléchargement du paquet wazuh-agent . . . . . . . . . . . . . . . . . . . .
+22
+3.11 Démarrage du service wazuh-agent
+. . . . . . . . . . . . . . . . . . . . . .
+23
+3.12 Bloc d’intégration custom-webhook ajouté dans ossec.conf
+. . . . . . . . .
+23
+3.13 Fichier de configuration réseau Netplan de la VM n8n . . . . . . . . . . . .
+23
+3.14 Ajout du dépôt NodeSource sur la VM n8n . . . . . . . . . . . . . . . . . .
+24
+3.15 Installation de n8n via npm
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.16 Message d’avertissement de n8n concernant le cookie sécurisé . . . . . . . .
+24
+3.17 Installation et démarrage de Suricata sur le serveur web . . . . . . . . . . .
+25
+3.18 Téléchargement de Node Exporter v1.8.2 sur le serveur web . . . . . . . . .
+25
+3.19 Extraction de l’archive et copie du binaire dans /usr/local/bin/
+. . . . . .
+25
+3.20 Création du service systemd et démarrage de Node Exporter . . . . . . . .
+26
+3.21 Configuration réseau de la VM serveur web . . . . . . . . . . . . . . . . . .
+26
+3.22 Installation de la stack LAMP sur le serveur web
+. . . . . . . . . . . . . .
+26
+3.23 Activation des modules Apache
+. . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.24 Clonage du dépôt DVWA sur le serveur web . . . . . . . . . . . . . . . . .
+27
+3.25 Création de la base et de l’utilisateur DVWA . . . . . . . . . . . . . . . . .
+27
+3.26 Création de l’utilisateur socadmin . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.27 Configuration sudoers limitée à iptables/ufw . . . . . . . . . . . . . . . . .
+27
+3.28 Installation et activation du service SSH sur le serveur web . . . . . . . . .
+28
+3.29 Installation de PostgreSQL sur la VM SOC App . . . . . . . . . . . . . . .
+28
+3.30 Démarrage du service PostgreSQL . . . . . . . . . . . . . . . . . . . . . . .
+28
+9
+
+
+===== PAGE 10 =====
+
+TABLE DES FIGURES
+3.31 Création de l’utilisateur et de la base socdb
+. . . . . . . . . . . . . . . . .
+29
+3.32 Installation de Redis sur la VM SOC App
+. . . . . . . . . . . . . . . . . .
+29
+3.33 Installation de Nginx et Node.js . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.34 Installation globale de PM2
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.35 Test de connectivité réseau entre les machines via ping
+. . . . . . . . . . .
+30
+3.36 Agent Wazuh en statut actif dans le tableau de bord
+. . . . . . . . . . . .
+31
+4.1
+Diagramme de cas d’utilisation de la SOC App . . . . . . . . . . . . . . . .
+33
+4.2
+Architecture trois tiers de la SOC App . . . . . . . . . . . . . . . . . . . .
+34
+4.3
+Script block-ip.sh — blocage, déblocage et isolation iptables
+. . . . . . . .
+36
+4.4
+Page de connexion de la SOC App
+. . . . . . . . . . . . . . . . . . . . . .
+37
+4.5
+Tableau de bord Overview — KPIs et courbe horaire des alertes . . . . . .
+38
+4.6
+Module IP Manager — blacklist, whitelist et isolation du serveur . . . . . .
+39
+4.7
+Module Agents — liste et statut des agents Wazuh
+. . . . . . . . . . . . .
+40
+4.8
+Module Vulnerabilities — CVE détectées par agent avec score CVSS3 . . .
+41
+4.9
+Module Server Monitor — RAM, CPU et disque en temps réel . . . . . . .
+42
+4.10 Flux de traitement d’une alerte dans le workflow n8n . . . . . . . . . . . .
+44
+4.11 Diagramme de séquence — chaîne complète de traitement d’une alerte
+. .
+44
+4.12 Principe d’une attaque bruteforce SSH . . . . . . . . . . . . . . . . . . . .
+46
+4.13 Lancement de l’attaque bruteforce SSH avec Hydra depuis Kali Linux . . .
+46
+4.14 Notification Telegram reçue suite à l’attaque bruteforce SSH . . . . . . . .
+46
+4.15 IP de Kali bloquée dans l’IP Manager de la SOC App suite à l’attaque
+bruteforce SSH
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.16 Principe d’une attaque par injection SQL . . . . . . . . . . . . . . . . . . .
+47
+4.17 Lancement de l’attaque par injection SQL avec sqlmap depuis Kali Linux .
+47
+4.18 Notification Telegram reçue suite à l’attaque par injection SQL . . . . . . .
+48
+4.19 IP de Kali bloquée 15 minutes dans l’IP Manager de la SOC App suite à
+l’injection SQL
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+4.20 Scan réseau de le serveur web avec nmap depuis Kali Linux . . . . . . . . .
+49
+4.21 Détection du scan nmap dans le tableau de bord Wazuh via Suricata
+. . .
+49
+4.22 Scan de vulnérabilités web avec Nikto contre le serveur web depuis Kali
+Linux
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.23 Notification Telegram reçue suite à la détection du scan Nikto . . . . . . .
+50
+4.24 IP de Kali bloquée 15 minutes dans l’IP Manager de la SOC App suite au
+scan Nikto . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.25 Simulation d’une modification de /etc/passwd sur le serveur web . . . . . .
+50
+4.26 Détection de la modification de /etc/passwd dans le tableau de bord Wazuh
+(FIM)
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.27 Installation de Python 2.7 (package volontairement vulnérable) sur le ser-
+veur web . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.28 CVEs de Python 2.7 détectées et affichées dans le module Vulnerabilities
+de la SOC App . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+10
+
+
+===== PAGE 11 =====
+
+Liste des tableaux
+1.1
+Comparaison des méthodologies traditionnelle et agile . . . . . . . . . . . .
+4
+1.2
+Planning du projet selon le modèle en cascade adapté . . . . . . . . . . . .
+4
+1.3
+Analyse des risques du projet et solutions envisagées
+. . . . . . . . . . . .
+6
+2.1
+Matrice de décision du workflow n8n
+. . . . . . . . . . . . . . . . . . . . .
+11
+11
+
+
+===== PAGE 12 =====
+
+Glossaire
+Agent Wazuh
+Collecteur de logs sur machine surveillée.
+Alerte
+Signal d’événement suspect détecté.
+API
+Interface entre deux logiciels.
+Authentification
+Vérification d’identité utilisateur.
+Blacklist
+Liste d’IPs malveillantes bloquées.
+Bruteforce
+Test automatisé de mots de passe.
+CVE
+Identifiant de vulnérabilité logicielle.
+CVSS
+Score de gravité d’une faille.
+DVWA
+Application web volontairement vulnérable.
+FIM
+Surveillance d’intégrité des fichiers.
+Hydra
+Outil d’attaque par force brute.
+Injection SQL
+Insertion de code SQL malveillant.
+iptables
+Filtrage réseau Linux.
+Kali Linux
+Distribution Linux pour tests offensifs.
+MITRE ATT&CK
+Référentiel des techniques d’attaque.
+n8n
+Moteur d’automatisation visuel.
+Nmap
+Outil de scan réseau.
+PostgreSQL
+Base de données relationnelle.
+Redis
+Base de données en mémoire.
+SIEM
+Plateforme d’analyse des journaux.
+SOC
+Centre de surveillance cybersécurité.
+SSH
+Protocole de connexion distante sécurisée.
+Syscollector
+Inventaire logiciel des agents Wazuh.
+Telegram
+Messagerie pour notifications d’alertes.
+Webhook
+URL de réception automatique de données.
+Whitelist
+Liste d’IPs fiables non bloquées.
+Wazuh
+Plateforme SIEM/XDR open-source.
+12
+
+
+===== PAGE 13 =====
+
+Introduction générale
+À l’ère de la transformation numérique, les systèmes d’information constituent le socle
+sur lequel reposent l’ensemble des activités économiques, industrielles et administratives
+des organisations modernes. Cette dépendance croissante, conjuguée à des infrastructures
+réseau de plus en plus interconnectées, expose les entreprises à un nombre grandissant
+d’attaques informatiques. Selon les publications récentes de l’ENISA et de l’ANSSI, le
+volume d’incidents de sécurité enregistrés en 2025 dépasse largement celui des années pré-
+cédentes, avec une multiplication des attaques ciblées, des rançongiciels et des intrusions
+furtives.
+Face à cette réalité, une approche uniquement réactive n’est plus suffisante. Il devient
+impératif de surveiller en permanence l’activité réseau, de détecter les comportements
+anormaux en temps réel et d’automatiser la réponse aux menaces. C’est l’objectif central
+d’un Centre Opérationnel de Sécurité (SOC, Security Operations Center) : centraliser
+la collecte des journaux, corréler les événements sur l’ensemble du réseau et déclencher
+automatiquement les actions défensives appropriées.
+Dans le cadre de notre projet de fin d’études, réalisé au sein de Poulina Group Hol-
+ding, l’un des plus importants groupes industriels tunisiens, nous avons eu pour mission
+d’étudier, de concevoir et de mettre en place un système complet de supervision réseau
+orienté SOC. Ce système devait répondre à un double impératif : d’une part, donner
+aux administrateurs et analystes une vue claire et permanente sur l’état des équipements
+et des flux réseau ; d’autre part, automatiser la détection des menaces et les actions de
+défense.
+Le présent mémoire est structuré en quatre chapitres. Le premier rend disponible
+le cadre du projet, présente l’organisme d’accueil, formule la problématique et décrit la
+méthodologie de gestion de projet choisie. Le deuxième chapitre présente les outils et
+technologies utilisés pour la surveillance réseau, et explique comment ils fonctionnent
+dans notre système. Le troisième chapitre explique comment nous avons installé et confi-
+guré l’environnement : architecture réseau, configuration des machines hôtes et virtuelles,
+installation des composants applicatifs. Enfin, le quatrième chapitre détaille la phase de
+réalisation, l’implémentation de l’application SOC, la chaîne d’automatisation n8n, ainsi
+que les tests effectués pour vérifier que tout fonctionne. Une conclusion générale clôture le
+mémoire en résumant ce que le projet apporte et en proposant des améliorations futures.
+13
+
+
+===== PAGE 14 =====
+
+Chapitre 1
+Présentation et cadre du projet
+1.1
+Introduction
+Ce chapitre présente le cadre du projet. Nous commençons par présenter l’entreprise
+et son environnement, puis nous expliquons le problème de sécurité qui a justifié ce projet
+ainsi que les grandes orientations de la solution proposée. Nous décrivons aussi l’archi-
+tecture du système et les notions de base en cybersécurité, et nous expliquons comment
+nous avons organisé le travail.
+1.2
+Présentation de l’organisme d’accueil
+1.2.1
+Poulina Group Holding
+Fondé en 1967 par M. Abdelwaheb Ben Ayed, Poulina Group Holding (PGH) est
+aujourd’hui l’un des plus importants groupes privés tunisiens. Coté à la Bourse des Valeurs
+Mobilières de Tunis depuis 2008, le groupe rassemble plus de soixante-dix sociétés actives
+dans des secteurs aussi variés que l’agroalimentaire, l’industrie, la céramique, le bois,
+l’emballage, l’immobilier, le tourisme et les services. Cette diversité, couplée à la dimension
+internationale de plusieurs filiales, fait de PGH un acteur économique majeur, tant sur le
+marché tunisien qu’à l’échelle régionale.
+Figure 1.1 – Logo de Poulina Group Holding
+La figure ci-dessous illustre la diversité sectorielle du groupe à travers ses principales
+filiales, réparties en huit domaines d’activité. Cette organisation multi-sectorielle explique
+la complexité et l’étendue de l’infrastructure informatique que le département IT/Sécurité
+doit superviser.
+1
+
+
+===== PAGE 15 =====
+
+CHAPITRE 1. PRÉSENTATION ET CADRE DU PROJET
+Figure 1.2 – Filiales de Poulina Group Holding réparties par secteur d’activité
+1.2.2
+Mission et activité du département IT/Sécurité
+Le département des systèmes d’information de Poulina Group Holding est en charge
+de la gouvernance, de l’exploitation et de la sécurisation de l’infrastructure numérique de
+l’ensemble des filiales. Compte tenu de la taille du groupe, ce département gère un parc
+machine étendu, un réseau inter-connecté entre plusieurs sites et un volume important
+de données sensibles (données métier, données clients, informations financières). Dans
+ce contexte, la cybersécurité occupe une place stratégique : elle assure la continuité des
+activités et la conformité aux exigences réglementaires.
+1.2.3
+Cadre du stage
+C’est dans ce département que s’est déroulé notre stage de fin d’études. La mission
+qui nous a été confiée vise à améliorer la sécurité du groupe, et plus particulièrement dans
+la mise en place d’un système de supervision réseau capable de centraliser la détection et
+la réponse aux incidents.
+1.3
+Présentation du projet
+1.3.1
+Critique de l’existant et problématique
+Avant le démarrage de notre projet, la supervision des équipements et la gestion des
+incidents de sécurité au sein de l’infrastructure cible reposaient principalement sur des
+mécanismes séparés et peu connectés entre eux. Plusieurs limitations ont été identifiées
+lors de la phase d’analyse :
+— Cloisonnement des sources de logs : les journaux produits par les différents équi-
+pements (serveurs Linux, postes Windows, équipements réseau, applications web)
+étaient consultés indépendamment, sans lien entre les événements centralisée.
+2
+
+
+===== PAGE 16 =====
+
+CHAPITRE 1. PRÉSENTATION ET CADRE DU PROJET
+— Détection majoritairement réactive : l’identification d’une attaque survenait souvent
+après que des dommages eurent été causés, faute d’un mécanisme de surveillance
+proactive.
+— Charge manuelle élevée : la qualification d’une alerte (vérifier si l’IP est déjà connue,
+identifier la machine touchée, décider de la réponse) était effectuée à la main, ce qui
+rallongeait considérablement le temps moyen de détection (MTTD) et de réponse
+(MTTR).
+— Absence d’interface unifiée : les administrateurs et analystes devaient jongler entre
+plusieurs consoles, ce qui limitait la capacité à obtenir une vue d’ensemble cohérente.
+— Pas d’automatisation des actions de correction : le blocage d’une IP malveillante,
+par exemple, exigeait une intervention humaine sur l’équipement concerné.
+L’ensemble de ces constats a permis de formaliser la problématique : comment doter
+l’infrastructure d’un dispositif de supervision permettant de centraliser la collecte des évé-
+nements, d’automatiser leur enrichissement, de déclencher les bonnes actions de réponse
+et d’offrir aux analystes une vision claire et exploitable des menaces ?
+1.3.2
+Solution proposée
+Pour répondre à cette problématique, nous proposons la mise en place d’un système
+de supervision SOC composé de plusieurs briques fonctionnelles intégrées :
+— Un SIEM/XDR centralisé qui collecte en continu les événements de sécurité de
+toutes les machines surveillées via des agents légers, les analyse et génère des alertes
+classifiées par niveau de sévérité.
+— Un moteur d’automatisation qui reçoit les alertes, vérifie si l’adresse IP source
+est connue comme fiable, et déclenche automatiquement les actions de réponse ap-
+propriées selon la gravité de la menace.
+— Une application web SOC personnalisée offrant aux analystes un tableau de
+bord temps réel, une supervision des ressources système, une gestion des agents, une
+détection de vulnérabilités CVE et un gestionnaire d’IPs avec blocage manuel ou
+automatique.
+— Un environnement de test offensif permettant de simuler des attaques réalistes
+afin de valider l’ensemble de la chaîne de détection et de réponse.
+1.3.3
+Objectifs de la solution
+Cette solution vise à atteindre plusieurs objectifs opérationnels : centraliser la collecte
+et l’analyse des événements de sécurité en un point unique, réduire le temps de détection
+et de réponse aux incidents à moins de 5 secondes pour les menaces critiques, éliminer les
+interventions manuelles répétitives grâce à l’automatisation, et offrir aux analystes une
+interface unifiée pour surveiller, analyser et répondre aux cyberattaques en temps réel.
+1.4
+Choix de la méthodologie
+La gestion d’un projet d’infrastructure mêlant configuration système, virtualisation,
+intégration applicative et développement web requiert une démarche structurée. Deux
+grandes familles de méthodologies se présentaient à nous : les méthodes traditionnelles
+telles que le cycle en V ou la cascade, et les méthodes agiles comme Scrum ou Kanban.
+3
+
+
+===== PAGE 17 =====
+
+CHAPITRE 1. PRÉSENTATION ET CADRE DU PROJET
+1.4.1
+Comparaison cascade vs Scrum
+Le tableau 1.1 présente une comparaison des deux méthodologies selon les critères
+les plus pertinents pour notre projet. Cette comparaison nous a guidés dans le choix de
+l’approche la mieux adaptée à nos contraintes de délai et de périmètre.
+Critère
+Cascade
+Scrum
+Approche
+Linéaire, séquentielle
+Itérative, incrémentale
+Planification
+Globale, en début de projet
+Par sprints courts (1 à 4 se-
+maines)
+Gestion du changement
+Rigide, peu d’adaptabilité
+Très souple, ajustements conti-
+nus
+Documentation
+Riche, formalisée à chaque étape
+Allégée, pragmatique
+Implication client
+Forte au début et à la fin
+Continue tout au long du projet
+Type de projet adapté
+Périmètre stable, bien défini
+Périmètre évolutif, exploratoire
+Table 1.1 – Comparaison des méthodologies traditionnelle et agile
+1.4.2
+Méthodologie choisie
+Le périmètre du projet ayant été clairement défini dès la phase d’analyse avec l’enca-
+drant professionnel, et les dates de livraison étant fixes, nous avons opté pour une approche
+en cascade adaptée. Cette démarche présente l’avantage d’une grande clarté dans la plani-
+fication et la traçabilité, deux qualités essentielles pour un projet d’infrastructure devant
+être documenté et reproductible. Le découpage choisi suit les phases suivantes : analyse des
+besoins, conception de l’architecture, mise en place de l’environnement, implémentation,
+tests et validation, installation et documentation.
+Phase
+Activités principales
+Début
+Fin
+Analyse
+Étude de l’existant, expression des besoins, choix des
+outils
+Sem. 1
+Sem. 2
+Conception
+Architecture réseau, plan d’adressage, modélisation
+UML
+Sem. 3
+Sem. 4
+Infrastructure
+Installation Wazuh, n8n, VMs, réseau lab, serveur web
+Sem. 5
+Sem. 7
+Développement
+Backend Node.js, frontend React, workflow n8n, inté-
+grations
+Sem. 8
+Sem. 11
+Tests
+Scénarios d’attaque, validation chaîne complète, cor-
+rections
+Sem. 12
+Sem. 13
+Rédaction
+Rapport de stage, documentation technique
+Sem. 10
+Sem. 14
+Table 1.2 – Planning du projet selon le modèle en cascade adapté
+La figure ci-dessous illustre les phases successives de cette méthodologie, depuis l’ex-
+pression des besoins jusqu’à la mise en service du système.
+4
+
+
+===== PAGE 18 =====
+
+CHAPITRE 1. PRÉSENTATION ET CADRE DU PROJET
+Figure 1.3 – Phases du modèle en cascade
+1.5
+Langage de modélisation
+Pour la formalisation des besoins fonctionnels et la conception de l’application SOC,
+nous avons choisi le langage UML (Unified Modeling Language). Ce standard de l’OMG
+offre l’avantage d’être universellement compris par les professionnels de l’informatique et
+propose une boîte à outils complète : diagrammes de cas d’utilisation pour décrire les
+interactions entre acteurs et système, diagrammes de classes pour modéliser le domaine
+de données, diagrammes de séquence pour illustrer les enchaînements et diagrammes de
+déploiement pour cartographier l’infrastructure cible.
+1.6
+Analyse des risques du projet
+Avant de démarrer la mise en œuvre, une analyse des risques a été conduite pour
+identifier les obstacles potentiels et préparer des solutions alternatives. Le tableau suivant
+résume les principaux risques identifiés.
+5
+
+
+===== PAGE 19 =====
+
+CHAPITRE 1. PRÉSENTATION ET CADRE DU PROJET
+Risque
+Description
+Probabilité
+Solution
+Incompatibilité de versions
+Les composants Wa-
+zuh,
+OpenSearch
+et
+les agents doivent être
+sur des versions com-
+patibles
+Moyenne
+Fixer les versions et
+suivre la matrice de
+compatibilité officielle
+Faux positifs
+Des alertes légitimes
+pourraient déclencher
+un blocage
+Haute
+Maintenir
+une
+liste
+blanche des IPs in-
+ternes et définir des
+seuils appropriés
+Indisponibilité SSH
+Si
+le
+serveur
+web
+cible (10.10.10.3) est
+injoignable, les com-
+mandes
+de
+blocage
+iptables échouent
+Faible
+Journaliser les erreurs
+et alerter l’analyste si
+le blocage échoue
+Surcharge n8n
+Un
+grand
+nombre
+d’alertes
+simultanées
+peut ralentir le work-
+flow
+Moyenne
+Filtrer les alertes de
+niveau inférieur à 7
+avant envoi au work-
+flow
+n8n
+—
+seules
+les
+alertes
+significa-
+tives
+(niveau
+≥
+7)
+sont transmises
+Perte de données PostgreSQL
+Une panne peut en-
+traîner la perte des
+alertes et configura-
+tions
+Faible
+Configurer des sauve-
+gardes
+automatiques
+quotidiennes
+Table 1.3 – Analyse des risques du projet et solutions envisagées
+Ces risques ont guidé certains choix d’architecture : la liste blanche pré-peuplée, le
+mécanisme de rechargement des blocs au démarrage, et le filtrage des alertes de niveau
+inférieur à 7 avant envoi à n8n pour éviter toute surcharge du workflow.
+1.7
+Conclusion
+Ce premier chapitre a permis de poser le contexte général du projet : l’organisme
+d’accueil, la mission confiée, la problématique métier et les grandes lignes de la solution
+proposée. Le chapitre suivant va plus loin en explorant l’état de l’art en matière de super-
+vision SOC et en présentant en détail chacun des outils et concepts qui composent notre
+solution.
+6
+
+
+===== PAGE 20 =====
+
+Chapitre 2
+Architecture et spécification des besoins
+2.1
+Introduction
+Dans ce chapitre, nous dressons un panorama des concepts et technologies qui sous-
+tendent un système de supervision SOC moderne. Après avoir clarifié les notions fonda-
+mentales et passé en revue les approches existantes, nous présentons en détail chacun des
+composants techniques utilisés dans la solution : Wazuh comme SIEM, n8n comme mo-
+teur d’automatisation, Kali Linux comme plateforme offensive et la stack web qui héberge
+l’application SOC.
+2.2
+Architecture générale du système
+L’architecture repose sur deux machines physiques hébergeant cinq machines vir-
+tuelles, toutes interconnectées via un réseau local dédié 10.10.10.0/24. La première ma-
+chine héberge le serveur Wazuh et le serveur web cible. La seconde héberge le serveur n8n,
+la SOC App et la machine Kali Linux pour les tests offensifs.
+Figure 2.1 – Vue globale de l’architecture du système de supervision SOC
+7
+
+
+===== PAGE 21 =====
+
+CHAPITRE 2. ARCHITECTURE ET SPÉCIFICATION DES BESOINS
+2.3
+Wazuh
+2.3.1
+Présentation générale
+Wazuh est une plateforme open-source de surveillance de la sécurité, distribuée sous
+licence GPLv2. Elle dérive historiquement du projet OSSEC mais a considérablement
+étendu son périmètre fonctionnel : analyse de logs, intégrité des fichiers, détection de
+rootkits, conformité réglementaire (PCI-DSS, GDPR), détection de vulnérabilités, et plus
+récemment réponse active. Wazuh utilise quatre composants principaux : le Wazuh Mana-
+ger, le Wazuh Indexer (basé sur OpenSearch), le Wazuh Dashboard (basé sur OpenSearch
+Dashboards) et les Wazuh Agents déployés sur les machines à surveiller. [1]
+Figure 2.2 – logo de wazuh
+2.3.2
+Choix de Wazuh face aux alternatives
+Plusieurs solutions SIEM existent sur le marché. Splunk et IBM QRadar sont des ré-
+férences commerciales très performantes, mais leur coût annuel peut dépasser plusieurs
+dizaines de milliers d’euros, ce qui les rend inaccessibles pour un projet académique. Elas-
+tic SIEM offre une alternative open-source, mais nécessite une configuration avancée et
+ne fournit pas nativement la réponse active ni la détection de vulnérabilités. AlienVault
+OSSIM est gratuit mais abandonné au profit d’une version commerciale (AT&T Cyberse-
+curity). Wazuh a été retenu car il est entièrement gratuit, activement maintenu, et intègre
+nativement le SIEM, la détection de vulnérabilités, le FIM et la réponse active en un seul
+produit.
+2.3.3
+Architecture interne
+Le Wazuh Manager est responsable de l’analyse des données envoyées par les agents
+et de l’application des règles de détection. Le Wazuh Indexer stocke les événements et
+les alertes de manière structurée, dans des index Elasticsearch/OpenSearch. Le Wazuh
+Dashboard fournit l’interface graphique permettant aux analystes de naviguer dans les
+événements, de construire des tableaux de bord et de gérer les agents. Les Agents, en-
+fin, fonctionnent sur les machines surveillées (Linux, Windows, macOS) et collectent en
+continu : logs système, événements de sécurité, modifications de fichiers, informations sur
+les processus et inventaire logiciel.
+2.3.4
+Règles et décodeurs
+Wazuh utilise un système à deux niveaux pour analyser les logs entrants : les décodeurs
+extraient les champs pertinents (IP source, utilisateur, action) du texte brut, et les règles
+8
+
+
+===== PAGE 22 =====
+
+CHAPITRE 2. ARCHITECTURE ET SPÉCIFICATION DES BESOINS
+appliquent une logique métier sur ces champs pour déclencher (ou non) une alerte. Plus
+de 5000 règles sont fournies par défaut, couvrant la majorité des produits courants (SSH,
+Apache, Nginx, MySQL, Windows Event Log, etc.). Chaque règle est associée à un niveau
+de 0 à 16 qui caractérise la sévérité de l’alerte.
+2.3.5
+Intégration MITRE ATT&CK
+Depuis sa version 4.x, Wazuh propose une carte native vers le référentiel MITRE
+ATT&CK. Chaque règle peut être associée à une ou plusieurs techniques (utilisation
+d’identifiants valides, force brute, etc.), ce qui permet aux analystes de visualiser une at-
+taque non plus comme une succession d’alertes isolées mais comme un parcours adversaire
+structuré. [5]
+2.3.6
+Réponse active Wazuh
+Wazuh intègre un mécanisme de réponse active (active response) qui permet de dé-
+clencher automatiquement des scripts sur les agents ou sur le manager en réaction à une
+alerte. Ce mécanisme est utilisé dans notre projet pour deux usages complémentaires à
+n8n :
+— Firewall-drop : réponse active native de Wazuh qui ajoute automatiquement une
+règle de blocage iptables sur l’agent Linux, lorsqu’une attaque par force brute SSH
+est détectée. Ce blocage est temporaire (600 secondes par défaut) et s’applique avant
+même que n8n ne traite l’alerte, assurant une première ligne de défense ultra-rapide.
+— Intégration webhook : le bloc d’intégration ajouté dans ossec.conf transmet en pa-
+rallèle toutes les alertes de niveau supérieur ou égal à 7 vers le webhook n8n pour
+l’enrichissement et l’automatisation avancée.
+Cette complémentarité entre la réponse active Wazuh — réaction immédiate et locale
+— et n8n — enrichissement, décision contextualisée, notification — forme une défense à
+deux niveaux : le premier bloc agit immédiatement, le second décide de façon éclairée.
+2.3.7
+Règles personnalisées
+En complément des plus de 5 000 règles fournies par défaut, il est possible d’ajouter
+des règles personnalisées dans le répertoire /var/ossec/etc/rules/ du manager. Ces règles
+permettent d’adapter la détection aux spécificités de l’environnement : seuils de déclen-
+chement ajustés, corrélation de plusieurs événements, ou prise en charge d’applications
+métier non couvertes par les règles standard. Dans notre laboratoire, des règles ajustées
+ont été définies pour la détection des injections SQL dans les logs Apache de DVWA, dont
+les patterns de requêtes malformées diffèrent des patterns standards.
+2.4
+n8n : automatisation et organisation
+2.4.1
+Rôle du moteur d’automatisation
+La détection d’une alerte par Wazuh n’est que la première étape. Pour transformer
+cette alerte en action concrète (notification, blocage, enrichissement), il faut un outil
+capable d’enchaîner plusieurs traitements de manière conditionnelle. Parmi les alternatives
+évaluées — TheHive/Cortex, Shuffle, Zapier auto-hébergé — n8n a été retenu pour sa
+9
+
+
+===== PAGE 23 =====
+
+CHAPITRE 2. ARCHITECTURE ET SPÉCIFICATION DES BESOINS
+double qualité : une interface graphique de conception de workflows accessible aux non-
+développeurs, et une flexibilité d’extension via du code JavaScript embarqué.
+Figure 2.3 – Logo de n8n
+2.4.2
+Choix de n8n face aux alternatives
+Pour l’automatisation des réponses aux alertes, plusieurs outils ont été évalués. Zapier
+et Make (ex-Integromat) sont des solutions cloud performantes mais payantes et ne per-
+mettent pas l’auto-hébergement, ce qui pose des problèmes de confidentialité des données
+de sécurité. TheHive/Cortex est une plateforme SOAR dédiée à la gestion d’incidents,
+mais sa complexité d’installation et sa courbe d’apprentissage élevée ne sont pas adaptées
+à un projet de cette envergure. Shuffle est une alternative open-source mais moins mature.
+n8n a été retenu pour sa possibilité d’auto-hébergement, son interface visuelle intuitive,
+et sa flexibilité grâce au code JavaScript embarqué directement dans les nœuds.
+2.4.3
+Concepts clés
+Un workflow n8n est constitué d’un ensemble de nodes (nœuds) reliés par des arêtes
+représentant le flot de données. Chaque node accomplit une tâche spécifique : recevoir un
+webhook, appeler une API, transformer des données, envoyer un message Telegram, etc.
+Plus de 400 nodes natifs sont fournis, et il est possible d’en créer sur mesure. Les workflows
+peuvent être déclenchés manuellement, périodiquement (cron), ou par des événements
+externes (webhook). [2]
+2.4.4
+Pertinence dans notre architecture
+Dans notre SOC, n8n est le point central de l’automatisation. Le workflow suit un
+pipeline séquentiel : réception de l’alerte Wazuh par webhook, normalisation des données,
+vérification de la liste blanche, transmission à la SOC App, vérification de déduplication
+(l’IP est-elle déjà bloquée ?), puis décision selon le niveau de sévérité (blocage permanent,
+blocage temporisé 15 minutes, ou enregistrement seul). Une notification Telegram est
+envoyée pour chaque action de blocage.
+2.4.5
+Données extraites et utilisées par le workflow
+Une alerte brute Wazuh contient plusieurs informations importantes. Le nœud de
+normalisation du workflow extrait et structure ces données pour que les étapes suivantes
+puissent les utiliser de façon uniforme :
+— L’adresse IP source (src_ip) : l’IP de l’attaquant, extraite selon la structure de
+l’alerte.
+— Le niveau de sévérité (severity) : nombre de 0 à 16, accompagné d’un label lisible
+(severity_label) : critical (≥15), high (≥12), medium (≥7), low (< 7).
+10
+
+
+===== PAGE 24 =====
+
+CHAPITRE 2. ARCHITECTURE ET SPÉCIFICATION DES BESOINS
+— L’identifiant et la description de la règle (rule_id, rule_desc) : identifient précisé-
+ment l’événement détecté.
+— Le nom et l’IP de l’agent Wazuh (agent_name, agent_ip) : identifient la machine
+source de l’alerte.
+— L’horodatage (timestamp) : date et heure de l’alerte, ajusté au fuseau horaire Afri-
+ca/Tunis.
+Le workflow comprend deux niveaux de protection contre le traitement redondant. En
+premier, il vérifie si l’IP source est présente dans la liste blanche de la SOC App : si oui,
+le workflow s’arrête immédiatement pour éviter de bloquer un équipement légitime. En
+second, après transmission à la SOC App, une vérification de déduplication consulte la
+liste des IPs déjà bloquées : si l’IP est déjà traitée, le workflow s’arrête sans renvoyer de
+notification, évitant ainsi les doublons de messages Telegram lors d’attaques persistantes.
+2.4.6
+Matrice de décision du workflow
+La décision de n8n est basée uniquement sur le niveau de sévérité de l’alerte Wazuh.
+Le tableau 2.1 résume la logique appliquée dans le workflow.
+Niveau Wazuh
+Action déclenchée
+≥12 (critical / high)
+Blocage permanent de l’IP + notification Telegram CRITIQUE
+≥10 (medium-high)
+Blocage temporisé de 15 minutes + notification Telegram
+< 10
+Enregistrement dans la SOC App uniquement (pas de blocage)
+Table 2.1 – Matrice de décision du workflow n8n
+2.5
+Suricata : détection d’intrusion réseau
+Suricata est un moteur open-source de détection et de prévention d’intrusion réseau
+(IDS/IPS), maintenu par l’OISF (Open Information Security Foundation). Il analyse le
+trafic réseau en temps réel en inspectant les paquets entrants et sortants, et les compare
+à un ensemble de règles de signatures pour identifier les comportements malveillants. [9]
+Figure 2.4 – Logo de Suricata
+2.5.1
+Choix de Suricata face aux alternatives
+Les deux principaux IDS open-source sont Suricata et Snort. Snort est le pionnier du
+domaine, mais il fonctionne en mode single-thread ce qui le rend moins performant sur
+les réseaux à fort débit. Suricata est multi-thread, supporte nativement le format EVE
+JSON (facilement intégrable avec Wazuh), et est activement maintenu par l’OISF. Zeek
+(anciennement Bro) est une autre alternative orientée analyse comportementale, mais sa
+complexité de configuration dépasse les besoins de ce projet. Suricata a donc été retenu
+11
+
+
+===== PAGE 25 =====
+
+CHAPITRE 2. ARCHITECTURE ET SPÉCIFICATION DES BESOINS
+pour ses performances, son intégration native avec Wazuh et la richesse de ses règles de
+détection.
+2.5.2
+Rôle de Suricata dans notre architecture
+Wazuh intègre nativement Suricata comme moteur de détection réseau complémen-
+taire. Là où Wazuh analyse les logs système et les événements d’authentification, Suricata
+surveille le trafic réseau au niveau des paquets. Cette combinaison couvre deux dimensions
+essentielles de la détection :
+— Wazuh seul : détecte les événements applicatifs (bruteforce SSH, injections SQL
+dans les logs Apache, modifications de fichiers)
+— Suricata + Wazuh : détecte les comportements réseau suspects (scans de ports
+nmap, tentatives d’exploitation réseau, trafic anormal)
+Dans notre projet, Suricata est installé sur le serveur web (le serveur web exposé) et
+ses alertes sont automatiquement remontées à Wazuh Manager. C’est grâce à Suricata
+que le scan nmap depuis Kali est détecté — les règles Suricata identifient les patterns
+caractéristiques d’un scan SYN et génèrent une alerte de niveau 3 à 7 dans Wazuh.
+2.6
+Telegram : notification en temps réel
+Telegram est une application de messagerie instantanée disposant d’une API Bot
+simple et gratuite. Elle permet d’envoyer des messages formatés via de simples requêtes
+HTTP POST, sans infrastructure supplémentaire.
+Figure 2.5 – Logo de Telegram
+2.6.1
+Utilisation de Telegram pour les notifications
+Dans un SOC, l’analyste ne peut pas surveiller en permanence l’interface web. Il faut
+un canal de notification immédiate accessible depuis n’importe quel appareil. Telegram a
+été choisi pour plusieurs raisons :
+— Intégration simple : l’API Bot Telegram est un simple appel HTTP POST, di-
+rectement supporté par n8n sans plugin supplémentaire
+— Disponibilité universelle : accessible sur mobile, desktop et navigateur web
+— Gratuit et sans limite : pas de quota ni de coût pour les notifications automatiques
+— Messages riches : support du format HTML pour des messages structurés et
+lisibles
+Les notifications Telegram sont envoyées pour toute alerte de niveau ≥10, avec le détail
+de la règle Wazuh, l’IP attaquante et l’action automatique prise (blocage permanent ou
+temporisé 15 minutes).
+12
+
+
+===== PAGE 26 =====
+
+CHAPITRE 2. ARCHITECTURE ET SPÉCIFICATION DES BESOINS
+2.7
+Stack offensive : Kali Linux et DVWA
+2.7.1
+Kali Linux
+Kali Linux est une distribution dérivée de Debian, maintenue par Offensive Security,
+et dédiée aux tests d’intrusion et à l’analyse d’analyse après incident. Elle inclut plusieurs
+centaines d’outils, parmi lesquels nmap (carte réseau), hydra (force brute), sqlmap (injec-
+tion SQL), metasploit (exploitation), wireshark (analyse de paquets) et burpsuite (tests
+web). Dans notre projet, Kali joue le rôle de red team : elle simule un attaquant dont les
+actions doivent être détectées par Wazuh. [3]
+Figure 2.6 – Logo de Kali Linux
+2.7.2
+DVWA
+DVWA (Damn Vulnerable Web Application) est une application web PHP/MySQL
+volontairement vulnérable, conçue pour permettre l’apprentissage et le test des techniques
+d’attaque web. Elle regroupe, sous un format pédagogique, les principales vulnérabilités
+du Top 10 OWASP : injection SQL, XSS, CSRF, inclusion de fichiers, exécution de com-
+mandes. [8] Hébergée sur le serveur web, elle est une cible idéale pour valider la chaîne de
+détection. [4]
+2.8
+Stack web : développement de l’application SOC
+2.8.1
+Node.js et Express
+Pour le backend, plusieurs technologies ont été comparées. Python avec Flask ou
+Django est très populaire pour les applications de sécurité, mais son modèle synchrone
+par défaut est moins adapté aux connexions WebSocket en temps réel. Java Spring Boot
+offre des performances excellentes mais implique une complexité et une verbosité élevées
+pour un projet de cette taille. PHP est inadapté à la gestion de connexions persistantes.
+Node.js a été retenu car son modèle événementiel asynchrone est parfaitement adapté à
+la réception simultanée de webhooks, aux connexions Socket.io et aux appels API, avec
+un écosystème npm très riche pour toutes les intégrations nécessaires.
+Le backend de l’application SOC est développé en Node.js avec le framework Express.
+Ce choix se justifie par la nature fortement asynchrone du domaine (réception de web-
+hooks, communication temps réel avec les clients) et par la richesse de l’écosystème npm.
+Express fournit une couche minimaliste de routage HTTP, complétée par les composants
+intermédiaires classiques (CORS, parsing JSON, authentification). [6]
+13
+
+
+===== PAGE 27 =====
+
+CHAPITRE 2. ARCHITECTURE ET SPÉCIFICATION DES BESOINS
+2.8.2
+PostgreSQL
+Le stockage relationnel est assuré par PostgreSQL, choisi pour sa robustesse, son
+support natif du type JSONB (très pratique pour stocker les alertes brutes Wazuh) et
+de la carte native (INET pour les adresses IP). Le schéma comprend principalement les
+tables alerts, attackers, incidents, ip_blacklist, ip_whitelist et users. [7]
+2.8.3
+Socket.io et React
+Pour le frontend, les trois frameworks JavaScript dominants ont été évalués. Angular
+est très complet mais sa complexité et sa courbe d’apprentissage élevée ne se justifient
+pas pour une application à cinq modules. Vue.js est une excellente alternative légère,
+mais son écosystème de composants est moins riche que celui de React. React a été retenu
+pour sa popularité, la richesse de son écosystème (Recharts, React Router), son modèle
+de composants réutilisables et sa gestion efficace des mises à jour de l’interface grâce au
+DOM virtuel, essentielle pour un tableau de bord temps réel.
+Le caractère temps réel du tableau de bord (mise à jour des alertes sans rafraîchis-
+sement de la page) est rendu possible par Socket.io, qui établit une connexion WebSo-
+cket persistante entre le navigateur et le backend. Côté frontend, React est utilisé pour
+construire une interface réactive et modulaire organisée en cinq modules : Overview, Server
+Monitor, Agents, Vulnerabilities et IP Manager. [11][12]
+2.8.4
+Nginx et PM2
+Pour l’installation en production, l’application est servie par Nginx en reverse proxy,
+qui gère le HTTPS et les fichiers statiques. Le processus Node.js est supervisé par PM2
+pour le redémarrage automatique en cas de crash et la gestion des logs. Redis est également
+déployé pour les besoins de cache et de file d’attente côté backend. [13][17]
+2.8.5
+OpenSearch et Wazuh Indexer
+Le Wazuh Indexer est construit sur OpenSearch, un moteur de recherche dérivé d’Elas-
+ticsearch. Il expose une API REST sur le port 9200 et permet d’indexer, de rechercher
+et d’agréger des millions d’événements de sécurité en quasi temps réel grâce au langage
+de requête DSL. Dans notre architecture, le backend SOC interroge l’Indexer en com-
+plément de l’API Wazuh Manager (port 55000) : l’Indexer est utilisé pour les calculs
+en grande quantité (compter les alertes du jour, calculer la distribution horaire via des
+requêtes date_histogram), tandis que le Manager est consulté pour les métadonnées sé-
+mantiques des agents. Cette double intégration tire parti des deux composants : précision
+des métadonnées agents d’un côté, et haute performance des agrégations de l’autre.
+2.8.6
+Recharts
+Pour la visualisation des données dans le frontend React, la bibliothèque Recharts
+(version 2.x) a été choisie. Construite sur D3.js et optimisée pour React, elle propose des
+composants déclaratifs (AreaChart, BarChart, ResponsiveContainer, etc.) qui s’intègrent
+naturellement dans le cycle de rendu React et gèrent le responsive design nativement.
+Dans la SOC App, Recharts est utilisé pour le graphique d’alertes par heure du tableau
+de bord, les courbes RAM et CPU en temps réel du module Server Monitor (multi-séries
+14
+
+
+===== PAGE 28 =====
+
+CHAPITRE 2. ARCHITECTURE ET SPÉCIFICATION DES BESOINS
+avec fenêtre glissante de 200 secondes), et l’histogramme horizontal d’utilisation disque
+avec code couleur automatique (rouge si > 90%, orange si > 70%). [14]
+2.8.7
+Vite et React Router
+Le frontend est bundlé par Vite, un outil de build nouvelle génération qui exploite
+les modules ES natifs du navigateur pour offrir un démarrage à froid quasi instantané
+et un rechargement à chaud (HMR) très réactif lors du développement. La navigation
+entre les différentes vues est gérée par React Router v6, qui fournit un système de routes
+déclaratives. Un composant PrivateRoute vérifie si l’utilisateur est connecté et redirige
+automatiquement vers la page de connexion tout utilisateur non authentifié.
+2.8.8
+node-ssh
+La bibliothèque node-ssh (basée sur le protocole SSH2) est utilisée côté backend pour
+établir des connexions SSH programmatiques vers le serveur web. Elle est dédiée exclu-
+sivement aux actions de réponse aux incidents : exécution du script block-ip.sh pour le
+blocage d’IP, et lecture des connexions TCP actives (ss -tnp) affichées dans le module
+Server Monitor.
+2.8.9
+Prometheus Node Exporter
+Prometheus Node Exporter est un agent léger open-source, standard de l’industrie
+pour la collecte de métriques système Linux. Installé sur chaque machine surveillée (le
+serveur web et la VM Wazuh), il expose en continu les métriques CPU, RAM, disque,
+uptime et charge via une interface HTTP sur le port 9100 (/metrics), au format texte
+Prometheus. [10]
+Dans la SOC App, le module Server Monitor interroge directement cet endpoint HTTP
+toutes les 2 secondes, sans aucune connexion SSH. Le backend analyse les compteurs
+cumulatifs du noyau Linux (/proc/stat, /proc/meminfo, /proc/diskstats) pour calculer
+le pourcentage CPU par delta entre deux relevés consécutifs. Cette approche élimine les
+risques liés aux credentials SSH dans le code, réduit la latence d’acquisition à quelques
+millisecondes, et permet un affichage véritablement temps réel dans le frontend.
+2.9
+Outils de développement et de rédaction
+Cette section présente les outils utilisés pour développer, gérer et documenter le projet,
+en dehors des composants de la solution SOC elle-même.
+2.9.1
+Visual Studio Code
+Éditeur de code utilisé pour développer le backend et le frontend de la SOC App. Il
+offre une coloration syntaxique, un terminal intégré et des extensions dédiées à Node.js
+et React.
+15
+
+
+===== PAGE 29 =====
+
+CHAPITRE 2. ARCHITECTURE ET SPÉCIFICATION DES BESOINS
+Figure 2.7 – Logo de Visual Studio Code
+2.9.2
+Overleaf
+Éditeur LaTeX en ligne utilisé pour rédiger ce rapport. Il compile le document direc-
+tement dans le navigateur et permet de voir le résultat en temps réel.
+Figure 2.8 – Logo de Overleaf
+2.9.3
+VirtualBox
+Logiciel de virtualisation utilisé pour créer et exécuter les machines virtuelles du la-
+boratoire (Wazuh, SOC App, Kali Linux, n8n).
+Figure 2.9 – Logo de VirtualBox
+2.9.4
+Postman
+Outil de test d’API utilisé pour vérifier les routes REST de la SOC App pendant le
+développement, avant de les connecter au frontend.
+Figure 2.10 – Logo de Postman
+2.9.5
+Draw.io
+Outil de création de diagrammes utilisé pour concevoir les schémas d’architecture
+réseau et les diagrammes de flux du projet.
+16
+
+
+===== PAGE 30 =====
+
+CHAPITRE 2. ARCHITECTURE ET SPÉCIFICATION DES BESOINS
+Figure 2.11 – Logo de Draw.io
+2.10
+Comparaison avec les solutions existantes
+Il existe sur le marché plusieurs solutions commerciales et open-source pour la super-
+vision de sécurité. Cette section compare notre approche avec les principales alternatives
+pour justifier les choix effectués.
+Notre approche présente plusieurs avantages clés par rapport aux solutions commer-
+ciales :
+— Coût zéro : Wazuh, n8n, PostgreSQL et React sont tous gratuits. Cela rend la
+solution accessible aux entreprises qui n’ont pas le budget pour Splunk ou QRadar,
+dont le coût annuel peut dépasser plusieurs dizaines de milliers de dinars.
+— Flexibilité totale : Puisque nous contrôlons tous les composants, nous pouvons adap-
+ter la solution à des besoins spécifiques. L’application SOC App a été développée
+sur mesure pour répondre exactement aux besoins du projet.
+— Réponse automatique complète : la combinaison n8n, iptables et Node Exporter
+permet de détecter, bloquer et visualiser une attaque en moins de 5 secondes, ce
+que peu de solutions dans cette gamme de prix permettent.
+— Transparence totale : Toutes les règles de détection sont visibles et modifiables. Il
+n’y a pas de « boîte noire » : on sait exactement pourquoi une alerte est générée et
+comment la corriger si besoin.
+L’inconvénient principal par rapport aux solutions commerciales est le temps de confi-
+guration initiale. Une solution comme Splunk dispose d’une équipe de support dédiée
+et de connecteurs prêts à l’emploi. Notre solution nécessite plus de mise en place, mais
+offre une maîtrise totale du système et une indépendance complète vis-à-vis des éditeurs
+commerciaux.
+2.11
+Conclusion
+Ce chapitre a présenté l’écosystème conceptuel et technique sur lequel repose notre
+projet. Chacun des outils choisis — Wazuh, n8n, Kali, DVWA, Node.js, React, Recharts,
+Vite, React Router, node-ssh, Prometheus Node Exporter, OpenSearch — a été retenu
+pour son apport spécifique à un besoin identifié, et leur intégration sera détaillée dans les
+chapitres suivants. Le chapitre suivant aborde la mise en place concrète de l’environnement
+technique : architecture réseau, configuration des serveurs et machines virtuelles.
+17
+
+
+===== PAGE 31 =====
+
+Chapitre 3
+Mise en place de l’environnement technique
+3.1
+Introduction
+Ce chapitre détaille étape par étape la mise en place de l’infrastructure physique et
+logique nécessaire au fonctionnement du SOC. Nous présentons d’abord l’architecture
+matérielle et le plan d’adressage, puis la configuration de chacun des serveurs et machines
+virtuelles, et enfin l’installation des composants applicatifs centraux : Wazuh, n8n et la
+SOC App.
+3.2
+Architecture matérielle et plan d’adressage
+3.2.1
+Composition de notre architecture
+Notre architecture est composée de deux machines physiques et de cinq machines
+virtuelles, reliées par un switch Ethernet niveau 2 formant le réseau 10.10.10.0/24. La
+première machine physique héberge la VM Wazuh SIEM et la VM serveur web. La seconde
+machine physique héberge les VMs n8n, SOC App et Kali Linux.
+3.2.2
+Justification de la séparation Internet/Lab
+Le choix d’un switch Ethernet pur (sans fonction routage) présente plusieurs avantages.
+Le réseau lab est stable et indépendant de tout accès Internet. Chaque machine physique
+accède à Internet via sa propre carte WiFi, tandis que les machines virtuelles utilisent une
+interface NAT VirtualBox. Cette architecture est facilement reproductible dans un autre
+environnement.
+3.3
+Création des machines virtuelles
+3.3.1
+Création VMs
+Quatre machines virtuelles ont été créées à l’aide de Oracle VM VirtualBox. L’envi-
+ronnement comprend un serveur Wazuh, un serveur n8n, une machine SOC Dashboard
+pour la supervision et une machine Kali Linux pour les tests de sécurité.
+3.3.2
+Configuration réseau interne de chaque VM
+Chaque VM Linux dispose de deux interfaces : enp0s3 (NAT VirtualBox, DHCP) pour
+l’accès Internet et enp0s8 (bridged) avec une IP statique sur le réseau lab.
+3.4
+Installation et configuration de Wazuh
+3.4.1
+Récupération du script d’installation
+Wazuh fournit un script d’installation all-in-one qui automatise le installation des trois
+composants (indexer, manager, dashboard) sur une même machine. Le téléchargement
+s’effectue via curl :
+18
+
+
+===== PAGE 32 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+Figure 3.1 – Téléchargement du script d’installation Wazuh
+3.4.2
+Configuration réseau de la VM Wazuh
+Le fichier init.yaml est édité pour configurer l’adresse IP statique 10.10.10.10 sur l’in-
+terface réseau du laboratoire, séparément de l’interface NAT utilisée pour l’accès Internet.
+Figure 3.2 – Édition du fichier init.yaml de Wazuh
+3.4.3
+Adaptation du fichier config.yml
+Avant de lancer l’installation, le fichier config.yml doit être ajusté pour refléter l’IP
+statique de la VM (10.10.10.10) sur les trois rôles : indexer, server et dashboard.
+19
+
+
+===== PAGE 33 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+Figure 3.3 – Édition du fichier config.yml de Wazuh
+3.4.4
+Génération des certificats
+Wazuh chiffre toutes ses communications internes par TLS. La première étape de
+l’installation génère les certificats nécessaires :
+Figure 3.4 – Génération des fichiers de configuration et certificats Wazuh
+3.4.5
+Déploiement de l’indexer
+L’indexer Wazuh est le premier composant à installer. Il constitue la couche de stockage
+et d’indexation des alertes, basée sur OpenSearch. La commande –wazuh-indexer node-1
+installe et démarre le nœud principal.
+20
+
+
+===== PAGE 34 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+Figure 3.5 – Installation du Wazuh Indexer (node-1)
+Une fois l’indexer installé, le cluster est démarré pour initialiser le nœud OpenSearch.
+Figure 3.6 – Démarrage du cluster Wazuh Indexer
+3.4.6
+Déploiement du serveur Wazuh
+Le manager Wazuh est ensuite installé. Il est responsable de la réception et de l’analyse
+des événements envoyés par les agents déployés sur les machines surveillées.
+Figure 3.7 – Installation du Wazuh Manager
+21
+
+
+===== PAGE 35 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+3.4.7
+Déploiement du dashboard
+Figure 3.8 – Installation du Wazuh Dashboard et récupération du mot de passe admin
+À l’issue de cette étape, le dashboard est accessible à l’adresse https ://10.10.10.10
+avec les identifiants admin / <mot_de_passe_généré>.
+3.4.8
+Réinitialisation du mot de passe admin
+Pour des raisons de sécurité opérationnelle, le mot de passe par défaut a été régénéré
+via l’outil wazuh-passwords-tool.sh.
+Figure 3.9 – Réinitialisation du mot de passe admin Wazuh
+3.5
+Déploiement des agents Wazuh
+3.5.1
+Agent sur le serveur web (Ubuntu)
+L’agent Wazuh est installé sur le serveur web par téléchargement du paquet .deb et uti-
+lisation des variables d’environnement WAZUH_MANAGER et WAZUH_AGENT_NAME
+pour pointer vers le serveur central.
+Figure 3.10 – Téléchargement du paquet wazuh-agent
+Une fois le paquet installé, le service de l’agent est activé pour qu’il envoie ses données
+au manager.
+22
+
+
+===== PAGE 36 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+Figure 3.11 – Démarrage du service wazuh-agent
+3.5.2
+Configuration de l’intégration webhook vers n8n
+Pour relier Wazuh à n8n, une intégration de type custom-webhook est ajoutée dans le
+fichier /var/ossec/etc/ossec.conf du manager. Toute alerte de niveau supérieur ou égal à
+7 sera ainsi transmise à n8n au format JSON.
+Figure 3.12 – Bloc d’intégration custom-webhook ajouté dans ossec.conf
+3.6
+Installation de n8n
+3.6.1
+Configuration réseau de la VM n8n
+La VM n8n est configurée avec une adresse IP statique 10.10.10.20 sur le réseau lab
+via Netplan, et une interface NAT pour l’accès Internet.
+Figure 3.13 – Fichier de configuration réseau Netplan de la VM n8n
+3.6.2
+Préparation de la VM
+La VM n8n fonctionne sous Ubuntu Server 22.04 avec 3 Go de RAM. Après configura-
+tion réseau (IP statique 10.10.10.20), Node.js 20 LTS est installé via le dépôt NodeSource.
+23
+
+
+===== PAGE 37 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+Figure 3.14 – Ajout du dépôt NodeSource sur la VM n8n
+n8n est ensuite installé globalement via npm pour être disponible comme service sys-
+tème.
+Figure 3.15 – Installation de n8n via npm
+3.6.3
+Création du service systemd
+Pour assurer le démarrage automatique de n8n et un fonctionnement en arrière-plan,
+un fichier de service systemd a été créé. Les variables d’environnement (port, authentifi-
+cation basique, fuseau horaire, clé de chiffrement) sont positionnées directement dans le
+fichier de service.
+3.6.4
+Sécurisation du cookie
+Par défaut, n8n exige un cookie sécurisé qui n’est pas envoyé sur HTTP en clair.
+Pour notre laboratoire, cette protection a été désactivée temporairement via la variable
+N8N_SECURE_COOKIE=false, en attendant la mise en place d’un certificat TLS in-
+terne.
+Figure 3.16 – Message d’avertissement de n8n concernant le cookie sécurisé
+3.7
+Installation de Suricata sur le serveur web
+Suricata est installé sur le serveur web (le serveur web exposé) pour surveiller le trafic
+réseau entrant et sortant. Ses alertes sont automatiquement intégrées à Wazuh via le
+fichier de logs /var/log/suricata/eve.json.
+24
+
+
+===== PAGE 38 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+Figure 3.17 – Installation et démarrage de Suricata sur le serveur web
+Après installation, Suricata est configuré pour surveiller l’interface enp0s8 (interface
+bridged du réseau lab). Le fichier /var/ossec/etc/ossec.conf de l’agent Wazuh sur le serveur
+web est mis à jour pour lire les logs Suricata et les transmettre au manager.
+3.8
+Installation de Prometheus Node Exporter
+Prometheus Node Exporter est installé sur le serveur web et sur la VM Wazuh pour
+exposer en continu les métriques système (CPU, RAM, disque, uptime) via une interface
+HTTP sur le port 9100. Le module Server Monitor de la SOC App interroge cet endpoint
+toutes les 2 secondes.
+3.8.1
+Téléchargement du binaire
+Le binaire Node Exporter v1.8.2 est téléchargé depuis le dépôt officiel Prometheus sur
+GitHub, puis installé sur le serveur web et sur la VM Wazuh.
+Figure 3.18 – Téléchargement de Node Exporter v1.8.2 sur le serveur web
+3.8.2
+Extraction et installation du binaire
+L’archive est extraite et le binaire copié dans /usr/local/bin/ pour le rendre accessible
+au service systemd.
+Figure 3.19 – Extraction de l’archive et copie du binaire dans /usr/local/bin/
+3.8.3
+Création du service systemd et démarrage
+Un fichier de service systemd est créé pour assurer le démarrage automatique de Node
+Exporter au boot et sa supervision par le système d’initialisation.
+25
+
+
+===== PAGE 39 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+Figure 3.20 – Création du service systemd et démarrage de Node Exporter
+Après démarrage, les métriques sont accessibles à l’adresse http ://10.10.10.3 :9100/me-
+trics pour le serveur web et http ://10.10.10.10 :9100/metrics pour la VM Wazuh. La
+même procédure est appliquée sur les deux machines.
+3.9
+Installation du serveur web et de DVWA
+3.9.1
+Configuration réseau de la VM serveur web
+Le serveur web est une machine virtuelle configurée avec l’adresse IP statique 10.10.10.3
+sur le réseau lab via Netplan, comme les autres VMs du projet.
+Figure 3.21 – Configuration réseau de la VM serveur web
+3.9.2
+Stack LAMP
+Le serveur web héberge une stack LAMP traditionnelle : Apache 2, PHP 8, MySQL.
+Figure 3.22 – Installation de la stack LAMP sur le serveur web
+3.9.3
+Activation des modules Apache
+Les modules rewrite et headers d’Apache sont activés pour permettre le fonctionne-
+ment correct de DVWA, notamment la réécriture d’URL et la gestion des en-têtes HTTP.
+26
+
+
+===== PAGE 40 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+Figure 3.23 – Activation des modules Apache
+3.9.4
+Déploiement de DVWA
+DVWA est cloné depuis son dépôt GitHub officiel directement dans le répertoire racine
+d’Apache /var/www/html/, ce qui le rend immédiatement accessible via le navigateur.
+Figure 3.24 – Clonage du dépôt DVWA sur le serveur web
+3.9.5
+Configuration de la base MySQL
+La base de données dvwa est créée et l’utilisateur aymen avec le mot de passe aymen007
+est configuré avec tous les privilèges sur cette base, permettant à DVWA de s’y connecter.
+Figure 3.25 – Création de la base et de l’utilisateur DVWA
+3.9.6
+Création du compte d’administration distant pour la SOC App
+Pour permettre à la SOC App de bloquer une IP via SSH, un utilisateur dédié socadmin
+est créé sur le serveur web, avec des droits sudo limités à iptables et ufw.
+Figure 3.26 – Création de l’utilisateur socadmin
+Les droits sudo sont limités aux seules commandes iptables et ufw pour restreindre les
+privilèges.
+Figure 3.27 – Configuration sudoers limitée à iptables/ufw
+27
+
+
+===== PAGE 41 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+Le service SSH est installé et activé pour permettre au serveur SOC d’exécuter les
+commandes à distance.
+Figure 3.28 – Installation et activation du service SSH sur le serveur web
+3.10
+Installation de la SOC App
+3.10.1
+Stack applicative
+La SOC App utilise une stack Node.js + PostgreSQL + Redis + Nginx, déployée sur
+la VM 10.10.10.40. PostgreSQL stocke les données métier, Redis sert de cache et de file
+d’attente, Nginx fait office de reverse proxy.
+Figure 3.29 – Installation de PostgreSQL sur la VM SOC App
+Le service PostgreSQL est démarré et configuré pour démarrer automatiquement au
+boot.
+Figure 3.30 – Démarrage du service PostgreSQL
+3.10.2
+Création de la base et de l’utilisateur SOC
+L’utilisateur PostgreSQL socuser et la base de données socdb sont créés. Tous les
+privilèges sont accordés à socuser sur socdb pour permettre à la SOC App de lire et écrire
+ses données.
+28
+
+
+===== PAGE 42 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+Figure 3.31 – Création de l’utilisateur et de la base socdb
+3.10.3
+Installation de Redis et Nginx
+Redis est installé pour le cache applicatif et la gestion des sessions. Nginx est installé
+en tant que reverse proxy pour exposer la SOC App sur le port 80 et servir les fichiers
+statiques du frontend React.
+Figure 3.32 – Installation de Redis sur la VM SOC App
+Nginx est installé comme reverse proxy et Node.js pour exécuter le backend de la SOC
+App.
+Figure 3.33 – Installation de Nginx et Node.js
+29
+
+
+===== PAGE 43 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+3.10.4
+Installation de PM2
+PM2 est installé globalement via npm. Il assure le démarrage automatique du ser-
+veur Node.js au boot et son redémarrage automatique en cas de crash, garantissant la
+disponibilité continue de la SOC App. [17]
+Figure 3.34 – Installation globale de PM2
+3.11
+Tests de connectivité
+Avant de clore ce chapitre, nous avons vérifié que l’ensemble des machines et services
+communiquent correctement sur le réseau. Ces tests confirment que l’infrastructure est
+opérationnelle et prête pour la phase de réalisation.
+3.11.1
+Test de connexion réseau
+Un test de ping a été effectué depuis le serveur n8n vers le serveur Wazuh et le serveur
+web pour confirmer la communication sur le réseau 10.10.10.0/24.
+Figure 3.35 – Test de connectivité réseau entre les machines via ping
+3.11.2
+Agent Wazuh actif dans le dashboard
+Le dashboard Wazuh confirme que l’agent installé sur le serveur web est en statut
+Active et remonte bien ses événements au manager.
+30
+
+
+===== PAGE 44 =====
+
+CHAPITRE 3. MISE EN PLACE DE L’ENVIRONNEMENT TECHNIQUE
+Figure 3.36 – Agent Wazuh en statut actif dans le tableau de bord
+3.12
+Conclusion
+À l’issue de ce chapitre, l’ensemble de l’infrastructure est opérationnel. Les tests de
+connectivité confirment que toutes les machines communiquent sur le réseau, les agents
+Wazuh remontent bien leurs événements au manager, et les services n8n et SOC App sont
+accessibles et fonctionnels. Le chapitre suivant aborde la phase de conception et d’implé-
+mentation : développement du backend et du frontend SOC, conception du workflow n8n,
+et validation de la chaîne complète par des scénarios d’attaque.
+31
+
+
+===== PAGE 45 =====
+
+Chapitre 4
+Conception et Implémentation
+4.1
+Introduction
+Ce chapitre est l’aboutissement du travail engagé : il décrit la conception détaillée
+et la mise en œuvre de l’application SOC, du workflow n8n d’organisation, ainsi que la
+validation de la chaîne complète par des scénarios d’attaque réalistes. Nous présentons
+d’abord la phase de planification (acteurs, besoins, cas d’utilisation), puis l’architecture
+logicielle choisie, enfin les interfaces et les tests.
+4.2
+Planification
+4.2.1
+Identification des acteurs
+L’application SOC est destinée à un seul profil d’utilisateur :
+— Administrateur : profil unique. Il accède à l’ensemble des fonctionnalités — consul-
+tation des alertes, gestion des agents, blocage/déblocage d’IPs, isolation du serveur
+et supervision des ressources système.
+4.2.2
+Besoins fonctionnels
+À l’issue de la phase d’analyse, les besoins fonctionnels suivants ont été identifiés :
+— Authentification sécurisée avec compte administrateur.
+— Réception des alertes Wazuh via webhook et enregistrement en base PostgreSQL.
+— Tableau de bord (Overview) : KPIs temps réel (alertes, agents actifs, déconnectés,
+pic horaire) et courbe horaire.
+— Supervision système (Server Monitor) : CPU, RAM et disque en temps réel via
+Prometheus Node Exporter (toutes les 2 secondes) pour chaque machine surveillée.
+— Gestion des agents Wazuh : liste, statut, OS, version et dernière activité.
+— Détection de vulnérabilités CVE par agent avec filtrage par sévérité et score CVSS3.
+— Gestionnaire d’IPs (IP Manager) : blocage permanent, blocage temporisé 15 min,
+liste blanche.
+— Isolation complète du serveur web via iptables (Isolate / Unisolate).
+— Notifications Telegram automatiques pour les alertes high et critical.
+4.2.3
+Besoins non fonctionnels
+— Performance : traitement d’au moins 100 alertes/seconde sans dégradation.
+— Sécurité : authentification obligatoire, chiffrement des secrets, validation des entrées.
+— Disponibilité : redémarrage automatique des services via PM2 et systemd.
+— Maintenabilité : code modulaire, séparation backend/frontend, documentation in-
+terne.
+— Évolutivité : architecture modulaire permettant d’ajouter facilement de nouvelles
+fonctionnalités.
+32
+
+
+===== PAGE 46 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+4.2.4
+Cas d’utilisation principaux
+Figure 4.1 – Diagramme de cas d’utilisation de la SOC App
+Les cas d’utilisation de la SOC App s’organisent autour de cinq modules principaux.
+Le module Overview donne une vue synthétique de l’état de sécurité avec les KPIs et la
+courbe horaire d’alertes. Le module Server Monitor permet de surveiller en temps réel
+les ressources CPU, RAM et disque des machines du laboratoire. Le module Agents liste
+tous les hôtes supervisés par Wazuh avec leur statut. Le module Vulnerabilities présente
+les failles CVE détectées par agent. Enfin, le module IP Manager permet de bloquer ou
+débloquer des adresses IP, gérer la liste blanche et isoler le serveur web en cas d’incident
+33
+
+
+===== PAGE 47 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+grave.
+La navigation est organisée en trois sections dans la barre latérale : MONITOR (Over-
+view, Server Monitor, Agents), ANALYZE (Vulnerabilities) et RESPOND (IP Manager).
+Cette organisation reflète les trois phases du cycle de supervision SOC : observer, analyser,
+répondre.
+4.3
+Architecture logicielle
+4.3.1
+Vue d’ensemble
+L’application utilise une architecture trois tiers classique : un frontend React, un ba-
+ckend Node.js/Express exposant une API REST et un canal Socket.io, et une couche de
+stockage PostgreSQL/Redis.
+Figure 4.2 – Architecture trois tiers de la SOC App
+L’architecture trois tiers sépare clairement les responsabilités. La couche présentation
+(frontend React) est responsable de l’affichage et des interactions utilisateur ; elle com-
+munique exclusivement via l’API REST et Socket.io, sans accès direct aux données. La
+couche logique métier (backend Node.js/Express) centralise les règles de gestion, orchestre
+les appels aux systèmes externes (Wazuh, SSH) et gère les sessions WebSocket. La couche
+données regroupe PostgreSQL pour le stockage structuré, Redis pour le cache, le Wazuh
+Indexer (OpenSearch) pour les alertes temps réel, et les connexions SSH vers les serveurs
+supervisés.
+4.4
+Architecture du serveur SOC
+4.4.1
+Rôle du serveur central
+Le serveur de la SOC App joue le rôle de point de convergence entre tous les compo-
+sants du système. Il reçoit les alertes enrichies provenant de n8n via un point d’entrée web
+dédié, les enregistre dans la base de données PostgreSQL, et les envoie immédiatement
+à tous les navigateurs des analystes connectés. Ce fonctionnement permet à plusieurs
+34
+
+
+===== PAGE 48 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+analystes de travailler en même temps sur les mêmes données sans aucun délai de syn-
+chronisation.
+Le serveur gère également les connexions en temps réel : quand une nouvelle alerte
+arrive, elle apparaît instantanément dans le tableau de bord de chaque analyste connecté,
+sans qu’il soit nécessaire de recharger la page.
+4.4.2
+Mécanisme de blocage à distance
+Lorsqu’un analyste décide de bloquer une adresse IP depuis l’interface, le serveur SOC
+établit une connexion chiffrée vers le serveur web et y exécute la commande de blocage
+appropriée. Cette architecture présente un avantage important en termes de sécurité :
+seul le serveur SOC est autorisé à se connecter au serveur web de cette façon. L’analyste
+n’interagit jamais directement avec le serveur ciblé, ce qui limite les risques d’erreur et
+maintient une traçabilité complète des actions effectuées.
+La même mécanique est utilisée pour l’isolation d’urgence du serveur : une seule action
+dans l’interface déclenche une mise en quarantaine complète du serveur web, tout en
+maintenant ouverte la connexion de supervision pour que l’équipe SOC puisse continuer
+à observer la machine.
+Ce mécanisme repose sur un script Bash block-ip.sh déployé sur le serveur web. Ce
+script accepte plusieurs actions en argument — block, block-timed, unblock, isolate, uni-
+solate — et applique les règles iptables correspondantes. Chaque action est enregistrée
+dans un fichier de log /var/log/soc-blocks.log pour assurer la traçabilité complète des
+opérations.
+35
+
+
+===== PAGE 49 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Figure 4.3 – Script block-ip.sh — blocage, déblocage et isolation iptables
+4.4.3
+Contrôle d’accès
+L’accès à la SOC App est protégé par une authentification administrateur. Chaque
+session expire automatiquement, ce qui évite qu’un navigateur oublié ouvert puisse servir
+de porte d’entrée à un intrus.
+4.5
+Implémentation du frontend
+4.5.1
+Page de connexion
+L’accès à la SOC App est protégé par une page de connexion sécurisée. L’administra-
+teur saisit son identifiant et son mot de passe, qui sont vérifiés côté serveur. En cas de
+succès, un jeton de session est généré pour authentifier toutes les requêtes suivantes.
+36
+
+
+===== PAGE 50 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Figure 4.4 – Page de connexion de la SOC App
+4.5.2
+Vue d’ensemble (Overview)
+Le premier module de la SOC App est le tableau de bord principal, accessible via
+l’onglet Overview dans la section MONITOR. Il présente les informations de sécurité les
+plus importantes en un seul écran.
+Quatre indicateurs clés (KPIs) sont affichés en haut de page :
+— Alertes aujourd’hui : nombre d’alertes de niveau de sévérité supérieur ou égal à
+7 enregistrées depuis minuit, avec la tendance par rapport à la veille (hausse ou
+baisse en pourcentage). Seules les alertes significatives sont comptabilisées — les
+événements de faible sévérité (niveau inférieur à 7) restent visibles dans le tableau
+de bord Wazuh mais ne sont pas remontés dans la SOC App.
+— Agents actifs : nombre d’agents Wazuh actuellement connectés et opérationnels
+— Agents déconnectés : nombre d’agents qui n’envoient plus de données (zone aveugle
+potentielle)
+— Pic d’alertes : l’heure de la journée où le volume d’alertes a été le plus élevé
+Un graphique en courbe montre l’évolution du nombre d’alertes heure par heure de-
+puis le début de la journée. En bas de page, un tableau récapitule l’état de tous les
+agents Wazuh (actifs, déconnectés, en attente, jamais vus). Les données sont actualisées
+automatiquement toutes les 30 secondes.
+37
+
+
+===== PAGE 51 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Figure 4.5 – Tableau de bord Overview — KPIs et courbe horaire des alertes
+4.5.3
+Gestion des IPs
+Le module IP Manager, accessible dans la section RESPOND, est l’interface de réponse
+centrale de la SOC App. Il regroupe trois fonctionnalités sur un seul écran :
+Indicateurs en haut de page : trois cartes affichent en temps réel le nombre d’IPs
+bloquées, le nombre d’IPs en liste blanche et le moteur d’exécution utilisé (iptables).
+Tableau des IPs bloquées / liste blanche : deux onglets permettent de basculer entre
+la liste des IPs actuellement bloquées (avec le type de blocage, la raison, l’auteur et la
+date) et la liste des IPs autorisées. Une barre de recherche permet de filtrer rapidement.
+Formulaire de blocage : à droite de l’écran, un formulaire permet à l’analyste de bloquer
+manuellement une adresse IP. Il peut choisir entre un blocage permanent (bouton Block)
+ou un blocage temporisé de 15 minutes (bouton 15 min). Un formulaire séparé permet
+d’ajouter une IP à la liste blanche.
+Isolation du serveur web : deux boutons en haut à droite de la page (Isolate server et
+Unisolate) permettent d’activer ou de désactiver l’isolation complète du serveur web en
+cas d’incident grave.
+38
+
+
+===== PAGE 52 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Figure 4.6 – Module IP Manager — blacklist, whitelist et isolation du serveur
+4.6
+Modules de la SOC App
+4.6.1
+Navigation et organisation de l’interface
+L’interface de la SOC App est organisée en trois sections de navigation principales,
+visibles dans la barre latérale gauche :
+— MONITOR : regroupe les modules de surveillance en temps réel — Overview (ta-
+bleau de bord principal), Server Monitor (supervision des ressources) et Agents (état
+des agents Wazuh).
+— ANALYZE : contient le module Vulnerabilities, dédié à l’analyse des failles de sé-
+curité détectées sur les machines supervisées.
+— RESPOND : contient le module IP Manager, qui permet aux analystes de prendre
+des décisions de blocage et d’isolation.
+Cette organisation en trois catégories (surveiller, analyser, répondre) reflète le cycle
+opérationnel d’un analyste SOC. Elle guide naturellement le flux de travail : d’abord
+observer ce qui se passe (MONITOR), puis comprendre les failles exposées (ANALYZE),
+et enfin agir en cas d’incident (RESPOND).
+4.6.2
+Gestion des agents Wazuh
+Le module Agents centralise la vision de tous les hôtes supervisés. Il liste chaque
+agent Wazuh avec son statut en temps réel (actif, déconnecté, en attente d’enrôlement),
+son adresse IP, son système d’exploitation, la version du logiciel agent et sa date de
+dernière activité.
+D’un point de vue SOC, ce module répond à une question critique : quelles machines
+sont actuellement surveillées et lesquelles ont des problèmes de connectivité ? Un agent dé-
+connecté représente une zone aveugle dans la supervision ; l’analyste peut ainsi rapidement
+identifier les hôtes qui ne remontent plus d’événements et déclencher une investigation.
+39
+
+
+===== PAGE 53 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+La liste affiche pour chaque agent : son nom, son identifiant unique, son adresse IP,
+son système d’exploitation, la version du logiciel agent, et la date de dernière activité
+(affichée en temps relatif : « à l’instant », « il y a 2 minutes », etc.).
+Figure 4.7 – Module Agents — liste et statut des agents Wazuh
+4.6.3
+Détection de vulnérabilités (CVE)
+Le module Vulnerabilities exploite le moteur de détection de vulnérabilités intégré à
+Wazuh. Ce moteur analyse en permanence l’inventaire logiciel de chaque agent (paquets
+installés et leurs versions) et les compare à des bases de données CVE reconnues (NVD,
+Red Hat Security Advisories, Debian Security Tracker). [16] Toute version logicielle affectée
+par une vulnérabilité connue génère une entrée dans l’inventaire des vulnérabilités.
+L’interface propose une sélection par agent et classe les vulnérabilités en quatre niveaux
+de gravité : Critical, High, Medium et Low, avec leur score CVSS3 associé. Ce score,
+sur 10, permet de prioriser les corrections : un score supérieur à 9.0 signale une faille très
+grave à corriger en priorité.
+Ce module transforme la SOC App en outil de gestion des risques à part entière, au-
+delà de la simple réponse aux incidents : il permet de détecter proactivement les failles
+avant qu’un attaquant ne les exploite.
+40
+
+
+===== PAGE 54 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Figure 4.8 – Module Vulnerabilities — CVE détectées par agent avec score CVSS3
+4.6.4
+Supervision système en temps réel (Server Monitor)
+Le module Server Monitor offre une supervision des ressources matérielles des ma-
+chines du laboratoire en temps réel. Pour chaque machine surveillée, une carte en haut
+de page affiche les valeurs actuelles de RAM, CPU et disque sous forme de pourcentages.
+Des graphiques en courbe montrent l’évolution de la RAM et du CPU sur une fenêtre
+glissante de 200 secondes, avec une courbe par machine. Un graphique à barres horizon-
+tales montre l’utilisation du disque actuelle pour chaque machine. Dans notre laboratoire,
+deux machines sont supervisées : wazuh-siem (10.10.10.10) et web-agent-1 (10.10.10.3).
+D’un point de vue SOC, cette supervision est essentielle pour détecter des compor-
+tements malveillants tels que la saturation des ressources par un processus malveillant
+ou l’impact d’une attaque volumétrique sur le CPU. L’affichage multi-machines sur des
+graphiques superposés permet de comparer instantanément l’état de tous les serveurs et
+d’identifier rapidement l’hôte affecté.
+41
+
+
+===== PAGE 55 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Figure 4.9 – Module Server Monitor — RAM, CPU et disque en temps réel
+4.7
+Mécanismes de réponses
+4.7.1
+Blocage temporisé et escalade automatique
+L’un des apports les plus importants de la SOC App est son mécanisme de blocage
+intelligent à deux niveaux : le blocage temporisé et l’escalade automatique vers un blocage
+permanent.
+Blocage temporisé.
+Lorsque n8n détecte une alerte de niveau 10 ou 11, il déclenche
+un blocage temporisé de 15 minutes. L’IP est immédiatement bloquée via iptables sur le
+serveur web. Ce blocage temporisé évite de pénaliser définitivement une IP qui pourrait
+être légitime (scanner de sécurité autorisé, adresse IP partagée, faux positif).
+Escalade automatique.
+À l’expiration du blocage temporisé, le système analyse le
+comportement de l’IP pendant la période de blocage. Deux conditions déclenchent une
+escalade vers un blocage permanent :
+— Si l’IP a généré plus de 3 nouvelles alertes pendant la durée du blocage, c’est un
+indicateur de menace persistante
+— Si l’IP a réussi une authentification sur un service supervisé pendant le blocage,
+c’est la preuve d’une compromission réussie malgré le blocage
+Dans les deux cas, le blocage est converti en blocage permanent et la base de données est
+mise à jour avec la raison détaillée.
+4.7.2
+Isolation du serveur web
+En cas d’incident grave (intrusion confirmée, exécution de code malveillant détectée),
+l’analyste peut déclencher l’isolation complète du serveur web depuis l’interface IP Ma-
+nager. Cette action met en place des règles iptables qui bloquent tout le trafic entrant
+42
+
+
+===== PAGE 56 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+à l’exception des connexions provenant des équipements de l’infrastructure SOC (Wazuh
+Manager, SOC App VM), permettant à l’équipe de continuer à superviser le serveur tout
+en l’isolant du réseau externe.
+L’isolation peut être levée à tout moment via le bouton Unisolate, qui restaure les
+politiques iptables d’origine.
+4.7.3
+Schéma de base de données
+La base de données PostgreSQL utilise six tables principales : users, alerts, attackers,
+incidents, ip_blacklist et ip_whitelist.
+La liste blanche est pré-peuplée dès l’installation avec les IPs du réseau lab afin qu’au-
+cun équipement de l’infrastructure SOC ne soit accidentellement bloqué.
+4.8
+Sécurité de l’application SOC
+L’accès à la SOC App est protégé par une authentification administrateur obligatoire.
+Toutes les communications entre le frontend et le backend sont sécurisées, et les secrets
+de l’application sont isolés de son code source.
+4.9
+Workflow n8n
+4.9.1
+Vue d’ensemble du workflow
+Le workflow n8n est composé de 9 nœuds reliés, depuis la réception du webhook Wazuh
+jusqu’aux actions finales de notification Telegram et de blocage IP.
+1. Webhook Trigger : reçoit l’alerte Wazuh au format JSON dès qu’un événement est
+détecté.
+2. Parse & Normalize Alert : extrait et structure les champs importants — IP source,
+niveau de sévérité, identifiant de règle, description, technique MITRE ATT&CK.
+3. Whitelist Check : interroge la SOC App pour vérifier si l’IP source est en liste
+blanche.
+4. IF : Whitelisted ? : si l’IP est en liste blanche, le workflow s’arrête ici pour éviter
+tout blocage accidentel.
+5. SOC App : transmet l’alerte normalisée à la SOC App pour enregistrement et affi-
+chage dans le module Overview.
+6. Check Blocked : interroge la SOC App pour vérifier si l’IP est déjà bloquée (dédu-
+plication).
+7. IF : Déjà bloquée ? : si l’IP est déjà dans la blacklist, le workflow s’arrête pour éviter
+les notifications Telegram en double.
+8. Switch : Niveau de Sévérité : décide de l’action selon le niveau — deux branches
+sont définies.
+9. Branche niveau ≥12 : formate un message CRITIQUE, envoie une notification
+Telegram, puis déclenche un blocage IP permanent via la SOC App.
+10. Branche niveau ≥10 : formate un message MOYEN, envoie une notification Tele-
+gram, puis déclenche un blocage temporisé de 15 minutes via la SOC App.
+43
+
+
+===== PAGE 57 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Figure 4.10 – Flux de traitement d’une alerte dans le workflow n8n
+4.9.2
+Diagramme de séquence — chaîne complète d’une alerte
+Le diagramme ci-dessous illustre la chaîne complète de traitement d’une alerte, depuis
+la détection de l’attaque par Wazuh jusqu’à la notification de l’analyste et le blocage
+automatique de l’IP source.
+Figure 4.11 – Diagramme de séquence — chaîne complète de traitement d’une alerte
+4.9.3
+Code de normalisation
+Le nœud de normalisation est le premier nœud de traitement du workflow n8n. Son rôle
+est de transformer l’alerte Wazuh brute en un objet uniforme exploitable par les nœuds
+suivants. Le code JavaScript extrait les champs depuis la structure imbriquée de Wazuh
+(body.data, body.rule, body.agent) et produit un objet plat standardisé contenant :
+— src_ip : adresse IP source de l’attaquant, extraite depuis srcip ou src_ip selon le
+type d’alerte. Par défaut 127.0.0.1 si absente.
+44
+
+
+===== PAGE 58 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+— rule_id / rule_desc : identifiant et description de la règle Wazuh déclenchée.
+— severity : niveau numérique Wazuh (0–16).
+— severity_label : label lisible calculé selon le niveau — critical (≥15), high (≥12),
+medium (≥7), low (sinon).
+— agent_name / agent_ip : nom et adresse IP de la machine Wazuh qui a généré
+l’alerte.
+— timestamp : horodatage de l’alerte au format ISO 8601, ajusté au fuseau horaire
+local (Africa/Tunis, UTC+1).
+Cette normalisation est essentielle : elle isole tous les nœuds suivants de la structure
+variable des alertes Wazuh, rendant le workflow robuste et facile à maintenir.
+4.9.4
+Notifications Telegram
+Pour les alertes de niveau 10 et supérieur, un message formaté est envoyé sur un canal
+Telegram dédié. Deux formats existent selon la sévérité :
+— Niveau ≥12 (critique) : en-tête ALERTE CRITIQUE SOC, action IP bloquée
+définitivement.
+— Niveau ≥10 (moyen) : en-tête ALERTE MEDIUM SOC, action IP bloquée 15
+minutes.
+Chaque message contient les informations suivantes :
+— La règle Wazuh déclenchée : identifiant et description de l’événement détecté
+— L’IP attaquante (src_ip) : adresse de la source de l’attaque
+— Le nom de l’agent Wazuh qui a détecté l’événement
+— L’IP de l’agent (machine surveillée)
+— L’heure locale de l’alerte (fuseau Africa/Tunis)
+— L’action automatique prise : blocage permanent ou temporisé 15 minutes
+Cette notification immédiate permet à l’analyste d’être prévenu sur son téléphone en
+quelques secondes, même s’il ne consulte pas activement l’interface SOC. Telegram a été
+choisi pour sa simplicité d’intégration (API HTTP), sa fiabilité et sa disponibilité sur
+toutes les plateformes.
+4.10
+Tests et validation
+4.10.1
+Scénario 1 : bruteforce SSH
+Cette technique d’attaque repose sur l’envoi automatisé d’un grand nombre de combi-
+naisons identifiant/mot de passe vers un service SSH. Des outils spécialisés comme hydra
+ou medusa permettent de tester plusieurs milliers de combinaisons par minute, rendant
+cette méthode redoutable face aux mots de passe faibles ou réutilisés. Chaque tentative
+échouée laisse une trace dans les journaux d’authentification (/var/log/auth.log). Wa-
+zuh surveille ces journaux en continu et déclenche une alerte dès qu’un seuil anormal de
+tentatives échouées est atteint dans une fenêtre de temps glissante.
+45
+
+
+===== PAGE 59 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Figure 4.12 – Principe d’une attaque bruteforce SSH
+Objectif : Vérifier que le système détecte et bloque automatiquement une attaque par
+essais successifs de mots de passe sur le service SSH du serveur web.
+Mise en œuvre : Depuis Kali (10.10.10.50), l’outil hydra est lancé contre le serveur
+web :
+Résultat observé : En moins de 10 secondes, Wazuh détecte les tentatives répétées
+de connexion échouée et génère plusieurs alertes de niveau 10 à 12. Ces alertes sont
+automatiquement envoyées par webhook à n8n. Le workflow normalise l’alerte, vérifie la
+liste blanche, puis la transmet à la SOC App. L’alerte apparaît dans le module Overview
+(compteur mis à jour) et une notification Telegram est envoyée à l’analyste.
+Blocage automatique : Dès qu’une alerte de niveau ≥12 est détectée, le système
+déclenche un blocage IP permanent via la SOC App (iptables sur le serveur web). Pour
+les alertes de niveau 10 à 11, le blocage est temporisé à 15 minutes.
+Figure 4.13 – Lancement de l’attaque bruteforce SSH avec Hydra depuis Kali Linux
+La notification Telegram est envoyée à l’analyste avec le détail de l’alerte et l’action
+effectuée.
+Figure 4.14 – Notification Telegram reçue suite à l’attaque bruteforce SSH
+L’IP attaquante apparaît dans le module IP Manager avec la raison et la durée du
+blocage.
+46
+
+
+===== PAGE 60 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Figure 4.15 – IP de Kali bloquée dans l’IP Manager de la SOC App suite à l’attaque
+bruteforce SSH
+Valeur ajoutée : Ce scénario illustre la capacité du système à passer de la détection à
+la réponse sans aucune intervention humaine, en moins de 5 secondes.
+4.10.2
+Scénario 2 : injection SQL
+L’injection SQL cible les applications web dont les requêtes vers la base de données
+sont construites à partir de données saisies par l’utilisateur sans validation suffisante. En
+insérant des commandes SQL dans un champ de formulaire ou dans l’URL, un attaquant
+peut court-circuiter la logique applicative et interagir directement avec le moteur de base
+de données. Les conséquences varient d’un simple contournement d’authentification à
+l’exfiltration complète des données. Dans notre environnement, l’outil sqlmap est utilisé
+depuis Kali Linux contre DVWA.
+Figure 4.16 – Principe d’une attaque par injection SQL
+Objectif : Vérifier que Wazuh détecte les attaques par injection SQL contre l’applica-
+tion web DVWA installée sur le serveur web.
+Mise en œuvre : Depuis Kali, l’outil sqlmap est utilisé pour tester automatiquement
+les paramètres de l’application DVWA à la recherche de failles SQL :
+Figure 4.17 – Lancement de l’attaque par injection SQL avec sqlmap depuis Kali Linux
+47
+
+
+===== PAGE 61 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+La notification confirme la détection de l’injection SQL et le blocage automatique de
+l’IP source.
+Figure 4.18 – Notification Telegram reçue suite à l’attaque par injection SQL
+Résultat observé : Les logs Apache générés par les requêtes malveillantes de sqlmap
+sont analysés par Wazuh en temps réel. Wazuh détecte les séquences caractéristiques des
+tentatives d’injection SQL et génère une alerte de niveau 10 (sévérité moyenne-haute).
+La chaîne de traitement n8n s’active et notifie l’analyste par Telegram avec le détail de
+l’attaque.
+Figure 4.19 – IP de Kali bloquée 15 minutes dans l’IP Manager de la SOC App suite à
+l’injection SQL
+Valeur ajoutée : Ce scénario montre que le système protège non seulement les proto-
+coles réseau (SSH) mais aussi la couche applicative web.
+4.10.3
+Scénario 3 : scan nmap
+La phase de reconnaissance est souvent la première étape d’une intrusion. Avant de
+lancer une attaque ciblée, un adversaire cherche à cartographier l’infrastructure : quelles
+machines répondent sur le réseau, quels ports sont ouverts, quels services et versions
+logicielles sont exposés ? nmap est l’outil de référence pour cette phase. Wazuh, renforcé
+par Suricata, détecte ce type de trafic anormal et avertit l’analyste avant qu’une vraie
+attaque ne débute.
+Objectif : Vérifier que Wazuh détecte les phases de reconnaissance réseau qui précèdent
+souvent une attaque réelle.
+Mise en œuvre : Depuis Kali, un scan complet du serveur web est effectué avec nmap :
+48
+
+
+===== PAGE 62 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Figure 4.20 – Scan réseau de le serveur web avec nmap depuis Kali Linux
+Résultat observé : Wazuh, via Suricata et ses règles de détection d’intrusion réseau,
+détecte le trafic caractéristique d’un scan de ports et génère une alerte de niveau 3 à 7.
+L’alerte est visible dans le tableau de bord Wazuh comme illustré ci-dessous.
+Figure 4.21 – Détection du scan nmap dans le tableau de bord Wazuh via Suricata
+Aucune notification Telegram n’est envoyée pour ce scénario : le niveau de sévérité (3–
+7) est inférieur au seuil de déclenchement fixé à 10 dans le workflow n8n. Ce comportement
+est intentionnel — un simple scan de reconnaissance ne justifie pas un blocage automa-
+tique, mais reste enregistré dans la SOC App pour permettre à l’analyste de surveiller
+l’IP source et d’anticiper une attaque plus sérieuse.
+Valeur ajoutée : La détection précoce des scans permet à l’analyste de surveiller une
+adresse IP suspecte avant qu’une vraie attaque ne se produise.
+4.10.4
+Scénario 4 : scan de vulnérabilités web avec Nikto
+Un scan de vulnérabilités web consiste à envoyer automatiquement des milliers de
+requêtes HTTP ciblées contre un serveur web afin d’identifier des fichiers sensibles exposés,
+des configurations dangereuses et des failles applicatives connues. Contrairement à nmap
+qui analyse la couche réseau, Nikto attaque directement la couche applicative HTTP. [15]
+Il génère en peu de temps des centaines de codes d’erreur HTTP 400 depuis la même IP,
+ce que Wazuh détecte immédiatement comme un comportement anormal.
+Objectif : Vérifier que Wazuh détecte un scan de vulnérabilités web agressif et que le
+système déclenche automatiquement un blocage temporisé.
+Mise en œuvre : Depuis Kali, Nikto est lancé contre le serveur web cible :
+Figure 4.22 – Scan de vulnérabilités web avec Nikto contre le serveur web depuis Kali
+Linux
+49
+
+
+===== PAGE 63 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Nikto génère un très grand nombre de requêtes HTTP malformées ou inattendues,
+provoquant des centaines de codes d’erreur HTTP 400 en quelques secondes depuis la
+même IP source. Wazuh détecte ce comportement anormal et génère une alerte de niveau
+10, ce qui correspond au seuil de blocage temporisé défini dans le workflow n8n.
+Résultat observé : Le workflow n8n reçoit l’alerte de niveau 10, vérifie que l’IP n’est
+pas en liste blanche, puis déclenche un blocage temporisé de 15 minutes via la SOC App.
+Une notification Telegram est envoyée à l’analyste.
+Figure 4.23 – Notification Telegram reçue suite à la détection du scan Nikto
+Le module IP Manager affiche l’IP bloquée avec un minuteur de 15 minutes.
+Figure 4.24 – IP de Kali bloquée 15 minutes dans l’IP Manager de la SOC App suite
+au scan Nikto
+Valeur ajoutée : Ce scénario illustre que le système protège la couche applicative web
+contre les outils de reconnaissance offensive, et qu’un blocage temporisé est plus adapté
+qu’un blocage permanent pour ce type d’attaque — l’analyste peut décider d’escalader
+en blocage permanent si l’IP persiste.
+4.10.5
+Scénario 5 : détection FIM — modification d’un fichier système
+Objectif : Vérifier que le module FIM de Wazuh détecte les modifications non autorisées
+de fichiers système sur le serveur web.
+Contexte : La surveillance FIM (File Integrity Monitoring) est activée dans Wazuh
+pour les répertoires critiques /etc, /bin et /usr/bin. Wazuh calcule et compare périodi-
+quement les empreintes (hash) des fichiers surveillés — toute modification est immédia-
+tement signalée dans le tableau de bord Wazuh. Cette fonctionnalité est native à Wazuh
+et ne passe pas par la SOC App.
+Mise en œuvre : Une modification est simulée sur le fichier /etc/passwd pour simuler
+une tentative d’altération d’un fichier système critique :
+Figure 4.25 – Simulation d’une modification de /etc/passwd sur le serveur web
+50
+
+
+===== PAGE 64 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Résultat observé : Wazuh détecte la modification lors de son cycle de vérification FIM
+et génère une alerte directement visible dans le tableau de bord Wazuh, comme illustré
+ci-dessous. L’alerte contient le chemin complet du fichier modifié, le hash avant/après et
+l’horodatage exact.
+Figure 4.26 – Détection de la modification de /etc/passwd dans le tableau de bord
+Wazuh (FIM)
+Valeur ajoutée : La détection FIM est essentielle pour repérer les attaquants qui ont
+déjà obtenu un accès et cherchent à modifier des fichiers critiques ou installer une porte
+dérobée. C’est une protection contre les attaques avancées survenant après la phase d’in-
+trusion initiale.
+4.10.6
+Scénario 6 : détection de vulnérabilités sur le serveur web
+Objectif : Vérifier que le module de détection de vulnérabilités de Wazuh identifie
+correctement les failles connues sur le serveur web et les affiche dans la SOC App.
+Fonctionnement : Le module Syscollector de Wazuh collecte régulièrement la liste de
+tous les logiciels installés sur le serveur web avec leurs versions, puis les compare à la base
+de données officielle CVE (NVD, Ubuntu Security Notices). Toute version affectée par
+une faille connue génère automatiquement une entrée dans le module Vulnerabilities de
+la SOC App.
+Mise en œuvre : Pour déclencher une détection concrète, Python 2.7 a été installé
+volontairement sur le serveur web. Python 2 est en fin de vie depuis janvier 2020 et n’est
+plus maintenu — il contient plusieurs CVEs critiques non corrigées, notamment CVE-
+2022-45061 (score CVSS3 : 7.5, attaque de type ReDoS via le module urllib). C’est donc
+un package délibérément vulnérable, idéal pour valider la chaîne de détection.
+Figure 4.27 – Installation de Python 2.7 (package volontairement vulnérable) sur le
+serveur web
+Résultat observé : Après redémarrage de l’agent Wazuh, le Syscollector transmet l’in-
+ventaire des packages au manager. Wazuh détecte immédiatement les CVEs associées à
+Python 2.7 et ses dépendances (python2.7, libpython2.7-stdlib, python2.7-minimal). Les
+résultats sont visibles dans le module Vulnerabilities de la SOC App :
+51
+
+
+===== PAGE 65 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+Figure 4.28 – CVEs de Python 2.7 détectées et affichées dans le module Vulnerabilities
+de la SOC App
+— Le numéro CVE et le nom du logiciel concerné
+— La note CVSS3 (de 0 à 10) indiquant la gravité
+— La version installée affectée
+Valeur ajoutée : L’analyste peut identifier les logiciels obsolètes et établir un plan de
+mise à jour prioritaire sans intervention manuelle.
+4.10.7
+Couverture MITRE ATT&CK
+Le cadre MITRE ATT&CK est une base de connaissances mondiale qui classe toutes
+les techniques utilisées par les attaquants dans des incidents réels. En faisant correspondre
+chacun de nos scénarios de test à une technique MITRE, nous montrons que notre système
+détecte des menaces concrètes et documentées, pas seulement des attaques fictives.
+Cette couverture illustre que le système détecte des attaques à plusieurs étapes de la
+chaîne d’intrusion : depuis la reconnaissance initiale (scan de ports et scan web), en passant
+par les tentatives d’accès (bruteforce, injection SQL) et les modifications non autorisées
+de fichiers système. Un attaquant qui suit la progression classique d’une intrusion sera
+donc détecté à plusieurs reprises avant même d’avoir atteint son objectif.
+4.10.8
+Récapitulatif des performances mesurées
+Ces résultats démontrent que la chaîne complète de détection, d’enrichissement et de
+réponse fonctionne en moins de 10 secondes pour les scénarios les plus courants.
+4.11
+Difficultés rencontrées et solutions apportées
+4.11.1
+Intégration Wazuh / OpenSearch
+— Problème : Le Manager Wazuh utilise une API REST sur le port 55000 avec un
+token JWT, tandis que l’Indexer utilise l’API OpenSearch sur le port 9200 avec une
+authentification basique.
+— Solution : Nous avons mis en place un système de double connexion dans le backend.
+Le token d’accès au Manager est renouvelé automatiquement toutes les 14 minutes.
+Les requêtes vers l’Indexer utilisent une connexion directe avec les identifiants sto-
+ckés dans les variables d’environnement.
+4.11.2
+Blocage automatique sans faux positifs
+— Problème : Les premières versions du système bloquaient parfois des adresses IP
+internes lors de tests, coupant l’accès aux services.
+52
+
+
+===== PAGE 66 =====
+
+CHAPITRE 4. CONCEPTION ET IMPLÉMENTATION
+— Solution : Nous avons ajouté une liste blanche gérée dans la base de données. Avant
+tout blocage, le système vérifie si l’adresse IP source est dans cette liste. Les adresses
+internes du laboratoire (10.10.10.x) sont dans cette liste par défaut.
+4.11.3
+Communication en temps réel avec WebSocket
+— Problème : Les premières versions utilisaient une mise à jour toutes les 30 secondes
+(polling), créant un délai important.
+— Solution : Nous avons remplacé ce mécanisme par WebSocket via Socket.io. Quand
+une alerte arrive par le webhook n8n, le serveur envoie immédiatement un message
+à tous les navigateurs connectés.
+4.11.4
+Persistance des blocs iptables après redémarrage
+— Problème : Les règles iptables sur le serveur web sont perdues à chaque redémarrage
+du serveur.
+— Solution : Le script de blocage enregistre aussi l’adresse IP dans la base de don-
+nées (table ip_blacklist). Au démarrage, le serveur relit cette table et réapplique
+automatiquement toutes les règles iptables via SSH.
+4.12
+Recommandations pour la mise en production
+Avant de déployer ce système dans un environnement de production réel, plusieurs
+mesures essentielles doivent être mises en place pour garantir la sécurité, la fiabilité et la
+maintenabilité de l’infrastructure.
+1. Sécuriser les accès administrateurs : Changer tous les mots de passe par défaut et
+utiliser des mots de passe forts et uniques pour chaque service.
+2. Chiffrer les communications internes : Activer HTTPS sur tous les services, même
+pour les communications internes entre les composants.
+3. Mettre en place des sauvegardes automatiques : Configurer des sauvegardes quoti-
+diennes de la base de données PostgreSQL et des configurations Wazuh.
+4. Former les utilisateurs : Les analystes doivent être formés pour interpréter correc-
+tement les alertes et distinguer les faux positifs des vraies menaces.
+5. Tester régulièrement : Effectuer des tests d’attaque réguliers pour s’assurer que le
+système détecte toujours correctement les nouvelles menaces.
+4.13
+Conclusion
+Ce chapitre a démontré la mise en œuvre concrète et le fonctionnement de bout en
+bout du système SOC. Les scénarios de test ont validé la chaîne de détection (Wazuh),
+d’enrichissement (n8n), de visualisation (SOC App — modules Overview, Server Moni-
+tor, Agents, Vulnerabilities, IP Manager) et de réponse (blocage automatique via SSH).
+Les performances mesurées (délai inférieur à 5 secondes entre l’attaque et le blocage)
+démontrent l’efficacité de l’architecture choisie.
+53
+
+
+===== PAGE 67 =====
+
+Conclusion générale
+Aujourd’hui, les cyberattaques sont de plus en plus nombreuses et sophistiquées. Toute
+entreprise qui utilise des systèmes informatiques est une cible potentielle. Attendre qu’une
+attaque se produise pour réagir n’est plus suffisant : il faut surveiller en permanence,
+détecter rapidement et répondre de façon automatique. C’est exactement l’objectif d’un
+Centre Opérationnel de Sécurité (SOC).
+Au terme de ce projet de fin d’études, réalisé au sein de Poulina Group Holding, nous
+avons conçu, installé et validé un système de supervision complet. Ce système combine
+Wazuh (pour détecter les attaques), n8n (pour automatiser les réponses), une application
+web SOC sur mesure (pour visualiser et gérer les alertes), et un environnement de test
+avec Kali Linux et DVWA.
+Ce que nous avons accompli :
+— Mise en place d’une infrastructure réseau de laboratoire avec 7 machines (3 physiques
+et 4 virtuelles) toutes interconnectées et supervisées
+— Installation et configuration de Wazuh sur 3 machines avec agents actifs, règles
+personnalisées et surveillance FIM
+— Développement d’une application web SOC complète avec 5 modules fonctionnels :
+Overview, Server Monitor, Agents, Vulnerabilities et IP Manager
+— Création d’un workflow n8n capable de bloquer automatiquement un attaquant en
+moins de 5 secondes, en appliquant une décision de blocage selon le niveau de sévérité
+de l’alerte
+— Validation du système par 6 scénarios d’attaque réels : bruteforce SSH, injection
+SQL, scan réseau, scan Nikto, détection FIM et détection CVE
+Les résultats mesurés : Le délai total entre la détection d’une attaque et son blocage
+automatique a été mesuré à moins de 5 secondes pour les scénarios critiques. Cette rapidité
+est rendue possible par l’automatisation complète de la chaîne de traitement : Wazuh
+détecte, n8n enrichit et décide, et le serveur SOC exécute le blocage, le tout sans aucune
+intervention humaine.
+Ce que ce projet nous a appris :
+Sur le plan technique, ce projet nous a permis de comprendre en profondeur le fonc-
+tionnement d’un SIEM moderne, la logique des règles de détection, et les défis réels de
+l’automatisation de la réponse aux incidents. Nous avons appris à distinguer un vrai posi-
+tif d’un faux positif, à régler la sensibilité des alertes, et à concevoir un système qui réagit
+vite sans bloquer des utilisateurs légitimes.
+Sur le plan organisationnel, nous avons compris pourquoi les entreprises investissent
+dans des équipes SOC dédiées : la surveillance de la sécurité est un travail continu qui exige
+des outils adaptés, des processus clairs et des personnes formées. Un système automatisé
+comme le nôtre aide les analystes à se concentrer sur les décisions importantes plutôt que
+sur les tâches répétitives.
+Ce travail ouvre plusieurs perspectives d’amélioration. L’intégration d’un moteur d’ap-
+prentissage automatique permettrait de détecter des comportements anormaux non cou-
+verts par les règles fixes actuelles. Une migration vers Docker simplifierait le déploiement
+et la maintenance, tandis que la connexion à des sources de Threat Intelligence enrichirait
+chaque alerte de contexte sur l’attaquant. Enfin, l’extension du périmètre à l’ensemble du
+réseau de Poulina Group Holding constitue le prolongement naturel de ce projet.
+54
+
+
+===== PAGE 68 =====
+
+CONCLUSION GÉNÉRALE
+Ce projet démontre qu’il est possible, avec des outils libres et une architecture bien
+pensée, de construire un système de surveillance de sécurité qui rivalise avec des solutions
+commerciales coûteuses. La cybersécurité accessible est une réalité, à condition d’avoir les
+compétences pour la mettre en œuvre.
+55
+
+
+===== PAGE 69 =====
+
+Webographie
+[1] Documentation officielle de Wazuh, consultée le 01/05/2026,
+https://documentation.wazuh.com/
+[2] Documentation officielle de n8n, consultée le 02/05/2026,
+https://docs.n8n.io/
+[3] Documentation Kali Linux, consultée le 03/05/2026,
+https://www.kali.org/docs/
+[4] Damn Vulnerable Web Application (DVWA), GitHub, consulté le 04/05/2026,
+https://github.com/digininja/DVWA
+[5] MITRE ATT&CK Framework, consulté le 05/05/2026,
+https://attack.mitre.org/
+[6] Documentation Express.js, consulté le 06/05/2026,
+https://expressjs.com/
+[7] Documentation PostgreSQL 16, consulté le 07/05/2026,
+https://www.postgresql.org/docs/16/
+[8] OWASP Top Ten 2021, consulté le 08/05/2026,
+https://owasp.org/Top10/
+[9] Documentation officielle de Suricata IDS, consultée le 09/05/2026,
+https://docs.suricata.io/
+[10] Prometheus Node Exporter, GitHub, consulté le 10/05/2026,
+https://github.com/prometheus/node_exporter
+[11] Documentation React.js, consulté le 11/05/2026,
+https://react.dev/
+[12] Documentation Socket.io, consulté le 12/05/2026,
+https://socket.io/docs/
+[13] Documentation Nginx, consultée le 13/05/2026,
+https://nginx.org/en/docs/
+[14] Recharts — bibliothèque de graphiques React, consultée le 14/05/2026,
+https://recharts.org/
+[15] Nikto Web Scanner, GitHub, consulté le 15/05/2026,
+https://github.com/sullo/nikto
+[16] Base de données CVE nationale (NVD), consultée le 15/05/2026,
+https://nvd.nist.gov/
+[17] Documentation PM2 — gestionnaire de processus Node.js, consultée le 15/05/2026,
+https://pm2.keymetrics.io/docs/
+56
+
+
+===== PAGE 70 =====
+
+2%
+INDICE DE SIMILITUDE 2%
+SOURCES INTERNET
+0%
+PUBLICATIONS
+2%
+COPIES DE L'ÉTUDIANT
+1
+1%
+2
+1%
+Exclure les citations
+Arret
+Exclure la bibliographie Arret
+Exclure les
+correspondances
+< 1%
+plagiat
+RAPPORT DE SIMILITUDE
+SOURCES PRINCIPALES
+Submitted to Université Virtuelle de Tunis
+Copie de l'étudiant
+Submitted to University of Jendouba
+Copie de l'étudiant

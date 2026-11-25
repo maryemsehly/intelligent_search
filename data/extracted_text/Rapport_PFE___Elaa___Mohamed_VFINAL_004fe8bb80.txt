@@ -1,0 +1,2912 @@
+===== PAGE 1 =====
+
+République Tunisienne
+Ministère de l’Enseignement Supérieur
+et de la Recherche Scientifique
+Université de Carthage
+Institut Supérieur des Technologies de
+l’Information et de la Communication
+Rapport de Projet de Fin d’Etudes
+Présenté en vue de l’obtention de la
+Licence en Ingénierie des systèmes d’information et logiciels
+Spécialité : Systèmes embarqués et IoT
+Création d’un outil de génération
+automatique des programmes ADL
+Par
+Elaa Henchir
+Mohamed Houcine
+Réalisé au sein de NeoXam Tunisie
+Soutenu le 26 mai 2022 devant le jury composé de :
+Présidente :
+Mme. Syrine Sahmim
+Rapporteur :
+Mme. Nejla Essaddi
+Encadrante académique :
+Mme. Jihene Latrech
+Encadrant professionnel :
+Mr. Mohamed Ben Bouzid
+Mme. Rania Souai
+Période De Stage : 24/01/2022 - 15/05/2022
+Année Universitaire : 2021 - 2022
+
+
+===== PAGE 2 =====
+
+République Tunisienne
+Ministère de l’Enseignement Supérieur
+et de la Recherche Scientifique
+Université de Carthage
+Institut Supérieur des Technologies de
+l’Information et de la Communication
+Rapport de Projet de Fin d’Etudes
+Présenté en vue de l’obtention de la
+Licence en Ingénierie des systèmes d’informations et
+logiciels
+Spécialité : Systèmes embarqués et IoT
+Création d’un outil de génération
+automatique des programmes ADL
+Par
+Elaa Henchir
+Mohamed Houcine
+Réalisé au sein de NeoXam Tunisie
+Autorisation de dépôt du rapport de Projet de Fin d’Etudes :
+Encadrante académique :
+Mme. Jihene Latrech
+Le :
+Signature :
+Encadrant professionnel :
+Mr. Mohamed Ben Bouzid
+Mme. Rania Souai
+Le :
+Signature :
+
+
+===== PAGE 3 =====
+
+Dédicaces
+Je dédie ce projet de fin d’études
+A mes chers parents,
+qui ont apporté leur soutien, leurs conseils et leurs encouragements lors
+de la réalisation de ce travail.
+A mes proches,
+qui ont partagé avec moi tous les moments d’émotion lors de la
+réalisation de ce travail. Ils m’ont chaleureusement supporté et
+encouragé tout au long de mon parcours.
+A mes amis,
+qui m’ont soutenu par leurs orientations, leurs conseils durant la
+réalisation de ce travail.
+Mohamed Houcine
+i
+
+
+===== PAGE 4 =====
+
+Dédicaces
+Je dédie ce projet de fin d’études
+A mes chers parents,
+Aucun mot, aucune dédicace ne pourrait exprimer mon respect, ma
+considération, et mon amour pour les sacrifices que vous avez consentis
+pour mon instruction et mon bien-être.
+Vous représentez pour moi le symbole de la bonté par excellence, la
+source de tendresse et l’exemple du dévouement qui n’a pas cessé de
+m’encourager et de prier pour moi.
+Que Dieu vous accorde la santé, le bonheur, la prospérité et une longue
+vie.
+A mon frère et mes sœurs,
+Je ne peux exprimer à travers ces lignes tous mes sentiments d’amour et
+de tendresse envers vous. Je vous souhaite la réussite dans votre vie, avec
+tout le bonheur qu’il faut pour vous combler.
+Que Dieu vous apporte la sérénité, l’aide à réaliser vos vœux et vous offre
+un avenir plein de succès.
+A mes amis,
+Je ne peux trouver les mots justes et sincères pour vous exprimer mon
+affection et mes pensées, vous êtes pour moi ma deuxième famille.
+En témoignage de l’amitié qui nous unit et des souvenirs de tous les
+moments que nous avons passés ensemble, je vous dédie ce travail et je
+vous souhaite une vie pleine de santé et de bonheur.
+Elaa Henchir
+ii
+
+
+===== PAGE 5 =====
+
+Remerciement
+Nous tiendrons à remercier dans un premier temps, toute l’équipe pédagogique de
+l’Institut Supérieur des Technologies de l’Information et de la Communication (ISTIC)
+et les intervenants professionnels responsables de la formation, pour avoir assuré la partie
+théorique de celle-ci et qui nous ont aidés dans le développement de notre personnage au
+cours de ces années.
+Nous remercierons également Monsieur Mohamed BEN BOUZID et Madame Ra-
+nia Souai de nous avoir accueillis dans cette société en nous offrant la possibilité d’ac-
+quérir une expérience professionnelle très enrichissante. Qu’ils trouvent ici l’expression de
+notre parfaite considération pour leurs conseils précieux.
+Nous tiendrons à remercier notre encadrante Madame Jihene Latrech, d’avoir ac-
+cepté de nous encadrer, ainsi que pour ses orientations et ses suggestions pertinentes dont
+nous avons bénéficié tout au long du projet.
+Nous adressons notre gratitude à toute l’équipe de NeoXam pour leur collaboration,
+leur soutien et toutes les informations qui nous ont été transmis gracieusement de leur
+part.
+Mohamed et Elaa
+iii
+
+
+===== PAGE 6 =====
+
+Table des matières
+Introduction générale
+1
+1 Contexte général du projet
+3
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Présentation de l’organisme d’accueil . . . . . . . . . . . . . . . . . . . . .
+3
+1.2.1
+Historique de l’organisme d’accueil
+. . . . . . . . . . . . . . . . . .
+4
+1.2.2
+Les services de l’organisme d’accueil
+. . . . . . . . . . . . . . . . .
+4
+1.2.3
+Organigramme de l’organisme d’accueil . . . . . . . . . . . . . . . .
+5
+1.3
+Présentation du cadre du projet . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.1
+Problématique
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.2
+Etude de l’existant
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.3
+Solutions proposées . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4
+Contexte de travail . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.4.1
+Méthodologie de gestion du projet
+. . . . . . . . . . . . . . . . . .
+8
+1.4.2
+Présentation des méthodes agiles
+. . . . . . . . . . . . . . . . . . .
+8
+1.4.3
+Méthodologie adoptée
+. . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.4.4
+Rôles dans scrum . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.4.5
+Les cérémonies de Scrum . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.4.6
+Les artefacts de Scrum . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.5
+Language de Modélisation . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.5.1
+Présentation de UML
+. . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.5.2
+Pourquoi UML ?
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2 Analyse des besoins
+13
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.2
+Spécification des besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.2.1
+Identification des acteurs . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.2.2
+Les besoins fonctionnels
+. . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.2.3
+Les besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . .
+14
+2.3
+Pilotage du projet avec SCRUM . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.3.1
+Equipes et rôles . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.3.2
+Le backlog du produit et planification . . . . . . . . . . . . . . . . .
+15
+2.3.3
+Planification des Sprints . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.3.4
+Diagramme de cas d’utilisation global . . . . . . . . . . . . . . . . .
+18
+2.3.5
+Diagramme de classes
+. . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.4
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+iv
+
+
+===== PAGE 7 =====
+
+Table des matières
+Table des matières
+3 Sprint 0 : Initialisation du projet
+21
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.2
+Architecture de la solution . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.2.1
+Architecture logique
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.2.2
+Architecture logicielle . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.3
+Environnement de travail . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.3.1
+Environnement matériel
+. . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.3.2
+Environnement de développement . . . . . . . . . . . . . . . . . . .
+23
+3.3.3
+Environnement logiciel . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.4
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+4 Sprint 1 : Gestion des utilisateurs et leurs rôles
+26
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+4.2
+Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles . . . .
+26
+4.2.1
+Le backlog du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+4.2.2
+Conception du Sprint 1
+. . . . . . . . . . . . . . . . . . . . . . . .
+28
+4.2.3
+Réalisation du Sprint 1
+. . . . . . . . . . . . . . . . . . . . . . . .
+37
+4.2.4
+Interface « Gérer utilisateurs »
+. . . . . . . . . . . . . . . . . . . .
+37
+4.2.5
+Interface « Ajout utilisateur » . . . . . . . . . . . . . . . . . . . . .
+38
+4.2.6
+Test et validation du Sprint 1 . . . . . . . . . . . . . . . . . . . . .
+38
+4.3
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+5 Sprint 2 : Gestion d’un projet ADL
+40
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+5.2
+Etude et réalisation du Sprint 2 : Gestion d’un projet ADL . . . . . . . . .
+40
+5.2.1
+Le backlog du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+5.2.2
+Conception du Sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . .
+42
+5.2.3
+Réalisation du Sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . .
+48
+5.2.4
+Test et validation du Sprint 1 . . . . . . . . . . . . . . . . . . . . .
+50
+5.3
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+6 Sprint 3 : Automatisation du code
+52
+6.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+6.2
+Etude et réalisation du Sprint 3 : Automatisation du code. . . . . . . . . .
+52
+6.2.1
+Le backlog du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+6.2.2
+Conception du Sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . .
+53
+6.2.3
+Réalisation du Sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . .
+59
+6.2.4
+Test et validation du Sprint 3 . . . . . . . . . . . . . . . . . . . . .
+60
+6.3
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+Conclusion Générale
+61
+Bibliographie
+62
+v
+
+
+===== PAGE 8 =====
+
+Table des figures
+1.1
+Logo de NeoXam . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Organigramme de NeoXam . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3
+Méthodes Agiles . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.4
+Exemple de cycle de vie d’un projet Scrum . . . . . . . . . . . . . . . . . .
+9
+1.5
+Schéma récapitulatif des rôles dans Scrum
+. . . . . . . . . . . . . . . . . .
+10
+1.6
+Logo UML
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.7
+Les acteurs du système . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.8
+Diagramme de cas d’utilisation global . . . . . . . . . . . . . . . . . . . . .
+18
+2.9
+Diagramme de classes global . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.10 Architecture logique de l’application web . . . . . . . . . . . . . . . . . . .
+21
+3.11 Architecture logicielle de l’application web . . . . . . . . . . . . . . . . . .
+22
+4.12 Diagramme de cas d’utilisation global du Sprint 1 . . . . . . . . . . . . . .
+28
+4.13 Diagramme de cas d’utilisation raffiné du Sprint 1 « Gérer les utilisateurs » 29
+4.14 Diagramme de cas d’utilisation raffiné du Sprint 1 « Gérer les permissions » 30
+4.15 Diagramme de classes du Sprint 1
+. . . . . . . . . . . . . . . . . . . . . .
+31
+4.16 Diagramme de séquence « S’authentifier »
+. . . . . . . . . . . . . . . . . .
+32
+4.17 Diagramme de séquence « Ajouter un utilisateur » du Sprint 1
+. . . . . .
+33
+4.18 Diagramme de séquence « Modifier un utilisateur » du Sprint 1
+. . . . . .
+34
+4.19 Diagramme de séquence « Supprimer un utilisateur » du Sprint 1
+. . . . .
+35
+4.20 Diagramme de séquence « Modifier mot de passe » du Sprint 1
+. . . . . .
+36
+4.21 Interface « Authentification » . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+4.22 Interface « Gérer utilisateurs »
+. . . . . . . . . . . . . . . . . . . . . . . .
+37
+4.23 Interface « Ajout utilisateur » . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+4.24 Test de cas d’ajout d’un utilisateur . . . . . . . . . . . . . . . . . . . . . .
+38
+5.25 Diagramme de cas d’utilisation global du Sprint 2 . . . . . . . . . . . . . .
+42
+5.26 Diagramme de cas d’utilisation raffiné du Sprint 2 « Gérer un projet ADL » 43
+5.27 Diagramme de classes du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . .
+44
+5.28 Diagramme de séquence « Ajouter un composant »
+. . . . . . . . . . . . .
+45
+5.29 Diagramme de séquence « Supprimer un composant » . . . . . . . . . . . .
+46
+5.30 Diagramme de séquence « Enregistrer un projet ADL » . . . . . . . . . . .
+47
+5.31 Interface « Ouvrir un projet ADL » . . . . . . . . . . . . . . . . . . . . . .
+48
+5.32 Interface « Créer projet ADL »
+. . . . . . . . . . . . . . . . . . . . . . . .
+48
+5.33 Interface « Listes des composants ADL » . . . . . . . . . . . . . . . . . . .
+49
+5.34 Interface « Modifier un composant ADL » . . . . . . . . . . . . . . . . . .
+49
+5.35 Test de cas d’ajout d’un composant . . . . . . . . . . . . . . . . . . . . . .
+50
+5.36 Test de cas d’ajout d’un ecran . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+6.37 Diagramme de cas d’utilisation global du Sprint 3 . . . . . . . . . . . . . .
+54
+6.38 Diagramme de cas d’utilisation raffinée « Automatiser la génération du
+code ADL » du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+vi
+
+
+===== PAGE 9 =====
+
+Table des figures
+Table des figures
+6.39 Diagramme de classes du Sprint 3
+. . . . . . . . . . . . . . . . . . . . . .
+56
+6.40 Diagramme de séquence « Automatiser la génération du code »
+. . . . . .
+57
+6.41 Diagramme de séquence « Manipuler l’éditeur de code »
+. . . . . . . . . .
+58
+6.42 Interface « Éditeur de code »
+. . . . . . . . . . . . . . . . . . . . . . . . .
+59
+6.43 Interface « Design »
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+vii
+
+
+===== PAGE 10 =====
+
+Liste des tableaux
+1.1
+Historique de l’organisme d’accueil
+. . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Évaluation des méthodes agiles
+. . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.3
+Les diagrammes de UML . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.4
+Identification des acteurs . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.5
+Les besoins fonctionnels
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.6
+Les besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.7
+Les participants dans scrum team . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.8
+Backlog du produit . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.9
+Planification des Sprints . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.10 Environnement matériel
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+3.11 Environnement de développement . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.12 Environnement logiciel . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+4.13 Backlog du produit : Sprint 1
+. . . . . . . . . . . . . . . . . . . . . . . . .
+28
+4.14 Description textuelle de cas d’utilisation « s’authentifier »
+. . . . . . . . .
+29
+4.15 Description textuelle de cas d’utilisation « Gérer utilisateurs » . . . . . . .
+30
+4.16 Description textuelle de cas d’utilisation « Gérer les permissions »
+. . . .
+31
+5.17 Backlog du produit : Sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . . .
+41
+5.18 Description textuelle de cas d’utilisation « Gérer un projet ADL »
+. . . .
+42
+5.19 Description textuelle de cas d’utilisation « Gérer la banque des champs » .
+43
+5.20 Description textuelle de cas d’utilisation raffiné « Gérer un projet ADL » .
+44
+5.21 Les scénarios de tests
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+6.22 Backlog du produit : Sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . . .
+53
+6.23 Description textuelle de cas d’utilisation « Automatiser la génération du
+code ADL »
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+6.24 Description textuelle de cas d’utilisation « Manipuler l’éditeur de code »
+.
+55
+6.25 Les scénarios de tests
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+viii
+
+
+===== PAGE 11 =====
+
+Liste des acronymes
+— GP
+=
+Gestion des Portefeuilles
+— ADL
+=
+Application Development Language
+— MVC
+=
+Modèle Vue Contrôleur
+— UML
+=
+Unified Modeling Language
+— API
+=
+Application Programming Interface
+ix
+
+
+===== PAGE 12 =====
+
+Introduction générale
+Au cours de ces dernières années, un changement fondamental est survenu dans la
+stratégie des entreprises dans lesquelles plusieurs activités se basent sur l’utilisation des
+applications web et mobiles.
+En effet, un logiciel qui est limité à la réalisation des besoins fonctionnels de ses
+utilisateurs n’est plus satisfaisant. Des autres exigences sont alors introduites dans la per-
+formance, la maintenabilité et l’ergonomie des applications.
+Dans ce contexte s’inscrit l’activité de la société « NeoXam » qui travaille dans le déve-
+loppement des logiciels pour la gestion d’actifs financiers. NeoXam a développé plusieurs
+solutions de gestion d’actifs tel que GP « Gestion du Portefeuille » qui est un progiciel
+sophistiqué configurable. Aussi, la société « NeoXam » utilise son propre langage de pro-
+grammation ADL pour le programmer à construire des interfaces GP.
+Malgré la disponibilité des plusieurs logiciels de construction des interfaces graphiques
+et les environnements de génération automatiques de code, l’équipe de « NeoXam » a
+besoin d’un outil propre à cette société permettant la génération automatique du code en
+langage ADL à partir d’une interface contenant des composantes GP.
+C’est dans ce cadre que se situe l’élaboration de notre sujet de projet de fin d’études
+qui vise à concevoir et développer une application web contenant des composants GP et
+son code en langage ADL adéquat dans un éditeur de code afin d’augmenter la fiabilité,
+l’efficacité et faciliter les tâches complexes lors de l’écriture du code pour chaque compo-
+sant.
+— Le premier chapitre « Contexte général du projet » concerne la présentation de
+l’organisme d’accueil, du cadre du projet, de la problématique ainsi que le diag-
+nostic de l’existant et de la méthodologie adoptée.
+— Le deuxième chapitre « Analyse des besoins » présente les acteurs, les besoins
+fonctionnels et non fonctionnels, le diagramme de cas d’utilisation global et une
+planification des Sprints.
+— Le troisième chapitre « Initialisation du projet » est consacré à l’initialisation du
+projet et la mise en place de l’environnement de développement, l’architecture ainsi
+que l’environnement matériel et logiciel.
+— Le quatrième chapitre est dédié au premier Sprint intitulé « Gestion des utilisa-
+teurs et rôles ».
+1
+
+
+===== PAGE 13 =====
+
+Introduction générale
+— Le cinquième chapitre est dédié au Sprint 2 qui décrit « La gestion d’un projet
+ADL ».
+— Le dernier chapitre, dédié au dernier Sprint, est consacré à l’automatisation du
+code en langage ADL.
+Enfin nous terminons ce rapport par une conclusion générale qui résume le travail
+réalisé tout au long de ce projet ainsi que quelques perspectives.
+2
+
+
+===== PAGE 14 =====
+
+Chapitre 1
+Contexte général du projet
+1.1
+Introduction
+Dans ce premier chapitre, nous allons présenter l’organisme d’accueil, son historique
+et son organigramme. Ensuite, nous allons passer au contexte de projet, la problématique
+et un diagnostic technique de la solution développée. Enfin, nous allons définir la métho-
+dologie de travail pour réaliser notre projet.
+1.2
+Présentation de l’organisme d’accueil
+NeoXam est un éditeur international de progiciels financiers, qui conçoit et intègre des
+solutions logicielles pour les sociétés de gestion d’actifs et des marchés de capitaux. En
+un peu plus de cinq ans, la société a augmenté son chiffre d’affaires plus de 40% , rem-
+porté des dizaines de nouveaux contrats et embauché plus des centaines de collaborateurs.
+Cette société est présente dans 14 pays : France, Francfort, Luxembourg, Zurich,
+Genève, Milan, New York, Boston, HongKong, Shangai, Pékin, Singapour, Tunis et au
+Cap[1].
+Figure 1.1 – Logo de NeoXam
+3
+
+
+===== PAGE 15 =====
+
+Chapitre 1
+1.2. Présentation de l’organisme d’accueil
+1.2.1
+Historique de l’organisme d’accueil
+Les dates les plus importantes pour l’historique de NeoXam sont illustrées dans le
+tableau 1.1 :
+Dates
+Activités
+31 Janvier
+2014
+NeoXam a été fondée par BlackFin CP et Serge Delpla,
+Directeur général de Neoxam avec l’acquisition des solutions
+«GP3» et «Decalog» de SunGard.
+Octobre 2014
+NeoXam rachète «Density Tech» et elle ne s’est pas arrêtée
+là, en effet en Avril 2015, elle rachète «Nexfi» et enfin
+«SmartCo» en Juin 2015.
+2016
+NeoXam est considérée comme un leader dans les solutions
+logicielles de finance en Europe et commence à imposer sa
+présence en Amérique et en Asie.
+2018
+«Cathay Capital» et «Bpifrance» accompagnent NeoXam
+dans l’accélération de son développement international, pour
+aboutir à un géant mondial du développement des solutions
+logicielles dans le secteur de la finance.
+Table 1.1 – Historique de l’organisme d’accueil
+1.2.2
+Les services de l’organisme d’accueil
+NeoXam garantit la couverture complète de la chaîne de valeur financière de la gestion
+des données et du front-office, middle-office et back-office pour aider le secteur financier
+à relever des défis complexes.
+La société compte maintenant plus de 150 sociétés clientes partout dans le monde et
+emploie plus de 500 personnes. Cette entreprise fournit des solutions à un nombre crois-
+sant d’acteurs internationaux, parmi ces solutions nous citons :
+• GP : un système de gestion de portefeuille qui offre un ensemble complet de fonc-
+tions pour faciliter le contrôle des utilisateurs, la conformité réglementaire, les risques et
+l’établissement de rapports.
+• DATAHUB : un ensemble de modules fonctionnels qui respectent les exigences
+particulières des institutions financières pour assurer la centralisation, le regroupement,
+la conformité et l’amélioration de la qualité des données.
+•NeoXam Investment Accounting : logiciel de comptabilité et de déclaration des
+investissements qui fournit aux investisseurs institutionnels et aux grands gestionnaires
+d’actifs les meilleures pratiques et les exigences réglementaires propres à chaque marché.
+•Neoxam Impress : un logiciel de reporting qui permet aux clients de consulter
+leurs données tous les jours de manière claire et fiable grâce à des supports de visualisa-
+tion innovants.
+4
+
+
+===== PAGE 16 =====
+
+Chapitre 1
+1.3. Présentation du cadre du projet
+1.2.3
+Organigramme de l’organisme d’accueil
+NeoXam Tunisie possède 4 département principales pour gérer le bon fonctionnement
+et la coordination entre les tâches à réaliser. Chaque équipe est devisé en sous-équipes.
+La figure 1.2 illustre l’organigramme de NeoXam Tunisie.
+Figure 1.2 – Organigramme de NeoXam
+1.3
+Présentation du cadre du projet
+Dans cette section, nous allons commencer par la problématique passant par le cadre
+de projet et une étude de l’existant. Par la suite, nous allons proposer notre solution.
+1.3.1
+Problématique
+« NeoXam Tunisie » est une société qui fait la création des logiciels informatique dé-
+diés à la finance. Pour augmenter le niveau de sécurité et de performance de ces produits,
+Neoxam utilise son propre langage de programmation « ADL ».
+Au cours de la réalisation d’un projet en ADL, chaque développeur passe un temps
+considérable lors de la création d’une interface de base. Cette manière classique cause
+une énorme perte de temps. Par conséquent, chaque développeur a besoin d’un moyen
+pour construire une interface graphique via "drag and drop" et d’un moyen de générer
+automatiquement du code ADL relative à chaque composant de l’écran.
+1.3.2
+Etude de l’existant
+Dans cette sous-section, nous allons faire une analyse et une critique de l’existant pour
+bien étudier les besoins et apporter une meilleure solution.
+5
+
+
+===== PAGE 17 =====
+
+Chapitre 1
+1.3. Présentation du cadre du projet
+1.3.2.1
+Analyse de l’existant
+Suite à l’analyse réalisée, il s’avère que l’entreprise NeoXam utilise son propre langage
+de programmation ADL pour faire la création des logiciels de gestion financière tel que le
+produit GP.
+A travers la programmation de l’ADL, plusieurs fonctionnalités peuvent être ajoutés
+au GP pour plus s’aligner au besoin du client.Pour ajouter, modifier ou créer un écran
+GP, chaque développeur doit écrire le code à sa manière malgré que les squelettes des
+écrans sont toutes les mêmes.
+1.3.2.2
+Critique de l’existant
+Dans cette partie, nous allons discuter les problémes observés par l’équipe NeoXam
+lors de la modification ou la création d’une nouvelle écran GP.
+— Perte de temps : Les écrans GP possèdent des squelettes presque identiques,
+ainsi les développeurs vont prendre beaucoup de temps pour développer plusieurs
+un composant d’un écran GP.
+— Hétérogénéité des codes : Chaque développeur a sa propre façon de dévelop-
+pement. Par conséquent, les codes des écrans ne se ressembleront pas.
+— Problèmes de maintenance : Avec des codes hétérogènes, les prochains déve-
+loppeurs à faire des modifications dans des écrans existants pourront trouver des
+difficultés dans la compréhension du code initial.
+— Sources d’erreurs : La réécriture des codes fait augmenter les sources d’erreurs.
+1.3.3
+Solutions proposées
+Dans le souci d’apporter une valeur ajoutée et un meilleur service aux clients et au
+groupe lui-même, nous avons proposé plusieurs solutions afin de choisir la meilleure.
+1.3.3.1
+Création d’un plugin
+Cette solution consiste à développer un plugin intégrable dans Eclipse-ADL permet-
+tant d’ouvrir un fichier ADL en utilisant ce plugin.
+Le développeur aura la possibilité d’éditer son code et son interface graphique dans le
+même environnement de développement. Ce plugin sera accessible à travers un clic droit
+sur un fichier ADL, et choisir l’option "Ouvrir avec > ADL Editor".
+Inconvénients et difficultés :
+Aprés une étude de faisabilité, nous avons conclu que cette solution apportera un plus
+et permet de résoudre plusieurs problèmes cités dans la section précédente, mais elle est
+difficile de la réaliser en vu de sa complexité sur plusieurs niveaux :
+6
+
+
+===== PAGE 18 =====
+
+Chapitre 1
+1.3. Présentation du cadre du projet
+• Notre plugin sera composé de plusieurs sous-plugins ce qui donne des difficultés à
+maintenir une bonne performance dans la communication entre eux.
+• Plusieurs plu-gins n’ont pas la même combinaison ce qui cause des erreurs d’in-
+compatibilité.
+• Cette solution nécessite 5 mois au minimum pour être fonctionnelle.
+1.3.3.2
+Développement d’une application Desktop de génération automa-
+tique de code
+Nous avons proposé de développer une application Desktop qui permet de générer un
+code ADL automatiquement à partir d’une interface graphique afin de diminuer le nombre
+d’erreur et de réduire le temps de développement des écrans GP.
+Une recherche approfondie a été faite pour bien choisir les technologies nécessaire à
+la réalisation de cette application. A travers cette étude nous avons conclu que les outils
+d’automatisation ne sont pas compatible avec les applications desktop ce qui cause plu-
+sieurs erreurs lors de la compilation.
+Inconvénients et difficultés :
+• La programmation d’un outil de génération automatique du code sera difficile a
+cause des logiciels d’automatisation très limités.
+• Les outils d’automatisation disponibles sont fonctionnels seulement sur Windows.
+• Une application desktop nécessitera des mise à jours pour chaque ordinateur.
+1.3.3.3
+Développement d’une application Web de génération automatique de
+code
+Pour garantir un bon fonctionnement du projet, nous avons décidé de faire une étude
+sur la dernière solution proposée qui consiste à développer une application web répondant
+à tous nos besoins.
+Pour créer un nouvel écran, le développeur n’a que cliquer sur un bouton d’ajout
+d’écran, et une squelette d’écran sera générée automatiquement.
+Cet outil va apporter pleins d’avantages aux développeurs sur plusieurs niveaux :
+• Gain de temps : Il peut enlever beaucoup de temps au niveau des tâches de codage.
+• Diminution des sources d’erreurs, vu que le code de base sera automatiquement
+généré.
+• Fonctionnel sur tous les systèmes d’exploitation : Contrairemnt à application na-
+tive, l’un des avantages de développement d’application Web est que, peu importe
+le système d’exploitation, elle est conçue de façon s’adapter à l’écran et la « langage
+» de l’appareil.
+• Homogénéité du code : Les codes auront une apparence presque identique, ce qui
+facilitera leur manipulation par les développeurs.
+7
+
+
+===== PAGE 19 =====
+
+Chapitre 1
+1.4. Contexte de travail
+• Garantie du respect des normes de développement de NeoXam : Contrairement à
+un programme automatique, l’être humain peut parfois comettre des erreurs ou
+oublier les normes et bonnes pratiques de développement de NeoXam.
+1.3.3.4
+Solution adoptée
+Grâce à une grande communauté des frameworks et des bibliothèques Qui nous per-
+mettent de réaliser ce travail sans aucune contrainte, nous avons décidé de développer
+une application web conçu à faire la génération automatique du code ADL à partir d’une
+interface graphique.
+1.4
+Contexte de travail
+Dans cette partie, nous allons présenter les méthodes agiles passant par la méthodo-
+logie, rôles et cérémonies adoptés.
+1.4.1
+Méthodologie de gestion du projet
+La conception d’un système d’information compte parmi les mesures les plus impor-
+tantes pour commencer un projet informatique. Cette étape s’effectue avant la réalisation
+et exige une méthode de travail précise qui est applicable et adaptée aux besoins des
+utilisateurs afin d’avoir une finalité parfaite et à la hauteur des attentes.
+1.4.2
+Présentation des méthodes agiles
+Ce sont des méthodes basées sur les principes du manifeste agile, orientées vers la
+gestion de projet, elles sont itératives et adaptatives en d’autres termes que la réalisation
+du produit se fait sur plusieurs itérations et s’adapte au changement.
+Le tableau 1.2 illustre l’évaluation des méthodes agiles.
+Avantages
+Inconvénients
+Moins de documentation
+Équipe réduite.
+S’adapter avec des projets
+de petite ou moyenne taille
+Non spécifique au dévelop-
+pement logiciel.
+S’ajuster
+rapidement
+aux
+changements des besoins.
+Le niveau de collaboration
+peut être difficile à mainte-
+nir
+Table 1.2 – Évaluation des méthodes agiles
+La figure 1.3 montre les principales méthodes agiles :
+8
+
+
+===== PAGE 20 =====
+
+Chapitre 1
+1.4. Contexte de travail
+Figure 1.3 – Méthodes Agiles
+1.4.3
+Méthodologie adoptée
+Dans le contexte de notre projet, les dimensions de notre produit ne sont pas fixes
+dès le début et en plus nous avons besoin de dialoguer et collaborer avec le reste des
+membres de l’équipe en quotidien pour pouvoir réussir toutes les étapes de production et
+de déploiement de notre projet. Donc, l’utilisation de la méthode agile est une opportunité
+pour pouvoir réussir la mission dans les meilleures conditions.
+C’est pour cela que nous avons choisi d’adapter la méthode Scrum, utilisée par toute
+l’équipe de NeoXam, qui présente une implémentation de l’approche agile. Le principe de
+base de Scrum étant d’être toujours prêt à réorienter le projet au fil de son avancement.
+Un projet Scrum est une succession d’itérations, chaque itération s’appelle Sprint
+et à la fin de chaque Sprint l’équipe livre au client un incrément de produit.
+Scrum se rapproche plus d’une démarche de travail qu’une méthode de conception.
+En effet, sa capacité aboutit à un résultat final en un minimum de temps représente un
+avantage considérable en comparaison aux méthodes classiques.
+La figure 1.4 montre le cycle de vie d’un projet Scrum.
+Figure 1.4 – Exemple de cycle de vie d’un projet Scrum
+9
+
+
+===== PAGE 21 =====
+
+Chapitre 1
+1.4. Contexte de travail
+1.4.4
+Rôles dans scrum
+La méthode Scrum définit trois rôles dans chaque projet :
+1- Le Product Owner : Le product owner représente le rôle du client identifier les
+user storys, mettredes priorités à ces user story, Il précise les spécifications fonctionnelles
+à implémenter.
+2- Le Scrum Master :
+C’est celui qui joue le rôle du chef de projet assure que
+les principes descrumsont bien appliqués et que l’équipe travaille dans les bonnes normes,
+c’est le dirigeant de la mise en œuvre du projet et il facilite la communication des membres
+de l’équipe.
+3- L’équipe «Team members» : C’est l’ensemble des personnes qui doivent im-
+plémenter les fonctionnalités du projet.
+La figure 1.5 représente un schéma récapitulatif des rôles dans un projet Scrum.
+Figure 1.5 – Schéma récapitulatif des rôles dans Scrum
+1.4.5
+Les cérémonies de Scrum
+1- Sprint Planning : S’organise avant chaque Sprint, sélectionner dans le product
+backlog les user story les plus prioritaire pour le client pour tester, livrer dans ce Sprint
+et constituer le sprint backlog et le Sprint global.
+2- Daily Scrum :
+C’est une réunion de 15 minutes à peu près effectué par toute
+l’équipe chaque jour géré par le scrum master pour savoir qu’est-ce que chaque membre
+a fait ainsi queles obstacles rencontrés.
+3- Sprint retro respective : c’est de voir ce qui est réussi dans le Sprint et ce qui
+n’est pas réussi.
+1.4.6
+Les artefacts de Scrum
+1- Product Backlog : C’est un document qui contient les différentes fonctionnalités
+à développerc’est à dire les différentes user storys pour que le logiciel satisfaire le client.
+10
+
+
+===== PAGE 22 =====
+
+Chapitre 1
+1.5. Language de Modélisation
+C’est unepremière liste car au cours du développement il peut y avoir des changements
+de fonctions.
+2- Sprint Backlog : C’est l’ensemble des activités à exécuter par l’équipe du projet
+pour un Sprint.
+3- Sprint retro respective : Développé et maintenu par le scurm master tout au
+long d’un Sprint. C’est Un graphe qui représente le temps de travail restant.
+1.5
+Language de Modélisation
+Au cours de cette section, nous présentons le langage de modélisation adopté ainsi que
+les avantages de son utilisation.
+1.5.1
+Présentation de UML
+UML, pour dire « Unified Modeling Language ». Ce langage signifie « Langage de
+modélisation unifié ». La notation UML est un langage visuel caractérisé par un ensemble
+de diagrammes, donnant chacun une vue différente du projet à réaliser.
+UML, utilise des diagrammes afin de représenter le logiciel à développer en précisant
+son fonctionnement, sa mise en route, les actions qualifies d’être réalisé par le logiciel.
+Puisque UML est le plus adopté pour ce projet nous l’avons choisi. Ce choix peut être
+expliqué par les divers diagrammes qu’il propose[2] .
+Figure 1.6 – Logo UML
+1.5.2
+Pourquoi UML ?
+La modélisation UML sert à vulgariser les aspects liés à l’architecture et à la concep-
+tion , propres au logiciel, au client. Aussi, elle apporte une compréhension facile et rapide
+du programme à d’autres développeurs en cas de maintenance ou pour la reprise du logi-
+ciel.
+11
+
+
+===== PAGE 23 =====
+
+Chapitre 1
+1.6. Conclusion
+UML représente un support de communication performant, qui facilite la représenta-
+tion et la compréhension de solutions objet.
+Le langage de modélisation définit 14 types de diagrammes, qui sont divisés en deux ca-
+tégories. Les catégories principales "structure" et "comportement" représentent les concepts
+de base représentés par les diagrammes UML.
+Afin de bien modéliser les fonctionnalités de notre application nous avons choisi d’uti-
+liser les diagrammes cités dans le tableau 1.3 :
+Type de diagramme
+Description
+Diagramme de cas d’utilisation
+Les diagrammes de cas d’utilisation sont des dia-
+grammes UML utilisés pour représenter le fonctionne-
+ment d’un système logiciel. Il s’agit d’une unité discrète
+d’interaction entre un utilisateur et un système. Ainsi,
+dans un diagramme de cas d’utilisation, on désigne les
+utilisateurs comme des acteurs, et ils apparaissent dans
+les cas d’utilisation [3] .
+Diagramme de classes
+Le diagramme de classes est un diagramme utilisé dans
+l’ingénierie logicielle pour introduire les classes et les in-
+terfaces des systèmes et leurs relations. Ce diagramme
+fait partie de la partie statique d’UML, sans tenir
+compte des aspects temporels et dynamiques [4] .
+Diagramme de séquence
+Les diagrammes de séquence sont la représentation gra-
+phique des interactions entre les acteurs et le système
+dans l’ordre chronologique dans la formulation du lan-
+gage de modélisation unifié [5] .
+Table 1.3 – Les diagrammes de UML
+1.6
+Conclusion
+Dans le premier chapitre, nous avons présenté l’entreprise, le cadre du projet et la
+méthode de conception et de développement des tâches requises. Dans le chapitre qui
+suit, nous allons passer à faire l’analyse et la conception.
+12
+
+
+===== PAGE 24 =====
+
+Chapitre 2
+Analyse des besoins
+2.1
+Introduction
+Dans ce chapitre, nous ferons référence aux objectifs de notre application, ce qui nous
+mène à caractériser les possibilités du système et les besoins des utilisateurs que nous
+essayerons de projeter dans les diagrammes de cas d’utilisations et de classes globales.
+Puis, nous finissons par une planification des Sprints.
+2.2
+Spécification des besoins
+Afin de bien fixer les objectifs souhaités de ce projet, nous allons identifier les acteurs,
+ainsi spécifier les besoins fonctionnels et non fonctionnels.
+2.2.1
+Identification des acteurs
+L’acteur est une entité qui peut être interne ou externe, physique ou logiciel qui peut
+interagir directement avec le système.
+Dans notre projet, il y a 3 acteurs principaux qui interagissent avec notre application
+comme l’indique la figure 2.7 :
+Figure 2.7 – Les acteurs du système
+13
+
+
+===== PAGE 25 =====
+
+Chapitre 2
+2.2. Spécification des besoins
+Acteurs
+Rôles
+Utilisateur
+C’est un acteur qui a la possibilité de visiter
+l’application pour faire des test ou de la vi-
+sualiser.
+Développeur
+C’est un acteur qui va interagir avec notre
+application pour faire la création d’un projet
+et modifier son contenu à travers la palette
+pour générer du code ADL.
+Administrateur
+C’est un acteur qui a la possibilité de gérer
+tout ce qui a été mentionnés ci-dessus. En
+plus, il va gérer les accées pour les utilisateurs
+et leurs permissions.
+Table 2.4 – Identification des acteurs
+2.2.2
+Les besoins fonctionnels
+Notre application doit fournir un ensemble de fonctionnalités qui répondent au besoins
+des acteurs. Les principaux besoins fonctionnels sont représentés dans le tableau 2.5 ci-
+dessous :
+Fonctionnalités
+Description
+S’authentifier
+La plate-forme permet au développeur d’accéder à son
+espace de travail à travers un login et un mot de passe.
+Gérer les projets ADL
+Le développeur aura la possibilité de créer, modifier,
+supprimer et consulter un projet ADL.
+Automatiser la création du
+code ADL
+Après la création, la modification ou la suppression des
+écrans GP, le code ADL correspondant sera généré au-
+tomatiquement.
+Gérer la banque des champs
+Les développeurs peuvent ajouter ou supprimer des com-
+posants de la palette.
+Gérer les utilisateurs
+Sert à ajouter, modifier et supprimer des utilisateurs.
+Table 2.5 – Les besoins fonctionnels
+2.2.3
+Les besoins non fonctionnels
+Outre des besoins fonctionnels, notre futur système doit également répondre aux
+contraintes présents dans le tableau 2.6.
+14
+
+
+===== PAGE 26 =====
+
+Chapitre 2
+2.3. Pilotage du projet avec SCRUM
+Caractéristiques
+Description
+La performance
+Il est essentiel que le temps de réponse de
+notre application soit optimal.
+La maintenance
+Il
+est
+important
+que
+notre
+application
+contienne un code source qui est caractérisé
+par sa structure bien organisée.
+La sécurité
+Vu l’importance des données qui comportent
+notre application. Donc cette dernière doit
+être sécurisée par son login et mot de passe
+et par les droits d’accès.
+La disponibilité
+Notre application doit être disponible tou-
+jours à chaque fois que l’utilisateur l’en a be-
+soin.
+L’ergonomique
+Notre application doit être adaptée aux
+conditions de travail de l’utilisateur.
+Table 2.6 – Les besoins non fonctionnels
+2.3
+Pilotage du projet avec SCRUM
+La première partie de cette section sera dédiée aux membres des équipes présentes à
+la mise en œuvre de ce projet. La deuxième partie, sera dédier au backlog du produit. La
+dernière partie sera destiné aux diagramme de cas d’utilisation et de classes globales.
+2.3.1
+Equipes et rôles
+Dans un projet SCRUM, l’équipe joue un rôle essentiel afin d’optimiser la productivité
+et l’efficacité. En effet, cela doit être auto-organisé et multifonctionnel.
+Le tableau 2.7 représente la décomposition de l’équipe SCRUM de GP :
+Nom et prénom
+Rôle dans l’équipe
+Mohamed Ben Bouzid
+Poduct Owner
+Rania Souai
+Scrum master
+Elaa Henchir
+Scrum team
+Mohamed Houcine
+Scrum team
+Table 2.7 – Les participants dans scrum team
+2.3.2
+Le backlog du produit et planification
+Le backlog est élaboré avant le lancement des Sprints, dans la phase de préparation.
+Il est utilisé pour la planification de la release, puis à chaque Sprint, lors de la réunion de
+planification du Sprint pour décider du sous-ensemble d’éléments.
+15
+
+
+===== PAGE 27 =====
+
+Chapitre 2
+2.3. Pilotage du projet avec SCRUM
+Dans notre contexte le backlog du produit dans le tableau 2.8 ci-dessous a été rédigé
+sous la forme "En tant que X, j’ai besoin de faire Y, afin de Z " et caractérisé par les
+champs suivants :
+• Epic : c’est une tâche importante qui peut être divisé en sous-tâches appelées
+stories.
+• ID : c’est le nombre unique pour chaque user story.
+• Users story : c’est une phrase décrivant le travail désiré.
+• Estimation : c’est la durée nécessaire pour réaliser une tâche.
+Epic
+ID
+User story
+Estimation
+En tant que adminis-
+trateur, je peux gérer
+les utilisateurs
+1
+En tant que administrateur, je peux ajouter des
+utilisateurs.
+1 semaine
+2
+En tant que administrateur, je peux supprimer
+des utilisateurs.
+3
+En tant que administrateur, je peux consulter
+les informations des utilisateurs
+5
+En tant que administrateur, je peux modifier les
+informations des utilisateurs
+En tant que adminis-
+trateur, je peux gérer
+les permissions
+6
+En tant que administrateur, je peux ajouter une
+permission.
+1 semaine
+7
+En tant que administrateur, je peux modifier
+une permission.
+8
+En tant que administrateur, je peux supprimer
+une permission.
+En tant que dévelop-
+peur/administrateur,
+je peux m’authenti-
+fier
+9
+En tant que développeur/administrateur, je
+peux m’authentifier avec un username et un
+password
+1 semaine
+En tant que dévelop-
+peur, je peux créer
+un nouvel écran
+10
+En tant que développeur, je peux générer au-
+tomatiquement la squelette du code ADL d’un
+nouvel écran GP, en précisant le nom de la pro-
+cédure et de l’écran
+1 semaine
+En tant que dévelop-
+peur, je peux gérer
+la palette des compo-
+santes ADL.
+11
+En tant que développeur, je peux définir de nou-
+velles composantes ADL dans la palette.
+1 semaine
+12
+En tant que développeur, je peux supprimer des
+composantes ADL de la palette
+16
+
+
+===== PAGE 28 =====
+
+Chapitre 2
+2.3. Pilotage du projet avec SCRUM
+En tant que déve-
+loppeur, je peux gé-
+rer les écrans GP via
+drag and drop
+13
+En tant que développeur, je peux ajouter des
+composantes ADL aux écrans GP.
+2 semaines
+14
+En tant que développeur, je peux modifier les
+propriétés des composantes des écrans GP
+15
+En tant que développeur, je peux supprimer des
+composantes ADL des écrans GP
+En tant que dévelop-
+peur, je peux gérer le
+code ADL des écrans
+via l’éditeur de code.
+16
+En tant que développeur, je peux modifier le
+code ADL d’un écran GP.
+1 semaine
+17
+En tant que développeur, je peux consulter le
+code ADL d’un écran GP.
+En tant que dévelop-
+peur, je peux sau-
+vegarder mon code
+ADL
+18
+En tant que développeur, je peux enregistrer
+mon code dans son fichier inital.
+1 semaine
+19
+En tant que développeur, je peux enregistrer
+sous mon code dans un nouveau fichier
+Table 2.8 – Backlog du produit
+2.3.3
+Planification des Sprints
+Notre projet sera divisé sur des Sprints ayant chacun un objectif et une durée précise.
+Après une réunion avec l’équipe, on a identifié quatre Sprints. Le tableau 2.9 illustre la
+planification des Sprints :
+Sprint
+Titre
+Sprint 0
+Initialisation du projet
+Sprint 1
+Gestion des utilisateurs et rôles
+Sprint 2
+Gestion d’un projet ADL
+Sprint 3
+Automatisation du code ADL
+Table 2.9 – Planification des Sprints
+17
+
+
+===== PAGE 29 =====
+
+Chapitre 2
+2.3. Pilotage du projet avec SCRUM
+2.3.4
+Diagramme de cas d’utilisation global
+Dans cette sous-section, nous présentons le diagramme de cas d’utilisation général qui
+permet de donner une vision globale sur le comportement fonctionnel de notre système.
+La figure 2.8 représente le diagramme de cas d’utilisation global.
+Figure 2.8 – Diagramme de cas d’utilisation global
+18
+
+
+===== PAGE 30 =====
+
+Chapitre 2
+2.3. Pilotage du projet avec SCRUM
+2.3.5
+Diagramme de classes
+Dans cette partie nous illustrons le diagramme de classes qui contient les classes in-
+tervenant dans le système. C’est une représentation statique des éléments qui composent
+un système et des relations entre eux.
+Ce diagramme est composé de 7 classes ayant chacune son emplacement dans la base de
+données :
+— La classe Code ADL : représente un enregistrement de la squelette initiale du
+code ADL en paramétre des attributs Nom procédure et Nom écran . Cette classe
+se caractérise par un nom de procédure, un nom d’écran et un nom d’un fichier
+qui sera étre généré . Ces champs sont remplis via une interaction avec l’utilisateur.
+— La classe Composant :
+permet de représenter les composants ADL qui sont
+identifiés par un ID. Chaque composant a un son propre nom, sa propre représen-
+tation graphique, son type et son code.
+— La classe Projet ADL : cette classe se caractérise par un ID , un nom , la date
+de création de projet et aussi le nom e développeur qui a fait la création .
+— La classe Graphique :
+cette classe représente la partie drag and drop où elle
+sera la création des interfaces
+— La classe Utilisateur :
+un utilisateur peut être un administrateur un déve-
+loppeur ou bien un visiteur . Chaque utilisateur a son propre ID, ses cordonnées
+d’authentification ( Email, Password, Login ), son département et son poste. La
+seule action qui peut faire l’utilisateur dans l’application est modifier son mot de
+passe.
+— La classe Développeur : un développeur a des actions uniques pour gérer un
+projet ADL. En effet, il peut créer un projet, ouvrir un projet existant, modifier
+un projet et sauvgarder les modifications.
+— La classe Administrateur :
+cette classe représente l’administrateur qui peut
+gérer les permission et les rôles de chaque utilisateur. Un administrateur ajoute,
+modifie et supprime des utilisateurs et des développeurs.
+Dans la figure 2.9 ci dessous on présente les différents classes qui identifie la base de
+données de l’application et les relations entre eux.
+19
+
+
+===== PAGE 31 =====
+
+Chapitre 2
+2.4. Conclusion
+Figure 2.9 – Diagramme de classes global
+2.4
+Conclusion
+Tout au long de ce chapitre, nous avons présenté les différents concepts nécessaires
+à la compréhension du projet. Nous avons également identifié les besoins fonctionnels et
+non fonctionnels ainsi que les acteurs. Par la suite, nous avons réalisé une conception pour
+notre projet. Dans le chapitre qui suit nous allons faire une initialisation du projet.
+20
+
+
+===== PAGE 32 =====
+
+Chapitre 3
+Sprint 0 : Initialisation du projet
+3.1
+Introduction
+Au cours de ce chapitre, nous allons présenter l’architecture logique et logicielle de
+la solution. Ensuite nous allons passer à l’environnement de travail pour expliquer les
+technologies utilisées.
+3.2
+Architecture de la solution
+Dans cette partie nous avons défini l’architecture logique et l’architecture logicielle
+propre à notre projet.
+3.2.1
+Architecture logique
+Dans notre application, nous envisageons d’adopter une architecture de type 3-tiers
+qui sera réparti en trois couches comme suit :
+— Couche 1 ( Site ) : Cette couche contient les interfaces permettant à l’utilisateur
+d’interagir avec l’application.
+— Couche 2 ( Serveur ) : Cette couche représente le serveur de l’application qui
+héberge toutes les couches de l’application à développer.
+— Couche 3 ( Base de données ) : Cette couche représente le côté base de don-
+nées de notre site qui sera une base de données PostgreSQL.
+Figure 3.10 – Architecture logique de l’application web
+21
+
+
+===== PAGE 33 =====
+
+Chapitre 3
+3.3. Environnement de travail
+3.2.2
+Architecture logicielle
+L’organisation du code source est assuré par le biais du modèle MVC ( Model/ View/
+Contoller). C’est une solution éprouvée et reconnue permettant de séparer l’affichage des
+informations( View ), les actions de l’utilisateur( Controller ) et l’accès aux données( Mo-
+del ). Son rôle est donc segmenter la logique du code en trois parties :
+— Modèle : Représente le coeur de l’application permettant de récupérer des don-
+nées brutes stockées dans notre base de données.
+— Vue : C’est la partie qui s’occupe des interactions avec l’utilisateur.
+— Contrôleur :
+Permet de gérer le dynamique de l’application en analysant les
+requêtes ainsi fait le lien entre l’utilisateur et le reste de l’application.
+La figure 3.11 schématise l’échange des informations entre les différentes éléments de
+l’architecture MVC.
+Figure 3.11 – Architecture logicielle de l’application web
+3.3
+Environnement de travail
+Dans cette partie, nous présenterons l’environnement matériel permettant de réaliser
+l’application, l’environnement de développement et logiciel permettant de développer les
+tâches du projet.
+3.3.1
+Environnement matériel
+Nous avons utilisé deux ordinateurs dont les configurations sont présentes dans le
+tableau 3.10 :
+22
+
+
+===== PAGE 34 =====
+
+Chapitre 3
+3.3. Environnement de travail
+Ordinateur
+HP
+HP
+Propriétaire
+Elaa Henchir
+Mohamed Houcine
+Processeur
+core i5
+core i5
+RAM
+12 Go
+8 Go
+Disque dur
+1 To
+500 Go
+Système d’exploitation
+Windows 10
+Windows 10
+Table 3.10 – Environnement matériel
+3.3.2
+Environnement de développement
+La table 3.11 ci dessous décrit les environnements de développement avec lesquels nous
+avons travaillé toute la durée du projet.
+Logo
+Environnements
+Présentation
+Visual Studio
+Visual Studio Code est un éditeur de code multi-
+plateforme, open source et gratuit développé par
+Microsoft. Il supporte plusieurs langages de pro-
+grammation tout en donnant la possibilité de télé-
+charger les langages non inclus par défaut [6].
+Postman
+Postman est une plateforme collaborative de déve-
+loppement des API. Il permet la création, le test
+et la modification des API. Nous avons ainsi testé
+les services Rest implémentés dans le BackEnd par
+cet outil [7].
+GitLab
+GitLab est une plateforme open source de colla-
+boration et de gestion de versions destinée aux
+développeurs de logiciels. Le développement de
+notre application étant réalisé sur deux ordina-
+teurs, donc nous avons bénéficié de la fonctionna-
+lité de gestion de versions de GitLab [8].
+Figma
+Figma est une application de conception d’inter-
+face qui offre tous les outils nécessaire pour la
+phase de conception du projet, y compris des outils
+vectoriels capables d’une illustration à part entière,
+ainsi que des capacités de prototypage [9].
+StarUML
+StarUML est un outil de modélisation logicielle
+open source qui prend en charge le cadre UML
+(Unified Modeling Language) pour la modélisation
+de systèmes et de logiciels [10].
+23
+
+
+===== PAGE 35 =====
+
+Chapitre 3
+3.3. Environnement de travail
+Microsoft Teams
+Microsoft Teams est une application qui fait par-
+tie de la suite Office 365 et permet aux équipes
+une collaboration dans le cloud. Elle offre, entre
+autres, des fonctionnalités de messagerie d’entre-
+prise, d’appel, de visioconférence et de partage de
+fichiers. Elle peut être utilisée par des entreprises
+de toutes tailles [11] .
+Overleaf
+Overleaf est un éditeur en ligne qui permet de sto-
+cker, éditer , gérer et compiler des projets Latex
+en ligne, où chaque projet peut être partagé entre
+plusieurs utilisateurs, en temps réel [12].
+Trello
+Trello est un outil de collaboration qui organise les
+projets en tableaux. En un coup d’œil, Trello in-
+dique l’environnement de travail. C’est comme un
+tableau blanc, rempli de listes de notes autocol-
+lantes, chaque note étant une tâche pour l’utilisa-
+teur et toute l’équipe [13] .
+Citrix Receiver
+Citrix Receiver est un programme qui opère
+comme une hôte d’applications en ligne. Elle nous
+permet de travailler à distance sans avoir à instal-
+ler aucune application sur nos ordinateurs [14].
+Table 3.11 – Environnement de développement
+3.3.3
+Environnement logiciel
+Afin de garantir un bon fonctionnement de l’application dans la partie frontend et
+backend, nous avons choisi de réaliser une application PERN ( PostgreSQL, Express,
+React et Node ).
+Le tableau 3.12 ci-dessous représente une description sur ces outils.
+Logo
+Outils
+Présentation
+PostgreSQL
+PostgreSQL un système de gestion de base de don-
+nées relationelle puissant et open source. Ce SGBD
+a été fondé par une communauté de développeurs
+et d’entreprises [15].
+Express
+Express.js est un framework d’application Web
+back-end pour Node.js, publié en tant que logiciel
+gratuit et open-source sous la licence MIT, conçu
+pour créer des applications Web et des API [16].
+24
+
+
+===== PAGE 36 =====
+
+Chapitre 3
+3.4. Conclusion
+React
+React est une bibliothèque JavaScript open source
+et libre. L’objectif principal de cette bibliothèque
+est de rendre la création d’applications Web d’une
+seule page plus facile en créant des composants liés
+à l’état et en générant une page HTML à chaque
+changement d’état [17].
+Node
+Node.js est un environnement d’exécution JavaS-
+cript open source et multiplateforme. Cet outil
+convient à de nombreux types de projets. Node.js
+exécute le moteur JavaScript V8 en dehors du na-
+vigateur, qui est au cœur de Google Chrome. Cela
+permet à Node.js de bien fonctionner [18].
+Table 3.12 – Environnement logiciel
+3.4
+Conclusion
+Dans ce chapitre, nous avons présenter l’architecture de la solution ainsi que l’envi-
+ronnement de travail de notre projet. Dans le chapitre suivant, nous entamons le dévelop-
+pement du Sprint 1.
+25
+
+
+===== PAGE 37 =====
+
+Chapitre 4
+Sprint 1 : Gestion des utilisateurs et
+leurs rôles
+4.1
+Introduction
+Ce chapitre fait l’objet d’une présentation du premier Sprint du projet qui comporte
+la gestion des utilisateurs et leurs rôles. Tout d’abord, nous allons commencer par la
+description des user stories et le Sprint backlog. Ensuite, nous allons représenter ces user
+stories en des diagrammes de conception. Enfn, nous présentons le travail réalisé et les
+résultats obtenus.
+4.2
+Étude et réalisation du Sprint 1 : Gestion des
+utilisateurs et les rôles
+Cette section comporte la partie du backlog du produit qui contient les différentes
+tâches réalisées tout au long de ce Sprint, la partie de conception composée des dia-
+grammes et ses description textuelles, et finalement la partie de réalisation et de testes
+des tâches.
+4.2.1
+Le backlog du Sprint 1
+Le tableau 4.13 représente le backlog produit du Sprint 1 :
+User story
+ID
+Tâches
+Estimation(J)
+En tant que : uti-
+lisateur, développeur
+ou administrateur, je
+peux m’authentifier.
+1.1
+Concevoir le diagramme de sé-
+quence du cas "s’authentifier".
+1
+1.2
+Développer le cas "s’authenti-
+fier"
+1
+1.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+26
+
+
+===== PAGE 38 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+En tant que adminis-
+trateur, je peux ajou-
+ter un utilisateur
+2.1
+Concevoir le diagramme de sé-
+quence du cas "Ajouter utilisa-
+teur".
+1
+2.2
+Développer le cas "Ajouter uti-
+lisateur".
+2
+2.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+En tant que adminis-
+trateur, je peux sup-
+primer un utilisateur.
+3.1
+Concevoir le diagramme de sé-
+quence du cas "supprimer utili-
+sateur".
+1
+3.2
+Développer le cas "supprimer
+utilisateur".
+2
+3.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+En tant que adminis-
+trateur, je peux mo-
+difier un utilisateur.
+4.1
+Concevoir le diagramme de sé-
+quence du cas "modifier utilisa-
+teur".
+1
+4.2
+Développer le cas "supprimer
+utilisateur".
+2
+4.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+En tant que adminis-
+trateur, je peux re-
+chercher un utilisa-
+teur.
+5.1
+Concevoir le diagramme de sé-
+quence du cas "rechercher utili-
+sateur".
+1
+5.2
+Développer le cas "rechercher
+utilisateur".
+2
+5.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+En tant que adminis-
+trateur, je peux ajou-
+ter une permission.
+6.1
+Concevoir le diagramme de sé-
+quence du cas "ajouter une per-
+mission".
+1
+6.2
+Développer le cas "ajouter une
+permission".
+2
+6.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+En tant que : uti-
+lisateur, développeur
+ou administrateur, je
+peux supprimer une
+permission.
+7.1
+Concevoir le diagramme de sé-
+quence du cas "supprimer per-
+mission".
+1
+7.2
+Développer le cas "supprimer
+permission"
+1
+7.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+27
+
+
+===== PAGE 39 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+En tant que : uti-
+lisateur, développeur
+ou administrateur, je
+peux
+modifier
+une
+permission.
+8.1
+Concevoir le diagramme de sé-
+quence du cas "supprimer per-
+mission".
+1
+8.2
+Développer le cas "supprimer
+permission"
+1
+8.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+En tant que : uti-
+lisateur, développeur
+ou administrateur, je
+peux gérer mon pro-
+fil.
+9.1
+Concevoir le diagramme de sé-
+quence du cas "modifier mot de
+passe".
+1
+9.2
+Développer le cas "gérer profil"
+1
+9.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+Table 4.13 – Backlog du produit : Sprint 1
+4.2.2
+Conception du Sprint 1
+Cette sous-section contient le digramme de cas d’utilisation raffiné du Sprint 1 suivi
+d’une description textuelle, le diagramme de classes et de séquences.
+4.2.2.1
+Diagramme de cas d’utilisation du Sprint 1
+Le diagramme de cas d’utilisation du Sprint 1 intitulé «Gestion des utilisateurs» est
+illustré ci-dessous :
+Figure 4.12 – Diagramme de cas d’utilisation global du Sprint 1
+28
+
+
+===== PAGE 40 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+Description textuelle de cas d’utilisation « s’authentifier »
+Le tableau 4.14 contient la description textuelle du cas d’utilisation « s’authentifier».
+Cas d’utilisation
+S’authentifier
+Acteurs
+Utilisateur/Developpeur/Administrateur
+Pré-condition
+L’utilisateur doit être inscrit dans la base de données et
+doit connaître ses identifiants
+Scénario principal
+Pour s’authentifier, l’utilisateur peut :
+- Saisir ses identifiants
+- Valider le formulaire
+Post-condition
+L’utilisateur accède à la page de bienvenue
+Table 4.14 – Description textuelle de cas d’utilisation « s’authentifier »
+4.2.2.2
+Diagramme de cas d’utilisation raffiné du Sprint 1 « Gérer les utili-
+sateurs »
+La figure 4.13 illustre le raffinement du cas d’utilisation « Gérer utilisateurs »
+Figure 4.13 – Diagramme de cas d’utilisation raffiné du Sprint 1 « Gérer les utilisateurs
+»
+Description textuelle de cas d’utilisation « Gérer les utilisateurs »
+Le tableau 4.15 comporte la description textuelle du cas d’utilisation « Gérer les utilisa-
+teurs ».
+29
+
+
+===== PAGE 41 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+Cas d’utilisation
+Gérer les utilisateurs
+Acteurs
+Administrateur
+Résumé
+L’administrateur peut gérer les utilisateurs.
+Pré-condition
+L’administrateur doit s’authentifier.
+Scénario principal
+Pour gérer les utilisateurs, l’administrateur peut consul-
+ter la listes des utilisateurs :
+- Ajouter un utilisateur
+- Modifier un utilisateur
+- Rechrecher un utilisateur
+- Supprimer un utilisateur
+Post-condition
+Mise à jours et affichage de la liste des utilisateurs
+Table 4.15 – Description textuelle de cas d’utilisation « Gérer utilisateurs »
+4.2.2.3
+Diagramme de cas d’utilisation raffiné du Sprint 1 « Gérer les per-
+missions »
+Le raffinement du cas d’utilisation « Gérer les permissions » est illustré dans la figure
+4014 ci-dessous :
+Figure 4.14 – Diagramme de cas d’utilisation raffiné du Sprint 1 « Gérer les permissions
+»
+30
+
+
+===== PAGE 42 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+Description textuelle de cas d’utilisation « Gérer les permissions »
+La description textuelle du cas d’utilisation « Gérer les permissions » est représenté dans
+le tableau 4.16 ci-dessous.
+Cas d’utilisation
+Gérer les permissions
+Acteurs
+Administrateur
+Résumé
+L’administrateur peut gérer les permissions.
+Pré-condition
+L’administrateur doit s’authentifier.
+Scénario principal
+Pour gérer les persmissions, l’administrateur peut :
+- Affecter une pérmission à un utilisateur
+- Supprimer une permission d’un utlilisateur
+Post-condition
+Mise à jours et affichage de la liste des permission pour
+chaque utilisateur.
+Table 4.16 – Description textuelle de cas d’utilisation « Gérer les permissions »
+4.2.2.4
+Diagramme de classes de Sprint 1
+Le diagramme de classes du Sprint 1 est illustré ci-dessous :
+— La classe Utilisateur : comporte les détails de chaque utilisateur comme le ID
+,le Nom , l’email et le mot de passe pour assurer l’authentification .
+— La classe Administrateur : cette classe hérite de la classe utilisateur mais elle
+se differe avec les ces méthodes spésifiques pour gérer les utilisateurs.
+— La classe Développeur : cette classe hérite de la classe utilisateur mais elle se
+differe avec les ces méthodes spésifiques pour gérer un projet ADL .
+Figure 4.15 – Diagramme de classes du Sprint 1
+31
+
+
+===== PAGE 43 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+4.2.2.5
+Diagramme de séquence Sprint 1
+On a présenté dans le diagramme de séquence ci-dessous le processus d’authentification
+d’un utilisateur dés la saisie de son login et son mot de passe jusqu’à l’accès à l’interface
+de bienvenue. Ceci est valable pour tous les acteurs. La figure 4.16 montre le diagramme
+de séquence pour le cas d’utilisation « s’authentifier ».
+Figure 4.16 – Diagramme de séquence « S’authentifier »
+32
+
+
+===== PAGE 44 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+Diagramme de séquence « Gérer les utilisateurs »
+* Ajouter un utilisateur
+Dans ce diagramme, on décrit l’interaction entre l’administrateur et le système lors de
+l’ajout d’un utilisateur, en tenant compte que pour qu’un administrateur puisse ajouter
+un utilisateur, il doit être connecté.
+La figure 4.17 représente le diagramme de séquence pour le cas d’utilisation « Ajouter un
+utilisateur ».
+Figure 4.17 – Diagramme de séquence « Ajouter un utilisateur » du Sprint 1
+33
+
+
+===== PAGE 45 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+Diagramme de séquence « Gérer les utilisateurs »
+* Modifier un utilisateur
+Ce diagramme décrit l’interaction entre l’administrateur, l’interface liste des utilisateur,
+le contrôleur et l’entité lors de la modification d’un utilisateur, en tenant compte que
+l’administrateur doit être connecté.
+La figure 4.18 illustre le diagramme de séquence pour le cas d’utilisation « Modifier un
+utilisateur ».
+Figure 4.18 – Diagramme de séquence « Modifier un utilisateur » du Sprint 1
+34
+
+
+===== PAGE 46 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+Diagramme de séquence « Gérer les utilisateurs »
+* Supprimer un utilisateur
+La suppression d’un utilisateur passe par 3 niveaux , l’envoi de la demande de l’adminis-
+trateur vers le contrôleur qui va générer une requête vers l’entité pour faire la suppression
+et finalement une réponse le contrôleur est généré pour faire l’affichage nécessaire.
+La figure 4.19 représente le diagramme de séquence pour le cas d’utilisation « Supprimer
+un utilisateur ».
+Figure 4.19 – Diagramme de séquence « Supprimer un utilisateur » du Sprint 1
+35
+
+
+===== PAGE 47 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+Diagramme de séquence « Gestion des utilisateurs »
+* Modification du mot de passe
+La figure 4.20 montre le diagramme de séquence du cas d’utilisation « Modifier mot
+de passe ».
+Figure 4.20 – Diagramme de séquence « Modifier mot de passe » du Sprint 1
+36
+
+
+===== PAGE 48 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+4.2.3
+Réalisation du Sprint 1
+Dans cette sous-section, nous illustrons les différentes interfaces réalisées dans ce
+Sprint.
+4.2.3.1
+Interface « Login »
+La figure 4.21 représente la première interface pour l’authentification. Cette interface
+permet à l’utilisateur d’accéder à l’application
+Figure 4.21 – Interface « Authentification »
+4.2.4
+Interface « Gérer utilisateurs »
+La figure 4.22 montre l’interface de « Gérer utilisateurs ». Cette interface contient
+la liste des utilisateurs et les actions permettant d’ajouter, modifier ou supprimer un
+utilisateurs.
+Figure 4.22 – Interface « Gérer utilisateurs »
+37
+
+
+===== PAGE 49 =====
+
+Chapitre 4
+4.2. Étude et réalisation du Sprint 1 : Gestion des utilisateurs et les rôles
+4.2.5
+Interface « Ajout utilisateur »
+La figure 4.23 représente le formulaire de l’interface « Ajout utilisateur ». Cette inter-
+face permet à l’administrateur d’ajouter un utlisateur
+Figure 4.23 – Interface « Ajout utilisateur »
+4.2.6
+Test et validation du Sprint 1
+Test avec Postman
+La figure 4.24 représente le résultat de test d’ajout d’un utilisateur avec postman.
+Figure 4.24 – Test de cas d’ajout d’un utilisateur
+38
+
+
+===== PAGE 50 =====
+
+Chapitre 4
+4.3. Conclusion
+Le tableau 4.17 illustre les scénarios des tests effectué durant ce Sprint :
+Cas de test
+Démarche
+Comportement de-
+mandé
+Résultats
+Test
+d’authentification
+L’utilisateur s’authen-
+tifie en saisissant des
+données invalides
+Le système affiche un
+message d’erreur
+Conforme
+à
+la
+demande.
+L’utilisateur s’authen-
+tifie en saisissant des
+données manquantes.
+Le système affiche un
+message d’erreur.
+Conforme
+à
+la
+demande.
+L’utilisateur s’authen-
+tifie en saisissant des
+données valides.
+Le système affiche la
+page d’accueil.
+Conforme
+à
+la
+demande.
+Test d’ajout
+d’un utilisateur
+L’administrateur
+n’a
+pas
+rempli
+tous
+les
+champs du formulaire
+d’ajout d’utilisateur
+Le système affiche un
+message d’erreur.
+Conforme
+à
+la
+demande.
+L’administrateur rem-
+pli tous les champs
+du formulaire d’ajout
+d’utilisateur
+- Le système affiche un
+message de succès.
+- Mise à jours et af-
+fichage de la liste des
+utilisateurs.
+Conforme
+à
+la
+demande.
+Après avoir vérifié le bon fonctionnement du code et ses fonctionnalités, le deuxième
+livrable a été testé par le Product Owner. Ainsi, il nous a transmis des améliorations à
+effectuer, des fonctionnalités à ajouter et des bugs à signaler.
+4.3
+Conclusion
+Au cours de ce chapitre, nous avons réalisé le deuxième Sprint qui permet de développer
+le module « Gestion des utilisateurs » et le module « Gestion des rôles » en rédigeant sa
+conception. Dans le chapitre suivant, nous entamons le développement du Sprint 2.
+39
+
+
+===== PAGE 51 =====
+
+Chapitre 5
+Sprint 2 : Gestion d’un projet ADL
+5.1
+Introduction
+Ce chapitre est dédié pour la réalisation et la présentation du Sprint 2, dans lequel nous
+présentons l’analyse et la spécifications des besoins pour ce Sprint ainsi que la conception
+de chaque cas d’utilisation en utilisant des diagrammes qui modélisent leurs fonctionne-
+ments.
+5.2
+Etude et réalisation du Sprint 2 : Gestion d’un
+projet ADL
+Cette section contient une partie pour le backlog du produit où on trouve les différentes
+fonctionnalités présentent dans ce Sprint, une partie pour la conception du Sprint 2 où
+on trouve les diagrammes de cas d’utilisation, de classes et de séquence, et une dernière
+partie pour le test et validation de chaque fonctionnalité réalisée.
+5.2.1
+Le backlog du Sprint 2
+Lors de la sélection des user stories du Sprint 2, nous devons garder à l’esprit la priorité
+de chaque user story que nous avons configurée lorsque nous avons établi notre product
+backlog.
+Le tableau 5.19 illustre le backlog du produit du Sprint 2 :
+User story
+ID
+Tâches
+Estimation(J)
+En tant que dévelop-
+peur, je peux Créer
+un projet ADL.
+1.1
+Concevoir le diagramme de cas
+d’utilisation, séquence du cas
+"créer un projet ADL".
+1
+1.2
+Développer le cas "créer pro-
+jet ADL" et Automatisation de
+la génération d’un fichier texte
+contenant le code ADL de la
+squelette du projet.
+1
+1.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+40
+
+
+===== PAGE 52 =====
+
+Chapitre 5
+5.2. Etude et réalisation du Sprint 2 : Gestion d’un projet ADL
+En tant que dévelop-
+peur, je peux modi-
+fier un projet ADL.
+2.1
+Concevoir le diagramme de cas
+d’utilisation, séquence du cas
+"modifier un projet ADL".
+2
+2.2
+Développer le cas "modifier un
+projet ADL".
+1
+1.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+En tant que dévelop-
+peur, je peux suppri-
+mer un projet ADL.
+3.1
+Concevoir le diagramme de cas
+d’utilisation, séquence du cas
+"supprimer un projet ADL".
+2
+3.2
+Développer le cas "supprimer un
+projet ADL".
+1
+3.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+En tant que dévelop-
+peur, je peux Ajou-
+ter un composant à la
+banque des champs.
+4.1
+Concevoir le diagramme de cas
+d’utilisation, séquence du cas
+"ajouter un composant".
+2
+4.2
+Développer le cas "ajouter un
+composant"
+1
+4.3
+Développement des composants
+ADL.
+2
+4.4
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+En tant que déve-
+loppeur, je peux mo-
+difier un composant
+de
+la
+banque
+des
+champs.
+5.1
+Concevoir le diagramme de cas
+d’utilisation, séquence du cas
+"Modifier un composant".
+2
+5.2
+Développer le cas " Modifier un
+composant"
+1
+5.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+En tant que dévelop-
+peur, je peux sup-
+primer un composant
+de
+la
+banque
+des
+champs.
+6.1
+Concevoir le diagramme de cas
+d’utilisation, séquence du cas
+"supprimer un composant".
+2
+6.2
+Développer le cas "supprimer un
+composant"
+1
+6.3
+Tester le fonctionnement de la
+partie frontend et backend.
+1
+Table 5.17 – Backlog du produit : Sprint 2
+41
+
+
+===== PAGE 53 =====
+
+Chapitre 5
+5.2. Etude et réalisation du Sprint 2 : Gestion d’un projet ADL
+5.2.2
+Conception du Sprint 2
+Dans cette partie, nous présenterons la description textuelle, le diagramme de cas
+d’utilisation détaillé, le diagramme de classes des principaux cas d’utilisation du Sprint 2
+et les diagrammes de séquence système avec la partie réalisation de chaque cas.
+5.2.2.1
+Diagramme de cas d’utilisation Sprint 2
+La figure 5.25 représente le diagramme de cas d’utilisation du Sprint 2.
+Figure 5.25 – Diagramme de cas d’utilisation global du Sprint 2
+Description textuelle de cas d’utilisation « Gérer un projet ADL »
+Le tableau 5.20 contient la description textuelle du cas d’utilisation « Gérer un projet
+ADL ».
+Cas d’utilisation
+Gérer projet ADL
+Acteurs
+Développeur
+Résumé
+Le développeur peut gérer un projet ADL.
+Pré-condition
+Le développeur doit authentifier.
+Sénario principal
+Pour gérer un projet ADL, l’utilisateur peut :
+- Créer un projet ADL
+- Consulter un projet ADL
+Post-condition
+Génération automatique d’un fichier texte contenant le
+code ADL du projet.
+Table 5.18 – Description textuelle de cas d’utilisation « Gérer un projet ADL »
+42
+
+
+===== PAGE 54 =====
+
+Chapitre 5
+5.2. Etude et réalisation du Sprint 2 : Gestion d’un projet ADL
+Description textuelle de cas d’utilisation « Gérer la banque des champs »
+Le tableau 5.21 contient la description textuelle du cas d’utilisation « Gérer la banque
+des champs ».
+Cas d’utilisation
+Gérer la banque des champs
+Acteurs
+Développeur
+Résumé
+Le développeur peut gérer la banque des champs.
+Pré-condition
+Le développeur doit authentifier.
+Sénario principal
+Pour gérer un projet ADL, l’utilisateur peut :
+- Ajouter un composant de la palette
+- Modifier un composant de la palette
+- Supprimer un composant de la palette
+Post-condition
+Mettre à jours la liste des composants
+Table 5.19 – Description textuelle de cas d’utilisation « Gérer la banque des champs »
+5.2.2.2
+Diagramme de cas d’utilisation raffiné du Sprint 2 « Gérer un projet
+ADL »
+La figure 5.26 décrit le raffinement du cas d’utilisation « Gérer un projet ADL »
+Figure 5.26 – Diagramme de cas d’utilisation raffiné du Sprint 2 « Gérer un projet ADL
+»
+43
+
+
+===== PAGE 55 =====
+
+Chapitre 5
+5.2. Etude et réalisation du Sprint 2 : Gestion d’un projet ADL
+Description textuelle de cas d’utilisation « Gérer un projet ADL »
+Le tableau 5.22 contient la description textuelle du cas d’utilisation raffiné « Gérer un
+projet ADL ».
+Cas d’utilisation
+Gérer projet ADL
+Acteurs
+Développeur
+Résumé
+Le développeur peut gérer un projet ADL.
+Pré-condition
+Le développeur doit authentifier.
+Sénario principal
+Pour gérer un projet ADL, l’utilisateur peut :
+- Créer un projet ADL
+- Ouvrir un projet ADL
+- Modifier un projet ADL
+- Supprimer un projet ADL
+Post-condition
+Génération automatique d’un fichier texte contenant le
+code ADL du projet.
+Table 5.20 – Description textuelle de cas d’utilisation raffiné « Gérer un projet ADL »
+5.2.2.3
+Diagramme de classes du Sprint 2
+La figure 5.27 illustre la structure statique du Sprint 2 schématisé dans un diagramme
+de classes. Ce diagramme est composé de 3 classes d’où :
+— La classe Projet ADL : permet de représenter les détails d’un projet lors de la
+création car chaque projet se caractérise par un ID , un nom de projet , la date de
+création et aussi il faut sauvegarder le nom de développeur qui a fait la création.
+— La classe Composant :
+permet de représenter les composants ADL qui sont
+identifiés par un ID. Chaque composant a un son propre nom, sa propre représen-
+tation graphique, son type et l’emplacement du fichier qui contient son code en
+ADL.
+Figure 5.27 – Diagramme de classes du Sprint 2
+44
+
+
+===== PAGE 56 =====
+
+Chapitre 5
+5.2. Etude et réalisation du Sprint 2 : Gestion d’un projet ADL
+5.2.2.4
+Diagramme de séquence Sprint 2
+Dans cette partie, nous allons illustrer l’aspect dynamique des opérations représentées
+dans le diagramme de classes à l’aide des diagrammes de séquences.
+Diagramme de séquence « Gérer la banque des champs »
+* Ajouter un composant
+Le diagramme de séquence ci-dessous présente le processus d’interaction entre le déve-
+loppeur, l’interface, les contrôleurs et l’entité lors de l’ajout d’un nouveau composant, en
+tenant compte qu’il doit être connecté pour ajouter un composant. La figure 5.28 illustre
+l’interaction entre l’acteur et le système lors de l’ajouter un composant :
+Figure 5.28 – Diagramme de séquence « Ajouter un composant »
+45
+
+
+===== PAGE 57 =====
+
+Chapitre 5
+5.2. Etude et réalisation du Sprint 2 : Gestion d’un projet ADL
+* Supprimer un composant
+Pour supprimer un composant le développeur doit tout d’abord s’authentifier. Puis il ac-
+cède à l’interface de la liste des composants pour qu’il puisse envoyer ses demandes.
+La figure 5.29 décrit l’interaction entre l’acteur, l’interface, le contrôleur et l’entité com-
+posant lors de la suppression d’un composant :
+Figure 5.29 – Diagramme de séquence « Supprimer un composant »
+46
+
+
+===== PAGE 58 =====
+
+Chapitre 5
+5.2. Etude et réalisation du Sprint 2 : Gestion d’un projet ADL
+Diagramme de séquence « Gérer un projet ADL »
+* Enregistrer un projet ADL
+Le contrôleur « file » interagit avec l’entité « code » pour récupérer les données du fichier
+contenant le code ADL. Puis le contrôleur file retourne comme réponse le code ADL chargé
+dans l’éditeur qui se trouve dans l’interface code. Après cette interaction, le développeur
+peut peut télécharger son code à travers l’interaction entre l’interface, le contrôleur et
+l’entité. La figure 5.30 décrit cette interaction :
+Figure 5.30 – Diagramme de séquence « Enregistrer un projet ADL »
+47
+
+
+===== PAGE 59 =====
+
+Chapitre 5
+5.2. Etude et réalisation du Sprint 2 : Gestion d’un projet ADL
+5.2.3
+Réalisation du Sprint 2
+Dans cette partie, nous représentons les interfaces permettant de créer un projet ADL,
+une nouvelle procédure, un nouvel écran et de gérer la banque des champs.
+5.2.3.1
+Interface « Ouvrir projet ADL »
+La figure 5.31 illustre l’interface « Listes des projets ADL ». Cette interface permet
+au developpeur d’ouvrir un projet déja existant.
+Figure 5.31 – Interface « Ouvrir un projet ADL »
+5.2.3.2
+Interface « Créer projet ADL »
+Cette interface permet au developpeur de créer un nouveau projet
+Figure 5.32 – Interface « Créer projet ADL »
+48
+
+
+===== PAGE 60 =====
+
+Chapitre 5
+5.2. Etude et réalisation du Sprint 2 : Gestion d’un projet ADL
+5.2.3.3
+Interface « Listes des composants ADL »
+Cette interface contient la liste des composants et les actions permettant d’ajouter,
+modifier , supprimer ou dupliquer un composant.
+Figure 5.33 – Interface « Listes des composants ADL »
+5.2.3.4
+Interface « Modifier un composant ADL »
+Cette interface contient la partie code du composant et les actions permettant modifier
+ce composant.
+Figure 5.34 – Interface « Modifier un composant ADL »
+49
+
+
+===== PAGE 61 =====
+
+Chapitre 5
+5.2. Etude et réalisation du Sprint 2 : Gestion d’un projet ADL
+5.2.4
+Test et validation du Sprint 1
+Test avec Postman
+La figure 5.35 montre le résultat de test d’ajout d’un composant avec postman.
+Figure 5.35 – Test de cas d’ajout d’un composant
+La figure 5.36 représente le résultat de test d’ajout d’un écran avec postman.
+Figure 5.36 – Test de cas d’ajout d’un ecran
+50
+
+
+===== PAGE 62 =====
+
+Chapitre 5
+5.3. Conclusion
+Le tableau 4.17 illustre les scénarios des tests effectués durant ce Sprint :
+Cas de test
+Démarche
+Comportement
+demandé
+Résultats
+Test
+de
+gestion
+de
+la
+palette des compo-
+sant
+L’utilisateur
+ajoute un com-
+posant
+déja
+existant
+Le système af-
+fiche un message
+d’erreur
+Conforme
+à
+la
+demande.
+L’utilisateur
+ajoute un com-
+posant
+qui
+n’existe pas
+Le système l’af-
+fiche dans la liste
+des composants.
+Conforme
+à
+la
+demande.
+L’utilisateur
+supprime
+un
+composant.
+Le
+système
+le
+supprime de la
+liste des compo-
+sants.
+Conforme
+à
+la
+demande.
+Test de gestion
+de Projet ADL
+L’utilisateur
+ouvre un projet
+déja existant
+Le système af-
+fiche le code de
+projet dans l’édi-
+teur.
+Conforme
+à
+la
+demande.
+L’utilisateur
+supprime
+un
+projet
+-Le
+système
+le
+supprime de la
+liste des projets.
+Conforme
+à
+la
+demande.
+Table 5.21 – Les scénarios de tests
+5.3
+Conclusion
+Au cours de ce cinquième chapitre, nous avons exposé la conception, la réalisation et
+le test du Sprint 2. Le prochain chapitre est réservé à présenter le dernier Sprint.
+51
+
+
+===== PAGE 63 =====
+
+Chapitre 6
+Sprint 3 : Automatisation du code
+6.1
+Introduction
+Au cours de ce chapitre, nous allons principalement nous intéresser à la fonctionnalité
+la plus importante de notre projet. Tout comme le Sprint précédent, nous procéderons
+par étapes afin d’éviter d’ignorer une partie de ce Sprint
+6.2
+Etude et réalisation du Sprint 3 : Automatisation
+du code.
+Dans cette section, nous présentons le backlog du Sprint 3, sa conception contenant
+des diagrammes et des descriptions textuelles. Puis, nous passons à la partie réalisation
+et quelques interfaces graphiques pour ce Sprint.
+6.2.1
+Le backlog du Sprint 3
+Le tableau 6.24 ci-dessous montre le backlog du produit du Sprint 3.
+User story
+ID
+Tâches
+Estimation(J)
+En tant que dévelop-
+peur, automatiser la
+génération du code
+ADL.
+1.1
+Développement de la partie ba-
+ckend
+1
+1.2
+- Développement d’une sque-
+lette standard du code ADL.
+- Génération d’un fichier dans la
+partie backend contenant cette
+squelette.
+1
+1.3
+Création automatique d’un fi-
+chier dans la partie backend
+contenant une copie la squelette
+avec des modification spécifique
+du nouveau projet ADL
+2
+52
+
+
+===== PAGE 64 =====
+
+Chapitre 6
+6.2. Etude et réalisation du Sprint 3 : Automatisation du code.
+En tant que dévelop-
+peur, automatiser la
+génération du code
+ADL.
+1.4
+- Intégration du fichier conte-
+nant la squelette spécifique du
+projet dans l’éditeur de code.
+- Affichage du code de la sque-
+lette crée dans l’éditeur de code.
+1
+1.5
+Tester
+le
+fonctionnement
+de
+l’automatisation.
+1
+En tant que déve-
+loppeur, je peux ma-
+nipuler l’éditeur de
+code.
+2.1
+Création de l’interface de l’édi-
+teur de code.
+2
+2.2
+Intégration de l’éditeur de code.
+1
+2.3
+Tester
+le
+fonctionnement
+de
+l’editeur,
+la
+synchronisation
+avec la partie drag and drop et
+l’automatisation de code ADL.
+1
+En tant que dévelop-
+peur, je peux créer
+des
+interfaces
+gra-
+phiques via drag and
+drop.
+3.1
+- Création de l’interface conte-
+nant la palette des composants
+et l’écran pour le drag and drop.
+- Développement de la partie
+backend.
+1
+3.2
+Création de la fonction de drag
+and drop et faire la relation avec
+la partie de l’automatisation de
+code.
+1
+3.3
+tester le fonctionnement de drag
+and drop et la synchronisation
+avec l’automatisation
+1
+Table 6.22 – Backlog du produit : Sprint 3
+6.2.2
+Conception du Sprint 3
+Dans cette sous-section, nous exposons la conception du Sprint 3. Nous ommençons
+par le diagramme de cas d’utilisation, puis le diagramme de classes et nous fissons par le
+diagramme de séquences.
+6.2.2.1
+Diagramme de cas d’utilisation Sprint 3
+La figure 6.37 représente le diagramme de cas d’utilisation du Sprint 3.
+53
+
+
+===== PAGE 65 =====
+
+Chapitre 6
+6.2. Etude et réalisation du Sprint 3 : Automatisation du code.
+Figure 6.37 – Diagramme de cas d’utilisation global du Sprint 3
+6.2.2.2
+Diagramme de cas d’utilisation raffiné du Sprint 3 « Automatiser la
+génération du code ADL »
+La figure 6.38 illustre le diagramme de cas d’utilisation raffinée « Automatiser la
+génération du code ADL » du Sprint 3.
+Figure 6.38 – Diagramme de cas d’utilisation raffinée « Automatiser la génération du
+code ADL » du Sprint 3
+54
+
+
+===== PAGE 66 =====
+
+Chapitre 6
+6.2. Etude et réalisation du Sprint 3 : Automatisation du code.
+Description textuelle de cas d’utilisation « Automatiser la génération du code ADL »
+Cas d’utilisation
+Automatiser code ADL
+Acteurs
+Développeur
+Résumé
+Le développeur peut automatiser l’écriture du code
+ADL.
+Pré-condition
+Le développeur doit s’authentifier.
+Sénario principal
+Pour gérernérer automatquement le code ADL, le deve-
+loppeur doit :
+- Séléctionner une composante a partir de la palette
+- Faire un glissement de la composante de la palete vers
+l’écran
+Post-condition
+Les parties du code associées à la composante choisie
+seront ajouté à leurs emplacement exacte dans le code
+principale
+Table 6.23 – Description textuelle de cas d’utilisation « Automatiser la génération du
+code ADL »
+Description textuelle de cas d’utilisation « Manipuler l’éditeur de code »
+Cas d’utilisation
+Manipuler l’éditeur de code
+Acteurs
+Développeur
+Résumé
+Le développeur peut gérer la banque des champs.
+Pré-condition
+Le développeur doit s’authentifier.
+Sénario principal
+Pour gérer l’éditeur de code, le developpeur peut :
+- Modifier le code existant
+- Ajouter des lignes de code
+- Supprimer le code existant
+Post-condition
+Mettre à jours la liste des composants
+Table 6.24 – Description textuelle de cas d’utilisation « Manipuler l’éditeur de code »
+55
+
+
+===== PAGE 67 =====
+
+Chapitre 6
+6.2. Etude et réalisation du Sprint 3 : Automatisation du code.
+6.2.2.3
+Diagramme de classes du Sprint 3
+La figure 6.39 illustre la structure statique du Sprint 3 schématisé dans un diagramme
+de classes.
+— La classe Code ADL : permet de représenter les détails du programme ADL que
+l’n veux crée qui se caractérise par un ID , un nom de procedure , nom d’écran et
+aussi le nom de fichier qui sera généré dans la partie backend pour asuré l’automati-
+sation de l’écriture de code , cette classe est une composition de classe Projet ADL .
+— La classe Graphique : permet de représenter l’interface où la partie drag and
+drop des composante ADL sera exécuté , cette classe est une composition de classe
+Projet ADL .
+Figure 6.39 – Diagramme de classes du Sprint 3
+56
+
+
+===== PAGE 68 =====
+
+Chapitre 6
+6.2. Etude et réalisation du Sprint 3 : Automatisation du code.
+6.2.2.4
+Diagramme de séquence Sprint 3
+Diagramme de séquence « Automatiser la génération du code »
+A travers l’interface « Design », le développeur peut interagir avec le contrôleur et
+l’entité « Code ADL » pour enfin obtenir les composants et son code adéquat en ADL.
+La figure 6.40 représente le diagramme de séquence pour le cas d’utilisation « Automatiser
+de la génération du code ».
+Figure 6.40 – Diagramme de séquence « Automatiser la génération du code »
+57
+
+
+===== PAGE 69 =====
+
+Chapitre 6
+6.2. Etude et réalisation du Sprint 3 : Automatisation du code.
+Diagramme de séquence « Manipuler de l’éditeur de code »
+La figure 6.41 représente le diagramme de séquence pour le cas d’utilisation « Mani-
+pulation de l’éditeur de code ».
+Figure 6.41 – Diagramme de séquence « Manipuler l’éditeur de code »
+58
+
+
+===== PAGE 70 =====
+
+Chapitre 6
+6.2. Etude et réalisation du Sprint 3 : Automatisation du code.
+6.2.3
+Réalisation du Sprint 3
+Cette sous-section, contient comme première partie une description du fonctionnement
+de l’automatisation. Une deuxième partie pour le développement d’une squelette du code
+ADL et une dernière partie pour la présentation des interfaces.
+6.2.3.1
+Déscription du fonctionnement de l’automatisation
+— En première étape le développeur doit donner comme paramétre un nom de pro-
+cedure et un nom d’écran qui seront exploitées pour faire la création d’un nouveau
+fichier qui contient une squelette standard du code ADL mais avecles données déja
+saisies.
+— En deuxieme étape le développeur accéde à l’interface de design où il va faire la
+création de son interface du code ADL à travers les composants présent dans la
+palette , le développeur va faire un glissement de chaque composant qu’il veut
+l’ajouter de la palette vers la partie de création à ce moment une fonction va étre
+executé dans la partie backend pour ajouter chaque bout de code ADL qui constitue
+le composant dans son emplacement exacte dans le fichier texte crée précédament
+qui contient la squelette généré en fonction des parametres saisies (Nom écran et
+Nom procédure ), le contenu de ce fichier sera afficher dans l’éditeur de code alors
+le developpeur peut faire des modification manuellement.
+— Finalement le developpeur peut avoir une copie de ce code généré en cliquant sur
+le boutton télécharger.
+6.2.3.2
+Interface « Éditeur de code »
+La figure 6.41 est une représentation de l’interface de l’éditeur de code permettant au
+développeur d’écrire un code ADL.
+Figure 6.42 – Interface « Éditeur de code »
+59
+
+
+===== PAGE 71 =====
+
+Chapitre 6
+6.3. Conclusion
+6.2.3.3
+Interface « Drag and Drop des composants »
+Dans cette interface le développeur peut créer son propre écran via drag drop des
+composants présent dans la palette.
+Figure 6.43 – Interface « Design »
+6.2.4
+Test et validation du Sprint 3
+Le tableau 6.27 contient les cas de tests effectué au cours le Sprint 3.
+Cas de test
+Démarche
+Comportement de-
+mandé
+Résultats
+Test
+automatiser la gé-
+nération
+du
+code
+ADL
+Le
+développeur
+fait un drag and
+drop des compo-
+sants ADL
+- Le système affiche
+le composant ajouté
+dans
+l’interface
+de
+création
+- Le système insére
+avec précission le code
+du composant dans le
+fichier de la squelette
+initiale de projet.
+Conforme
+à
+la
+de-
+mande.
+Test de
+manipulation
+de
+l’éditeur de code
+Le
+développeur
+accéde au code
+généré.
+Le système affiche le
+code généré dans l’édi-
+teur.
+Conforme
+à
+la
+de-
+mande.
+Table 6.25 – Les scénarios de tests
+6.3
+Conclusion
+Dans ce chapitre, nous avons terminé le dernier Sprint de notre application en traitant
+les détails de la réalisation de notre Sprint et en montrant les différentes interfaces.
+60
+
+
+===== PAGE 72 =====
+
+Conclusion Générale
+Le présent document est une présentation du travail réalisé durant notre stage de fin
+d’études au sein de la société « NeoXam Tunisie ». Il détaille toutes les étapes par les-
+quelles nous sommes passées pour arriver au résultat attendu. Nous avons essayé tout au
+long de notre travail de construire notre application incrément par incrément en se basant
+sur la méthodologie Scrum.
+D’un point de vue technologique, cette application nous a permis d’appliquer les
+connaissances théoriques acquises pendant les années d’études, d’améliorer ses connais-
+sances et notamment de modéliser des systèmes.
+Le projet est représenté sous forme d’une application « Web» qui permettra aux
+équipes de NeoXam de développer son propre code ADL, de créer des interfaces gra-
+phiques à travers drag and drop et d’enregistrer les modifications du code dans un fichier
+ADL. Ceci est dans le but de faciliter aux développeurs la création des projets ADL.
+Nous avons débuté par comprendre le contexte général du projet puis nous sommes
+passés par l’analyse et l’identification des besoins fonctionnels et non fonctionnels et la
+traduction de ces besoins en scénarios applicables dans le contexte des technologies du
+monde de développements logiciels. Ensuite, Nous avons préparé un planning de travail
+en respectant les priorités des besoins déjà fixés avec l’équipe Scrum.
+Pour y parvenir, il nous a fallu, dans un premier temps développer la partie de l’au-
+thentification, ensuite l’éditeur de code qui est nécessaire pour le code ADL. Cette partie
+nous a permis de nous approfondir dans la théorie de langage. Par ailleurs, nous avons
+développé un squelette standard du code ADL pour les composants.
+Ce projet a été très enrichissant puisqu’il nous a permis de découvrir et d’adopter de
+nouvelles technologies ( PostgreSQL, ExpressJS, NodeJS, ReactJS ). Finalement, notre
+travail ne s’arrête pas à ce niveau. En effet, l’élaboration d’un compilateur de code qui
+permettra de compiler le code ADL dans le même environnement de développement est
+nécessaire pour améliorer la fiabilité et la certitude du processus effectué.
+61
+
+
+===== PAGE 73 =====
+
+Bibliographie
+[1] NeoXam. https://www.linkedin.com/company/neoxam-tunisie/mycompany/.
+[2] Pierre-Alain Muller and Nathalie Gaertner. Modélisation objet avec UML, volume
+514. Eyrolles Paris, 2000.
+[3] Damien Pollet. Une architecture pour les transformations de modèles et la restructu-
+ration de modèles UML. PhD thesis, Université Rennes 1, 2005.
+[4] Chantal Morley, Jean Hugues, Bernard Leblanc, and Olivier Hugues. Processus mé-
+tiers et systèmes d’information : évaluation, modélisation, mise en oeuvre.-2e édition.
+Dunod, 2007.
+[5] Pierre-Alain Muller and Nathalie Gaertner. Modélisation objet avec UML, volume
+514. Eyrolles Paris, 2000.
+[6] Visual Studio. https://framalibre.org/content/visual-studio-code.
+[7] Postman. https://practicalprogramming.fr/postman.
+[8] GitLab. https://www.blogdumoderateur.com/tools/gitlab/.
+[9] Figma. https://www.usabilis.com/figma-outil-dexcellence-vos-design-systems/.
+[10] StarUML.
+https://inf1410.teluq.ca/teluqDownload.php?file=2014/01/
+INF1410-PresentationStarUML.pdf.
+[11] Teams. https://www.lemagit.fr/definition/Microsoft-Teams.
+[12] OverLeaf. https://bioinfo-fr.net/creez-vos-documents-collaboratifs-latex.
+[13] Trello.
+https://outilscollaboratifs.com/2012/01/
+trello-outil-dorganisation-collaboratif-2/.
+[14] Citrix. https://www.citrix.com/fr-fr/products/receiver.html.
+[15] PostgreSQL.
+https://www.oracle.com/fr/database/definition-postgresql.
+html.
+[16] ExpressJS. https://expressjs.com/fr/.
+[17] AM Vipul and Prathamesh Sonpatki. ReactJS by Example-Building Modern Web
+Applications with React. Packt Publishing Ltd, 2016.
+[18] Basarat Ali Syed and Martin Bean. Beginning Node. js. Springer, 2014.
+62

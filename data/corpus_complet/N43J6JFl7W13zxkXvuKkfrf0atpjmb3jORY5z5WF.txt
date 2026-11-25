@@ -1,0 +1,2864 @@
+===== PAGE 1 =====
+
+ 
+République Tunisienne 
+ 
+Université de Monastir 
+Ministère de l’Enseignement Supérieur et 
+Institut Supérieur d’Informatique de 
+de la Recherche Scientifique 
+Mahdia 
+MEMOIRE 
+N° d’ordre: LBC-BI-3-2025- 
+021 
+MEMOIRE 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+Effectué à 
+Rose Blanche Group 
+ 
+En vue de l’obtention du diplôme de 
+ 
+Licence Business Computing : Business Intelligence 
+Licence Business Computing : Business Intelligence 
+Elaboré par : 
+ 
+Riani Ilyes, Fhal Wejden 
+ 
+ 
+Conception et Développement d'une Application Web de Gestion et 
+Visualisation des KPI pour le Suivi des Performances Industrielles 
+ 
+Soutenu le : 16 juin 2025 
+devant le jury composé de : 
+ 
+ 
+ 
+Président 
+          : Ghannay Sana 
+Rapporteur 
+           : Hassairi Walid 
+Encadreur Académique 
+           : Bsir Bassem 
+Encadrant  Professionnel 
+           : Chaouch Rabeb 
+ 
+ 
+Année universitaire 2024 - 2025 
+
+
+===== PAGE 2 =====
+
+Dédicaces
+Je dédie ce travail :
+À ma famille en général,parents, pour leur amour infini, leurs sacrifices, et leur
+soutien permanent tout au long de mon parcours scolaire et universitaire.
+À ma mère, pour sa bienveillance constante et sa présence réconfortante dans les
+moments de doute, pour ses conseils précieux qui m’ont souvent éclairé, pour sa patience,
+son amour infini et son soutien moral inestimable.
+À mes chers amis sans exception, pour l’amitié qui nous a unis, pour les merveilleux
+souvenirs et les bons moments que nous avons vécus ensemble.
+Wejden
+
+
+===== PAGE 3 =====
+
+Dédicace
+Je dédie ce travail à tous ceux qui ont marqué mon parcours d’une manière
+précieuse et inoubliable.
+À ma grande et petite famille, pour l’amour sincère, la chaleur et la force qu’elle
+m’a toujours transmis.
+À mes chères sœurs, Amira et Balsem, pour leur affection, leur présence rassurante
+et les moments de complicité partagés.
+À mes parents, pour leurs innombrables sacrifices, leur soutien indéfectible et leurs
+encouragements constants qui ont été la clé de ma persévérance.
+À mes amis de l’Institut, pour les souvenirs inoubliables, les échanges enrichissants
+et l’esprit de solidarité qui nous a unis.
+Un remerciement tout particulier à Rimel Chaouch, pour sa collaboration précieuse,
+son engagement et son esprit d’équipe tout au long de cette aventure.
+Ilyes Riani
+i
+
+
+===== PAGE 4 =====
+
+Remerciements
+Je tiens à exprimer ma profonde reconnaissance à mon encadrant, M. Bsir Bassem, pour
+son accompagnement constant, sa disponibilité, ses conseils avisés ainsi que la confiance
+qu’il m’a accordée tout au long de ce projet de fin d’études.
+Mes remerciements vont également à Mme Chaouech Rabeb, ma tutrice de stage, pour
+son soutien indéfectible, sa patience et son aide précieuse face aux différents défis
+rencontrés durant cette expérience professionnelle.
+Je souhaite également saluer le travail de mon binôme, Riani Ilyes, pour son
+engagement, sa réactivité et son esprit collaboratif qui ont grandement contribué à la
+réussite de notre mission.
+Ma gratitude va aussi à ma famille mes parents mes sœurs et mes deux frères pour leur
+soutien moral, leur encouragement permanent et leur présence bienveillante, qui ont été
+essentiels dans la réalisation de ce projet.
+Enfin, j’adresse mes plus sincères remerciements aux membres du jury, Mme Sana
+Ghannay et M. Walid Hassairi, pour l’honneur qu’ils m’ont fait en acceptant d’évaluer
+ce travail.
+Wejden
+ii
+
+
+===== PAGE 5 =====
+
+Remerciements
+Je tiens à exprimer ma profonde reconnaissance à mon encadrant, M. Bsir Bassem, pour
+son accompagnement constant, sa disponibilité, ses conseils avisés ainsi que la confiance
+qu’il m’a accordée tout au long de ce projet de fin d’études.
+Mes remerciements vont également à Mme Chaouech Rabeb, ma tutrice de stage, pour
+son soutien indéfectible, sa patience et son aide précieuse face aux différents défis
+rencontrés durant cette expérience professionnelle.
+Je souhaite également saluer le travail de ma binôme, Fhal Wejden, pour son sérieux,
+son implication et l’excellente collaboration dont elle a fait preuve tout au long de notre
+mission commune.
+Enfin, j’adresse mes plus sincères remerciements aux membres du jury, Mme Sana
+Ghannay et M. Walid Hassairi, pour l’honneur qu’ils m’ont fait en acceptant d’évaluer
+ce travail.
+Ilyes Riani
+iii
+
+
+===== PAGE 6 =====
+
+Abstract
+This report presents the development of a comprehensive decision-making solution for monitoring
+and analyzing industrial performance. The project relies on automated data collection through
+Microsoft 365, SharePoint, and Power BI, enabling continuous integration of production files.
+A star schema model is then implemented to structure the data warehouse and ensure efficient
+analysis. Dynamic dashboards are created and customized to meet business needs, integrating key
+performance indicators such as OEE, quality, and availability. Additionally, a predictive model
+based on an LSTM network is developed to forecast production trends. This report highlights
+the contribution of modern Business Intelligence and Artificial Intelligence tools in enhancing
+decision-making processes.
+Keywords : Power BI, dashboards, LSTM, Business Intelligence, deep learning.
+iv
+
+
+===== PAGE 7 =====
+
+Résumé
+Ce rapport présente le développement d’une solution décisionnelle complète pour le suivi et
+l’analyse de la performance industrielle. Le projet s’appuie sur une automatisation de la collecte
+de données via Microsoft 365, SharePoint et Power BI, permettant une intégration continue
+des fichiers de production. Une modélisation en étoile est ensuite mise en place pour structurer
+l’entrepôt de données et assurer une analyse efficace. Des tableaux de bord dynamiques sont
+créés et personnalisés selon les besoins métiers, intégrant des indicateurs clés tels que le TRS,
+la qualité et la disponibilité. En complément, un modèle prédictif basé sur un réseau LSTM
+est développé afin d’anticiper les tendances de production. Ce rapport met en évidence l’apport
+des outils modernes de Business Intelligence et d’Intelligence Artificielle dans l’amélioration des
+processus décisionnels.
+Keywords : Power BI, tableaux de bord, LSTM, Business Intelligence, apprentissage
+profond.
+v
+
+
+===== PAGE 8 =====
+
+Table des matières
+Introduction générale
+1
+1
+Contexte Général
+2
+1
+Présentation Organisme d’accueil . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.1
+Présentation de Warda . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Présentation de Pâtes Warda
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.3
+Pâtes Warda dans l’échelle international
+. . . . . . . . . . . . . . . . . . . . .
+4
+1.4
+Initiatives et partenariats internes . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2
+Cadre du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2.1
+Étude de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+2.2
+Problématique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+2.3
+Solutions actuellement en place . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+2.4
+Proposition de solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+2.5
+Bénéfices attendus
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+2.6
+Objectifs du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+3
+Méthodologie
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+3.1
+Approche Agile retenue . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+4
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2
+Sprint 0
+11
+1
+Analyse et spécification des besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.1
+Identification des parties prenantes . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.2
+Besoins fonctionnels
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.3
+Besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2
+Organisation de l’architecture logicielle . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.1
+Architecture en trois niveaux : interface, logique, données . . . . . . . . . . . .
+14
+2.2
+Architecture de modèle MVC
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+3
+Planification du traitement des cas d’utilisation
+. . . . . . . . . . . . . . . . . . . . .
+16
+3.1
+Exigences et priorités . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+vi
+
+
+===== PAGE 9 =====
+
+3.2
+Gestion des risques . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+4
+Méthodologie SCRUM et gestion du projet . . . . . . . . . . . . . . . . . . . . . . . .
+16
+4.1
+Rôles dans l’équipe SCRUM . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+4.2
+Backlog produit global . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+4.3
+Diagramme de Gantt du projet
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+4.4
+Environnement logiciel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+5
+Architecture physique de l’application . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+3
+Sprint 1
+22
+1
+Phase ETL : Extraction, Transformation, Chargement . . . . . . . . . . . . . . . . . .
+23
+1.1
+Pré-Traitement des données . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2
+Automatisation des Processus de Traitement Données . . . . . . . . . . . . . . . . . .
+26
+2.1
+Reporting automatisé via Microsoft 365 et Power BI
+. . . . . . . . . . . . . .
+26
+2.2
+Traitement de données avec Power Query . . . . . . . . . . . . . . . . . . . . .
+28
+3
+Modélisation des Données dans Power BI . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.1
+Chargement et transformation dans Power BI
+. . . . . . . . . . . . . . . . . .
+30
+3.2
+Modèles de conception d’un Data Warehouse . . . . . . . . . . . . . . . . . . .
+30
+3.3
+Table de faits . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.4
+Tables de dimensions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+4
+Sprint 2
+36
+1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+2
+Backlog du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+3
+Indicateurs Clés de Performance (KPI) . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.1
+TRS (Taux de Rendement Synthétique)
+. . . . . . . . . . . . . . . . . . . . .
+38
+3.2
+Taux de rendement global (TRG) . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.3
+Taux de disponibilité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.4
+Taux de performance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.5
+Taux de qualité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.6
+Taux de rupture de stock des références stratégiques . . . . . . . . . . . . . . .
+39
+3.7
+Taux de service fournisseur (OTIF Fournisseur) . . . . . . . . . . . . . . . . .
+40
+vii
+
+
+===== PAGE 10 =====
+
+3.8
+Taux de productivité de la MOD
+. . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4
+Conception des Tableaux de Bord avec Power BI . . . . . . . . . . . . . . . . . . . . .
+40
+4.1
+Importance stratégique de Power BI . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.2
+Page Production
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.3
+Page Empaquetage . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.4
+Page Déchets
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.5
+Page Maintenance
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.6
+Page Ventes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.7
+Page Achats . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+5
+Connexion aux Données et Actualisation Automatique
+. . . . . . . . . . . . . . . . .
+44
+5.1
+Déclenchement planifié du flux . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+5.2
+Filtrage des e-mails pertinents . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+5.3
+Création automatique de fichiers dans SharePoint . . . . . . . . . . . . . . . .
+46
+6
+Système d’Alerte
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+7
+Publication et Diffusion des Rapports . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+8
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+5
+Sprint 3
+49
+1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+2
+Backlog – Sprint 3
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+3
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+3.1
+Diagramme global des cas d’utilisation . . . . . . . . . . . . . . . . . . . . . .
+51
+3.2
+Cas d’utilisation «Authentification» . . . . . . . . . . . . . . . . . . . . . . . .
+52
+3.3
+Cas d’utilisation «Gestion des utilisateurs» . . . . . . . . . . . . . . . . . . . .
+54
+3.4
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+3.5
+Diagramme de séquence
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+4
+Déploiement de l’application web
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+5
+Implémentation du modèle prédictif LSTM . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.1
+Description des données
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.2
+Architecture du modèle LSTM . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.3
+Phase d’entraînement du modèle
+. . . . . . . . . . . . . . . . . . . . . . . . .
+62
+viii
+
+
+===== PAGE 11 =====
+
+5.4
+Évaluation du modèle
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+5.5
+Résultats
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+Conclusion Générale
+68
+Webographie
+69
+ix
+
+
+===== PAGE 12 =====
+
+Table des figures
+1.1
+Logo de la société Warda . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Exemple de fichier Excel utilisés pour la consolidation des données . . . . . . . . . . .
+6
+1.3
+Exemple de graphique réalisé dans un rapport Excel . . . . . . . . . . . . . . . . . . .
+6
+1.4
+Méthodologie Scrum
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.1
+Type d’architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.2
+Architecture MVC
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.3
+Diagramme de Gantt
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.4
+Architecture physique de la chaîne de traitement des données . . . . . . . . . . . . . .
+21
+3.1
+Illustration du processus ETL . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.2
+Extrait du code VBA . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.3
+Exemple script Python pour la segmentation des tableaux
+. . . . . . . . . . . . . . .
+26
+3.4
+Vue de la bibliothèque de documents sur SharePoint . . . . . . . . . . . . . . . . . . .
+26
+3.5
+Connexion à une liste SharePoint dans Power BI . . . . . . . . . . . . . . . . . . . . .
+27
+3.6
+Reconnaissance d’un fichier Excel par SharePoint
+. . . . . . . . . . . . . . . . . . . .
+27
+3.7
+Combinaison des tableaux dans Power Query . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.8
+Fusion des tables ayant une structure similaire . . . . . . . . . . . . . . . . . . . . . .
+29
+3.9
+Création de colonnes techniques pour les relations . . . . . . . . . . . . . . . . . . . .
+29
+3.10 Modèle en étoile . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.11 Modèle en flocon de neige
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.12 Modèle en constellation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.13 Modélisation en étoile dans Power BI . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.1
+Schéma d’analyse du TRS et des pertes . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+4.2
+Questions clés à considérer lors de la création d’un rapport Power BI
+. . . . . . . . .
+41
+4.3
+Exemple de page Production . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.4
+Exemple de page Empaquetage
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.5
+Exemple de page Déchets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.6
+Exemple de page Maintenance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+x
+
+
+===== PAGE 13 =====
+
+4.7
+Exemple de page Ventes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.8
+Exemple de page Achats . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.9
+mise a jour automatique des données . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.10 Planification du flux Power Automate . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.11 Sélection des e-mails selon des critères définis
+. . . . . . . . . . . . . . . . . . . . . .
+46
+4.12 Création automatisée des fichiers dans SharePoint . . . . . . . . . . . . . . . . . . . .
+46
+4.13 Exemple d’alerte configurée dans Power BI
+. . . . . . . . . . . . . . . . . . . . . . .
+47
+4.14 Partage sécurisé des rapports via Power BI Service. . . . . . . . . . . . . . . . . . . .
+47
+5.1
+Diagramme de cas d’utilisation global de l’application Warda.
+. . . . . . . . . . . . .
+52
+5.2
+Diagramme de cas d’utilisation : Authentification. . . . . . . . . . . . . . . . . . . . .
+53
+5.3
+Diagramme de cas d’utilisation : Gestion des utilisateurs. . . . . . . . . . . . . . . . .
+54
+5.4
+Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+5.5
+Diagramme de séquence : Authentification . . . . . . . . . . . . . . . . . . . . . . . .
+56
+5.6
+Diagramme de séquence : Gestion des utilisateurs. . . . . . . . . . . . . . . . . . . . .
+57
+5.7
+Interface de connexion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+5.8
+Tableau de bord principal
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.9
+Section dédiée aux rapports Power BI . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.10 Exemple de tableau de bord de production (Power BI)
+. . . . . . . . . . . . . . . . .
+60
+5.11 Interface de gestion des utilisateurs . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+5.12 Architecture du modèle LSTM à deux couches pour la prédiction de séries temporelles
+62
+5.13 Évolution de la fonction de perte pendant l’entraînement . . . . . . . . . . . . . . . .
+64
+5.14 Comparaison entre les valeurs réelles et les valeurs prédites . . . . . . . . . . . . . . .
+65
+5.15 Interface utilisateur pour l’accès aux prédictions . . . . . . . . . . . . . . . . . . . . .
+66
+xi
+
+
+===== PAGE 14 =====
+
+Liste des tableaux
+1.1
+Différences entre l’utilisation d’un tableau de bord et d’Excel . . . . . . . . . . . . . .
+7
+1.2
+Évolution du système avant et après la mise en place de la solution
+. . . . . . . . . .
+8
+2.2
+Outils de développement et de visualisation
+. . . . . . . . . . . . . . . . . . . . . . .
+19
+3.1
+Table de faits : Production . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.2
+Table de dimension : Machine . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.3
+Table de dimension : Date . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.4
+Table de dimension : Déchet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.5
+Table de dimension : Arrêt . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+4.1
+Backlog du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+5.1
+Backlog du Sprint – Application Web et Modèle LSTM . . . . . . . . . . . . . . . . .
+50
+5.2
+Description du cas d’utilisation : Authentification . . . . . . . . . . . . . . . . . . . .
+53
+5.3
+Description du cas d’utilisation : Gestion des utilisateurs . . . . . . . . . . . . . . . .
+54
+xii
+
+
+===== PAGE 15 =====
+
+Liste des abréviations
+—
+BI
+=
+Business Intelligence
+—
+CSS
+=
+Cascading Style Sheets
+—
+DAX
+=
+Data Analysis Expressions
+—
+ERP
+=
+Enterprise Resource Planning
+—
+ETL
+=
+Extract, Transform, Load
+—
+HTML =
+Hyper Text Markup Language
+—
+KPI
+=
+Key Performance Indicator
+—
+LSTM
+=
+Long Short-Term Memory
+—
+ML
+=
+Machine Learning
+—
+MVC
+=
+Model-View-Controller
+—
+PHP
+=
+Hypertext Preprocessor
+— SCRUM=
+Méthodologie agile SCRUM
+—
+SQL
+=
+Structured Query Language
+—
+VBA
+=
+Visual Basic for Applications
+xiii
+
+
+===== PAGE 16 =====
+
+Introduction générale
+Afin d’assurer le bon déroulement du projet, une méthode de travail agile a été choisie, en
+utilisant plus précisément la méthodologie SCRUM. Le développement a été divisé en plusieurs étapes
+appelées "sprints", chacune ayant des objectifs précis et des résultats attendus. Voici un aperçu des
+grandes phases du projet.
+Tout d’abord, une présentation de l’entreprise Pâtes Warda est faite. Elle permet de mieux
+comprendre le contexte, les difficultés liées à l’utilisation des données actuelles, ainsi que les besoins
+de l’entreprise. Cette partie définit aussi les objectifs du projet et les solutions envisagées.
+Ensuite, les spécifications techniques et fonctionnelles du projet sont établies. Les personnes
+impliquées sont identifiées, et l’architecture logicielle ainsi que les outils de développement à utiliser
+sont présentés.
+La phase suivante concerne le traitement des données. Un processus complet ETL est mis en
+place afin de préparer les données et garantir leur fiabilité avant de les utiliser dans Power BI.
+Puis, des tableaux de bord dynamiques sont créés avec Power BI. Ils sont adaptés aux besoins
+des utilisateurs, les mises à jour sont automatisées, et leur publication est sécurisée pour permettre
+un accès simple et sûr aux informations.
+Par la suite, une application web est développée à l’aide du framework Symfony. Elle regroupe
+les tableaux de bord et intègre un modèle de prédiction basé sur les réseaux de neurones LSTM pour
+anticiper les performances futures.
+Enfin, un résumé global du projet est proposé. Il met en valeur les résultats obtenus, montre
+en quoi la solution aide à prendre de meilleures décisions, et suggère des idées pour améliorer encore
+le système à l’avenir.
+1
+
+
+===== PAGE 17 =====
+
+Chapitre 1
+Contexte Général
+
+
+===== PAGE 18 =====
+
+Chapitre 1. Contexte Général
+Introduction
+Ce premier chapitre établit le cadre général de notre étude en présentant l’environnement
+organisationnel et sectoriel de Pâtes Warda. Il met en lumière les enjeux stratégiques qui motivent
+notre projet de conception d’une application web de gestion et visualisation des KPI pour le suivi
+des performances industrielles.
+1
+Présentation Organisme d’accueil
+1.1
+Présentation de Warda
+Warda est membre du groupe Rose Blanche, une société tunisienne spécialisée dans la sélection,
+la transformation et la distribution du blé et de ses produits dérivés.
+• Création : 1997
+• Domaine d’activité : Agroalimentaire
+• Capacité de production : 520 tonnes par jour
+• Produits agroalimentaires : Pâtes longues, pâtes coupées, couscous et pâtes spéciales.
+Figure 1.1 : Logo de la société Warda
+1.2
+Présentation de Pâtes Warda
+Les produits Pâtes Warda se caractérisent par leur élaboration à partir de 100%de semoule de
+blé dur, rigoureusement choisie. En alliant des équipements de production modernes aux méthodes
+artisanales, l’entreprise propose une vaste sélection de produits répondant aux exigences de sa
+clientèle : pâtes longues, pâtes courtes, couscous et variétés spécifiques. En raison de ses efforts
+continus en matière d’innovation et de son dévouement à la qualité, Pâtes Warda est désormais
+3
+
+
+===== PAGE 19 =====
+
+Chapitre 1. Contexte Général
+considérée comme une marque emblématique tant en Tunisie qu’à l’international.
+1.3
+Pâtes Warda dans l’échelle international
+Pâtes Warda a décidé d’adopter une stratégie d’expansion internationale, ce qui permet à ses
+produits d’être disponibles dans plus de 40 pays. L’entreprise prend part régulièrement à des salons
+prestigieux tels qu’ANUGA, Gulfood et SIAL, ce qui lui permet de promouvoir son expertise et
+de solidifier sa présence sur les marchés internationaux. Son objectif principal est de consolider sa
+position de leader tout en satisfaisant les diverses attentes des consommateurs à l’échelle mondiale.
+1.4
+Initiatives et partenariats internes
+Pâtes Warda s’engage dans plusieurs initiatives destinées à améliorer ses performances opérati-
+onnelles et à élargir sa gamme de produits dans le cadre de son développement constant. Ces
+initiatives reposent sur des collaborations stratégiques et l’implémentation de solutions contemporaines
+dans des secteurs tels que l’amélioration des processus de production, l’efficacité énergétique et la
+gestion des déchets. L’entreprise s’efforce de maintenir sa position de leader en adoptant une démarche
+respectueuse de l’environnement et en répondant aux attentes de sa clientèle.
+2
+Cadre du projet
+Dans cette partie nous présentons le contexte et la finalité du projet. Il s’agit d’une étape
+cruciale dans la gestion de projet, car elle permet de déterminer clairement les attentes et les
+exigences, ainsi que les contraintes.
+2.1
+Étude de l’existant
+Nous ne pouvons pas commencer ce travail sans avoir une idée nette et précise sur le système
+existant. C’est pour cela que nous allons consacrer cette rubrique à l’étude de l’existant afin de
+comprendre le déroulement du métier, en conséquence on va révéler ces failles et ses limites qui nous
+aideront à son tour de perfectionner notre solution.
+Au sein du cellule du Warda, tout le travail concernant la productivité, le déroulement des
+produits, et le calcul des certaines valeurs se fait manuellement et seulement à l’intermédiaire du
+logiciel Excel. Les employées reçoivent quotidiennement une update sous forme de fichier Excel par
+4
+
+
+===== PAGE 20 =====
+
+Chapitre 1. Contexte Général
+mail et les traitent un par un manuellement et cela pose un vrai problème en matière de temps,
+d’effort et de fiabilité.
+2.2
+Problématique
+Malgré la disponibilité de données issues des différentes activités de l’entreprise, celles-ci sont
+souvent sous-utilisées ou dispersées dans divers systèmes, rendant difficile une analyse globale et
+centralisée. Cela entraîne des défis majeurs.
+— L’analyse du système actuel montre plusieurs problèmes :
+• Données fragmentées entre différents systèmes non interconnectés
+• Délais importants pour générer des rapports de performance
+• Visualisations statiques limitant l’analyse approfondie
+• Difficulté à identifier rapidement les dérives de production
+— La direction identifie plusieurs besoins essentiels à améliorer :
+• Accès en temps réel aux indicateurs clés
+• Capacité à croiser automatiquement différentes dimensions d’analyse
+• Détection précoce des écarts par rapport aux objectifs
+2.3
+Solutions actuellement en place
+Actuellement, les responsables de production collectent quotidiennement les données brutes
+issues des ateliers. Ces informations sont saisies à la main dans des fichiers Excel distincts, chacun
+correspondant à une ligne de production. En fin de semaine, le service méthodes regroupe l’ensemble
+de ces fichiers pour produire une synthèse . Celle-ci est ensuite utilisée pour générer des graphiques
+simples, présentés lors des réunions de pilotage.
+Ce mode de fonctionnement présente plusieurs limites. La saisie manuelle entraîne un taux
+d’erreur estimé entre 5 et 8 %, selon un audit interne. De plus, la gestion des versions devient
+rapidement difficile, car les fichiers circulent sans véritable suivi. Enfin, il n’existe aucune traçabilité
+des modifications, ce qui complique la vérification des données ou la correction des erreurs.
+La figure 1.2 ci-dessous illustre deux exemples concrets de fichiers Excel utilisés dans ce
+processus.
+5
+
+
+===== PAGE 21 =====
+
+Chapitre 1. Contexte Général
+Figure 1.2 : Exemple de fichier Excel utilisés pour la consolidation des données
+L’entreprise s’appuie également sur des rapports Excel pour suivre ses indicateurs de performance.
+Ces rapports sont élaborés à partir de données exportées manuellement depuis l’ERP, puis exploitées
+à l’aide de formules personnalisées dans Excel.
+Une fois les données saisies, des tableaux et graphiques sont générés de façon manuelle.
+Ce processus exige une mise à jour régulière, ce qui mobilise beaucoup de temps et augmente le
+risque d’erreurs. Le système manque de réactivité et ne permet pas une analyse fluide et rapide des
+performances.
+La figure 1.3 présente un exemple typique de graphique issu de ces rapports Excel.
+Figure 1.3 : Exemple de graphique réalisé dans un rapport Excel
+6
+
+
+===== PAGE 22 =====
+
+Chapitre 1. Contexte Général
+2.4
+Proposition de solution
+La solution envisagée repose sur la mise en place d’un tableau de bord interactif développé avec
+Power BI, connecté à une application web Symfony. Cette architecture permettra de centraliser les
+données, de fiabiliser les analyses et de fournir une visualisation claire et dynamique des indicateurs
+clés.
+L’objectif principal est de passer d’un fonctionnement manuel sous Excel à une solution
+automatisée, plus conviviale et adaptée au suivi en temps réel. La comparaison ci-dessous illustre les
+différences majeures entre les deux approches.
+Table 1.1 : Différences entre l’utilisation d’un tableau de bord et d’Excel
+Critères
+Tableaux de bord
+Excel
+Convivialité
+Intuitive
+Basique
+Données
+Temps réel
+Saisie manuelle
+Analyse
+Avancée
+Limitée
+Partage
+Facile
+Restreint
+Automatisation
+Oui
+Non
+2.5
+Bénéfices attendus
+L’intégration de cette solution apportera plusieurs améliorations concrètes : les données seront
+centralisées, leur mise à jour automatisée, et les analyses plus performantes. Les utilisateurs auront
+accès à une visualisation en temps réel et pourront bénéficier d’outils de prévision intégrés grâce au
+machine learning. Cela permettra également de réduire le temps consacré aux rapports et d’améliorer
+la prise de décision au quotidien.
+Le tableau suivant met en évidence les changements attendus avant et après la mise en œuvre
+de la solution.
+7
+
+
+===== PAGE 23 =====
+
+Chapitre 1. Contexte Général
+Table 1.2 : Évolution du système avant et après la mise en place de la solution
+Critères
+Avant
+Après
+Données
+Dispersées
+Centralisées
+Mise à jour
+Manuelle
+Automatique
+Décision
+Historique
+Temps réel
+Prévision
+Absente
+Intégrée
+2.6
+Objectifs du projet
+Ce projet poursuit plusieurs objectifs complémentaires qui visent à optimiser la gestion et
+l’analyse des données au sein de l’entreprise.
+Tout d’abord, un des objectifs principaux est la création d’un tableau de bord interactif
+permettant de suivre efficacement la production et les ventes. Pour ce faire, les indicateurs les
+plus pertinents ont été sélectionnés, puis représentés sous forme de graphiques dynamiques grâce
+à l’outil Power BI. Cette visualisation interactive rend les données plus compréhensibles et facilite
+leur interprétation par les utilisateurs.
+Ensuite, le projet inclut le développement d’une application web accessible, conçue à l’aide du
+framework Symfony et des technologies telles que Twig, HTML, CSS et Bootstrap. Cette application
+centralise l’ensemble des données, les rend consultables depuis une interface simple et ergonomique, et
+intègre le tableau de bord Power BI via un lien sécurisé. Cela permet un accès direct aux informations,
+en temps réel, depuis un seul point d’entrée.
+Enfin, une dimension prédictive a été ajoutée au projet grâce à l’intégration d’un modèle
+d’intelligence artificielle. Ce modèle, basé sur le Machine Learning, exploite les données historiques
+issues de Power BI pour anticiper les évolutions futures des performances. Il offre ainsi un appui
+précieux pour la prise de décisions stratégiques, en permettant de prévenir d’éventuels problèmes et
+d’orienter les actions à venir.
+8
+
+
+===== PAGE 24 =====
+
+Chapitre 1. Contexte Général
+3
+Méthodologie
+Dans cette section, nous décrivons l’approche adoptée pour structurer notre travail de manière
+efficace et rigoureuse. Cette méthode facilite l’organisation des étapes de conception, de développement
+et de documentation. Pour cela, nous avons choisi une démarche Agile, en particulier le cadre de
+travail appelé SCRUM.
+3.1
+Approche Agile retenue
+Les méthodes Agiles sont des approches de gestion de projet basées sur un développement
+itératif, incrémental et souple. Depuis la publication du Manifeste Agile en 2001, ces pratiques se
+sont imposées dans le domaine du développement logiciel, mais aussi dans d’autres secteurs. Elles
+permettent de mieux répondre aux attentes des utilisateurs, d’améliorer la productivité et de livrer
+des résultats concrets dans des délais réduits.
+3.1.1
+Présentation de SCRUM
+SCRUM est l’un des cadres Agiles les plus utilisés. Proposé pour la première fois en 1995 par
+Ken Schwaber, il a été formalisé en 2001 en collaboration avec Mike Beedle. Cette méthode consiste
+à diviser le projet en cycles courts appelés sprints. Chaque sprint, d’une durée fixe (souvent entre
+une et quatre semaines), permet de produire une version fonctionnelle du produit.
+Le sprint débute par une planification des tâches à accomplir. Une fois le sprint terminé, une
+démonstration du travail réalisé est organisée. Ensuite, une réunion de rétrospective permet à l’équipe
+d’analyser les points à améliorer avant le sprint suivant.
+3.1.2
+Les rôles dans SCRUM
+Trois rôles essentiels structurent l’organisation SCRUM :
+— Product Owner (Responsable produit) : Il définit les besoins du client, gère les priorités
+et alimente le backlog avec les fonctionnalités à développer.
+— Scrum Master (Facilitateur) : Il accompagne l’équipe au quotidien, élimine les obstacles et
+s’assure que le cadre SCRUM est respecté, sans exercer de pouvoir hiérarchique.
+— Équipe de développement : Composée généralement de 2 à 10 personnes, elle est responsable
+de la conception et du développement du produit de manière autonome.
+9
+
+
+===== PAGE 25 =====
+
+Chapitre 1. Contexte Général
+3.1.3
+Déroulement d’un sprint
+Le processus SCRUM suit un cycle bien défini. Il commence par une réunion de planification
+qui fixe les objectifs du sprint. Chaque jour, une courte réunion (daily meeting) permet de faire
+le point sur l’avancement. À la fin du sprint, une revue est organisée pour présenter les résultats
+obtenus, suivie d’une rétrospective qui vise à améliorer les pratiques pour les sprints suivants. Ce
+cycle se répète jusqu’à l’achèvement du projet.
+Figure 1.4 : Méthodologie Scrum
+4
+Conclusion
+Ce chapitre a permis de poser les bases du projet en présentant le contexte organisationnel
+de Pâtes Warda ainsi que les limites du système actuel de gestion des performances. L’analyse
+de l’existant a mis en évidence le besoin d’une solution moderne, centralisée et automatisée. La
+plateforme proposée vise à répondre à ces enjeux en facilitant le suivi des indicateurs clés, en
+améliorant l’analyse des données et en soutenant la prise de décision. Le choix d’une méthodologie
+agile, en particulier SCRUM, garantit une mise en œuvre progressive, flexible et centrée sur les besoins
+réels de l’entreprise.
+10
+
+
+===== PAGE 26 =====
+
+Chapitre 2
+Sprint 0
+
+
+===== PAGE 27 =====
+
+Chapitre 2. Sprint 0
+Étude préalable et spécification des besoins
+Introduction
+Ce chapitre a pour but de présenter les objectifs poursuivis par le projet, ainsi que les services
+concernés et leurs attentes spécifiques. Une analyse approfondie des besoins, aussi bien fonctionnels
+que non fonctionnels, est menée afin d’assurer la cohérence de la solution avec les exigences métier.
+Nous aborderons également l’architecture générale retenue ainsi que les technologies choisies pour la
+mise en œuvre du système décisionnel.
+1
+Analyse et spécification des besoins
+Cette étape constitue le base du projet, car elle permet de recueillir et de formaliser les besoins
+exprimés par les différentes parties prenantes. Elle comprend l’identification des acteurs clés et la
+définition des exigences fonctionnelles et non fonctionnelles.
+1.1
+Identification des parties prenantes
+Les parties prenantes correspondent aux entités ou individus qui interagissent directement
+avec le système ou qui sont impactés par son fonctionnement. Dans le cadre de notre étude, les
+principaux intervenants sont les suivants :
+Responsable Production : Responsable de la fabrication des produits, ce service s’appuie
+sur des indicateurs de performance pour optimiser la chaîne de production, limiter les pertes et
+garantir la conformité des produits finis.
+Responsable Logistique : Chargé de la gestion des stocks, les flux d’approvisionnement et
+la distribution. L’exploitation des données opérationnelles lui permet de suivre les niveaux de stock
+en temps réel, planifier les livraisons et améliorer la chaîne logistique.
+Responsable Commercial : Chargé du suivi des ventes, analyse les performances commerciales
+à travers des tableaux de bord. Il identifie les produits les plus vendus selon les zones géographiques,
+ajuste la stratégie marketing et améliore la rentabilité.
+Responsables de Décision : Les dirigeants et cadres stratégiques ont besoin d’une vue
+d’ensemble consolidée de l’activité afin d’orienter les choix à long terme. Les indicateurs clés et
+12
+
+
+===== PAGE 28 =====
+
+Chapitre 2. Sprint 0
+rapports analytiques leur fournissent les éléments nécessaires à la prise de décision.
+1.2
+Besoins fonctionnels
+Les besoins fonctionnels désignent les principales fonctionnalités que le système doit offrir pour
+répondre aux attentes des utilisateurs :
+— Tableaux de bord interactifs : Conception de tableaux de bord permettant d’afficher, de
+manière claire et dynamique, les indicateurs clés de performance (KPI) propres à chaque service.
+— Prévisions automatisées : Intégration d’un système de prévision basé sur des techniques de
+Machine Learning, afin d’anticiper les évolutions futures et aider à la prise de décision.
+— Mise à jour en temps réel : Actualisation immédiate des données pour suivre en direct
+l’évolution des indicateurs et améliorer la réactivité opérationnelle.
+— Partage et export des rapports : Possibilité de générer, partager et exporter les tableaux de
+bord via une application web sécurisée, pour faciliter l’échange d’informations entre les services.
+1.3
+Besoins non fonctionnels
+Ces besoins concernent les qualités que la solution doit posséder pour garantir un fonctionnement
+optimal, durable et sécurisé :
+Rapidité : Le système doit être capable de répondre rapidement, même lorsqu’il traite de
+grandes quantités de données.
+Sécurité : Il est important d’assurer la protection des données en mettant en place des
+mécanismes d’authentification et de chiffrement afin d’éviter tout accès non autorisé.
+Facilité d’utilisation : L’interface doit être simple à comprendre et à utiliser, même pour
+des utilisateurs non techniques.
+Évolutivité : La solution doit pouvoir s’adapter facilement à de futurs besoins, comme l’ajout
+de nouvelles fonctionnalités ou de nouveaux indicateurs.
+Fiabilité : Le système doit fonctionner de manière stable, sans interruptions fréquentes, et
+permettre une utilisation continue.
+Qualité des données : Les données utilisées doivent être fiables, cohérentes et bien organisées,
+même si elles proviennent de sources différentes.
+13
+
+
+===== PAGE 29 =====
+
+Chapitre 2. Sprint 0
+Clarté des rapports : Les résultats présentés dans les tableaux de bord doivent être faciles
+à lire et à comprendre par tous les utilisateurs.
+Facilité de maintenance : Le système doit être conçu de manière à pouvoir être mis à jour
+ou corrigé rapidement, avec un minimum d’efforts.
+Accessibilité : L’application doit être disponible à tout moment pour ses utilisateurs, sans
+coupures importantes.
+2
+Organisation de l’architecture logicielle
+2.1
+Architecture en trois niveaux : interface, logique, données
+Pour organiser le développement de notre application, nous avons choisi une architecture en
+trois couches, suivant le modèle client-serveur. Cette structure rend le code plus clair, facilite le
+travail en équipe et permet de faire évoluer ou corriger le système plus facilement. Le traitement côté
+serveur est assuré par le framework Symfony (PHP), tandis que les données sont gérées avec MySQL.
+Couche interface (présentation) : C’est la partie visible par l’utilisateur. Elle lui permet
+d’interagir avec l’application via des pages web, des champs à remplir ou des boutons.
+Couche logique (métier) : Elle gère le fonctionnement interne du système. Symfony s’occupe
+ici de recevoir les demandes des utilisateurs, d’appliquer les règles prévues et d’agir en conséquence.
+Couche données (accès à la base) : Elle sert de lien avec la base MySQL. Elle permet de
+lire, enregistrer, modifier ou supprimer les informations, tout en respectant les règles de sécurité.
+L’interaction entre les différentes parties du système peut être résumée ainsi :
+— Le client : Il agit à travers l’interface (par exemple en remplissant un formulaire) et reçoit une
+réponse adaptée, comme une page ou un message.
+— Le serveur applicatif (Symfony) : Il examine les demandes envoyées par le client, exécute
+les traitements nécessaires, et transmet les requêtes à la base de données si besoin.
+— Le serveur de données (MySQL) : Il gère tout ce qui concerne le stockage, la recherche et
+la mise à jour des données utilisées par le système.
+14
+
+
+===== PAGE 30 =====
+
+Chapitre 2. Sprint 0
+Figure 2.1 : Type d’architecture
+2.2
+Architecture de modèle MVC
+Le design pattern MVC est couramment utilisé dans la création d’applications, en particulier
+celles qui possèdent une interface graphique.Ce modèle divise les rôles afin de rendre l’application
+plus compréhensible et plus facile à administrer. Trois éléments clés composent l’architecture MVC :
+Modèle : Il est chargé de la gestion des données de l’application. Il est responsable de leur
+lecture, actualisation et conservation.
+Vue : Elle fait référence à l’interface utilisateur. C’est elle qui fournit les informations et qui autorise
+l’entrée de données.
+Contrôleur : Il sert de pont entre la représentation visuelle et le modèle. Il gère les interactions de
+l’utilisateur, actualise le modèle et modifie la vue en fonction des résultats obtenus.
+Cette structuration facilite l’organisation du code et favorise la collaboration en équipe sur les
+divers éléments de l’application.
+Figure 2.2 : Architecture MVC
+15
+
+
+===== PAGE 31 =====
+
+Chapitre 2. Sprint 0
+3
+Planification du traitement des cas d’utilisation
+3.1
+Exigences et priorités
+Une exigence représente une nécessité à laquelle le système doit répondre. Au cours de l’examen
+des fonctionnalités, nous avons remarqué que certaines revêtent une plus grande urgence que d’autres.
+Pour progresser de façon graduelle et ordonnée, il est judicieux d’établir un classement des exigences
+selon leur niveau de priorité : faible, moyen ou élevé. Cette classification facilite le démarrage avec
+les composants indispensables, généralement requis pour l’application des éléments subséquents.
+3.2
+Gestion des risques
+Un risque se réfère à un incident inattendu susceptible de troubler l’exécution du projet. Cela
+peut engendrer des dépendances entre des modules qui étaient indépendants au départ. Pour éviter ce
+type de problème, il est recommandé de rassembler les éléments associés et de garantir une transition
+fluide entre les Sprints.
+4
+Méthodologie SCRUM et gestion du projet
+4.1
+Rôles dans l’équipe SCRUM
+Voici la composition de notre équipe SCRUM, chaque rôle étant illustré par une icône représentant
+son titulaire :
+Product Owner
+SCRUM Master
+Développeuse
+Développeur
+Chaouch Rabeb
+Bsir Bassem
+Fhal Wejden
+Riani Ilyes
+4.2
+Backlog produit global
+Ce tableau décrit l’organisation du projet en plusieurs sprints. Chaque phase contient des
+tâches précises avec des objectifs simples et concrets, afin de mener le projet à terme de manière
+progressive.
+16
+
+
+===== PAGE 32 =====
+
+Chapitre 2. Sprint 0
+Sprint
+Période
+Thème
+Tâches
+Priorité
+Livrables
+attendus
+Sprint
+0
+Mois
+1
+(Sem. 1–2)
+Cadrage
+fonctionnel
+- Séparer le projet
+-
+Comprendre
+les
+besoins
+- Rédiger un cahier de
+charges
+Très
+Élevée
+Cahier des charges
+validé
+Objectifs définis
+Mois
+1
+(Sem. 3–4)
+Préparation
+technique
+-
+Rassembler
+les
+données
+- Choisir outils (Power
+BI, ML...)
+Élevée
+Données
+disponibles
+Schéma technique
+Sprint
+1
+Mois
+2
+(Sem. 1–2)
+Traitement
+des données
+- Extraire des sources
+-
+Nettoyer
+(Power
+Query, Python)
+Très
+Élevée
+Données propres
+Scripts ETL
+Documentation
+Mois
+2
+(Sem. 3–4)
+Modélisation
+BI
+- Créer modèle en étoile
+- Lier les tables
+-
+Définir
+dimensions/faits
+Très
+Élevée
+Modèle Power BI
+Schéma
+des
+relations
+Sprint
+2
+Mois
+3
+(Sem. 1–2)
+Visualisation
+Power BI
+- Créer mesures DAX
+- Ajouter graphiques
+- Filtres dynamiques
+- Personnalisation
+Très
+Élevée
+Dashboards lisibles
+KPI intégrés
+Mois
+3
+(Sem. 3–4)
+Partage
+et
+alertes
+- Publier les rapports
+- Automatiser mise à
+jour
+- Créer alertes
+Élevée
+Rapports publiés
+Alertes configurées
+17
+
+
+===== PAGE 33 =====
+
+Chapitre 2. Sprint 0
+Sprint
+Période
+Thème
+Tâches
+Priorité
+Livrables
+attendus
+Sprint
+3
+Mois
+4
+(Sem. 1–2)
+Prédiction
+(LSTM)
+-
+Développer
+modèle
+LSTM
+- Ajuster paramètres
+-
+Créer
+formulaire
+prédiction
+- Visualiser résultats
+Très
+Élevée
+Modèle LSTM
+Interface simple
+Graphiques
+Mois
+4
+(Sem. 3–4)
+Déploiement
+Web
+- Login sécurisé
+- Intégrer Power BI
+- Gestion utilisateurs
+Élevée
+App sécurisée
+Rapports intégrés
+Interface admin
+4.3
+Diagramme de Gantt du projet
+Le diagramme de Gantt ci-dessous offre une vision globale de la progression du projet, tout en
+respectant les principes de la méthodologie Scrum. Chaque Sprint y est planifié dans le temps avec
+les tâches correspondantes. Par ailleurs, la rédaction du rapport est maintenue de manière continue
+tout au long du projet, en parallèle des développements techniques.
+Figure 2.3 : Diagramme de Gantt
+18
+
+
+===== PAGE 34 =====
+
+Chapitre 2. Sprint 0
+4.4
+Environnement logiciel
+Pour réaliser ce projet, différents logiciels ont été utilisés pour développer, analyser et gérer
+les données. Le tableau ci-dessous donne un aperçu des principaux outils employés. Il inclut pour
+chacun le logo, le nom et une courte description de son rôle dans le projet.logo, nom et description.
+Table 2.2 : Outils de développement et de visualisation
+Logo
+Nom
+Description
+Visual
+Studio
+Code
+Éditeur de code source léger et puissant, développé par
+Microsoft, qui prend en charge de nombreux langages de
+programmation. [1]
+Python
+Langage de programmation polyvalent, largement utilisé
+en science des données, en intelligence artificielle et en
+automatisation des processus. [2]
+Colab
+Plateforme en ligne gratuite de Google permettant
+d’exécuter du code Python dans un environnement
+Jupyter Notebook sans installation locale. [3]
+Power Query
+Outil d’extraction, de transformation et de chargement
+de données (ETL) intégré à Excel et Power BI. [4]
+Power BI
+Service d’analyse de données de Microsoft permettant
+de visualiser des données à l’aide de tableaux de bord
+interactifs. [5]
+Power Automate
+Outil de Microsoft permettant d’automatiser des flux de
+travail entre différentes applications et services afin de
+synchroniser des fichiers et collecter des données. [6]
+Symfony
+Framework PHP sécurisé, utilisé pour développer des
+applications web robustes et modulaires dans des
+contextes professionnels variés. [7]
+19
+
+
+===== PAGE 35 =====
+
+Chapitre 2. Sprint 0
+Logo
+Nom
+Description
+SharePoint
+Plateforme
+Microsoft
+permettant
+la
+gestion
+documentaire, le stockage de fichiers et la collaboration
+au sein des équipes. [8]
+Figma
+Outil de conception UI/UX collaboratif basé sur le
+cloud, utilisé pour créer des maquettes interactives et
+prototyper des interfaces. [9]
+5
+Architecture physique de l’application
+Cette section décrit l’architecture générale de l’application, tant sur le plan physique que
+logiciel. L’approche adoptée repose sur une chaîne de traitement des données allant de l’ingestion
+jusqu’à la visualisation, en passant par le stockage et l’analyse.
+L’architecture physique repose sur un enchaînement logique de composants organisés en plusieurs
+blocs fonctionnels :
+— Sources de données : Les données proviennent de différentes sources telles que des bases SQL
+ou des fichiers Excel (.XLS).
+— Préparation des données : Cette étape est réalisée dans une fabrique de données et comprend
+deux sous-étapes :
+— Ingestion des données : L’acquisition des données est effectuée à l’aide de scripts en
+Python, d’automatisations Excel et de macros VBA.
+— Stockage des données : Les données sont ensuite centralisées et stockées dans un espace
+de collaboration tel que SharePoint.
+— Analyse : Une fois les données stockées, elles sont analysées à l’aide du langage DAX (Data
+Analysis Expressions), utilisé pour produire des mesures et indicateurs pertinents.
+— Visualisation : Les résultats de l’analyse sont finalement visualisés via Power BI, permettant
+ainsi de générer des tableaux de bord interactifs pour les utilisateurs.
+20
+
+
+===== PAGE 36 =====
+
+Chapitre 2. Sprint 0
+Figure 2.4 : Architecture physique de la chaîne de traitement des données
+6
+Conclusion
+Ce premier sprint a posé les fondations robustes pour le succès de notre projet décisionnel. En
+explorant les principes essentiels de l’informatique décisionnelle, nous avons souligné la nécessité d’une
+architecture appropriée, basée sur un entrepôt de données organisé selon un modèle en étoile. Cette
+méthode assure une utilisation optimale des données issues de divers processus métiers, satisfaisant
+ainsi les exigences de complexité de l’environnement étudié. De plus, la reconnaissance des intervenants
+et de leurs besoins particuliers a conduit à l’établissement d’exigences précises, à la fois fonctionnelles
+et non fonctionnelles. Ces dernières guideront l’exécution du projet de manière continue.
+Ce travail préparatoire est donc une phase essentielle, qui garantit que la solution finale répond
+aux exigences des différents services impliqués, tout en permettant une prise de décision informée à
+tous les échelons de l’entreprise.
+21
+
+
+===== PAGE 37 =====
+
+Chapitre 3
+Sprint 1
+
+
+===== PAGE 38 =====
+
+Chapitre 3. Sprint 1
+Préparation et Traitement des Données
+Introduction
+Cette première phase du projet a pour objectif de préparer les données brutes afin de les
+rendre exploitables pour l’analyse. Pour cela, nous avons mis en place une chaîne de traitement ETL
+visant à garantir la qualité, la cohérence et la structuration des données avant leur intégration dans
+Power BI. Cette étape comprend l’extraction des données depuis différentes sources, leur nettoyage,
+leur transformation et leur modélisation selon les besoins analytiques.
+1
+Phase ETL : Extraction, Transformation, Chargement
+Le processus ETL représente une composante essentielle dans la gestion des données. Dans le
+cadre de ce projet, il nous a permis de transformer des fichiers bruts en données structurées, prêtes
+à être utilisées dans des rapports décisionnels.
+Les étapes principales du processus ETL sont les suivantes :
+— Extraction : Récupération des données à partir de différentes sources internes, notamment
+des fichiers Excel.
+— Transformation : Nettoyage, restructuration et enrichissement des données pour les rendre
+cohérentes et conformes aux attentes de l’analyse.
+— Chargement : Intégration des données dans un entrepôt ou dans un outil d’analyse comme
+Power BI.
+L’ensemble de cette procédure a permis de fiabiliser et d’harmoniser les données tout en
+limitant les erreurs manuelles. Grâce aux outils comme Python, SQL et Power Query, nous avons
+mis en place une solution robuste et adaptable.
+23
+
+
+===== PAGE 39 =====
+
+Chapitre 3. Sprint 1
+Figure 3.1 : Illustration du processus ETL
+1.1
+Pré-Traitement des données
+Grâce au script VBA, les différentes tables ont été extraites et enregistrées dans des fichiers
+individuels, chacun portant un nom représentatif du type de production, de la machine concernée
+et de la date. Cela permet une meilleure traçabilité et facilite les traitements ultérieurs. Une fois
+les tableaux générés, une nouvelle phase de traitement a été engagée pour les structurer de manière
+uniforme. En effet, les données issues des différents fichiers présentaient parfois des formats ou des
+organisations hétérogènes. Pour pallier cela, des scripts en Python ont été mis en place afin de
+détecter automatiquement les zones de séparation entre les tableaux, notamment en repérant les
+lignes vides. Cette étape a permis de segmenter précisément les données, assurant ainsi une base
+propre et cohérente pour l’analyse décisionnelle.
+1.1.1
+Extraction des données
+Les données utilisées dans ce projet proviennent exclusivement de fichiers Excel internes. Une
+vérification initiale a été effectuée pour s’assurer de leur qualité . Seules les feuilles et colonnes
+pertinentes ont été conservées afin de réduire le volume d’informations à traiter et d’optimiser les
+performances.
+1.1.2
+Automatisation de l’extraction via VBA
+VBA est un langage de codage intégré dans Microsoft Excel. Cela offre la possibilité d’élaborer
+des macros pour automatiser les tâches récurrentes, telles que la manipulation ou le classement de
+données. Il simplifie les tâches de tous les jours en minimisant les fautes humaines et en accélérant
+les opérations manuelles.
+24
+
+
+===== PAGE 40 =====
+
+Chapitre 3. Sprint 1
+Pour faciliter l’extraction des diverses tables présentes dans les feuilles Excel, un script VBA
+a été élaboré. Ce script automatise l’isolement de chaque table et leur enregistrement dans des
+fichiers Excel distincts. Cette automatisation réduit les besoins d’interventions manuelles et optimise
+la vitesse de traitement.
+Figure 3.2 : Extrait du code VBA
+Le fichier VBA permet de générer automatiquement un tableau spécifique pour chaque cas,
+en fonction de critères comme le type de production, le nom de la machine ou encore la date. Par
+exemple, une table nommée prod_pc1_01_24 sera créée et enregistrée dans un fichier distinct, ce qui
+facilite grandement l’organisation et le traitement des données par la suite.
+1.1.3
+Sélection de Tableaux
+Après extraction, des scripts Python ont été conçus en utilisant la bibliothèque Pandas pour
+structurer les données :
+— Détection des lignes vides servant à segmenter automatiquement les tableaux.
+25
+
+
+===== PAGE 41 =====
+
+Chapitre 3. Sprint 1
+Figure 3.3 : Exemple script Python pour la segmentation des tableaux
+2
+Automatisation des Processus de Traitement Données
+2.1
+Reporting automatisé via Microsoft 365 et Power BI
+Dans une démarche de digitalisation, les fichiers de production sont automatiquement récupérés
+depuis SharePoint Online et intégrés dans Power BI.
+Figure 3.4 : Vue de la bibliothèque de documents sur SharePoint
+26
+
+
+===== PAGE 42 =====
+
+Chapitre 3. Sprint 1
+Power BI est connecté à SharePoint pour accéder aux fichiers stockés de manière sécurisée et
+centralisée.
+Figure 3.5 : Connexion à une liste SharePoint dans Power BI
+Figure 3.6 : Reconnaissance d’un fichier Excel par SharePoint
+27
+
+
+===== PAGE 43 =====
+
+Chapitre 3. Sprint 1
+2.2
+Traitement de données avec Power Query
+Power Query joue un rôle essentiel dans Power BI, car il permet de transformer, nettoyer
+et organiser les données avant leur intégration dans le modèle. Grâce à cet outil, il est possible
+d’automatiser des tâches complexes tout en garantissant la qualité et la cohérence des données.
+Les étapes suivantes ont été réalisées pour structurer les fichiers de manière optimale :
+— Regroupement de plusieurs tableaux en un seul à l’aide de l’éditeur avancé,
+— Fusion des tables ayant une structure similaire pour unifier les sources de données,
+— Suppression des colonnes non pertinentes afin d’alléger le modèle et d’améliorer les performances,
+— Création de colonnes techniques (clés de jointure, indicateurs) pour faciliter les relations entre
+les tables.
+La figure suivante 3.7 illustre le processus de combinaison de plusieurs tableaux dans Power
+Query, à l’aide de l’éditeur avancé. Cette étape est cruciale pour créer une base consolidée à partir
+de données dispersées.
+Figure 3.7 : Combinaison des tableaux dans Power Query
+Le figure ci-dessous 3.8 montre l’opération de fusion de tables ayant une structure similaire.
+Cette action permet d’unifier les sources de données en supprimant les doublons et en harmonisant
+les colonnes.
+28
+
+
+===== PAGE 44 =====
+
+Chapitre 3. Sprint 1
+Figure 3.8 : Fusion des tables ayant une structure similaire
+Enfin, la figure suivante 3.9 présente l’ajout de colonnes techniques, comme les clés de jointure
+ou les indicateurs, essentielles pour établir des relations solides entre les tables dans le modèle de
+données Power BI.
+Figure 3.9 : Création de colonnes techniques pour les relations
+29
+
+
+===== PAGE 45 =====
+
+Chapitre 3. Sprint 1
+3
+Modélisation des Données dans Power BI
+3.1
+Chargement et transformation dans Power BI
+Après l’intégration des fichiers, les données sont nettoyées puis organisées dans Power BI à
+l’aide de Power Query, en adoptant une structure en étoile. Ce type de modélisation permet de relier
+efficacement les données entre elles autour d’une table centrale, facilitant ainsi l’analyse décisionnelle.
+L’assistant Copilot joue un rôle essentiel dans ce processus. Il permet de simplifier la création
+des relations entre les différentes tables et contribue à la construction d’un modèle de données cohérent
+et optimal. Grâce à ses suggestions automatiques, il permet de gagner un temps considérable tout
+en réduisant les risques d’erreur humaine lors de la modélisation.
+Cette approche présente plusieurs avantages notables. Tout d’abord, elle permet une automatisation
+complète du traitement des données, depuis la collecte jusqu’à leur visualisation. Ensuite, elle assure
+un accès centralisé et sécurisé aux informations via SharePoint, ce qui facilite leur partage entre les
+équipes. De plus, la collaboration est renforcée, car les rapports sont constamment mis à jour. Enfin,
+l’appui de Copilot permet d’accélérer la création du modèle tout en garantissant une précision accrue
+dans la définition des relations entre les données.
+3.2
+Modèles de conception d’un Data Warehouse
+◦Modèle en étoile : Il intègre une table principale nommée table des faits, renfermant les
+mesures quantitatives, directement liée à diverses tables de dimensions qui offrent le contexte
+aux informations (par exemple : client, produit, temps). Ce modèle est à la fois simple, performant
+pour les requêtes et d’une compréhension aisée.
+Figure 3.10 : Modèle en étoile
+30
+
+
+===== PAGE 46 =====
+
+Chapitre 3. Sprint 1
+◦Modèle en flocon de neige :Ce modèle élargit le concept du modèle en étoile en normalisant
+les tables de dimensions, c’est-à-dire en les subdivisant en plusieurs sous-tables. Par exemple,
+on pourrait décomposer une dimension « produit » en « produit », « catégorie » et « fournisseur
+». Ce modèle diminue la redondance des données tout en rendant les requêtes plus complexes.
+Figure 3.11 : Modèle en flocon de neige
+◦Modèle en constellation : Ce modèle, aussi appelé galaxie de faits, inclut plusieurs tables
+de faits partageant des dimensions communes. Il est particulièrement adapté aux entrepôts de
+données complexes contenant plusieurs processus métier (ex. : ventes, commandes, livraisons)
+qui doivent être analysés de façon conjointe.
+Figure 3.12 : Modèle en constellation
+31
+
+
+===== PAGE 47 =====
+
+Chapitre 3. Sprint 1
+Dans le cadre de notre étude, nous avons opté pour une modélisation en étoile. Ce choix s’explique par
+la structure de notre entrepôt de données, qui repose sur une table de faits centrale reliée à plusieurs
+tables de dimensions. Ce schéma permet une organisation claire et efficace des données, facilitant
+ainsi les analyses décisionnelles tout en assurant de bonnes performances lors des interrogations.
+Les données ont été organisées en un modèle relationnel structuré selon une architecture en
+étoile. Celui-ci comprend :
+— Une table de faits : Production(Fact),
+— Plusieurs tables de dimensions : Machine, Date, Déchet, Arrêt, etc.
+Figure 3.13 : Modélisation en étoile dans Power BI
+3.3
+Table de faits
+La table de faits "Production" constitue le cœur du modèle en étoile. Elle regroupe les mesures
+quantitatives essentielles telles que la quantité produite, le temps de fonctionnement ou encore les
+arrêts machine. Chaque enregistrement est lié à des dimensions spécifiques (date, machine, déchet,
+arrêt), ce qui permet une analyse détaillée et croisée des performances de production.
+32
+
+
+===== PAGE 48 =====
+
+Chapitre 3. Sprint 1
+Table 3.1 : Table de faits : Production
+Nom de la colonne
+Type
+Description
+ID_Production
+Entier
+Identifiant unique de la ligne de production
+DateID
+Entier
+Clé étrangère vers la table Date
+MachineID
+Entier
+Clé étrangère vers la table Machine
+Quantité_Produite
+Entier
+Nombre de pièces produites
+DéchetID
+Entier
+Clé étrangère vers la table Déchet
+ArrêtID
+Entier
+Clé étrangère vers la table Arrêt
+Temps_Fonctionnement
+Décimal
+Durée de fonctionnement (en minutes)
+Temps_Arrêt
+Décimal
+Durée des arrêts (en minutes)
+3.4
+Tables de dimensions
+Les tables de dimensions fournissent le contexte nécessaire à l’interprétation des données
+présentes dans la table de faits. Elles décrivent les entités principales du processus de production,
+telles que les machines utilisées, les dates d’exécution, les types de déchets générés ou encore les
+causes d’arrêt. Ces tables permettent d’effectuer des analyses détaillées selon différents axes, rendant
+les tableaux de bord plus pertinents et dynamiques.
+Table 3.2 : Table de dimension : Machine
+Nom de la colonne
+Type
+Description
+MachineID
+Entier
+Identifiant unique de la machine
+Nom_Machine
+Texte
+Nom de la machine (ex. PC1)
+Type_Machine
+Texte
+Type ou famille de la machine
+33
+
+
+===== PAGE 49 =====
+
+Chapitre 3. Sprint 1
+Table 3.3 : Table de dimension : Date
+Nom de la colonne
+Type
+Description
+DateID
+Entier
+Identifiant unique de la date
+Jour
+Entier
+Jour du mois
+Mois
+Entier
+Mois
+Année
+Entier
+Année
+Jour_Semaine
+Texte
+Jour de la semaine (Lundi, Mardi...)
+Semaine_Annee
+Entier
+Numéro de la semaine
+Table 3.4 : Table de dimension : Déchet
+Nom de la colonne
+Type
+Description
+DéchetID
+Entier
+Identifiant du type de déchet
+Type_Déchet
+Texte
+Désignation du déchet
+Nature
+Texte
+Nature du déchet
+Table 3.5 : Table de dimension : Arrêt
+Nom de la colonne
+Type
+Description
+ArrêtID
+Entier
+Identifiant de l’arrêt machine
+Cause_Arrêt
+Texte
+Motif de l’arrêt
+Catégorie_Arrêt
+Texte
+Type (externe, interne, maintenance...)
+34
+
+
+===== PAGE 50 =====
+
+Chapitre 3. Sprint 1
+Conclusion
+Le modèle de données développé repose sur une modélisation en étoile, adaptée aux besoins
+analytiques de la production industrielle. Cette structuration permet d’assurer une cohérence, une
+flexibilité et une performance optimale lors de l’analyse des indicateurs clés. En distinguant les tables
+de faits des tables de dimensions, il devient possible de réaliser des analyses multi-axes (par machine,
+par jour, par type de déchet ou cause d’arrêt) avec une grande facilité d’utilisation dans les outils
+décisionnels tels que Power BI.
+Cette base solide constitue un socle indispensable pour le développement de tableaux de
+bord performants et pertinents, orientés vers l’amélioration continue et le pilotage stratégique de la
+production.
+35
+
+
+===== PAGE 51 =====
+
+Chapitre 4
+Sprint 2
+
+
+===== PAGE 52 =====
+
+Chapitre 4. Sprint 2
+Visualisation Interactive, Publication et
+Automatisation des Indicateurs de Performance
+1
+Introduction
+Ce troisième sprint constitue une étape déterminante du projet décisionnel. Il est consacré à
+la conception, la personnalisation et la diffusion de tableaux de bord dynamiques en utilisant Power
+BI. Ces visualisations interactives offrent aux divers départements la possibilité de surveiller leurs
+indicateurs de performance en direct, ce qui simplifie le processus décisionnel.
+Chaque page du tableau de bord est élaborée en tenant compte des exigences précises des
+secteurs d’activité concernés, tout en observant les critères de transparence, d’interactivité et d’accessibilité.
+2
+Backlog du Sprint 3
+Le tableau ci-dessous présente les éléments du backlog définis pour le Sprint 3
+Table 4.1 : Backlog du Sprint 3
+ID
+Fonctionnalité
+Description synthétique
+Priorité
+1
+Tableaux
+de
+bord
+Power BI
+Création de pages interactives pour chaque
+domaine métier
+Très élevée
+2
+Connexion
+à
+SharePoint
+Récupération
+automatique
+des
+données
+sources
+Élevée
+3
+Actualisation
+des
+données
+Automatisation
+du
+rafraîchissement
+des
+rapports
+Élevée
+4
+Alertes par seuil
+Envoi d’e-mails en cas de dépassement de
+seuils critiques
+Moyenne
+5
+Publication en ligne
+Mise à disposition des rapports via Power BI
+Service
+Moyenne
+37
+
+
+===== PAGE 53 =====
+
+Chapitre 4. Sprint 2
+3
+Indicateurs Clés de Performance (KPI)
+3.1
+TRS (Taux de Rendement Synthétique)
+Le TRS est un indicateur global qui évalue l’efficacité d’un système de production. Il prend
+en compte trois types de pertes majeures : la disponibilité des équipements, la performance du
+processus et la qualité des produits. En combinant ces dimensions, le TRS offre une vision complète
+du rendement réel par rapport au potentiel théorique de la production.
+TRS = Quantité de pièces bonnes produitesTemps de cycle
+Temps de production planifié
+=
+Temps utile
+Temps de production planifié
+(1)
+Figure 4.1 : Schéma d’analyse du TRS et des pertes
+3.2
+Taux de rendement global (TRG)
+Le TRG évalue le taux d’utilisation effectif des équipements en tenant compte de l’ensemble du
+temps d’ouverture, y compris les arrêts planifiés (maintenance préventive, pauses, essais, sous-charge,
+etc.). Contrairement au TRS qui se base sur le temps de production planifié, le TRG permet d’avoir
+une vision plus large de la performance des moyens de production, en identifiant également les leviers
+d’amélioration sur les périodes d’inactivité programmées.
+TRG = TRS
+
+Temps d’ouverture
+Temps de production planifié
+
+=
+Temps utile
+Temps d’ouverture
+(2)
+38
+
+
+===== PAGE 54 =====
+
+Chapitre 4. Sprint 2
+3.3
+Taux de disponibilité
+Le taux de disponibilité (ou disponibilité opérationnelle) est un indicateur qui reflète le temps
+durant lequel une machine ou un système est réellement opérationnel par rapport au temps de
+production prévu. Il permet d’identifier les arrêts non planifiés qui nuisent à la disponibilité des
+équipements.
+Taux de disponibilité =
+Temps de fonctionnement
+Temps de production planifié
+(3)
+3.4
+Taux de performance
+Le taux de performance est un indicateur qui reflète la vitesse réelle de production par
+rapport à la vitesse théorique attendue. Il évalue dans quelle mesure les équipements produisent
+au rythme prévu, en comparant le temps net au temps de fonctionnement. Il permet de détecter les
+ralentissements, micro-arrêts ou baisses de cadence.
+Taux de performance =
+Temps net
+Temps de fonctionnement
+(4)
+3.5
+Taux de qualité
+Le taux de qualité est un indicateur du TRS qui permet d’évaluer la part de production
+conforme, c’est-à-dire les pièces bonnes, par rapport à l’ensemble des pièces produites durant le
+temps net. Il permet ainsi d’identifier les pertes liées à la non-qualité (défauts, rebuts, reprises, etc.).
+Taux de qualité = Temps utile
+Temps net
+(5)
+3.6
+Taux de rupture de stock des références stratégiques
+Le taux de rupture des références stratégiques mesure la part des articles essentiels indisponibles.
+Ces références, définies par chaque filiale, sont cruciales pour maintenir la production.
+Taux de rupture de stock = Nombre de références stratégiques en rupture de stock
+Nombre total de références stratégiques
+(6)
+39
+
+
+===== PAGE 55 =====
+
+Chapitre 4. Sprint 2
+3.7
+Taux de service fournisseur (OTIF Fournisseur)
+Le OTIF Fournisseur, évalue la proportion de lignes de commandes réceptionnées complètes et
+dans les délais fixés. Cet indicateur reflète la performance et la fiabilité des fournisseurs, et constitue
+un critère essentiel d’évaluation. Il est principalement suivi pour les achats stratégiques, notamment
+les consommables, les pièces de rechange et les matières premières hors blé (hors admission temporaire).
+Dans un premier temps, il sera suivi principalement pour les consommables et pièces de rechange.
+OTIF Fournisseur = Nombre de lignes de commandes réceptionnées dans les délais et au complet
+Nombre total de lignes de commandes à réceptionner
+(7)
+3.8
+Taux de productivité de la MOD
+Le taux de productivité de la MOD indique le nombre d’heures nécessaires pour produire
+une tonne de produits conformes. Il évalue l’efficacité du personnel directement impliqué dans la
+production. Les encadrants non opérationnels ne sont pas inclus.
+Taux de productivité de la MOD =
+Nombre d’heures de MOD
+Quantité de produits conformes produite (en tonnes)
+(8)
+4
+Conception des Tableaux de Bord avec Power BI
+4.1
+Importance stratégique de Power BI
+Dans le contexte des organisations contemporaines, Power BI joue un rôle central dans
+la valorisation des données. Grâce à ses fonctionnalités avancées de visualisation, de filtrage et
+d’interaction, cet outil permet de concevoir des tableaux de bord à la fois précis, dynamiques et
+adaptés aux besoins spécifiques des utilisateurs métiers. Cette personnalisation facilite la compréhension
+des indicateurs clés, l’évaluation des performances ainsi que la prise de décisions éclairées.
+Lors de la conception d’un rapport Power BI, plusieurs questions fondamentales doivent être
+posées, parmi lesquelles : Qui sont les utilisateurs cibles du rapport ?, Quels rapports existants sont
+déjà utilisés ?, Quelles informations supplémentaires sont attendues ?, ou encore Quel est l’objectif
+40
+
+
+===== PAGE 56 =====
+
+Chapitre 4. Sprint 2
+principal du rapport ?. Ces interrogations orientent le choix des visuels, la structuration des pages
+et la pertinence des données présentées. En tenant compte de ces éléments dès la phase initiale du
+projet, le concepteur garantit la cohérence, l’efficacité et l’utilité du tableau de bord dans un cadre
+professionnel.
+Chaque tableau de bord est élaboré en fonction des besoins opérationnels propres à l’organisation.
+Les différentes pages intègrent des indicateurs pertinents, des filtres interactifs et assurent une
+navigation fluide entre les sections, offrant ainsi une expérience utilisateur optimale.
+Figure 4.2 : Questions clés à considérer lors de la création d’un rapport Power BI
+4.2
+Page Production
+Cette page regroupe les indices concernant l’efficacité de la production : pourcentage de
+rendement global, performance des lignes de production, taux d’élimination, qualité et quantités
+produites.
+41
+
+
+===== PAGE 57 =====
+
+Chapitre 4. Sprint 2
+Figure 4.3 : Exemple de page Production
+4.3
+Page Empaquetage
+Elle facilite le suivi des opérations d’emballage, comme le volume de boîtes manipulées, les
+fautes identifiées, les taux d’efficacité par opérateur ou ligne de production.
+Figure 4.4 : Exemple de page Empaquetage
+4.4
+Page Déchets
+La section consacrée aux déchets présente les quantités par type, les dépenses liées et leur
+progression au fil des années. Elle facilite l’examen des origines du gaspillage et la gestion des actions
+de rectification.
+42
+
+
+===== PAGE 58 =====
+
+Chapitre 4. Sprint 2
+Figure 4.5 : Exemple de page Déchets
+4.5
+Page Maintenance
+Elle compile les actions de maintenance (préventive et corrective), spécifiant les intervalles, les
+durées, les genres de défaillances, le matériel impliqué et le temps nécessaire pour la restauration.
+Figure 4.6 : Exemple de page Maintenance
+4.6
+Page Ventes
+Ce tableau de bord illustre les performances commerciales : revenus, quantité par produit,
+localisation géographique, client ou canal de distribution. Il contient des comparaisons avec les buts.
+43
+
+
+===== PAGE 59 =====
+
+Chapitre 4. Sprint 2
+Figure 4.7 : Exemple de page Ventes
+4.7
+Page Achats
+La division Achats assure le suivi des dépenses, des fournisseurs, du coût unitaire et de la
+constance des livraisons. Elle soutient l’optimisation des coûts d’acquisition.
+Figure 4.8 : Exemple de page Achats
+5
+Connexion aux Données et Actualisation Automatique
+Les fichiers hébergés sur SharePoint sont liés aux rapports Power BI. Cette intégration assure
+une actualisation automatique des données d’origine. Power BI Service se charge de la programmation
+de la mise à jour, en fonction d’une fréquence établie selon les exigences.(quotidienne, hebdomadaire,
+etc.).
+44
+
+
+===== PAGE 60 =====
+
+Chapitre 4. Sprint 2
+Figure 4.9 : mise a jour automatique des données
+Avec Power Automate, un processus automatisé a été établi pour récupérer automatiquement
+les pièces jointes des courriels et les enregistrer sur SharePoint.
+5.1
+Déclenchement planifié du flux
+Cette phase facilite l’établissement d’un rythme d’exécution automatique du flux (quotidien,
+hebdomadaire, etc.), assurant ainsi un recueil constant des données sans besoin d’intervention manuelle.
+Figure 4.10 : Planification du flux Power Automate
+5.2
+Filtrage des e-mails pertinents
+Il est crucial de trier les courriels pour ne retenir que ceux qui comportent des pièces jointes
+pertinentes, en se basant sur des paramètres prédéfinis tels que le sujet, l’expéditeur ou le contenu.
+45
+
+
+===== PAGE 61 =====
+
+Chapitre 4. Sprint 2
+Figure 4.11 : Sélection des e-mails selon des critères définis
+5.3
+Création automatique de fichiers dans SharePoint
+Après l’extraction des pièces jointes, elles sont automatiquement stockées dans une bibliothèque
+SharePoint dédiée, garantissant ainsi un accès centralisé et sécurisé aux documents.
+Figure 4.12 : Création automatisée des fichiers dans SharePoint
+6
+Système d’Alerte
+Dans Power BI, un dispositif d’alerte a été instauré. Lorsque qu’un indicateur atteint un seuil
+critique (par exemple : Taux de planification inférieur ou égal à 60 %), un avis est automatiquement
+46
+
+
+===== PAGE 62 =====
+
+Chapitre 4. Sprint 2
+envoyé par messagerie via Power Automate. Ce dispositif offre aux gestionnaires la possibilité d’intervenir
+promptement en cas de chute de rendement.
+Figure 4.13 : Exemple d’alerte configurée dans Power BI
+7
+Publication et Diffusion des Rapports
+Les tableaux de bord sont diffusés sur l’interface Power BI Service, ce qui donne la possibilité
+aux utilisateurs de s’y connecter à distance, que ce soit par le biais d’un navigateur internet ou d’une
+application mobile. L’attribution des droits d’accès est gérée en fonction des rôles établis dans les
+groupes Microsoft 365, garantissant ainsi une distribution sécurisée et contrôlée des informations.
+Figure 4.14 : Partage sécurisé des rapports via Power BI Service.
+8
+Conclusion
+Ce sprint a contribué à matérialiser l’aspect opérationnel du projet décisionnel. Les tableaux
+de bord interactifs offrent aux utilisateurs un instrument complet et sûr pour surveiller leurs activités
+47
+
+
+===== PAGE 63 =====
+
+Chapitre 4. Sprint 2
+en temps réel et prendre des décisions informées. L’efficacité de la solution a été améliorée grâce à la
+possibilité de personnaliser les pages, à la mise à jour automatique des données et à l’implémentation
+de notifications.
+48
+
+
+===== PAGE 64 =====
+
+Chapitre 5
+Sprint 3
+
+
+===== PAGE 65 =====
+
+Chapitre 5. Sprint 3
+Déploiement de l’application web et modèle de
+prédiction
+1
+Introduction
+Cette partie du projet correspond à la troisième phase de développement, consacrée à la mise
+en place d’un modèle de prédiction fondé sur les réseaux de neurones de type LSTM . Cette étape
+s’appuie sur les données traitées lors des sprints précédents, et a pour objectif principal de prévoir
+certains indicateurs clés de performance, tels que le TRS et les volumes de production.
+Afin de modéliser efficacement les relations temporelles présentes dans les données, l’architecture
+LSTM a été choisie en raison de sa capacité à capturer les dépendances à long terme dans les
+séries chronologiques. Le travail réalisé comprend plusieurs étapes : la préparation des séquences
+d’entrée, la conception du modèle, l’entraînement à partir des données historiques, puis l’évaluation
+des performances à l’aide d’indicateurs quantitatifs tels que la MSE, la RMSE et la MAE
+2
+Backlog – Sprint 3
+Table 5.1 : Backlog du Sprint – Application Web et Modèle LSTM
+ID
+Fonctionnalité
+Description synthétique
+Priorité
+T1
+Objectifs fonctionnels
+Définir les cas d’usage de l’application et
+les attentes métier
+Haute
+T2
+Interfaces utilisateur
+Concevoir les écrans de connexion, tableau
+de bord et intégration Power BI
+Haute
+T3
+Formulaire de prédiction
+Intégrer un module de prédiction basé sur
+un modèle LSTM via formulaire
+Haute
+T4
+Préparation des données
+Normaliser
+et
+structurer
+les
+données
+temporelles en séquences adaptées
+Haute
+50
+
+
+===== PAGE 66 =====
+
+Chapitre 5. Sprint 3
+ID
+Fonctionnalité
+Description synthétique
+Priorité
+T5
+Entraînement
+du
+modèle
+LSTM
+Développer, ajuster et entraîner le modèle
+de prédiction LSTM
+Haute
+T6
+Visualisation des résultats
+Créer
+des
+graphiques
+de
+performance
+(perte, prédictions vs réels)
+Moyenne
+T7
+Gestion des utilisateurs
+Implémenter la gestion des rôles et accès
+dans l’interface web
+Moyenne
+T8
+Tests
+Valider l’intégration globale du système et
+corriger les bugs
+Haute
+T9
+Déploiement
+Exporter le modèle, finaliser le système et
+rédiger la documentation
+Moyenne
+3
+Conception
+Dans cette section, le langage de modélisation UML (Unified Modeling Language) est utilisé
+afin de représenter graphiquement les interactions entre les utilisateurs et le système. Ce langage
+standard facilite la compréhension, la spécification et la documentation des différentes composantes
+d’un système logiciel, tout en permettant une meilleure visualisation de son fonctionnement global.
+Un schéma d’ensemble des cas d’utilisation sera d’abord présenté, offrant une vue synthétique
+des principales fonctionnalités du système ainsi que des acteurs qui y sont associés. Par la suite,
+chaque fonctionnalité sera détaillée au moyen de diagrammes spécifiques, accompagnés de scénarios
+décrivant les différentes interactions entre les utilisateurs et l’application.
+3.1
+Diagramme global des cas d’utilisation
+Le diagramme ci-dessous illustre les interactions essentielles entre les utilisateurs (notamment
+les utilisateurs finaux et les administrateurs) et les différents modules fonctionnels de l’application
+web. Ce schéma met en évidence les fonctionnalités principales du système, à savoir l’authentification,
+la consultation des tableaux de bord, la prévision des performances et la gestion des comptes
+utilisateurs.
+51
+
+
+===== PAGE 67 =====
+
+Chapitre 5. Sprint 3
+Figure 5.1 : Diagramme de cas d’utilisation global de l’application Warda.
+3.2
+Cas d’utilisation «Authentification»
+Ce diagramme représente le processus de connexion d’un utilisateur à travers l’interface dédiée.
+L’utilisateur saisit ses identifiants (nom d’utilisateur et mot de passe), puis, une fois l’authentification
+validée, il est automatiquement redirigé vers son tableau de bord personnalisé, en fonction de son
+52
+
+
+===== PAGE 68 =====
+
+Chapitre 5. Sprint 3
+profil ou de son rôle dans le système.
+Figure 5.2 : Diagramme de cas d’utilisation : Authentification.
+Table 5.2 : Description du cas d’utilisation : Authentification
+Nom
+du
+cas
+d’utilisation
+Authentification
+Acteurs
+Utilisateur
+Résumé
+L’utilisateur saisit ses identifiants afin d’accéder à
+la
+plateforme.
+En
+cas
+de
+succès,
+il
+est
+redirigé
+automatiquement vers son tableau de bord personnel.
+Précondition
+L’utilisateur doit disposer d’un compte actif dans le
+système.
+Scénario principal
+1. L’utilisateur accède à l’interface de connexion.
+2. Il entre son nom d’utilisateur ainsi que son mot de
+passe.
+3. Le système vérifie la validité des informations
+saisies.
+4. Si les données sont correctes, l’utilisateur est
+connecté et redirigé vers son espace personnel.
+Scénarios
+alternatifs
+A1 : En cas d’identifiants erronés, le système affiche un
+message d’erreur invitant à réessayer.
+A2 : L’utilisateur peut sélectionner l’option “Mot de
+passe oublié” afin de lancer une procédure de
+réinitialisation.
+53
+
+
+===== PAGE 69 =====
+
+Chapitre 5. Sprint 3
+3.3
+Cas d’utilisation «Gestion des utilisateurs»
+Cette fonctionnalité est exclusivement réservée à l’administrateur. Elle permet d’ajouter de
+nouveaux utilisateurs, de modifier les comptes existants ou de les supprimer. L’administrateur peut
+également gérer les rôles attribués à chaque utilisateur en fonction de leurs responsabilités au sein
+du système.
+Figure 5.3 : Diagramme de cas d’utilisation : Gestion des utilisateurs.
+Ce cas d’utilisation illustre les différentes opérations qu’un directeur peut effectuer pour gérer
+les comptes utilisateurs au sein de la plateforme. Ces actions incluent la consultation des profils
+existants, l’ajout de nouveaux comptes, la mise à jour des informations utilisateur ainsi que la
+suppression des comptes devenus obsolètes. L’accès à ces fonctionnalités est conditionné par une
+authentification préalable, garantissant la sécurité des opérations d’administration.
+Table 5.3 : Description du cas d’utilisation : Gestion des utilisateurs
+Nom
+du
+cas
+d’utilisation
+Gérer les utilisateurs
+Acteur principal
+Directeur
+Résumé
+Le
+directeur
+peut
+consulter,
+ajouter,
+modifier
+ou
+supprimer un utilisateur après s’être authentifié. Chaque
+action est traitée selon un sous-cas spécifique.
+54
+
+
+===== PAGE 70 =====
+
+Chapitre 5. Sprint 3
+Précondition
+Le directeur doit être authentifié.
+Scénario principal
+1. Le directeur s’authentifie avec ses identifiants.
+2. Il accède à l’interface de gestion des utilisateurs.
+3. Il choisit une action : consulter, ajouter, modifier
+ou supprimer un utilisateur.
+4. Le système exécute l’action sélectionnée et affiche
+le résultat.
+Scénarios
+alternatifs
+A1 : Si l’authentification échoue, l’accès à la gestion est
+refusé.
+A2 : Si les informations fournies lors de l’ajout ou
+de la modification sont incomplètes, un message
+d’erreur est affiché.
+A3 : Si l’utilisateur à modifier ou supprimer n’existe
+pas, le système affiche un message d’erreur.
+3.4
+Diagramme de classes
+Le diagramme de classes offre une représentation statique de l’architecture du système en cours
+de développement. Il met en lumière les entités principales de l’application web ainsi que les relations
+qui les lient. Chaque classe y est définie par un ensemble d’attributs et de méthodes, traduisant
+son comportement et ses interactions avec les autres composants. Dans le cadre de notre projet, les
+classes fondamentales regroupent les utilisateurs, les modules de prévision, les données de production
+et les rôles d’accès. Ce schéma joue un rôle essentiel dans la structuration du code et constitue une
+étape clé pour une mise en œuvre rigoureuse selon les principes de la programmation orientée objet.
+55
+
+
+===== PAGE 71 =====
+
+Chapitre 5. Sprint 3
+Figure 5.4 : Diagramme de classes
+3.5
+Diagramme de séquence
+3.5.1
+Diagramme de séquence «Authentification»
+Le diagramme ci-dessous illustre les interactions entre les entités lors de l’authentification.
+Il est lié au cas d’utilisation « Création d’une nouvelle session utilisateur » et montre les échanges
+nécessaires pour vérifier les identifiants et ouvrir une session sécurisée.
+Figure 5.5 : Diagramme de séquence : Authentification
+56
+
+
+===== PAGE 72 =====
+
+Chapitre 5. Sprint 3
+3.5.2
+Diagramme de séquence «Gestion des utilisateurs»
+Ce diagramme met en évidence le déroulement des opérations relatives à l’administration des
+comptes utilisateurs. L’administrateur interagit avec l’interface dédiée afin d’effectuer diverses actions
+telles que l’ajout, la modification ou la suppression d’un utilisateur. Le schéma détaille les échanges
+entre l’interface et la base de données, illustrant ainsi le flux complet des opérations de gestion.
+Figure 5.6 : Diagramme de séquence : Gestion des utilisateurs.
+57
+
+
+===== PAGE 73 =====
+
+Chapitre 5. Sprint 3
+4
+Déploiement de l’application web
+L’application web développée dans le cadre de ce projet a pour vocation principale de centraliser
+l’accès à plusieurs modules essentiels : les tableaux de bord décisionnels, les prévisions issues du
+modèle LSTM, ainsi que la gestion des utilisateurs. Elle offre une interface intuitive et sécurisée,
+permettant aux utilisateurs de consulter les rapports Power BI, d’exécuter des prédictions personnalisées
+et de gérer les autorisations d’accès.
+L’intégration de rapports dynamiques permet un suivi en temps réel des indicateurs relatifs à
+la production, la maintenance, les achats et les ventes. Par ailleurs, le module de prédiction autorise
+l’utilisateur à saisir des paramètres spécifiques afin de générer des prévisions instantanées, soutenant
+ainsi la prise de décision rapide en environnement industriel.
+Les fonctionnalités clés proposées par l’application sont les suivantes :
+— Authentification sécurisée via identifiants personnels.
+— Tableau de bord personnalisé selon les rôles définis.
+— Intégration fluide de rapports interactifs Power BI.
+— Module de prédiction basé sur un modèle LSTM.
+— Système de gestion des utilisateurs avec gestion fine des droits d’accès.
+L’écran de connexion constitue la porte d’entrée sécurisée vers l’environnement applicatif. Il
+permet aux utilisateurs enregistrés de s’authentifier via leur adresse électronique et mot de passe.
+Figure 5.7 : Interface de connexion
+Une fois l’authentification réussie, l’utilisateur est redirigé vers le tableau de bord principal,
+depuis lequel il peut accéder aux différents modules : visualisation des rapports, prédiction, et
+58
+
+
+===== PAGE 74 =====
+
+Chapitre 5. Sprint 3
+administration.
+Figure 5.8 : Tableau de bord principal
+La section « Rapports Power BI » permet à chaque utilisateur, selon son rôle, de consulter
+des tableaux de bord spécifiques liés aux domaines de la production, de la maintenance, des ventes
+et des achats.
+Figure 5.9 : Section dédiée aux rapports Power BI
+Un exemple concret de rapport Power BI est présenté ci-dessous. Il permet le suivi de la
+production par équipement, en fonction des périodes mensuelles et annuelles. Ce rapport intègre des
+59
+
+
+===== PAGE 75 =====
+
+Chapitre 5. Sprint 3
+indicateurs tels que le TRS, les heures de production et les écarts par rapport aux prévisions.
+Figure 5.10 : Exemple de tableau de bord de production (Power BI)
+Enfin, un module dédié à la gestion des utilisateurs est disponible dans l’interface d’administration.
+Ce système permet d’ajouter, modifier ou supprimer des comptes, d’attribuer des rôles spécifiques
+(ex. : production, maintenance) et de contrôler les accès en fonction des profils.
+Figure 5.11 : Interface de gestion des utilisateurs
+60
+
+
+===== PAGE 76 =====
+
+Chapitre 5. Sprint 3
+5
+Implémentation du modèle prédictif LSTM
+5.1
+Description des données
+Le module prédictif repose sur un jeu de données représentatif du processus de production.
+Ce dernier inclut plusieurs variables pertinentes, à la fois numériques et catégorielles, permettant de
+capter la dynamique temporelle du système.
+— Date : Date de l’opération de production.
+— Article : Produit concerné (ex. : Couscous, Chorba).
+— Production standard : Quantité planifiée à produire.
+— Temps d’arrêt : Durée d’arrêt exprimée en heures.
+— Heure de prod : Total d’heures de production journalière.
+— Production de jour : Volume réel produit dans la journée.
+— TRS : Taux de Rendement Synthétique, indicateur de performance global.
+— Machine : Nom ou identifiant de la machine utilisée.
+Ce jeu de données, riche en informations, est particulièrement adapté à l’apprentissage séquentiel.
+Les données ont été préalablement nettoyées et préparées : traitement des valeurs manquantes,
+normalisation des variables continues, et transformation des séquences pour l’entrée du modèle.
+5.2
+Architecture du modèle LSTM
+Dans le cadre de ce projet, un modèle de type LSTM a été mis en place afin de modéliser
+les séries temporelles de production. Ce type de réseau neuronal récurrent est particulièrement
+efficace pour capturer les dépendances temporelles à long terme, là où les architectures traditionnelles
+montrent leurs limites.
+Le modèle se compose de deux couches LSTM empilées, suivies d’une couche dense finale
+assurant la prédiction.
+Détail de l’architecture :
+— Couche d’entrée : Reçoit des séquences de vecteurs temporels correspondant aux différents
+paramètres de production (TRS, heures, volumes, etc.).
+— 1ère couche LSTM : 64 unités, avec return_sequences=True, afin de transmettre l’intégralité
+de la séquence à la couche suivante.
+61
+
+
+===== PAGE 77 =====
+
+Chapitre 5. Sprint 3
+— 2ème couche LSTM : 64 unités, produisant une représentation globale de la séquence en
+sortie.
+— Couche dense de sortie : Une unité avec activation linéaire, adaptée à la régression.
+Principaux hyperparamètres :
+— Fonction de perte : Mean Squared Error (MSE)
+— Nombre d’époques : 100
+— Taille des lots (batch size) : 32
+La figure 5.12 illustre de manière schématique l’architecture du modèle LSTM à deux couches
+développé dans le cadre de ce projet :
+Figure 5.12 : Architecture du modèle LSTM à deux couches pour la prédiction de séries
+temporelles
+Ce choix d’architecture repose sur un compromis judicieux entre expressivité du modèle et
+complexité computationnelle. Grâce à ses capacités de mémorisation à long terme, ce réseau est apte
+à capturer les relations séquentielles présentes dans les données de production, tout en limitant les
+risques de surapprentissage grâce à l’application de techniques de régularisation.
+5.3
+Phase d’entraînement du modèle
+Méthodologie d’entraînement et environnement de calcul
+L’entraînement du modèle LSTM s’est appuyé sur une approche expérimentale fondée sur la
+méthode des fenêtres glissantes (sliding windows). Cette méthode consiste à générer des séquences
+temporelles fixes — ici, de 10 jours consécutifs — utilisées comme entrées, avec pour cible la valeur
+du jour suivant. Cette stratégie permet au modèle d’apprendre les dynamiques temporelles sur de
+62
+
+
+===== PAGE 78 =====
+
+Chapitre 5. Sprint 3
+courtes périodes et de généraliser les tendances observées.
+Avant l’entraînement, toutes les variables numériques ont été normalisées à l’aide de la technique
+de mise à l’échelle min-max, ramenant les valeurs dans l’intervalle [0, 1], ce qui favorise la stabilité
+de l’optimisation.
+Le jeu de données a été divisé en trois sous-ensembles :
+— 70% pour l’entraînement du modèle ;
+— 15% pour la validation, permettant de surveiller la performance en cours d’apprentissage ;
+— 15% pour le test final, réservé à l’évaluation hors échantillon.
+L’apprentissage s’est déroulé sur 100 époques, avec une taille de lot (batch size) fixée à 32.
+Un mécanisme d’arrêt anticipé (EarlyStopping) a été mis en place : si la perte de validation ne
+s’améliorait pas sur 10 époques consécutives, l’entraînement était interrompu. Cette précaution
+permet d’éviter un surajustement et de préserver la capacité de généralisation du modèle.
+Optimisation des hyperparamètres
+L’optimisation des hyperparamètres a été conduite à l’aide d’une recherche par grille restr
+5.4
+Évaluation du modèle
+L’évaluation du modèle LSTM repose sur plusieurs indicateurs standards de régression, visant
+à quantifier l’écart entre les prédictions du modèle et les données réelles issues du jeu de test. Les
+métriques suivantes ont été utilisées :
+— Erreur quadratique moyenne (MSE) : elle évalue la moyenne des carrés des écarts entre
+les prédictions et les observations réelles. Cette métrique pénalise fortement les grandes erreurs,
+ce qui la rend utile pour détecter des prédictions extrêmes.
+MSE = 1
+n
+n
+X
+i=1
+(yi −ˆyi)2
+(5.1)
+— Racine de l’erreur quadratique moyenne (RMSE – Root Mean Squared Error) :
+c’est la racine carrée de la MSE, exprimée dans la même unité que la variable prédite. Elle
+facilite l’interprétation des erreurs.
+RMSE =
+v
+u
+u
+t1
+n
+n
+X
+i=1
+(yi −ˆyi)2
+(5.2)
+63
+
+
+===== PAGE 79 =====
+
+Chapitre 5. Sprint 3
+— Erreur absolue moyenne (MAE) : elle calcule la moyenne des écarts absolus entre les
+valeurs observées et les prédictions. Elle est moins sensible aux valeurs extrêmes que la MSE.
+MAE = 1
+n
+n
+X
+i=1
+|yi −ˆyi|
+(5.3)
+Les résultats obtenus montrent que le modèle présente une bonne capacité de généralisation,
+avec des erreurs faibles et une stabilité des prédictions.
+5.5
+Résultats
+5.5.1
+Analyse des courbes d’apprentissage
+L’évolution de la fonction de perte sur les jeux d’entraînement et de validation montre une
+convergence stable du modèle au fil des époques, sans signe de surapprentissage. Cette observation
+est illustrée dans la figure suivante :
+Figure 5.13 : Évolution de la fonction de perte pendant l’entraînement
+5.5.2
+Comparaison des prédictions aux données réelles
+Afin d’évaluer la précision du modèle, une comparaison visuelle entre les valeurs réelles et
+prédites a été effectuée sur l’ensemble de test. Comme le montre la figure 5.14, les courbes présentent
+une superposition satisfaisante, confirmant que le modèle parvient à capter les tendances temporelles
+globales.
+Les résultats sont particulièrement bons dans les périodes stables, tandis que les pics ou chutes
+64
+
+
+===== PAGE 80 =====
+
+Chapitre 5. Sprint 3
+Figure 5.14 : Comparaison entre les valeurs réelles et les valeurs prédites
+brusques de production sont moins bien anticipés, probablement en raison de leur rareté dans le jeu
+d’entraînement.
+5.5.3
+Analyse critique des performances
+Le modèle LSTM démontre une performance notable pour la prédiction de séries temporelles
+industrielles. Son architecture récurrente, combinée à l’utilisation de fenêtres temporelles glissantes,
+lui permet de capter les relations séquentielles dans les données.
+Cependant, certaines limites doivent être prises en compte :
+— Faible sensibilité aux événements rares : les ruptures soudaines ou anomalies, peu représentées
+dans les données, sont mal anticipées.
+— Manque de réactivité : le modèle a tendance à lisser les fluctuations rapides, ce qui peut
+engendrer un retard dans les réponses aux variations brutales.
+— Dépendance à la qualité des données : la présence de valeurs manquantes ou aberrantes
+peut fortement nuire aux performances, soulignant l’importance du prétraitement.
+Dans l’ensemble, le modèle répond efficacement aux objectifs du projet et peut servir de base
+fiable pour des applications décisionnelles dans un environnement industriel.
+5.5.4
+Interface de visualisation des prédictions
+Pour rendre les prédictions accessibles aux utilisateurs finaux, une interface web a été développée.
+Cette interface permet, via un formulaire, de sélectionner des paramètres tels que la date, le type
+d’article ou la machine concernée. Une fois les informations saisies, la requête est transmise au modèle,
+qui retourne la valeur prédite.
+65
+
+
+===== PAGE 81 =====
+
+Chapitre 5. Sprint 3
+Le résultat est affiché de manière claire, soit sous forme numérique, soit à travers un graphique,
+facilitant l’interprétation par les utilisateurs non spécialistes.
+Ce module fait partie intégrante de la plateforme BI globale développée au cours du projet,
+incluant également des tableaux de bord analytiques et des systèmes d’alerte.
+Figure 5.15 : Interface utilisateur pour l’accès aux prédictions
+6
+Conclusion
+Conclusion du sprint 3
+Ce troisième sprint a porté sur la conception et la mise en œuvre d’un modèle de prédiction
+basé sur les réseaux de neurones à mémoire longue courte durée (LSTM), dans le but d’anticiper les
+indicateurs clés de performance, tels que le TRS ou les volumes de production.
+S’appuyant sur les jeux de données nettoyés et structurés au cours des sprints précédents,
+cette phase a introduit une composante prédictive stratégique, orientée vers l’aide à la décision
+proactive. Le développement du modèle a suivi un processus méthodologique précis, comprenant
+la transformation des séries temporelles en séquences exploitables, la définition de l’architecture du
+réseau LSTM, le réglage des hyperparamètres, l’entraînement du modèle, ainsi que son évaluation à
+l’aide d’indicateurs quantitatifs (MSE, RMSE, MAE) et de visualisations comparatives.
+66
+
+
+===== PAGE 82 =====
+
+Chapitre 5. Sprint 3
+L’interprétation des résultats a confirmé la capacité du modèle à reproduire fidèlement les
+tendances globales des données temporelles. Toutefois, certaines limites ont été identifiées, notamment
+dans la gestion des variations brusques et des événements atypiques, qui restent difficiles à modéliser
+de manière précise.
+Malgré ces restrictions, les performances globales du modèle sont satisfaisantes et témoignent
+de la pertinence de l’approche LSTM pour la prédiction dans un contexte industriel. Le travail réalisé
+constitue ainsi une base solide pour des améliorations ultérieures, telles que l’intégration dans des
+interfaces interactives ou l’hybridation avec d’autres techniques analytiques.
+Le chapitre suivant traitera de l’intégration du modèle prédictif dans une application web
+fonctionnelle, combinant visualisation, interaction utilisateur et sécurité d’accès.
+67
+
+
+===== PAGE 83 =====
+
+Conclusion Générale
+Ce rapport a retracé les différentes phases de conception et de réalisation d’un système
+décisionnel prédictif dans un contexte industriel, structuré selon la méthodologie agile Scrum. Le
+projet s’est articulé autour de quatre sprints complémentaires, allant de l’analyse fonctionnelle jusqu’à
+la mise en production d’une solution intégrée.
+L’un des apports majeurs de ce projet réside dans l’exploitation conjointe d’outils modernes
+tels que Power BI pour la visualisation des données et la création de tableaux de bord dynamiques, et
+d’un site web interactif servant d’interface centrale pour la consultation des indicateurs, l’interaction
+avec le moteur de prédiction, et l’accès sécurisé à l’information. Cette double approche permet non
+seulement d’améliorer la lisibilité et l’interprétation des données, mais aussi de faciliter l’adoption de
+la solution par les utilisateurs métiers.
+L’intégration d’un modèle de deep learning (LSTM) permet de prédire des indicateurs critiques
+comme le TRS ou les volumes de production, rendant la prise de décision plus réactive et mieux
+informée. Grâce à une interface intuitive, les utilisateurs peuvent interagir simplement avec le système
+via des formulaires, recevoir des prédictions en temps réel, et visualiser les résultats dans un environnement
+convivial. Ce travail démontre ainsi comment la combinaison de l’intelligence artificielle, des outils
+décisionnels visuels, et d’une interface web bien pensée peut transformer l’exploitation des données
+industrielles en un levier stratégique d’optimisation.
+Ce travail ouvre également plusieurs pistes de recherche futures. D’une part, l’amélioration
+du modèle prédictif peut être envisagée à travers l’utilisation d’architectures plus avancées, telles
+que les réseaux neuronaux bidirectionnels (Bi-LSTM) ou les Transformers, qui offrent une meilleure
+capacité de modélisation des séquences complexes. D’autre part, l’intégration de données exogènes
+(conditions météorologiques, horaires de travail, données de maintenance, etc.) pourrait enrichir les
+prédictions et renforcer leur robustesse.
+Par ailleurs, la plateforme web développée pourrait évoluer vers un système décisionnel intelligent
+entièrement interactif, capable d’adapter dynamiquement ses recommandations en fonction du contexte
+industriel en temps réel. Enfin, des travaux futurs pourraient explorer l’implémentation d’outils
+d’explicabilité des modèles (comme SHAP ou LIME) afin de rendre les prédictions plus transparentes
+pour les utilisateurs non spécialistes.
+68
+
+
+===== PAGE 84 =====
+
+Webographie
+— Visual Studio Code : éditeur de code source développé par Microsoft — https://code.
+visualstudio.com
+— Python : langage de programmation open-source pour le développement et l’analyse de données
+— https://www.python.org
+— Symfony : framework PHP pour créer des applications web robustes — https://symfony.com
+— Google Colab : environnement de développement Jupyter dans le cloud — https://colab.
+research.google.com
+— Overleaf : plateforme collaborative pour l’écriture de documents LaTeX — https://www.
+overleaf.com
+— Figma : outil de conception d’interfaces et de prototypage collaboratif — https://www.figma.
+com
+— Draw.io : outil de création de diagrammes UML en ligne — https://app.diagrams.net
+— SharePoint : plateforme Microsoft de gestion documentaire et de collaboration — https:
+//www.microsoft.com/fr-fr/microsoft-365/sharepoint/collaboration
+— Power BI : outil Microsoft de visualisation et d’analyse des données — https://powerbi.
+microsoft.com
+— Power Automate : service d’automatisation de flux de travail proposé par Microsoft —
+https://powerautomate.microsoft.com
+— Power Query : outil de transformation de données intégré à Power BI et Excel — https:
+//learn.microsoft.com/fr-fr/power-query
+— Méthodologie Scrum : cadre de travail agile pour la gestion de projet — https://www.
+scrum.org/resources/what-is-scrum
+— Architecture en trois couches : modèle d’architecture logicielle (présentation, métier, données)
+— https://learn.microsoft.com/fr-fr/dotnet/architecture/modern-web-apps-azure/
+common-web-application-architectures
+— Architecture MVC : modèle d’architecture logicielle Model-View-Controller — https://
+learn.microsoft.com/fr-fr/aspnet/mvc/overview/older-versions-1/overview/asp-net-mvc-o
+— ETL (Extraction, Transformation, Chargement) : processus de traitement des données —
+69
+
+
+===== PAGE 85 =====
+
+Chapitre 5. Sprint 3
+https://learn.microsoft.com/fr-fr/azure/architecture/data-guide/relational-data/
+etl
+— Modélisation des données dans Power BI : modèles en étoile, flocon et constellation —
+https://learn.microsoft.com/fr-fr/power-bi/guidance/star-schema
+— Modèle prédictif LSTM : réseaux de neurones pour les séries temporelles — https://
+keras.io/api/layers/recurrent_layers/lstm/
+70
+
+
+===== PAGE 86 =====
+
+4 
+rapport_pfe_finale.pdf 
+ 
+RAPPORT DE SIMILITUDE 
+ 
+% 
+ 
+INDICE DE SIMILITUDE 1% 
+SOURCES INTERNET 0% 
+PUBLICATIONS 
+3% 
+COPIES DE L'ÉTUDIANT 
+ 
+ 
+SOURCES PRINCIPALES 
+ 1  
+ 
+ 2  
+ 
+ 3  
+ 
+ 
+ 
+ 
+ 4  
+ 
+ 5  
+ 
+ 6  
+ 
+ 7  
+ 
+ 8  
+ 
+ 9  
+ 
+10  
+ 
+11  
+ 
+12  
+Submitted to University of Jendouba 
+Copie de l'étudiant 
+ 
+Submitted to University of Manouba 
+Copie de l'étudiant 
+ 
+Patel, Jasmin. "Exploration of Low-Level 
+Features for Enhancing Movie 
+Recommendation Systems", University of 
+Windsor (Canada), 2024 
+Publication 
+online-journals.org 
+Source Internet 
+ 
+enibly.gitbook.io 
+Source Internet 
+ 
+Submitted to University of Carthage 
+Copie de l'étudiant 
+ 
+Submitted to University of East London 
+Copie de l'étudiant 
+ 
+Submitted to University of Sousse 
+Copie de l'étudiant 
+ 
+assets-eu.researchsquare.com 
+Source Internet 
+ 
+repositorio.ug.edu.ec 
+Source Internet 
+ 
+Submitted to Universite libre de Tunis 
+Copie de l'étudiant 
+ 
+www.coursehero.com 
+Source Internet 
+2% 
+<1% 
+<1% 
+ 
+ 
+<1% 
+<1% 
+<1% 
+<1% 
+<1% 
+<1% 
+<1% 
+<1% 
+
+
+===== PAGE 87 =====
+
+ 
+ 
+ 
+13  
+ 
+14  
+ 
+ 
+9pdf.org 
+Source Internet 
+ 
+hdl.handle.net 
+Source Internet 
+<1% 
+<1% 
+<1% 
+ 
+ 
+ 
+ 
+ 
+Exclure les citations 
+Activer 
+Exclure la bibliographie Arret 
+Exclure les 
+correspondances 
+Arret 
+
+
+===== PAGE 88 =====
+
+Chapitre 5. Sprint 3
+iii

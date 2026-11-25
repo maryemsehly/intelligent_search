@@ -1,0 +1,805 @@
+===== PAGE 1 =====
+
+République Tunisienne
+Ministère de l'Enseignement Supérieur et de la Recherche Scientifique
+[Nom de l'institution — à compléter]
+Projet de Fin d'Études
+En vue de l'obtention du diplôme de
+[Diplôme et parcours — à compléter]
+TTSG — Conception et développement d'une plateforme web
+intelligente
+pour la gestion des stages, des formations et de l'affectation
+des stagiaires
+au sein des agences de Tunisie Télécom
+Élaboré par :
+[Nom Prénom de l'étudiant(e)]
+Soutenu le : [JJ/MM/AAAA]
+Encadré par :
+[Nom encadrant académique]
+Encadrant académique
+[Nom encadrant professionnel]
+Encadrant professionnel — Tunisie Télécom
+Année universitaire : [2025 – 2026]
+Page 1 / 25
+
+
+===== PAGE 2 =====
+
+Dédicace
+[Espace réservé — à rédiger toi-même. C'est un texte personnel, propre à ta situation ; je ne peux pas l'inventer à ta
+place.]
+Page 2 / 25
+
+
+===== PAGE 3 =====
+
+Remerciements
+[Espace réservé — à rédiger toi-même : remercie ton encadrant académique, ton encadrant professionnel chez
+Tunisie Télécom, le jury, et toute personne t'ayant aidé durant ce stage.]
+Page 3 / 25
+
+
+===== PAGE 4 =====
+
+Résumé
+Ce projet, réalisé dans le cadre d'un stage de fin d'études au sein de Tunisie Télécom, consiste à concevoir et
+développer TTSG (Tunisie Télécom Stages & Gestion), une plateforme web destinée à centraliser et fiabiliser
+l'ensemble du processus de gestion des stages : dépôt de demande par le stagiaire, étude et validation par les
+Ressources Humaines, affectation à un encadrant, suivi du stage, évaluation et génération d'attestation. La
+plateforme couvre également la structure organisationnelle de Tunisie Télécom (directions régionales, structures
+d'accueil, structures centrales, départements/services) ainsi que le catalogue des formations professionnelles.
+Développée selon une architecture MVC en PHP 8 avec une base de données MySQL, l'application répartit les
+responsabilités entre cinq acteurs (Administrateur, Ressources Humaines, Responsable de structure d'accueil,
+Encadrant, Stagiaire), chacun disposant d'un espace dédié et de droits strictement délimités.
+Mots clés : gestion des stages, plateforme web, PHP/MySQL, Tunisie Télécom, workflow de validation, affectation,
+MVC.
+Abstract
+This project, carried out as part of a final-year internship at Tunisie Télécom, consists of designing and developing
+TTSG (Tunisie Télécom Stages & Gestion), a web platform intended to centralize and streamline the entire internship
+management process: submission of a request by the intern, review and validation by Human Resources, assignment
+to a supervisor, internship monitoring, evaluation, and certificate generation. The platform also models Tunisie
+Télécom's organizational structure (regional directorates, host structures, central structures, departments/services) as
+well as the professional training catalog. Built on an MVC architecture in PHP 8 with a MySQL database, the application
+distributes responsibilities across five actors (Administrator, HR, Host-structure manager, Supervisor, Intern), each
+with a dedicated workspace and strictly scoped permissions.
+Keywords: internship management, web platform, PHP/MySQL, Tunisie Télécom, validation workflow, assignment,
+MVC.
+Page 4 / 25
+
+
+===== PAGE 5 =====
+
+Table des matières (sommaire simplifié)
+Introduction générale
+Chapitre 1 — Contexte général du projet
+1.1 Présentation de l'organisme d'accueil — 1.2 Contexte et problématique — 1.3 Étude de l'existant — 1.4 Solution
+proposée — 1.5 Méthodologie — 1.6 Planning
+Chapitre 2 — Spécification des besoins
+2.1 Identification des acteurs — 2.2 Besoins fonctionnels — 2.3 Besoins non fonctionnels — 2.4 Diagramme de cas
+d'utilisation global — 2.5 Cas d'utilisation détaillés
+Chapitre 3 — Conception
+3.1 Architecture générale — 3.2 Modèle relationnel — 3.3 Diagramme de classes — 3.4 Diagrammes de séquence —
+3.5 Diagramme d'activité
+Chapitre 4 — Réalisation
+4.1 Environnement de travail — 4.2 Technologies utilisées — 4.3 Réalisation par espace utilisateur
+Conclusion générale et perspectives
+Page 5 / 25
+
+
+===== PAGE 6 =====
+
+I N T R O D U C T I O N
+Introduction générale
+La gestion des stagiaires au sein d'une grande entreprise comme Tunisie Télécom implique la coordination de
+plusieurs intervenants — services Ressources Humaines, responsables d'agences et de structures régionales,
+encadrants de terrain — répartis sur l'ensemble du territoire tunisien. Sans outil dédié, ce processus repose
+typiquement sur des échanges de documents dispersés, difficiles à tracer et à consolider, avec un risque réel
+d'incohérence entre les décisions prises localement et le suivi centralisé.
+Le présent projet a pour objectif de répondre à ce besoin par la conception et le développement de TTSG, une
+plateforme web qui prend en charge l'intégralité du cycle de vie d'un stage : de l'inscription du candidat jusqu'à la
+délivrance de son attestation, en passant par l'étude de sa demande, sa validation, son affectation à un encadrant et
+le suivi de son évaluation. La plateforme modélise également la structure organisationnelle réelle de l'entreprise —
+directions régionales, structures d'accueil, structures centrales et départements/services — afin que chaque demande
+de stage soit rattachée précisément à son contexte d'accueil.
+Ce rapport est structuré en quatre chapitres. Le premier situe le contexte du projet, présente l'organisme d'accueil et
+justifie la solution retenue. Le deuxième formalise les besoins fonctionnels et non fonctionnels à travers l'identification
+des acteurs et des cas d'utilisation. Le troisième détaille la conception technique : architecture, modèle de données,
+diagrammes de séquence et d'activité. Le quatrième présente la réalisation concrète de la plateforme, écran par
+écran, ainsi que les technologies mobilisées. Le rapport se termine par un bilan du travail accompli et les perspectives
+d'évolution envisagées.
+Page 6 / 25
+
+
+===== PAGE 7 =====
+
+C H A P I T R E 1
+Contexte général du projet
+Sommaire — 1.1 Présentation de l'organisme d'accueil · 1.2 Contexte et problématique · 1.3 Étude critique de
+l'existant · 1.4 Solution proposée · 1.5 Méthodologie de gestion de projet · 1.6 Planning prévisionnel
+1.1 Présentation de l'organisme d'accueil
+Tunisie Télécom est l'opérateur télécom historique de Tunisie, présent sur l'ensemble du territoire à travers un réseau
+de directions régionales et de structures d'accueil locales (agences, centres de service à la clientèle, espaces TT). Au-
+delà des structures régionales, l'entreprise dispose de structures centrales (directions au siège) qui accueillent
+également des stagiaires, notamment sur des profils techniques et informatiques.
+[Compléter ici, si souhaité : coordonnées officielles, adresse du siège, activité détaillée de Tunisie Télécom, service
+d'accueil précis dans lequel le stage a été effectué.]
+1.1.1 Structure organisationnelle
+La structure organisationnelle modélisée par la plateforme repose sur quatre niveaux, distincts mais complémentaires
+:
+Niveau
+Rôle
+Exemple
+Direction
+régionale
+Découpage géographique national (24 directions, une par
+gouvernorat)
+Direction Régionale Sfax
+Structure
+d'accueil
+Site physique rattaché à une direction régionale, typé (CSC,
+agence, espace TT, point de vente)
+CSC Sfax Centre
+Structure centrale
+Direction du siège, indépendante de toute direction régionale
+Direction Centrale des Systèmes
+d'Information
+Département /
+Service
+Unité fonctionnelle au sein d'une structure d'accueil, qui
+accueille réellement les stagiaires
+Réseaux & Infrastructure,
+Systèmes d'Information
+1.2 Contexte et problématique
+Chaque année, Tunisie Télécom accueille un nombre important de stagiaires, dans des profils très variés
+(informatique, télécommunications, gestion, marketing…) et répartis sur l'ensemble de ses structures régionales et
+centrales. Le traitement d'une demande de stage implique plusieurs étapes et plusieurs intervenants :
+le candidat doit soumettre son dossier (profil académique, CV, structure et service souhaités) ;
+le service RH doit étudier chaque demande, vérifier sa cohérence, puis la valider ou la refuser ;
+un encadrant doit être désigné, en tenant compte de sa charge de travail actuelle ;
+Page 7 / 25
+
+
+===== PAGE 8 =====
+
+la capacité d'accueil de la structure et du département concerné doit être respectée ;
+à l'issue du stage, une évaluation doit être réalisée et une attestation délivrée.
+Sans outil centralisé, cette coordination repose sur des échanges manuels (courriels, fichiers partagés, documents
+papier), ce qui rend difficile le suivi en temps réel de l'état d'une demande, le contrôle des capacités d'accueil, et la
+consolidation de l'historique des stagiaires ayant effectué plusieurs stages au fil du temps.
+1.3 Étude critique de l'existant
+Limite constatée
+Conséquence
+Absence de statut centralisé et à jour de chaque
+demande
+Le stagiaire et le service RH n'ont pas de vue fiable sur l'avancement
+du dossier
+Pas de contrôle automatique des capacités d'accueil
+Risque de sur-affectation d'une structure, d'un département ou d'un
+encadrant
+Historique des stages dispersé
+Difficulté à identifier les stagiaires ayant déjà effectué un stage
+précédent
+Attestations produites manuellement
+Risque d'erreur, perte de temps, absence de traçabilité
+Aucune séparation claire des rôles
+Toute personne ayant accès aux documents peut, en théorie, les
+modifier
+1.4 Solution proposée
+La solution retenue, TTSG, est une plateforme web centralisée organisée en cinq espaces utilisateurs distincts
+(Administrateur, RH, Responsable de structure d'accueil, Encadrant, Stagiaire), chacun avec des droits strictement
+délimités. Elle couvre :
+l'auto-inscription et la gestion du dossier permanent du stagiaire (CIN ou passeport, profil académique) ;
+le dépôt de demande de stage avec sélection en cascade Direction régionale → Structure d'accueil → Département
+;
+le circuit de validation RH (étude, validation ou refus motivé) ;
+l'affectation à un encadrant, avec vérification automatique de trois niveaux de capacité (structure, département,
+encadrant) ;
+le suivi du stage, l'évaluation en fin de parcours (grille de 6 critères notés de 1 à 5) et la génération de
+l'attestation en PDF ;
+la gestion de l'organisation elle-même (directions régionales, structures d'accueil, structures centrales,
+départements, encadrants) et du catalogue des formations professionnelles.
+Un principe de conception a été respecté tout au long du projet : la formation académique du stagiaire (son cursus
+d'études) et le département/service où il effectue son stage sont deux notions strictement indépendantes, jamais
+confondues dans le modèle de données ni dans l'interface.
+Page 8 / 25
+
+
+===== PAGE 9 =====
+
+1.5 Méthodologie de gestion de projet
+Le développement a suivi une démarche itérative et incrémentale : chaque fonctionnalité a été spécifiée,
+développée, puis validée fonctionnellement avant de passer à la suivante, ce qui a permis d'ajuster progressivement
+le périmètre du projet (par exemple l'ajout ultérieur du niveau « Structures centrales » et de la séparation des droits
+Admin/RH) sans remettre en cause les fonctionnalités déjà en place. Chaque évolution a fait l'objet d'une vérification
+de non-régression sur l'ensemble des rôles avant d'être considérée comme terminée.
+1.6 Planning prévisionnel
+[Insérer ici un diagramme de Gantt propre à ton calendrier de stage — dates de début/fin de chaque grande étape :
+analyse des besoins, conception, développement, tests, rédaction du rapport.]
+Page 9 / 25
+
+
+===== PAGE 10 =====
+
+C H A P I T R E 2
+Spécification des besoins
+Sommaire — 2.1 Identification des acteurs · 2.2 Besoins fonctionnels · 2.3 Besoins non fonctionnels · 2.4 Diagramme
+de cas d'utilisation global · 2.5 Cas d'utilisation détaillés
+2.1 Identification des acteurs
+Acteur
+Rôle
+Administrateur
+Gère l'organisation de l'entreprise dans la plateforme (directions régionales, structures d'accueil,
+structures centrales, départements/services), les encadrants et le catalogue des formations
+professionnelles. Consultation en lecture seule sur les demandes, sans pouvoir de décision.
+RH (Ressources
+Humaines)
+Gère exclusivement le circuit des demandes de stage : étude, validation ou refus motivé,
+affectation à un encadrant, génération des attestations. Consultation en lecture seule sur
+l'organisation.
+Responsable de
+structure d'accueil
+Consulte, en lecture seule, les demandes de stage et les dossiers des candidats destinés à sa
+propre structure. Reçoit une notification à chaque nouvelle demande la concernant. N'a aucun
+pouvoir de décision.
+Encadrant
+Consulte la liste des stagiaires qui lui sont affectés, suit leur stage, réalise l'évaluation de fin de
+stage et génère l'attestation correspondante.
+Stagiaire
+Crée son compte par auto-inscription (CIN pour un candidat tunisien, passeport pour un candidat
+étranger), complète son profil académique, dépose une ou plusieurs demandes de stage au fil du
+temps, suit l'état de son dossier et télécharge ses attestations.
+2.2 Besoins fonctionnels
+2.2.1 Gestion des comptes et de l'authentification
+Authentification sécurisée par e-mail et mot de passe, avec blocage temporaire après plusieurs échecs successifs
+;
+Auto-inscription du stagiaire avec identification exclusive par CIN (8 chiffres, nationalité tunisienne) ou passeport
+(nationalité étrangère) ;
+Gestion du profil personnel et changement de mot de passe pour chaque acteur.
+2.2.2 Gestion de l'organisation (Administrateur)
+CRUD des directions régionales (24 directions correspondant aux gouvernorats) ;
+Page 10 / 25
+
+
+===== PAGE 11 =====
+
+CRUD des structures d'accueil, typées (CSC, agence, espace TT, point de vente, autre), rattachées à une direction
+régionale ;
+CRUD des structures centrales, indépendantes de toute direction régionale ;
+CRUD des départements/services, rattachés à une structure d'accueil, avec capacité d'accueil propre ;
+CRUD des encadrants, rattachés à une structure et un département, avec capacité maximale de stagiaires
+encadrés simultanément ;
+CRUD du catalogue des formations professionnelles.
+2.2.3 Circuit de la demande de stage
+Dépôt d'une demande par le stagiaire : sélection en cascade Direction régionale → Structure d'accueil →
+Département, période souhaitée, type de stage, dépôt du CV (PDF uniquement) ;
+Étude de la demande par RH : consultation du profil, du CV, notification automatique envoyée à RH et au
+responsable de la structure concernée ;
+Décision RH : validation ou refus avec motif obligatoire, notification automatique au stagiaire ;
+Affectation : désignation d'un encadrant parmi ceux du département concerné, avec vérification automatique de
+trois niveaux de capacité (structure, département, encadrant) avant de permettre la confirmation ;
+Suivi du stage jusqu'à son terme, puis évaluation par l'encadrant (grille de six critères notés de 1 à 5, plus une
+appréciation générale libre) ;
+Génération de l'attestation de stage au format PDF, produite à la demande et jamais stockée sur le serveur.
+2.2.4 Dossier stagiaire permanent
+Un même stagiaire conserve un compte unique et peut déposer plusieurs demandes au fil du temps ;
+Le dossier conserve l'historique complet de tous les stages effectués (structure, département, encadrant, période,
+statut, attestation) ;
+Recherche des stagiaires par nom, prénom, CIN ou passeport, avec filtres et pagination côté serveur.
+2.3 Besoins non fonctionnels
+Exigence
+Mise en œuvre
+Sécurité
+Requêtes SQL exclusivement préparées (PDO), jeton anti-CSRF sur tous les formulaires, mots de passe
+hachés (bcrypt), limitation des tentatives de connexion, contrôle d'accès par rôle sur chaque action
+serveur, upload de CV limité au format PDF avec vérification réelle du type MIME
+Confidentialité
+Chaque acteur n'accède qu'aux données relevant de son périmètre (un stagiaire ne peut jamais
+consulter le dossier d'un autre stagiaire, un responsable de structure ne voit que les demandes de sa
+structure)
+Performance
+Pagination côté serveur sur toutes les listes volumineuses (stagiaires, formations…) — aucune liste
+complète n'est chargée côté navigateur
+Ergonomie
+Interface responsive basée sur Bootstrap 5, tableau de bord synthétique par rôle avec indicateurs clés
+Page 11 / 25
+
+
+===== PAGE 12 =====
+
+Traçabilité
+Historique horodaté des changements de statut d'une demande, journal d'audit des actions sensibles
+Cohérence des
+données
+Séparation stricte, au niveau du modèle de données, entre la formation académique du stagiaire et le
+département/service où il effectue son stage
+2.4 Diagramme de cas d'utilisation global
+Admin
+RH
+Structure
+d'accueil
+Encadrant
+Stagiaire
+Gérer l'organisation
+Gérer les formations
+Gérer les encadrants
+Étudier une demande
+Valider / Refuser
+Affecter un encadrant
+Générer une
+attestation
+Consulter les demandes
+de sa structure
+Consulter ses
+stagiaires
+Évaluer un stage
+Générer une
+attestation
+Gérer son profil
+Déposer une demande
+Suivre son dossier
+Consulter attestations
+S'authentifier
+«include»
+Figure 2.1 — Diagramme de cas d'utilisation global de la plateforme TTSG
+2.5 Cas d'utilisation détaillés
+2.5.1 « Déposer une demande de stage »
+Cas d'utilisation
+Déposer une demande de stage
+Page 12 / 25
+
+
+===== PAGE 13 =====
+
+Acteur
+Stagiaire
+Pré-condition
+Le stagiaire est authentifié et son profil académique est complété
+Post-condition
+La demande est enregistrée avec le statut « Envoyée » ; RH et le responsable de la structure
+concernée sont notifiés
+Scénario principal
+1) Le stagiaire accède à « Créer une demande ».
+2) Il sélectionne une direction régionale, puis une structure d'accueil rattachée, puis un
+département de cette structure.
+3) Il choisit le type de stage et la période souhaitée.
+4) Il dépose son CV au format PDF.
+5) Il valide le formulaire.
+6) Le système enregistre la demande (statut « Envoyée ») et notifie RH ainsi que le responsable
+de la structure.
+Scénario alternatif
+Affichage d'un message d'erreur si un champ obligatoire est manquant, si le CV n'est pas un PDF
+valide, ou si les dates sont incohérentes.
+2.5.2 « Valider et affecter une demande »
+Cas d'utilisation
+Valider et affecter une demande
+Acteur
+RH
+Pré-condition
+La demande a le statut « Envoyée »
+Post-condition
+La demande passe au statut « Affectée », les compteurs de capacité sont mis à jour, l'encadrant
+et le stagiaire sont notifiés
+Scénario principal
+1) RH consulte la demande et le dossier du candidat.
+2) RH valide la demande (statut « Validée »).
+3) RH accède à l'écran d'affectation et choisit un encadrant parmi ceux du département concerné.
+4) Le système vérifie automatiquement les trois niveaux de capacité (structure, département,
+encadrant).
+5) Si toutes les capacités sont disponibles, RH confirme l'affectation ; sinon le système bloque
+l'opération et affiche le niveau saturé.
+Scénario alternatif
+RH refuse la demande avec un motif obligatoire ; le stagiaire est notifié du refus.
+Page 13 / 25
+
+
+===== PAGE 14 =====
+
+C H A P I T R E 3
+Conception
+Sommaire — 3.1 Architecture générale · 3.2 Modèle relationnel de données · 3.3 Diagramme de classes · 3.4
+Diagrammes de séquence · 3.5 Diagramme d'activité
+3.1 Architecture générale
+La plateforme suit une architecture MVC (Modèle / Vue / Contrôleur), implémentée en PHP 8 sans framework, avec un
+contrôleur frontal unique qui dispatche chaque requête vers le contrôleur concerné selon les paramètres page et
+action de l'URL.
+Couche
+Responsabilité
+Modèle
+Accès aux données via PDO (requêtes préparées exclusivement), une classe par entité métier
+(Stagiaire, DemandeStage, Affectation, Agence, Encadrant…)
+Vue
+Gabarits PHP/HTML avec Bootstrap 5, un layout commun (en-tête, menu latéral adapté au rôle, pied de
+page) et des vues spécifiques par écran
+Contrôleur
+Un contrôleur par domaine fonctionnel (DemandeStageController, DemandeRhController,
+StageController, AgenceController…), chacun protégé par une vérification de rôle avant toute action
+3.2 Modèle relationnel de données
+Extrait des tables principales et de leurs relations :
+Table
+Clé primaire
+Clés étrangères principales
+utilisateur
+id
+code_agence, id_encadrant (selon le rôle)
+stagiaire
+id
+—
+direction_regionale
+id
+—
+agence (structure d'accueil)
+code_agence
+id_direction_regionale
+structure_centrale
+id
+—
+departement
+id
+code_agence
+encadrant
+id_encadrant
+code_agence, id_departement
+formation
+code_formation
+—
+Page 14 / 25
+
+
+===== PAGE 15 =====
+
+demande_stage
+id
+id_stagiaire, code_agence, id_departement
+affectation
+id
+demande_id, id_stagiaire, code_agence, id_departement, id_encadrant
+evaluation_stage
+id
+affectation_id
+evenement_calendrier
+id
+—
+notification
+id
+destinataire (type + id)
+3.3 Diagramme de classes
+1
+0..*
+1
+0..*
+1
+0..*
+(indépendante des directions régionales)
+1
+0..*
+1
+0..1
+1
+0..1
+1
+0..*
+1
+0..*
+0..*
+1
+formation académique = attribut de profil, distinct du département
+DirectionRegionale
++ id : int
++ nom : string
+Agence (structure d'accueil)
++ codeAgence : string
++ nom : string
++ type : enum
++ capaciteAccueil : int
+Departement
++ id : int
++ nom : string
++ capacite : int
+Encadrant
++ id : int
++ nom, prenom : string
++ capaciteMax : int
+StructureCentrale
++ id : int
++ nom : string
+Stagiaire
++ id : int
++ cin / passeport : string
++ nom, prenom : string
++ formationAcademique : string
+DemandeStage
++ id : int
++ reference : string
++ typeStage : enum
++ statut : enum
++ dateDebut, dateFin : date
+Affectation
++ id : int
++ sujetStage : string
++ statut : enum
+EvaluationStage
++ id : int
++ 6 critères : int (1-5)
++ appreciation : text
+Formation
++ codeFormation : string
++ intitule : string
++ etatFormation : enum
+Utilisateur
++ id : int
++ email : string
++ role : enum (admin, rh, agence, encadrant)
+Figure 3.1 — Diagramme de classes simplifié de TTSG
+3.4 Diagrammes de séquence
+3.4.1 Authentification
+Page 15 / 25
+
+
+===== PAGE 16 =====
+
+Acteur
+Interface
+Contrôleur
+Base de données
+Saisir e-mail + mot de passe
+soumettre(email, motDePasse)
+SELECT utilisateur WHERE email
+ligne trouvée
+password_verify() +
+régénération de session
+redirection vers le tableau de bord du rôle
+affichage de l'espace personnel
+Figure 3.2 — Diagramme de séquence « Authentification »
+Page 16 / 25
+
+
+===== PAGE 17 =====
+
+3.4.2 Dépôt d'une demande de stage
+Stagiaire
+Interface
+DemandeStageController
+Base de données
+Direction ? Structure ? Département
+période, type de stage, CV (PDF)
+create(données du formulaire)
+validation des champs +
+vérification MIME réelle du CV
+INSERT demande_stage
+référence générée
+INSERT notification (RH + structure)
+confirmation
+affichage : demande envoyée
+Figure 3.3 — Diagramme de séquence « Dépôt d'une demande de stage »
+3.4.3 Validation et affectation
+RH
+Interface
+DemandeRhController
+Base de données
+consulter la demande
+cliquer « Valider »
+valider(id)
+UPDATE statut = validee_rh
+choisir un encadrant
+affecter(id, idEncadrant)
+vérification des 3 capacités :
+structure, département, encadrant
+INSERT affectation + UPDATE statut
+INSERT notification (encadrant + stagiaire)
+confirmation
+affichage : affectation créée
+Figure 3.4 — Diagramme de séquence « Validation et affectation »
+Page 17 / 25
+
+
+===== PAGE 18 =====
+
+3.4.4 Évaluation et génération de l'attestation
+Encadrant
+Interface
+StageController
+Base de données
+noter les 6 critères (1 à 5) + appréciation
+enregistrerEvaluation(données)
+INSERT evaluation_stage
+confirmation
+cliquer « Générer l'attestation »
+generate(idAffectation)
+construction du PDF via dompdf, à
+la volée, jamais stocké sur
+disque
+flux binaire PDF
+téléchargement de l'attestation
+Figure 3.5 — Diagramme de séquence « Évaluation et attestation »
+3.5 Diagramme d'activité — cycle de vie complet d'une demande
+Page 18 / 25
+
+
+===== PAGE 19 =====
+
+Déposer une demande de stage
+(structure, département,
+période, CV)
+STAGIAIRE
+Étudier la demande et le dossier
+RH
+Demande recevable ?
+non
+Refuser
+(motif obligatoire)
+RH
+Recevoir la notification
+de refus
+STAGIAIRE
+oui
+Valider la demande
+RH
+Choisir un encadrant
+dans le département visé
+RH
+Capacités structure /
+département / encadrant
+disponibles ?
+non
+oui
+Confirmer l'affectation
+RH
+Suivre le stage jusqu'à son terme
+ENCADRANT
+Évaluer le stage
+(6 critères + appréciation)
+ENCADRANT
+Générer l'attestation de stage
+ENCADRANT
+Figure 3.6 — Diagramme d'activité du cycle de vie d'une demande de stage
+Page 19 / 25
+
+
+===== PAGE 20 =====
+
+C H A P I T R E 4
+Réalisation
+Sommaire — 4.1 Environnement de travail · 4.2 Technologies utilisées · 4.3 Réalisation par espace utilisateur
+4.1 Environnement de travail
+4.1.1 Environnement matériel
+Caractéristique
+Valeur
+Machine
+[Marque / modèle — à compléter]
+Processeur
+[Référence — à compléter]
+Mémoire RAM
+[À compléter]
+Système d'exploitation
+[À compléter]
+4.1.2 Environnement logiciel
+Outil
+Usage dans le projet
+XAMPP (Apache, MySQL/MariaDB, PHP)
+Serveur web local de développement
+Visual Studio Code
+Éditeur de code
+phpMyAdmin / client MySQL
+Administration de la base de données
+Composer
+Gestion des dépendances PHP (dompdf)
+Git
+[Si utilisé pour le versionning — à compléter]
+4.2 Technologies utilisées
+Technologie
+Rôle
+PHP 8
+Langage serveur, architecture MVC codée à la main (sans framework), accès aux données
+exclusivement via PDO et requêtes préparées
+MySQL /
+MariaDB
+Système de gestion de base de données relationnelle
+HTML5 / CSS3
+Structure et mise en forme des pages
+Page 20 / 25
+
+
+===== PAGE 21 =====
+
+Bootstrap 5
+Framework CSS pour une interface responsive et cohérente
+JavaScript
+(vanilla)
+Interactions côté client : listes déroulantes en cascade (direction → structure → département), validation
+de formulaires
+dompdf
+Génération à la volée des attestations de stage au format PDF, sans stockage sur disque
+Bootstrap Icons
+Iconographie de l'interface
+4.2.1 Architecture de travail (MVC)
+Chaque requête HTTP est reçue par un point d'entrée unique ( index.php), qui détermine le contrôleur à instancier à
+partir du paramètre page de l'URL, puis délègue le traitement à l'action correspondante (paramètre action). Le
+contrôleur sollicite les modèles nécessaires (accès base de données), puis inclut la vue chargée de produire le rendu
+HTML final envoyé au navigateur.
+4.3 Réalisation par espace utilisateur
+Cette section illustre les principaux écrans de la plateforme, organisés par espace utilisateur. Chaque emplacement
+[Capture d'écran] est à remplir avec une capture réelle exportée depuis le navigateur.
+4.3.1 Authentification et tableau de bord
+[Capture d'écran : Page de connexion]
+Formulaire d'authentification commun à Admin, RH, Structure d'accueil et Encadrant.
+[Capture d'écran : Tableau de bord Admin/RH]
+Cartes d'indicateurs clés (stagiaires, demandes en attente, stages en cours, places disponibles), section
+Organisation, calendrier.
+4.3.2 Espace Administrateur
+[Capture d'écran : Gestion des directions régionales]
+Liste des 24 directions régionales, création/modification/suppression.
+[Capture d'écran : Gestion des structures d'accueil]
+Liste des structures avec leur type (CSC, agence, espace TT…) et leur direction régionale de rattachement.
+Page 21 / 25
+
+
+===== PAGE 22 =====
+
+[Capture d'écran : Gestion des structures centrales et des encadrants]
+CRUD des structures centrales et des encadrants, avec sélection en cascade structure → département.
+4.3.3 Espace RH
+[Capture d'écran : Liste des demandes de stage]
+Vue paginée des demandes avec filtre par statut.
+[Capture d'écran : Étude d'une demande]
+Détail du dossier candidat, CV téléchargeable, actions Valider / Refuser.
+[Capture d'écran : Écran d'affectation]
+Sélection de l'encadrant filtrée par département, avec places disponibles affichées, blocage si capacité atteinte.
+4.3.4 Espace Stagiaire
+[Capture d'écran : Formulaire d'inscription]
+Choix de la nationalité, CIN ou passeport selon le cas.
+[Capture d'écran : Formulaire de demande de stage]
+Cascade Direction régionale → Structure d'accueil → Département, période, upload du CV.
+[Capture d'écran : Suivi du dossier]
+Historique des demandes et de leurs statuts, dossier permanent multi-stages.
+4.3.5 Espace Encadrant
+Page 22 / 25
+
+
+===== PAGE 23 =====
+
+[Capture d'écran : Liste des stagiaires affectés]
+Vue des stagiaires actuellement encadrés, avec accès au détail du stage.
+[Capture d'écran : Grille d'évaluation]
+Formulaire de notation des 6 critères (1 à 5) et appréciation générale.
+4.3.6 Espace Structure d'accueil
+[Capture d'écran : Demandes reçues]
+Consultation en lecture seule des demandes ciblant la structure du responsable connecté.
+Page 23 / 25
+
+
+===== PAGE 24 =====
+
+C O N C L U S I O N
+Conclusion générale et perspectives
+Ce projet a permis de concevoir et de développer une plateforme complète de gestion des stages pour Tunisie
+Télécom, couvrant l'ensemble du parcours d'un stagiaire — de son inscription à la délivrance de son attestation —
+ainsi que la structure organisationnelle réelle de l'entreprise (directions régionales, structures d'accueil, structures
+centrales, départements). La séparation stricte des rôles, le contrôle automatique des capacités d'accueil à trois
+niveaux et la conservation d'un dossier permanent par stagiaire répondent directement aux limites identifiées dans
+l'étude de l'existant.
+Sur le plan technique, la mise en œuvre d'une architecture MVC en PHP natif a permis de garder une totale maîtrise
+du code, tout en respectant des exigences de sécurité strictes (requêtes préparées, protection CSRF, hachage des
+mots de passe, contrôle d'accès par rôle vérifié côté serveur).
+Perspectives d'amélioration
+Affectation intelligente : proposer automatiquement à RH un classement des meilleures correspondances
+encadrant/département pour un candidat, en fonction de sa formation, de ses compétences et des places
+disponibles — la décision finale restant entre les mains de RH ;
+Tests automatisés : compléter la vérification manuelle actuelle par une suite de tests automatisés (unitaires et
+fonctionnels) ;
+Application mobile : offrir un accès simplifié au suivi de dossier pour les stagiaires ;
+Filtres avancés : élargir les critères de recherche (par formation, par direction régionale, par période) sur la liste
+des stagiaires et des demandes.
+Page 24 / 25
+
+
+===== PAGE 25 =====
+
+Bibliographie et webographie
+1. Documentation officielle PHP — https://www.php.net/manual/fr/
+2. Documentation officielle MySQL — https://dev.mysql.com/doc/
+3. Documentation Bootstrap 5 — https://getbootstrap.com/docs/5.0/
+4. Documentation dompdf — https://github.com/dompdf/dompdf
+5. PDO — PHP Data Objects — https://www.php.net/manual/fr/book.pdo.php
+6. OWASP — bonnes pratiques de sécurité web (CSRF, injection SQL) — https://owasp.org/
+7. [Ajouter ici toute autre source utilisée pendant le stage]
+Page 25 / 25

@@ -1,0 +1,512 @@
+===== PAGE 1 =====
+
+S2 - Gestion des stages PFE/PFA · page 1 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Gestion des stages PFE/PFA - 
+Rapport de conception (Séance 2) 
+ 
+ 
+ 
+SAADALI Walid 
+ADAWI Wael 
+BERGER Enzo 
+SAMIT Wajih 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 2 =====
+
+S2 - Gestion des stages PFE/PFA · page 2 
+Table des matières 
+1. Spécification agile et backlog MVP ................................................................................................................................... 3 
+2. Conception UX/UI (maquettes) ......................................................................................................................................... 4 
+3. Architecture technique et choix de la stack ....................................................................................................................... 5 
+4. Modélisation de la base de données ................................................................................................................................. 6 
+Dictionnaire de données (champs principaux) ...................................................................................................................... 7 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+===== PAGE 3 =====
+
+S2 - Gestion des stages PFE/PFA · page 3 
+1. Spécification agile et backlog MVP 
+Le MVP(Minimum Viable Product) regroupe 22 user stories issues du BPMN TO-BE (schémas 1 à 5). Priorités : M = Must (16 stories 
+du MVP), S = Should (3), C = Could (3, module optionnel d'offres partenaires). Le chiffre est le numéro du schéma TO-BE. Chaque 
+story cible un rôle (couloir du BPMN) et se termine par des critères d'acceptation vérifiables. 
+ID 
+User story 
+Critères d'acceptation 
+US-01 
+M · 1 
+En tant qu'étudiant, je veux déclarer mon stage trouvé par mes 
+propres moyens en remplissant ma fiche de stage en ligne, afin de 
+ne plus passer par des formulaires et échanges dispersés. 
+Identité pré-remplie ; origine du stage (réseau, site d'emploi, offre 
+partenaire) ; brouillon possible ; envoi bloqué si champ obligatoire 
+vide. 
+US-02 
+M · 1 
+En tant qu'encadrant, je veux être notifié et vérifier la conformité de 
+la fiche de stage, afin de garantir que le sujet correspond au cursus. 
+Notification à l'envoi de la fiche ; motif obligatoire si refus ; l'étudiant 
+corrige sa fiche et la renvoie. 
+US-03 
+M · 1 
+En tant qu'étudiant, je veux que la convention PDF soit générée à 
+partir de ma fiche validée, afin de ne pas ressaisir les informations. 
+Toutes les données de la fiche reprises ; numéro unique ; PDF 
+téléchargeable ; génération possible seulement si fiche conforme. 
+US-04 
+M · 2 
+En tant qu'encadrant, agent du Service Stages ou responsable, je 
+veux valider ou refuser la convention à mon niveau, afin que chaque 
+niveau contrôle avant signature. 
+Ordre Encadrant > Service Stages > Responsable ; refus motivé ; 
+historique horodaté. 
+US-05 
+M · 2 
+En tant que signataire (étudiant, entreprise, école), je veux signer 
+la convention en ligne, afin de supprimer les signatures papier. 
+Signatures en parallèle après validation ; convention verrouillée ; 
+signatures horodatées ; archivage. 
+US-06 
+M · 2 
+En tant qu'agent du Service Stages, je veux que la plateforme 
+relance les validateurs et signataires en retard, afin de ne plus 
+relancer à la main. 
+Délai paramétrable ; e-mail avec lien direct ; relances tracées ; arrêt 
+dès l'action faite. 
+US-07 
+M · 2 
+En tant qu'agent du Service Stages, je veux exporter les 
+conventions signées en CSV pour WebAurion, afin d'éviter la double 
+saisie. 
+Conventions signées uniquement ; colonnes au format WebAurion ; 
+fichier horodaté. 
+US-08 
+M · 1 
+En tant qu'agent du Service Stages, je veux importer les étudiants 
+et encadrants depuis WebAurion (CSV), afin de ne pas créer les 
+comptes à la main. 
+Rapport d'erreurs par ligne ; pas de doublons ; données utilisées 
+pour pré-remplir la fiche. 
+US-09 
+M · 3 
+En tant qu'étudiant, je veux déposer mon rapport de stage final en 
+ligne, afin d'avoir une preuve de dépôt sans e-mail. 
+PDF uniquement ; horodatage et accusé de réception ; dépôt 
+bloqué après la date limite. 
+US-10 
+M · 3 
+En tant qu'étudiant, je veux recevoir des relances automatiques 
+avant la date limite, afin de ne pas dépasser le délai. 
+Calendrier paramétrable ; arrêt dès le dépôt ; Service Stages 
+informé des retards. 
+US-11 
+M · 3 
+En tant que responsable ou agent du Service Stages, je veux 
+consulter un tableau de bord des stages, afin de piloter sans relancer 
+chaque personne. 
+Stages par étape ; conventions en attente ; rapports déposés et en 
+retard ; mise à jour automatique. 
+US-12 
+M · 4 
+En tant que membre du jury, je veux indiquer mes disponibilités via 
+un sondage en ligne, afin d'éviter les échanges de mails. 
+Sondage envoyé automatiquement ; créneaux à cocher ; rappel en 
+cas de non-réponse. 
+US-13 
+M · 4 
+En tant qu'agent du Service Stages, je veux valider un planning de 
+soutenances proposé automatiquement, afin d'éviter les conflits de 
+salles et de jurys. 
+Un jury, une salle et un étudiant par créneau ; validation ou 
+nouvelle proposition. 
+US-14 
+M · 4 
+En tant qu'étudiant ou membre du jury, je veux recevoir ma 
+convocation automatiquement, afin de connaître date, heure et salle 
+sans relance. 
+E-mail dès la validation du planning ; mis à jour si le planning 
+change. 
+US-15 
+M · 4 
+En tant que membre du jury, je veux saisir le PV et la note en ligne, 
+afin d'éviter les documents papier. 
+PV pré-rempli ; note obligatoire ; validation par le Service Stages ; 
+PV rattaché au dossier. 
+US-16 
+M · 4 
+En tant qu'agent du Service Stages, je veux exporter les notes 
+validées vers WebAurion et archiver le dossier, afin de clôturer sans 
+ressaisie. 
+Notes validées uniquement ; format CSV WebAurion ; dossier 
+archivé (convention, rapport, PV). 
+US-17 
+S · 3 
+En tant qu'étudiant, je veux déposer mes livrables intermédiaires en 
+ligne, afin d'avoir une trace de chaque remise pendant le stage. 
+Liste des livrables avec date limite ; dépôt PDF horodaté ; statut 
+visible (à déposer, déposé, validé, à corriger). 
+US-18 
+S · 3 
+En tant qu'encadrant, je veux valider ou demander la correction d'un 
+livrable, afin de suivre l'avancement sans échanges de mails. 
+Décision avec commentaire ; étudiant notifié ; relance automatique 
+avant chaque date limite. 
+US-19 
+S · 3 
+En tant qu'encadrant, je veux corriger le rapport final et saisir mon 
+évaluation en ligne, afin de centraliser la correction et la note dans le 
+dossier. 
+Commentaires sur le rapport ; évaluation enregistrée ; visible du 
+Service Stages ; alimente la note de soutenance. 
+US-20 
+C · 5 
+En tant qu'entreprise partenaire, je veux proposer une offre de 
+stage via un formulaire public, afin de la diffuser aux étudiants sans 
+inscription. 
+Accès par lien sans authentification ; champs obligatoires ; e-mail 
+de confirmation ; statut « en modération ». 
+US-21 
+C · 5 
+En tant que responsable, je veux modérer les offres reçues (publier 
+ou refuser), afin de n'afficher que des offres conformes. 
+Motif obligatoire si refus ; entreprise notifiée dans les deux cas. 
+US-22 
+C · 5 
+En tant qu'étudiant, je veux consulter les offres des entreprises 
+partenaires, afin de les comparer à mes autres pistes. 
+Seules les offres publiées ; filtres type, domaine, durée, lieu ; une 
+offre choisie pré-remplit la fiche de stage. 
+TO-BE 1 Déclaration et validation du stage · 2 Convention, validation, signature · 3 Suivi, livrables et rapport · 4 Finalisation et soutenance · 5 Offres partenaires 
+(optionnel). Les étudiants trouvent leur stage hors de la plateforme : les offres partenaires restent un module secondaire.  
+
+
+===== PAGE 4 =====
+
+S2 - Gestion des stages PFE/PFA · page 4 
+2. Conception UX/UI (maquettes) 
+Six écrans clés, un par rôle du BPMN TO-BE. Ce sont des maquettes basse fidélité (structure et parcours, pas de charte graphique). 
+Les valeurs affichées sont des exemples. 
+ 
+E1 · Déclarer mon stage 
+Étudiant · US-01 · TO-BE 1 
+ 
+E2 · Vérifier la conformité du stage 
+Encadrant · US-02 · TO-BE 1 
+ 
+E3 · Suivre mon stage 
+Étudiant · US-03, US-09, US-17 · TO-BE 1 à 3 
+ 
+E4 · Valider une convention 
+Encadrant, Service Stages, Responsable · US-04 · TO-BE 2 
+ 
+E5 · Planifier les soutenances 
+Service Stages · US-13, US-14 · TO-BE 4 
+ 
+E6 · Piloter les stages 
+Responsable · US-11 · TO-BE 3 
+Non maquettés à ce stade : l'espace Jury (sondage de disponibilités, saisie du PV, US-12 et US-15) et le module optionnel d'offres partenaires (US-20 à US-22). 
+
+
+===== PAGE 5 =====
+
+S2 - Gestion des stages PFE/PFA · page 5 
+3. Architecture technique et choix de la stack 
+Solution développée from scratch : application web à trois couches (interface, API, base) avec quelques services techniques appelés 
+par l'API. Choix proposés, à confirmer selon les compétences du groupe. 
+Couche 
+Choix 
+Justification 
+Frontend 
+React + Vite, Tailwind CSS 
+Application web à une page, composants réutilisables par rôle (E1 à E6), 
+démarrage rapide, large documentation. 
+Backend 
+Node.js + Express, API REST, JWT 
+Même langage que le frontend, simple à apprendre en équipe ; les rôles 
+sont vérifiés par un middleware sur chaque route. 
+Base de données 
+PostgreSQL 
+Modèle relationnel adapté aux liens stage - convention - validations - 
+livrables ; contraintes d'intégrité et transactions ; open source. 
+Documents 
+PDFKit (convention), dossier de fichiers côté 
+serveur 
+Génération de la convention sans service payant ; rapports et livrables 
+stockés sur le serveur, chemin gardé en base. 
+E-mails et relances 
+Nodemailer (SMTP), node-cron 
+Notifications et relances automatiques (US-06, US-10, US-14, US-18) sans 
+intervention du Service Stages. 
+Signature 
+Signature électronique simple : horodatage + 
+empreinte SHA-256 
+Preuve de signature de chaque partie (US-05). Limite : pas de certificat 
+qualifié ; à valider avec l'école. 
+Import / export 
+Fichiers CSV 
+Pas d'API WebAurion à disposition : les échanges se font par fichiers CSV 
+(US-07, US-08, US-16). 
+Déploiement 
+Docker Compose (web, api, db), Git / GitHub 
+Environnement identique pour les 4 membres, installation en une 
+commande. 
+ 
+Les entreprises n'ont pas de compte : elles accèdent à la signature (et au formulaire d'offre optionnel) par un lien unique envoyé par e-mail. Les autres 
+rôles s'authentifient (JWT) et voient uniquement les écrans de leur couloir BPMN. 
+
+
+===== PAGE 6 =====
+
+S2 - Gestion des stages PFE/PFA · page 6 
+4. Modélisation de la base de données 
+Schéma relationnel (MCD) : 12 tables, clés primaires (PK) et étrangères (FK). Le stage est au centre ; l'offre partenaire (en violet) est facultative. Une convention est liée à un seul stage ; elle reçoit 3 validations (une par 
+niveau) et 3 signatures (étudiant, entreprise, école). 
+ 
+
+
+===== PAGE 7 =====
+
+S2 - Gestion des stages PFE/PFA · page 7 
+Dictionnaire de données (champs principaux) 
+Extrait des champs qui portent les règles de gestion du MVP. Les autres champs (nom, prénom, ville, description, etc.) sont de type texte ou date et se lisent dans le schéma ci-dessus. 
+Table 
+Champ 
+Type 
+Contrainte 
+Description / règle métier 
+UTILISATEUR 
+id_utilisateur 
+BIGINT 
+PK, AutoInc 
+Identifiant unique de l'utilisateur 
+ 
+email 
+VARCHAR(150) 
+UNIQUE, NOT NULL 
+Adresse de connexion et de notification 
+ 
+role 
+VARCHAR(20) 
+NOT NULL 
+ETUDIANT, ENCADRANT, SERVICE_STAGES, RESPONSABLE ou JURY : détermine les écrans accessibles 
+ENTREPRISE 
+id_entreprise 
+BIGINT 
+PK, AutoInc 
+Identifiant unique de l'entreprise (sans compte utilisateur) 
+ 
+raison_sociale 
+VARCHAR(150) 
+NOT NULL 
+Nom repris dans la fiche de stage et la convention 
+ 
+contact_email 
+VARCHAR(150) 
+NOT NULL 
+Reçoit les liens uniques (signature, statut d'offre) 
+OFFRE (optionnel) 
+id_offre 
+BIGINT 
+PK, AutoInc 
+Identifiant unique de l'offre partenaire (module facultatif) 
+ 
+type 
+VARCHAR(3) 
+NOT NULL 
+PFA ou PFE 
+ 
+statut 
+VARCHAR(20) 
+NOT NULL, DEFAULT 
+'EN_MODERATION' 
+EN_MODERATION, PUBLIEE ou REFUSEE (motif obligatoire) ; seules les PUBLIEE sont visibles 
+ 
+id_entreprise 
+BIGINT 
+FK, NOT NULL 
+Entreprise qui dépose l'offre 
+LIVRABLE 
+id_stage 
+BIGINT 
+FK, NOT NULL 
+Stage auquel le livrable intermédiaire appartient 
+ 
+date_limite 
+DATE 
+NOT NULL 
+Date après laquelle le dépôt est refusé ; relance avant échéance 
+ 
+statut 
+VARCHAR(12) 
+NOT NULL, DEFAULT 'A_DEPOSER' 
+A_DEPOSER, DEPOSE, VALIDE ou A_CORRIGER (décision de l'encadrant) 
+STAGE 
+id_stage 
+BIGINT 
+PK, AutoInc 
+Identifiant unique du stage (saisi par l'étudiant dans sa fiche) 
+ 
+id_offre 
+BIGINT 
+FK, NULLABLE 
+Renseigné seulement si le stage vient d'une offre partenaire 
+ 
+origine 
+VARCHAR(15) 
+NOT NULL 
+RESEAU, SITE_EMPLOI ou OFFRE_PARTENAIRE 
+ 
+id_etudiant, id_encadrant 
+BIGINT 
+FK, NOT NULL 
+Étudiant et encadrant pédagogique (deux lignes de UTILISATEUR) 
+ 
+date_debut, date_fin 
+DATE 
+NOT NULL 
+date_fin postérieure à date_debut 
+ 
+statut_conformite 
+VARCHAR(15) 
+NOT NULL, DEFAULT 'EN_ATTENTE' 
+EN_ATTENTE, CONFORME ou REFUSE (décision de l'encadrant) 
+CONVENTION 
+numero 
+VARCHAR(20) 
+UNIQUE, NOT NULL 
+Numéro unique généré avec le PDF 
+ 
+id_stage 
+BIGINT 
+FK, UNIQUE 
+Une seule convention par stage 
+ 
+statut 
+VARCHAR(20) 
+NOT NULL, DEFAULT 
+'EN_VALIDATION' 
+EN_VALIDATION, VALIDEE, EN_SIGNATURE, SIGNEE ou REFUSEE 
+VALIDATION 
+niveau 
+SMALLINT 
+NOT NULL, CHECK 1 à 3 
+1 Encadrant, 2 Service Stages, 3 Responsable (hypothèse à confirmer) 
+ 
+decision, commentaire 
+VARCHAR(10), TEXT 
+NOT NULL, NULLABLE 
+VALIDE ou REFUSE ; commentaire obligatoire si REFUSE 
+SIGNATURE 
+signataire 
+VARCHAR(12) 
+NOT NULL 
+ETUDIANT, ENTREPRISE ou ECOLE 
+ 
+empreinte 
+VARCHAR(64) 
+NOT NULL 
+Empreinte SHA-256 du PDF signé ; date_signature horodate la signature 
+RAPPORT 
+fichier_pdf 
+VARCHAR(255) 
+NOT NULL 
+Chemin du rapport déposé 
+ 
+date_depot 
+TIMESTAMP 
+NOT NULL 
+Horodatage ; dépôt refusé après la date limite 
+ 
+commentaire_encadrant 
+TEXT 
+NULLABLE 
+Correction et évaluation saisies en ligne par l'encadrant 
+ 
+statut 
+VARCHAR(15) 
+NOT NULL, DEFAULT 'DEPOSE' 
+DEPOSE, A_CORRIGER ou CORRIGE (correction par l'encadrant) 
+SOUTENANCE 
+date_heure, salle 
+TIMESTAMP, 
+VARCHAR(30) 
+NULLABLE 
+Créneau proposé puis validé par le Service Stages 
+ 
+note 
+DECIMAL(4,2) 
+NULLABLE, CHECK 0 à 20 
+Saisie par le jury avec le PV (validé par le Service Stages) ; exportée vers WebAurion 
+DISPONIBILITE 
+debut, fin 
+TIMESTAMP 
+NOT NULL 
+Créneaux cochés par les membres du jury (sondage)

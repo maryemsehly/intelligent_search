@@ -1,0 +1,3243 @@
+===== PAGE 1 =====
+
+Université Côte d’Azur
+–
+École Marocaine des Sciences de l’Ingénieur
+Rapport de Projet de Fin d’Études
+Master MIAGE : MBDS
+5ème Année en Ingénierie Informatique et Réseaux
+Année universitaire : 2025 / 2026
+Stratégie Data-Driven pour augmenter le volume
+et la fréquence d’usage des cartes de paiement
+Réalisé par :
+Hamza Raji
+Sous la direction de :
+Cherkaoui Leghris
+Encadrant Académique
+Wassim Tahir
+Encadrant Entreprise
+Entreprise d’accueil
+
+
+===== PAGE 2 =====
+
+Dédicace
+Je dédie ce travail à
+Mes chers parents,
+dont l’amour inconditionnel,
+les sacrifices et le soutien indéfectible
+m’ont porté tout au long de ce parcours.
+Que Dieu vous accorde longue vie et santé
+pour continuer à illuminer mon chemin.
+Mon frère,
+pour son soutien,
+son affection et sa présence inestimable
+qui m’a donné la force d’avancer
+avec confiance et détermination.
+Que Dieu lui accorde succés et réussite.
+Ma famille,
+pour leur présence chaleureuse,
+leurs encouragements sincères
+et leur soutien de chaque instant.
+Je vous dois une part de cette réussite.
+Mes amis,
+véritables compagnons de route,
+pour leurs encouragements constants
+et leur soutien précieux.
+Je vous souhaite à tous réussite et épanouissement
+dans vos projets.
+Mon chat,
+pour m’avoir fait comprendre, à sa façon,
+des choses qu’aucun humain n’aurait pu m’apprendre –
+la responsabilité, la patience
+et l’amour inconditionnel.
+Avec toute ma gratitude et mon affection.
+
+
+===== PAGE 3 =====
+
+Remerciements
+Je n’aurais jamais pu réaliser ce projet sans la précieuse aide et sans le soutien d’un grand nombre
+de personnes dont la générosité, la bonne humeur et l’intérêt manifestés à l’égard de mon PFE m’ont
+permis de progresser.
+En premier lieu, je tiens à remercier mon encadrant universitaire Cherkaoui Leghris, pour la
+confiance qu’il m’a accordée en acceptant d’encadrer ce travail, pour ses multiples conseils et pour
+toutes les heures qu’il a consacrées à diriger ce travail.
+Je souhaiterais exprimer ma gratitude à Wassim Tahir, pour m’avoir donné envie de réaliser
+un mémoire sur l’exploitation des données comportementales pour augmenter l’usage des cartes de
+paiement au sein de « AttijariWafa Bank ». Je le remercie également pour son accueil chaleureux à
+chaque fois que j’ai sollicité son aide, ainsi que pour ses multiples encouragements. J’ai été extrê-
+mement sensible à ses qualités humaines d’écoute et de compréhension tout au long de ce travail de
+mémoire.
+Je remercie également Marouane El Allali, Manager de l’entité Data BDME, pour m’avoir ac-
+cueilli au sein de son équipe et permis de réaliser ce stage dans les meilleures conditions.
+Mes remerciements vont aussi à Mohammed Mestari, qui a accepté de m’aider en me trans-
+mettant le plan de cadrage ayant servi de point de départ à ce projet, et dont l’intérêt manifesté
+à l’égard de ce travail a été précieux. J’aimerais enfin dire à Mr Michel Syska à quel point je suis
+honoré pour avoir accepté de présider ce jury de PFE.
+Ma reconnaissance va à ceux qui ont plus particulièrement assuré le soutien affectif de ce travail :
+ma famille ainsi que mes amis. Mes parents, mon frère, en particulier.
+
+
+===== PAGE 4 =====
+
+Résumé
+Ce travail s’inscrit dans le cadre du projet de fin d’études réalisé au sein de l’entité Data BDME
+de AttijariWafa Bank en vue de l’obtention du diplôme national d’ingénieur à l’École Marocaine
+des Sciences de l’Ingénieur, en partenariat avec Université Côte d’Azur (Master MIAGE – MBDS).
+L’objectif est de concevoir et mettre en œuvre une stratégie data-driven visant à augmenter le volume
+et la fréquence d’usage des cartes bancaires pour les paiements, au sein du portefeuille clients de la
+banque.
+Face à l’écart persistant entre le nombre de clients détenteurs d’une carte et ceux qui l’utilisent
+effectivement pour payer, ce mémoire mobilise, selon la méthodologie CRISP-DM, une démarche
+analytique construite à partir de deux populations complémentaires – les clients déjà actifs sur le
+paiement carte et ceux qui ne l’ont jamais utilisé. Une segmentation comportementale par règles
+métier est d’abord construite pour chaque population, puis validée et enrichie par des méthodes non
+supervisées (K-Means, DBSCAN, réduction de dimension par PCA et UMAP). Cette base sert ensuite
+à cinq modèles prédictifs complémentaires : une étude rétrospective de la vitesse d’activation et de
+la fidélité qui lui est associée, un classifieur XGBoost distinguant les clients actifs des jamais-actifs
+(AUC de 0,966), un modèle de régression estimant la valeur d’usage attendue de chaque client, un
+scoring des commerçants partenaires selon la qualité de la clientèle qu’ils attirent, et deux modèles de
+survie de Cox – l’un estimant le délai avant la première activation, l’autre le risque de désengagement
+des clients déjà actifs.
+L’ensemble de ces résultats se traduit en six recommandations opérationnelles concrètes, offrant
+à la banque un dispositif d’aide à la décision pour prioriser ses actions commerciales, personnaliser
+ses campagnes selon le profil des clients et prévenir le désengagement des clients les plus exposés.
+Mots clés— Science des données, Apprentissage automatique, Segmentation com-
+portementale, K-Means, DBSCAN, Réduction de dimension (PCA, UMAP), XG-
+Boost, Régression, Modèle de survie de Cox, Analyse de survie, Scoring commerçant,
+Désengagement client, Cartes bancaires, Stratégie data-driven, CRISP-DM, Attijari-
+wafa Bank.
+
+
+===== PAGE 5 =====
+
+Abstract
+This work is part of the graduation project carried out within the Data BDME entity of Atti-
+jariWafa Bank , in order to obtain the national engineering diploma from the École Marocaine des
+Sciences de l’Ingénieur, in partnership with Université Côte d’Azur (MIAGE Master’s – MBDS).
+The objective is to design and implement a data-driven strategy aimed at increasing the volume and
+frequency of bank card usage for payments within the bank’s client portfolio.
+Given the persistent gap between clients who own a bank card and those who actually use it for
+payments, this thesis follows the CRISP-DM methodology to build an analytical approach based on
+two complementary populations – clients already active in card payments and those who have never
+used one. A rule-based behavioral segmentation is first built for each population, then validated and
+enriched through unsupervised methods (K-Means, DBSCAN, dimensionality reduction via PCA
+and UMAP). This foundation supports five complementary predictive models : a retrospective study
+of activation speed and the resulting customer loyalty, an XGBoost classifier distinguishing active
+from never-active clients (AUC of 0.966), a regression model estimating each client’s expected usage
+value, a merchant scoring system based on the quality of the clientele they attract, and two Cox
+survival models – one estimating the time to first activation, the other the risk of disengagement
+among already-active clients.
+These results translate into six concrete operational recommendations, providing the bank with
+a decision-support framework to prioritize commercial actions, personalize campaigns according to
+client profile, and prevent disengagement among the most at-risk clients.
+Keywords— Data Science, Machine Learning, Behavioral Segmentation, K-Means,
+DBSCAN, Dimensionality Reduction (PCA, UMAP), XGBoost, Regression, Cox
+Survival Model, Survival Analysis, Merchant Scoring, Customer Churn, Bank Cards,
+Data-Driven Strategy, CRISP-DM, Attijariwafa Bank.
+
+
+===== PAGE 6 =====
+
+ﻣﻠﺨﺺ
+ﺍﻟﺘﺎﺑﻊﻟﻤﺠﻤﻮﻋﺔﺍﻟﺘﺠﺎﺭﻱﻭﻓﺎBDME Dataﻳﻨﺪﺭﺝﻫﺬﺍﺍﻟﻌﻤﻞﺿﻤﻦﻣﺸﺮﻭﻉﻧﻬﺎﻳﺔﺍﻟﺪﺭﺍﺳﺎﺕﺍﻟﻤﻨﺠﺰﺩﺍﺧﻞﻛﻴﺎﻥ
+ﻭﺫﻟﻚﺑﻐﺮﺽﺍﻟﺤﺼﻮﻝﻋﻠﻰﺩﺑﻠﻮﻡﺍﻟﻤﻬﻨﺪﺱﺍﻟﻮﻁﻨﻲﻣﻦﺍﻟﻤﺪﺭﺳﺔﺍﻟﻤﻐﺮﺑﻴﺔﻟﻌﻠﻮﻡBank)، (AttijariWafaﺑﻨﻚ
+- MIAGEﻣﺎﺳﺘﺮ-- d'Azur) Côte (Université(ﻓﻲﺇﻁﺎﺭﺷﺮﺍﻛﺔﻣﻊﺟﺎﻣﻌﺔﻛﻮﺕﺩﺍﺯﻭﺭEMSI)،ﺍﻟﻤﻬﻨﺪﺱ
+(ﻟﺰﻳﺎﺩﺓﺣﺠﻢdata-driven)ﻳﻬﺪﻑﻫﺬﺍﺍﻟﻤﺸﺮﻭﻉﺇﻟﻰﺗﺼﻤﻴﻢﻭﺗﻨﻔﻴﺬﺍﺳﺘﺮﺍﺗﻴﺠﻴﺔﻗﺎﺋﻤﺔﻋﻠﻰﺍﻟﺒﻴﺎﻧﺎﺕMBDS.
+.ﻭﺗﻮﺍﺗﺮﺍﺳﺘﺨﺪﺍﻡﺍﻟﺒﻄﺎﻗﺎﺕﺍﻟﺒﻨﻜﻴﺔﻓﻲﻋﻤﻠﻴﺎﺕﺍﻷﺩﺍء،ﺿﻤﻦﻣﺤﻔﻈﺔﻋﻤﻼءﺍﻟﺒﻨﻚ
+ﻧﻈﺮﺍﻟﻠﻔﺠﻮﺓﺍﻟﻘﺎﺋﻤﺔﺑﻴﻦﻋﺪﺩﺍﻟﻌﻤﻼءﺍﻟﺤﺎﺋﺰﻳﻦﻋﻠﻰﺑﻄﺎﻗﺔﺑﻨﻜﻴﺔﻭﺃﻭﻟﺌﻚﺍﻟﺬﻳﻦﻳﺴﺘﺨﺪﻣﻮﻧﻬﺎﻓﻌﻠﻴﺎﻟﻸﺩﺍء،ﺗﻌﺘﻤﺪ
+--ﻣﻘﺎﺭﺑﺔﺗﺤﻠﻴﻠﻴﺔﻣﺒﻨﻴﺔﻋﻠﻰﻣﺠﻤﻮﻋﺘﻴﻦﻣﺘﻜﺎﻣﻠﺘﻴﻦﻣﻦﺍﻟﻌﻤﻼءCRISP-DM،ﻫﺬﻩﺍﻟﻤﺬﻛﺮﺓ،ﻭﻓﻖﻣﻨﻬﺠﻴﺔ
+ﺍﻟﻌﻤﻼءﺍﻟﻨﺸﻄﻴﻦﺑﺎﻟﻔﻌﻞﻓﻲﺍﻷﺩﺍءﺑﺎﻟﺒﻄﺎﻗﺔ،ﻭﺃﻭﻟﺌﻚﺍﻟﺬﻳﻦﻟﻢﻳﺴﺘﺨﺪﻣﻮﻫﺎﻗﻂ.ﻳﺘﻢﺃﻭﻻﺑﻨﺎءﺗﺼﻨﻴﻒﺳﻠﻮﻛﻲ
+(K-ﻗﺎﺋﻢﻋﻠﻰﻗﻮﺍﻋﺪﺍﻟﻌﻤﻞﻟﻜﻞﻣﺠﻤﻮﻋﺔ،ﺛﻢﻳﺘﻢﺍﻟﺘﺤﻘﻖﻣﻦﺻﺤﺘﻪﻭﺇﺛﺮﺍﺅﻩﺑﻮﺍﺳﻄﺔﻁﺮﻕﻏﻴﺮﻣﻮﺟﻬﺔ
+(.ﺗُﺴﺘﺨﺪﻡﻫﺬﻩﺍﻟﻘﺎﻋﺪﺓﺑﻌﺪﺫﻟﻚﻓﻲﺧﻤﺴﺔUMAPﻭPCAﻭﺗﻘﻠﻴﺺﺍﻷﺑﻌﺎﺩﺑﺎﺳﺘﺨﺪﺍﻡDBSCAN، Means،
+XGBoostﻧﻤﺎﺫﺝﺗﻨﺒﺆﻳﺔﻣﺘﻜﺎﻣﻠﺔ :ﺩﺭﺍﺳﺔﺍﺳﺘﺮﺟﺎﻋﻴﺔﻟﺴﺮﻋﺔﺍﻟﺘﻔﻌﻴﻞﻭﺍﻟﻮﻻءﺍﻟﻤﺮﺗﺒﻂﺑﻬﺎ،ﻭﻧﻤﻮﺫﺝﺗﺼﻨﻴﻒ
+(،ﻭﻧﻤﻮﺫﺝﺍﻧﺤﺪﺍﺭﻳﻘﺪﺭﺍﻟﻘﻴﻤﺔ966 .0ﺗﺒﻠﻎAUCﻳﻤﻴﺰﺑﻴﻦﺍﻟﻌﻤﻼءﺍﻟﻨﺸﻄﻴﻦﻭﻏﻴﺮﺍﻟﻨﺸﻄﻴﻦﻋﻠﻰﺍﻹﻁﻼﻕ )ﺑﺪﻗﺔ
+ﺍﻟﻤﺘﻮﻗﻌﺔﻻﺳﺘﺨﺪﺍﻡﻛﻞﻋﻤﻴﻞ،ﻭﻧﻈﺎﻡﻟﺘﺼﻨﻴﻒﺍﻟﺘﺠﺎﺭﺍﻟﺸﺮﻛﺎءﺣﺴﺐﺟﻮﺩﺓﺍﻟﻌﻤﻼءﺍﻟﺬﻳﻦﻳﺠﺬﺑﻮﻧﻬﻢ،ﻭﻧﻤﻮﺫﺟﻲ
+ﻳﻘﺪﺭﺃﺣﺪﻫﻤﺎﺍﻟﻤﺪﺓﻗﺒﻞﺍﻟﺘﻔﻌﻴﻞﺍﻷﻭﻝ،ﻭﻳﻘﺪﺭﺍﻵﺧﺮﺧﻄﺮﺍﻧﻘﻄﺎﻉﺍﻟﻌﻤﻼءﺍﻟﻨﺸﻄﻴﻦﺑﺎﻟﻔﻌﻞ-- Coxﺑﻘﺎءﻣﻦﻧﻮﻉ
+ﻋﻦﺍﻻﺳﺘﺨﺪﺍﻡ.
+ﺗُﺘﺮﺟﻢﻛﻞﻫﺬﻩﺍﻟﻨﺘﺎﺋﺞﺇﻟﻰﺳﺖﺗﻮﺻﻴﺎﺕﻋﻤﻠﻴﺎﺗﻴﺔﻣﻠﻤﻮﺳﺔ،ﺗﻮﻓﺮﻟﻠﺒﻨﻚﺃﺩﺍﺓﻟﺪﻋﻢﺍﺗﺨﺎﺫﺍﻟﻘﺮﺍﺭﻣﻦﺃﺟﻞﺗﺮﺗﻴﺐ
+ﺃﻭﻟﻮﻳﺎﺕﺍﻹﺟﺮﺍءﺍﺕﺍﻟﺘﺠﺎﺭﻳﺔ،ﻭﺗﺨﺼﻴﺺﺍﻟﺤﻤﻼﺕﺣﺴﺐﻣﻠﻒﻛﻞﻋﻤﻴﻞ،ﻭﺍﻟﻮﻗﺎﻳﺔﻣﻦﺍﻧﻘﻄﺎﻉﺍﻟﻌﻤﻼءﺍﻷﻛﺜﺮﻋﺮﺿﺔ
+ﻟﺬﻟﻚ.
+ﺗﻘﻠﻴﺺﺍﻷﺑﻌﺎﺩDBSCAN، K-Means، ،ﻋﻠﻢﺍﻟﺒﻴﺎﻧﺎﺕ،ﺍﻟﺘﻌﻠﻢﺍﻵﻟﻲ،ﺍﻟﺘﺼﻨﻴﻒﺍﻟﺴﻠﻮﻛﻲ--ﺍﻟﻜﻠﻤﺎﺕﺍﻟﻤﻔﺘﺎﺣﻴﺔ
+(ﺗﺤﻠﻴﻞﺍﻟﺒﻘﺎء،ﺗﺼﻨﻴﻒﺍﻟﺘﺠﺎﺭ،ﺍﻧﻘﻄﺎﻉﺍﻟﻌﻤﻼء،Cox)،ﺍﻻﻧﺤﺪﺍﺭ،ﻧﻤﻮﺫﺝﺍﻟﺒﻘﺎءﻟﻜﻮﻛﺲXGBoost، ،(UMAP(ﻭPCA
+.ﺍﻟﺘﺠﺎﺭﻱﻭﻓﺎﺑﻨﻚCRISP-DM، ،ﺍﻟﺒﻄﺎﻗﺎﺕﺍﻟﺒﻨﻜﻴﺔ،ﺍﻻﺳﺘﺮﺍﺗﻴﺠﻴﺔﺍﻟﻘﺎﺋﻤﺔﻋﻠﻰﺍﻟﺒﻴﺎﻧﺎﺕ
+
+
+===== PAGE 7 =====
+
+Table des matières
+Dédicace. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+i
+Remerciements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ii
+Résumé. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ii
+Table des figures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+iv
+Liste des tableaux . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+v
+Liste des abréviations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+vi
+Introduction générale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1
+Chapitre 1. Présentation du cadre de projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.1
+Cadre académique du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Présentation de l’organisme d’accueil . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+Étude de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.1
+Description de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.3.2
+Critique de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.3.3
+Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.4
+Choix du modèle de développement . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.5
+Planning prévisionnel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+Chapitre 2. Spécification des besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+2.1
+Besoins fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.1.1
+Gestion et préparation des données . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.1.2
+Analyse descriptive et segmentation . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.1.3
+Préparation des variables analytiques . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.1.4
+Modélisation prédictive . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.1.5
+Restitution et pilotage . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2
+Besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.1
+Performance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.2
+Sécurité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.3
+Disponibilité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.4
+Maintenabilité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.2.5
+Ergonomie et lisibilité
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.3
+Modélisation des cas d’utilisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.3.1
+Vue d’ensemble . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+2.3.2
+Zoom sur l’entraînement des modèles prédictifs
+. . . . . . . . . . . . . . . . .
+13
+i
+
+
+===== PAGE 8 =====
+
+Chapitre 3. Compréhension et préparation des données. . . . . . . . . . . . . . . . . . . . . . . 15
+3.1
+Présentation des tables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+3.2
+Contrôles de cohérence et qualité
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.2.1
+Nettoyage de la premiére table client . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.2.2
+Nettoyage de la deuxiéme table client . . . . . . . . . . . . . . . . . . . . . . .
+21
+3.3
+Bilan du nettoyage des deux tables
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+Chapitre 4. Construction de la base analytique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+4.1
+Choix de la granularité des tables . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+4.2
+Définition des variables cible . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+4.2.1
+Modèle d’activation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+4.2.2
+Modèle d’activation J30
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+4.2.3
+Modèle de classification actif / jamais actif . . . . . . . . . . . . . . . . . . . .
+28
+4.2.4
+Délai avant activation ou désengagement . . . . . . . . . . . . . . . . . . . . .
+29
+4.2.5
+Classification des freins à l’usage
+. . . . . . . . . . . . . . . . . . . . . . . . .
+30
+4.2.6
+Scoring commerçant
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+Chapitre 5. Segmentation comportementale . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+5.1
+Cadre méthodologique de la segmentation
+. . . . . . . . . . . . . . . . . . . . . . . .
+33
+5.1.1
+Pourquoi segmenter, et pourquoi par règles métier . . . . . . . . . . . . . . . .
+33
+5.1.2
+Deux tables, deux logiques d’analyse
+. . . . . . . . . . . . . . . . . . . . . . .
+33
+5.2
+Construction de la segmentation de la table 1
+. . . . . . . . . . . . . . . . . . . . . .
+34
+5.2.1
+Objectif . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+5.2.2
+Variables retenues . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+5.2.3
+Construction des scores et des seuils
+. . . . . . . . . . . . . . . . . . . . . . .
+35
+5.2.4
+Segmentation principale : paiement et cash . . . . . . . . . . . . . . . . . . . .
+36
+5.2.5
+Segmentation renforcée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+5.3
+Construction de la segmentation de la table 2
+. . . . . . . . . . . . . . . . . . . . . .
+39
+5.3.1
+Objectif . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+5.3.2
+Variables retenues et logique de potentiel . . . . . . . . . . . . . . . . . . . . .
+39
+5.3.3
+Construction du score de potentiel d’activation . . . . . . . . . . . . . . . . . .
+39
+5.3.4
+Segmentation principale
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+5.3.5
+Segmentation renforcée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+5.4
+Analyse comparative des deux segmentations . . . . . . . . . . . . . . . . . . . . . . .
+40
+5.4.1
+Forces et limites de la segmentation métier . . . . . . . . . . . . . . . . . . . .
+41
+5.4.2
+Segmentation RFM . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+5.5
+Ouverture vers les méthodes complémentaires
+. . . . . . . . . . . . . . . . . . . . . .
+41
+5.5.1
+Pourquoi enrichir la lecture métier
+. . . . . . . . . . . . . . . . . . . . . . . .
+41
+5.5.2
+Méthodes retenues
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+5.5.3
+Résultats du clustering K-Means sur la première table . . . . . . . . . . . . . .
+42
+5.5.4
+Détection des comportements atypiques par DBSCAN sur la première table . .
+43
+5.5.5
+Résultats du clustering K-Means sur la deuxième table . . . . . . . . . . . . .
+45
+5.5.6
+Détection des comportements atypiques par DBSCAN sur la deuxième table .
+48
+Chapitre 6. Étude de la vitesse d’activation et de la fidélité . . . . . . . . . . . . . . . . . . . 51
+6.1
+Populations comparées . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+6.2
+Résultats . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+6.3
+Désengagement réel par groupe de vitesse d’activation . . . . . . . . . . . . . . . . . .
+54
+ii
+
+
+===== PAGE 9 =====
+
+6.4
+Commerçant principal selon la vitesse d’activation . . . . . . . . . . . . . . . . . . . .
+54
+6.5
+Profils au sein de l’activation tardive
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+6.6
+Interprétation et limites
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+Chapitre 7. Modélisation prédictive et recommandations. . . . . . . . . . . . . . . . . . . . . . 57
+7.1
+Modèle de classification actif / jamais actif . . . . . . . . . . . . . . . . . . . . . . . .
+58
+7.1.1
+Rappel du protocole
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+7.1.2
+Résultats
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+7.1.3
+Importance des variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+7.2
+Modèle de régression – valeur attendue . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+7.2.1
+Rappel du protocole
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+7.2.2
+Résultats
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+7.2.3
+Score de valeur attendue et priorisation combinée . . . . . . . . . . . . . . . .
+61
+7.2.4
+Limites . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+7.3
+Scoring commerçant
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+7.3.1
+Rappel de la méthode
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+7.3.2
+Résultats
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+7.3.3
+Interprétation et usage . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+7.4
+Modèle de survie – délai avant première activation . . . . . . . . . . . . . . . . . . . .
+65
+7.4.1
+Rappel du protocole
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+7.4.2
+D’un modèle simple à un modèle stratifié . . . . . . . . . . . . . . . . . . . . .
+65
+7.4.3
+Résultats
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+7.4.4
+Limites . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+7.5
+Modèle de survie – désengagement réel . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+7.5.1
+Rappel du protocole
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+7.5.2
+D’un modèle exploratoire à un modèle affiné . . . . . . . . . . . . . . . . . . .
+68
+7.5.3
+Résultats
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+7.5.4
+Limites . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+7.6
+Recommandations stratégiques
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+69
+7.6.1
+Prioriser l’activation par un score combiné probabilité × valeur
+. . . . . . . .
+69
+7.6.2
+Accompagner les nouveaux clients dans le premier mois . . . . . . . . . . . . .
+70
+7.6.3
+Cibler les partenariats commerçants à forte valeur de clientèle
+. . . . . . . . .
+70
+7.6.4
+Différencier les actions par segment comportemental . . . . . . . . . . . . . . .
+70
+7.6.5
+Adapter la communication aux profils démographiques et géographiques . . . .
+70
+7.6.6
+Prévenir le désengagement selon le niveau de service . . . . . . . . . . . . . . .
+71
+Conclusion générale & Perspectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 73
+Bibliographie . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 76
+iii
+
+
+===== PAGE 10 =====
+
+Table des figures
+1.1
+Établissements partenaires du double diplôme : Master MIAGE – MBDS (Université
+Côte d’Azur) et École Marocaine des Sciences de l’Ingénieur . . . . . . . . . . . . . .
+4
+1.2
+Logo d’Attijariwafa bank, organisme d’accueil de ce projet de fin d’études . . . . . . .
+5
+1.3
+Les six phases du modèle CRISP-DM . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.4
+Planning prévisionnel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.1
+Diagramme de cas d’utilisation – vue d’ensemble du dispositif analytique . . . . . . .
+14
+2.2
+Diagramme de cas d’utilisation – détail du cas « Entraîner les modèles prédictifs » . .
+14
+5.1
+Distribution des scores et seuils de segmentation retenus
+. . . . . . . . . . . . . . . .
+37
+5.2
+Matrice croisée des segments : Score de paiement × Score de cash . . . . . . . . . . .
+37
+5.3
+Répartition des sous-segments de paiement fort
+. . . . . . . . . . . . . . . . . . . . .
+38
+5.4
+Projection PCA des quatre clusters K-Means (table 1)
+. . . . . . . . . . . . . . . . .
+44
+5.5
+Projection UMAP des quatre clusters K-Means (table 1)
+. . . . . . . . . . . . . . . .
+44
+5.6
+Graphe des k-distances et sélection du paramètre eps pour DBSCAN
+. . . . . . . . .
+45
+5.7
+Clusters denses et comportements atypiques détectés par DBSCAN (projection PCA)
+46
+5.8
+Projection PCA des cinq clusters K-Means (table 2) . . . . . . . . . . . . . . . . . . .
+47
+5.9
+Projection UMAP des cinq clusters K-Means (table 2)
+. . . . . . . . . . . . . . . . .
+47
+5.10 Graphe des k-distances et sélection du paramètre eps pour DBSCAN (table 2) . . . .
+49
+5.11 Clusters denses et comportements atypiques détectés par DBSCAN (table 2, projection
+PCA)
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+6.1
+Part de clients « Grand utilisateur multi-usage » selon la vitesse d’activation . . . . .
+53
+6.2
+Rythme de paiement mensuel depuis l’activation, selon la vitesse d’activation . . . . .
+53
+6.3
+DBSCAN restreint au groupe « activation tardive » (table 1) . . . . . . . . . . . . . .
+55
+7.1
+Matrice de confusion du modèle actif / jamais actif (jeu de test) . . . . . . . . . . . .
+59
+7.2
+Courbe ROC du modèle actif / jamais actif
+. . . . . . . . . . . . . . . . . . . . . . .
+59
+7.3
+Importance des variables du modèle actif / jamais actif . . . . . . . . . . . . . . . . .
+60
+7.4
+Valeurs prédites contre valeurs réelles du rythme de paiement mensuel (jeu de test)
+.
+62
+7.5
+Importance des variables du modèle de régression – valeur attendue . . . . . . . . . .
+63
+7.6
+Top 10 des commerçants (échantillon fiable) par part de « Grands utilisateurs multi-
+usage » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+7.7
+Modèle de survie – variables au plus fort effet sur la vitesse d’activation . . . . . . . .
+67
+7.8
+Modèle de survie – désengagement réel (marché particulier), variables significatives . .
+69
+iv
+
+
+===== PAGE 11 =====
+
+Liste des tableaux
+3.1
+Identification du client . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+3.2
+Ancienneté et dates de relation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+3.3
+Profil socio-démographique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.4
+Positionnement bancaire . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.5
+Paiements locaux et internationaux . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.6
+Retraits GAB . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.7
+Activité sur l’application . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.8
+Crédits et débits
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.9
+Paiements totaux . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.10 Répartition de l’activité
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.11 Identification du client . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+3.12 Activité CMC . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.13 Activité CMD . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.14 Profil socio-démographique . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.15 Relation bancaire . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.16 Usage digital
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+5.1
+Variables retenues pour la segmentation de la table 1 et justification de leur choix . .
+35
+5.2
+Construction des scores utilisés pour la segmentation de la table 1 . . . . . . . . . . .
+36
+6.1
+Désengagement réel (seuil de 120 jours) selon la vitesse d’activation . . . . . . . . . .
+54
+v
+
+
+===== PAGE 12 =====
+
+Liste des abréviations
+Abréviation
+Signification
+ARI
+Adjusted Rand Index – indice de stabilité d’un partitionnement
+entre plusieurs exécutions.
+AUC
+Area Under the Curve – aire sous la courbe ROC, mesure de
+performance d’un modèle de classification.
+BDME
+Big Data & Marketing Engineering – entité d’Attijariwafa bank
+d’accueil de ce PFE.
+CRISP-DM
+Cross-Industry Standard Process for Data Mining – méthodolo-
+gie de référence des projets de data science.
+DBSCAN
+Density-Based Spatial Clustering of Applications with Noise –
+algorithme de clustering fondé sur la densité.
+EMSI
+École Marocaine des Sciences de l’Ingénieur.
+GAB
+Guichet Automatique Bancaire.
+HR
+Hazard Ratio – rapport de risque, mesure d’effet d’un modèle
+de survie de Cox.
+MAE
+Mean Absolute Error – erreur absolue moyenne, métrique d’éva-
+luation d’un modèle de régression.
+PCA
+Principal Component Analysis – analyse en composantes prin-
+cipales, méthode de réduction de dimension.
+PFE
+Projet de Fin d’Études.
+RFM
+Récence, Fréquence, Montant – méthode de segmentation client.
+RMSE
+Root Mean Square Error – racine de l’erreur quadratique
+moyenne, métrique d’évaluation d’un modèle de régression.
+ROC
+Receiver Operating Characteristic – courbe représentant la per-
+formance d’un modèle de classification selon son seuil de déci-
+sion.
+R2
+Coefficient de détermination – part de variance expliquée par
+un modèle de régression.
+UMAP
+Uniform Manifold Approximation and Projection – méthode de
+réduction de dimension non linéaire.
+XGBoost
+eXtreme Gradient Boosting – algorithme d’apprentissage super-
+visé par boosting de gradient.
+
+
+===== PAGE 13 =====
+
+Introduction générale
+1
+
+
+===== PAGE 14 =====
+
+Dans un contexte de transformation numérique accélérée du secteur bancaire marocain, la carte
+bancaire s’est imposée comme l’un des vecteurs stratégiques de la relation client. Pourtant, malgré
+une progression constante du parc de porteurs, un écart significatif subsiste entre le nombre de clients
+détenteurs d’une carte et ceux qui l’utilisent effectivement pour réaliser des paiements – un manque
+à gagner direct pour les établissements bancaires, dont une partie des revenus est indexée sur le vo-
+lume des transactions générées. Attijariwafa Bank, première banque du Maroc, est confrontée à cette
+même réalité : certains clients effectuent des centaines de transactions par an, tandis que d’autres
+n’utilisent leur carte que pour des retraits, voire ne l’ont jamais activée pour un paiement.
+C’est dans ce cadre que s’inscrit le présent travail, réalisé au sein de l’entité Data BDME d’Attija-
+riwafa Bank : concevoir et mettre en œuvre une stratégie data-driven visant à accroître l’utilisation
+des cartes bancaires pour les paiements au sein du portefeuille clients de la banque. La problématique
+centrale peut être formulée ainsi : comment exploiter les données comportementales et transaction-
+nelles des clients pour identifier, segmenter et activer les leviers d’usage de la carte bancaire, et ainsi
+maximiser le volume de paiements générés ?
+Pour répondre à cette question, nous mobilisons des techniques d’apprentissage automatique –
+segmentation non supervisée, classification prédictive et analyse de survie – selon la méthodologie
+CRISP-DM, afin de construire un dispositif analytique complet : de la compréhension des profils
+clients jusqu’à la recommandation d’actions business ciblées.
+Le présent rapport s’organise en sept chapitres. Le premier pose le cadre du projet et l’état
+de l’existant ; les chapitres 2 et 3 couvrent la spécification des besoins et la compréhension des
+données. Le chapitre 4 construit la base analytique qui sert de socle aux trois derniers chapitres : le
+chapitre 5 développe la segmentation comportementale de la clientèle, le chapitre 6 étudie la vitesse
+d’activation et la fidélité qui lui est associée, et le chapitre 7 présente les modèles prédictifs ainsi que
+les recommandations stratégiques qui en découlent.
+2
+
+
+===== PAGE 15 =====
+
+Chapitre 1
+Présentation du cadre de projet
+3
+
+
+===== PAGE 16 =====
+
+Introduction
+Ce chapitre reprend le sujet déjà présenté en introduction, cette fois en entrant davantage dans
+les détails techniques. Nous commençons par présenter le cadre académique de ce travail ainsi que
+l’organisme d’accueil et l’équipe avec laquelle nous avons mené ce travail, avant de dresser un état
+des lieux de l’existant et de proposer notre solution.
+1.1
+Cadre académique du projet
+Ce projet de fin d’études s’inscrit dans le cadre d’un double diplôme : il vise l’obtention du di-
+plôme national d’ingénieur de l’École Marocaine des Sciences de l’Ingénieur, délivré en partenariat
+avec Université Côte d’Azur dans le cadre du Master MIAGE – MBDS. Porté au niveau national
+par le réseau MIAGE (Méthodes Informatiques Appliquées à la Gestion des Entreprises), ce master
+forme des ingénieurs capables de conjuguer expertise technique et compréhension des enjeux métier –
+une double compétence directement mobilisée dans ce mémoire, qui articule modélisation statistique
+et recommandations opérationnelles pour une banque.
+Figure 1.1 – Établissements partenaires du double diplôme : Master MIAGE – MBDS (Université
+Côte d’Azur) et École Marocaine des Sciences de l’Ingénieur
+Ce mémoire, réalisé lors d’un stage de fin d’études au sein d’Attijariwafa bank, constitue le livrable
+central de cette double formation.
+1.2
+Présentation de l’organisme d’accueil
+Attijariwafa bank est l’un des principaux groupes bancaires et financiers en Afrique, leader au
+Maroc et dans la région du Maghreb. Né de la fusion entre la Banque Commerciale du Maroc et Wa-
+fabank en 2004, le Groupe s’est progressivement imposé comme un acteur incontournable du secteur
+financier africain, opérant aujourd’hui dans 26 pays à travers un réseau de plus de 7 000 agences. Il
+propose une gamme diversifiée de services financiers via ses filiales spécialisées couvrant l’assurance,
+le crédit à la consommation, la gestion d’actifs et les services de paiement.
+Conscient des mutations profondes que traverse le secteur bancaire, Attijariwafa bank s’inscrit
+résolument dans une dynamique de transformation digitale et de développement durable, avec une
+ambition affirmée de renforcer son leadership continental à travers son plan stratégique. Dans ce
+4
+
+
+===== PAGE 17 =====
+
+Figure 1.2 – Logo d’Attijariwafa bank, organisme d’accueil de ce projet de fin d’études
+contexte, la valorisation de la donnée est devenue un levier stratégique majeur pour améliorer la
+connaissance client, optimiser les offres et renforcer la compétitivité du Groupe.
+Nous avons effectué notre stage au sein de l’entité Data BDME (Big Data & Marketing Engineering)
+d’Attijariwafa bank. Cette entité occupe une position centrale dans l’écosystème data du Groupe :
+elle est en charge de la collecte, du traitement et de l’exploitation des données clients afin d’alimenter
+les décisions marketing et commerciales.
+L’entité Data BDME intervient à plusieurs niveaux stratégiques : la modélisation et la segmen-
+tation avancée de la base clients, le développement de cas d’usage data au service des directions
+métiers, la mise en place d’indicateurs de performance et de tableaux de bord analytiques, ainsi que
+la conception de stratégies fondées sur la donnée (data-driven) pour accompagner la croissance des
+usages bancaires.
+C’est dans ce cadre que s’inscrit notre mission : concevoir une stratégie data-driven pour augmenter
+l’utilisation des cartes bancaires Attijariwafa Bank, en mobilisant la segmentation comportementale
+et l’analyse de données au service des enjeux business de l’entité Data BDME.
+1.3
+Étude de l’existant
+1.3.1
+Description de l’existant
+Actuellement, le suivi de l’usage des cartes bancaires au sein d’Attijariwafa Bank repose prin-
+cipalement sur des reportings statiques et des indicateurs agrégés. Les campagnes d’activation des
+porteurs sont menées de manière uniforme, sans distinction des profils comportementaux ni antici-
+pation des risques d’inactivité. Bien que les données transactionnelles soient disponibles, elles restent
+largement sous-exploitées dans le cadre des décisions commerciales.
+5
+
+
+===== PAGE 18 =====
+
+1.3.2
+Critique de l’existant
+Cette approche présente plusieurs limites. L’absence de segmentation fine des clients empêche toute
+personnalisation des actions marketing. Par ailleurs, la détection de l’inactivité intervient de manière
+réactive, après que le client a déjà réduit ou cessé son usage, ce qui réduit considérablement les
+chances de réactivation. Enfin, la richesse des données disponibles — comportement transactionnel,
+usage digital, ratio retraits/paiements — n’est pas exploitée pour guider les décisions opérationnelles.
+1.3.3
+Solution proposée
+Pour répondre à ces lacunes, nous proposons une démarche data-driven structurée autour de trois
+axes : une segmentation comportementale par apprentissage non supervisé, un modèle de classification
+pour la prédiction d’inactivité, et un modèle de survie pour l’estimation du risque de désengagement
+dans le temps. L’ensemble de ces composantes permet de formuler des recommandations stratégiques
+personnalisées par segment, offrant à la banque un dispositif opérationnel et proactif.
+6
+
+
+===== PAGE 19 =====
+
+1.4
+Choix du modèle de développement
+Contrairement aux projets de développement logiciel classiques qui s’appuient sur des modèles tels
+que le cycle en V ou la méthode Agile, notre projet s’inscrit dans une démarche d’analyse de don-
+nées. Nous avons donc adopté la méthodologie CRISP-DM [Chapman et al., 2000] (Cross-Industry
+Standard Process for Data Mining), reconnue comme le standard de référence dans les projets de
+data science.
+CRISP-DM est un processus itératif organisé en six phases complémentaires :
+1. Compréhension métier : définir les objectifs du projet du point de vue de la banque et
+traduire la problématique en tâches analytiques ;
+2. Compréhension des données : explorer, décrire et évaluer la qualité du dataset mis à
+disposition ;
+3. Préparation des données : nettoyer, transformer et enrichir les données en vue de la modé-
+lisation ;
+4. Modélisation : construire et paramétrer les modèles de segmentation, de classification et de
+survie ;
+5. Évaluation : valider les résultats obtenus et vérifier leur pertinence métier ;
+6. Déploiement : formuler les recommandations stratégiques actionnables à destination de la
+banque.
+Ce modèle présente l’avantage d’être flexible et itératif :
+il est possible de revenir à une phase précédente à tout moment, ce qui est particulièrement adapté
+à un projet exploratoire où les données et les besoins métier évoluent au fil de l’analyse.
+Figure 1.3 – Les six phases du modèle CRISP-DM
+7
+
+
+===== PAGE 20 =====
+
+1.5
+Planning prévisionnel
+Le déroulement du projet a été organisé selon les six phases de la méthodologie CRISP-DM
+présentée ci-dessus, du cadrage initial jusqu’au déploiement des recommandations. Le planning ci-
+dessous détaille la répartition de ces phases sur la durée du stage.
+Figure 1.4 – Planning prévisionnel
+8
+
+
+===== PAGE 21 =====
+
+Conclusion
+Ce premier chapitre a permis de poser le cadre de ce projet : la présentation de l’organisme
+d’accueil et de l’entité Data BDME, l’étude de l’existant qui justifie une approche data-driven, ainsi
+que le choix de la méthodologie CRISP-DM qui structure la suite de ce mémoire. Le chapitre suivant
+précise les besoins fonctionnels et non fonctionnels du système analytique à construire.
+9
+
+
+===== PAGE 22 =====
+
+Chapitre 2
+Spécification des besoins
+10
+
+
+===== PAGE 23 =====
+
+Introduction
+Ce chapitre présente les besoins fonctionnels et non fonctionnels du système proposé dans le cadre
+du projet. L’objectif est de clarifier les fonctionnalités attendues, les contraintes de qualité, ainsi que
+les interactions principales entre les acteurs du système et la plateforme analytique.
+Dans ce projet, le système vise à exploiter les données clients, cartes, transactions, commerçants et
+canaux digitaux afin de construire une base analytique exploitable pour la segmentation, le scoring
+et la modélisation prédictive. La spécification des besoins constitue ainsi une étape fondamentale
+pour cadrer le périmètre du système et orienter les choix de conception.
+2.1
+Besoins fonctionnels
+Les besoins fonctionnels décrivent les services que le système doit fournir aux utilisateurs et aux
+processus métiers. Dans le cadre de ce projet, ils sont organisés selon les principaux domaines fonc-
+tionnels du système.
+2.1.1
+Gestion et préparation des données
+— Importer les données issues des différentes sources ;
+— Vérifier la présence et la cohérence des champs obligatoires ;
+— Nettoyer les données brutes en supprimant les doublons et en traitant les valeurs manquantes ;
+— Standardiser les formats de dates, montants et identifiants ;
+— Construire une table agrégée par client à partir de l’historique transactionnel.
+2.1.2
+Analyse descriptive et segmentation
+— Calculer les indicateurs descriptifs de base sur les clients et les transactions ;
+— Mesurer la fréquence, la récence et le volume d’utilisation de la carte ;
+— Identifier les comportements d’usage dominants ;
+— Segmenter les clients selon leur niveau d’usage de la carte ;
+— Visualiser les distributions et les tendances comportementales.
+2.1.3
+Préparation des variables analytiques
+— Construire des variables RFM adaptées au contexte bancaire ;
+— Générer des variables comportementales liées à l’usage carte ;
+— Construire des variables temporelles pour les modèles de prédiction ;
+— Préparer des variables digitales, financières et commerciales ;
+— Assurer la disponibilité des variables avant l’événement à prédire.
+2.1.4
+Modélisation prédictive
+— Estimer la propension à l’activation des clients ;
+— Prédire l’activation d’un nouveau client à J+30 ;
+— Estimer le délai avant activation ou désengagement ;
+— Identifier le frein principal à l’usage de la carte ;
+— Scorer les commerçants ou zones géographiques à fort potentiel.
+11
+
+
+===== PAGE 24 =====
+
+2.1.5
+Restitution et pilotage
+— Produire des scores interprétables pour les équipes métier ;
+— Générer des tableaux de bord de suivi ;
+— Proposer des recommandations actionnables par segment ;
+— Suivre les indicateurs de performance métier et data science ;
+— Préparer les livrables nécessaires à l’analyse et à la soutenance.
+2.2
+Besoins non fonctionnels
+Les besoins non fonctionnels décrivent les contraintes de qualité que le système doit respecter. Ils
+concernent notamment les performances, la sécurité, la disponibilité, la maintenabilité et l’évolutivité
+du système.
+2.2.1
+Performance
+Le système doit pouvoir traiter un volume important de données transactionnelles dans un délai
+raisonnable. Les opérations de préparation, d’agrégation et de calcul des indicateurs doivent rester
+efficaces afin de permettre une exploitation fluide des données.
+— Temps de traitement acceptable pour les jeux de données de taille moyenne ;
+— Calcul rapide des agrégations par client et par période ;
+— Exécution des modèles de scoring dans un temps compatible avec les besoins métiers.
+2.2.2
+Sécurité
+Le système doit garantir la confidentialité et l’intégrité des données bancaires et clients. L’accès
+aux données sensibles doit être strictement contrôlé.
+— Authentification des utilisateurs autorisés ;
+— Autorisation par profil ou niveau d’accès ;
+— Chiffrement ou anonymisation des données sensibles lorsque nécessaire ;
+— Respect des règles de confidentialité et de gouvernance des données.
+2.2.3
+Disponibilité
+Le système doit être disponible de manière fiable pendant toute la durée de l’analyse et du trai-
+tement. Les données préparées doivent pouvoir être réutilisées sans perte ni altération.
+— Disponibilité suffisante pour les travaux d’analyse et de modélisation ;
+— Sauvegarde régulière des fichiers intermédiaires et finaux ;
+— Réduction des risques de perte de données lors des traitements.
+2.2.4
+Maintenabilité
+Le code et les traitements doivent être simples à comprendre, à corriger et à faire évoluer. La
+structure du projet doit permettre d’ajouter facilement de nouvelles variables ou de nouveaux mo-
+dèles.
+— Code modulaire et bien structuré ;
+— Documentation claire des traitements ;
+12
+
+
+===== PAGE 25 =====
+
+— Nommage cohérent des fichiers, variables et tables ;
+— Facilité d’adaptation à d’autres jeux de données ou à d’autres segments.
+2.2.5
+Ergonomie et lisibilité
+Les résultats du système doivent être présentés de manière claire et exploitable. Les tableaux de
+bord, tableaux de sortie et fichiers générés doivent être faciles à interpréter.
+— Présentation lisible des résultats ;
+— Noms explicites pour les variables et les colonnes ;
+— Visualisations compréhensibles pour les utilisateurs métier.
+2.3
+Modélisation des cas d’utilisation
+La modélisation des cas d’utilisation permet de représenter les interactions entre les acteurs et
+le système. Contrairement à une application interactive classique, le « système » modélisé ici est le
+dispositif analytique dans son ensemble – de la préparation des données jusqu’à la restitution des
+recommandations – et non une interface graphique. Deux acteurs interagissent avec ce dispositif : le
+Data Analyst, qui construit et exécute le pipeline, et l’équipe Marketing de l’entité Data BDME,
+qui exploite les résultats produits.
+2.3.1
+Vue d’ensemble
+Le diagramme de cas d’utilisation ci-dessous reprend directement les catégories de besoins fonc-
+tionnels définies en section 2.1 : le Data Analyst prend en charge la préparation des données, la
+segmentation, l’entraînement des modèles prédictifs et le scoring, tandis que l’équipe Marketing
+consulte les résultats produits pour prioriser ses actions commerciales.
+2.3.2
+Zoom sur l’entraînement des modèles prédictifs
+Le cas d’utilisation « Entraîner les modèles prédictifs » regroupe en réalité cinq modèles distincts,
+développés et présentés séparément au chapitre 7 : c’est une relation d’inclusion («include») au sens
+UML, puisque l’entraînement complet du dispositif implique systématiquement ces cinq étapes.
+Conclusion
+Ce chapitre a précisé les besoins fonctionnels et non fonctionnels attendus du système analy-
+tique, ainsi que les principales interactions entre acteurs et plateforme. Ce cadrage sert de référence
+pour les choix de conception effectués dans la suite du projet. Le chapitre suivant est consacré à la
+compréhension et à la préparation des données mobilisées pour répondre à ces besoins.
+13
+
+
+===== PAGE 26 =====
+
+Data
+Analyst
+Équipe
+Marketing
+Dispositif analytique
+Préparer
+les données
+Segmenter
+les clients
+Entraîner les
+modèles prédictifs
+Scorer les clients
+et les commerçants
+Consulter les scores
+et recommandations
+Prioriser les
+actions commerciales
+Figure 2.1 – Diagramme de cas d’utilisation – vue d’ensemble du dispositif analytique
+Data
+Analyst
+Entraîner les
+modèles prédictifs
+Classification
+actif / jamais actif
+Régression –
+valeur attendue
+Scoring commerçant
+Survie – délai
+avant activation
+Survie –
+désengagement réel
+«include»
+Figure 2.2 – Diagramme de cas d’utilisation – détail du cas « Entraîner les modèles prédictifs »
+14
+
+
+===== PAGE 27 =====
+
+Chapitre 3
+Compréhension et préparation des
+données
+15
+
+
+===== PAGE 28 =====
+
+Introduction
+Dans ce chapitre, nous posons les bases du projet en commençant par introduire les tables clients
+du jeu de données, fourni par l’encadrant entreprise Wassim Tahir. Grâce aux extractions qu’il a
+réalisées, nous avons pu établir, avec son aide, un dictionnaire de données dans lequel chaque variable
+des tables client est expliquée : cette étape de gouvernance des données est indispensable pour assurer
+la traçabilité, la clarté des variables et la rigueur de l’analyse. Au-delà de la simple présentation des
+tables, nous détaillons également la manière dont nous avons vérifié la cohérence des données, leur
+granularité, leur structure et leur exploitabilité : ce travail conditionne directement l’axe suivant,
+consacré à la construction de la base analytique et aux variables dérivées.
+3.1
+Présentation des tables
+Nous présentons ici les tables disponibles, en soulignant leur importance pour la stratégie data-
+driven que nous cherchons à construire.
+Deux extractions ont été réalisées. La première, que nous avons nommée table_paiement, regroupe
+les informations relatives au client : elle contient 50 000 lignes et 33 colonnes, que nous avons choisi
+de répartir comme suit :
+Afin de faciliter la lecture du jeu de données, les variables ont été regroupées en dix catégories
+homogènes selon leur nature métier et leur rôle analytique. Cette structuration permet de distinguer
+les variables d’identification, de profil client, de comportement bancaire, d’activité transactionnelle
+et d’usage digital. Elle offre ainsi une lecture plus claire des données disponibles et prépare leur
+exploitation dans les étapes d’analyse suivantes.
+Table 3.1: Identification du client
+Variable
+Description
+ID
+Identifiant unique du client.
+La deuxième catégorie regroupe les variables d’ancienneté et de dates, qui situent chaque client
+dans le temps par rapport au début de sa relation bancaire et à ses premières opérations.
+Table 3.2: Ancienneté et dates de relation
+Variable
+Description
+anciennete_jours
+Ancienneté de la relation client en jours.
+dt_deb_rela
+Date de début de la relation bancaire.
+dat_prem_paiement
+Date du premier paiement observé.
+dat_prem_retrait
+Date du premier retrait observé.
+Les variables suivantes décrivent le profil socio-démographique du client.
+16
+
+
+===== PAGE 29 =====
+
+Table 3.3: Profil socio-démographique
+Variable
+Description
+Age
+Âge du client.
+Genre
+Genre du client.
+Profession
+Profession du client.
+ville_principale
+Ville principale du client.
+Le positionnement bancaire du client, c’est-à-dire son rattachement à un marché et un niveau de
+service, est précisé par les variables suivantes.
+Table 3.4: Positionnement bancaire
+Variable
+Description
+Marché
+Segment ou marché bancaire du client.
+Niveau de service
+Niveau de service ou d’offre associé au client.
+segment_metier
+Segment métier attribué au client.
+Les variables de paiement, au cœur de ce projet, distinguent les flux locaux des flux internationaux,
+en nombre comme en montant.
+Table 3.5: Paiements locaux et internationaux
+Variable
+Description
+Nombre_local
+Nombre de paiements locaux.
+Volume_local
+Montant total des paiements locaux.
+Nombre_international
+Nombre de paiements internationaux.
+Volume_international
+Montant total des paiements internationaux.
+Les retraits en guichet automatique bancaire, qui concurrencent le paiement carte dans l’usage
+quotidien du client, sont décrits par les deux variables suivantes.
+Table 3.6: Retraits GAB
+Variable
+Description
+nbr_retraits_gab
+Nombre de retraits GAB effectués par le client.
+mnt_retraits_gab
+Montant total des retraits GAB effectués par le client.
+L’usage du canal digital est capté par les variables d’activité sur l’application mobile.
+Table 3.7: Activité sur l’application
+Variable
+Description
+nbr_connexion_app
+Nombre de connexions à l’application.
+has_app_connexion
+Indicateur indiquant si le client s’est déjà connecté à
+l’application.
+Les mouvements globaux de crédits et de débits du compte, indépendamment du canal utilisé,
+sont résumés par les variables suivantes.
+17
+
+
+===== PAGE 30 =====
+
+Table 3.8: Crédits et débits
+Variable
+Description
+nbr_credit
+Nombre de crédits enregistrés.
+nbr_debit
+Nombre de débits enregistrés.
+montant_total_credits Montant total des crédits.
+montant_total_debits
+Montant total des débits.
+Ces variables consolident enfin l’activité de paiement du client sous forme de totaux et de parts
+relatives.
+Table 3.9: Paiements totaux
+Variable
+Description
+nb_paiements_total
+Nombre total de paiements.
+mnt_paiements_total
+Montant total des paiements.
+part_paiement
+Part des paiements dans l’activité globale.
+Enfin, la répartition de l’activité entre paiement et retrait, ainsi que le principal regroupement de
+dépenses du client, est précisée par les variables suivantes.
+Table 3.10: Répartition de l’activité
+Variable
+Description
+part_retrait
+Part des retraits dans l’activité globale.
+ens_pv_top_2025
+Indicateur de groupe ou ensemble de dépenses principal.
+premiere_ens_pv
+Premier ensemble de dépenses ou premier regroupement
+observé.
+Malgré la richesse de ses variables, cette première table ne suffit pas à elle seule pour mener les
+analyses souhaitées : elle ne comprend aucun client jamais actif, c’est-à-dire n’ayant réalisé aucun
+paiement local ou international.
+Nous avons donc procédé à une seconde extraction, depuis une autre source, que nous avons
+intitulée clients_jamais_actifs. Cette table contient des variables tout aussi riches que celles de la
+première, réparties sur 60 000 lignes et 19 colonnes.
+Table 3.11: Identification du client
+Variable
+Description
+ID
+Identifiant unique du client.
+Les variables d’activité CMC décrivent les virements réalisés par le client, en nombre comme en
+montant.
+18
+
+
+===== PAGE 31 =====
+
+Table 3.12: Activité CMC
+Variable
+Description
+M_VIREMENT_cmc
+Montant total des virements réalisés dans le cadre de
+l’activité CMC.
+F_VIREMENT_cmc
+Nombre de virements réalisés dans le cadre de l’activité
+CMC.
+V_CMC
+Indicateur synthétique de volume lié à l’activité CMC.
+F_CMC
+Indicateur synthétique de fréquence lié à l’activité CMC.
+Les variables d’activité CMD complètent cette lecture avec les retraits et virements associés à ce
+canal.
+Table 3.13: Activité CMD
+Variable
+Description
+M_RETRAITS_cmd
+Montant total des retraits associés à l’activité CMD.
+M_VIREMENT_cmd
+Montant total des virements associés à l’activité CMD.
+f_RETRAITS_cmd
+Nombre de retraits associés à l’activité CMD.
+f_VIREMENT_cmd
+Nombre de virements associés à l’activité CMD.
+V_CMD
+Indicateur synthétique de volume lié à l’activité CMD.
+F_CMD
+Indicateur synthétique de fréquence lié à l’activité CMD.
+Le profil socio-démographique du client est décrit par les variables suivantes, portant ici le suffixe
+ORDO propre à cette seconde source de données.
+Table 3.14: Profil socio-démographique
+Variable
+Description
+profession_ORDO
+Profession du client telle qu’enregistrée dans le référen-
+tiel ORDO.
+age_client_ORDO
+Âge du client.
+genre_ORDO
+Genre du client.
+Ville
+Ville de résidence principale du client.
+La relation bancaire du client est ensuite caractérisée par les variables suivantes.
+Table 3.15: Relation bancaire
+Variable
+Description
+Date Début Relation
+Date de début de la relation bancaire avec le client.
+niveau
+de
+service
+ORDO
+Niveau de service ou d’offre associé au client.
+Marché_ORDO
+Segment ou marché bancaire du client.
+Enfin, l’usage digital du client est mesuré par la variable suivante.
+19
+
+
+===== PAGE 32 =====
+
+Table 3.16: Usage digital
+Variable
+Description
+nbr_connexion_app
+Nombre de connexions à l’application bancaire.
+3.2
+Contrôles de cohérence et qualité
+Avant toute exploitation analytique, un ensemble de contrôles de cohérence et de qualité a été
+appliqué afin de garantir la fiabilité du jeu de données. Nous avons ainsi mené une étape d’ana-
+lyse des tables extraites, à l’aide de scripts Python mobilisant des bibliothèques telles que pan-
+das [McKinney, 2010], numpy et pathlib – retenues parce qu’elles répondaient bien à nos besoins.
+Notre objectif était double : vérifier les tables et unifier leur format, mais aussi contrôler la qualité
+des données afin de pouvoir nous y appuyer pendant l’étape de segmentation et les rendre pleinement
+exploitables par les modèles prédictifs.
+3.2.1
+Nettoyage de la premiére table client
+Le fichier initial de la première table contenait 50 000 lignes et 23 colonnes. Nous avons d’abord
+vérifié l’unicité de l’identifiant client ID. Aucun doublon n’a été détecté, ni avant ni après le contrôle,
+ce qui confirme que chaque ligne correspond à un client unique.
+Nous avons ensuite converti les variables de dates dans un format temporel homogène afin de
+pouvoir les exploiter dans les calculs d’ancienneté et dans les analyses chronologiques. Les champs
+correspondant à la date de début de relation, à la date du premier paiement et à la date du premier
+retrait ont tous été transformés en format datetime64[ns]. Le nombre de valeurs manquantes observé
+sur chacune de ces trois variables est resté stable, avec 633 valeurs manquantes avant et après conver-
+sion, ce qui montre que cette transformation n’a pas introduit de perte d’information supplémentaire.
+Nous avons également converti les variables numériques dans des formats adaptés à l’analyse.
+Les variables de nombre et de montant, telles que les volumes de paiements, les retraits GAB, les
+crédits et les débits, ont été contrôlées afin de détecter les valeurs non interprétables. Une attention
+particulière a été accordée à la variable Age. Après conversion, le nombre de valeurs manquantes est
+passé de 633 à 640, ce qui s’explique par l’exclusion des âges incohérents, inférieurs à 0 ou supérieurs
+à 100.
+Les valeurs manquantes ne sont pas réparties de manière uniforme entre les variables. Certaines co-
+lonnes comportementales présentent un volume plus élevé d’informations absentes, comme le nombre
+de connexions à l’application, qui contient 5 018 valeurs manquantes. D’autres variables, telles que
+les retraits GAB, les crédits, les débits, les montants totaux de crédits et de débits, présentent
+également des valeurs manquantes, mais dans des proportions plus limitées. Cette observation nous
+a permis d’identifier les champs les plus sensibles avant la phase de construction de la base analytique.
+Les variables textuelles ont, quant à elles, fait l’objet d’un nettoyage syntaxique afin d’harmoniser
+les libellés et d’éliminer les espaces inutiles. Les champs relatifs à la ville principale, au niveau de
+service, au genre, au marché, à la profession ainsi qu’aux variables de segmentation ont été unifor-
+misés. Ce travail nous a permis d’améliorer la cohérence des catégories et d’éviter la multiplication
+20
+
+
+===== PAGE 33 =====
+
+artificielle de modalités équivalentes mais écrites différemment.
+En définitive, la présentation des tables, leur regroupement par catégories de variables ainsi que
+les contrôles de cohérence réalisés constituent une étape préalable indispensable à toute analyse ap-
+profondie. Ce travail de structuration nous a permis de clarifier la nature des données disponibles,
+d’en vérifier la fiabilité et d’en préciser les usages possibles dans le cadre du projet.
+3.2.2
+Nettoyage de la deuxiéme table client
+Nous avons nettoyé ce fichier selon la même démarche que pour la première table, décrite ci-dessus.
+Nous avons commencé par vérifier la structure générale de cette table afin de nous assurer de la
+cohérence des données disponibles. La table contenait 60 000 lignes et 19 colonnes, avec un identifiant
+client unique, sans doublons. Ensuite, nous avons analysé chaque colonne afin d’identifier sa nature,
+de repérer les valeurs manquantes et de détecter les éventuelles incohérences de format.
+Nous avons ensuite converti les variables de dates dans un format exploitable pour l’analyse, ce
+qui nous a permis de conserver leur dimension temporelle. Une seule date a été conservée comme
+valeur manquante, car elle était initialement codée par un tiret et ne pouvait pas être interprétée
+correctement. Nous avons procédé de la même manière pour la variable d’âge : les valeurs nulles co-
+dées par un tiret ainsi que les âges aberrants supérieurs à 100 ans ont été remplacés afin de garantir
+la cohérence des traitements statistiques.
+Par ailleurs, nous avons nettoyé les variables numériques relatives aux montants et aux fréquences
+afin de les rendre directement exploitables dans les analyses futures. Les variables textuelles ont
+également été harmonisées pour supprimer les espaces inutiles et recoder certaines modalités non
+renseignées. Ce travail nous a permis de constater que plusieurs valeurs présentées comme rensei-
+gnées correspondaient en réalité à des non-réponses, notamment dans la variable ville, où le tiret
+était utilisé comme code de valeur manquante.
+Enfin, nous avons créé deux variables dérivées, à savoir l’ancienneté client en jours et un indicateur
+de connexion à l’application. À l’issue de ce nettoyage, la base est devenue plus cohérente, plus lisible
+et mieux adaptée à la construction de la base analytique et aux analyses qui seront réalisées par la
+suite.
+3.3
+Bilan du nettoyage des deux tables
+Au terme du nettoyage des deux tables, nous disposons désormais d’un jeu de données plus cohé-
+rent, mieux structuré et directement exploitable pour la suite du projet. La première table contenait
+initialement 50 000 lignes et 23 colonnes, puis 25 colonnes après ajout des variables dérivées. La
+deuxième table contenait 60 000 lignes et 19 colonnes, puis 21 colonnes après enrichissement. Dans
+les deux cas, nous avons vérifié l’unicité des identifiants clients et confirmé l’absence de doublons.
+Sur le plan temporel, les variables de dates ont été harmonisées dans un format exploitable, ce
+21
+
+
+===== PAGE 34 =====
+
+qui nous a permis de calculer l’ancienneté client dans les deux tables. Les contrôles effectués ont
+également mis en évidence un nombre très limité de valeurs non interprétables, notamment une seule
+date manquante dans la deuxième table, que nous avons conservée comme valeur nulle car son impact
+reste négligeable à l’échelle de la base.
+Le nettoyage a également porté sur les variables numériques. Dans la première table, nous avons
+corrigé plusieurs incohérences, notamment sur la variable Age, ainsi que sur certaines variables com-
+portementales présentant des valeurs manquantes. Dans la deuxième table, nous avons transformé la
+variable d’âge en variable numérique et remplacé les valeurs nulles codées par des tirets ainsi que les
+âges aberrants supérieurs à 100 ans. Ce traitement nous a permis de fiabiliser les variables les plus
+sensibles pour l’analyse descriptive et comparative.
+Enfin, les variables textuelles ont été harmonisées dans les deux tables afin de supprimer les es-
+paces inutiles, recoder certaines modalités de non-réponse et clarifier les catégories. Le nettoyage a
+également montré que certaines valeurs initialement considérées comme renseignées correspondaient
+en réalité à des codes de valeurs manquantes, comme le tiret utilisé dans plusieurs champs. Cette
+étape a donc permis non seulement de corriger la structure des données, mais aussi de mieux inter-
+préter le sens réel des valeurs présentes.
+Conclusion
+En résumé, le nettoyage des deux tables a renforcé la qualité, la lisibilité et la cohérence de la base
+de travail. Il a préparé le terrain pour la construction de la base analytique, qui constituera l’étape
+suivante du projet.
+Le chapitre suivant sera consacré à l’axe 2, à savoir la construction de la base analytique. Cette
+étape consistera à agréger les informations pertinentes au bon niveau de granularité, tout en res-
+pectant les contraintes méthodologiques liées aux fuites temporelles, à la séparation entre période
+d’observation et période de prédiction, ainsi qu’à la traçabilité des transformations. Elle permettra
+ainsi de disposer d’une base consolidée et exploitable pour les analyses exploratoires et les travaux
+de modélisation à venir.
+22
+
+
+===== PAGE 35 =====
+
+Chapitre 4
+Construction de la base analytique
+23
+
+
+===== PAGE 36 =====
+
+Introduction
+Une fois les deux tables nettoyées et contrôlées, nous avons pu passer à l’étape de construction
+de la base analytique. Cette phase consiste à transformer les données disponibles en une structure
+consolidée, organisée au bon niveau de granularité et directement exploitable pour les analyses du
+projet.
+L’objectif n’est plus seulement de disposer de données propres, mais de construire une base co-
+hérente, documentée et adaptée aux besoins de modélisation. Pour cela, nous devons sélectionner
+les variables pertinentes, créer les indicateurs dérivés nécessaires et vérifier la cohérence entre les
+montants, les fréquences et les statuts afin de garantir la fiabilité de l’ensemble.
+4.1
+Choix de la granularité des tables
+Les données que nous exploitons dans le cadre de ce projet sont organisées en deux tables dis-
+tinctes mais complémentaires, toutes deux orientées client. Dans chacune de ces tables, chaque ligne
+représente un client unique identifié par un identifiant spécifique. Cette granularité nous permet de
+regrouper, pour chaque client, l’ensemble des informations nécessaires à l’analyse de son comporte-
+ment bancaire, notamment ses caractéristiques sociodémographiques, son ancienneté dans la banque,
+son niveau d’activité, son utilisation des différents canaux bancaires ainsi que ses habitudes de paie-
+ment, qu’il privilégie les transactions en espèces ou les paiements par carte.
+Ce choix de granularité est cohérent avec l’objectif du projet, qui consiste à construire une base
+analytique exploitable pour des modèles de propension, d’activation et de priorisation commerciale. Il
+permet de comparer les clients entre eux sur une base homogène, sans être contraint par une logique
+transactionnelle ou temporelle détaillée que les données disponibles ne permettent pas d’exploiter
+pleinement.
+Ainsi, la base analytique finale est construite au niveau client, en agrégeant les variables pertinentes
+issues des différentes tables disponibles. Cette approche facilite la fusion des données, la création
+d’indicateurs dérivés et la préparation des étapes ultérieures d’analyse exploratoire et de modélisation.
+24
+
+
+===== PAGE 37 =====
+
+4.2
+Définition des variables cible
+Nous avons définis les variables cibles du projet en cohérence avec les objectifs analytiques retenus.
+Plutôt qu’une cible unique, l’étude s’organise autour de plusieurs problématiques complémentaires :
+la propension à l’activation, l’activation à J+30, le délai avant activation ou désengagement, la clas-
+sification des freins à l’usage et le scoring des commerçants à prioriser. Cette structuration permet
+de couvrir à la fois la dimension client, la dimension temporelle et la dimension commerciale du projet.
+Afin de rendre la lecture du projet plus claire, la section consacrée aux variables cibles est struc-
+turée en plusieurs sous-parties. Chaque sous-partie correspond à un modèle analytique précis et
+présente la variable cible associée, sa logique de construction ainsi que son intérêt métier. Cette or-
+ganisation permet de passer progressivement d’une cible principale, le modèle d’activation, vers les
+cibles secondaires liées à la propension à l’usage, à l’identification des freins et à la priorisation des
+commerçants.
+4.2.1
+Modèle d’activation
+4.2.1.1
+Modèle de propension à la montée en usage
+Le premier modèle retenu dans ce travail est le modèle de propension à la montée en usage. Ce
+modèle a pour objectif d’identifier, parmi les clients déjà présents dans la base, ceux qui présentent
+un fort potentiel d’augmentation de leur niveau d’usage. Autrement dit, il ne s’agit pas ici de prédire
+une première activation, mais plutôt d’évaluer la probabilité qu’un client peu actif ou moyennement
+actif devienne un client plus engagé dans l’utilisation des services bancaires étudiés.
+Nous construisons ce modèle en premier lieu à partir de la première table, qui regroupe les clients
+actifs, moyennement actifs et peu actifs, et qui contient donc les informations les plus adaptées pour
+caractériser les différences de comportement entre ces profils.
+La cible du modèle repose sur une logique de segmentation comportementale. À partir des règles
+métier définies dans le cadre du projet, chaque client peut être rattaché à une classe d’activité, par
+exemple : client peu actif, client moyennement actif ou client actif. Cette variable cible peut égale-
+ment être simplifiée en une formulation binaire, où la classe 1 représente les clients ayant un fort
+potentiel d’activation ou de montée en usage, et la classe 0 les autres clients. Le choix entre une cible
+binaire ou multiclasses dépend de la finesse d’analyse souhaitée et de la lisibilité recherchée dans les
+résultats finaux.
+Pour construire cette cible et entraîner le modèle, nous mobilisons plusieurs variables issues de la
+première table.
+Les variables de profil, telles que l’âge, le genre, le marché, le niveau de service, la profession
+et la ville principale, permettent de caractériser le client sur un plan sociodémographique et bancaire.
+Les variables liées à l’ancienneté et à la relation bancaire, comme la date de début de
+relation et l’ancienneté en jours, apportent une mesure de maturité de la relation client.
+Les variables d’activité, telles que le nombre et le volume des transactions locales et internatio-
+nales, le nombre et le montant des retraits GAB, le nombre de connexions à l’application bancaire,
+25
+
+
+===== PAGE 38 =====
+
+les indicateurs d’usage digital, ainsi que les montants totaux crédités et débités, permettent quant à
+elles de décrire le niveau réel d’engagement du client.
+Enfin, les variables de synthèse, comme le nombre total de paiements, le montant total des
+paiements, le nombre total de retraits, le montant total retiré, la part des paiements et la part des
+retraits, offrent une lecture consolidée du comportement bancaire.
+En complément de ces variables brutes, nous construisons également des variables dérivées afin
+d’enrichir la qualité de la modélisation, notamment des indicateurs tels que :
+— la part des paiements dans l’ensemble des opérations ;
+— la part des retraits dans l’activité totale ;
+— des ratios entre les montants et les fréquences d’utilisation.
+De la même manière, nous construisons des variables de regroupement pour synthétiser le niveau
+d’activité du client, par exemple :
+— un score global d’usage ;
+— une classe d’activité ;
+— un indicateur de comportement dominant.
+4.2.1.2
+Modèle de propension à la première activation
+La deuxième table, quant à elle, regroupe les clients jamais actifs. Elle permet d’étudier un autre
+segment de la population, à savoir les clients qui n’ont encore réalisé aucun paiement carte, mais qui
+présentent tout de même certains signaux d’activité bancaire ou digitale. Cette table est donc parti-
+culièrement pertinente pour identifier les profils susceptibles de réaliser une première activation, en
+s’appuyant sur des indicateurs tels que l’ancienneté de la relation, les opérations bancaires observées,
+l’usage de l’application mobile et les caractéristiques sociodémographiques du client.
+Pour construire cette cible et entraîner le modèle, nous mobilisons plusieurs variables issues de la
+deuxième table.
+Les variables de profil, telles que la profession, l’âge client, le niveau de service, le marché, la
+ville et le genre, permettent de caractériser le client sur un plan sociodémographique et bancaire.
+Ces informations offrent un premier niveau de lecture du profil et facilitent l’identification des clients
+présentant des caractéristiques proches de ceux qui s’activent plus facilement.
+Les variables liées à la relation bancaire, comme la date de début de relation et l’ancienneté
+en jours, apportent une mesure de la maturité de la relation client. Elles permettent d’apprécier
+depuis combien de temps le client est rattaché à l’établissement et de distinguer les profils récents
+des profils installés, ce qui constitue un élément important dans l’analyse du potentiel d’activation.
+Les variables d’activité bancaire, telles que les montants de virements, les fréquences de vire-
+ments, les montants de retraits, ainsi que les indicateurs V_CMC, F_CMC, V_CMD et F_CMD,
+permettent de décrire l’intensité des comportements bancaires observés en dehors du paiement carte.
+Ces variables traduisent le niveau d’interaction du client avec les services bancaires et constituent
+des signaux utiles pour repérer un potentiel futur d’activation.
+Les variables d’usage digital, comme le nombre de connexions à l’application bancaire et l’in-
+dicateur has_app_connexion, offrent une lecture complémentaire du comportement du client. Elles
+26
+
+
+===== PAGE 39 =====
+
+permettent d’évaluer son niveau d’engagement digital, lequel peut constituer un signal favorable à
+l’adoption future du service étudié.
+Enfin, les variables de synthèse issues de la table, regroupant l’ensemble des informations dis-
+ponibles, permettent de consolider la lecture comportementale du client et de faciliter la comparaison
+entre profils.
+En complément de ces variables brutes, nous construisons également des variables dérivées afin
+d’enrichir la qualité de la modélisation, notamment des indicateurs tels que :
+— l’intensité des virements ;
+— l’intensité des retraits ;
+— la présence ou non d’un usage digital ;
+— un ratio entre les connexions à l’application et l’ancienneté ;
+— un score global de potentiel d’activation.
+De la même manière, nous construisons des variables de regroupement pour synthétiser le profil
+du client, par exemple :
+— une classe de potentiel d’activation ;
+— un indicateur de comportement bancaire dominant ;
+— un score de proximité avec l’usage cible.
+Ces variables permettent de mieux faire ressortir les écarts entre les profils de clients et d’identifier
+plus facilement ceux qui disposent d’un potentiel de montée en activité.
+Ainsi, le modèle de propension à l’activation repose sur une base client enrichie par des variables
+de profil, d’usage et de synthèse, ainsi que par des variables dérivées construites à partir des données
+disponibles. Cette approche permet de produire un score exploitable pour cibler les clients à fort
+potentiel et orienter les actions commerciales ou relationnelles de manière plus pertinente.
+4.2.2
+Modèle d’activation J30
+Un modèle prédictif d’activation à J+30 supposerait de disposer, pour chaque client, de variables
+mesurées uniquement avant son activation, ainsi que d’un découpage temporel strict entre période
+d’observation et période de prédiction. Or, les données mobilisées dans ce projet se présentent sous
+forme de totaux cumulés à la date d’extraction (nombre et volume de paiements, de retraits, de
+connexions à l’application), sans historique daté transaction par transaction. Il n’est donc pas pos-
+sible de reconstituer, pour un client donné, l’état exact de son comportement au moment précis de
+son activation, ni de garantir l’absence de fuite d’information entre le passé et le futur : un véritable
+modèle prédictif à J+30 n’est donc pas réalisable en l’état sur ce jeu de données.
+Nous préparons à la place les variables nécessaires à une étude rétrospective et comparative, moins
+ambitieuse mais exploitable avec les données disponibles : comparer, parmi les clients déjà activés de
+la table 1, le niveau d’engagement ultérieur des clients selon la rapidité de leur première activation.
+Cette préparation repose sur trois étapes.
+La première consiste à construire un délai d’activation, défini comme l’écart en jours entre la date
+de début de relation bancaire (dt_deb_rela) et la date du premier paiement observé (dat_prem_paiement).
+Ce calcul impose d’écarter les lignes non exploitables : les dates manquantes, ainsi que les délais né-
+27
+
+
+===== PAGE 40 =====
+
+gatifs, c’est-à-dire les cas où un paiement est enregistré avant le début officiel de la relation, une
+anomalie incompatible avec la logique métier qui devra être vérifiée auprès de la source des données
+plutôt que corrigée arbitrairement.
+La deuxième étape consiste à regrouper les clients en classes de vitesse d’activation – activation
+rapide, intermédiaire et tardive – à partir de seuils sur ce délai, afin de disposer de populations
+comparables entre elles.
+La troisième étape consiste à préparer une mesure de fidélité qui ne soit pas biaisée par le temps
+d’exposition : comparer directement les totaux cumulés de paiement favoriserait mécaniquement les
+clients activés tôt, qui ont eu plus de temps pour accumuler des opérations. Un rythme d’usage men-
+suel est donc construit en rapportant l’activité de paiement à la durée écoulée depuis l’activation, et
+non depuis le début de la relation. Cette mesure continue est complétée par un rapprochement avec
+le segment d’usage actuel du client, issu de la segmentation renforcée présentée au chapitre suivant.
+Les résultats obtenus à partir de ces variables préparées sont présentés et interprétés au chapitre 6.
+4.2.3
+Modèle de classification actif / jamais actif
+Ce modèle correspond à la classification XGBoost annoncée en introduction pour prédire l’inac-
+tivité des porteurs de cartes. Les deux tables étudiées constituant déjà, par construction, les deux
+classes recherchées – les clients de la table 1 ayant réalisé au moins un paiement carte, ceux de la table
+2 n’en ayant jamais réalisé – la préparation de la base consiste à rapprocher ces deux populations
+sur un socle de variables communes, plutôt qu’à construire une cible supplémentaire.
+4.2.3.1
+Harmonisation des variables communes aux deux tables
+Les deux tables ne partagent pas exactement les mêmes colonnes, ni les mêmes noms de variables.
+Un travail d’harmonisation a donc été nécessaire pour ramener les informations comparables sous une
+nomenclature commune : âge, genre, profession, marché, niveau de service, ville, ancienneté en jours
+et usage digital (nombre de connexions à l’application). Les modalités textuelles (genre, profession,
+marché, niveau de service, ville) ont également été uniformisées en majuscules et débarrassées des
+espaces superflus, afin d’éviter une multiplication artificielle de catégories équivalentes entre les deux
+sources.
+4.2.3.2
+Écart des variables porteuses d’un risque de fuite de cible
+Certaines variables ne peuvent pas être retenues, car elles définissent la cible par construction, la
+reproduisent indirectement, ou introduisent un biais de population entre les deux sources.
+Les variables de paiement carte de la table 1 (nombre et volume de paiements locaux et internatio-
+naux) sont exclues sans ambiguïté, puisqu’un client de la table 1 est par définition celui qui en possède.
+Les variables de crédits et débits bancaires globaux (nbr_credit, nbr_debit, montant_total_credits,
+montant_total_debits) ont également été écartées : une vérification empirique montre une corrélation
+de 0,69 entre le nombre de débits et le nombre total de paiements carte du client, ce qui indique que
+28
+
+
+===== PAGE 41 =====
+
+les paiements carte sont très probablement comptabilisées dans ces totaux.
+Un premier essai de modélisation, incluant le marché et le nombre/montant de retraits en guichet
+automatique, a fait apparaître un problème plus structurel : la table 2 ne contient, sans aucune
+exception, que des clients du marché « PARTICULIER », alors que la table 1 couvre également les
+entreprises, professionnels et marocains résidant à l’étranger. La variable marché devenait de fait
+un identifiant quasi parfait de la table d’origine plutôt qu’un signal comportemental, et a donc été
+retirée des variables explicatives – la base a en outre été restreinte au marché « PARTICULIER »
+dans les deux tables, afin de comparer des populations réellement comparables. De la même manière,
+le nombre de retraits en guichet automatique de la table 1 (nbr_retrait_gab, dont les valeurs ex-
+trêmes ont déjà été signalées comme anomalie de données) s’est révélé sur une échelle sans rapport
+avec la fréquence de retrait de la table 2, malgré la proximité de leurs intitulés : ces deux variables
+ne mesurent manifestement pas la même chose et ont donc été écartées plutôt que rapprochées à tort.
+Seules les variables dont l’indépendance vis-à-vis du paiement carte et la comparabilité entre les
+deux tables sont raisonnablement établies – profil socio-démographique, ancienneté et usage digital
+– ont finalement été conservées.
+4.2.3.3
+Base obtenue
+Après restriction au marché « PARTICULIER », le rapprochement des deux tables produit une
+base de 94 111 clients, réunissant 34 111 clients de la table 1 (classe « actif », 36,2 % de la base) et
+60 000 clients de la table 2 (classe « jamais actif », 63,8 % de la base). Les 15 889 clients de la table
+1 hors marché « PARTICULIER » sont exclus de ce modèle, faute d’équivalent dans la table 2. Les
+valeurs manquantes propres à chaque variable ont été conservées telles quelles à ce stade et seront
+traitées lors de la phase de modélisation proprement dite, au chapitre consacré à la modélisation
+prédictive.
+4.2.4
+Délai avant activation ou désengagement
+Le volet « délai avant activation » de cette cible est déjà couvert par l’étude préparée plus haut
+dans ce chapitre et présentée au chapitre 6 : le délai entre le début de la relation bancaire et le
+premier paiement carte y est calculé et exploité pour la table 1.
+Le volet « désengagement » a d’abord été écarté pour la même raison qu’un modèle prédictif à
+J+30 : les variables disponibles pour la table 1 (nombre et volume de paiements, de retraits, de
+connexions) sont des totaux cumulés à la date d’extraction, qui ne permettent pas de savoir si un
+client encore jugé « actif » au global n’a en réalité plus effectué de paiement depuis plusieurs mois.
+Un historique transactionnel daté est ensuite devenu disponible en cours de projet : l’encadrant en-
+treprise a transmis une extraction complémentaire fournissant, pour chaque client de la table 1, la
+date de son dernier paiement (dat_dern_paiement), à la date de référence du 31 décembre 2025.
+Cette nouvelle variable a d’abord fait l’objet d’un contrôle de cohérence : vérification de la jointure
+avec la table 1 par identifiant client (et non par position de ligne), absence de client sans correspon-
+dance dans un sens ou dans l’autre, et recoupement des valeurs manquantes (633, exactement les
+29
+
+
+===== PAGE 42 =====
+
+mêmes clients déjà signalés lors du nettoyage du chapitre 3).
+Le désengagement est défini par un seuil d’inactivité : un client est considéré désengagé si son
+dernier paiement remonte à plus de 120 jours à la date de référence, et censuré sinon. Ce seuil a été
+choisi empiriquement plutôt qu’arbitrairement, à partir de la distribution du délai depuis le dernier
+paiement : même le quartile de clients les moins actifs, mais toujours engagés, présente une pause
+médiane de l’ordre de 55 à 60 jours ; 120 jours laisse donc une marge confortable au-delà d’une
+pause jugée normale. La durée de survie est ensuite construite entre la date de première activation
+(dat_prem_paiement) et soit la date de désengagement (client en événement), soit la date de référence
+(client censuré). Les résultats de ce modèle sont présentés au chapitre 7.
+4.2.5
+Classification des freins à l’usage
+Contrairement aux cibles précédentes, cette classification n’a pas besoin d’être construite : elle
+existe déjà, sous la forme de la variable alerte_metier produite lors de la segmentation renforcée
+présentée au chapitre 5, pour la table 1 comme pour la table 2. Il s’agit d’une classification multi-
+étiquette, chaque client pouvant cumuler plusieurs freins simultanément, construite par combinaison
+de règles à partir des segments déjà calculés plutôt que par un modèle supervisé.
+Pour la table 1, un client est signalé lorsque son segment de paiement et son segment de cash ou
+sa maturité digitale se combinent de façon défavorable ou atypique : « Paiement fort mais digital
+faible » (paiement fort et maturité digitale faible), « Client très orienté cash » (paiement faible et
+cash fort), « Grand utilisateur multi-flux » (paiement fort et cash fort) et « Faible usage global »
+(paiement faible et cash faible). Pour la table 2, la logique est similaire mais tournée vers les freins à
+l’activation : « Fort potentiel mais digital faible », « Faible potentiel très cash », « Activation difficile
+car cash fort » et « Aucune connexion app » (absence totale d’usage digital observé).
+Cette classification étant déjà disponible, l’effort de préparation ne porte pas sur sa construction
+mais sur son rattachement à la base analytique : la variable alerte_metier sera jointe à la base du
+modèle de classification actif / jamais actif par l’identifiant client, afin de pouvoir être exploitée soit
+comme variable explicative complémentaire, soit comme grille de lecture pour interpréter les erreurs
+de classification du futur modèle.
+4.2.6
+Scoring commerçant
+Contrairement aux cibles précédentes, définies au niveau client, cette dernière cible impose un
+changement de granularité : il ne s’agit plus de qualifier un client mais un commerçant. La table 1
+ne contient pas de table commerçant à part entière, mais un champ indiquant, pour chaque client, le
+commerçant représentant sa plus forte dépense sur l’année (ens_pv_top_depense_2025). La prépa-
+ration de cette base consiste donc à regrouper les clients par ce commerçant, plutôt qu’à construire
+une nouvelle variable cible au sens strict.
+4.2.6.1
+Nettoyage du nom de commerçant
+Le champ ens_pv_top_depense_2025 présente initialement 12 363 valeurs distinctes pour 50 000
+clients, mais une partie de cette variété provient de doublons de saisie plutôt que de commerçants
+30
+
+
+===== PAGE 43 =====
+
+réellement différents : « CARREFOUR MARKE » et « Carrefour Marke » désignent par exemple
+le même commerçant. Une harmonisation de la casse et des espaces superflus ramène le nombre de
+commerçants distincts à 12 318. Cette harmonisation reste toutefois partielle : des variantes plus pro-
+fondes, comme « TEMU » et « TEMU.COM », ne sont pas fusionnées automatiquement, faute d’une
+règle de rapprochement fiable qui ne risquerait pas de regrouper à tort des commerçants distincts.
+Les 633 clients sans commerçant renseigné sont écartés de cette préparation.
+4.2.6.2
+Agrégation au niveau commerçant
+Pour chaque commerçant, les clients qui le désignent comme leur première destination de dépense
+sont regroupés afin de calculer : le nombre de clients rattachés, leur fréquence et leur volume de paie-
+ment moyens, leur usage digital moyen, leur ancienneté moyenne, ainsi que la part de clients classés
+« Grand utilisateur multi-usage » dans la segmentation renforcée – utilisée ici comme indicateur de
+la qualité de la clientèle attirée par ce commerçant.
+Une limite méthodologique importante doit être soulignée : le volume agrégé par commerçant
+correspond au volume de paiement total des clients qui le désignent comme première destination
+de dépense, et non au chiffre d’affaires réellement encaissé par ce commerçant. Les données ne per-
+mettent pas de connaître le montant dépensé spécifiquement chez chaque commerçant, transaction
+par transaction : ce score doit donc être lu comme un indicateur de la valeur des clients attirés par
+un commerçant, non comme une mesure directe de son activité commerciale.
+Par ailleurs, la répartition des clients par commerçant est très inégale : la majorité des 12 318
+commerçants ne comptent que quelques clients, ce qui rend un score peu fiable statistiquement. Un
+seuil minimal de 30 clients a donc été retenu pour distinguer les commerçants dont le score peut être
+interprété avec confiance : 177 commerçants dépassent ce seuil, représentant 19 784 clients.
+Les résultats de ce classement seront présentés et interprétés dans le chapitre consacré à la modé-
+lisation prédictive et aux recommandations.
+Conclusion
+Ce chapitre a précisé la granularité retenue pour la base analytique – une ligne par client – et
+défini les six cibles mobilisées pour la suite du projet : la propension à la montée en usage et à la pre-
+mière activation, l’activation à J+30 reformulée en étude rétrospective, la classification actif / jamais
+actif, le délai avant activation et le désengagement, la classification des freins à l’usage et le scoring
+commerçant. Ce travail de préparation, mené dans le respect des contraintes de comparabilité entre
+les deux tables, sert de socle aux résultats présentés dans les trois chapitres suivants.
+31
+
+
+===== PAGE 44 =====
+
+Chapitre 5
+Segmentation comportementale
+32
+
+
+===== PAGE 45 =====
+
+Introduction
+Nous présentons dans ce chapitre la démarche de segmentation retenue pour analyser la clientèle
+étudiée. L’objectif est d’identifier des groupes homogènes de clients selon leurs comportements tran-
+sactionnels, afin de mieux comprendre les usages observés et de préparer l’application de méthodes
+d’analyse plus avancées. Nous construisons d’abord cette segmentation à partir de règles métier,
+avant de l’enrichir par une lecture comparative des deux tables étudiées puis par des méthodes non
+supervisées.
+Rappelons que les deux tables ne relèvent pas de la même logique : la première concerne des
+clients déjà actifs ou partiellement actifs dans le paiement, tandis que la seconde regroupe des clients
+n’ayant pas encore adopté le paiement carte.
+5.1
+Cadre méthodologique de la segmentation
+5.1.1
+Pourquoi segmenter, et pourquoi par règles métier
+Une lecture globale et uniforme de la clientèle ne suffit pas : les usages, les niveaux d’activité et les
+profils transactionnels varient trop fortement d’un client à l’autre pour être résumés par une moyenne.
+Segmenter permet de structurer cette diversité en sous-ensembles cohérents et exploitables, un enjeu
+particulièrement fort dans un contexte bancaire où la compréhension fine des comportements clients
+conditionne la qualité des décisions commerciales. C’est aussi une étape préparatoire indispensable
+avant d’aller plus loin : en organisant les données en groupes homogènes, nous posons une base de
+travail plus stable pour les analyses complémentaires menées plus loin dans ce chapitre (clustering,
+réduction de dimension, analyse de stabilité).
+Nous avons choisi de construire cette première segmentation à partir de règles métier plutôt que
+d’un algorithme non supervisé dès le départ. Une segmentation entièrement algorithmique détecte
+bien les structures latentes des données, mais elle reste souvent difficile à traduire en leviers d’action
+concrets pour un lecteur métier. Une approche par règles, elle, s’appuie sur des dimensions directe-
+ment compréhensibles – intensité d’usage, fréquence transactionnelle, comportement cash, maturité
+digitale – et respecte la logique propre à chacune des deux tables : usages déjà observés pour la
+première, potentiel d’activation pour la seconde. Les seuils sont construits à partir des quantiles de
+la distribution réelle des données plutôt que fixés arbitrairement, ce qui garantit une base empirique
+solide. Cette segmentation par règles constitue ainsi une première structuration de la clientèle, lisible
+et directement mobilisable, que nous renforçons ensuite par des techniques statistiques.
+5.1.2
+Deux tables, deux logiques d’analyse
+La table 1 regroupe des clients dont le comportement transactionnel permet d’observer des usages
+déjà installés, en particulier autour du paiement et des retraits : elle relève d’une logique d’usage
+observé. La table 2, à l’inverse, concerne des clients qui n’ont pas encore adopté le paiement carte ;
+nous ne pouvons donc pas y analyser un usage existant, mais plutôt des indicateurs de potentiel
+d’activation – la propension du client à évoluer vers un usage plus actif du paiement. Cette différence
+de nature impose d’adapter à la fois le choix des variables et l’interprétation des résultats : la première
+table nous permet de décrire et structurer des comportements existants, la seconde d’anticiper des
+33
+
+
+===== PAGE 46 =====
+
+trajectoires d’adoption. Les deux lectures sont complémentaires plutôt que redondantes – l’une éclaire
+les usages réalisés, l’autre les marges de progression.
+5.2
+Construction de la segmentation de la table 1
+5.2.1
+Objectif
+Nous cherchons ici à structurer la clientèle à partir des comportements transactionnels effective-
+ment observés, autour du paiement et des retraits. Contrairement à une logique de potentiel, cette
+segmentation repose sur des pratiques déjà réalisées par les clients et vise à faire apparaître des
+groupes homogènes selon l’intensité et la nature de leur activité. Nous retenons pour cela deux axes :
+un axe de paiement (fréquence, volume, diversité, usage digital, ancienneté) et un axe cash (fré-
+quence des retraits, volume, orientation générale vers le cash), afin de dépasser la simple opposition
+actif/inactif et de faire ressortir des combinaisons de comportements plus fines.
+5.2.2
+Variables retenues
+Le tableau suivant liste les huit variables mobilisées pour cette segmentation, réparties entre l’axe
+de paiement, l’axe cash et la dimension digitale, avec pour chacune le rôle qu’elle joue dans l’analyse
+et la justification de son choix.
+34
+
+
+===== PAGE 47 =====
+
+Variable
+Axe
+de
+seg-
+mentation
+Rôle dans l’analyse
+Justification du choix
+Fréquence des paie-
+ments
+Paiement
+Mesure
+l’intensité
+d’usage du paiement
+Permet d’identifier les clients
+les plus actifs sur le plan
+transactionnel.
+Volume
+des
+paie-
+ments
+Paiement
+Mesure
+l’importance
+monétaire
+des
+paie-
+ments
+Complète
+la
+fréquence
+en
+captant l’ampleur réelle de
+l’activité de paiement.
+Diversité des paie-
+ments
+Paiement
+Mesure la variété des
+comportements
+de
+paiement
+Permet
+de
+distinguer
+les
+clients ayant un usage plus
+équilibré entre plusieurs ca-
+naux ou types de flux.
+Usage digital
+Digital
+Mesure la maturité di-
+gitale
+Indique le niveau d’adoption
+des canaux numériques et la
+propension à utiliser des ser-
+vices dématérialisés.
+Ancienneté
+rela-
+tionnelle
+Historique
+Mesure la profondeur
+de la relation client
+Sert à apprécier la stabilité
+de la relation bancaire et le
+degré de maturité du client
+dans le temps.
+Fréquence des re-
+traits
+Cash
+Mesure l’intensité de
+l’usage du cash
+Permet de repérer les clients
+qui
+réalisent
+régulièrement
+des retraits.
+Volume des retraits
+Cash
+Mesure
+l’importance
+du cash dans les flux
+Complète la fréquence des re-
+traits en donnant une lecture
+plus fine de la dépendance au
+cash.
+Orientation cash
+Cash
+Mesure le poids relatif
+du cash
+Permet d’identifier les pro-
+fils davantage orientés vers
+les retraits que vers les paie-
+ments dématérialisés.
+Table 5.1 – Variables retenues pour la segmentation de la table 1 et justification de leur choix
+Ces variables couvrent les dimensions les plus structurantes du comportement client : intensité
+d’usage, valeur des flux, orientation cash et maturité digitale. D’autres variables ont été observées en
+cours d’analyse mais écartées de la segmentation principale, pour éviter la redondance et préserver
+la lisibilité de la structure obtenue.
+5.2.3
+Construction des scores et des seuils
+Nous résumons ces variables en trois scores synthétiques – paiement, cash et maturité digitale –
+plutôt que de manipuler directement chaque indicateur élémentaire.
+Une fois ces scores calculés, nous fixons les seuils de segmentation à partir des quantiles – les
+25e et 75e percentiles – pour répartir la population en trois catégories : faible, moyen et fort. Cette
+35
+
+
+===== PAGE 48 =====
+
+Score
+Variables mobilisées
+Mode de calcul
+Rôle dans la
+segmentation
+Score
+de
+paie-
+ment
+Fréquence
+des
+paie-
+ments,
+volume
+des
+paiements, diversité des
+usages,
+usage
+digital,
+ancienneté relationnelle
+Combinaison
+pondérée
+des variables après nor-
+malisation, afin de résu-
+mer l’intensité et la ri-
+chesse du comportement
+de paiement
+Identifier
+les
+clients
+les plus actifs sur le
+plan des paiements et
+distinguer
+les
+profils
+dominants
+en
+matière
+d’usage
+Score de cash
+Fréquence des retraits,
+volume
+des
+retraits,
+orientation
+générale
+vers le cash
+Combinaison
+pondérée
+des variables après nor-
+malisation, afin de me-
+surer le poids du cash
+dans le comportement
+transactionnel
+Repérer les clients les
+plus orientés vers les re-
+traits et mesurer leur
+dépendance aux opéra-
+tions cash
+Score digital
+Nombre de connexions à
+l’application
+Variable isolée puis clas-
+sée par quantiles, afin de
+mesurer le degré de ma-
+turité digitale
+Évaluer
+le
+niveau
+d’adoption des canaux
+numériques
+et
+com-
+pléter
+la
+lecture
+des
+comportements transac-
+tionnels
+Table 5.2 – Construction des scores utilisés pour la segmentation de la table 1
+approche s’appuie sur la distribution réelle des données plutôt que sur des bornes arbitraires, tout
+en gardant une segmentation équilibrée et facile à interpréter. Sur la table 1, le score de paiement
+de la zone intermédiaire est ainsi compris entre 0,2348 et 0,4347, et le score de cash entre 0,5908 et
+0,7550.
+5.2.4
+Segmentation principale : paiement et cash
+Le croisement du score de paiement et du score de cash offre une vision plus nuancée que la seule
+opposition actif/inactif, en distinguant les profils équilibrés, les clients davantage orientés paiement,
+et ceux dont l’activité reste marquée par le cash. Chaque client est classé faible, moyen ou fort sur
+chacun des deux axes, ce qui produit une matrice de neuf combinaisons. La distribution est parfai-
+tement équilibrée au niveau marginal : 12 500 clients dans les segments faibles et forts pour chaque
+axe, 25 000 dans le segment intermédiaire.
+Le segment le plus important est celui des utilisateurs mixtes équilibrés, avec 15 606 clients –
+une population où paiement et cash coexistent sans domination nette d’un axe sur l’autre. D’autres
+segments ressortent de façon significative, comme les grands utilisateurs multi-usage ou les utilisateurs
+cash dominants, tandis que le segment cash intensif reste marginal (40 clients). Les combinaisons les
+plus fréquentes se situent dans les niveaux intermédiaires ou élevés des deux axes (paiement moyen
++ cash moyen, paiement fort + cash fort), alors que des combinaisons comme paiement faible + cash
+fort restent rares – un profil transactionnel atypique.
+36
+
+
+===== PAGE 49 =====
+
+Figure 5.1 – Distribution des scores et seuils de segmentation retenus
+Figure 5.2 – Matrice croisée des segments : Score de paiement × Score de cash
+37
+
+
+===== PAGE 50 =====
+
+5.2.5
+Segmentation renforcée
+Le segment paiement fort reste hétérogène : il regroupe des clients aux profils très différents
+selon la répartition de leurs paiements entre local et international. Nous l’affinons donc en cinq
+profils : 100 % local, 100 % international, local dominant, international dominant et mixte, à
+partir de la présence de paiements locaux/internationaux et de leur part relative en volume et
+en nombre.
+Le sous-segment le plus important est celui des paiements forts mixtes (5 153 clients), suivi
+des profils local dominant et 100 % local ; les profils international dominant et 100 % interna-
+tional restent beaucoup plus restreints, révélant une forte asymétrie entre usage local et inter-
+national au sein des paiements forts. Cette hétérogénéité confirme que le segment fort n’est pas
+un bloc homogène et qu’il justifie une lecture plus détaillée, faisant au passage ressortir des
+profils rares mais potentiellement stratégiques, comme les clients à paiement international très
+élevé.
+Figure 5.3 – Répartition des sous-segments de paiement fort
+38
+
+
+===== PAGE 51 =====
+
+5.3
+Construction de la segmentation de la table 2
+5.3.1
+Objectif
+Nous cherchons ici à identifier, parmi les clients qui n’ont pas encore adopté le paiement carte,
+ceux qui présentent le plus fort potentiel d’activation : il ne s’agit plus de décrire un usage installé,
+mais d’anticiper les profils les plus susceptibles d’évoluer vers ce mode de paiement. Cette lecture
+constitue une base opérationnelle pour hiérarchiser les efforts d’animation commerciale et distinguer
+les clients facilement activables de ceux dont l’orientation cash ou le faible usage digital compliquent
+l’activation.
+5.3.2
+Variables retenues et logique de potentiel
+Trois axes structurent cette segmentation : le potentiel d’activation (intensité des flux, fréquence
+transactionnelle, montant entrant, usage digital, ancienneté), l’orientation cash (place des retraits
+dans les flux sortants) et la maturité digitale (usage de l’application). Ces variables captent chacune
+une dimension complémentaire du comportement : le niveau d’activité, la dynamique des flux, la dé-
+pendance au cash et la capacité à interagir avec des canaux dématérialisés – l’ancienneté apportant
+en plus un signal de profondeur relationnelle.
+Les quantiles observés confirment des distributions suffisamment contrastées pour segmenter de
+façon lisible : l’intensité des flux passe de 5 800 au premier quartile à 66 168,37 au troisième, l’usage
+digital de 94 à 168 entre P25 et P75, et l’ancienneté médiane s’établit à 39 mois – une population déjà
+installée dans la relation bancaire, mais avec des niveaux de maturité et d’activité très hétérogènes.
+Nous appliquons la même règle de seuillage que pour la table 1 : faible en dessous de P25, moyen
+entre P25 et P75, fort au-dessus de P75, pour le score de potentiel d’activation, le score d’orientation
+cash et l’usage digital.
+5.3.3
+Construction du score de potentiel d’activation
+Ce score synthétise les dimensions qui traduisent la capacité d’un client à évoluer vers le paiement
+carte : activité bancaire, maturité digitale et ancienneté relationnelle. Un score élevé traduit une
+combinaison d’activité soutenue, d’usage digital déjà présent et d’une relation bancaire suffisamment
+installée ; un score faible signale au contraire une intensité relationnelle limitée ou des freins struc-
+turels. Les quantiles observés situent ce score entre 0,3502 (P25) et 0,5269 (P75), avec une médiane
+à 0,4115.
+5.3.4
+Segmentation principale
+Le croisement du potentiel d’activation et de l’orientation cash permet de ne pas se limiter à
+un score unique et de distinguer des sous-populations aux comportements très différents en matière
+d’activabilité. La répartition fait apparaître trois blocs de potentiel : 15 000 clients à potentiel faible,
+30 000 à potentiel moyen, 15 000 à potentiel fort ; et pour l’orientation cash, 12 310 clients en orien-
+tation faible, 33 148 en orientation moyenne, 14 542 en orientation forte.
+Le groupe le plus important de la matrice croisée est potentiel moyen + orientation cash moyenne
+(19 233 clients) – le profil intermédiaire à travailler, ni prioritaire ni fermé à l’activation. Deux en-
+sembles se distinguent ensuite : potentiel fort + orientation cash forte (7 662 clients, un fort potentiel
+39
+
+
+===== PAGE 52 =====
+
+encore très marqué par le cash) et potentiel fort + orientation cash faible (4 209 clients, la cible
+prioritaire à activer, qui combine bon socle relationnel et freins cash limités). Les potentiels faibles
+se concentrent surtout en potentiel faible + orientation cash moyenne (10 786 clients), loin devant
+potentiel faible + orientation cash faible (3 959) et potentiel faible + orientation cash forte, résiduel
+(255 clients) – signe que les faibles potentiels ne sont pas uniformes : certains restent peu actifs sans
+dépendre du cash, d’autres sont plus nettement bloqués par les retraits. Cette matrice se double
+d’une nomenclature métier à neuf profils que nous réutilisons plus loin dans ce chapitre ; elle ajoute
+notamment « Profil cash à convertir » (6 625 clients) et « Cible à activer avec accompagnement »
+(3 129 clients) aux profils déjà identifiés.
+5.3.5
+Segmentation renforcée
+Nous affinons ensuite les clients à fort potentiel en profils plus actionnables, pour distinguer ceux
+qui sont déjà proches d’une activation de ceux que le cash ou le digital freinent encore. Cinq sous-
+segments en ressortent : « Fort potentiel mais ancré cash » (7 662 clients, le plus important – flux
+élevés mais orientation cash quasi totale), « Fort potentiel mixte » (3 499 clients, orientation cash
+moins extrême, cible intermédiaire pour une activation progressive), « Fort potentiel digitalisable »
+(2 256 clients, flux élevés mais maturité digitale plus faible) et son pendant « Fort potentiel digital
+prêt à activer » (1 118 clients, profils déjà connectés et donc plus immédiatement mobilisables), et
+enfin « Fort potentiel orienté virement » (465 clients seulement, mais un profil transactionnel très
+favorable à une activation directe).
+Les alertes métier confirment cette lecture : la grande majorité des clients (47 906) ne déclenche
+« Aucune alerte », mais parmi ceux qui en portent une, les cas les plus fréquents sont « Activation
+difficile car cash fort » et « Aucune connexion app », certaines combinaisons cumulant plusieurs freins
+à la fois (par exemple « Fort potentiel mais digital faible » associé à « Activation difficile car cash
+fort »). Cette couche d’alertes ajoute une dimension opérationnelle : elle identifie non seulement les
+segments porteurs, mais aussi les obstacles concrets à lever.
+5.4
+Analyse comparative des deux segmentations
+Les deux segmentations répondent à des logiques complémentaires mais distinctes : la table 1 dé-
+crit des comportements déjà observables, la table 2 anticipe un potentiel d’activation chez des clients
+qui n’ont pas encore adopté le paiement carte. Dans la première, la segmentation structure des usages
+existants ; dans la seconde, elle repère des opportunités commerciales et anticipe une évolution pos-
+sible des comportements – une logique descriptive d’un côté, prospective de l’autre. Les mêmes types
+de critères (orientation cash, digital, intensité des flux) n’y sont donc pas lus de la même façon : ils ca-
+ractérisent un usage déjà constitué sur la table 1, et estiment une faisabilité d’activation sur la table 2.
+Cette complémentarité est directement utile à la décision opérationnelle : les segments de la table
+1 aident à comprendre les profils déjà actifs, ceux de la table 2 à cibler les campagnes de conversion,
+d’accompagnement ou de relance. Les deux lectures ne se superposent pas, elles se répondent – l’une
+décrit le présent des usages, l’autre prépare leur évolution.
+40
+
+
+===== PAGE 53 =====
+
+5.4.1
+Forces et limites de la segmentation métier
+Cette segmentation par scores fournit une lecture stable et interprétable, mais elle reste fondée
+sur des règles définies a priori. Cette limite justifie l’ouverture vers des méthodes complémentaires,
+pour tester la structure réelle des données, repérer d’éventuels comportements atypiques et vérifier
+la robustesse des segments sur les deux tables – à la fois pour confronter la lecture métier à des
+approches statistiques non supervisées, et pour comparer plus librement les profils des deux tables.
+5.4.2
+Segmentation RFM
+La segmentation RFM (Récence, Fréquence, Montant) est une base méthodologique simple et lar-
+gement répandue pour décrire le comportement client à partir de trois dimensions. Elle transforme
+des données transactionnelles brutes en groupes facilement interprétables, avec une forte dimension
+opérationnelle : en attribuant un score à chaque client selon son activité récente, sa régularité d’usage
+et la valeur de ses opérations, elle permet d’identifier rapidement les profils prioritaires, à fort po-
+tentiel ou peu actifs. Elle reste cependant fondée sur des seuils a priori, donc moins souple qu’un
+clustering purement piloté par les données.
+Dans ce mémoire, nous utilisons la logique RFM comme point d’ancrage commun aux deux tables,
+avant d’appliquer les méthodes plus exploratoires présentées dans la section suivante : K-Means,
+DBSCAN et réduction de dimension pour la visualisation.
+5.5
+Ouverture vers les méthodes complémentaires
+5.5.1
+Pourquoi enrichir la lecture métier
+La segmentation métier repose sur des seuils fixés a priori à partir des quantiles P25 et P75 :
+elle capture des ruptures statistiques dans la distribution des scores, sans garantir que ces ruptures
+correspondent à une structure réelle et homogène des données. Nous confrontons donc cette lecture à
+une approche qui ne présuppose aucun découpage, pour vérifier si les groupes obtenus par les règles
+se retrouvent naturellement dans l’espace des variables comportementales, ou si d’autres structures,
+non anticipées par les règles, existent également. Cette démarche répond à un double objectif : valider
+la robustesse de la segmentation métier en mesurant dans quelle mesure ses segments coïncident avec
+des regroupements purement statistiques, et détecter les profils que la logique par seuils ne peut pas
+isoler – en particulier les comportements rares ou extrêmes qui se diluent dans les catégories « faible
+/ moyen / fort ».
+5.5.2
+Méthodes retenues
+Nous mobilisons trois méthodes complémentaires : le clustering K-Means, le clustering par densité
+DBSCAN, et la réduction de dimension pour la visualisation.
+Les deux méthodes de clustering s’appuient sur un même socle de neuf variables comportementales
+non redondantes, propres à chaque table mais construites selon le même principe (ancienneté rela-
+tionnelle, intensité et volume des flux, orientation cash, usage digital). Nous excluons volontairement
+les scores composites déjà utilisés pour la segmentation par règles (score de paiement et de cash pour
+la table 1, score de potentiel d’activation et d’orientation cash pour la table 2) : ces scores étant
+41
+
+
+===== PAGE 54 =====
+
+eux-mêmes des agrégats de ces variables, les réintroduire dans le clustering créerait une circularité et
+biaiserait la comparaison entre les deux approches. Les variables retenues sont winsorisées au 1er et
+au 99e centile puis standardisées avant tout traitement. Les clients présentant une valeur manquante
+sur au moins une de ces variables sont exclus de cette analyse : 49 367 clients sur 50 000 sont conservés
+pour la table 1, et 56 113 sur 60 000 pour la table 2. Les effectifs par segment métier cités plus loin
+portent donc sur ces sous-populations, et peuvent différer légèrement des totaux présentés plus haut,
+calculés sur l’ensemble de la population.
+Pour K-Means [MacQueen, 1967], nous testons un nombre de clusters variant de 2 à 7, avec
+sélection par croisement de l’inertie (méthode du coude) et du score de silhouette. Pour ne pas nous
+limiter à l’optimum statistique brut, qui tend à privilégier un partitionnement très grossier sur ce
+type de données, nous conservons deux lectures : l’optimum global au sens du silhouette, et le meilleur
+compromis parmi les solutions à trois clusters ou plus, jugé plus actionnable sur le plan métier. Nous
+vérifions ensuite la robustesse du partitionnement retenu par une analyse de stabilité : dix relances
+de K-Means avec des graines aléatoires différentes, dont nous mesurons l’accord par l’Adjusted Rand
+Index (ARI) [Hubert and Arabie, 1985].
+DBSCAN [Ester et al., 1996] sert une logique différente : non pas partitionner l’ensemble de la
+population, mais isoler les comportements atypiques que K-Means, en cherchant à minimiser une
+inertie globale, tend à absorber dans les clusters les plus proches. Nous fixons min_samples selon
+la règle usuelle de deux fois le nombre de dimensions, et déterminons eps automatiquement à partir
+du graphe des k-distances, en retenant le point de coude le plus éloigné de la droite reliant les deux
+extrémités de la courbe.
+Enfin, la réduction de dimension combine deux méthodes : une analyse en composantes princi-
+pales (PCA) [Pearson, 1901], qui préserve au mieux la variance globale et reste interprétable, et une
+projection UMAP [McInnes et al., 2018], plus adaptée à la mise en évidence de structures locales et
+de sous-groupes compacts. Nous utilisons les deux projections aussi bien pour K-Means que pour
+DBSCAN.
+5.5.3
+Résultats du clustering K-Means sur la première table
+Pour la table 1, le socle de neuf variables regroupe : ancienneté relationnelle, fréquence et volume
+de paiement, diversité des paiements, part des paiements locaux, fréquence et volume des retraits,
+part des paiements dans l’activité globale, et usage digital.
+Le score de silhouette est maximal pour deux clusters (0,477), diminue pour trois (0,358), puis
+remonte légèrement pour quatre (0,379) avant de redescendre. Cette forme non monotone est cohé-
+rente avec la structure de la population : une rupture statistique très nette sépare un petit groupe
+de clients à forte intensité transactionnelle du reste de la population, ce qui favorise mécaniquement
+un optimum à deux clusters, au détriment d’une lecture plus fine de la masse intermédiaire.
+La partition à deux clusters isole un groupe de 5 865 clients (11,9 % de la population), caractérisé
+par une ancienneté élevée, une fréquence de paiement de 248,6 opérations en moyenne, un volume
+de paiement de 97 921 en moyenne, une fréquence et un volume de retraits nettement supérieurs à la
+moyenne, et un usage digital élevé (505,6 connexions en moyenne). Ce cluster est composé à 83,7 %
+de clients du segment « Grand utilisateur multi-usage » (4 909 clients sur 5 865) et capture 69,3 %
+42
+
+
+===== PAGE 55 =====
+
+de l’ensemble de ce segment (4 909 sur 7 083) : une validation solide par une méthode entièrement
+indépendante des règles, même si environ un tiers des grands utilisateurs se retrouve malgré tout
+mélangé au reste de la population dans le second cluster (43 502 clients, sans distinction fine). Cette
+partition est en outre extrêmement stable : l’ARI moyen entre dix graines aléatoires atteint 0,999
+(écart-type 0,001) – la frontière entre grands utilisateurs et reste de la population ne dépend donc
+pas de l’initialisation de l’algorithme.
+La lecture à quatre clusters, retenue comme second niveau de détail, affine sensiblement cette
+structure :
+— un cluster de 3 935 clients (8,0 %) qui isole plus finement les grands utilisateurs multi-usage,
+avec les valeurs moyennes les plus élevées sur pratiquement toutes les variables ;
+— un cluster de 31 924 clients (64,7 %) qui regroupe la masse des utilisateurs cash dominants, cash
+occasionnels et mixtes équilibrés, avec une part de paiement très faible (3 %) et des paiements
+exclusivement locaux ;
+— un cluster de 3 213 clients (6,5 %) au profil inattendu : une part de paiement de 94 % (quasiment
+aucun retrait), mais l’usage digital le plus faible des quatre clusters (136,9 connexions en
+moyenne) – des clients qui paient presque exclusivement par carte sans être engagés sur le
+canal digital, un profil que la segmentation métier ne nomme pas explicitement ;
+— un cluster de 10 295 clients (20,9 %) marqué par la diversité de paiement la plus élevée (1,78)
+et une répartition équilibrée entre local et international (51 % de paiements locaux) – le seul
+cluster où l’usage international est réellement significatif.
+Le croisement du troisième cluster (paiement pur, digital faible) avec la segmentation métier
+montre qu’il se répartit entre « Utilisateur digital en progression » (41,6 %), « Faible utilisateur
+global » (39,5 %) et, dans une moindre mesure, « Utilisateur paiement prioritaire » (19,0 %) : trois
+segments distincts au sens des règles, mais qui partagent visiblement un même déficit d’engagement
+digital – le libellé même du segment « digital en progression » confirme un usage encore limité,
+cohérent avec le profil du cluster. Cette lecture, invisible dans la segmentation par règles, constitue
+un apport propre au clustering.
+5.5.4
+Détection des comportements atypiques par DBSCAN sur la pre-
+mière table
+Avec un eps de 1,024 et un min_samples de 18, déterminés automatiquement à partir du graphe
+des k-distances, DBSCAN fait émerger quatre clusters denses et un ensemble de 4 854 clients (9,83 %)
+classés comme bruit – des comportements atypiques qui ne s’intègrent à aucune zone dense de l’es-
+pace des variables.
+Le cluster dense principal (33 737 clients, 68,3 %) recoupe la même masse cash-dominante et mixte
+déjà identifiée par K-Means. Deux clusters plus spécifiques se distinguent nettement : 7 769 clients à
+diversité de paiement élevée et part locale de 67 %, et 2 949 clients dont la part locale est nulle – des
+paiements intégralement réalisés à l’international, un profil invisible pour K-Means, qui illustre bien
+l’intérêt d’une méthode fondée sur la densité : un sous-groupe homogène mais peu nombreux peut
+être noyé dans un cluster plus large par K-Means, alors qu’il forme une zone dense identifiable pour
+DBSCAN.
+Le résultat le plus notable reste un quatrième cluster de seulement 58 clients, aux moyennes
+extrêmes sur toutes les dimensions : 665 paiements en moyenne pour un volume de 296 605, une
+43
+
+
+===== PAGE 56 =====
+
+Figure 5.4 – Projection PCA des quatre clusters K-Means (table 1)
+Figure 5.5 – Projection UMAP des quatre clusters K-Means (table 1)
+44
+
+
+===== PAGE 57 =====
+
+fréquence de retraits moyenne dépassant 71 000 opérations et un volume de retraits moyen supérieur
+à 109 millions. Ce micro-segment, entièrement rattaché au segment métier « Grand utilisateur multi-
+usage » (58 clients sur 58), correspond à une clientèle à très haute valeur que K-Means, contraint
+de répartir toute la population en un nombre restreint de groupes, ne parvenait pas à isoler aussi
+nettement du reste des grands utilisateurs. Sa fréquence de retraits, très supérieure à ce qu’un usage
+individuel plausible laisserait attendre, tient à quelques valeurs extrêmes déjà présentes dans les
+données sources (le maximum observé sur l’ensemble de la table 1 atteint 305 558 retraits pour un
+même client) et mériterait d’être vérifiée auprès de la source des données avant toute exploitation
+commerciale directe.
+Le groupe des 4 854 clients atypiques recoupe à 70,3 % le segment « Grand utilisateur multi-usage »
+(3 411 clients), mais inclut aussi une part notable d’« Utilisateur paiement prioritaire » (516 clients
+sur 1 135, près de la moitié de ce segment). Ce recouvrement partiel confirme que le bruit détecté par
+DBSCAN ne se limite pas à des erreurs ou des valeurs aberrantes : il capture une frange de clients
+au comportement suffisamment singulier pour ne s’apparenter pleinement à aucun profil dominant,
+qu’il s’agisse d’une lecture par règles ou par densité.
+Figure 5.6 – Graphe des k-distances et sélection du paramètre eps pour DBSCAN
+5.5.5
+Résultats du clustering K-Means sur la deuxième table
+Nous reproduisons la même démarche sur la table 2, avec un socle de neuf variables construites
+sur le même principe : ancienneté relationnelle, montant et fréquence des flux entrants, montant et
+fréquence des retraits, montant et fréquence des virements sortants, part des retraits dans les flux
+sortants, et usage digital. Les scores métier et les segments qui en découlent en sont là aussi exclus,
+pour la même raison de circularité.
+45
+
+
+===== PAGE 58 =====
+
+Figure 5.7 – Clusters denses et comportements atypiques détectés par DBSCAN (projection PCA)
+Le score de silhouette est ici maximal pour deux clusters (0,607) – un optimum plus net que
+sur la table 1 – avant de diminuer pour trois et quatre clusters (0,430 puis 0,450) et de remonter
+localement à cinq (0,477). La partition à deux clusters isole 4 710 clients (8,4 %) aux flux entrants et
+sortants nettement supérieurs à la moyenne (montant entrant moyen de 347 831, virements sortants
+de 300 910) et à l’orientation cash modérée (45 % de la sortie en retraits). Ce cluster capture 68,9 %
+du segment « Cible prioritaire à activer » (2 827 clients sur 4 101) – une validation forte, dans la
+même logique que le « Grand utilisateur multi-usage » de la table 1 – et se révèle tout aussi stable,
+avec un ARI moyen de 0,997 (écart-type 0,003) sur dix graines aléatoires.
+La lecture à cinq clusters affine cette structure :
+— un cluster de 1 683 clients (3,0 %) aux flux extrêmes (montant entrant moyen de 701 682,
+virements sortants de 665 697), composé à 89,6 % de clients « Cible prioritaire à activer »
+(1 507 sur 1 683) ;
+— un cluster de 5 062 clients (9,0 %) orienté virement plutôt que retrait (part de retrait de 15 %),
+qui recoupe surtout « Profil cash à convertir » (51,2 %) et « Cible prioritaire à activer » (36,7 %) ;
+— un cluster de 10 065 clients (17,9 %) au profil inverse, très orienté retrait (94 %) mais avec un
+montant entrant non négligeable, qui recoupe majoritairement « Potentiel fort mais réflexe
+cash » (57,6 %) ;
+— un cluster de 38 301 clients (68,3 %), le plus large, qui regroupe la masse des profils à faible
+activité et forte orientation cash (99 % de retrait) ;
+— un cluster de 1 002 clients (1,8 %) au profil inattendu : un usage digital moyen de 1 324
+connexions, près de dix fois supérieur aux autres clusters, pour des flux par ailleurs modé-
+rés. Ce profil hyper-digital se disperse entre plusieurs segments métier, ce qui suggère une
+dimension à part, non capturée par la logique de potentiel d’activation des règles.
+46
+
+
+===== PAGE 59 =====
+
+Figure 5.8 – Projection PCA des cinq clusters K-Means (table 2)
+Figure 5.9 – Projection UMAP des cinq clusters K-Means (table 2)
+47
+
+
+===== PAGE 60 =====
+
+5.5.6
+Détection des comportements atypiques par DBSCAN sur la deuxième
+table
+La sélection automatique d’eps par le coude du graphe des k-distances a demandé un ajustement
+sur la table 2 : le coude calculé sur la courbe brute (eps ≈1,29) provoquait une saturation mémoire
+à l’exécution de DBSCAN, la zone centrale de l’espace standardisé étant trop dense. Nous avons
+donc écarté le dernier centile de la courbe – les points les plus isolés, de toute façon destinés à finir
+en bruit – avant de rechercher le coude, ce qui ramène eps à 0,712 pour un min_samples de 18.
+Cet ajustement ne change rien à la logique de la méthode, il évite simplement que quelques points
+extrêmes ne biaisent le choix du paramètre.
+Avec ces paramètres, DBSCAN fait émerger six clusters denses et 9 326 clients atypiques (16,6 %).
+Le cluster dense principal (45 913 clients, 81,8 %) correspond à la masse à faible activité déjà iden-
+tifiée par K-Means. Les cinq autres, beaucoup plus petits, sont fortement caractérisés : 657 clients
+à usage digital très élevé (1 298 connexions en moyenne), qui confirment indépendamment le profil
+hyper-digital déjà repéré par K-Means ; 95 clients quasi exclusivement tournés vers le retrait (montant
+moyen de 535 246) ; et surtout 68 clients au profil extrême, entièrement tournés vers le virement (part
+de retrait nulle), avec un montant entrant moyen de 2,3 millions et des virements sortants moyens
+de 2,4 millions. Ce dernier micro-segment recoupe intégralement « Cible prioritaire à activer » (68
+clients sur 68) – avec son équivalent de la table 1, l’un des résultats les plus nets de cette analyse :
+un noyau de clients à très haute valeur, invisible en tant que groupe homogène dans la segmentation
+par règles, mais clairement isolé par une méthode fondée sur la densité.
+Le groupe des 9 326 clients atypiques présente ici un profil très différent de celui de la table
+1 : plutôt que des comportements marginaux, il concentre 90,6 % du segment « Cible prioritaire à
+activer » (3 714 clients sur 4 101) et 52,8 % de « Cible à activer avec accompagnement » (1 653 sur
+3 128). Ces clients à fort potentiel partagent un niveau d’activité élevé, mais des combinaisons de flux
+entrants, de retraits et de virements trop variées pour former une zone dense au sens de DBSCAN –
+un constat qui rejoint celui de la table 1, où le bruit recoupait déjà en grande partie les profils les plus
+actifs. Sur les deux tables, DBSCAN tend donc à isoler les clients les plus engagés comme un ensemble
+hétérogène plutôt que comme un cluster unique, ce qui est un résultat cohérent et interprétable, pas
+une limite de la méthode.
+48
+
+
+===== PAGE 61 =====
+
+Figure 5.10 – Graphe des k-distances et sélection du paramètre eps pour DBSCAN (table 2)
+Figure 5.11 – Clusters denses et comportements atypiques détectés par DBSCAN (table 2, projec-
+tion PCA)
+Conclusion
+Nous avons construit dans ce chapitre une segmentation comportementale complète de la clientèle,
+en combinant une approche par règles métier et un enrichissement par des méthodes non supervi-
+sées, appliquées selon la même méthodologie sur les deux tables. La segmentation par règles – scores
+de paiement, de cash et de maturité digitale – fournit une première lecture stable, interprétable et
+directement mobilisable, aussi bien pour la table 1 (usage observé) que pour la table 2 (potentiel
+49
+
+
+===== PAGE 62 =====
+
+d’activation).
+L’ouverture vers K-Means et DBSCAN confirme la robustesse de cette lecture sur ses segments les
+plus structurants : le « Grand utilisateur multi-usage » de la table 1 et la « Cible prioritaire à acti-
+ver » de la table 2 forment tous deux la composante largement dominante d’un cluster extrêmement
+stable, retrouvé par une méthode entièrement indépendante des règles – même si une fraction de ces
+segments reste répartie ailleurs, ce qui invite à ne pas lire cette validation comme une correspondance
+parfaite. Elle met surtout au jour des profils que la segmentation par seuils ne pouvait pas isoler :
+sur la table 1, des payeurs à faible engagement digital malgré un usage de paiement favorable, et
+un profil de paiement exclusivement international ; sur la table 2, un profil hyper-digital retrouvé
+indépendamment par les deux méthodes, ainsi que des micro-segments de clients à très haute valeur,
+purement orientés virement ou purement orientés retrait. Sur les deux tables, le bruit détecté par
+DBSCAN s’est révélé riche d’enseignement : il concentre les clients au comportement le plus engagé,
+mais aussi le plus hétérogène.
+Ces apports constituent une base directement exploitable pour affiner les recommandations com-
+merciales du chapitre 7, en particulier pour prioriser les micro-segments à très haute valeur identifiés
+par DBSCAN et traiter séparément le profil hyper-digital, qui ne correspond à aucune des catégories
+définies par les règles métier initiales.
+50
+
+
+===== PAGE 63 =====
+
+Chapitre 6
+Étude de la vitesse d’activation et de la
+fidélité
+51
+
+
+===== PAGE 64 =====
+
+Introduction
+Ce chapitre présente les résultats de l’étude préparée au chapitre 4 : la comparaison, parmi les
+clients déjà activés de la table 1, du niveau d’engagement ultérieur selon la rapidité de leur première
+activation. Cette analyse reste descriptive et corrélationnelle – elle ne permet pas d’établir un lien de
+causalité entre vitesse d’activation et fidélité – mais elle constitue une première lecture exploitable
+avec les données disponibles, et une base pour un futur modèle prédictif si un historique daté devient
+accessible.
+6.1
+Populations comparées
+Sur les 50 000 clients de la table 1, 633 sont écartés pour dates manquantes et 2 588 (5,2 % de la
+table) pour délai d’activation négatif, un premier paiement enregistré avant le début officiel de la
+relation bancaire. Au total, 46 779 clients restent exploitables.
+Trois groupes ont été constitués à partir du délai d’activation : activation rapide (30 jours ou moins,
+6 057 clients), activation intermédiaire (entre 31 et 60 jours, 4 515 clients) et activation tardive (plus
+de 60 jours, 36 207 clients). La grande majorité des clients de la table 1 mettent donc plus de deux
+mois avant de réaliser leur premier paiement après l’ouverture de la relation.
+6.2
+Résultats
+Le rythme de paiement mensuel médian diminue de façon monotone avec le délai d’activation :
+1,66 paiement par mois pour les clients activés rapidement, contre 1,15 pour les activations intermé-
+diaires et seulement 0,55 pour les activations tardives – soit un rythme environ trois fois plus élevé
+pour les activations rapides que pour les activations tardives. Le même ordre se retrouve sur l’usage
+digital médian (212 connexions pour les activations rapides, contre 184 pour les activations tardives),
+avec un écart moins marqué.
+Cette tendance se confirme sur l’indicateur métier le plus direct : la part de clients classés « Grand
+utilisateur multi-usage » atteint 20,65 % parmi les activations rapides, contre 17,74 % pour les ac-
+tivations intermédiaires et seulement 13,44 % pour les activations tardives. Un client qui active son
+premier paiement dans le mois suivant l’ouverture de sa relation a donc, dans ces données, environ 1,5
+fois plus de chances de devenir un grand utilisateur qu’un client qui met plus de deux mois à s’activer.
+Le croisement complet avec les neuf segments d’usage confirme cette lecture : la part d’« Utilisa-
+teur paiement dominant » suit la même tendance décroissante (11,87 % puis 10,21 % puis 8,22 %),
+tandis que la part d’« Utilisateur cash occasionnel » augmente au contraire avec le délai d’activation
+(6,98 % puis 9,79 % puis 11,19 %). Autrement dit, les clients qui tardent à s’activer ne se contentent
+pas d’être globalement moins actifs : ils tendent aussi à rester durablement plus orientés vers le cash
+lorsqu’ils finissent par s’activer.
+52
+
+
+===== PAGE 65 =====
+
+Figure 6.1 – Part de clients « Grand utilisateur multi-usage » selon la vitesse d’activation
+Figure 6.2 – Rythme de paiement mensuel depuis l’activation, selon la vitesse d’activation
+53
+
+
+===== PAGE 66 =====
+
+6.3
+Désengagement réel par groupe de vitesse d’activation
+Les résultats précédents reposent sur un indicateur de rythme d’usage, qui capture le volume
+d’activité mais ne dit rien du fait qu’un client ait, ou non, cessé de payer par carte. La date de
+dernier paiement, obtenue en cours de projet et déjà mobilisée pour construire le modèle de survie
+du désengagement (chapitres 4 et 7), permet de compléter cette lecture avec une mesure directe :
+un client est considéré désengagé si son dernier paiement remonte à plus de 120 jours à la date de
+référence du 31 décembre 2025, le même seuil que celui retenu pour ce modèle de survie.
+Groupe
+Clients
+Médiane (j)
+Moyenne (j)
+Désengagement
+Activation rapide (≤30j)
+6 057
+16
+38,74
+8,0 %
+Activation intermédiaire (31–60j)
+4 515
+18
+42,48
+9,0 %
+Activation tardive (>60j)
+36 207
+21
+50,39
+13,0 %
+Table 6.1 – Désengagement réel (seuil de 120 jours) selon la vitesse d’activation
+Le taux de désengagement réel suit exactement l’ordre attendu – 8,0 % pour les activations rapides,
+contre 13,0 % pour les activations tardives, soit un risque environ 1,6 fois plus élevé – et confirme,
+avec un indicateur directement observé plutôt qu’un proxy construit sur le rythme d’usage, l’avantage
+de fidélité déjà mis en évidence par les résultats précédents. Le nombre médian de jours depuis le
+dernier paiement suit la même progression (16, 18 puis 21 jours), un écart plus modeste que celui
+du taux de désengagement, ce qui indique que l’essentiel de la différence entre groupes se joue sur la
+minorité de clients réellement désengagés plutôt que sur un ralentissement généralisé du rythme de
+paiement des clients encore actifs.
+6.4
+Commerçant principal selon la vitesse d’activation
+La table 1 indique, pour chaque client, le commerçant de plus forte dépense sur l’année 2025
+(ens_pv_top_depense_2025, déjà mobilisé pour le scoring commerçant du chapitre 7). Il ne s’agit
+pas du commerçant du premier paiement – les données ne permettent pas de dater chaque transac-
+tion individuellement – mais ce croisement permet néanmoins de vérifier si le profil de consommation
+diffère selon la vitesse d’activation.
+Glovo domine nettement le classement des activations rapides et intermédiaires : il concentre 6,1 %
+des clients activés rapidement (368 sur 6 057) et 4,7 % des activations intermédiaires, devant ONCF
+E-commerce et Carrefour Market. Pour les activations tardives, en revanche, ce classement s’inverse :
+Carrefour Market (949 clients) et ONCF E-commerce (879) devancent Glovo (658), qui ne représente
+plus que 1,8 % de ce groupe, beaucoup plus nombreux. Le poids relatif de Glovo diminue donc à
+mesure que le délai d’activation augmente, ce qui rejoint le constat du chapitre 7 : la clientèle de
+Glovo est associée à un usage carte nettement plus engagé que la moyenne, un profil que l’on retrouve
+logiquement surreprésenté parmi les clients qui se sont activés le plus vite.
+6.5
+Profils au sein de l’activation tardive
+Le groupe « activation tardive » représente à lui seul 77,4 % des clients exploitables de ce chapitre
+(36 207 sur 46 779), et affiche en moyenne le rythme d’usage le plus faible. Reste à savoir s’il s’agit
+54
+
+
+===== PAGE 67 =====
+
+d’une masse homogène de clients peu engagés, ou si ce groupe recouvre en réalité des profils diffé-
+rents. Un DBSCAN restreint à ce seul groupe, avec les mêmes neuf variables comportementales et
+la même recette que la segmentation renforcée du chapitre 5 (winsorisation, standardisation, eps et
+min_samples déterminés automatiquement par la méthode du coude), permet de trancher.
+L’algorithme identifie 5 clusters denses et 9,49 % de comportements atypiques (3 436 clients, aux
+valeurs extrêmes sur plusieurs variables à la fois, à traiter au cas par cas plutôt qu’en segment). Le
+cluster 0, très largement majoritaire (70,50 %, 25 526 clients), correspond bien au profil attendu :
+rythme et volume de paiement faibles, et une composition dominée par les segments « Utilisateur
+mixte équilibré », « Cash dominant » et « Cash occasionnel ». Ce cluster confirme donc, pour la
+majorité du groupe, la lecture d’ensemble d’une activation tardive associée à un engagement plus
+faible.
+Figure 6.3 – DBSCAN restreint au groupe « activation tardive » (table 1)
+Un second cluster nuance toutefois cette lecture. Le cluster 2 (13,74 %, 4 976 clients) se distingue
+par une fréquence et un volume de paiement nettement supérieurs à ceux du cluster majoritaire
+– plus du double en fréquence – et une composition très orientée paiement : environ 85 % de ses
+membres sont déjà classés « Grand utilisateur multi-usage » ou « Utilisateur paiement dominant »
+dans la segmentation renforcée du chapitre 5. Autrement dit, l’activation tardive ne se traduit pas
+systématiquement par un engagement durablement faible : environ un client tardif sur sept a fini
+par développer un usage carte solide, malgré un démarrage lent. Les trois clusters restants sont de
+taille beaucoup plus réduite (moins de 6 % de l’effectif à eux trois) et correspondent à des profils
+plus marginaux – notamment un cluster de clients à relation plus récente et un cluster de très gros
+volumes atypiques – sans remettre en cause la lecture d’ensemble.
+55
+
+
+===== PAGE 68 =====
+
+Ce résultat a une implication opérationnelle directe : au sein même du groupe le plus tardif, un
+sous-segment identifiable (environ 5 000 clients) justifie une action de fidélisation plutôt qu’une action
+d’activation, puisque l’activation, chez ces clients, a déjà réussi – avec retard, mais durablement.
+6.6
+Interprétation et limites
+Ces résultats suggèrent que la vitesse à laquelle un client réalise son premier paiement après l’ou-
+verture de sa relation est un signal précoce, corrélé à son niveau d’engagement ultérieur avec le
+paiement carte – un lien confirmé aussi bien par le rythme d’usage que par le taux de désengage-
+ment réel. Sur le plan opérationnel, cela renforce l’intérêt d’actions d’accompagnement précoces –
+dans le mois suivant l’ouverture de la relation – plutôt que des campagnes de relance tardives, dans
+la mesure où les clients activés tardivement semblent, en moyenne, s’installer durablement dans un
+profil d’usage plus faible et plus orienté cash. Le DBSCAN restreint à ce groupe nuance néanmoins
+cette moyenne : une action de relance générique sur l’ensemble des activations tardives risquerait
+de traiter à l’identique des clients déjà bien engagés et des clients réellement à risque, alors qu’un
+sous-segment d’environ 5 000 clients relève plutôt d’une logique de fidélisation.
+Cette lecture appelle toutefois deux réserves. D’une part, l’analyse reste corrélationnelle : elle ne
+permet pas de distinguer si l’activation rapide favorise elle-même la fidélité, ou si les deux résultent
+d’un même profil de client déjà plus engagé au départ. D’autre part, l’exclusion de 5,2 % des clients
+pour délai négatif limite la portée des conclusions et souligne la nécessité de fiabiliser cette variable
+auprès de la source des données avant toute exploitation commerciale directe.
+Conclusion
+Ce chapitre a montré qu’une lecture rétrospective simple, construite à partir de deux dates déjà
+présentes dans les données, suffit à révéler un lien cohérent et exploitable entre vitesse d’activation et
+fidélité ultérieure. Ce lien se confirme sur un indicateur de désengagement réel et non plus seulement
+sur un proxy de rythme d’usage, et se retrouve jusque dans le profil des commerçants fréquentés.
+Le DBSCAN restreint au groupe le plus tardif apporte cependant une nuance utile : derrière une
+moyenne de groupe défavorable se cache un sous-segment de clients déjà bien engagés, qui appelle une
+action différente du reste du groupe. Ces pistes viennent compléter la segmentation comportementale
+présentée au chapitre 5, et pourront être approfondies par un modèle prédictif à part entière si un
+historique de transactions daté devient disponible.
+56
+
+
+===== PAGE 69 =====
+
+Chapitre 7
+Modélisation prédictive et
+recommandations
+57
+
+
+===== PAGE 70 =====
+
+Introduction
+Ce chapitre présente les résultats des modèles prédictifs construits à partir des bases préparées
+au chapitre 4. Il s’ouvre avec le modèle de classification actif / jamais actif, qui correspond au
+modèle XGBoost annoncé en introduction pour prédire l’inactivité des porteurs de cartes, se poursuit
+avec un modèle de régression estimant la valeur attendue de chaque client, puis avec le scoring
+commerçant et deux modèles de survie de Cox – l’un sur le délai avant première activation, l’autre sur
+le désengagement réel. Il se conclut par les recommandations stratégiques qui consolident l’ensemble
+de ces résultats en actions opérationnelles.
+7.1
+Modèle de classification actif / jamais actif
+7.1.1
+Rappel du protocole
+La base d’entraînement, préparée et documentée au chapitre 4, réunit 94 111 clients du marché
+« PARTICULIER » – 34 111 clients actifs (table 1) et 60 000 clients jamais actifs (table 2) – décrits
+par sept variables indépendantes du paiement carte : âge, genre, profession, niveau de service, ville,
+ancienneté et usage digital.
+La base a été séparée en un jeu d’entraînement de 75 288 clients et un jeu de test de 18 823
+clients, par tirage aléatoire stratifié sur la cible (80 % / 20 %), afin de conserver la même pro-
+portion de clients actifs (36,2 %) dans les deux jeux. Le modèle retenu est un classifieur XG-
+Boost [Chen and Guestrin, 2016] (300 arbres, profondeur maximale 5, taux d’apprentissage 0,05),
+dont la gestion native des variables catégorielles a été utilisée pour les variables profession, niveau de
+service et ville, afin d’éviter un encodage one-hot qui aurait démultiplié le nombre de colonnes sans
+bénéfice pour ce type de variables à forte cardinalité.
+7.1.2
+Résultats
+Sur le jeu de test, le modèle atteint une exactitude de 89,6 %, une précision de 87,6 %, un rap-
+pel de 83,1 %, un F1-score de 85,3 % et une aire sous la courbe ROC de 0,966. Ces résultats sont
+sensiblement inférieurs à ceux obtenus lors d’un premier essai incluant le marché et les variables de
+retrait (respectivement 98,2 % et 0,998 d’AUC), mais cet écart est attendu et souhaitable : le premier
+essai reposait sur des variables biaisées par une différence de périmètre entre les deux tables sources,
+documentée au chapitre 4, et surestimait artificiellement la performance du modèle. Les résultats
+présentés ici reflètent un signal prédictif réel, fondé uniquement sur des variables de profil et d’usage
+digital.
+La matrice de confusion montre que le modèle identifie correctement 11 200 des 12 001 clients
+jamais actifs (93 % de rappel sur cette classe) et 5 671 des 6 822 clients actifs (83 % de rappel). Les
+erreurs se répartissent en 801 faux positifs – des clients jamais actifs prédits comme actifs – et 1 151
+faux négatifs – des clients actifs prédits comme jamais actifs. Le modèle est donc légèrement plus
+prudent pour repérer les clients actifs que pour écarter les clients jamais actifs, ce qui reste cohérent
+avec un usage commercial du score : mieux vaut cibler un peu trop large que manquer des clients à
+fort potentiel.
+58
+
+
+===== PAGE 71 =====
+
+Figure 7.1 – Matrice de confusion du modèle actif / jamais actif (jeu de test)
+Figure 7.2 – Courbe ROC du modèle actif / jamais actif
+59
+
+
+===== PAGE 72 =====
+
+7.1.3
+Importance des variables
+Au-delà des métriques globales de performance, il est utile d’identifier quelles variables pèsent le
+plus dans les prédictions du modèle, afin de vérifier la cohérence du signal appris avec les constats
+métier des chapitres précédents.
+Figure 7.3 – Importance des variables du modèle actif / jamais actif
+La ville (32,7 %) et l’usage digital (29,0 %) dominent très largement l’importance des variables,
+suivies du niveau de service (16,2 %), de la profession (9,2 %), du genre (6,4 %), de l’âge (3,9 %) et de
+l’ancienneté (2,5 %). La prédominance de l’usage digital est cohérente avec les constats des chapitres
+précédents : le chapitre 6 avait déjà montré qu’un usage digital plus élevé est associé à un engagement
+de paiement plus fort, et la table 2 comptait une part significative de clients sans aucune connexion à
+l’application (segment « Aucune connexion app » de l’alerte_metier, chapitre 4). Le poids important
+de la variable ville, en revanche, suggère un effet géographique – probablement lié à la densité du
+réseau d’acceptation carte ou à des dynamiques locales d’adoption – qui n’avait pas été investigué
+dans les chapitres précédents et mériterait une analyse complémentaire dédiée.
+7.2
+Modèle de régression – valeur attendue
+7.2.1
+Rappel du protocole
+Le modèle précédent indique la probabilité qu’un client de la table 2 s’active un jour, mais ne dit
+rien de la valeur que représenterait ce client une fois activé : deux clients à probabilité égale peuvent
+60
+
+
+===== PAGE 73 =====
+
+avoir un potentiel d’usage très différent. Pour compléter cette lecture, nous entraînons un second
+modèle – une régression, et non plus une classification – qui prédit l’intensité d’usage attendue d’un
+client à partir de son seul profil.
+La cible retenue est le rythme de paiement mensuel, déjà construit au chapitre 6 comme le
+nombre de paiements par mois depuis la première activation : cette mesure neutralise le biais de
+temps d’exposition plutôt que d’utiliser un total cumulé, qui favoriserait mécaniquement les clients
+actifs depuis longtemps. Le modèle est entraîné uniquement sur la table 1, restreinte au marché
+« PARTICULIER » pour rester comparable à la table 2, sur les 34 064 clients disposant à la fois
+d’un délai d’activation valide et d’un profil complet. Les variables explicatives sont les mêmes sept
+variables de profil que le modèle de classification, afin de pouvoir appliquer le modèle appris aux
+clients de la table 2.
+7.2.2
+Résultats
+Sur le jeu de test, le modèle – un régresseur XGBoost aux mêmes hyperparamètres que le classi-
+fieur – atteint une erreur quadratique moyenne (RMSE) de 2,57 paiements par mois et une erreur
+absolue moyenne (MAE) de 1,37, contre respectivement 2,82 et 1,64 pour une prédiction naïve qui se
+contenterait de la moyenne du jeu d’entraînement pour tous les clients. Le modèle apporte donc un
+signal réel, mais modeste : le coefficient de détermination (R2) s’établit à 0,168, ce qui signifie que
+le profil socio-démographique et l’usage digital n’expliquent qu’une fraction limitée de la variance
+du rythme d’usage – une bonne part de l’intensité d’usage réelle d’un client tient à des facteurs
+individuels que ces sept variables ne peuvent pas capturer.
+Le nuage de points confirme cette lecture : le modèle resserre ses prédictions autour de valeurs
+modérées et peine à anticiper les rythmes d’usage les plus élevés, un comportement attendu pour un
+signal faible – il est plus prudent de prédire une valeur proche de la moyenne que de parier sur un
+cas extrême rarement observé pour un profil donné.
+L’ancienneté relationnelle domine l’importance des variables (25,3 %), suivie de l’usage digital
+(16,4 %), de la ville (13,7 %), de la profession (13,6 %), du niveau de service (12,5 %), de l’âge (12,0 %)
+et du genre (6,5 %). Ce classement diffère de celui du modèle de classification, où la ville et l’usage
+digital dominaient très largement : prédire si un client va s’activer et prédire à quel rythme il paierait
+une fois activé ne s’appuient donc pas exactement sur les mêmes leviers.
+7.2.3
+Score de valeur attendue et priorisation combinée
+Le modèle entraîné est appliqué aux 60 000 clients de la table 2 pour produire un score de valeur
+attendue par client, croisé avec la probabilité d’activation du modèle de classification. La corrélation
+entre les deux scores est faible et légèrement négative (r = −0, 099) : un client à forte probabilité
+d’activation n’est pas plus susceptible d’avoir un fort potentiel d’usage, et inversement. Ce résultat
+justifie a posteriori l’intérêt de croiser les deux scores plutôt que de se fier à un seul : en répartissant
+les clients selon la médiane de chaque score, quatre groupes de taille comparable se dégagent – 9 452
+clients à probabilité et valeur élevées, 20 561 à forte probabilité mais valeur plus faible, 20 555 à
+l’inverse, et 9 432 aux deux scores faibles. Ces quatre groupes sont directement mobilisés dans les
+recommandations qui suivent.
+61
+
+
+===== PAGE 74 =====
+
+Figure 7.4 – Valeurs prédites contre valeurs réelles du rythme de paiement mensuel (jeu de test)
+7.2.4
+Limites
+Un R2 de 0,168 reste modeste : ce modèle donne une indication directionnelle utile pour prioriser
+des actions à l’échelle de milliers de clients, mais ne doit pas être lu comme une prédiction fiable au
+niveau d’un client individuel. Cette limite est cohérente avec la nature des variables disponibles : un
+profil socio-démographique et un niveau d’usage digital renseignent sur le contexte d’un client, mais
+ne peuvent pas capturer l’ensemble des facteurs qui déterminent son comportement de paiement
+réel. Un historique transactionnel daté, déjà identifié comme la principale limite de ce mémoire,
+permettrait probablement d’améliorer sensiblement ce signal.
+62
+
+
+===== PAGE 75 =====
+
+Figure 7.5 – Importance des variables du modèle de régression – valeur attendue
+7.3
+Scoring commerçant
+7.3.1
+Rappel de la méthode
+Contrairement au modèle précédent, ce volet ne repose pas sur un algorithme entraîné, mais sur
+un changement de granularité et une agrégation : les clients de la table 1 sont regroupés par leur
+commerçant de plus forte dépense (ens_pv_top_depense_2025), afin de produire un indicateur par
+commerçant plutôt que par client. La préparation de cette base, détaillée au chapitre 4, a nécessité
+l’harmonisation des noms de commerçants (12 363 valeurs brutes ramenées à 12 318 commerçants
+distincts) et l’application d’un seuil de fiabilité de 30 clients minimum, retenant 177 commerçants
+sur les 19 784 clients qu’ils couvrent.
+L’indicateur central retenu est la part de clients classés « Grand utilisateur multi-usage » parmi
+les clients de chaque commerçant (pct_grand_utilisateur), utilisée comme mesure de la qualité de
+la clientèle attirée plutôt que de l’activité commerciale du point de vente lui-même – cette dernière
+n’étant pas mesurable avec les données disponibles (voir la limite méthodologique rappelée plus bas).
+7.3.2
+Résultats
+Le commerçant le plus fréquemment désigné est ONCF E-commerce (1 309 clients), suivi de Car-
+refour Market (1 308) et de Glovo (1 262) – trois enseignes à forte notoriété nationale, ce qui est
+attendu pour les commerçants les plus cités. La moyenne de pct_grand_utilisateur sur l’ensemble
+63
+
+
+===== PAGE 76 =====
+
+des 177 commerçants fiables s’établit à 13,4 %.
+Un résultat se détache nettement de cette moyenne : Glovo, avec 1 262 clients, affiche 44 % de
+« Grands utilisateurs multi-usage » parmi sa clientèle – soit environ 3,3 fois la moyenne des com-
+merçants fiables, et le score le plus élevé de tous les commerçants au-dessus du seuil de fiabilité.
+Ce résultat est d’autant plus notable que Glovo n’est pas le commerçant avec le montant moyen de
+paiement le plus élevé (50 619 en moyenne, contre 60 295 pour RAM Internet ou 124 608 pour un
+commerçant plus restreint comme Resort Co) – la valeur de sa clientèle ne tient donc pas au montant
+des transactions, mais à la fréquence et à la régularité de l’engagement carte de ses clients.
+Figure 7.6 – Top 10 des commerçants (échantillon fiable) par part de « Grands utilisateurs multi-
+usage »
+Derrière Glovo, les commerçants les mieux classés sont plus hétérogènes en taille : Resort Co (43 %,
+49 clients), Kitea Géant Rabat (36 %, 36 clients) et Sisal Jeux Maroc (32 %, 31 clients) combinent
+un score élevé à un effectif proche du seuil de fiabilité minimal, ce qui invite à une lecture prudente
+de leur classement tant que l’échantillon ne grandit pas.
+7.3.3
+Interprétation et usage
+Ce classement offre à la banque un critère objectif pour prioriser ses partenariats commerçants :
+cibler en priorité les enseignes qui attirent structurellement une clientèle à fort usage du paiement
+carte, comme Glovo, plutôt que celles qui se contentent d’un grand nombre de clients sans que ceux-ci
+soient particulièrement engagés dans le paiement (à l’image d’ONCF E-commerce, très cité mais avec
+seulement 17 % de grands utilisateurs). Un partenariat ciblé – mise en avant, offre de cashback – avec
+64
+
+
+===== PAGE 77 =====
+
+ce type de commerçant pourrait constituer un levier d’activation pour des clients au profil proche
+mais non encore engagés dans le paiement carte.
+Il convient toutefois de rappeler la limite méthodologique déjà soulignée au chapitre 4 : ce score
+mesure la valeur de la clientèle qui désigne un commerçant comme sa destination principale, et
+non le chiffre d’affaires réellement encaissé par ce commerçant, faute de détail transactionnel par
+commerçant dans les données disponibles.
+7.4
+Modèle de survie – délai avant première activation
+7.4.1
+Rappel du protocole
+Ce premier modèle de survie s’intéresse au temps écoulé jusqu’à la première activation carte,
+avant d’être complété plus loin dans ce chapitre par un second modèle de survie portant sur le
+désengagement réel, rendu possible par une donnée obtenue en cours de projet. Les deux modèles
+reposent sur le modèle de Cox à risques proportionnels [Cox, 1972], ajusté à l’aide de la bibliothèque
+Python lifelines [Davidson-Pilon, 2019]. La table 1 fournit les événements observés (durée = délai
+entre le début de la relation et le premier paiement), la table 2 fournit les observations censurées
+(durée = ancienneté actuelle, l’activation n’ayant pas encore eu lieu). Après restriction au marché
+« PARTICULIER » – la même contrainte de périmètre que pour le modèle actif / jamais actif –, la
+base réunit 94 063 clients, dont 34 064 événements observés et 59 999 observations censurées.
+7.4.2
+D’un modèle simple à un modèle stratifié
+Un premier modèle, incluant genre, niveau de service, âge et usage digital comme covariables,
+converge sans difficulté (concordance de 0,790) mais présente deux limites. D’une part, la vérification
+de l’hypothèse des risques proportionnels – qui suppose que l’effet de chaque variable sur le risque
+d’activation reste constant dans le temps – échoue pour le genre et plusieurs niveaux de service.
+D’autre part, l’ajout de la profession et de la ville comme covariables supplémentaires, pourtant
+regroupées en catégories moins nombreuses, provoque une non-convergence : le temps d’ajustement
+dépasse dix minutes sans stabilisation, signe d’une séparation quasi parfaite sur certaines catégories
+rares.
+Nous résolvons les deux problèmes par la stratification plutôt que par un simple renforcement de
+la pénalisation. Une variable placée en strate ne reçoit pas de coefficient : chaque modalité dispose de
+sa propre fonction de risque de base, ce qui neutralise à la fois le risque de séparation et l’obligation de
+vérifier la proportionnalité pour cette variable, puisqu’elle sort du terme linéaire du modèle. Stratifier
+les quatre variables catégorielles simultanément aurait toutefois produit 8 143 combinaisons observées,
+avec une moyenne de 4 événements par combinaison – bien trop fragmenté pour être exploitable.
+Nous stratifions donc uniquement le genre et le niveau de service (38 combinaisons, environ 900
+événements chacune), ce qui permet à la profession et à la ville de redevenir des covariables classiques,
+cette fois sans concurrencer genre et niveau de service dans l’optimisation : le modèle converge alors
+normalement.
+65
+
+
+===== PAGE 78 =====
+
+7.4.3
+Résultats
+Le modèle stratifié atteint une concordance de 0,766, légèrement inférieure au modèle initial – la
+contrepartie attendue de sortir genre et niveau de service du terme linéaire. En échange, la profession
+et la ville deviennent des covariables interprétables : sur 70 modalités encodées, 50 sont statistique-
+ment significatives, une richesse d’information qu’aucun des modèles précédents n’apportait.
+Plusieurs professions se distinguent nettement. Les profils étudiants et cadres activent plus rapide-
+ment que la référence : « Étudiant de l’enseignement supérieur » (hazard ratio de 1,44), « Ingénieur
+d’État » (1,29), « Étudiant chercheur » (1,25), « Étudiant » (1,22) et « Cadre » (1,19). À l’inverse,
+les profils « Makhzni » (0,73), « Ouvrier » (0,78), « Ouvrier non qualifié » (0,79) et « Femme au
+foyer » (0,82) activent nettement plus lentement. Côté géographique, plusieurs villes ressortent avec
+un hazard ratio supérieur à 1,15 : Témara (1,32), Salé (1,22), Mohammedia (1,21), Settat (1,21) et
+Marrakech (1,18), tandis que les clients sans ville renseignée activent plus lentement (0,85).
+Ce résultat éclaire en partie un constat resté sans explication au chapitre précédent : la ville était
+la variable la plus importante du modèle de classification actif / jamais actif, sans que sa nature
+exacte soit connue. Le modèle de survie confirme qu’il s’agit d’un effet géographique réel plutôt que
+diffus – quelques villes précises se distinguent nettement des autres –, mais son interprétation exacte
+appelle une réserve importante, détaillée dans la section Limites ci-dessous : le hazard ratio d’une
+ville ne mesure pas uniquement une vitesse d’activation.
+Cette différence de vitesse par profession ne se limite pas au seul délai d’activation : un rapproche-
+ment avec les résultats du chapitre 6 montre que les professions qui activent le plus vite conservent
+aussi, une fois activées, un engagement nettement supérieur à la moyenne. Les clients des professions
+à hazard ratio élevé (étudiants, cadre, ingénieur d’État) ont un âge moyen de 31,7 ans contre 39,4 ans
+pour l’ensemble de la table 1, un rythme de paiement mensuel médian de 1,19 contre 0,68, et 20,8 %
+d’entre eux appartiennent au segment « Grand utilisateur multi-usage » contre 14,2 % en moyenne.
+À l’inverse, les professions les plus lentes (Makhzni, Ouvrier, Ouvrier non qualifié, Femme au foyer)
+affichent un âge moyen de 50,3 ans et seulement 6,3 % de « Grand utilisateur multi-usage » – moins
+de la moitié de la moyenne. La vitesse d’activation par profession n’est donc pas un simple signal
+précoce isolé : elle annonce aussi, dans ces données, la qualité de l’engagement ultérieur.
+7.4.4
+Limites
+La vérification de l’hypothèse des risques proportionnels sur ce modèle stratifié signale 33 variables
+en violation, y compris l’âge, l’usage digital et la plupart des professions. Cette proportion élevée
+ne traduit pas une dégradation du modèle par rapport à la version précédente, mais une propriété
+connue du test de Schoenfeld : à grand échantillon – 94 063 lignes ici –, le test devient extrêmement
+sensible et signale des écarts à la proportionnalité même minimes et sans portée pratique, comme
+le rappelle d’ailleurs la documentation de la librairie utilisée. Les coefficients obtenus restent donc
+valides comme effets moyens sur la période d’observation, mais ne doivent pas être lus comme des
+effets strictement constants dans le temps. Une piste d’amélioration, non mise en œuvre ici faute de
+temps, consisterait à stratifier également l’âge après regroupement en classes.
+Une seconde réserve, plus spécifique à la ville, mérite d’être détaillée. Le modèle combine, pour
+estimer le risque de chaque ville, les clients de la table 1 qui ont activé (délai observé) et les clients de
+66
+
+
+===== PAGE 79 =====
+
+Figure 7.7 – Modèle de survie – variables au plus fort effet sur la vitesse d’activation
+la table 2 qui ne l’ont jamais fait (durée censurée = ancienneté actuelle) : le hazard ratio d’une ville
+reflète donc un mélange entre deux effets distincts, la vitesse d’activation proprement dite et la part
+de clients qui ne s’activent jamais. Un contrôle direct sur les délais bruts illustre cette limite : parmi
+les clients de la table 1 de Témara (hazard ratio de 1,32, la ville la plus « rapide » du modèle), le délai
+médian réel avant activation est de 427,5 jours – le plus long des six villes examinées, plus long que
+celui de Casablanca (358,5 jours), pourtant classée plus lente (hazard ratio de 0,92). L’écart s’explique
+par la part de clients qui n’activent jamais : elle atteint 64,4 % à Casablanca contre seulement 17,6 %
+à Témara. Le modèle capte donc bien un effet géographique réel et statistiquement robuste – la
+vérification de proportionnalité ne signale d’ailleurs pas de problème sur la variable ville de Témara
+elle-même –, mais cet effet doit être lu comme « la probabilité qu’un client de cette ville finisse par
+activer un jour » plutôt que comme « la vitesse à laquelle il le fait ». Cette nuance limite la portée
+du parallèle établi plus haut avec l’effet ville du modèle de classification actif / jamais actif, et invite
+à la prudence avant toute action commerciale qui présupposerait un simple effet de rapidité.
+7.5
+Modèle de survie – désengagement réel
+7.5.1
+Rappel du protocole
+Comme annoncé au chapitre 4, l’encadrant entreprise a transmis en cours de projet une extraction
+complémentaire fournissant la date de dernier paiement de chaque client de la table 1, à une date
+67
+
+
+===== PAGE 80 =====
+
+de référence du 31 décembre 2025. Cette donnée permet de construire, pour la première fois dans ce
+mémoire, un véritable événement de désengagement – non plus une reformulation faute de mieux,
+mais la cible initialement visée. Un client est considéré désengagé si son dernier paiement remonte à
+plus de 120 jours à la date de référence (seuil déterminé empiriquement, voir chapitre 4), et censuré
+sinon. La durée de survie est mesurée entre la première activation et l’événement (ou la censure).
+7.5.2
+D’un modèle exploratoire à un modèle affiné
+Une première spécification, reprenant la recette du modèle d’activation (profession et ville en co-
+variables), donne une concordance faible de 0,608, avec seulement 3 variables significatives sur 49 et
+des hazard ratios négligeables : contrairement à l’activation, le désengagement d’un client déjà actif
+ne semble guère expliqué par sa profession ou sa ville. L’exploration de plusieurs variantes montre
+que deux variables jusque-là absentes du modèle – le marché et l’ancienneté relationnelle – ap-
+portent un signal nettement plus informatif, tandis que profession et ville, à l’inverse, n’apportent
+presque rien : une fois ces deux dimensions substituées, la concordance atteint 0,72 avec beaucoup
+moins de covariables.
+Le modèle est enfin restreint au marché « PARTICULIER », pour rester cohérent avec le péri-
+mètre des autres modèles de ce chapitre et pour disposer d’une population homogène directement
+mobilisable dans les recommandations commerciales. La base finale réunit 33 885 clients, dont 3 513
+désengagements observés (10,4 %) et 30 372 censures.
+7.5.3
+Résultats
+Le modèle retenu – niveau de service, genre, âge, usage digital et ancienneté comme covariables,
+sans stratification – atteint une concordance de 0,7205, avec 7 variables significatives sur 19. Les
+hazard ratios sont exprimés par rapport à la catégorie de niveau de service la plus fréquente (« S3 –
+Potentiel », 8 839 clients), plutôt que par rapport à un regroupement résiduel peu interprétable.
+Le niveau de service ressort comme le facteur le plus structurant : les segments haut de gamme se
+désengagent moins que la référence – « S1 – Excellence » (hazard ratio de 0,91) et « S2 – Premium »
+(0,94) –, tandis que les segments plus larges se désengagent davantage – « S5 – Universel » (1,05)
+et surtout « S6 – Lib » (1,08). Les trois covariables numériques ont un effet réel mais modeste une
+fois ramené à une échelle lisible : chaque année d’ancienneté supplémentaire réduit le risque de
+désengagement d’environ 0,5 %, chaque tranche de 100 connexions à l’application d’environ 0,7 %, et
+chaque décennie d’âge d’environ 1,5 %.
+7.5.4
+Limites
+Deux réserves, dans la continuité de celles déjà posées pour le modèle d’activation. D’une part,
+la vérification de l’hypothèse des risques proportionnels signale l’âge, l’ancienneté et le niveau de
+service « Lib » en violation – la même sensibilité du test de Schoenfeld à grand échantillon déjà
+rencontrée précédemment, qui n’invalide pas les coefficients mais invite à les lire comme des effets
+moyens plutôt que strictement constants dans le temps. D’autre part, l’interprétation précise de
+chaque niveau de service (par exemple ce qui distingue concrètement « Universel » de « Lib ») repose
+sur une nomenclature interne à la banque, que ce mémoire n’a pas vocation à documenter en détail :
+la lecture retenue ici – un gradient du plus haut de gamme au plus grand public – est cohérente avec
+le sens des hazard ratios observés, mais gagnerait à être confirmée avec l’entité Data BDME.
+68
+
+
+===== PAGE 81 =====
+
+Figure 7.8 – Modèle de survie – désengagement réel (marché particulier), variables significatives
+7.6
+Recommandations stratégiques
+Cette dernière section consolide les résultats du chapitre 5 et des sections précédentes de ce chapitre
+en recommandations opérationnelles, à destination de l’entité Data BDME et des équipes marketing
+d’Attijariwafa bank.
+7.6.1
+Prioriser l’activation par un score combiné probabilité × valeur
+Le modèle actif / jamais actif fournit, pour chaque client de la table 2, une probabilité d’activation ;
+le modèle de régression fournit, pour ce même client, une valeur attendue – l’intensité d’usage qu’il
+produirait s’il s’activait. La faible corrélation observée entre ces deux scores (r = −0, 099) confirme
+qu’ils apportent une information complémentaire plutôt que redondante, et le croisement des deux
+médianes fait ressortir quatre groupes de taille comparable : 9 452 clients à probabilité et valeur
+élevées – la cible prioritaire, où l’effort commercial produit le meilleur retour attendu ; 20 561 clients
+à forte probabilité mais valeur plus faible, où une activation est probable mais peu rentable en
+elle-même ; 20 555 clients à l’inverse, à fort potentiel de valeur mais probabilité d’activation plus
+faible, qui justifient un accompagnement plus soutenu pour convertir un potentiel réel en activation
+effective ; et 9 432 clients aux deux scores faibles, à traiter en priorité basse. Le modèle de survie
+vient ensuite affiner le calendrier de ces actions : à profil comparable, les hazard ratios du chapitre
+précédent indiquent quels clients sont susceptibles de répondre rapidement (par exemple un profil
+« Cadre », hazard ratio de 1,19) et lesquels nécessitent une relance plus étalée dans le temps (un
+profil « Ouvrier », hazard ratio de 0,78).
+69
+
+
+===== PAGE 82 =====
+
+7.6.2
+Accompagner les nouveaux clients dans le premier mois
+Le chapitre 6 a montré qu’un client activé dans les 30 premiers jours suivant l’ouverture de sa
+relation affiche, par la suite, un rythme de paiement mensuel médian environ trois fois supérieur
+à un client activé après 60 jours (1,66 contre 0,55 paiement par mois), et une probabilité environ
+1,5 fois plus élevée de devenir « Grand utilisateur multi-usage » (20,65 % contre 13,44 %). Nous
+recommandons de concentrer les actions d’accompagnement à l’ouverture de compte – prise en main
+de la carte, sensibilisation au paiement sans contact, activation de l’application – sur le premier
+mois de la relation, plutôt que sur des campagnes de relance plus tardives et, d’après ce constat,
+structurellement moins efficaces.
+7.6.3
+Cibler les partenariats commerçants à forte valeur de clientèle
+Le scoring commerçant présenté plus haut dans ce chapitre identifie Glovo comme le commerçant
+associé à la clientèle la plus engagée dans le paiement carte (44 % de « Grands utilisateurs multi-
+usage » parmi ses clients, contre 13,4 % en moyenne sur les 177 commerçants fiables), sans que cela
+corresponde au montant moyen de paiement le plus élevé. Nous recommandons de prioriser ce type
+de partenaire – à forte fréquence d’usage plutôt qu’à fort montant unitaire – pour des opérations
+de cashback ou de mise en avant ciblées sur les clients de la table 2 dont le profil se rapproche des
+grands utilisateurs déjà identifiés, dans une logique d’acquisition par affinité commerçant plutôt que
+par seul volume de sollicitation.
+7.6.4
+Différencier les actions par segment comportemental
+La segmentation renforcée du chapitre 5 distingue, sur la table 2, des sous-populations aux besoins
+différents : les clients « Profil cash à convertir » (6 625 clients) disposent déjà d’un usage cash établi et
+constituent une cible de conversion vers le paiement carte, tandis que les clients « Cible à activer avec
+accompagnement » (3 129 clients) nécessitent un travail plus en amont sur l’adoption elle-même. Sur
+la table 1, les clients déjà classés « Grand utilisateur multi-usage » justifient à l’inverse des actions
+de fidélisation et de reconnaissance plutôt que d’activation, afin de préserver un comportement déjà
+favorable. Nous recommandons de décliner des parcours marketing distincts par segment, plutôt
+qu’une communication uniforme, en s’appuyant sur les profils déjà caractérisés au chapitre 5.
+7.6.5
+Adapter la communication aux profils démographiques et géogra-
+phiques
+Le modèle de survie fait ressortir des écarts marqués de vitesse d’activation selon la profession.
+Les profils étudiants et cadres s’activent nettement plus vite que la moyenne, tandis que les profils
+ouvriers, « Femme au foyer » et « Makhzni » 1 s’activent plus lentement – un écart qui, comme montré
+plus haut, se prolonge au-delà de l’activation elle-même sur la qualité d’engagement ultérieur. Nous
+recommandons d’adapter le ton et le canal des campagnes à ces profils : une communication digitale
+et autonome pour les profils rapides, déjà réceptifs, et un accompagnement plus humain – en agence
+ou par contact direct – pour les profils plus lents, dont le frein tient probablement moins à l’intérêt
+pour le produit qu’à l’accès ou à l’habitude d’usage.
+1. Membre des Forces auxiliaires, un corps paramilitaire marocain placé sous l’autorité du ministère de l’Intérieur.
+70
+
+
+===== PAGE 83 =====
+
+Côté géographique, l’effet mesuré par le modèle appelle une lecture différente : comme détaillé à la
+section Limites ci-dessus, le hazard ratio d’une ville reflète surtout la part de ses clients qui finissent,
+ou non, par activer un jour, plutôt qu’une vitesse d’activation à proprement parler. Des villes comme
+Casablanca, où 64,4 % des clients ne s’activent jamais, représentent donc un gisement de conversion
+bien plus large que des villes comme Témara, où cette part tombe à 17,6 %. Nous recommandons de
+prioriser les actions de conversion sur les zones à forte population jamais-active plutôt que d’y voir
+un simple retard de vitesse à corriger par un accompagnement renforcé – la cause sous-jacente de cet
+écart (densité du réseau d’acceptation carte, dynamiques locales d’adoption) reste néanmoins hors
+du périmètre des données disponibles pour ce projet.
+7.6.6
+Prévenir le désengagement selon le niveau de service
+Le modèle de survie sur le désengagement réel montre que le risque n’est pas réparti uniformé-
+ment : les clients des segments « Excellence » et « Premium » se désengagent nettement moins que
+la moyenne, tandis que les segments « Universel » et surtout « Lib » présentent un risque plus élevé.
+Nous recommandons de mettre en place un suivi de rétention proactif ciblé sur ces derniers segments
+– par exemple une alerte commerciale dès qu’un client dépasse 90 jours sans paiement carte, avant
+que le seuil de désengagement de 120 jours ne soit atteint – plutôt qu’un traitement uniforme de la
+base active, qui traiterait de la même façon des clients à risque très différent.
+Conclusion
+Le modèle de classification actif / jamais actif obtient une performance solide (AUC 0,966) à partir
+de variables de profil et d’usage digital, sans dépendre d’aucune information liée au paiement carte
+lui-même. La vérification méthodologique effectuée pour écarter les variables biaisées par le périmètre
+des deux tables sources a été déterminante pour la validité de ce résultat, et souligne l’importance
+de ne pas se fier à une performance apparemment excellente sans en vérifier l’origine. Le modèle de
+régression qui lui succède complète cette probabilité par une estimation de la valeur attendue de
+chaque client ; son signal est plus modeste (R2 = 0, 168) mais réel, et la faible corrélation entre les
+deux scores confirme qu’ils éclairent deux dimensions distinctes du potentiel client.
+Le scoring commerçant complète cette lecture par un angle différent, non plus centré sur le client
+mais sur les partenaires commerciaux : il fait ressortir Glovo comme un commerçant associé à une
+clientèle nettement plus engagée dans le paiement carte que la moyenne, un critère directement ex-
+ploitable pour prioriser des actions de partenariat. Les deux modèles de survie apportent enfin une
+lecture temporelle que les modèles précédents n’offraient pas : le premier explique en partie l’effet de
+la ville déjà observé dans le modèle actif / jamais actif (certaines villes précises accélèrent nettement
+l’activation, de même que les profils étudiants et cadres) ; le second, rendu possible par une donnée
+obtenue en cours de projet, montre que le désengagement des clients déjà actifs dépend surtout de
+leur niveau de service, avec un signal plus modeste (concordance de 0,72) que pour l’activation.
+Ces cinq modèles, mis en regard des segmentations du chapitre 5 et de l’étude rétrospective du
+chapitre 6, ont permis de formuler six recommandations opérationnelles concrètes : la priorisation
+par score combiné probabilité / valeur, l’accompagnement précoce dans le premier mois, le ciblage
+de partenariats commerçants à forte valeur de clientèle, la différenciation des actions par segment
+comportemental, l’adaptation de la communication aux profils démographiques et géographiques les
+71
+
+
+===== PAGE 84 =====
+
+plus lents à s’activer, et la prévention du désengagement ciblée sur les segments de service à risque.
+72
+
+
+===== PAGE 85 =====
+
+Conclusion générale & Perspectives
+73
+
+
+===== PAGE 86 =====
+
+Ce projet de fin d’études nous a permis de concevoir une stratégie data-driven complète pour
+augmenter le volume et la fréquence d’usage des cartes de paiement au sein d’Attijariwafa bank, en
+suivant la méthodologie CRISP-DM du cadrage initial jusqu’aux recommandations opérationnelles.
+Sur le plan méthodologique, nous avons d’abord construit une compréhension fine des deux po-
+pulations de clients mises à disposition – les porteurs déjà actifs sur le paiement carte et ceux qui
+ne l’ont jamais utilisé – puis enrichi la segmentation métier existante par des méthodes non super-
+visées (K-Means, DBSCAN, réduction de dimension), qui ont confirmé la robustesse des segments
+les plus structurants tout en révélant des profils invisibles pour une lecture par seuils. Cette base a
+ensuite servi à cinq modèles complémentaires : une étude rétrospective démontrant qu’une activation
+rapide est associée à une fidélité ultérieure nettement plus forte, un classifieur XGBoost distinguant
+les clients actifs des jamais-actifs avec une performance solide (AUC de 0,966) à partir de variables
+de profil seules, un modèle de régression estimant la valeur attendue de chaque client jamais actif,
+un modèle de survie de Cox détaillant l’effet différencié de la profession et de la ville sur la vitesse
+d’activation, et un second modèle de survie portant cette fois sur le désengagement réel des clients
+déjà actifs, rendu possible par une donnée obtenue en cours de projet. Un scoring commerçant est
+venu compléter cette lecture centrée client par un angle partenarial. L’ensemble de ces résultats s’est
+traduit en six recommandations opérationnelles concrètes, allant de la priorisation des clients à la
+prévention du désengagement selon le niveau de service.
+Ce travail confirme, à l’échelle de ce projet, l’intérêt d’une approche data-driven pour une banque
+comme Attijariwafa : elle permet de passer d’une gestion uniforme et réactive de l’activation des
+cartes – telle que décrite au chapitre 1 – à un ciblage différencié et anticipé, fondé sur des signaux
+mesurables plutôt que sur la seule intuition métier. Dans un secteur bancaire marocain en pleine
+transformation digitale, où l’usage de la carte reste un levier direct de rentabilité et de fidélisation, la
+capacité à identifier tôt les clients à fort potentiel – et à adapter l’action commerciale à leur profil réel
+– représente un avantage opérationnel mesurable, aussi bien en efficacité marketing qu’en allocation
+des ressources commerciales.
+Plusieurs pistes restent toutefois ouvertes pour approfondir ce travail. La limite la plus structu-
+rante identifiée en début de projet était l’absence de données transactionnelles datées : les tables
+mises à disposition ne fournissaient que des agrégats (totaux, moyennes) sur toute la période d’ob-
+servation, sans historique par client permettant de dater un événement précis. Une donnée plus légère
+qu’un historique complet – la seule date de dernier paiement de chaque client, combinée à un seuil
+d’inactivité déterminé empiriquement – a finalement été obtenue en cours de projet, ce qui a permis
+de construire un véritable modèle de survie du désengagement (chapitre 7) plutôt que de se limiter
+à documenter cette limite comme initialement prévu. Un historique transactionnel complet resterait
+néanmoins utile pour lever les limites qui subsistent : construire un véritable modèle prédictif d’acti-
+vation à J+30 comme initialement envisagé, plutôt que l’étude rétrospective présentée au chapitre 6 ;
+et introduire des covariables dépendantes du temps dans les deux modèles de survie, ce qui permet-
+trait de re-tester rigoureusement l’hypothèse des risques proportionnels plutôt que de la contourner
+par stratification ou par une lecture en effets moyens.
+D’autres prolongements, moins conditionnés par la disponibilité de nouvelles données, renfor-
+ceraient également la valeur opérationnelle des recommandations. Un historique des sollicitations
+marketing déjà envoyées aux clients permettrait de distinguer l’effet réel des actions commerciales
+d’un simple effet de profil, et d’évaluer par un protocole de test contrôlé (A/B testing) l’impact réel
+74
+
+
+===== PAGE 87 =====
+
+des recommandations proposées avant un déploiement à grande échelle. Le détail transactionnel par
+commerçant – plutôt que le seul commerçant de plus forte dépense par client – affinerait le scoring
+commerçant en une mesure directe du chiffre d’affaires généré, plutôt qu’un indicateur de qualité de
+clientèle. Le modèle de régression pourrait par ailleurs être affiné par des variables supplémentaires
+si elles devenaient disponibles : son signal actuel (R2 = 0, 168) reste modeste, et un historique tran-
+sactionnel daté serait, là aussi, le levier le plus direct pour l’améliorer. Enfin, l’effet marqué de la
+ville, mis en évidence à la fois par le modèle de classification et par le modèle de survie sans être
+pleinement expliqué, mériterait une analyse dédiée croisant ces résultats avec la densité du réseau
+d’acceptation carte ou des indicateurs socio-économiques locaux.
+Au-delà de ses résultats propres, ce projet illustre plus largement pourquoi la donnée doit devenir
+un levier stratégique pour la banque : elle seule permet de passer d’une action commerciale appliquée
+uniformément à l’ensemble de la base clients à une action différenciée, mesurable et améliorable dans
+le temps – une démarche que l’entité Data BDME pourra poursuivre et affiner à mesure que de
+nouvelles données deviendront disponibles.
+75
+
+
+===== PAGE 88 =====
+
+Bibliographie
+[Chapman et al., 2000] Chapman, P., Clinton, J., Kerber, R., Khabaza, T., Reinartz, T., Shearer,
+C., and Wirth, R. (2000). CRISP-DM 1.0 : Step-by-step data mining guide. Technical report,
+SPSS Inc.
+[Chen and Guestrin, 2016] Chen, T. and Guestrin, C. (2016). XGBoost : A scalable tree boosting
+system. In Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Dis-
+covery and Data Mining, pages 785–794. ACM.
+[Cox, 1972] Cox, D. R. (1972). Regression models and life-tables. Journal of the Royal Statistical
+Society : Series B (Methodological), 34(2) :187–202.
+[Davidson-Pilon, 2019] Davidson-Pilon, C. (2019). lifelines : survival analysis in Python. Journal of
+Open Source Software, 4(40) :1317.
+[Ester et al., 1996] Ester, M., Kriegel, H.-P., Sander, J., and Xu, X. (1996). A density-based algo-
+rithm for discovering clusters in large spatial databases with noise. In Proceedings of the Second
+International Conference on Knowledge Discovery and Data Mining (KDD-96), pages 226–231.
+AAAI Press.
+[Hubert and Arabie, 1985] Hubert, L. and Arabie, P. (1985).
+Comparing partitions.
+Journal of
+Classification, 2(1) :193–218.
+[MacQueen, 1967] MacQueen, J. (1967). Some methods for classification and analysis of multivariate
+observations.
+In Proceedings of the Fifth Berkeley Symposium on Mathematical Statistics and
+Probability, volume 1, pages 281–297. University of California Press.
+[McInnes et al., 2018] McInnes, L., Healy, J., and Melville, J. (2018). UMAP : Uniform manifold
+approximation and projection for dimension reduction. arXiv preprint arXiv :1802.03426.
+[McKinney, 2010] McKinney, W. (2010). Data structures for statistical computing in Python. In
+Proceedings of the 9th Python in Science Conference, pages 56–61.
+[Pearson, 1901] Pearson, K. (1901). On lines and planes of closest fit to systems of points in space.
+The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science, 2(11) :559–
+572.
+76

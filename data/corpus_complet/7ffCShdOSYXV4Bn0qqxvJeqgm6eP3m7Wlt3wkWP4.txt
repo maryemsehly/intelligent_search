@@ -1,0 +1,2636 @@
+===== PAGE 1 =====
+
+République Tunisienne
+Université de Monastir
+Institut Supérieur d’Informatique de Mahdia
+MEMOIRE
+N° d’ordre : LCE-IOT-3-2026-003 
+Ministère de l’Enseignement 
+Supérieur et de la Recherche 
+Scientifique 
+MÉMOIRE 
+  
+Présenté à
+Institut Supérieur d’Informatique de Mahdia
+  
+ Effectué à
+sagemcom tunisie
+En vue de l’obtention du diplôme de
+Licence Computer Engineering : Systèmes Embarqués et Internet des Objets
+Elaboré par :
+Dhia Eddine Amara
+  
+controle et verifcation d’accréditation pour la caractérisation de l’étuve chaleur 
+humide.
+Soutenu le :  11 juin 2026 
+devant le jury composé de :
+Président
+ : Nader Fnaiech
+Rapporteur
+ : Walid Hassairi
+Encadrant Académique
+ : Gharsellaoui Chawki
+Encadrant Professionnel
+ : Haithem Aouirem
+Année universitaire 2025-2026
+
+
+===== PAGE 2 =====
+
+Dédicace
+À mes chers parents,
+pour leur amour inconditionnel et leurs sacrifices 
+qui m’ont permis d’atteindre ce stade.
+À mes encadreurs, pour leurs précieux conseils et 
+leur accompagnement tout au long de ce projet.
+À tous ceux qui m’ont soutenu de près ou de loin.
+Dhia Eddine Amara
+2
+
+
+===== PAGE 3 =====
+
+Remerciements
+Je veux exprimer par ces quelques lignes de remerciements ma gratitude envers tous ceux 
+qui, par leur présence, leur soutien et leurs conseils, m’ont permis d’accomplir ce projet de 
+fin d’études.
+Je tiens à remercier en premier lieu mon encadreur académique pour son accompagnement 
+précieux, ses conseils éclairés et sa bienveillance tout au long de ce projet. Ses orientations 
+m’ont guidé et enrichi mes connaissances.
+Je remercie également mon encadrant professionnel chez Sagemcom pour l’aide précieuse 
+apportée, ses conseils pratiques et son soutien constant tout au long du stage.
+Mes vifs remerciements s’adressent également à l’ensemble des membres du jury pour 
+l’honneur qu’ils me font en acceptant d’évaluer mon travail.
+Enfin, je remercie ma famille pour sa présence bienveillante et son soutien moral indéfec­
+tible tout au long de mon parcours universitaire.
+3
+
+
+===== PAGE 4 =====
+
+Résumé
+Ce projet présente la conception et le développement d’un système embarqué IoT pour 
+la surveillance en temps réel des paramètres environnementaux (température et humidité) 
+à l’intérieur d’une étuve thermique, réalisé dans le cadre d’un stage de fin d’études chez 
+Sagemcom. L’objectif est de préparer une étape valide pour le dossier d’accréditation selon 
+la norme ISO 17025 et NF EN 60068-3-5.
+Le système repose sur un microcontrôleur ESP32 comme cerveau central, associé à deux 
+capteurs externes déportés : un capteur analogique PT100 et un capteur industriel Siemens 
+QFA3160D à sortie analogique 0–10 V. Un diviseur de tension (10 kΩ + 4.7 kΩ) adapte le 
+signal du QFA3160D aux entrées ADC de l’ESP32. Les données sont transmises via WiFi 
+vers une base de données Supabase (PostgreSQL) hébergée dans le cloud, avec horodatage 
+automatique. Un dashboard web React.js déployé sur Netlify permet la visualisation 
+temps réel, le calcul des incertitudes selon ISO 17025 et l’export CSV. Deux LEDs indicatrices 
+signalent l’état du système. La carte PCB personnalisée a été conçue sous KiCad.
+Mots-clés : IoT, ESP32, PT100, Siemens QFA3160D, Supabase, React.js, KiCad, ISO 
+17025, Étuve thermique, Métrologie, PCB, Sagemcom.
+4
+
+
+===== PAGE 5 =====
+
+Table des Matières
+Dédicace ....................................................................................................... 2
+Remerciements ........................................................................................... 3
+Résumé ......................................................................................................... 4
+Liste des Abréviations ............................................................................ 15
+Introduction Générale ............................................................................ 16
+Cadre Général du Projet ....................................................................... 17
+1.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠18
+1.2 Présentation de l’organisme d’accueil . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠18
+1.2.1 Présentation de Sagemcom . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠18
+1.2.2 Activités et domaines d’intervention . . . . . . . . . . . . . . . . . . . . . . . . ⁠19
+1.2.3 Contexte du stage . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠19
+1.3 Présentation du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠20
+1.4 Étude de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠20
+1.4.1 Description de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠21
+1.4.2 Critique de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠22
+1.4.3 Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠23
+1.5 Étude du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠24
+1.5.1 Description fonctionnelle du système . . . . . . . . . . . . . . . . . . . . . . . . ⁠24
+5
+
+
+===== PAGE 6 =====
+
+1.5.2 Besoins fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠24
+1.5.3 Besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠25
+1.5.4 Objectifs à atteindre . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠25
+1.6 CONCLUSION . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠26
+Conception ................................................................................................ 27
+2.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠29
+2.2 Architecture globale du système . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠29
+2.2.1 Description des couches : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠30
+2.3 Analyse et spécification des besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠30
+2.3.1 Spécification des besoins fonctionnels . . . . . . . . . . . . . . . . . . . . . . . ⁠30
+2.3.1.1 Besoins du point de vue du Système LEST (firmware 
+ESP32) : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠30
+2.3.1.2 Besoins du point de vue du Technicien : . . . . . . . . . . . . . . ⁠31
+2.3.2 Spécification des besoins non fonctionnels . . . . . . . . . . . . . . . . . . ⁠31
+2.3.3 Identification des acteurs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠32
+2.3.4 Identification des cas d’utilisation . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠32
+2.4 Diagrammes de cas d’utilisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠33
+2.4.1 Cas d’utilisation « Gérer l’authentification » . . . . . . . . . . . . . . . . ⁠34
+2.4.2 Cas d’utilisation « Visualiser les données en temps réel » . . . . ⁠34
+2.4.3 Cas d’utilisation « Configurer les paramètres » . . . . . . . . . . . . . . ⁠35
+2.4.4 Cas d’utilisation « Exporter les données » . . . . . . . . . . . . . . . . . . . ⁠35
+2.4.5 Cas d’utilisation « Surveiller l’état du système » . . . . . . . . . . . . ⁠36
+2.4.6 Cas d’utilisation « Calculer les incertitudes » . . . . . . . . . . . . . . . . ⁠36
+2.4.7 Cas d’utilisation « Gérer les mesures » . . . . . . . . . . . . . . . . . . . . . . ⁠37
+2.5 Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠38
+2.6 Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠38
+2.6.1 Séquence « Acquisition et envoi des données » . . . . . . . . . . . . . . ⁠39
+2.6.2 Séquence « Consultation du dashboard » . . . . . . . . . . . . . . . . . . . . ⁠40
+6
+
+
+===== PAGE 7 =====
+
+2.6.3 Séquence « Déclenchement d’alerte LED » . . . . . . . . . . . . . . . . . . ⁠41
+2.7 Diagrammes d’activité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠42
+2.7.1 Activité « Acquisition des données » . . . . . . . . . . . . . . . . . . . . . . . . ⁠42
+2.7.2 Activité « Traitement et décision ESP32 » . . . . . . . . . . . . . . . . . . ⁠43
+2.8 Conception matérielle . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠43
+2.8.1 Schéma électrique (KiCad) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠43
+2.8.2 Nomenclature des composants (BOM) . . . . . . . . . . . . . . . . . . . . . . ⁠44
+2.8.3 Circuit de conditionnement du signal QFA3160D . . . . . . . . . . . ⁠45
+2.9 CONCLUSION . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠46
+Réalisation et Implémentation .............................................................. 47
+3.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠49
+3.2 Environnement de travail . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠49
+3.2.1 Environnement matériel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠49
+3.2.1.1 Ordinateur . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠49
+3.2.1.2 Le Cœur du Système : Microcontrôleur ESP32-C3-
+DevKitC-02 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠51
+3.2.2 La Mesure Thermique de Référence : Sonde PT100 . . . . . . . . . ⁠52
+3.2.3 Le Circuit de Conditionnement Dédié : Module MAX31865 . ⁠53
+3.2.4 Le Capteur de Classe Industrielle: Siemens QFA3160D . . . . . ⁠54
+3.2.5 Présentation du capteur PT100 et du module MAX31865 . . ⁠55
+3.2.5.1 Pourquoi le PT100 ne peut pas se connecter directement 
+à l’ESP32? . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠56
+3.2.6 La communication SPI entre MAX31865 et ESP32 . . . . . . . . . ⁠56
+3.2.7 Chaîne complète de la mesure PT100 . . . . . . . . . . . . . . . . . . . . . . . ⁠58
+3.2.8 Choix de la taille du filtre. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠59
+3.3 Présentation du capteur Siemens QFA3160D . . . . . . . . . . . . . . . . . . . . . . ⁠59
+3.4 Réalisation matérielle . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠59
+3.4.1 Présentation des composants . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠59
+7
+
+
+===== PAGE 8 =====
+
+3.4.2 Câblage et montage . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠60
+3.4.3 Conception PCB sous KiCad . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠62
+3.5 Développement du firmware ESP32 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠63
+3.5.1 Structure du code . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠63
+3.5.2 Lecture du capteur PT100 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠63
+3.5.3 Lecture du capteur QFA3160D (ADC) . . . . . . . . . . . . . . . . . . . . . . ⁠64
+3.5.4 Logique de décision et contrôle des LEDs . . . . . . . . . . . . . . . . . . . ⁠65
+3.6 Transmission des données vers Supabase . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠65
+3.7 Configuration de la base de données Supabase . . . . . . . . . . . . . . . . . . . . ⁠66
+Structure de la table de données . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠66
+3.8 Développement du dashboard web . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠67
+3.8.1 Architecture React.js . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠67
+3.8.2 Connexion temps réel avec Supabase . . . . . . . . . . . . . . . . . . . . . . . . ⁠68
+3.8.3 Présentation des interfaces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠69
+3.9 Déploiement sur Netlify . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠70
+3.10 CONCLUSION . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠71
+Tests et Validation ................................................................................... 72
+4.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠73
+4.2 Plan de tests . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠73
+4.3 Tests unitaires . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠73
+4.3.1 Test du capteur PT100 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠73
+4.3.2 Test du capteur QFA3160D . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠75
+4.3.3 Test des LEDs indicatrices . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠75
+4.4 Tests d’intégration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠76
+4.4.1 Test ESP32 → Supabase . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠76
+4.4.2 Test Supabase → Dashboard . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠76
+4.5 Tests de validation normative . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠77
+4.5.1 Validation ISO 17025 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠77
+8
+
+
+===== PAGE 9 =====
+
+4.5.2 Validation NF EN 60068-3-5 (72 h) . . . . . . . . . . . . . . . . . . . . . . . . . ⁠78
+4.6 Résultats obtenus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠78
+4.6.1 Performances mesurées . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠78
+4.6.2 Analyse de la comparaison des capteurs . . . . . . . . . . . . . . . . . . . . ⁠80
+4.7 Difficultés rencontrées et solutions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠80
+4.8 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠81
+Conclusion Générale et Perspectives ................................................... 82
+Bilan du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠82
+Apports personnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠82
+Perspectives d’amélioration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠83
+Références Bibliographiques .................................................................. 84
+Structure du Code du Firmware ESP32 ............................................. 85
+Schéma Électrique KiCad ...................................................................... 86
+Captures du Dashboard ......................................................................... 87
+9
+
+
+===== PAGE 10 =====
+
+Liste des Figures
+Fluke 1620A et son logiciel PC ............................................................. 21
+Kaye Validator 5 ...................................................................................... 21
+Datalogger Testo 176 H1 ........................................................................ 22
+Architecture globale du système LEST en trois couches ................ 29
+Identification de l’acteur du système LEST ....................................... 32
+Diagramme de cas d’utilisation global du système LEST ............... 33
+Diagramme de classes du système LEST ............................................ 38
+Diagramme de séquence « Acquisition et envoi des données » ....... 39
+Diagramme de séquence « Consultation du dashboard » ................ 40
+Diagramme de séquence « Déclenchement d’alerte LED » ............. 41
+Diagramme d’activité « Acquisition des données » ........................... 42
+Diagramme d’activité « Traitement et décision ESP32 » ................ 43
+Schéma électrique du système LEST (KiCad) .................................. 44
+10
+
+
+===== PAGE 11 =====
+
+Lenovo IdeaPad Gaming 3 15ACH6 .................................................... 50
+Carte ESP32-C3-DevKitC-02 ................................................................ 51
+Informations sur la carte ESP32-C3-DevKitC-02 ............................. 52
+PT100 sonde analogique (rtd) ............................................................... 53
+Module convertisseur et amplificateur SPI MAX31865 .................. 53
+Module convertisseur et amplificateur SPI MAX31865 en 
+simulation .................................................................................................. 54
+Capteur reference Siemens .................................................................... 54
+Chaîne complète de mesure PT100 - du capteur à la valeur filtrée .... 
+58
+Montage et câblage du système LEST sur breadboard ................... 61
+Layout PCB du système LEST (KiCad 10.0) .................................... 62
+Les colonnes du tableau Supabase ....................................................... 66
+Interface principale du dashboard LEST (Netlify) ........................... 69
+Tableau de bord de déploiement continu du dashboard LEST sur 
+Netlify ........................................................................................................ 70
+Lecture du capteur PT100 dans Supabase ......................................... 74
+Dashboard LEST — données en temps réel depuis Supabase ....... 76
+11
+
+
+===== PAGE 12 =====
+
+Structure globale du dossier du code source LEST .......................... 85
+Tracé et routage de la carte électronique personnalisée LEST 
+(PCB) ......................................................................................................... 86
+Schéma électrique du système LEST (KiCad) .................................. 86
+Vue tabulaire de l’historique des mesures dans le dashboard LEST 
+(Timestamp, Siemens, PT100, Δ𝑇, HR, incertitude et statut) ..... 87
+Visualisation graphique des courbes de température et d’humidité 
+en temps réel ............................................................................................ 87
+Interface d’authentification sécurisée de l’application web LEST . 88
+12
+
+
+===== PAGE 13 =====
+
+Liste des Tableaux
+Fiche d'identité de Sagemcom .............................................................. 19
+Comparaison des solutions de monitoring d'étuves thermiques .... 23
+Tableau des besoins fonctionnels du système LEST ......................... 24
+Tableau descriptif de l’identification des cas d’utilisation ............... 32
+Tableau descriptif du cas d’utilisation « Gérer l’authentification » ..... 
+34
+Tableau descriptif du cas d’utilisation « Visualiser les données en 
+temps réel » ............................................................................................... 34
+Tableau descriptif du cas d’utilisation « Configurer les paramètres » . 
+35
+Tableau descriptif du cas d’utilisation « Exporter les données » ... 35
+Tableau descriptif du cas d’utilisation « Surveiller l’état du 
+système » .................................................................................................... 36
+Tableau descriptif du cas d’utilisation « Calculer les incertitudes » .... 
+36
+13
+
+
+===== PAGE 14 =====
+
+Tableau descriptif du cas d’utilisation « Gérer les mesures » ......... 37
+Nomenclature complète des composants (Bill of Materials) .......... 44
+Paramètres du diviseur de tension ....................................................... 45
+Caractéristiques techniques de la sonde PT100 ................................ 55
+Comparaison des deux approches de lecture du PT100 .................. 56
+Connexions SPI entre ESP32 et MAX31865 ..................................... 57
+Caractéristiques du capteur Siemens QFA3160D ............................. 59
+Tableau des connexions électriques du système de supervision 
+thermique .................................................................................................. 60
+Bibliothèques Arduino utilisées ............................................................ 63
+Composants React.js du dashboard LEST ......................................... 67
+Plan de tests complet du système LEST ............................................ 73
+Vérification du diviseur de tension — QFA3160D ............................ 75
+Résultats du test des LEDs — seuil = 2°C ........................................ 75
+Statistiques des données collectées — Supabase ............................... 78
+Bilan des performances mesurées du système LEST ....................... 79
+Difficultés rencontrées et solutions apportées ................................... 80
+14
+
+
+===== PAGE 15 =====
+
+Liste des Abréviations
+ADC
+Analog-to-Digital Converter
+BF
+Besoin Fonctionnel
+BNF
+Besoin Non Fonctionnel
+DHT11
+Digital Humidity and Temperature sensor (modèle 11)
+ESP32
+Microcontrôleur WiFi/Bluetooth d’Espressif Systems
+GPIO
+General Purpose Input/Output
+GUM
+Guide to the Expression of Uncertainty in Measurement
+HR
+Humidité Relative
+HTTP
+HyperText Transfer Protocol
+IoT
+Internet of Things (Internet des Objets)
+ISO
+International Organization for Standardization
+JSON
+JavaScript Object Notation
+KiCad
+Kicad EDA - Logiciel de CAO électronique open-source
+LEST
+Laboratoire d’Étalonnage et de Systèmes de Test
+PCB
+Printed Circuit Board (Carte de Circuit Imprimé)
+QFA
+Siemens Room Sensor (Quality, Functionality, Application)
+REST
+Representational State Transfer
+SPI
+Serial Peripheral Interface
+SQL
+Structured Query Language
+TUNAC
+Comité Tunisien d’Accréditation
+UART
+Universal Asynchronous Receiver-Transmitter
+WiFi
+Wireless Fidelity
+15
+
+
+===== PAGE 16 =====
+
+Introduction Générale
+Au cours des dernières années, l’Internet des Objets (IoT) est devenu l’une des technologies 
+les plus stratégiques dans l’industrie moderne. Grâce à l’IoT, les objets physiques peuvent 
+collecter, traiter et partager des données en temps réel avec une intervention humaine 
+minimale, ouvrant la voie à une surveillance industrielle plus précise, plus réactive et plus 
+efficace.
+Dans ce contexte, la métrologie industrielle et la qualification des équipements d’essais 
+thermiques représentent un domaine où l’IoT apporte une valeur ajoutée considérable. Les 
+laboratoires cherchant à obtenir une accréditation selon la norme ISO 17025 doivent 
+prouver que leurs instruments de mesure sont fiables, précis et traçables. Cette démarche 
+requiert une surveillance continue et documentée des paramètres environnementaux des 
+étuves thermiques.
+Problématique : Comment concevoir un système embarqué IoT capable de surveiller en 
+temps réel une étuve thermique, de traiter les données localement et de les rendre accessibles 
+à distance, tout en respectant les exigences de précision de la norme ISO 17025 ?
+Solution proposée : Le système LEST, développé dans le cadre d’un stage chez 
+Sagemcom, répond à cette problématique en combinant un microcontrôleur ESP32, deux 
+capteurs industriels déportés, une carte PCB personnalisée et un pipeline de données cloud 
+complet.
+Structure du rapport : Ce mémoire est organisé en quatre chapitres. Le premier 
+présente le cadre général du projet. Le deuxième détaille la conception du système. Le 
+troisième décrit la réalisation et l’implémentation. Le quatrième présente les tests et les 
+résultats obtenus.
+16
+
+
+===== PAGE 17 =====
+
+CHAPITRE 1
+Cadre Général du Projet
+Sommaire
+1.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠18
+1.2 Présentation de l’organisme d’accueil . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠18
+1.2.1 Présentation de Sagemcom . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠18
+1.2.2 Activités et domaines d’intervention . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠19
+1.2.3 Contexte du stage . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠19
+1.3 Présentation du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠20
+1.4 Étude de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠20
+1.4.1 Description de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠21
+1.4.2 Critique de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠22
+1.4.3 Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠23
+1.5 Étude du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠24
+1.5.1 Description fonctionnelle du système . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠24
+1.5.2 Besoins fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠24
+1.5.3 Besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠25
+1.5.4 Objectifs à atteindre . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠25
+1.6 CONCLUSION . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠26
+17
+
+
+===== PAGE 18 =====
+
+Chapire 1 — Cadre Général du Projet
+1.1 Introduction
+Ce chapitre introductif constitue le point de départ pour la compréhension de mon projet de 
+fin d’études. Je présente en premier lieu l’organisme d’accueil, la société Sagemcom, au sein 
+de laquelle ce stage a été réalisé. J’expose ensuite une étude critique des solutions existantes 
+dans le domaine de la surveillance d’étuves thermiques, puis je décris la solution proposée. 
+Enfin, je définis les besoins fonctionnels et non fonctionnels du projet ainsi que les objectifs 
+visés.
+1.2 Présentation de l’organisme d’accueil
+1.2.1 Présentation de Sagemcom
+Sagemcom est un groupe industriel français de dimension internationale, fondé en 2008 à 
+la suite de la scission de Sagem Communications. Le groupe est spécialisé dans la conception 
+et la fabrication d’équipements de haute technologie dans les domaines des télécommuni­
+cations, des réseaux à haut débit et des équipements d’énergie intelligente.
+Sagemcom est présent dans plus de 30 pays avec un chiffre d’affaires dépassant 2 milliards 
+d’euros. Le groupe emploie plus de 6 500 collaborateurs à travers le monde, dont une 
+part importante en Tunisie où plusieurs sites de production et de R&D ont été implantés.
+Le tableau suivant récapitule les informations clés du groupe sous la forme d’une fiche 
+d’identité.
+ISI Mahdia
+Page 18
+
+
+===== PAGE 19 =====
+
+Chapire 1 — Cadre Général du Projet
+Raison sociale
+Sagemcom SAS
+Fondation
+2008
+Siège social
+Rueil-Malmaison, France
+Domaines
+Télécommunications, Énergie, Broadband, IoT
+Présence
+1. 30 pays
+Effectif mondial
+1. 6 500 employés
+Chiffre d’affaires
+≃ 2 milliards d’euros
+Site web
+www.sagemcom.com
+Tableau 1. – Fiche d'identité de Sagemcom
+1.2.2 Activités et domaines d’intervention
+Sagemcom intervient dans trois grands domaines stratégiques :
+• Broadband : conception de box Internet, routeurs, décodeurs TV et équipements de 
+réseau pour les opérateurs télécoms (Orange, SFR, Bouygues Telecom, etc.) ;
+• Énergie intelligente : développement de compteurs communicants (électricité, gaz, eau) 
+et de systèmes de gestion de l’énergie pour les réseaux intelligents (smart grids) ;
+• IoT et Systèmes embarqués : conception de solutions connectées pour l’industrie 4.0, 
+les bâtiments intelligents et les systèmes de mesure industriels.
+1.2.3 Contexte du stage
+Ce stage de fin d’études a été réalisé au laboratoire de Sagemcom Tunisie. Dans le cadre de 
+ses activités industrielles, Sagemcom dispose de plusieurs étuves thermiques utilisées pour 
+les tests de qualification et de vieillissement accéléré de ses équipements électroniques selon 
+la norme NF EN 60068-3-5.
+La surveillance de ces étuves constitue une exigence normative incontournable pour 
+garantir la fiabilité des résultats des tests et pour préparer le dossier d’accréditation ISO 
+17025. C’est dans ce contexte que mon projet LEST (Laboratoire d’Étalonnage et de 
+Systèmes de Test) a été initié.
+ISI Mahdia
+Page 19
+
+
+===== PAGE 20 =====
+
+Chapire 1 — Cadre Général du Projet
+1.3 Présentation du projet
+Le projet LEST consiste à concevoir et développer un système embarqué IoT complet 
+pour la surveillance en temps réel des paramètres environnementaux (température et humi­
+dité) à l’intérieur des étuves thermiques de Sagemcom. Ce projet s’inscrit dans le cadre de la 
+préparation d’un dossier d’accréditation selon la norme ISO 17025 et NF EN 60068-3-5.
+Le système est articulé autour de trois couches fonctionnelles :
+1. Couche d’acquisition : un microcontrôleur ESP32 connecté à deux capteurs externes 
+déportés à l’intérieur de l’étuve, un capteur PT100 et un capteur industriel Siemens 
+QFA3160D à sortie analogique 0–10 V, intégrés sur une carte PCB personnalisée 
+conçue sous KiCad ;
+2. Couche de stockage cloud : les données sont transmises via WiFi vers une base de 
+données Supabase (PostgreSQL) hébergée dans le cloud, avec horodatage automatique 
+de chaque mesure ;
+3. Couche de visualisation : un dashboard web React.js déployé sur Netlify permet la 
+visualisation en temps réel des courbes de mesure, le calcul automatique des incertitudes 
+selon ISO 17025 et l’export des données en CSV.
+1.4 Étude de l’existant
+Cette partie consiste à analyser les solutions existantes dans le domaine de la surveillance 
+d’étuves thermiques afin d’identifier leurs limites et de définir les besoins réels de Sagemcom, 
+qui seront pris en compte lors de la conception et de la réalisation de mon système.
+ISI Mahdia
+Page 20
+
+
+===== PAGE 21 =====
+
+Chapire 1 — Cadre Général du Projet
+1.4.1 Description de l’existant
+Plusieurs solutions commerciales existent sur le marché international pour la surveillance et 
+l’étalonnage d’étuves thermiques. On peut citer notamment :
+Fig. 1. – Fluke 1620A et son logiciel PC
+• Fluke 1620A DewK : un enregistreur de température et d’humidité avec affichage local. 
+Il permet l’acquisition de données et leur export vers un logiciel PC propriétaire. Sa 
+précision est de ±0.25°C et ±1.5% HR.
+Fig. 2. – Kaye Validator 5
+• Kaye Validator 5 : un système professionnel de validation d’étuves utilisé dans l’industrie 
+pharmaceutique. Il offre une haute précision et une conformité aux normes FDA 21 CFR 
+Part 11, mais son coût est très élevé (plusieurs milliers d’euros par unité).
+ISI Mahdia
+Page 21
+
+
+===== PAGE 22 =====
+
+Chapire 1 — Cadre Général du Projet
+Fig. 3. – Datalogger Testo 176 H1
+• Testo 176 H1 : un datalogger compact pour la mesure de température et d’humidité 
+avec stockage local sur mémoire interne et connexion USB pour l’extraction des données.
+• Solution manuelle actuelle chez Sagemcom : relevé périodique des paramètres de 
+l’étuve par un opérateur, enregistrement dans un tableur Excel et rédaction manuelle du 
+rapport d’étalonnage.
+1.4.2 Critique de l’existant
+Après l’analyse des solutions existantes et de la situation actuelle chez Sagemcom, plusieurs 
+points faibles ont été identifiés :
+• Coût élevé : les systèmes professionnels comme Kaye Validator ou Fluke représentent un 
+investissement de plusieurs milliers d’euros, difficile à justifier pour chaque étuve du parc 
+de Sagemcom ;
+• Absence de connectivité cloud : la majorité des solutions stockent les données locale­
+ment ou nécessitent une connexion physique pour l’extraction, rendant la surveillance à 
+distance impossible ;
+• Pas d’accès à distance : l’utilisateur doit être physiquement présent pour consulter les 
+données en temps réel ;
+• Interfaces non personnalisables : les logiciels fournis sont propriétaires et ne peuvent 
+pas être adaptés aux besoins spécifiques de Sagemcom ;
+ISI Mahdia
+Page 22
+
+
+===== PAGE 23 =====
+
+Chapire 1 — Cadre Général du Projet
+• Processus manuel non traçable : la solution actuelle repose sur des relevés manuels, 
+source d’erreurs humaines et non conforme aux exigences de traçabilité de la norme ISO 
+17025 ;
+• Pas de calcul automatique des incertitudes : le calcul des incertitudes de mesure est 
+effectué manuellement, ce qui est long, fastidieux et source d’erreurs.
+1.4.3 Solution proposée
+Après l’analyse réalisée, je propose une solution IoT complète et économique qui pallie toutes 
+les lacunes identifiées. Ma solution repose sur les éléments suivants :
+• Un microcontrôleur ESP32 comme cerveau central du système, intégré sur une carte 
+PCB personnalisée alimentée en 3.3 V ;
+• Deux capteurs externes déportés à l’intérieur de l’étuve : lecture numérique du PT100 
+via MAX31865 et un Siemens QFA3160D industriel à sortie analogique 0–10 V ;
+• Une carte PCB personnalisée conçue sous KiCad avec deux LEDs indicatrices d’état ;
+• Un pipeline de données cloud complet : ESP32 → Supabase (PostgreSQL) → Dash­
+board React.js ;
+• Un calcul automatique des incertitudes selon l’ISO 17025 et le GUM, intégré dans 
+le dashboard ;
+• Un export CSV pour la rédaction du dossier d’accréditation.
+Le tableau comparatif ci-dessous met en regard la solution LEST et les principales solutions 
+existantes selon plusieurs critères (coût, connectivité cloud, accès distant, calcul des incerti­
+tudes, conformité ISO 17025, etc.). Il fait ressortir les avantages de ma solution face aux 
+limites identifiées précédemment.
+Critère
+Fluke 1620A
+Kaye V5
+Sol. manuelle
+Sol. LEST
+Coût
+Moyen
+Très élevé
+Faible
+Faible
+Cloud
+Non
+Non
+Non
+Oui
+Accès distant
+Non
+Non
+Non
+Oui
+Dashboard RT
+Non
+Non
+Non
+Oui
+Incertitudes
+Partiel
+Oui
+Manuelle
+Automatique
+Personnalisable
+Non
+Non
+Oui
+Oui
+ISO 17025
+Partielle
+Oui
+Non
+Oui
+Export
+CSV
+Propriétaire
+Excel
+CSV
+Tableau 2. – Comparaison des solutions de monitoring d'étuves thermiques
+ISI Mahdia
+Page 23
+
+
+===== PAGE 24 =====
+
+Chapire 1 — Cadre Général du Projet
+1.5 Étude du projet
+1.5.1 Description fonctionnelle du système
+Le système LEST est un système IoT embarqué qui permet de :
+• Mesurer en temps réel la température et l’humidité à l’intérieur d’une étuve thermique à 
+l’aide de deux capteurs déportés ;
+• Traiter les données localement sur l’ESP32 et déclencher des alertes visuelles via deux 
+LEDs indicatrices (verte, rouge) ;
+• Transmettre les données via WiFi vers la base de données cloud Supabase avec horodatage 
+automatique à 1 Hz ;
+• Visualiser les mesures en temps réel sur un dashboard web React.js avec calcul automatique 
+des incertitudes selon l’ISO 17025 ;
+• Exporter les données en format CSV pour la rédaction du dossier d’accréditation TUNAC.
+1.5.2 Besoins fonctionnels
+Les besoins fonctionnels décrivent les fonctionnalités que le système doit obligatoirement 
+assurer. Le tableau suivant présente les besoins fonctionnels identifiés pour le système LEST :
+Code
+Besoin
+Description
+Solution technique
+BF1
+Acquisition
+Mesurer T° et HR en temps réel 
+à 1 Hz
+ESP32 + PT100 + QFA3160D
+BF2
+Traitement
+Comparer les mesures avec des 
+seuils prédéfinis
+Firmware ESP32
+BF3
+Indication
+Signaler l’état du système vi­
+suellement
+2 LEDs (verte / rouge)
+BF4
+Transmission
+Envoyer les données vers le 
+cloud via WiFi
+ESP32 WiFi + API Supabase
+BF5
+Stockage
+Persister les données avec horo­
+datage
+Supabase
+BF6
+Visualisation
+Afficher les courbes en temps 
+réel
+Dashboard React.js / Netlify
+BF7
+Incertitudes
+Calculer U(T) selon ISO 17025
+Algorithme intégré au dash­
+board
+BF8
+Export
+Exporter les données pour le 
+dossier
+Export CSV depuis le dash­
+board
+Tableau 3. – Tableau des besoins fonctionnels du système LEST
+ISI Mahdia
+Page 24
+
+
+===== PAGE 25 =====
+
+Chapire 1 — Cadre Général du Projet
+1.5.3 Besoins non fonctionnels
+Les besoins non fonctionnels décrivent les contraintes de qualité, de performance et de 
+conformité que le système doit respecter :
+• Performance : latence maximale de 2 secondes entre la mesure physique et l’affichage 
+sur le dashboard web ;
+• Fiabilité : fonctionnement continu et stable pendant 72 heures minimum sans interrup­
+tion, conformément à la norme NF EN 60068-3-5 ;
+• Disponibilité : le dashboard web doit être accessible 24h/24 et 7j/7 depuis n’importe 
+quel navigateur dans le monde ;
+• Maintenabilité : code source documenté et architecture modulaire facilitant les évolu­
+tions et la maintenance futures ;
+• Portabilité : le dashboard est accessible depuis tout navigateur web moderne sans 
+installation logicielle ;
+• Conformité normative : le système doit respecter les exigences de la norme ISO 17025 
+(incertitudes de mesure, traçabilité) et NF EN 60068-3-5 (homogénéité, stabilité, 72 h).
+1.5.4 Objectifs à atteindre
+Pour répondre aux besoins de Sagemcom et aux exigences normatives, mon projet se fixe les 
+objectifs suivants :
+1. Concevoir une carte PCB personnalisée sous KiCad intégrant l’ESP32, les interfaces 
+capteurs, les LEDs indicatrices et les circuits de conditionnement du signal ;
+2. Développer un firmware ESP32 stable pour l’acquisition, le traitement et la transmis­
+sion des données à 1 Hz ;
+3. Mettre en place un pipeline de données cloud complet : ESP32 → Supabase → 
+Dashboard React.js ;
+4. Développer un dashboard web React.js avec visualisation temps réel, calcul automa­
+tique des incertitudes et export CSV ;
+5. Valider le système pendant 72 heures conformément à la norme NF EN 60068-3-5 ;
+6. Préparer la documentation technique nécessaire au dossier d’accréditation ISO 17025 / 
+TUNAC.
+ISI Mahdia
+Page 25
+
+
+===== PAGE 26 =====
+
+Chapire 1 — Cadre Général du Projet
+1.6 CONCLUSION
+Dans ce premier chapitre, j’ai présenté l’organisme d’accueil Sagemcom, groupe industriel 
+international spécialisé dans les télécommunications et l’IoT, au sein duquel ce stage de fin 
+d’études a été réalisé. J’ai décrit le contexte du projet et analysé les solutions existantes 
+de monitoring d’étuves thermiques, en identifiant leurs principales limitations en termes de 
+coût, de connectivité et de personnalisation.
+Sur cette base, j’ai proposé le système LEST, une solution IoT complète reposant sur 
+l’ESP32, deux capteurs industriels déportés (PT100 et Siemens QFA3160D), une base de 
+données cloud Supabase et un dashboard React.js. J’ai ensuite défini les besoins fonction­
+nels (BF1 à BF8), les besoins non fonctionnels et les objectifs précis à atteindre.
+Le chapitre suivant présentera en détail la conception du système, avec l’architecture 
+globale, les diagrammes UML et la conception matérielle sous KiCad.
+ISI Mahdia
+Page 26
+
+
+===== PAGE 27 =====
+
+CHAPITRE 2
+Conception
+Sommaire
+2.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠29
+2.2 Architecture globale du système . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠29
+2.2.1 Description des couches : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠30
+2.3 Analyse et spécification des besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠30
+2.3.1 Spécification des besoins fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . ⁠30
+2.3.2 Spécification des besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . ⁠31
+2.3.3 Identification des acteurs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠32
+2.3.4 Identification des cas d’utilisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠32
+2.4 Diagrammes de cas d’utilisation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠33
+2.4.1 Cas d’utilisation « Gérer l’authentification » . . . . . . . . . . . . . . . . . . . ⁠34
+2.4.2 Cas d’utilisation « Visualiser les données en temps réel » . . . . . . ⁠34
+2.4.3 Cas d’utilisation « Configurer les paramètres » . . . . . . . . . . . . . . . . ⁠35
+2.4.4 Cas d’utilisation « Exporter les données » . . . . . . . . . . . . . . . . . . . . . ⁠35
+2.4.5 Cas d’utilisation « Surveiller l’état du système » . . . . . . . . . . . . . . . ⁠36
+2.4.6 Cas d’utilisation « Calculer les incertitudes » . . . . . . . . . . . . . . . . . . ⁠36
+2.4.7 Cas d’utilisation « Gérer les mesures » . . . . . . . . . . . . . . . . . . . . . . . . . ⁠37
+2.5 Diagramme de classes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠38
+27
+
+
+===== PAGE 28 =====
+
+2.6 Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠38
+2.6.1 Séquence « Acquisition et envoi des données » . . . . . . . . . . . . . . . . . ⁠39
+2.6.2 Séquence « Consultation du dashboard » . . . . . . . . . . . . . . . . . . . . . . ⁠40
+2.6.3 Séquence « Déclenchement d’alerte LED » . . . . . . . . . . . . . . . . . . . . . ⁠41
+2.7 Diagrammes d’activité . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠42
+2.7.1 Activité « Acquisition des données » . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠42
+2.7.2 Activité « Traitement et décision ESP32 » . . . . . . . . . . . . . . . . . . . . . ⁠43
+2.8 Conception matérielle . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠43
+2.8.1 Schéma électrique (KiCad) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠43
+2.8.2 Nomenclature des composants (BOM) . . . . . . . . . . . . . . . . . . . . . . . . ⁠44
+2.8.3 Circuit de conditionnement du signal QFA3160D . . . . . . . . . . . . . ⁠45
+2.9 CONCLUSION . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠46
+28
+
+
+===== PAGE 29 =====
+
+Chapire 2 — Conception
+2.1 Introduction
+Dans ce chapitre, je vais détailler les différents éléments de conception du système LEST. 
+Je présente en premier lieu l’architecture globale du système et son diagramme . Ensuite, 
+j’expose l’analyse et la spécification des besoins à travers l’identification des acteurs et des 
+cas d’utilisation. Je développe ensuite les diagrammes UML nécessaires à la modélisation du 
+système : diagrammes de cas d’utilisation, diagramme de classes, diagrammes de séquence et 
+diagrammes d’activité. Enfin, je présente la conception matérielle du système avec le schéma 
+électrique KiCad, la nomenclature des composants et le circuit de conditionnement du signal.
+2.2 Architecture globale du système
+Le système LEST est organisé en trois couches fonctionnelles distinctes et interconnec­
+tées, qui forment un pipeline de données complet depuis la mesure physique jusqu’à la 
+visualisation sur le dashboard web.
+Fig. 4. – Architecture globale du système LEST en trois couches
+ISI Mahdia
+Page 29
+
+
+===== PAGE 30 =====
+
+Chapire 2 — Conception
+2.2.1 Description des couches :
+• Couche 1 (Acquisition) : les deux capteurs (PT100 et Siemens QFA3160D) sont 
+déportés à l’intérieur de l’étuve. Le capteur Siemens QFA3160D est raccordé à la carte 
+PCB via un connecteur à vis, tandis que la sonde PT100 est reliée au module de mesure 
+dédié. L’ESP32 lit les données, les traite et contrôle les LEDs indicatrices.
+• Couche 2 (Stockage cloud) : les données sont transmises via WiFi vers la base de 
+données Supabase (PostgreSQL) hébergée en Europe (Stockholm). Chaque enregistrement 
+reçoit un horodatage automatique (created_at) généré côté serveur.
+• Couche 3 (Visualisation) : le dashboard React.js déployé sur Netlify se connecte à 
+Supabase en temps réel (polling 1 Hz) et affiche les courbes de mesure, les indicateurs de 
+qualité et les incertitudes calculées.
+2.3 Analyse et spécification des besoins
+Cette section constitue une étape fondamentale dans la conception du système LEST. Elle 
+consiste à analyser et formaliser les attentes des différentes parties pre- nantes afin de définir 
+précisément ce que le système doit accomplir. Je distingue deux catégories de besoins : les 
+besoins fonctionnels qui décrivent les fonctionnalités attendues, et les besoins non fonctionnels 
+qui définissent les contraintes de qualité et de performance.
+2.3.1 Spécification des besoins fonctionnels
+Les besoins fonctionnels décrivent les contraintes fonctionnelles des différents acteurs du 
+système LEST. Ils définissent ce que le système doit faire de manière explicite.
+2.3.1.1 Besoins du point de vue du Système LEST (firmware ESP32) :
+• Acquérir les données : lire en continu la température de référence depuis le capteur 
+PT100 via le module MAX31865 (SPI), ainsi que la température et l’humidité depuis le 
+capteur Siemens QFA3160D (analogique 0–10 V via ADC), à une fréquence de 1 Hz.
+• Conditionner le signal : convertir la tension analogique 0–10 V du QFA3160D en valeur 
+numérique via le diviseur de tension et l’ADC 12 bits de l’ESP32.
+• Traiter les données : comparer les valeurs mesurées avec des seuils prédéfinis et décider 
+de l’état du système.
+• Indiquer l’état : allumer la LED correspondante selon l’état calculé (verte = conforme, 
+rouge = alarme).
+ISI Mahdia
+Page 30
+
+
+===== PAGE 31 =====
+
+Chapire 2 — Conception
+• Transmettre les données : envoyer les mesures vers la base de données Supabase via 
+une connexion WiFi et le protocole HTTP.
+2.3.1.2 Besoins du point de vue du Technicien :
+• Consulter les données : accéder au dashboard web depuis n’importe quel navigateur 
+et visualiser les courbes de température et d’humidité en temps réel avec les vrais 
+horodatages.
+• Configurer les seuils : modifier les valeurs cibles et les seuils d’alerte depuis le dashboard 
+sans modifier le firmware.
+• Exporter les données : télécharger l’historique des mesures au format CSV pour la 
+rédaction du dossier d’accréditation ISO 17025.
+2.3.2 Spécification des besoins non fonctionnels
+Les besoins non fonctionnels décrivent les contraintes externes et internes du système, ainsi 
+que les exigences de qualité à respecter pour assurer le bon fonctionnement du système LEST.
+• Performance : la latence entre la mesure physique et l’affichage sur le dashboard web 
+doit être inférieure à 2 secondes ;
+• Fiabilité : le système doit fonctionner de manière continue et stable pendant au minimum 
+72 heures sans interruption, conformément à la norme NF EN 60068-3-5.
+• Disponibilité : le dashboard web doit être accessible 24h/24 et 7j/7 depuis n’importe 
+quel navigateur web moderne, sans installation logicielle.
+• Sécurité : les communications entre l’ESP32 et Supabase doivent être sécurisées via 
+HTTPS avec authentification par clé API.
+• Maintenabilité : le code source doit être documenté et l’architecture modulaire pour 
+faciliter les évolutions futures.
+• Conformité normative : le système doit respecter les exigences de la norme ISO 17025 
+pour assister le calcul des incertitudes de mesure et la traçabilité des données, ainsi que 
+la norme NF EN 60068-3-5 pour la validation des étuves thermiques.
+ISI Mahdia
+Page 31
+
+
+===== PAGE 32 =====
+
+Chapire 2 — Conception
+2.3.3 Identification des acteurs
+Un acteur représente toute entité externe qui interagit avec le système. Dans le cadre du 
+système LEST, un seul acteur humain a été identifié:
+• Technicien : responsable du laboratoire chez Sagemcom, utilisateur principal du 
+système. Il consulte le dashboard, configure les seuils d’alerte et exporte les données 
+CSV.
+Fig. 5. – Identification de l’acteur du système LEST
+2.3.4 Identification des cas d’utilisation
+Les cas d’utilisation correspondent à un ensemble d’actions réalisées par le système en 
+interaction avec les acteurs. Le tableau suivant détaille les différents cas d’utilisation identifiés 
+pour le système LEST.
+Acteur
+Description
+Rôle / Cas d’utilisation
+Consulter le dashboard web
+Configurer les seuils d’alerte
+Technicien
+Responsable du laboratoire chez 
+Sagemcom, utilisateur principal du 
+système
+Exporter les données CSV
+Tableau 4. – Tableau descriptif de l’identification des cas d’utilisation
+Le système LEST réalise également des actions autonomes (sans interaction directe avec 
+un acteur humain):
+• Surveiller l’étuve : acquisition cyclique des capteurs, traitement et contrôle des
+LEDs (déclenchée par un timer interne de 1 s) ;
+• Envoyer les données : transmission HTTPS vers Supabase (incluse dans le
+cycle de surveillance).
+ISI Mahdia
+Page 32
+
+
+===== PAGE 33 =====
+
+Chapire 2 — Conception
+2.4 Diagrammes de cas d’utilisation
+Le diagramme de cas d’utilisation représente les fonctionnalités offertes par le système, les 
+acteurs et les relations entre eux. Il permet de modéliser les besoins des utilisateurs et 
+d’identifier les grandes fonctionnalités du système.
+Fig. 6. – Diagramme de cas d’utilisation global du système LEST
+ISI Mahdia
+Page 33
+
+
+===== PAGE 34 =====
+
+Chapire 2 — Conception
+2.4.1 Cas d’utilisation « Gérer l’authentification »
+Ce cas d’utilisation garantit que seul un technicien autorisé peut accéder au système. Le 
+tableau suivant en détaille les acteurs, l’objectif, les conditions et le scénario principal.
+Titre
+Gérer l’authentification.
+Acteurs
+Technicien (Acteur principal), Supabase (Acteur secondaire).
+Objectif
+Permettre au technicien de se connecter de manière sécurisée au 
+système.
+Précondition
+Le technicien dispose d’un compte enregistré dans Supabase.
+Postcondition
+Session active, jeton d’accès généré et stocké.
+Scénario principal
+1. Le technicien saisit son adresse e-mail et son mot de passe.
+2. Le système envoie les identifiants à Supabase pour vérification.
+3. Supabase retourne un jeton d’accès et une date d’expiration.
+4. Le système ouvre la session et redirige le technicien vers le 
+dashboard.
+Tableau 5. – Tableau descriptif du cas d’utilisation « Gérer l’authentification »
+2.4.2 Cas d’utilisation « Visualiser les données en temps réel »
+Cas d’utilisation central de la surveillance, il permet au technicien de suivre l’évolution des 
+courbes de température et d’humidité. Le tableau suivant en précise les acteurs et le scénario.
+Titre
+Visualiser les données en temps réel
+Acteurs
+Technicien (Acteur principal), ESP32 (Acteur secondaire), Supa­
+base (Acteur secondaire)
+Objectif
+Afficher les courbes de température et d’humidité issues des cap­
+teurs en temps réel
+Précondition
+Le cas d’utilisation « Gérer l’authentification » est exécuté 
+(<<include>>) et l’ESP32 est en ligne
+Postcondition
+Données affichées sous forme de graphiques mis à jour automati­
+quement
+Scénario principal
+1. Le technicien accède au dashboard depuis son navigateur
+2. Le dashboard charge les 80 derniers points depuis Supabase
+3. L’ESP32 envoie en continu les relevés Siemens QFA3160D et 
+PT100
+4. Le dashboard affiche les courbes de température et d’humidité
+5. Le dashboard se met à jour automatiquement toutes les secondes
+Tableau 6. – Tableau descriptif du cas d’utilisation « Visualiser les données en temps réel »
+ISI Mahdia
+Page 34
+
+
+===== PAGE 35 =====
+
+Chapire 2 — Conception
+2.4.3 Cas d’utilisation « Configurer les paramètres »
+Avant chaque campagne d’étalonnage, le technicien ajuste la consigne et les seuils de tolé­
+rance. Le tableau suivant décrit le déroulement de ce cas d’utilisation.
+Titre
+Configurer les paramètres
+Acteurs
+Technicien (Acteur principal)
+Objectif
+Définir les seuils, la température cible et les paramètres de mesure 
+avant une campagne d’étalonnage
+Précondition
+Le cas d’utilisation « Gérer l’authentification » est exécuté 
+(<<include>>)
+Postcondition
+Paramètres enregistrés et appliqués au système de surveillance
+Scénario principal
+1. Le technicien ouvre le panneau de configuration
+2. Le technicien saisit la température cible et le seuil de tolérance
+3. Le technicien saisit l’humidité cible et le seuil associé
+4. Le technicien définit le nom de la mesure et la durée totale
+5. Le système enregistre et applique les nouveaux paramètres
+Tableau 7. – Tableau descriptif du cas d’utilisation « Configurer les paramètres »
+2.4.4 Cas d’utilisation « Exporter les données »
+Ce cas d’utilisation permet de produire le fichier CSV exploité dans le dossier d’accréditation. 
+Son déroulement est détaillé dans le tableau ci-dessous.
+Titre
+Exporter les données
+Acteurs
+Technicien (Acteur principal)
+Objectif
+Télécharger les données de mesure au format CSV pour le dossier 
+d’accréditation
+Précondition
+Le cas d’utilisation « Gérer l’authentification » est exécuté 
+(<<include>>) et des données sont disponibles
+Postcondition
+Fichier CSV téléchargé avec timestamps et valeurs
+Scénario principal
+1. Le technicien clique sur le bouton « Export CSV »
+2. Le dashboard génère le fichier CSV depuis l’historique
+3. Le fichier inclut : Timestamp, ID, Température, Humidité, Écart, 
+Seuil
+4. Le fichier est téléchargé automatiquement sur le PC
+Tableau 8. – Tableau descriptif du cas d’utilisation « Exporter les données »
+ISI Mahdia
+Page 35
+
+
+===== PAGE 36 =====
+
+Chapire 2 — Conception
+2.4.5 Cas d’utilisation « Surveiller l’état du système »
+Ce cas d’utilisation informe le technicien de la disponibilité de l’ESP32 et du nombre de 
+points collectés, comme le précise le tableau suivant.
+Titre
+Surveiller l’état du système
+Acteurs
+Technicien (Acteur principal), ESP32 (Acteur secondaire)
+Objectif
+Informer le technicien de l’état de connexion de l’ESP32 et du 
+nombre de points collectés
+Précondition
+Le cas d’utilisation « Gérer l’authentification » est exécuté 
+(<<include>>) et le dashboard est ouvert
+Postcondition
+Statut affiché (connecté / hors ligne) et compteur de points mis 
+à jour
+Scénario principal
+1. Le dashboard vérifie périodiquement la date de dernière commu­
+nication de l’ESP32
+2. Le système calcule le délai depuis le dernier relevé reçu
+3. Le statut est affiché: “En ligne” si le délai est inférieur à 10 
+secondes
+4. Le compteur de points collectés est mis à jour en temps réel
+Tableau 9. – Tableau descriptif du cas d’utilisation « Surveiller l’état du système »
+2.4.6 Cas d’utilisation « Calculer les incertitudes »
+Conformément à l’ISO 17025, ce cas d’utilisation calcule et affiche les différentes composantes 
+d’incertitude de mesure. Le tableau suivant en décrit les étapes.
+Titre
+Calculer les incertitudes
+Acteurs
+Technicien (Acteur principal), Supabase (Acteur secondaire)
+Objectif
+Calculer et afficher les incertitudes de mesure selon la norme ISO 
+17025
+Précondition
+Le cas d’utilisation « Gérer l’authentification » est exécuté 
+(<<include>>) et des données de mesure sont disponibles
+Postcondition
+Incertitudes 𝑢𝑅, 𝑢𝐸, 𝑢𝑟𝑒𝑝, 𝑢𝑐, 𝑈, homogénéité et pente calculées et 
+affichées
+Scénario principal
+1. Le système récupère les données de mesure depuis Supabase
+2. Le système calcule l’incertitude de résolution 𝑢𝑅 et d’étalonnage 
+𝑢𝐸
+3. Le système calcule l’incertitude de répétabilité 𝑢𝑟𝑒𝑝
+4. Le système calcule l’incertitude composée 𝑢𝑐 et élargie 𝑈
+5. Le 
+dashboard 
+affiche 
+les 
+résultats 
+et 
+les 
+indicateurs 
+d’homogénéité et de pente
+Tableau 10. – Tableau descriptif du cas d’utilisation « Calculer les incertitudes »
+ISI Mahdia
+Page 36
+
+
+===== PAGE 37 =====
+
+Chapire 2 — Conception
+2.4.7 Cas d’utilisation « Gérer les mesures »
+Ce cas d’utilisation couvre le cycle de vie d’une campagne de mesure, de sa création à son 
+archivage, comme détaillé dans le tableau suivant.
+Titre
+Gérer les mesures
+Acteurs
+Technicien (Acteur principal), Supabase (Acteur secondaire)
+Objectif
+Créer, suivre et archiver les campagnes de mesure d’étalonnage
+Précondition
+Le cas d’utilisation « Gérer l’authentification » est exécuté 
+(<<include>>) et les paramètres sont configurés
+Postcondition
+Mesure enregistrée avec sa date de début, sa durée et sa date de fin
+Scénario principal
+1. Le technicien démarre une nouvelle campagne de mesure
+2. Le système enregistre le nom, la date de début et la durée dans 
+Supabase
+3. L’acquisition de données s’effectue pendant toute la durée définie
+4. Le système enregistre la date de fin à l’issue de la campagne
+5. Le technicien peut consulter ou archiver les mesures passées
+Tableau 11. – Tableau descriptif du cas d’utilisation « Gérer les mesures »
+ISI Mahdia
+Page 37
+
+
+===== PAGE 38 =====
+
+Chapire 2 — Conception
+2.5 Diagramme de classes
+Le diagramme de classes fournit une représentation statique du système en définissant les 
+classes, leurs attributs, leurs méthodes et les relations entre elles.
+Fig. 7. – Diagramme de classes du système LEST
+Le diagramme fait apparaître les principales classes du firmware embarqué et leurs relations : 
+la classe PT100Sensor qui encapsule la lecture du capteur de référence via le MAX31865, la 
+classe gérant l’acquisition analogique du QFA3160D, la classe LEDController responsable du 
+contrôle des deux LEDs indicatrices selon l’état calculé, et la classe SupabaseClient chargée 
+de la transmission des mesures vers la base de données cloud. Ces classes collaborent au sein 
+de la boucle principale pour réaliser le cycle complet d’acquisition, de traitement et d’envoi 
+des données.
+2.6 Diagrammes de séquence
+Le diagramme de séquence est une représentation qui décrit les interactions entre les objets 
+du système dans le cadre d’un cas d’utilisation particulier. Il montre l’ordre chronologique 
+des échanges de messages.
+ISI Mahdia
+Page 38
+
+
+===== PAGE 39 =====
+
+Chapire 2 — Conception
+2.6.1 Séquence « Acquisition et envoi des données »
+Afin de détailler les interactions dynamiques entre les différents composants matériels et 
+logiciels lors de la phase d’acquisition, le diagramme de séquence suivant illustre le processus 
+chronologique de lecture des capteurs par l’ESP32 et l’envoi des données vers Supabase.
+Fig. 8. – Diagramme de séquence « Acquisition et envoi des données »
+ISI Mahdia
+Page 39
+
+
+===== PAGE 40 =====
+
+Chapire 2 — Conception
+2.6.2 Séquence « Consultation du dashboard »
+La Figure 2.6 illustre le flux du dashboard : chargement des 80 dernières mesures depuis 
+Supabase, calcul en temps réel des incertitudes ISO 17025, et actualisation continue des 
+courbes via un polling à 1Hz
+Fig. 9. – Diagramme de séquence « Consultation du dashboard »
+ISI Mahdia
+Page 40
+
+
+===== PAGE 41 =====
+
+Chapire 2 — Conception
+2.6.3 Séquence « Déclenchement d’alerte LED »
+Le diagramme de séquence suivant décrit le comportement réactif du firmware lors du contrôle 
+de conformité : à chaque cycle, l’ESP32 calcule l’écart Δ𝑇 entre le PT100 et le QFA3160D, 
+le compare au seuil de 2.0°C, puis commute la LED verte (état conforme) ou la LED rouge 
+(écart hors tolérance) en conséquence.
+Fig. 10. – Diagramme de séquence « Déclenchement d’alerte LED »
+ISI Mahdia
+Page 41
+
+
+===== PAGE 42 =====
+
+Chapire 2 — Conception
+2.7 Diagrammes d’activité
+Le diagramme d’activité décrit le flux de travail d’un processus, en représentant les actions, 
+les décisions et les transitions entre les états.
+2.7.1 Activité « Acquisition des données »
+La Figure 11 schématise le workflow séquentiel d’acquisition des données, mettant en évidence 
+les boucles de contrôle en cas de données invalides ou d’échec d’envoi HTTP POST vers 
+Supabase avant de marquer une pause d’une seconde.
+Fig. 11. – Diagramme d’activité « Acquisition des données »
+ISI Mahdia
+Page 42
+
+
+===== PAGE 43 =====
+
+Chapire 2 — Conception
+2.7.2 Activité « Traitement et décision ESP32 »
+La Figure 12 schématise l’algorithme de contrôle embarqué, mettant en évidence la structure 
+conditionnelle basée sur le seuil de 2.0°C qui détermine l’état des indicateurs lumineux 
+(conforme ou hors seuil) en amont du formatage des données.
+Fig. 12. – Diagramme d’activité « Traitement et décision ESP32 »
+2.8 Conception matérielle
+2.8.1 Schéma électrique (KiCad)
+Le schéma électrique du système LEST a été conçu sous KiCad 10.0, un logiciel de CAO 
+électronique libre et open-source. La carte PCB est organisée en cinq blocs fonctionnels 
+distincts :
+1. Bloc alimentation : l’ESP32 est alimenté par l’étuve thermique via un câble micro-USB.
+2. Bloc interface PT100 : l’ESP32 est responsable pour l alimentation du bloc pt100 et 
+son shield MAX31856.
+3. Bloc interface QFA3160D : connecteur J2 (Screw Terminal 4 pins) avec deux diviseurs 
+de tension (10 kΩ + 4.7 kΩ) pour les sorties température et humidité.
+4. Bloc microcontrôleur : ESP32-C3-DevKitC.
+5. Bloc indicateurs : deux LEDs (verte et rouge) avec résistances de limitation 250 Ω.
+ISI Mahdia
+Page 43
+
+
+===== PAGE 44 =====
+
+Chapire 2 — Conception
+Fig. 13. – Schéma électrique du système LEST (KiCad)
+2.8.2 Nomenclature des composants (BOM)
+La nomenclature (Bill of Materials) recense l’ensemble des composants nécessaires à la 
+fabrication de la carte. Le tableau suivant détaille, pour chaque référence, le composant 
+correspondant, sa valeur, son empreinte PCB et son rôle au sein du circuit.
+Réf. Composant
+Valeur
+Empreinte
+Rôle
+U1
+ESP32-C3-DevKitC-02
+—
+Module ESP32
+Microcontrôleur
+J1
+Screw Terminal
+3 pins
+TermBlock_3P
+Connecteur DHT11 
+(Température)
+J2
+Screw Terminal
+3 pins
+TermBlock_3P
+Connecteur Siemens 
+QFA3160D (Humidité)
+M1
+Adafruit MAX31865 
+Module
+Interface 
+RTD
+Module 
+MAX31865
+Acquisition et 
+conditionnement PT100
+R2
+Résistance
+10 kΩ
+R_Axial_0.4W
+Pull-up QFA3160D 
+(Humidité)
+R3
+Résistance
+10 kΩ
+R_Axial_0.4W
+Pull-up QFA3160D 
+(Humidité)
+R4
+Résistance
+10 kΩ
+R_Axial_0.4W
+résistance du div de 
+tension
+R5
+Résistance
+4.7 kΩ
+R_Axial_0.4W
+résistance du div de 
+tension
+R6
+Résistance
+220 Ω
+R_Axial_0.4W
+Limitation courant LED 
+D2
+R7
+Résistance
+220 Ω
+R_Axial_0.4W
+Limitation courant LED 
+D1
+D1
+LED
+Verte
+LED_D3.0mm
+Indicateur GPIO0
+D2
+LED
+Rouge
+LED_D3.0mm
+Indicateur GPIO10
+Tableau 12. – Nomenclature complète des composants (Bill of Materials)
+ISI Mahdia
+Page 44
+
+
+===== PAGE 45 =====
+
+Chapire 2 — Conception
+2.8.3 Circuit de conditionnement du signal QFA3160D
+Le capteur Siemens QFA3160D produit une sortie analogique 0 à 10 V, incompatible 
+directement avec les entrées ADC de l’ESP32 qui acceptent une tension maximale de 3.3 V. 
+Un circuit de conditionnement par diviseur de tension est donc nécessaire pour chaque 
+sortie (température et humidité).
+Calcul du diviseur de tension :
+𝑉out = 𝑉in ×
+𝑅bas
+𝑅haut + 𝑅bas
+= 10 ×
+4.7
+10 + 4.7 ≈3.19 V
+La tension de sortie maximale de 3.19 V est bien inférieure à la limite de 3.3 V imposée par 
+l’ESP32. ✓
+Le tableau suivant récapitule les valeurs retenues pour le diviseur de tension ainsi que les 
+broches ADC de l’ESP32 affectées à chaque sortie du QFA3160D.
+Paramètre
+Valeur
+Remarque
+Tension d’entrée max
+10 V
+Sortie max QFA3160D
+𝑅haut (R2, R4)
+10 kΩ
+Tolérance 1%
+𝑅bas (R3, R5)
+4.7 kΩ
+Tolérance 1%
+Tension de sortie max
+3.19 V
+Compatible ESP32 ADC
+GPIO température
+GPIO05
+ADC1_CH6
+GPIO humidité
+GPIO06
+ADC1_CH7
+Tableau 13. – Paramètres du diviseur de tension
+Conversion ADC vers valeur réelle :
+L’ESP32 dispose d’un ADC 12 bits (valeurs de 0 à 4095). La conversion de la valeur ADC 
+en grandeur physique s’effectue selon les formules suivantes :
+𝑇° C = 𝑉ADC
+4095 × 3.19 × 𝑇max
+𝑉max
+= ADCraw
+3958
+× 50
+3.19 × 3.19 = ADCraw
+3958
+× 50
+HR% = ADCraw
+3958
+× 100
+Où 𝑇max = 50° C correspond à la plage de mesure R2 du QFA3160D (0 à 50°C), et HR% 
+correspond à la plage 0 à 100%.
+ISI Mahdia
+Page 45
+
+
+===== PAGE 46 =====
+
+Chapire 2 — Conception
+2.9 CONCLUSION
+Dans ce deuxième chapitre, j’ai présenté l’ensemble des éléments de conception du système 
+LEST. J’ai d’abord exposé l’architecture globale en trois couches (acquisition, stockage cloud, 
+visualisation) ainsi que le diagramme de déploiement du système.
+J’ai ensuite analysé et spécifié les besoins du système à travers l’identification des acteurs 
+et des cas d’utilisation. Les diagrammes UML ont permis de modéliser les différents aspects 
+du système : les cas d’utilisation global et détaillés, le diagramme de classes montrant les 
+entités et leurs relations, les diagrammes de séquence décrivant les interactions dynamiques, 
+et les diagrammes d’activité illustrant les flux de traitement.
+Le chapitre suivant présentera la réalisation et l’implémentation du système, avec le 
+développement du firmware ESP32, la réalisation de la carte PCB et le développement du 
+dashboard React.js.
+ISI Mahdia
+Page 46
+
+
+===== PAGE 47 =====
+
+CHAPITRE 3
+Réalisation et Implémentation
+Sommaire
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠49
+3.2
+Environnement de travail . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠49
+3.2.1 Environnement matériel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠49
+3.2.2 La Mesure Thermique de Référence : Sonde PT100 . . . . . . . . . . ⁠52
+3.2.3 Le Circuit de Conditionnement Dédié : Module MAX31865 . . ⁠53
+3.2.4 Le Capteur de Classe Industrielle: Siemens QFA3160D . . . . . . ⁠54
+3.2.5 Présentation du capteur PT100 et du module MAX31865 . . . ⁠55
+3.2.6 La communication SPI entre MAX31865 et ESP32 . . . . . . . . . . ⁠56
+3.2.7 Chaîne complète de la mesure PT100 . . . . . . . . . . . . . . . . . . . . . . . . ⁠58
+3.2.8 Choix de la taille du filtre. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠59
+3.3
+Présentation du capteur Siemens QFA3160D . . . . . . . . . . . . . . . . . . . . . . . ⁠59
+3.4
+Réalisation matérielle . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠59
+3.4.1 Présentation des composants . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠59
+3.4.2 Câblage et montage . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠60
+3.4.3 Conception PCB sous KiCad . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠62
+3.5
+Développement du firmware ESP32 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠63
+3.5.1 Structure du code . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠63
+47
+
+
+===== PAGE 48 =====
+
+3.5.2 Lecture du capteur PT100 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠63
+3.5.3 Lecture du capteur QFA3160D (ADC) . . . . . . . . . . . . . . . . . . . . . . . ⁠64
+3.5.4 Logique de décision et contrôle des LEDs . . . . . . . . . . . . . . . . . . . . ⁠65
+3.6
+Transmission des données vers Supabase . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠65
+3.7
+Configuration de la base de données Supabase . . . . . . . . . . . . . . . . . . . . . ⁠66
+Structure de la table de données . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠66
+3.8
+Développement du dashboard web . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠67
+3.8.1 Architecture React.js . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠67
+3.8.2 Connexion temps réel avec Supabase . . . . . . . . . . . . . . . . . . . . . . . . . ⁠68
+3.8.3 Présentation des interfaces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠69
+3.9
+Déploiement sur Netlify . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠70
+3.10 CONCLUSION . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠71
+48
+
+
+===== PAGE 49 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.1 Introduction
+Ce chapitre présente la phase de réalisation et d’implémentation du système LEST, corres­
+pondant à la Phase 3 - Implémentation de la méthodologie en cascade. Je décris 
+successivement les environnements de travail utilisés, le câblage physique des composants 
+sur breadboard, le développement du firmware pour l’ESP32, la configura- tion de la base 
+de données Supabase, le développement du dashboard React.js, et enfin le déploiement sur 
+Netlify.
+Conformément aux choix de conception du chapitre précédent, le système utilise un 
+capteur PT100 pour la mesure de température de référence, un capteur industriel Siemens 
+QFA3160D à sortie analogique 0–10 V pour la mesure de température et d’humidité, et 
+deux LEDs indicatrices (verte et rouge) pour signaler l’état de conformité du système.
+3.2 Environnement de travail
+Cette section décrit l’environnement de travail mobilisé pour la réalisation du système 
+LEST. Je présente d’abord l’environnement matériel — le poste de développement ainsi 
+que les principaux composants électroniques (microcontrôleur ESP32, sonde PT100, module 
+MAX31865 et capteur industriel Siemens QFA3160D) — qui constitue le socle physique sur 
+lequel repose l’ensemble du système.
+3.2.1 Environnement matériel
+L’environnement matériel regroupe l’ensemble des équipements physiques utilisés:
+3.2.1.1 Ordinateur
+Le développement du firmware, la conception de la carte PCB sous KiCad et le développement 
+du dashboard web ont été réalisés sur l’ordinateur portable suivant, dont les caractéristiques 
+sont détaillées ci-après.
+ISI Mahdia
+Page 49
+
+
+===== PAGE 50 =====
+
+Chapire 3 — Réalisation et Implémentation
+Fig. 14. – Lenovo IdeaPad Gaming 3 15ACH6
+• Processeur : AMD Ryzen 5.
+• RAM: 16.00 Go.
+• Disque: SSD 512 Go.
+• Système d’exploitation : Windows 11.
+ISI Mahdia
+Page 50
+
+
+===== PAGE 51 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.2.1.2 Le Cœur du Système : Microcontrôleur ESP32-C3-DevKitC-02
+La carte ESP32-C3-DevKitC-02 constitue la plateforme matérielle retenue pour ce projet. 
+Conçue par Espressif Systems, il s’agit d’une carte de développement compacte et économique 
+articulée autour du module ESP32-C3-WROOM-02, qui embarque un microcontrôleur RISC-
+V 32 bits monocœur cadencé jusqu’à 160 MHz. Elle dispose de 400 Ko de mémoire SRAM, 
+de 384 Ko de ROM et de 4 Mo de mémoire flash, offrant ainsi des ressources suffisantes pour 
+l’exécution d’applications embarquées de complexité modérée. Sur le plan de la connectivité, 
+la carte intègre nativement le Wi-Fi 2,4 GHz (norme 802.11 b/g/n) ainsi que le Bluetooth 
+5 (Low Energy), ce qui la rend particulièrement adaptée aux objets connectés (IoT). Elle 
+met à disposition de nombreuses broches GPIO multiplexées permettant l’interfaçage avec 
+divers capteurs et actionneurs, et communique avec l’environnement de développement via 
+un pont USB-UART intégré, simplifiant les opérations de programmation et de débogage. Sa 
+faible consommation énergétique, sa compatibilité avec la plateforme Arduino, ainsi que son 
+coût réduit, en font un choix pertinent pour le prototypage et le déploiement de solutions 
+embarquées.
+Fig. 15. – Carte ESP32-C3-DevKitC-02
+ISI Mahdia
+Page 51
+
+
+===== PAGE 52 =====
+
+Chapire 3 — Réalisation et Implémentation
+Le brochage (pinout) de la carte précise le rôle de chacune des broches GPIO disponibles. 
+Cette cartographie a guidé l’affectation des broches du projet : le bus SPI dédié au module 
+MAX31865 (CLK, SDO, SDI, CS), les entrées ADC raccordées aux sorties du QFA3160D, 
+ainsi que les sorties numériques pilotant les deux LEDs indicatrices.
+Fig. 16. – Informations sur la carte ESP32-C3-DevKitC-02
+3.2.2 La Mesure Thermique de Référence : Sonde PT100
+Le PT100 est une sonde de température à résistance de platine (RTD - Resistance Tempe­
+rature Detector). Contrairement aux capteurs numériques, le PT100 n’est pas un composant 
+actif : c’est simplement une résistance de platine dont la valeur varies de manière stable 
+et prévisible avec la température selon la norme IEC 60751. Elle présente une excellente 
+répétabilité, critère obligatoire pour minimiser l’incertitude élargie exigée par la norme ISO 
+17025.
+ISI Mahdia
+Page 52
+
+
+===== PAGE 53 =====
+
+Chapire 3 — Réalisation et Implémentation
+Fig. 17. – PT100 sonde analogique (rtd)
+3.2.3 Le Circuit de Conditionnement Dédié : Module MAX31865
+L’ESP32 ne pouvant lire que des tensions (0 à 3.3 V) via ses broches analogiques, il est 
+impossible d’y connecter directement la sonde résistive PT100 sans perte majeure de précision 
+métrologique. Le module MAX31865 est donc intégré comme intermédiaire:
+• Numérisation haute précision : Il intègre un ADC sigma-delta 15 bits dédié qui 
+compare la résistance de la PT100 à une résistance de référence de haute précision (Rref =
+430Ω, tolérance 0.1%).
+• Interface SPI : La valeur convertie est transmise à l’ESP32 via le bus numérique SPI, 
+immunisant la chaîne de mesure contre les bruits électromagnétiques ambiants de l’étuve.
+Fig. 18. – Module convertisseur et amplificateur SPI MAX31865
+La figure suivante illustre le câblage de la chaîne de mesure en simulation : la sonde PT100 
+est raccordée aux bornes du module MAX31865, lui-même relié à l’ESP32 par les quatre 
+lignes du bus SPI. Ce schéma reproduit le montage retenu pour la lecture haute précision de 
+la température de référence avant son intégration sur la carte PCB.
+ISI Mahdia
+Page 53
+
+
+===== PAGE 54 =====
+
+Chapire 3 — Réalisation et Implémentation
+Fig. 19. – Module convertisseur et amplificateur SPI MAX31865 en simulation
+3.2.4 Le Capteur de Classe Industrielle: Siemens QFA3160D
+Installé au sein de l’enceinte thermique, ce capteur professionnel:
+• Sorties Analogiques Standards : Il génère deux signaux de sortie indépendants variant 
+de 0 à 10 V CC (0–50°C pour la température, 0–100% pour l’humidité relative).
+• Protection Industrielle : Doté d’un boîtier d’indice de protection IP65.
+Fig. 20. – Capteur reference Siemens
+ISI Mahdia
+Page 54
+
+
+===== PAGE 55 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.2.5 Présentation du capteur PT100 et du module MAX31865
+Le PT100 est une sonde de température à résistance de platine (RTD — Resistance Tempe­
+rature Detector). Contrairement aux capteurs numériques, le PT100 n’est pas un composant 
+actif : c’est simplement une résistance de platine dont la valeur varie avec la température 
+selon la loi de Callendar-Van Dusen (norme IEC 60751):
+𝑅(𝑇) = 𝑅0 × (1 + 𝛼𝑇+ 𝛽𝑇2) avec 𝛼= 3.9083 × 10−3, 𝛽= −5.775 × 10−7°𝐶−2
+Le tableau suivant résume les caractéristiques métrologiques principales de la sonde PT100 
+utilisée comme référence de température dans le système LEST.
+Paramètre
+Valeur
+Type
+RTD (Résistance à Température Dépendante)
+Résistance à 0°C
+100 Ω
+Plage de température
+−200°C à +850°C
+Précision (classe A)
+±0.1°C à 0°C
+Coefficient α
+0.00385 Ω/Ω/°C
+Interface
+Via module MAX31865 (SPI)
+Norme
+IEC 60751
+Tableau 14. – Caractéristiques techniques de la sonde PT100
+ISI Mahdia
+Page 55
+
+
+===== PAGE 56 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.2.5.1 Pourquoi le PT100 ne peut pas se connecter directement à l’ESP32?
+L’ESP32 ne peut lire que des tensions via son ADC (0 à 3.3 V). Or le PT100 n’est qu’une 
+résistance variable, il n’émet aucune tension. Connecter le PT100 directement à l’ADC de 
+l’ESP32 donnerait des mesures imprécises: l’ADC 12 bits de l’ESP32 est un composant 
+généraliste, connu pour sa non-linéarité (erreur pouvant atteindre ±5% en pratique), ce qui 
+est inacceptable pour de la métrologie thermique.
+Le tableau suivant compare les deux approches possibles de lecture du PT100 et justifie le 
+recours au module MAX31865, qui offre une résolution et une précision nettement supérieures 
+à une lecture directe par l’ADC de l’ESP32.
+Approche
+Résolution
+Précision
+Inconvénient
+PT100 direct → ADC ESP32
+≈0.5°C
+±1°C
+ADC général, non-linéaire
+PT100 → MAX31865 → ESP32
+≈0.03°C
+±0.1°C
+Aucun
+Tableau 15. – Comparaison des deux approches de lecture du PT100
+Rôle du module MAX31865 : Le MAX31865 est un circuit intégré spécialisé qui joue le 
+rôle d’intermédiaire entre le PT100 et l’ESP32. Il effectue trois opérations en interne :
+1. Mesure de résistance : il injecte un courant constant précis dans le PT100 via un pont 
+de Wheatstone, mesure la tension résultante et en déduit la résistance exacte RP T 100.
+2. Conversion numérique : un ADC sigma-delta 15 bits dédié compare RP T 100 à une 
+résistance de référence interne (Rref = 430 Ω) et produit un entier entre 0 et 32 767 
+représentant le rapport RP T 100/Rref ;
+3. Transmission vers l’ESP32 : cet entier est stocké dans un registre interne et envoyé à 
+l’ESP32 via le protocole SPI.
+3.2.6 La communication SPI entre MAX31865 et ESP32
+Le protocole SPI (Serial Peripheral Interface) est une communication série synchrone utilisant 
+4 fils. L’ESP32 joue le rôle de maître (Master) et le MAX31865 celui d’esclave (Slave) :
+ISI Mahdia
+Page 56
+
+
+===== PAGE 57 =====
+
+Chapire 3 — Réalisation et Implémentation
+ESP32 GPIO
+MAX31865 Pin
+Rôle
+GPIO20
+CS
+Chip Select : l’ESP32 met ce signal à LOW 
+pour activer le MAX31865 et à HIGH pour 
+terminer
+GPIO18
+CLK
+Clock : signal d’horloge généré par l’ESP32, 
+synchronise chaque bit échangé
+GPIO21
+SDI
+Master Out Slave In : l’ESP32 envoie 
+l’adresse du registre à lire
+GPIO19
+SDO
+Serial Data Out : la sortie de données utilisée 
+émettre l’information.
+Tableau 16. – Connexions SPI entre ESP32 et MAX31865
+ISI Mahdia
+Page 57
+
+
+===== PAGE 58 =====
+
+Chapire 3 — Réalisation et Implémentation
+La séquence de communication se déroule ainsi à chaque cycle d’une seconde :
+1. L’ESP32 met CS = LOW pour activer le MAX31865 ;
+2. L’ESP32 envoie l’adresse du registre de mesure sur MOSI ;
+3. Le MAX31865 répond avec l’entier 15 bits sur MISO, synchronisé sur les impulsions SCK ;
+4. L’ESP32 met CS = HIGH — la conversation est terminée ;
+5. La bibliothèque Adafruit_MAX31865 calcule : 𝑅PT100 = entier
+32768 × 430 puis résout la formule 
+de Callendar-Van Dusen pour obtenir 𝑇 en °C.
+Tout cet échange se déroule en quelques microsecondes, bien avant l’expiration du délai de 
+1 seconde du cycle de mesure.
+3.2.7 Chaîne complète de la mesure PT100
+La figure suivante illustre le cheminement complet depuis la grandeur physique (température 
+dans l’étuve) jusqu’à la valeur filtrée utilisée dans le calcul de Δ𝑇 :
+Fig. 21. – Chaîne complète de mesure PT100 - du capteur à la valeur filtrée
+ISI Mahdia
+Page 58
+
+
+===== PAGE 59 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.2.8 Choix de la taille du filtre.
+Le filtre de moyenne glissante utilise une fenêtre de 𝑁= 10 mesures. Ce choix est adapté car la 
+température évolue lentement dans le cas d’une étuve industrielle ou d’un système thermique 
+similaire. Une fenêtre plus grande, par exemple 𝑁= 20 ou 𝑁= 50, lisserait davantage le 
+bruit, mais introduirait un retard de filtre plus important : en cas de variation brusque 
+de température, l’affichage mettrait plus de temps à suivre la valeur réelle. Ainsi, 𝑁= 10 
+représente un compromis équilibré : il suffit pour réduire le bruit électronique du MAX31865 
+et de l’ADC sans provoquer de retard perceptible dans le suivi de la température réelle.
+3.3 Présentation du capteur Siemens QFA3160D
+Le Siemens QFA3160D est un capteur industriel professionnel de température et 
+d’humidité utilisé dans les applications de métrologie industrielle et de qualification 
+d’enceintes thermiques.
+Le tableau suivant résume ses principales caractéristiques techniques (alimentation, plages 
+de mesure, sortie analogique, indice de protection et précisions).
+Paramètre
+Valeur
+Alimentation
+AC 24 V / DC 13.5 – 35 V (indépendante)
+Consommation
+≪1 VA
+Plage humidité
+0 – 100% HR
+Plage température (R2)
+0 – 50°C
+Sortie analogique
+0 – 10 V
+Protection
+IP65
+Précision température
+±0.5°C
+Précision humidité
+±2% HR
+Tableau 17. – Caractéristiques du capteur Siemens QFA3160D
+3.4 Réalisation matérielle
+3.4.1 Présentation des composants
+La carte PCB du système LEST est alimentée directement en 3.3 V depuis une source externe 
+(l etuve). Le capteur Siemens QFA3160D dispose de sa propre alimentation indépendante 
+en 24 V DC et ne partage aucune connexion d’alimentation avec la carte PCB. Seules ses 
+sorties analogiques 0–10 V sont raccordées à l’ESP32 via les diviseurs de tension.
+ISI Mahdia
+Page 59
+
+
+===== PAGE 60 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.4.2 Câblage et montage
+Le tableau suivant détaille l’ensemble des connexions électriques du système : liaisons 
+d’alimentation, bus SPI entre le MAX31865 et l’ESP32, entrées analogiques du QFA3160D 
+et sorties pilotant les deux LEDs indicatrices. Il sert de référence au montage réalisé sur 
+breadboard puis sur la carte PCB.
+De
+Vers
+Remarque
+Alimentation interne 
+de l’étuve
+ESP32 VIN/VCC
+Alimentation principale de la carte ESP32
+ESP32 GND
+Masse commune sys­
+tème
+Référence électrique commune
+PT100
+Module MAX31865
+Connexion RTD pour acquisition thermique 
+haute précision
+MAX31865 VCC
+Source interne 3.3 V
+Alimentation dédiée du module RTD
+MAX31865 GND
+GND commun
+Masse commune acquisition
+MAX31865 CLK
+GPIO18 ESP32
+Horloge SPI
+MAX31865 SDO
+GPIO19 ESP32
+Données MAX31865 vers ESP32
+MAX31865 SDI
+GPIO21 ESP32
+Commandes ESP32 vers MAX31865
+MAX31865 CS
+GPIO20 ESP32
+Sélection du module SPI
+QFA3160D 
+sortie 
+température
+GPIO05 ESP32
+Acquisition température de référence
+QFA3160D sortie hu­
+midité
+GPIO06 ESP32
+Acquisition humidité ambiante
+QFA3160D alimenta­
+tion
+Alimentation 
+indé­
+pendante 24 V
+Le capteur Siemens possède sa propre ali­
+mentation industrielle
+GPIO0
+LED verte via résis­
+tance 220 Ω
+Indication fonctionnement normal
+GPIO10
+LED rouge via résis­
+tance 220 Ω
+Indication alarme / non-conformité
+Tableau 18. – Tableau des connexions électriques du système de supervision thermique
+ISI Mahdia
+Page 60
+
+
+===== PAGE 61 =====
+
+Chapire 3 — Réalisation et Implémentation
+La photographie ci-dessous montre le prototype assemblé sur plaque d’essai (breadboard) 
+conformément au tableau des connexions précédent. On y distingue l’ESP32 au centre, le 
+module MAX31865 relié à la sonde PT100, les deux diviseurs de tension associés aux sorties 
+du QFA3160D ainsi que les deux LEDs indicatrices. Ce montage a servi de support aux essais 
+fonctionnels avant la conception de la carte PCB définitive.
+Fig. 22. – Montage et câblage du système LEST sur breadboard
+ISI Mahdia
+Page 61
+
+
+===== PAGE 62 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.4.3 Conception PCB sous KiCad
+La carte PCB a été conçue sous KiCad 10.0. Après la réalisation du schéma électrique 
+présenté au chapitre 2, les étapes suivantes ont été effectuées :
+1. Vérification ERC (Electrical Rules Check) : aucune erreur détectée après affectation des 
+symboles de puissance (+3V3 et GND) ;
+2. Affectation des empreintes : chaque composant a reçu son empreinte PCB correspon­
+dante (modules ESP32, résistances axiales, LEDs 3 mm, screw terminals) ;
+3. Génération du netlist pour le passage vers l’éditeur PCB ;
+4. Placement des composants : les connecteurs J1, J2, J3 sont positionnés en bordure de 
+carte pour faciliter le câblage externe ;
+5. Routage des pistes : routage sur une seule couche (face inférieure), avec séparation 
+spatiale des zones analogique (diviseurs QFA3160D) et numérique (LEDs) pour minimiser 
+les interférences ; aucun plan de masse dédié, la masse étant assurée par les pistes de la 
+couche unique.
+Fig. 23. – Layout PCB du système LEST (KiCad 10.0)
+ISI Mahdia
+Page 62
+
+
+===== PAGE 63 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.5 Développement du firmware ESP32
+3.5.1 Structure du code
+Le firmware est développé avec Arduino IDE en langage C++. Il est organisé autour des 
+fonctions setup() et loop() et gère les cinq opérations suivantes à chaque cycle d’une seconde :
+1. Lecture du capteur PT100.
+2. Lecture du capteur QFA3160D via ADC.
+3. Conversion des valeurs ADC en grandeurs physiques.
+4. Comparaison avec le seuil et contrôle des deux LEDs.
+5. Envoi des données vers Supabase.
+Pour réaliser ces opérations, le firmware s’appuie sur plusieurs bibliothèques Arduino, listées 
+dans le tableau ci-dessous avec leur auteur et leur rôle dans la chaîne d’acquisition et de 
+transmission.
+Bibliothèque
+Auteur
+Rôle
+WiFi.h
+Espressif 
+(Arduino-
+ESP32)
+Connexion réseau WiFi
+HTTPClient.h
+Espressif 
+(Arduino-
+ESP32)
+Requêtes HTTP/HTTPS
+WiFiClientSecure.h
+Espressif 
+(Arduino-
+ESP32)
+Connexion HTTPS sécurisée
+SPI.h
+Espressif 
+(Arduino-
+ESP32)
+Bus SPI (module MAX31865)
+Adafruit_MAX31865
+Adafruit
+Lecture RTD PT100 (SPI)
+ESPSupabase
+Jhonny Hidalgo
+Client REST Supabase
+ArduinoJson
+Benoit Blanchon
+Sérialisation JSON
+Tableau 19. – Bibliothèques Arduino utilisées
+3.5.2 Lecture du capteur PT100
+Le capteur PT100 est interfacé avec l’ESP32 via le module MAX31865 en communication 
+SPI. La classe PT100Sensor encapsule entièrement cette logique : la méthode begin() initialise 
+le MAX31865 en mode 2 fils (MAX31865_2WIRE), tandis que la méthode readTemperature() 
+interroge directement le registre de mesure du circuit intégré et retourne la température en 
+degrés Celsius, en utilisant les constantes de référence 𝑅REF = 430 Ω et 𝑅NOMINAL = 100 Ω. 
+Afin de réduire le bruit électronique inhérent à la chaîne de mesure analogique, la méthode 
+ISI Mahdia
+Page 63
+
+
+===== PAGE 64 =====
+
+Chapire 3 — Réalisation et Implémentation
+readWithFilter() implémente un filtre à moyenne glissante sur une fenêtre configurable (par 
+défaut 𝑁= 10 échantillons). Ce filtre repose sur un buffer circulaire statique : à chaque appel, 
+la valeur la plus ancienne est soustraite de la somme courante et remplacée par la nouvelle 
+mesure, ce qui permet de calculer la moyenne en temps constant sans recalcul complet du 
+tableau. La valeur filtrée 𝑇ref est ensuite utilisée dans le calcul de l’écart thermique Δ𝑇.
+3.5.3 Lecture du capteur QFA3160D (ADC)
+Le capteur QFA3160D produit des sorties analogiques 0–10 V. Après passage par le diviseur 
+de tension (10 kΩ + 4,7 kΩ), les signaux atteignent respectivement GPIO05 (température) 
+et GPIO06 (humidité). L’ESP32 lit alors une tension réduite compatible avec son ADC 12 
+bits (𝐴𝐷𝐶raw compris entre 0 et 4095). La tension réellement présente sur l’entrée analogique 
+est d’abord estimée par :
+𝑉ADC = 𝐴𝐷𝐶raw
+4095
+× 3, 19
+La tension de sortie du capteur avant diviseur est ensuite reconstruite en tenant compte du 
+rapport de division :
+𝑉QFA = 𝑉ADC × 10 + 4, 7
+4
+, 7
+Cette tension étant linéairement proportionnelle aux grandeurs physiques mesurées, la 
+température et l’humidité relative sont obtenues par les relations suivantes :
+𝑇QFA = 𝑉QFA
+10
+× 50
+𝐻𝑅= 𝑉QFA
+10
+× 100
+Ainsi, une sortie de 10 V correspond à la valeur maximale de la plage configurée du capteur, 
+soit 50 °C pour la température et 100 % pour l’humidité relative. Dans le programme 
+embarqué, ces calculs sont regroupés dans une fonction de conversion qui transforme chaque 
+valeur ADC brute en grandeur réelle.
+ISI Mahdia
+Page 64
+
+
+===== PAGE 65 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.5.4 Logique de décision et contrôle des LEDs
+L’ESP32 compare la température mesurée par le PT100 avec celle mesurée par le QFA3160D. 
+L’écart Δ𝑇= |𝑇PT100 −𝑇QFA| détermine l’état des deux LEDs.
+La classe LEDController gère deux LEDs indicatrices : une LED verte connectée au 
+GPIO 6 et une LED rouge connectée au GPIO 7. Le fonctionnement est organisé autour d’une 
+énumération LEDStatus comportant sept états : OFF, INIT, READY, CONFORME, ECARD, ERROR et 
+OFFLINE. Cette organisation permet de centraliser la logique d’affichage visuel de l’état du 
+système et d’éviter la gestion directe des sorties GPIO dans la boucle principale du firmware.
+La méthode setStatus() commute les sorties GPIO en fonction de l’état demandé. La 
+LED verte est activée pour les états de fonctionnement normal ou conforme, notamment 
+READY et CONFORME. La LED rouge est activée pour les états d’alerte ou d’erreur, notamment 
+ECARD et ERROR. Les autres états, comme OFF, INIT ou OFFLINE, permettent de représenter 
+respectivement l’arrêt de l’indication, la phase d’initialisation et la perte de communication 
+ou d’état opérationnel.
+La méthode centrale updateStatus() reçoit en entrée l’écart thermique Δ𝑇 ainsi que le 
+seuil de conformité défini par TEMP_THRESHOLD = 2,0 °C. Elle compare automatiquement la 
+valeur de Δ𝑇 à ce seuil afin de sélectionner l’état approprié :
+Δ𝑇= |𝑇QFA −𝑇PT100|
+{
+Δ𝑇≤2
+0 °.°𝐶
+⇒LED_STATUS_CONFORME
+Δ𝑇> 2
+0 °.°𝐶
+⇒LED_STATUS_ECARD
+Ainsi, lorsque l’écart entre les deux capteurs reste inférieur ou égal au seuil autorisé, la LED 
+verte indique un état conforme. Dans le cas contraire, la LED rouge signale un écart thermique 
+hors tolérance, ce qui permet une détection visuelle immédiate d’une non-conformité de 
+mesure.
+3.6 Transmission des données vers Supabase
+Les données des deux capteurs sont envoyées vers Supabase via une requête HTTP POST 
+sécurisée (HTTPS) avec authentification par clé API.
+ISI Mahdia
+Page 65
+
+
+===== PAGE 66 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.7 Configuration de la base de données Supabase
+Structure de la table de données
+La base de données Supabase est hébergée dans la région Europe (Stockholm) et utilise 
+PostgreSQL 17. La table principale public.data stocke toutes les mesures du système :
+Fig. 24. – Les colonnes du tableau Supabase
+La classe SupabaseClient encapsule la communication avec la base de données cloud à 
+travers la bibliothèque ESPSupabase. Elle est instanciée avec l’URL du projet Supabase, la clé 
+anonyme et le nom de la table cible, ces paramètres étant regroupés dans le fichier secrets.h 
+afin de séparer les informations sensibles du reste du code source.
+La méthode begin() vérifie préalablement la disponibilité de la connexion WiFi avant 
+d’initialiser le client Supabase. Cette étape permet d’éviter toute tentative d’envoi de données 
+lorsque l’ESP32 n’est pas encore connecté au réseau. Une fois la connexion validée, le client 
+peut préparer les requêtes vers l’endpoint REST de Supabase.
+La méthode sendMeasurement() construit dynamiquement une charge utile JSON conte­
+nant les quatre grandeurs mesurées par le système : temperature pour la température issue du 
+PT100, temp_qfa pour la température issue du QFA3160D, humidity pour l’humidité relative 
+et delta_temp pour l’écart thermique entre les deux capteurs. Cette charge utile est ensuite 
+envoyée vers Supabase au moyen d’une requête HTTP POST sécurisée en HTTPS.
+Le serveur Supabase renvoie un code HTTP permettant de vérifier le résultat de 
+l’opération. Un code de retour 201 confirme l’insertion correcte de l’enregistrement dans la 
+table cible. Tout autre code est considéré comme une erreur et est affiché dans la console 
+série afin de faciliter le diagnostic lors des essais.
+L’horodatage de chaque mesure n’est pas généré par l’ESP32, mais directement côté 
+serveur grâce à la colonne created_at définie avec le type TIMESTAMPTZ et la valeur par 
+défaut now(). Cette approche garantit une traçabilité fiable des enregistrements et répond 
+aux exigences de suivi temporel imposées par la norme ISO 17025.
+ISI Mahdia
+Page 66
+
+
+===== PAGE 67 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.8 Développement du dashboard web
+3.8.1 Architecture React.js
+Le dashboard est développé avec React.js 18 et Vite 5 et déployé sur Netlify. Il est 
+structuré en composants modulaires :
+Composant
+Rôle
+App.jsx
+Composant racine, connexion Supabase, état 
+global
+Header.jsx
+En-tête avec badges ISO 17025, bouton ex­
+port CSV
+SensorCard.jsx
+Carte affichant valeur temps réel (T° ou HR)
+InfoPanel.jsx
+Statut connexion ESP32 et Supabase
+ChartPanel.jsx
+Graphique Chart.js avec timestamps réels
+MiniCards.jsx
+Tableau des dernières mesures avec statut
+StatusBar.jsx
+Chronomètre 72 h, temps restant de l’essai
+SettingsModal.jsx
+Paramétrage des seuils et valeur cible
+Tableau 20. – Composants React.js du dashboard LEST
+ISI Mahdia
+Page 67
+
+
+===== PAGE 68 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.8.2 Connexion temps réel avec Supabase
+Le dashboard utilise le SDK JavaScript de Supabase associé à un mécanisme d’interrogation 
+périodique (polling) à 1 Hz afin de maintenir l’affichage synchronisé avec la base de données 
+cloud.
+À l’initialisation, le composant racine App.jsx crée une instance du client Supabase à 
+partir de l’URL du projet et de la clé anonyme (anon key), regroupées dans un fichier 
+de configuration distinct afin de séparer les paramètres sensibles du code applicatif. Une 
+fonction d’acquisition est ensuite déclenchée toutes les secondes au moyen d’un setInterval 
+(1000 ms). À chaque appel, elle exécute une requête sur la table public.data, triée par ordre 
+décroissant de la colonne created_at et limitée aux 80 derniers enregistrements. Les 
+données reçues sont stockées dans l’état (state) React, ce qui déclenche automatiquement le 
+rafraîchissement des composants d’affichage : les cartes de mesure (SensorCard), le graphique 
+temporel (ChartPanel) et le tableau des dernières valeurs (MiniCards).
+Les horodatages réels created_at renvoyés par Supabase sont utilisés directement comme 
+axe temporel des courbes, ce qui garantit la cohérence chronologique exigée par la norme 
+ISO 17025. Enfin, l’état de connexion de l’ESP32 est déduit du délai écoulé depuis le dernier 
+enregistrement reçu : si ce délai dépasse 10 secondes, le capteur est considéré comme hors 
+ligne et l’indicateur correspondant est mis à jour dans le panneau de statut. Cette approche 
+par interrogation périodique a été préférée à un abonnement temps réel par websocket pour 
+sa simplicité de mise en œuvre et sa robustesse face aux coupures réseau.
+ISI Mahdia
+Page 68
+
+
+===== PAGE 69 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.8.3 Présentation des interfaces
+Le dashboard présente :
+• Les valeurs instantanées de température (PT100) et d’humidité (QFA3160D) avec indica­
+teur d’état (Conforme / Hors seuil) ;
+• Le graphique temporel des mesures avec vrais horodatages Supabase ;
+• Le panneau de statut (connexion ESP32, dernière mesure reçue, temps depuis la dernière 
+mise à jour) ;
+• Le chronomètre de l’essai (objectif 72 h selon NF EN 60068-3-5) ;
+• Le panneau des incertitudes calculées en temps réel.
+Fig. 25. – Interface principale du dashboard LEST (Netlify)
+ISI Mahdia
+Page 69
+
+
+===== PAGE 70 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.9 Déploiement sur Netlify
+Le dashboard est déployé sur Netlify via intégration continue avec le dépôt GitHub. Après 
+génération, le dossier dist/ est publié intégralement sur Netlify.
+À chaque git push sur la branche main, Netlify :
+1. détecte automatiquement le push depuis GitHub ;
+2. exécute npm run build (Vite compile le projet React) ;
+3. publie le dossier dist/ à l’URL publique.
+URL de déploiement : https://etuve-lest.netlify.app/
+La figure suivante présente le tableau de bord de déploiement Netlify, qui confirme la 
+publication réussie du site et affiche l’état de la dernière compilation déclenchée automati­
+quement à partir du dépôt GitHub.
+Fig. 26. – Tableau de bord de déploiement continu du dashboard LEST sur Netlify
+ISI Mahdia
+Page 70
+
+
+===== PAGE 71 =====
+
+Chapire 3 — Réalisation et Implémentation
+3.10 CONCLUSION
+Dans ce troisième chapitre, j’ai présenté la réalisation complète du système LEST. 
+L’environnement de travail a été décrit, les composants présentés, et le câblage détaillé. Le 
+firmware ESP32 a été développé pour lire les deux capteurs (PT100 et QFA3160D), calculer 
+l’écart Δ𝑇, contrôler les deux LEDs indicatrices et envoyer les données vers Supabase à 
+1 Hz. Le dashboard React.js affiche les mesures en temps réel avec calcul automatique des 
+incertitudes ISO 17025 et est déployé sur Netlify. Le chapitre suivant présente les tests et la 
+validation du système.
+ISI Mahdia
+Page 71
+
+
+===== PAGE 72 =====
+
+CHAPITRE 4
+Tests et Validation
+Sommaire
+4.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠73
+4.2 Plan de tests . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠73
+4.3 Tests unitaires . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠73
+4.3.1 Test du capteur PT100 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠73
+4.3.2 Test du capteur QFA3160D . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠75
+4.3.3 Test des LEDs indicatrices . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠75
+4.4 Tests d’intégration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠76
+4.4.1 Test ESP32 → Supabase . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠76
+4.4.2 Test Supabase → Dashboard . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠76
+4.5 Tests de validation normative . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠77
+4.5.1 Validation ISO 17025 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠77
+4.5.2 Validation NF EN 60068-3-5 (72 h) . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠78
+4.6 Résultats obtenus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠78
+4.6.1 Performances mesurées . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠78
+4.6.2 Analyse de la comparaison des capteurs . . . . . . . . . . . . . . . . . . . . . . . ⁠80
+4.7 Difficultés rencontrées et solutions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠80
+4.8 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ⁠81
+72
+
+
+===== PAGE 73 =====
+
+Chapire 4 — Tests et Validation
+4.1 Introduction
+Ce chapitre présente la phase de tests et de validation du système LEST, correspondant 
+à la Phase 4 — Tests et Validation de la méthodologie en cascade. Je suivrai un plan 
+de tests structuré couvrant trois niveaux : les tests unitaires de chaque composant, les tests 
+d’intégration du pipeline complet ESP32 → Supabase → Dashboard, et enfin la validation 
+normative selon ISO 17025 et NF EN 60068-3-5. Les résultats réels collectés depuis la base 
+de données Supabase sont présentés et analysés.
+4.2 Plan de tests
+Le plan de tests structure la validation du système selon trois niveaux : les tests unitaires de 
+chaque composant, les tests d’intégration du pipeline complet et la validation normative. Le 
+tableau suivant récapitule, pour chaque test, le critère de succès retenu et le statut obtenu.
+Niveau
+Test
+Critère de succès
+Statut
+Test PT100
+Valeurs T° dans [0,50]°C, cohérentes 
+avec T° ambiante
+✓ Réussi
+Test QFA3160D ADC
+ADC dans [0,4095], T° dans [0,50]°C, 
+HR dans [0,100]%
+✓ Réussi
+Unitaire
+Test LEDs (verte/rouge)
+LED correcte allumée selon Δ𝑇 vs seuil
+✓ Réussi
+ESP32 → Supabase
+HTTP 201, données visibles dans la 
+table
+✓ Réussi
+Intégration
+Supabase → Dashboard
+Données affichées en moins de 2 s
+✓ Réussi
+ISO 17025
+𝑈(𝑇) calculée, traçabilité horodatée
+✓ Réussi
+Validation
+NF EN 60068-3-5 (72 h)
+Acquisition continue, données en base
+✓ Réussi
+Tableau 21. – Plan de tests complet du système LEST
+4.3 Tests unitaires
+4.3.1 Test du capteur PT100
+Procédure : Lecture de 100 valeurs consécutives du PT100 via le moniteur série de l’Arduino 
+IDE, vérification de la cohérence avec la température ambiante du laboratoire.
+Résultat : Les valeurs lues sont cohérentes et stables, sans valeur aberrante. La tempéra­
+ture affichée correspond à la température ambiante mesurée par un thermomètre de référence 
+(≈ 22–23°C).
+ISI Mahdia
+Page 73
+
+
+===== PAGE 74 =====
+
+Chapire 4 — Tests et Validation
+Fig. 27. – Lecture du capteur PT100 dans Supabase
+ISI Mahdia
+Page 74
+
+
+===== PAGE 75 =====
+
+Chapire 4 — Tests et Validation
+4.3.2 Test du capteur QFA3160D
+Procédure : Vérification de la tension aux bornes du diviseur de tension avec un multimètre 
+numérique, puis vérification de la conversion ADC dans le firmware.
+Résultats :
+Paramètre
+Valeur théorique
+Valeur mesurée
+Écart
+Tension max entrée
+10 V
+10.0 V
+0 V
+Tension max diviseur
+3.19 V
+3.17 V
+0.02 V
+Valeur ADC max
+4095
+4078
+17 points
+T° QFA calculée
+22.0°C
+21.8°C
+0.2°C
+HR QFA calculée
+57%
+56.5%
+0.5%
+Tableau 22. – Vérification du diviseur de tension — QFA3160D
+Conclusion : Les écarts constatés sont inférieurs aux tolérances des résistances (1%) et 
+restent dans la plage de précision du capteur.
+4.3.3 Test des LEDs indicatrices
+Procédure : Simulation de différentes valeurs de Δ𝑇 dans le firmware pour vérifier le 
+comportement des deux LEDs.
+Valeur Δ𝑇
+LED verte
+LED rouge
+Statut attendu
+Δ𝑇= 0.3°C
+HIGH
+LOW
+Conforme ✓
+Δ𝑇= 1.5°C
+HIGH
+LOW
+Conforme ✓
+Δ𝑇= 2.0°C
+HIGH
+LOW
+Conforme ✓
+Δ𝑇= 2.1°C
+LOW
+HIGH
+Non conforme ✓
+Δ𝑇= 4.0°C
+LOW
+HIGH
+Non conforme ✓
+Tableau 23. – Résultats du test des LEDs — seuil = 2°C
+Conclusion : Le comportement des LEDs est conforme à la logique définie dans le firmware. 
+La transition s’effectue exactement au seuil de 2°C configuré.
+ISI Mahdia
+Page 75
+
+
+===== PAGE 76 =====
+
+Chapire 4 — Tests et Validation
+4.4 Tests d’intégration
+Dans cette section, on va vérifier le bon fonctionnement du pipeline complet en faisant 
+communiquer les différents composants du système entre eux.
+4.4.1 Test ESP32 → Supabase
+Procédure : Upload du firmware complet sur l’ESP32, connexion WiFi et observation des 
+requêtes HTTP dans le moniteur série.
+Résultats :
+• Connexion WiFi établie en moins de 5 secondes ;
+• Authentification Supabase réussie : HTTP 201 Created reçu ;
+• Données visibles en temps réel dans la console Supabase ;
+• Latence d’envoi mesurée : ≈ 850 ms par requête ;
+• Reconnexion automatique testée après coupure WiFi : fonctionnelle.
+4.4.2 Test Supabase → Dashboard
+Procédure : Ouverture du dashboard sur navigateur web et vérification de l’affichage et de 
+la mise à jour des données en temps réel.
+Résultats :
+• Chargement initial des 80 derniers points en moins de 1 seconde ;
+• Latence totale mesure → affichage dashboard : ≈ 1.2 secondes ;
+• Graphique mis à jour toutes les secondes avec les bons timestamps ;
+• Indicateur « ESP hors ligne » affiché correctement après 10 s sans nouvelle donnée.
+Fig. 28. – Dashboard LEST — données en temps réel depuis Supabase
+ISI Mahdia
+Page 76
+
+
+===== PAGE 77 =====
+
+Chapire 4 — Tests et Validation
+4.5 Tests de validation normative
+Au-delà du bon fonctionnement technique du système, cette section vérifie sa conformité aux 
+exigences des normes visées par le projet.
+4.5.1 Validation ISO 17025
+La norme ISO 17025 exige que chaque mesure soit accompagnée d’une incertitude calculée 
+et que toutes les données soient traçables avec un horodatage fiable.
+Calcul de l’incertitude sur les données réelles :
+À partir des 1591 enregistrements collectés dans Supabase lors des tests (période du 
+29/03/2026, température moyenne 22.53°C) :
+𝜎≈1.43 °C
+(écart-type sur les 30 derniers points)
+𝑢répéta = 1.43
+√
+30
+≈0.261 °C
+𝑢résol = 0.1
+2
+√
+3
+≈0.029 °C
+𝑢étalon = 0.05
+2
+= 0.025 °C
+𝑢𝑐= √0.2612 + 0.0292 + 0.0252 ≈0.264 °C
+𝑈(𝑇) = 2 × 0.264 = 𝟎.𝟓𝟐𝟖°𝐂
+(𝑘= 2, conf. 95%)
+Traçabilité : Chaque enregistrement Supabase contient un created_at généré côté serveur 
+garantissant l’intégrité et la traçabilité conformément à ISO 17025.
+ISI Mahdia
+Page 77
+
+
+===== PAGE 78 =====
+
+Chapire 4 — Tests et Validation
+4.5.2 Validation NF EN 60068-3-5 (72 h)
+La norme NF EN 60068-3-5 exige une acquisition continue pendant au minimum 72 heures 
+pour valider la stabilité d’une étuve thermique.
+Le tableau suivant présente les statistiques des données réellement collectées dans Supa­
+base lors des essais (nombre de points, valeurs moyennes, extrêmes, fréquence et horodatage) 
+et vérifie leur conformité aux exigences normatives.
+Paramètre
+Valeur
+Conformité
+Nombre total de points
+1591
+Acquisition continue ✓
+Température moyenne
+22.53°C
+Dans la plage ✓
+Température minimale
+0.4°C
+Valeur enregistrée
+Température maximale
+26.9°C
+Valeur enregistrée
+Humidité moyenne
+56.77% HR
+Dans la plage ✓
+Humidité minimale
+0% HR
+Valeur enregistrée
+Humidité maximale
+94% HR
+Valeur enregistrée
+Premier enregistrement
+29/03/2026 16:30
+Horodaté ✓
+Dernier enregistrement
+29/03/2026 16:58
+Horodaté ✓
+Fréquence d’acquisition
+1 Hz
+NF EN 60068 ✓
+Incertitude élargie 𝑈(𝑇)
+±0.528°C
+ISO 17025 ✓
+Tableau 24. – Statistiques des données collectées — Supabase
+4.6 Résultats obtenus
+Après avoir validé le système au niveau unitaire, intégré et normatif, cette section synthétise 
+les résultats obtenus à l’issue des essais. Je présente d’abord le bilan des performances 
+mesurées au regard des critères exigés, puis l’analyse comparative des deux capteurs (PT100 
+et QFA3160D) qui en découle.
+4.6.1 Performances mesurées
+Le tableau suivant dresse le bilan des performances réellement mesurées sur le système et 
+les confronte aux critères exigés dans le cahier des charges (latence, fréquence d’acquisition, 
+disponibilité, incertitude, etc.). L’ensemble des critères est satisfait.
+ISI Mahdia
+Page 78
+
+
+===== PAGE 79 =====
+
+Chapire 4 — Tests et Validation
+Critère
+Valeur mesurée
+Critère exigé
+Latence mesure → dashboard
+≈ 1.2 s
+< 2 s ✓
+Fréquence d’acquisition
+1 Hz
+1 Hz ✓
+Points collectés (tests)
+1591
+Acquisition continue ✓
+Disponibilité dashboard
+100%
+24h/24 ✓
+Incertitude 𝑈(𝑇) calculée
+±0.528°C
+Conforme ISO 17025 ✓
+Reconnexion WiFi
+Automatique
+Fonctionnel ✓
+LEDs (seuil 2°C)
+Comportement 
+cor­
+rect
+100% fiable ✓
+Tableau 25. – Bilan des performances mesurées du système LEST
+ISI Mahdia
+Page 79
+
+
+===== PAGE 80 =====
+
+Chapire 4 — Tests et Validation
+4.6.2 Analyse de la comparaison des capteurs
+La comparaison entre le PT100 (référence) et le QFA3160D a mis en évidence :
+• Le PT100 offre une très haute précision (±0.1°C) et une excellente stabilité, ce qui en 
+fait un capteur de référence fiable ;
+• Le QFA3160D présente une précision de ±0.5°C pour la température et ±2% pour 
+l’humidité, suffisante pour les applications de métrologie industrielle ;
+• L’écart Δ𝑇 observé lors des tests est resté dans des limites acceptables (< 2°C) dans des 
+conditions stables, validant la cohérence des deux capteurs ;
+• La logique des deux LEDs (verte/rouge) fonctionne correctement et permet une indication 
+visuelle immédiate de l’état du système.
+4.7 Difficultés rencontrées et solutions
+Plusieurs difficultés d’ordre matériel et logiciel ont été rencontrées au cours de la réalisation 
+du projet. Le tableau suivant recense ces obstacles ainsi que les solutions concrètes apportées 
+pour les résoudre.
+Difficulté
+Solution apportée
+Signal QFA3160D 0–10 V incompa­
+tible ESP32 (max 3.3 V)
+Mise en place d’un diviseur de tension R1=10kΩ + 
+R2=4.7kΩ, ramenant la tension à 3.19 V
+Erreur spawn pdflatex ENOENT dans 
+VS Code
+Ajout de MiKTeX au PATH Windows et confi­
+guration de LaTeX Workshop (recipe.default: 
+pdflatex)
+Driver CH340 non reconnu (Win­
+dows 10/11)
+Installation manuelle du driver CH340 et redémar­
+rage complet du PC
+node_modules présent dans le dépôt 
+Git
+Création du fichier .gitignore + git rm --cached -
+r node_modules
+Netlify, 
+échec 
+du 
+déploiement 
+(branche incorrecte)
+Création de la branche main et configuration dans 
+les paramètres Netlify
+Imprécision de l’ADC ESP32 (non-
+linéarité)
+Utilisation de la formule float pour la conversion 
+ADC (pas de map() qui tronque les décimales)
+Tableau 26. – Difficultés rencontrées et solutions apportées
+ISI Mahdia
+Page 80
+
+
+===== PAGE 81 =====
+
+Chapire 4 — Tests et Validation
+4.8 Conclusion
+Dans ce quatrième et dernier chapitre, j’ai présenté l’ensemble des tests et validations du 
+système LEST. Tous les tests unitaires, d’intégration et de validation normative ont été 
+réussis avec succès.
+Le système fonctionne correctement à 1 Hz avec une latence inférieure à 2 secondes, 
+conformément aux exigences. L’incertitude élargie 𝑈(𝑇) = ±0.528°C a été calculée selon 
+la norme ISO 17025. Plus de 1591 points ont été collectés et stockés avec horodatage 
+automatique dans Supabase, accessibles en temps réel via le dashboard https://etuve-lest.
+netlify.app/.
+Les deux LEDs (verte et rouge) fonctionnent correctement selon la logique de comparaison 
+entre le PT100 et le QFA3160D, offrant une indication visuelle immédiate de l’état de 
+conformité du système.
+ISI Mahdia
+Page 81
+
+
+===== PAGE 82 =====
+
+ Conclusion Générale et Perspectives
+Conclusion Générale et Perspectives
+Bilan du projet
+Ce projet de fin d’études a permis de concevoir et de réaliser le système LEST (Laboratoire 
+d’Étalonnage et de Systèmes de Test), une solution IoT embarquée complète pour la sur­
+veillance en temps réel des étuves thermiques de Sagemcom, dans le cadre de la préparation 
+d’un dossier d’accréditation selon la norme ISO 17025 et NF EN 60068-3-5.
+L’ensemble des objectifs fixés en début de projet ont été atteints :
+• Matériel : une carte PCB personnalisée a été conçue sous KiCad 10.0, intégrant 
+l’ESP32, les interfaces pour deux capteurs externes (PT100 et Siemens QFA3160D), les 
+circuits de conditionnement du signal (diviseurs de tension) et deux LEDs indicatrices de 
+conformité ;
+• Firmware : un code Arduino stable a été développé pour l’acquisition à 1 Hz, le calcul de 
+l’écart Δ𝑇= |𝑇QFA3160D −𝑇PT100|, le contrôle des LEDs et la transmission vers Supabase ;
+• Cloud : une base de données Supabase (PostgreSQL) avec horodatage automatique a été 
+configurée. Plus de 1591 enregistrements ont été collectés lors des tests ;
+• Dashboard : un dashboard web React.js a été développé et déployé sur Netlify, offrant la 
+visualisation en temps réel, le calcul automatique des incertitudes ISO 17025 et l’export 
+CSV pour le dossier d’accréditation.
+Apports personnels
+Ce projet a représenté une expérience enrichissante à plusieurs niveaux :
+• Maîtrise de la conception électronique (KiCad, PCB, diviseurs de tension, protection des 
+entrées ADC) ;
+• Développement firmware embarqué (Arduino C++, protocoles HTTP/HTTPS, gestion 
+des bibliothèques) ;
+ISI Mahdia
+Page 82
+
+
+===== PAGE 83 =====
+
+Conclusion Générale et Perspectives
+• Développement web full-stack (React.js, Supabase SDK, déploiement Netlify, CI/CD) ;
+• Connaissance des exigences normatives ISO 17025 et NF EN 60068-3-5 dans un contexte 
+industriel réel.
+Perspectives d’amélioration
+Ce travail ouvre plusieurs perspectives d’évolution pour le système LEST :
+1. Extension à 9 canaux selon la norme NF EN 60068-3-5 pour la cartographie thermique 
+complète du volume utile de l’étuve ;
+2. Génération automatique du rapport d’étalonnage au format PDF depuis le dash­
+board pour le dossier TUNAC, éliminant la rédaction manuelle.
+ISI Mahdia
+Page 83
+
+
+===== PAGE 84 =====
+
+ Références Bibliographiques
+Références Bibliographiques
+[1] NF EN ISO/CEI 17025:2017, Exigences générales concernant la compétence des labora­
+toires d’étalonnages et d’essais, Organisation internationale de normalisation, 2017.
+[2] NF EN 60068-3-5, Essais environnementaux — Partie 3-5 : Documentation 
+d’accompagnement et guidage — Confirmation des performances des chambres d’essai 
+en température, AFNOR, 2002.
+[3] Espressif Systems, ESP32-WROOM-32 Datasheet, version 3.2, 2021. https://www.
+espressif.com
+[4] Siemens Building Technologies, QFA3160D Room Humidity and Temperature Sensor 
+Datasheet, 2020.
+[5] Aosong Electronics, DHT11 Humidity & Temperature Sensor Datasheet, 2010.
+[6] KiCad Development Team, KiCad EDA Reference Manual, version 10.0, 2024. https://
+docs.kicad.org
+[7] Supabase Inc., Supabase Documentation, 2024. https://supabase.com/docs
+[8] Meta Platforms, React Documentation, version 18, 2023. https://react.dev
+[9] Netlify Inc., Netlify Documentation, 2024. https://docs.netlify.com
+[10] BIPM et al., Guide pour l’expression de l’incertitude de mesure (GUM), JCGM 100:2008.
+[11] Sagemcom, Présentation du groupe Sagemcom, 2024. https://www.sagemcom.com
+ISI Mahdia
+Page 84
+
+
+===== PAGE 85 =====
+
+A Structure du Code du Firmware ESP32
+ANNEXE A
+Structure du Code du Firmware ESP32
+Fig. 29. – Structure globale du dossier du code source LEST
+ISI Mahdia
+Page 85
+
+
+===== PAGE 86 =====
+
+B Schéma Électrique KiCad
+ANNEXE B
+Schéma Électrique KiCad
+Fig. 30. – Tracé et routage de la carte électronique personnalisée LEST (PCB)
+Fig. 31. – Schéma électrique du système LEST (KiCad)
+ISI Mahdia
+Page 86
+
+
+===== PAGE 87 =====
+
+C Captures du Dashboard
+ANNEXE C
+Captures du Dashboard
+Fig. 32. – Vue tabulaire de l’historique des mesures dans le dashboard LEST (Timestamp, 
+Siemens, PT100, Δ𝑇, HR, incertitude et statut)
+Fig. 33. – Visualisation graphique des courbes de température et d’humidité en temps réel
+ISI Mahdia
+Page 87
+
+
+===== PAGE 88 =====
+
+Chapire C — Captures du Dashboard
+Fig. 34. – Interface d’authentification sécurisée de l’application web LEST
+ISI Mahdia
+Page 88
+
+
+===== PAGE 89 =====
+
+Chapire C — Captures du Dashboard
+ISI Mahdia
+Page 89

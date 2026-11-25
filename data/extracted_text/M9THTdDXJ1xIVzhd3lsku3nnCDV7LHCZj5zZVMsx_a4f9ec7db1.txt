@@ -1,0 +1,4021 @@
+===== PAGE 1 =====
+
+République Tunisienne
+Ministère de l’Enseignement Supérieur et de
+la Recherche Scientifique
+Université de Monastir
+Institut Supérieur d’Informatique de Mahdia
+MEMOIRE
+N° d’ordre : LCS-GLSI-3-2026-054
+Présenté à
+Institut Supérieur d’Informatique de Mahdia
+Effectué à
+BNS ENGINEERING
+En vue de l’obtention du diplôme de
+Licence Computer Science : Génie Logiciel et Système d’Information
+Elaboré par :
+Oussema Bensalah, Koussay Benkhedher
+Développement d’une maquette / POC des modèles de
+référence de la chaîne logistique internationale
+Soutenu le : 12 juin 2026
+devant le jury composé de :
+Président
+: Mme. Marghli Nourhene
+Rapporteur
+: M. Hazem Rakkez
+Encadrant Académique
+: Mme. Amal Gassara
+Encadrant Professionnel
+: M. Jameleddine El Kamel
+Année universitaire 2025-2026
+
+
+===== PAGE 2 =====
+
+Dédicace
+À mes parents,
+Pour leur amour inconditionnel, leur patience et leurs sacrifices inestimables. Leur sagesse et
+leur expérience constituent le véritable code source de mes réussites et ma référence au
+quotidien.
+À mon oncle,
+Pour ses efforts continus à mes côtés, son soutien indéfectible et ses précieux conseils qui ont
+éclairé mon chemin.
+À mes frères,
+Pour notre belle complicité, leur présence constante et leurs encouragements qui m’ont donné
+la force de persévérer dans les moments de doute.
+À toute ma famille,
+Pour votre bienveillance, votre affection et votre confiance inébranlable tout au long de mes
+études.
+Je dédie ce travail avec ma plus profonde gratitude.
+Koussay Benkhedher
+
+
+===== PAGE 3 =====
+
+Dédicace
+À ma famille, pour son amour, ses sacrifices et son soutien constant,
+À mes proches, pour leur confiance, leur patience et leurs encouragements,
+À toutes les personnes qui m’ont accompagné durant ce parcours, dans les moments d’effort
+comme dans les instants de doute.
+Je dédie ce travail avec toute ma reconnaissance.
+Oussema Bensalah
+
+
+===== PAGE 4 =====
+
+Remerciements
+Nous tenons tout d’abord à exprimer notre profonde gratitude à toutes les personnes qui ont
+contribué, de près ou de loin, à la réalisation de ce projet de fin d’études.
+Nous remercions sincèrement notre encadrant académique pour son accompagnement, ses
+conseils précieux et sa disponibilité tout au long de ce travail.
+Nous adressons également nos remerciements à notre encadrant professionnel ainsi qu’à
+toute l’équipe de BNS Engineering pour leur accueil chaleureux, leur aide et les connaissances
+techniques et organisationnelles qu’ils nous ont apportées durant la période de stage.
+Nous remercions les membres du jury pour l’honneur qu’ils nous font en évaluant ce mémoire
+et pour le temps consacré à son examen.
+Notre reconnaissance va aussi à l’ensemble des enseignants et du personnel de l’Institut
+Supérieur d’Informatique de Mahdia pour la qualité de la formation reçue durant notre parcours
+universitaire.
+Enfin, nous adressons une pensée particulière à nos familles respectives et à nos proches
+pour leur soutien, leur patience et leurs encouragements constants face aux défis de ce projet.
+
+
+===== PAGE 5 =====
+
+TABLE DES MATIÈRES
+Table des matières
+Dédicace
+ii
+Remerciements
+iii
+Table des matières
+vii
+Liste des figures
+ix
+Liste des tableaux
+x
+Liste des acronymes
+xi
+Introduction générale
+1
+1
+Cadre général du projet
+4
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.1
+Présentation de l’organisme d’accueil
+. . . . . . . . . . . . . . . . . . . . . .
+4
+1.1.1
+Présentation de la société . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.1.2
+Domaines d’activité
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.1.3
+Organisation de la société
+. . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.2
+Présentation du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.2.1
+Contexte du projet
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.2.2
+Problématique
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.2.3
+Étude et critique de l’existant
+. . . . . . . . . . . . . . . . . . . . . .
+8
+1.2.4
+Solution proposée
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.3
+Méthodologie de gestion du projet . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.3.1
+Scrum . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+Page iv
+
+
+===== PAGE 6 =====
+
+TABLE DES MATIÈRES
+1.3.2
+Architecture de Scrum . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2
+Analyse et spécification des besoins
+15
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.1
+Identification des acteurs . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.2
+Spécification des besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.2.1
+Besoins fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.2.2
+Besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.3
+Diagramme de cas d’utilisation global . . . . . . . . . . . . . . . . . . . . . .
+19
+2.4
+Architecture de l’application . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.4.1
+Architecture physique
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.4.2
+Architecture logique . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.5
+Mise en œuvre avec Scrum . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.5.1
+Backlog du produit . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.5.2
+Planification des sprints
+. . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.6
+Environnement logiciel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3
+Authentification et gestion des accès
+32
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.2
+Backlog du sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.3
+Analyse du premier sprint . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.3.1
+Diagramme de cas d’utilisation du Sprint 1 . . . . . . . . . . . . . . .
+35
+3.3.2
+Descriptions textuelles des cas d’utilisation . . . . . . . . . . . . . . .
+36
+3.4
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.4.1
+Diagrammes de classes . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+3.4.2
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+3.5
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.5.1
+Interface « S’authentifier » . . . . . . . . . . . . . . . . . . . . . . . .
+46
+3.5.2
+Interface « Réinitialiser le mot de passe » . . . . . . . . . . . . . . . .
+46
+3.5.3
+Interface « Gérer les utilisateurs » . . . . . . . . . . . . . . . . . . . .
+47
+3.5.4
+Interface « Ajouter un utilisateur » . . . . . . . . . . . . . . . . . . . .
+47
+3.5.5
+Interface « Gérer les référentiels » . . . . . . . . . . . . . . . . . . . .
+48
+3.5.6
+Interface « Ajouter un référentiel » . . . . . . . . . . . . . . . . . . . .
+48
+3.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+Page v
+
+
+===== PAGE 7 =====
+
+TABLE DES MATIÈRES
+4
+Gestion des déclarations et documents
+50
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.2
+Backlog du sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.3
+Analyse du deuxième sprint . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.3.1
+Diagramme de cas d’utilisation du Sprint 2 . . . . . . . . . . . . . . .
+54
+4.3.2
+Descriptions textuelles des cas d’utilisation . . . . . . . . . . . . . . .
+55
+4.4
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+4.4.1
+Modélisation du workflow avec BPMN et Camunda
+. . . . . . . . . .
+60
+4.4.2
+Diagramme de classes
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+4.4.3
+Diagrammes de séquence . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+4.5
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+67
+4.5.1
+Interface « Initier DI » . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+4.5.2
+Interface « Consulter Fiche de suivi GUCE» . . . . . . . . . . . . . . .
+71
+4.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+72
+5
+Traitement des dossiers
+73
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+5.2
+Backlog du sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+5.3
+Analyse du troisième sprint . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+77
+5.3.1
+Diagramme de cas d’utilisation du Sprint 3 . . . . . . . . . . . . . . .
+77
+5.3.2
+Descriptions textuelles des cas d’utilisation . . . . . . . . . . . . . . .
+78
+5.4
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+83
+5.4.1
+Diagramme de séquence « Paiement de la Fiche de suivi GUCE » . . .
+83
+5.5
+Réalisation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+84
+5.5.1
+Interface « Dashboard paiement » . . . . . . . . . . . . . . . . . . . .
+84
+5.5.2
+Interface « Paiement en ligne » . . . . . . . . . . . . . . . . . . . . . .
+85
+5.5.3
+Interface « Valider paiement » . . . . . . . . . . . . . . . . . . . . . .
+85
+5.5.4
+Interface « Gestion des agents GUCE/Campost » . . . . . . . . . . . .
+86
+5.5.5
+Interface « Gestion des agents douane » . . . . . . . . . . . . . . . . .
+86
+5.5.6
+Interface « Traitement des demandes » . . . . . . . . . . . . . . . . . .
+87
+5.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+6
+Industrialisation DevOps et intelligence artificielle
+88
+6.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+88
+6.2
+Backlog du sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+88
+6.3
+Analyse et conception du sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . .
+91
+Page vi
+
+
+===== PAGE 8 =====
+
+TABLE DES MATIÈRES
+6.3.1
+Architecture DevOps proposée . . . . . . . . . . . . . . . . . . . . . .
+91
+6.3.2
+Organisation de la chaîne DevOps . . . . . . . . . . . . . . . . . . . .
+92
+6.4
+Réalisation de la chaîne CI/CD . . . . . . . . . . . . . . . . . . . . . . . . . .
+92
+6.4.1
+Pipeline de déploiement local
+. . . . . . . . . . . . . . . . . . . . . .
+93
+6.4.2
+Qualité du code avec SonarQube et JaCoCo . . . . . . . . . . . . . . .
+94
+6.4.3
+Intérêt de l’automatisation . . . . . . . . . . . . . . . . . . . . . . . .
+95
+6.5
+Supervision et observabilité . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+95
+6.5.1
+Vue globale de la plateforme . . . . . . . . . . . . . . . . . . . . . . .
+95
+6.5.2
+Suivi du trafic HTTP . . . . . . . . . . . . . . . . . . . . . . . . . . .
+96
+6.5.3
+Suivi des performances JVM . . . . . . . . . . . . . . . . . . . . . . .
+97
+6.6
+Micro-service intelligent d’analyse documentaire . . . . . . . . . . . . . . . .
+98
+6.6.1
+Contexte et objectif . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+98
+6.6.2
+Stack technique utilisée . . . . . . . . . . . . . . . . . . . . . . . . . .
+99
+6.6.3
+Fonctionnement général du service
+. . . . . . . . . . . . . . . . . . . 100
+6.6.4
+Extraction du texte par OCR . . . . . . . . . . . . . . . . . . . . . . . 101
+6.6.5
+Structuration des données avec le LLM . . . . . . . . . . . . . . . . . 102
+6.6.6
+Comparaison documentaire
+. . . . . . . . . . . . . . . . . . . . . . . 103
+6.6.7
+Résultat retourné par le service . . . . . . . . . . . . . . . . . . . . . . 103
+6.6.8
+Apport du micro-service . . . . . . . . . . . . . . . . . . . . . . . . . 104
+6.7
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 105
+Conclusion Générale
+106
+Bibliographie
+108
+Page vii
+
+
+===== PAGE 9 =====
+
+TABLE DES FIGURES
+Table des figures
+1
+Logo de BNS Engineering
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+2
+Organigramme de BNS Engineering . . . . . . . . . . . . . . . . . . . . . . .
+6
+3
+Processus Scrum
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+4
+Diagramme de cas d’utilisation global . . . . . . . . . . . . . . . . . . . . . .
+19
+5
+Architecture physique du système
+. . . . . . . . . . . . . . . . . . . . . . . .
+20
+6
+Architecture logique microservices avec API Gateway et services métier . . . .
+23
+7
+Planification agile illustrant la charge des sprints . . . . . . . . . . . . . . . . .
+27
+8
+Diagramme de cas d’utilisation détaillé du Sprint 1 . . . . . . . . . . . . . . .
+36
+9
+Diagramme de classes de la gestion des accès . . . . . . . . . . . . . . . . . .
+42
+10
+Diagramme de classes de la gestion des référentiels . . . . . . . . . . . . . . .
+43
+11
+Diagramme de séquence du cas d’utilisation « S’authentifier »
+. . . . . . . . .
+44
+12
+Diagramme de séquence du cas d’utilisation « Ajouter un utilisateur » . . . . .
+45
+13
+Interface « S’authentifier » . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+14
+Interface « Réinitialiser le mot de passe »
+. . . . . . . . . . . . . . . . . . . .
+46
+15
+Interface « Gérer les utilisateurs »
+. . . . . . . . . . . . . . . . . . . . . . . .
+47
+16
+Interface « Ajouter un utilisateur » . . . . . . . . . . . . . . . . . . . . . . . .
+47
+17
+Interface « E-mail de bienvenue »
+. . . . . . . . . . . . . . . . . . . . . . . .
+48
+18
+Interface « Gérer les référentiels » . . . . . . . . . . . . . . . . . . . . . . . .
+48
+19
+Interface « Ajouter un référentiel » . . . . . . . . . . . . . . . . . . . . . . . .
+49
+20
+Diagramme de cas d’utilisation du sprint 2 . . . . . . . . . . . . . . . . . . . .
+54
+21
+Processus BPMN de traitement d’une déclaration d’importation
+. . . . . . . .
+61
+22
+Processus BPMN de demande de prorogation . . . . . . . . . . . . . . . . . .
+62
+23
+Processus BPMN de demande de modification . . . . . . . . . . . . . . . . . .
+62
+Page viii
+
+
+===== PAGE 10 =====
+
+TABLE DES FIGURES
+24
+Diagramme de classes du sprint 2
+. . . . . . . . . . . . . . . . . . . . . . . .
+64
+25
+Diagramme de séquence du cas d’utilisation « Initier une déclaration d’importation
+» . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+26
+Diagramme de séquence du cas d’utilisation « Demande de prorogation »
+. . .
+66
+27
+Diagramme de séquence du cas d’utilisation « Demande de modification » . . .
+67
+28
+Interface « Initier DI — Importateur » . . . . . . . . . . . . . . . . . . . . . .
+68
+29
+Interface « Initier DI — Fournisseur » . . . . . . . . . . . . . . . . . . . . . .
+68
+30
+Interface « Initier DI — Informations générales » . . . . . . . . . . . . . . . .
+69
+31
+Interface « Initier DI — Marchandises » . . . . . . . . . . . . . . . . . . . . .
+69
+32
+Interface « Ajouter une marchandise » . . . . . . . . . . . . . . . . . . . . . .
+70
+33
+Interface « Initier DI — Pièces jointes » . . . . . . . . . . . . . . . . . . . . .
+70
+34
+Interface « Aperçu des frais » . . . . . . . . . . . . . . . . . . . . . . . . . . .
+71
+35
+Interface « Consulter fiche de suivi GUCE » . . . . . . . . . . . . . . . . . . .
+71
+36
+Diagramme de cas d’utilisation global du Sprint 3 . . . . . . . . . . . . . . . .
+78
+37
+Diagramme de séquence du cas d’utilisation « Paiement de la Fiche de suivi
+GUCE » . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+84
+38
+Interface « Dashboard paiement »
+. . . . . . . . . . . . . . . . . . . . . . . .
+85
+39
+Interface « Paiement en ligne via Stripe »
+. . . . . . . . . . . . . . . . . . . .
+85
+40
+Interface « Valider paiement »
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+86
+41
+Interface « Gestion des agents GUCE/Campost »
+. . . . . . . . . . . . . . . .
+86
+42
+Interface « Gestion des agents douane » . . . . . . . . . . . . . . . . . . . . .
+87
+43
+Interface « Traitement des demandes » . . . . . . . . . . . . . . . . . . . . . .
+87
+44
+Architecture DevOps de la plateforme . . . . . . . . . . . . . . . . . . . . . .
+92
+45
+Pipeline Jenkins de déploiement local
+. . . . . . . . . . . . . . . . . . . . . .
+93
+46
+Analyse SonarQube du service DI . . . . . . . . . . . . . . . . . . . . . . . .
+94
+47
+Vue globale de la supervision de la plateforme . . . . . . . . . . . . . . . . . .
+96
+48
+Suivi du trafic HTTP des micro-services . . . . . . . . . . . . . . . . . . . . .
+97
+49
+Suivi des performances JVM des micro-services . . . . . . . . . . . . . . . . .
+98
+50
+Répartition des documents concernés par les erreurs documentaires . . . . . . .
+99
+51
+Fonctionnement général du micro-service d’analyse documentaire . . . . . . . 100
+52
+Étapes d’extraction OCR d’un document scanné . . . . . . . . . . . . . . . . . 101
+53
+Mapping sémantique des données documentaires avec le LLM . . . . . . . . . 102
+54
+Entrées, moteur de comparaison et sorties du service
+. . . . . . . . . . . . . . 104
+Page ix
+
+
+===== PAGE 11 =====
+
+LISTE DES TABLEAUX
+Liste des tableaux
+1
+Backlog du produit . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2
+Outils et technologies de développement utilisés . . . . . . . . . . . . . . . . .
+28
+3
+Backlog du Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+4
+Description textuelle du cas d’utilisation « Créer un compte » . . . . . . . . . .
+37
+5
+Description textuelle du cas d’utilisation « S’authentifier » . . . . . . . . . . .
+37
+6
+Description textuelle du cas d’utilisation « Réinitialiser le mot de passe »
+. . .
+38
+7
+Description textuelle du cas d’utilisation « Gérer les utilisateurs »
+. . . . . . .
+39
+8
+Description textuelle du cas d’utilisation « Gérer les référentiels »
+. . . . . . .
+40
+9
+Backlog du Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+10
+Description textuelle du cas d’utilisation « Initier et gérer une déclaration d’importation
+» . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+11
+Description textuelle du cas d’utilisation « Confirmer la déclaration et générer
+la Fiche de suivi GUCE » . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+12
+Description textuelle du cas d’utilisation « Consulter et suivre les déclarations »
+57
+13
+Description textuelle du cas d’utilisation « Gérer les demandes liées à la déclaration
+» . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+14
+Backlog du Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+74
+15
+Description textuelle du cas d’utilisation « Gérer les agents GUCE/Campost » .
+78
+16
+Description textuelle du cas d’utilisation « Paiement et validation du paiement »
+79
+17
+Description textuelle du cas d’utilisation « Gérer les agents douane » . . . . . .
+81
+18
+Description textuelle du cas d’utilisation « Traiter les dossiers et les demandes »
+82
+19
+Backlog du Sprint 4 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+20
+Stack technique du micro-service d’analyse documentaire . . . . . . . . . . . .
+99
+Page x
+
+
+===== PAGE 12 =====
+
+LISTE DES TABLEAUX
+Liste des acronymes
+API Application Programming Interface
+BNS Business Numeric Systems
+BPMN Business Process Model and Notation
+CI/CD Continuous Integration / Continuous Deployment
+CPU Central Processing Unit
+DevOps Development & Operations
+DI Déclaration d’Importation
+FOB Free On Board
+GED Gestion Électronique des Documents
+GUCE Guichet Unique du Commerce Extérieur
+HTTP HyperText Transfer Protocol
+ISIMA Institut Supérieur d’Informatique de Mahdia
+ISIMA Institut Supérieur d’Informatique de Mahdia
+JSON JavaScript Object Notation
+JVM Java Virtual Machine
+JWT JSON Web Token
+LLM Large Language Model
+OCR Optical Character Recognition
+PO Product Owner
+POC Proof of Concept (Preuve de concept)
+REST Representational State Transfer
+SM Scrum Master
+SMTP Simple Mail Transfer Protocol
+UM Université de Monastir
+UML Unified Modeling Language
+Page xi
+
+
+===== PAGE 13 =====
+
+INTRODUCTION GÉNÉRALE
+Introduction générale
+Le commerce international occupe aujourd’hui une place stratégique dans le développement
+économique des pays. L’intensification des échanges de marchandises, combinée à la diversité
+des acteurs impliqués, a considérablement complexifié les procédures liées aux opérations
+d’importation. Dans ce contexte, ces dernières nécessitent une organisation rigoureuse, un suivi
+précis ainsi qu’une coordination efficace entre les différentes parties prenantes. Par conséquent,
+la modernisation des démarches administratives s’impose comme un enjeu majeur, visant
+à réduire les délais de traitement, améliorer la qualité des services offerts et renforcer la
+transparence des opérations.
+Afin de répondre à ces exigences, les guichets uniques du commerce extérieur ont été
+introduits comme une solution innovante permettant de centraliser les formalités administratives
+au sein d’une plateforme unifiée. Cette approche facilite les interactions entre les importateurs,
+les administrations publiques et les organismes de contrôle, tout en simplifiant les procédures.
+Néanmoins, certaines opérations liées aux déclarations d’importation présentent encore des
+limites, notamment en termes de suivi des dossiers, de gestion des documents, de validation
+des paiements et de traitement des décisions douanières, ce qui peut engendrer des retards et
+des inefficacités opérationnelles.
+C’est dans ce contexte que s’inscrit notre projet de fin d’études, réalisé au sein de
+BNS Engineering. Ce projet consiste à concevoir et développer une plateforme numérique
+dédiée à la gestion des déclarations d’importation, inspirée du principe du guichet unique du
+Page 1
+
+
+===== PAGE 14 =====
+
+INTRODUCTION GÉNÉRALE
+commerce extérieur. L’objectif principal est de proposer une solution intégrée permettant de
+gérer l’ensemble du cycle de vie d’une déclaration, depuis sa création par l’importateur jusqu’à
+son traitement final par les autorités compétentes.
+La solution développée vise à simplifier les démarches des utilisateurs, à centraliser les
+informations relatives aux dossiers et à assurer un suivi efficace des différentes étapes du
+processus. Elle permet également de gérer de manière cohérente les comptes utilisateurs, les
+rôles, les référentiels, les pièces jointes, les factures, les paiements ainsi que les décisions
+douanières. Par ailleurs, elle prend en charge des cas spécifiques tels que les demandes de
+complément d’information, les demandes de prorogation et les demandes de modification,
+contribuant ainsi à une meilleure traçabilité et à une gestion plus fluide des opérations.
+Le présent rapport expose l’ensemble des travaux réalisés dans le cadre de ce projet de fin
+d’études. Il retrace les différentes étapes de conception et de développement de la solution,
+depuis l’étude du contexte et l’analyse des besoins jusqu’à l’implémentation, les tests et la
+validation des fonctionnalités. L’approche adoptée repose sur une méthodologie agile de type
+Scrum, favorisant une réalisation progressive et itérative à travers plusieurs sprints.
+Ce document est structuré en six chapitres principaux :
+— Le premier chapitre présente le cadre général du projet. Il introduit l’organisme
+d’accueil, décrit le contexte du projet, expose la problématique, analyse et critique
+l’existant, puis présente la solution proposée ainsi que la méthodologie de travail adoptée.
+— Le deuxième chapitre est consacré à l’analyse et à la spécification des besoins. Il identifie
+les acteurs du système, détaille les besoins fonctionnels et non fonctionnels, présente les
+principaux cas d’utilisation et décrit l’architecture générale ainsi que l’environnement de
+développement.
+— Le troisième chapitre détaille le premier sprint, consacré à la mise en place des
+fonctionnalités de base, notamment l’authentification, la gestion des utilisateurs, des rôles
+et des référentiels.
+— Le quatrième chapitre présente le deuxième sprint, dédié à la gestion des déclarations
+d’importation côté importateur. Il couvre la création des dossiers, l’ajout des
+Page 2
+
+
+===== PAGE 15 =====
+
+INTRODUCTION GÉNÉRALE
+marchandises et des pièces jointes, l’aperçu des frais, la confirmation de la déclaration,
+la génération des factures, les demandes liées au dossier ainsi que l’orchestration du
+workflow avec BPMN et Camunda.
+— Le cinquième chapitre décrit le troisième sprint, portant sur le paiement des factures,
+la validation des paiements, la gestion des agents, le traitement douanier ainsi que le
+traitement des demandes de prorogation et de modification par les agents concernés.
+— Le sixième chapitre présente le quatrième sprint, consacré à l’industrialisation DevOps
+de la plateforme, à la supervision technique des microservices, à l’analyse qualité du code
+et à l’intégration d’un micro-service intelligent d’analyse documentaire.
+À travers ce travail, nous mettons en évidence l’apport de la digitalisation des procédures
+d’importation, ainsi que l’intérêt d’une plateforme centralisée dans l’amélioration de la
+traçabilité, de la transparence et de l’efficacité du traitement des dossiers, contribuant ainsi à
+une meilleure performance globale des opérations du commerce extérieur.
+Page 3
+
+
+===== PAGE 16 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+Chapitre
+1
+Cadre général du projet
+Introduction
+Ce chapitre traite la mise en contexte organisationnel et méthodologique du projet. Tout
+d’abord, nous présentons l’organisme d’accueil ainsi que ses principaux domaines d’activité.
+Ensuite, nous décrivons le contexte du projet et la problématique identifiée. Puis, nous
+procédons à une étude de l’existant afin de dégager les limites des solutions actuelles et de
+présenter la solution proposée. Enfin, nous terminons par la méthodologie de gestion adoptée
+pour assurer le bon déroulement du projet.
+1.1 Présentation de l’organisme d’accueil
+Cette section présente l’entreprise d’accueil, ses principaux domaines d’activité ainsi que
+son organisation interne.
+1.1.1
+Présentation de la société
+BNS Engineering est une entreprise spécialisée dans les services informatiques, la
+transformation numérique et le développement de solutions à forte valeur ajoutée. Elle intervient
+principalement dans la conception, le développement et la mise en œuvre de solutions
+Page 4
+
+
+===== PAGE 17 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+digitales destinées à accompagner les organisations dans la modernisation de leurs systèmes
+d’information.
+L’entreprise se distingue par son expertise dans les domaines de l’e-Government, de
+l’e-Finance, de la dématérialisation des procédures administratives et de l’automatisation
+des processus métiers. À travers ses différents projets, BNS Engineering accompagne ses
+partenaires dans l’amélioration de leur performance opérationnelle, la simplification de leurs
+procédures et l’optimisation de leurs services.
+Grâce à une expertise confirmée dans l’ingénierie des systèmes d’information, BNS
+Engineering propose des solutions adaptées aux besoins spécifiques de ses clients, en tenant
+compte des contraintes organisationnelles, techniques et fonctionnelles propres à chaque projet.
+FIGURE 1. Logo de BNS Engineering
+1.1.2
+Domaines d’activité
+BNS Engineering intervient dans plusieurs domaines stratégiques liés à la transformation
+digitale et aux systèmes d’information. Ses principales activités peuvent être résumées comme
+suit :
+— e-Government : mise en place de solutions de dématérialisation des procédures
+administratives et développement de guichets uniques électroniques facilitant les
+échanges entre les administrations, les entreprises et les citoyens.
+— Transformation digitale : accompagnement des organisations dans la modernisation de
+leurs systèmes d’information à travers des solutions innovantes, évolutives et adaptées à
+leurs besoins métiers.
+Page 5
+
+
+===== PAGE 18 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+— Plateformes Workflow et GED : conception de solutions permettant la gestion des
+processus métiers, le suivi des circuits de validation ainsi que l’archivage et la gestion
+électronique des documents.
+— e-Finance : développement de plateformes financières digitales, notamment dans les
+domaines du paiement électronique, des services bancaires et de la sécurisation des
+transactions.
+— Intégration de systèmes : mise en place de solutions assurant l’échange de données et
+l’interopérabilité entre différents systèmes d’information.
+— Conseil et ingénierie : accompagnement stratégique et technique des entreprises dans la
+définition, la conception et la réalisation de leurs projets de transformation numérique.
+1.1.3
+Organisation de la société
+L’organisation de BNS Engineering repose sur une structure hiérarchique claire qui assure
+une répartition efficace des responsabilités entre les différentes directions et départements. Cette
+organisation favorise la coordination entre les équipes, le suivi des projets ainsi que la maîtrise
+des différentes phases de réalisation.
+FIGURE 2. Organigramme de BNS Engineering
+Page 6
+
+
+===== PAGE 19 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+1.2 Présentation du projet
+1.2.1
+Contexte du projet
+Dans un contexte marqué par la mondialisation et l’intensification des échanges
+commerciaux internationaux, les administrations douanières sont confrontées à des exigences
+croissantes en matière de rapidité, de transparence et d’efficacité. La gestion des opérations
+d’importation nécessite une coordination rigoureuse entre plusieurs acteurs, notamment les
+importateurs, les organismes de contrôle, les administrations publiques, les services financiers
+et les services douaniers.
+Dans cette optique, le Guichet Unique du Commerce Extérieur (GUCE) constitue
+une plateforme essentielle qui permet de centraliser et de simplifier les formalités liées
+aux opérations d’importation et d’exportation. Il facilite les échanges entre les différents
+intervenants et contribue à améliorer la qualité du service rendu aux opérateurs économiques.
+Cependant, malgré l’existence de ce type de plateforme, certaines procédures liées
+à la gestion des déclarations d’importation restent encore partiellement manuelles ou
+insuffisamment optimisées. Cette situation entraîne des retards de traitement, une visibilité
+limitée sur l’état des dossiers, des difficultés de coordination entre les acteurs ainsi qu’un
+manque de traçabilité des opérations effectuées.
+C’est dans ce cadre que s’inscrit notre projet, qui consiste à concevoir et à développer
+une plateforme de gestion des déclarations d’importation. Cette solution vise à digitaliser et
+à automatiser l’ensemble du cycle de vie d’un dossier, depuis sa création par l’importateur
+jusqu’à son traitement final par les services concernés.
+1.2.2
+Problématique
+Malgré les efforts de digitalisation entrepris, la gestion actuelle des déclarations
+d’importation présente encore plusieurs limites qui impactent la performance globale du
+Page 7
+
+
+===== PAGE 20 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+processus. Ces limites concernent principalement le suivi des dossiers, la traçabilité des actions,
+l’automatisation des étapes métier ainsi que la coordination entre les différents intervenants.
+Les principales problématiques identifiées sont les suivantes :
+— Difficulté de suivi des dossiers : les utilisateurs ne disposent pas toujours d’une visibilité
+claire sur l’état d’avancement de leurs dossiers, ce qui complique le suivi des traitements
+et la prise de décision.
+— Manque de traçabilité : l’absence d’un historique détaillé des actions rend
+difficile l’identification des opérations effectuées, des intervenants concernés et des
+responsabilités associées.
+— Faible automatisation des processus : plusieurs étapes du circuit d’importation
+sont encore réalisées manuellement, ce qui augmente le risque d’erreurs, d’oublis et
+d’incohérences.
+— Délais de traitement élevés : le manque d’optimisation et de coordination entre les
+acteurs entraîne souvent un allongement des délais de traitement.
+— Multiplicité des intervenants : la présence de plusieurs acteurs, tels que l’importateur, la
+douane, le GUCE et les services financiers, rend les échanges plus complexes et nécessite
+une meilleure organisation du processus.
+Ces constats rendent le processus global lourd, peu fluide et difficile à exploiter. Ils justifient
+la nécessité de proposer une solution digitale performante, capable d’améliorer la gestion
+des déclarations d’importation, de renforcer la traçabilité des opérations et de faciliter la
+coordination entre les différents acteurs.
+1.2.3
+Étude et critique de l’existant
+Dans cette section, nous présentons une analyse de l’existant afin de mieux comprendre
+les solutions déjà mises en place dans le domaine du commerce extérieur et de la gestion
+des déclarations d’importation. Cette étude permet d’identifier les points forts des plateformes
+existantes ainsi que les limites qui peuvent persister malgré les efforts de digitalisation.
+Page 8
+
+
+===== PAGE 21 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+Plusieurs pays ont adopté des systèmes de guichet unique afin de faciliter les opérations
+liées à l’importation et à l’exportation. Parmi les expériences les plus connues, nous pouvons
+citer :
+— Singapour (TradeNet) : cette plateforme constitue l’une des références internationales
+en matière de guichet unique. Elle assure une centralisation efficace des demandes
+et contribue à réduire considérablement les délais de traitement. Toutefois, son
+fonctionnement repose sur une organisation institutionnelle très structurée, ce qui peut
+limiter son adaptabilité à d’autres contextes moins matures.
+— Corée du Sud (UNI-PASS) : ce système se distingue par son niveau élevé
+d’automatisation et par sa capacité à accélérer le traitement des opérations douanières.
+Néanmoins, sa mise en œuvre nécessite une forte maturité numérique, une infrastructure
+avancée et une interconnexion efficace entre les différents acteurs.
+— Maroc (PortNet) : cette solution a permis d’améliorer la circulation des informations
+entre les acteurs du commerce extérieur et de réduire certains délais de traitement.
+Cependant, certaines contraintes organisationnelles subsistent, notamment au niveau de
+la coordination entre les différents intervenants.
+— Cameroun (e-GUCE) : cette plateforme a contribué à la digitalisation d’une partie des
+démarches liées au commerce extérieur. Malgré cette avancée, certaines limites persistent,
+notamment en matière de flexibilité, de suivi détaillé des dossiers et d’automatisation
+complète du processus.
+Malgré leurs performances, ces solutions présentent un ensemble de limites communes qui
+peuvent être résumées comme suit :
+— Automatisation partielle : certaines étapes des processus métier restent encore
+manuelles, ce qui ralentit le traitement des dossiers et augmente le risque d’erreurs.
+— Manque de flexibilité : les systèmes existants s’adaptent parfois difficilement aux
+évolutions réglementaires, organisationnelles ou fonctionnelles.
+— Coordination limitée : les interactions entre les différents acteurs ne sont pas toujours
+optimisées, ce qui engendre des retards et des difficultés de communication.
+Page 9
+
+
+===== PAGE 22 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+— Traçabilité insuffisante : le suivi du cycle de vie des dossiers reste parfois incomplet,
+réduisant ainsi la visibilité offerte aux utilisateurs.
+— Personnalisation limitée : les tableaux de bord, les indicateurs et les vues fonctionnelles
+ne sont pas toujours adaptés aux besoins spécifiques de chaque profil utilisateur.
+Malgré les progrès réalisés dans le domaine des guichets uniques du commerce extérieur,
+les solutions existantes présentent encore plusieurs contraintes. Ces limites concernent
+principalement la flexibilité du système, l’automatisation des processus, la coordination entre
+les acteurs ainsi que la qualité du suivi offert aux utilisateurs. Cette analyse confirme l’intérêt
+de proposer une solution plus adaptée, évolutive et centrée sur la gestion complète du cycle de
+vie des déclarations d’importation.
+1.2.4
+Solution proposée
+Face aux limites identifiées, la solution proposée dans le cadre de ce projet vise à offrir
+une plateforme plus flexible, plus évolutive et mieux adaptée aux besoins des différents acteurs
+intervenant dans le circuit d’importation.
+L’objectif principal est de mettre en place un système capable de centraliser les opérations,
+de faciliter les échanges entre les utilisateurs et d’assurer un suivi clair de chaque dossier
+depuis sa création jusqu’à son traitement final. Cette solution cherche à améliorer la visibilité,
+la traçabilité et la fluidité des procédures liées aux déclarations d’importation.
+La plateforme repose sur une organisation modulaire qui permet de séparer les grandes
+fonctionnalités du système, telles que la gestion des utilisateurs, la gestion des déclarations
+d’importation, la gestion des documents, la gestion des référentiels et le suivi des processus
+métier. Cette organisation facilite l’évolution progressive du système et permet d’ajouter de
+nouvelles fonctionnalités sans perturber l’ensemble de la plateforme.
+La solution intègre également un mécanisme d’orchestration des processus métier. Ce
+mécanisme permet de représenter les différentes étapes du circuit d’importation sous forme
+de workflows, afin de mieux contrôler leur déroulement, d’automatiser certaines transitions et
+d’assurer une meilleure coordination entre les acteurs concernés.
+Page 10
+
+
+===== PAGE 23 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+En complément, la plateforme assure une gestion sécurisée des accès. Chaque utilisateur
+dispose d’un espace adapté à son profil et ne peut accéder qu’aux fonctionnalités correspondant
+à son rôle. Cette approche garantit une meilleure maîtrise des accès, une séparation claire des
+responsabilités et une protection renforcée des données manipulées.
+La solution vise aussi à améliorer l’expérience utilisateur à travers des interfaces simples,
+claires et adaptées aux besoins de chaque acteur. Les tableaux de bord permettent de consulter
+rapidement les informations importantes, de suivre l’état des dossiers et d’identifier les actions
+en attente.
+Ainsi, la solution proposée répond aux principales limites de l’existant en apportant :
+— une meilleure centralisation des procédures;
+— un suivi plus clair du cycle de vie des dossiers;
+— une automatisation progressive des processus métier;
+— une gestion plus souple des utilisateurs et des accès selon les rôles;
+— une meilleure traçabilité des actions réalisées;
+— une plateforme évolutive capable de s’adapter aux besoins futurs.
+Cette solution constitue une réponse adaptée aux enjeux actuels de digitalisation du
+commerce extérieur. Elle permet d’améliorer l’efficacité du traitement des dossiers, de réduire
+les interventions manuelles, de renforcer la transparence entre les différents acteurs et d’assurer
+une meilleure maîtrise du processus d’importation.
+1.3 Méthodologie de gestion du projet
+La méthodologie de gestion de projet constitue un élément essentiel pour assurer le bon
+déroulement et la réussite d’un projet informatique. Elle permet de structurer les différentes
+phases du projet, d’organiser le travail de l’équipe et de garantir une meilleure coordination
+entre les différents intervenants.
+Dans le cadre de ce projet, nous avons opté pour une approche agile basée sur le cadre
+Scrum. Ce choix est motivé par la nécessité de s’adapter aux évolutions des besoins, de
+Page 11
+
+
+===== PAGE 24 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+livrer progressivement des fonctionnalités opérationnelles et d’assurer un suivi régulier de
+l’avancement du projet.
+1.3.1
+Scrum
+Scrum est un cadre de gestion agile conçu pour aider les équipes à organiser et à gérer
+efficacement leur travail[1]. Il repose sur une approche itérative et incrémentale, dans laquelle le
+développement est découpé en cycles courts appelés sprints. Chaque sprint permet de produire
+un incrément fonctionnel du système, qui peut être évalué et amélioré au fur et à mesure de
+l’avancement du projet.
+Contrairement aux méthodes traditionnelles telles que le modèle en V, Scrum offre une plus
+grande flexibilité et permet une adaptation rapide aux changements. Il favorise également une
+meilleure visibilité sur l’avancement du projet, une communication continue entre les membres
+de l’équipe et une amélioration progressive du produit.
+Dans notre travail, l’adoption de Scrum nous a permis de structurer le développement
+du projet, de planifier les tâches de manière progressive et d’assurer un suivi régulier des
+fonctionnalités réalisées à chaque sprint.
+1.3.2
+Architecture de Scrum
+Le cadre Scrum repose sur trois éléments principaux : les rôles, les artefacts et les
+événements. Ces éléments permettent d’organiser le travail, de clarifier les responsabilités et
+de suivre l’évolution du projet de manière structurée. La figure 3 illustre les éléments clés de la
+méthode Scrum utilisés dans la gestion de projet agile.
+Page 12
+
+
+===== PAGE 25 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+FIGURE 3. Processus Scrum
+Rôles en Scrum
+Les rôles Scrum définissent les responsabilités des membres de l’équipe et assurent une
+meilleure répartition du travail :
+— Product Owner (PO) : responsable de la définition des besoins, de la priorisation des
+fonctionnalités et de la gestion du Product Backlog. Dans notre projet, ce rôle est assuré
+par Jameleddine El kamel.
+— Scrum Master (SM) : garant du bon déroulement du processus Scrum, il veille au respect
+de la méthodologie et accompagne l’équipe dans la résolution des obstacles rencontrés.
+Ce rôle est assuré par Amal Gassara.
+— Équipe de développement : chargée de la conception, du développement, des tests et de
+la validation des fonctionnalités du système. Elle est composée de Oussema Bensalah et
+Koussay Ben Khedher.
+Artefacts
+Les artefacts Scrum permettent d’organiser, de suivre et de rendre visible le travail réalisé
+tout au long du projet :
+Page 13
+
+
+===== PAGE 26 =====
+
+CHAPITRE 1. CADRE GÉNÉRAL DU PROJET
+— Product Backlog : il regroupe l’ensemble des fonctionnalités du projet sous forme de
+User Stories, classées selon leur priorité et leur importance métier.
+— Sprint Backlog : il correspond à l’ensemble des tâches sélectionnées pour être réalisées
+durant un sprint donné.
+— Incrément : il représente la version fonctionnelle du produit livrée à la fin de chaque
+sprint, intégrant les fonctionnalités développées et validées.
+Événements
+Les événements Scrum rythment le déroulement du projet et assurent un suivi continu de
+l’avancement :
+— Sprint : période de développement de durée limitée durant laquelle un ensemble de
+fonctionnalités est réalisé.
+— Sprint Planning : réunion de planification permettant de définir les objectifs du sprint et
+les tâches à réaliser.
+— Daily Scrum : réunion courte et régulière permettant de suivre l’avancement, d’identifier
+les difficultés et de coordonner le travail de l’équipe.
+— Revue de Sprint : réunion de validation permettant de présenter les fonctionnalités
+réalisées et de recueillir les retours nécessaires.
+— Rétrospective : réunion d’amélioration continue permettant d’analyser le déroulement
+du sprint et d’identifier les actions d’amélioration pour les prochains cycles.
+Conclusion
+Au cours de ce chapitre, nous avons présenté le cadre général du projet en exposant
+l’organisme d’accueil, le contexte du travail ainsi que la problématique identifiée. Nous avons
+également étudié la situation existante afin de dégager ses principales limites et de justifier la
+solution proposée. Ces éléments constituent une base essentielle pour aborder, dans le chapitre
+suivant, l’analyse et la spécification des besoins du système.
+Page 14
+
+
+===== PAGE 27 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+Chapitre
+2
+Analyse et spécification des besoins
+Introduction
+Ce chapitre est consacré à l’analyse et à la spécification des besoins de notre système. Cette
+étape permet de comprendre le fonctionnement global de la plateforme, d’identifier les acteurs,
+de définir les besoins fonctionnels et non fonctionnels, puis de présenter leur modélisation à
+travers les diagrammes UML. Enfin, nous abordons l’architecture du système, le backlog du
+produit, la planification des sprints ainsi que l’environnement de développement utilisé.
+2.1 Identification des acteurs
+Un acteur est une entité externe qui interagit avec le système afin d’accomplir certaines
+actions. Dans notre projet, nous avons identifié les acteurs suivants :
+— Importateur : acteur principal de la plateforme. Il s’inscrit, initie des déclarations
+d’importation, ajoute des pièces jointes, consulte ses dossiers, effectue les paiements et
+suit l’évolution de ses opérations.
+— Agent Douane : responsable du traitement des dossiers transmis à la douane. Il peut
+consulter les déclarations, accepter ou refuser un dossier, demander un complément
+d’information et traiter les demandes de prorogation ou de modification.
+Page 15
+
+
+===== PAGE 28 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+— Administrateur Douane : responsable de la gestion des agents douaniers. Il peut créer,
+modifier, bloquer ou supprimer les comptes des agents douane, consulter la liste des
+agents, et assurer les mêmes actions qu’un agent douane, notamment le traitement
+des déclarations, la demande de complément d’information, ainsi que le traitement des
+demandes de prorogation et de modification.
+— Agent GUCE / Campost : intervient principalement dans la validation des paiements et
+la transmission des dossiers à la douane après confirmation du paiement.
+— Administrateur GUCE / Campost : responsable de la gestion des agents GUCE et
+Campost. Il peut créer, modifier, bloquer ou supprimer les comptes des agents, consulter
+la liste des agents, et assurer les mêmes actions qu’un agent GUCE ou Campost,
+notamment la validation des paiements et la transmission des dossiers à la douane.
+— Administrateur : responsable de la gestion globale de la plateforme. Il gère les comptes
+utilisateurs, les rôles, les référentiels métiers et les paramètres généraux du système.
+2.2 Spécification des besoins
+L’identification des besoins permet de définir les fonctionnalités que le système doit offrir
+afin de répondre aux objectifs du projet.
+2.2.1
+Besoins fonctionnels
+L’analyse fonctionnelle vise à décrire les fonctions que la plateforme doit assurer afin de
+satisfaire les besoins de ses différents utilisateurs. Les fonctionnalités attendues sont présentées
+ci-dessous, organisées selon les acteurs concernés.
+Importateur :
+— S’inscrire et se connecter à la plateforme.
+— Initier une déclaration d’importation et la sauvegarder en brouillon.
+— Consulter, modifier et supprimer ses déclarations.
+— Ajouter les marchandises et les pièces jointes obligatoires.
+Page 16
+
+
+===== PAGE 29 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+— Consulter l’aperçu des frais et les fiches de suivi GUCE générées.
+— Suivre l’état de ses dossiers.
+— Effectuer le paiement en ligne ou en espèces.
+— Répondre aux demandes de complément d’information.
+— Soumettre des demandes de prorogation ou de modification.
+— Télécharger les déclarations validées.
+Agent Douane :
+— Consulter les dossiers transmis à la douane.
+— Consulter les détails d’une déclaration et ses pièces jointes.
+— Traiter les déclarations d’importation.
+— Accepter ou refuser un dossier.
+— Demander un complément d’information.
+— Traiter les demandes de prorogation et de modification.
+Administrateur Douane :
+— Gérer les comptes des agents douane.
+— Créer, modifier, bloquer ou supprimer un agent douane.
+— Consulter la liste des agents douane.
+— Assurer les mêmes actions qu’un agent douane, notamment le traitement des dossiers, la
+demande de complément et le traitement des demandes avancées.
+Agent GUCE / Campost :
+— Consulter les fiches de suivi GUCE en attente de paiement.
+— Vérifier les paiements effectués.
+— Valider les paiements.
+— Transmettre les dossiers à la douane après validation du paiement.
+Administrateur GUCE / Campost :
+— Gérer les comptes des agents GUCE et Campost.
+— Créer, modifier, bloquer ou supprimer un agent GUCE ou Campost.
+Page 17
+
+
+===== PAGE 30 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+— Consulter la liste des agents GUCE et Campost.
+— Assurer les mêmes actions qu’un agent GUCE ou Campost, notamment la validation des
+paiements et la transmission des dossiers à la douane.
+Administrateur :
+— Gérer les comptes utilisateurs.
+— Accepter ou rejeter les comptes importateurs.
+— Attribuer les rôles aux utilisateurs.
+— Gérer les données de référence.
+— Configurer les paramètres généraux du système.
+— Superviser les opérations de la plateforme.
+2.2.2
+Besoins non fonctionnels
+Les besoins non fonctionnels décrivent les exigences liées à la qualité du système ainsi
+qu’aux contraintes de son environnement d’utilisation. Ils permettent de garantir le bon
+fonctionnement, la sécurité et la performance globale de la plateforme. Parmi ces besoins, nous
+citons :
+— Fiabilité : le système doit produire des résultats corrects quelles que soient les conditions
+d’utilisation, tout en assurant une disponibilité continue et une cohérence des données.
+— Flexibilité : la plateforme doit pouvoir s’adapter aux évolutions des besoins métier et aux
+changements réglementaires sans nécessiter de modifications lourdes.
+— Efficacité : le système doit atteindre les objectifs fixés en optimisant les temps de réponse
+et en réduisant les délais de traitement des opérations.
+— Sécurité et contrôle d’accès : le système doit protéger les données contre les accès non
+autorisés et garantir une gestion rigoureuse des accès selon les rôles des utilisateurs.
+— Maintenabilité : la plateforme doit pouvoir être corrigée, améliorée ou mise à jour
+facilement, notamment en cas d’évolution fonctionnelle ou technique.
+— Scalabilité : le système doit pouvoir supporter une augmentation du nombre d’utilisateurs
+et du volume des données sans dégradation des performances.
+Page 18
+
+
+===== PAGE 31 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+— Traçabilité : le système doit permettre de suivre et d’enregistrer les différentes actions
+effectuées afin de garantir la transparence et le contrôle des opérations.
+— Interopérabilité : la plateforme doit pouvoir communiquer et échanger des données avec
+d’autres systèmes ou applications de manière efficace.
+2.3 Diagramme de cas d’utilisation global
+Après avoir identifié les acteurs du système, il est nécessaire de représenter leurs interactions
+avec la plateforme. Le diagramme de cas d’utilisation, illustré dans la figure 4, a pour but
+d’enrichir notre compréhension du comportement fonctionnel de notre application en offrant
+une vision globale.
+FIGURE 4. Diagramme de cas d’utilisation global
+Page 19
+
+
+===== PAGE 32 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+2.4 Architecture de l’application
+2.4.1
+Architecture physique
+Le système repose sur une architecture physique structurée autour d’un client, d’un serveur
+d’application front-end, d’un serveur d’application back-end et d’un serveur de base de données.
+Il suit ainsi une architecture multi-niveaux de type 3-tiers, permettant de séparer les différentes
+responsabilités du système et d’assurer une meilleure évolutivité, maintenabilité et modularité.
+La figure 5 illustre cette architecture.
+FIGURE 5. Architecture physique du système
+Les principaux composants de cette architecture sont les suivants :
+— Client : il s’agit du navigateur web qui permet à l’utilisateur d’accéder à l’application et
+d’interagir avec les différentes fonctionnalités proposées.
+— Serveur d’application front-end : il héberge l’application Angular qui assure l’interface
+utilisateur et communique avec le back-end via des appels API.
+— Serveur d’application back-end : il regroupe les microservices développés avec Spring
+Boot, exposés à travers une API Gateway, et assure le traitement des données et la logique
+métier.
+— Serveur de base de données : il s’agit du serveur PostgreSQL chargé de la persistance
+et de la gestion des données du système.
+Page 20
+
+
+===== PAGE 33 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+2.4.2
+Architecture logique
+Le système repose sur une architecture microservices, dans laquelle chaque service
+fonctionne de manière autonome et il est responsable d’un domaine métier spécifique. Cette
+approche favorise la modularité, l’évolutivité du système ainsi qu’un déploiement indépendant
+des composants.
+Contrairement aux architectures monolithiques, cette structure facilite la maintenance et
+permet d’adapter certaines parties du système sans impacter l’ensemble de l’application.
+Pour concrétiser cette vision technique, l’architecture retenue s’appuie sur un écosystème
+modulaire et hautement découplé. Le rôle de chaque composant est détaillé ci-après :
+— API Gateway : Faisant office de point de contact unique pour l’application cliente,
+cette passerelle aiguille et répartit l’ensemble des requêtes entrantes vers les briques
+applicatives correspondantes.
+— Auth-service : Ce module centralise la sécurité globale de la plateforme à l’aide de
+jetons JWT, englobant le contrôle d’accès, l’authentification et la gestion fine des comptes
+utilisateurs.
+— DI-service : Dédié au cœur métier du système, il prend en charge l’intégralité du cycle
+de vie des dossiers ainsi que le traitement des déclarations d’importation.
+— Referentiel-service : Il centralise et fournit aux autres microservices les données
+statiques et transverses indispensables au fonctionnement du système, telles que les
+devises, les pays ou la configuration des bureaux.
+— Document-service : Ce composant encapsule toute la logique d’archivage, d’indexation
+et de manipulation des pièces jointes associées aux différents dossiers.
+— Workflow-service : En liaison étroite avec Camunda 8, il orchestre et pilote l’exécution
+pas à pas des processus métiers automatisés.
+— Service-Conformite-PJ : Représentant la brique intelligente du backend, ce service
+intègre un pipeline d’intelligence artificielle (extraction OCR et algorithmes de
+validation) pour analyser automatiquement la conformité des documents soumis.
+Page 21
+
+
+===== PAGE 34 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+— Kafka : Ce bus d’événements distribué a été choisi pour fluidifier les communications
+asynchrones inter-services, garantissant ainsi un couplage faible et une forte tolérance
+aux pannes.
+— PostgreSQL
+:
+Afin
+de
+respecter
+scrupuleusement
+le
+patron
+d’architecture
+database-per-service,
+les
+modules
+essentiels
+(Authentification,
+Référentiels,
+DI)
+s’appuient sur des bases de données relationnelles totalement isolées.
+— Redis : Exploité comme mémoire cache en amont du service d’authentification, ce
+magasin de données en mémoire optimise la vitesse de vérification des sessions actives.
+— MinIO : Une solution de stockage d’objets haute performance (compatible S3) dédiée à
+la sauvegarde physique et sécurisée des fichiers gérés par le Document-service.
+— Elasticsearch : Ce moteur d’indexation et de recherche rapide collecte les données
+d’exécution du moteur de workflow afin d’assurer une traçabilité et une analyse précise
+des instances.
+— Zeebe : Il s’agit du moteur natif de Camunda 8 qui exécute techniquement les flux de
+travail en coordonnant les tâches distribuées au Workflow-service.
+— Serveur SMTP (Gmail) : Service externe qui intercepte les événements de notification
+publiés sur Kafka pour expédier les alertes et courriels de suivi aux utilisateurs.
+— Eureka Server : Il remplit la fonction de Service Discovery (découverte de services),
+permettant aux instances de microservices de s’enregistrer et de se localiser mutuellement
+de manière dynamique.
+— Spring Cloud Config Server : Ce serveur centralise la gestion des configurations
+applicatives, ce qui facilite grandement la modification des paramètres d’environnement
+sans nécessiter un redéploiement complet des artefacts.
+— Docker & Jenkins : Ces technologies forment le socle de notre démarche DevOps.
+Docker garantit l’isolation et la portabilité de chaque microservice sous forme de
+conteneurs, tandis que Jenkins automatise l’ensemble du pipeline d’intégration et de
+déploiement continus (CI/CD).
+— Frontend : L’interface graphique finale destinée aux utilisateurs, dont l’intégralité des
+flux réseaux passe impérativement par la passerelle de sécurité.
+Page 22
+
+
+===== PAGE 35 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+Cette structuration modulaire est complétée par des mécanismes de routage dynamique, de
+surveillance et de centralisation des logs, indispensables pour garantir la résilience et la haute
+disponibilité d’un système distribué en production.
+FIGURE 6. Architecture logique microservices avec API Gateway et services métier
+2.5 Mise en œuvre avec Scrum
+Cette section présente la mise en œuvre du projet selon la méthode Scrum. Elle décrit
+d’abord le backlog du produit, qui regroupe l’ensemble des besoins fonctionnels identifiés, puis
+leur organisation progressive sous forme de sprints afin de structurer les différentes étapes de
+réalisation de la plateforme.
+2.5.1
+Backlog du produit
+Le backlog du produit regroupe les principaux besoins fonctionnels de notre application.
+Les fonctionnalités sont organisées sous forme de cas globaux, puis détaillées à travers des
+Page 23
+
+
+===== PAGE 36 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+user stories afin de préciser les actions possibles pour chaque acteur. Le backlog du produit est
+présenté dans le tableau 1.
+TABLE 1. Backlog du produit
+ID
+Cas global
+User Story
+Acteurs
+SP
+1
+Authentification
+En tant qu’utilisateur, je peux :
+• m’authentifier avec mes identifiants.
+• accéder à l’interface correspondant à mon rôle.
+• être redirigé vers mon tableau de bord.
+• me déconnecter du système.
+Tous
+3
+2
+Inscription
+En tant qu’importateur, je peux :
+• créer un compte sur la plateforme.
+• renseigner mes informations personnelles et professionnelles.
+• soumettre ma demande de création de compte.
+• attendre la validation de mon compte par l’administrateur.
+Importateur
+5
+3
+Réinitialisation du mot
+de passe
+En tant qu’utilisateur, je peux :
+• demander la réinitialisation de mon mot de passe.
+• recevoir un code de vérification.
+• vérifier mon identité avec le code reçu.
+• définir un nouveau mot de passe.
+Tous
+3
+4
+Gestion des utilisateurs
+En tant qu’administrateur, je peux :
+• créer un compte utilisateur.
+• consulter la liste des utilisateurs.
+• valider ou rejeter un compte importateur.
+• modifier les informations d’un utilisateur.
+• bloquer ou débloquer un utilisateur.
+• supprimer un compte utilisateur.
+Administrateur
+8
+5
+Gestion
+des
+référentiels
+En tant qu’administrateur, je peux :
+• consulter la liste des référentiels.
+• créer un élément de référentiel.
+• modifier un élément existant.
+• activer ou désactiver un élément.
+• supprimer un élément non utilisé.
+Administrateur
+8
+6
+Gestion
+du
+compte
+personnel
+En tant qu’utilisateur, je peux :
+• afficher les détails de mon compte.
+• modifier mes informations personnelles.
+• maintenir mes données à jour.
+Tous
+3
+Page 24
+
+
+===== PAGE 37 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+TABLE 1. Backlog du produit – suite
+ID
+Cas global
+User Story
+Acteurs
+SP
+7
+Gestion DI
+En tant qu’importateur, je peux :
+• initier une déclaration d’importation.
+• renseigner les informations du dossier.
+• ajouter les marchandises.
+• ajouter les pièces jointes obligatoires.
+• consulter l’aperçu des frais.
+• confirmer la déclaration et consulter la fiche de suivi GUCE générée.
+• suivre l’état d’avancement du dossier.
+Importateur
+8
+8
+Paiement
+En tant qu’importateur, agent GUCE/Campost ou administrateur
+GUCE/Campost, je peux :
+• consulter les fiches de suivi GUCE en attente.
+• choisir un mode de paiement.
+• effectuer un paiement en ligne via Stripe.
+• effectuer un paiement en espèces auprès d’un bureau GUCE ou
+Campost.
+• valider le paiement après vérification.
+• transmettre le dossier à la douane après validation.
+Importateur, Agent
+GUCE/Campost,
+Admin
+GUCE/Campost
+5
+9
+Traitement douanier
+En tant qu’agent douane ou administrateur douane, je peux :
+• consulter les déclarations transmises.
+• afficher les détails du dossier.
+• consulter les pièces jointes.
+• accepter une déclaration conforme.
+• refuser une déclaration non conforme.
+• demander un complément d’information.
+Agent
+Douane,
+Admin Douane
+8
+10
+Réponse
+au
+complément
+En tant qu’importateur, je peux :
+• consulter une demande de complément.
+• ajouter les informations ou documents demandés.
+• ajouter ou remplacer les pièces jointes nécessaires.
+• soumettre ma réponse afin de poursuivre le traitement.
+Importateur
+5
+11
+Demande
+de
+prorogation
+En tant qu’importateur, je peux :
+• initier une demande de prorogation.
+• saisir le motif et la durée souhaitée.
+• joindre une pièce justificative.
+• soumettre la demande pour traitement.
+Importateur
+5
+Page 25
+
+
+===== PAGE 38 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+TABLE 1. Backlog du produit – suite
+ID
+Cas global
+User Story
+Acteurs
+SP
+12
+Traitement
+de
+prorogation
+En tant qu’agent douane ou administrateur douane, je peux :
+• consulter les demandes de prorogation.
+• analyser les informations fournies.
+• accorder ou rejeter la demande.
+• mettre à jour le statut de la demande.
+Agent
+Douane,
+Admin Douane
+5
+13
+Demande
+de
+modification
+En tant qu’importateur, je peux :
+• initier une demande de modification.
+• modifier les informations nécessaires.
+• préciser le motif de la demande.
+• soumettre la demande pour traitement.
+Importateur
+5
+14
+Traitement
+de
+modification
+En tant qu’agent douane ou administrateur douane, je peux :
+• consulter les demandes de modification.
+• analyser les changements proposés.
+• approuver ou rejeter la demande.
+• mettre à jour le statut de la demande.
+Agent
+Douane,
+Admin Douane
+5
+15
+Gestion
+des
+agents
+douane
+En tant qu’administrateur douane, je peux :
+• créer un compte agent douane.
+• consulter la liste des agents douane.
+• modifier les informations d’un agent.
+• bloquer ou débloquer un agent.
+• supprimer un compte agent.
+Admin Douane
+5
+16
+Gestion
+des
+agents
+GUCE/Campost
+En tant qu’administrateur GUCE/Campost, je peux :
+• créer un compte agent GUCE ou Campost.
+• consulter la liste des agents.
+• modifier les informations d’un agent.
+• bloquer ou débloquer un agent.
+• supprimer un compte agent.
+Admin
+GUCE/Campost
+5
+17
+Notifications
+En tant qu’utilisateur, je peux :
+• recevoir des notifications liées à mes actions.
+• consulter l’historique des notifications.
+• suivre l’évolution de mes dossiers.
+Tous
+3
+Page 26
+
+
+===== PAGE 39 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+2.5.2
+Planification des sprints
+La gestion du projet a été organisée selon la méthodologie Scrum, en répartissant les
+fonctionnalités sur quatre sprints successifs. Chaque sprint regroupe un ensemble cohérent de
+fonctionnalités, comme présenté ci-dessous :
+— Sprint 1 : mise en place de l’authentification, de la gestion des comptes utilisateurs, des
+rôles et des référentiels.
+— Sprint 2 : développement du module de gestion des déclarations d’importation, des
+marchandises, des pièces jointes, des frais, des fiches de suivi GUCE, des demandes liées
+aux dossiers et de l’orchestration du workflow.
+— Sprint 3 : mise en place du paiement en ligne et en espèces, de la validation des
+paiements, de la gestion des agents, du traitement douanier et du traitement des demandes.
+— Sprint 4 : industrialisation DevOps de la plateforme, supervision technique et intégration
+d’un micro-service intelligent d’analyse documentaire.
+FIGURE 7. Planification agile illustrant la charge des sprints
+2.6 Environnement logiciel
+Le projet s’appuie sur différents outils et technologies utilisés pour le développement, la
+modélisation, la gestion des données, les tests, la qualité du code et la rédaction du rapport. Le
+tableau 2 résume les principaux outils utilisés ainsi que leurs rôles respectifs.
+Page 27
+
+
+===== PAGE 40 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+TABLE 2. Outils et technologies de développement utilisés
+Description
+Logo
+VS Code[2] est un éditeur de code source léger et performant,
+largement utilisé pour le développement des applications web.
+Dans notre projet, il a été utilisé principalement pour le
+développement du frontend Angular.
+IntelliJ IDEA[3] est un environnement de développement intégré
+puissant, spécialement conçu pour le développement en Java. Il a
+été utilisé pour le développement des microservices Spring Boot.
+Git[4] est utilisé pour la gestion de versions, le suivi des
+modifications du code source et la collaboration entre les membres
+de l’équipe.
+Swagger[5] est un outil basé sur la spécification OpenAPI[6].
+Il permet de documenter, de tester et d’explorer les API REST
+exposées par les différents services du système.
+Draw.io[7] est un outil de modélisation graphique utilisé pour la
+création des diagrammes UML, des diagrammes d’architecture et
+des schémas de conception.
+TypeScript[8] est un langage basé sur JavaScript qui ajoute un
+typage statique. Il améliore la robustesse et la maintenabilité du
+code frontend.
+Page 28
+
+
+===== PAGE 41 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+Description
+Logo
+Angular[9] et PrimeNG[10] sont utilisés pour le développement
+de l’application web frontend. Angular permet de créer une
+application dynamique et modulaire, tandis que PrimeNG fournit
+des composants graphiques modernes et ergonomiques.
+Java[11] est le langage utilisé pour le développement backend.
+Il permet de construire des applications robustes, sécurisées et
+maintenables.
+Spring Boot[12] est un framework Java utilisé pour développer
+les microservices de la plateforme. Il facilite la configuration, le
+développement et le déploiement des services backend.
+Camunda[13] est une plateforme d’orchestration de processus
+métier. Elle permet de modéliser, d’exécuter et de superviser les
+workflows liés au traitement des déclarations d’importation.
+Stripe[14] est utilisé pour gérer le paiement en ligne des fiches
+de suivi GUCE. Il permet à l’importateur d’effectuer un paiement
+sécurisé directement depuis la plateforme.
+Apache Kafka[15] est une plateforme de streaming distribuée
+utilisée pour assurer la communication asynchrone entre les
+microservices.
+PostgreSQL[16] est une base de données relationnelle open source
+utilisée pour assurer la persistance des données principales de la
+plateforme.
+Page 29
+
+
+===== PAGE 42 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+Description
+Logo
+MongoDB[17]
+est
+une
+base
+de
+données
+NoSQL
+orientée
+documents, offrant une grande flexibilité pour la gestion de
+certaines données semi-structurées.
+MinIO[18] est un système de stockage objet compatible avec
+Amazon S3. Il est utilisé pour gérer les fichiers et les pièces jointes
+associés aux déclarations d’importation.
+Docker[19] est utilisé pour la conteneurisation des services,
+garantissant la portabilité et la reproductibilité des environnements
+d’exécution.
+Jenkins[20] est un outil d’intégration continue utilisé pour
+automatiser les processus de build, de test et de déploiement.
+SonarQube[21] est utilisé pour analyser la qualité du code,
+détecter les vulnérabilités et suivre des indicateurs tels que la
+maintenabilité et la couverture des tests.
+JUnit 5[22] est utilisé pour les tests backend. Il permet de réaliser
+des tests unitaires afin de vérifier le bon fonctionnement des
+composants de manière isolée.
+JaCoCo[23] est utilisé pour mesurer la couverture des tests
+unitaires et générer des rapports permettant d’identifier les parties
+du code couvertes par les tests.
+Prometheus[24] est utilisé pour collecter les métriques exposées
+par les micro-services et assurer le suivi technique de la plateforme.
+Page 30
+
+
+===== PAGE 43 =====
+
+CHAPITRE 2. ANALYSE ET SPÉCIFICATION DES BESOINS
+Description
+Logo
+Grafana[25] est utilisé pour visualiser les métriques collectées par
+Prometheus sous forme de tableaux de bord de supervision.
+Redis[26] est utilisé comme système de cache afin d’améliorer les
+performances et de gérer certaines données temporaires de manière
+rapide.
+LaTeX[27] est un système de composition de documents utilisé
+pour la rédaction du rapport. Il permet d’obtenir une mise en forme
+professionnelle et cohérente.
+Conclusion
+Au cours de ce chapitre, nous avons présenté l’analyse et la spécification des besoins du
+système, en identifiant les principaux acteurs, les besoins fonctionnels et non fonctionnels,
+ainsi que les architectures physique et logique de la solution. Nous avons également exposé
+le backlog du produit, la planification des sprints et l’environnement de développement utilisé.
+Ces éléments constituent une base essentielle pour aborder, dans le chapitre suivant, l’étude et
+la réalisation du premier sprint.
+Page 31
+
+
+===== PAGE 44 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+Chapitre
+3
+Authentification et gestion des accès
+3.1 Introduction
+Ce chapitre présente le premier sprint de notre projet. Il est consacré aux premières
+fonctionnalités de la plateforme, notamment l’authentification, la gestion des comptes
+utilisateurs, l’attribution des rôles et la gestion des référentiels. Nous y présentons le backlog
+du sprint, l’analyse, la conception, la réalisation des interfaces et les tests effectués.
+3.2 Backlog du sprint 1
+Ce premier sprint porte sur la mise en place des bases d’accès à la plateforme. Il couvre
+l’inscription, l’authentification, la gestion des comptes utilisateurs, l’attribution des rôles, la
+gestion du compte personnel et les premiers référentiels métiers. Les fonctionnalités retenues
+sont présentées dans le tableau 3.
+Page 32
+
+
+===== PAGE 45 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+TABLE 3. Backlog du Sprint 1
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+1
+Inscription
+En tant qu’importateur, je peux :
+• créer un compte sur la plateforme.
+• renseigner mes informations personnelles et
+professionnelles.
+• soumettre ma demande de création de
+compte.
+• attendre la validation de mon compte par
+l’administrateur.
+Importateur
+5
+2
+Authentification
+En tant qu’utilisateur, je peux :
+• me connecter avec mes identifiants.
+• accéder à l’espace correspondant à mon
+rôle.
+• être redirigé vers mon tableau de bord.
+• me déconnecter du système.
+Tous
+3
+3
+Réinitialisation du
+mot de passe
+En tant qu’utilisateur, je peux :
+• demander la réinitialisation de mon mot de
+passe.
+• recevoir un code de vérification.
+• vérifier mon identité avec le code reçu.
+• définir un nouveau mot de passe.
+Tous
+3
+4
+Gestion
+des
+utilisateurs
+En tant qu’administrateur, je peux :
+• créer un compte utilisateur.
+• consulter la liste des utilisateurs.
+• valider ou rejeter un compte importateur.
+• modifier les informations d’un utilisateur.
+• bloquer ou débloquer un utilisateur.
+• supprimer un compte utilisateur.
+Administrateur
+8
+Page 33
+
+
+===== PAGE 46 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+TABLE 3. Backlog du Sprint 1 – suite
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+5
+Gestion des rôles
+En tant qu’administrateur, je peux :
+• attribuer un rôle à un utilisateur.
+• modifier le rôle d’un utilisateur.
+• organiser l’accès aux interfaces selon le
+profil.
+• garantir une séparation claire entre les
+différents espaces.
+Administrateur
+5
+6
+Gestion du compte
+personnel
+En tant qu’utilisateur, je peux :
+• consulter les informations de mon compte.
+• modifier mes informations personnelles.
+• maintenir mes données à jour.
+Tous
+3
+7
+Gestion
+des
+référentiels
+En tant qu’administrateur, je peux :
+• consulter la liste des référentiels.
+• créer un élément de référentiel.
+• modifier un élément existant.
+• activer ou désactiver un élément.
+• supprimer un élément non utilisé.
+Administrateur
+8
+8
+Consultation
+des
+référentiels
+En tant qu’utilisateur, je peux :
+• consulter les valeurs de référence
+disponibles.
+• utiliser les valeurs actives lors de la saisie
+des formulaires.
+• éviter les erreurs liées aux données non
+valides.
+Tous
+3
+Page 34
+
+
+===== PAGE 47 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+TABLE 3. Backlog du Sprint 1 – suite
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+9
+Journalisation
+des
+actions
+En tant qu’administrateur, je peux :
+• suivre les actions importantes réalisées sur
+la plateforme.
+• consulter les traces utiles pour le contrôle.
+• renforcer la sécurité et la traçabilité du
+système.
+Administrateur
+5
+3.3 Analyse du premier sprint
+Cette section présente les besoins fonctionnels traités durant le premier sprint. Elle permet
+de mieux comprendre les interactions entre les utilisateurs et les fonctionnalités développées.
+3.3.1
+Diagramme de cas d’utilisation du Sprint 1
+Le diagramme de cas d’utilisation du sprint 1 regroupe les principales actions liées à
+l’accès à la plateforme et à l’administration des premières données du système. Il montre les
+interactions entre les acteurs, principalement l’administrateur et l’importateur, et les différents
+cas d’utilisation réalisés dans ce sprint.
+Page 35
+
+
+===== PAGE 48 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+FIGURE 8. Diagramme de cas d’utilisation détaillé du Sprint 1
+3.3.2
+Descriptions textuelles des cas d’utilisation
+Cas d’utilisation « Créer un compte »
+Ce cas décrit la procédure d’inscription d’un importateur sur la plateforme. L’objectif est de
+permettre à un nouvel importateur de soumettre une demande de création de compte.
+Page 36
+
+
+===== PAGE 49 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+TABLE 4. Description textuelle du cas d’utilisation « Créer un compte »
+Nom
+du
+cas
+d’utilisation
+Créer un compte
+Acteur
+Importateur
+Résumé
+L’importateur renseigne ses informations afin de créer un
+compte sur la plateforme.
+Pré-condition
+L’importateur ne possède pas déjà un compte avec les mêmes
+informations.
+Scénario nominal
+1. L’importateur accède à la page de création de compte.
+2. L’importateur saisit les informations demandées.
+3. Le système vérifie les données saisies.
+4. Le système enregistre la demande de création du compte.
+5. Le système informe l’importateur que son compte est en
+attente de validation.
+Enchaînements
+alternatifs
+— Données invalides : le système affiche un message d’erreur.
+— Compte déjà existant : la création du compte est refusée.
+Post conditions
+Le compte est créé avec un statut en attente de validation.
+Cas d’utilisation « S’authentifier »
+Ce cas décrit la connexion d’un utilisateur à la plateforme. Il permet de vérifier ses
+identifiants avant de lui donner accès à son espace selon son rôle.
+TABLE 5. Description textuelle du cas d’utilisation « S’authentifier »
+Nom
+du
+cas
+d’utilisation
+S’authentifier
+Acteurs
+Administrateur, Importateur
+Page 37
+
+
+===== PAGE 50 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+Résumé
+L’utilisateur se connecte à la plateforme à l’aide de son adresse
+e-mail et de son mot de passe.
+Pré-condition
+L’utilisateur possède un compte valide dans le système.
+Scénario nominal
+1. Le système affiche la page de connexion.
+2. L’utilisateur saisit son e-mail et son mot de passe.
+3. Le système vérifie les identifiants saisis.
+4. Le
+système
+redirige
+l’utilisateur
+vers
+l’espace
+correspondant à son profil.
+Enchaînements
+alternatifs
+— Identifiants incorrects : le système affiche un message
+d’erreur.
+— Compte bloqué ou en attente : l’accès à la plateforme est
+refusé.
+Post conditions
+L’utilisateur est authentifié et accède à son espace personnel.
+Cas d’utilisation « Réinitialiser le mot de passe »
+Ce cas présente la démarche suivie par un utilisateur lorsqu’il oublie son mot de passe. La
+réinitialisation se fait à travers un code de vérification envoyé par e-mail.
+TABLE 6. Description textuelle du cas d’utilisation « Réinitialiser le mot de passe »
+Nom
+du
+cas
+d’utilisation
+Réinitialiser le mot de passe
+Acteurs
+Administrateur, Importateur
+Résumé
+L’utilisateur réinitialise son mot de passe après validation d’un
+code de vérification envoyé par e-mail.
+Pré-condition
+L’utilisateur possède un compte enregistré dans le système.
+Page 38
+
+
+===== PAGE 51 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+Scénario nominal
+1. L’utilisateur saisit son adresse e-mail.
+2. Le système envoie un code de vérification.
+3. L’utilisateur saisit le code reçu.
+4. Le système vérifie la validité du code.
+5. L’utilisateur définit un nouveau mot de passe.
+6. Le système confirme la réinitialisation.
+Enchaînements
+alternatifs
+— E-mail inconnu : le système affiche un message d’erreur.
+— Code incorrect ou expiré : la validation est refusée.
+Post conditions
+Le mot de passe est réinitialisé avec succès.
+Cas d’utilisation « Gérer les utilisateurs »
+Ce cas regroupe les actions réalisées par l’administrateur pour gérer les comptes utilisateurs.
+Il peut consulter la liste des comptes, ajouter un nouvel utilisateur, modifier ses informations,
+supprimer un compte ou encore changer son état.
+TABLE 7. Description textuelle du cas d’utilisation « Gérer les utilisateurs »
+Nom
+du
+cas
+d’utilisation
+Gérer les utilisateurs
+Acteur
+Administrateur
+Résumé
+L’administrateur gère les comptes utilisateurs du système à
+partir d’une interface dédiée.
+Pré-condition
+L’administrateur est authentifié dans le système.
+Page 39
+
+
+===== PAGE 52 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+Scénario nominal
+1. L’administrateur
+accède
+à
+la
+page
+de
+gestion
+des
+utilisateurs.
+2. Le système affiche la liste des comptes existants.
+3. L’administrateur choisit l’action à effectuer.
+4. Le système traite la demande.
+5. Le système met à jour la liste des utilisateurs.
+Enchaînements
+alternatifs
+— Accès non autorisé : le système affiche un message
+d’erreur.
+— Erreur de traitement : l’action demandée n’est pas
+effectuée.
+Post conditions
+Les informations des comptes utilisateurs sont mises à jour
+dans l’interface de gestion.
+Cas d’utilisation « Gérer les référentiels »
+Ce cas concerne la gestion des données de référence utilisées dans la plateforme. Ces
+données permettent d’assurer une certaine cohérence dans les choix proposés aux utilisateurs,
+comme les types de documents, les statuts ou les catégories.
+TABLE 8. Description textuelle du cas d’utilisation « Gérer les référentiels »
+Nom
+du
+cas
+d’utilisation
+Gérer les référentiels
+Acteur
+Administrateur
+Résumé
+L’administrateur ajoute, modifie, active ou désactive les
+éléments de référentiel utilisés par la plateforme.
+Pré-condition
+L’administrateur
+est
+authentifié
+et
+possède
+les
+droits
+nécessaires.
+Page 40
+
+
+===== PAGE 53 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+Scénario nominal
+1. L’administrateur
+accède
+à
+la
+page
+de
+gestion
+des
+référentiels.
+2. Le système affiche la liste des éléments existants.
+3. L’administrateur sélectionne une action à effectuer.
+4. Le système vérifie les informations saisies.
+5. Le système enregistre les modifications.
+6. Le système affiche un message de confirmation.
+Enchaînements
+alternatifs
+— Données invalides : le système affiche un message d’erreur.
+— Élément déjà existant : l’ajout est refusé.
+— Élément introuvable : l’opération est annulée.
+Post conditions
+Les données de référence sont mises à jour et peuvent être
+utilisées dans la plateforme.
+3.4 Conception
+Dans cette section, nous présentons la conception du premier sprint à travers des
+diagrammes de classes et des diagrammes de séquence. Les diagrammes de classes permettent
+de représenter les principales entités manipulées par le système, tandis que les diagrammes de
+séquence montrent l’enchaînement des échanges entre l’utilisateur, l’interface et le système.
+3.4.1
+Diagrammes de classes
+Les diagrammes de classes suivants présentent la structure des principales entités utilisées
+durant ce sprint, notamment celles liées à l’authentification, à la gestion des utilisateurs, des
+rôles et des référentiels.
+Page 41
+
+
+===== PAGE 54 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+3.4.1.1
+Diagramme de classes « Gestion des accès »
+Ce diagramme présente les principales classes liées à la gestion des accès. Il montre les
+relations entre les utilisateurs, les groupes, les rôles et les permissions. Un utilisateur peut être
+associé à un ou plusieurs groupes et rôles, tandis que les rôles permettent d’organiser les accès
+aux différentes fonctionnalités du système.
+FIGURE 9. Diagramme de classes de la gestion des accès
+3.4.1.2
+Diagramme de classes « Gestion des référentiels »
+Ce diagramme présente la structure des entités utilisées pour la gestion des référentiels. Ces
+référentiels permettent de stocker les données de base utilisées dans la plateforme, comme les
+pays, les devises, les bureaux ou les types de documents.
+Page 42
+
+
+===== PAGE 55 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+FIGURE 10. Diagramme de classes de la gestion des référentiels
+3.4.2
+Diagrammes de séquence
+Les diagrammes de séquence suivants montrent les échanges entre l’utilisateur, l’interface
+et le système. Ils permettent de mieux visualiser l’enchaînement des actions effectuées pour les
+principales fonctionnalités du sprint.
+3.4.2.1
+Diagramme de séquence « S’authentifier »
+Ce diagramme présente le déroulement de l’authentification d’un utilisateur. Il commence
+par la saisie des identifiants, puis passe par leur vérification avant la redirection vers l’espace
+correspondant au rôle de l’utilisateur.
+Page 43
+
+
+===== PAGE 56 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+FIGURE 11. Diagramme de séquence du cas d’utilisation « S’authentifier »
+3.4.2.2
+Diagramme de séquence « Ajouter un utilisateur »
+Ce diagramme illustre les étapes suivies lorsqu’un administrateur ajoute un nouvel
+utilisateur. Le système vérifie les informations saisies, contrôle l’unicité de l’adresse e-mail,
+puis enregistre le compte utilisateur.
+Page 44
+
+
+===== PAGE 57 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+FIGURE 12. Diagramme de séquence du cas d’utilisation « Ajouter un utilisateur »
+3.5 Réalisation
+Cette partie présente les interfaces développées durant le sprint. Les captures d’écran
+permettent d’illustrer les fonctionnalités mises en place et leur intégration dans la plateforme.
+Page 45
+
+
+===== PAGE 58 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+3.5.1
+Interface « S’authentifier »
+L’interface de connexion permet aux utilisateurs d’accéder à la plateforme en saisissant leur
+adresse e-mail et leur mot de passe. Après une authentification réussie, l’utilisateur est redirigé
+vers son espace selon son rôle.
+FIGURE 13. Interface « S’authentifier »
+3.5.2
+Interface « Réinitialiser le mot de passe »
+Cette interface est utilisée lorsqu’un utilisateur oublie son mot de passe. Il renseigne son
+adresse e-mail, puis le système lui envoie un code de vérification afin de lui permettre de définir
+un nouveau mot de passe.
+FIGURE 14. Interface « Réinitialiser le mot de passe »
+Page 46
+
+
+===== PAGE 59 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+3.5.3
+Interface « Gérer les utilisateurs »
+Cette interface permet à l’administrateur de consulter la liste des utilisateurs et d’effectuer
+les principales actions de gestion, comme l’ajout, la modification ou la suppression d’un
+compte.
+FIGURE 15. Interface « Gérer les utilisateurs »
+3.5.4
+Interface « Ajouter un utilisateur »
+Cette interface permet à l’administrateur de créer un nouveau compte utilisateur à partir d’un
+formulaire. Les informations saisies sont ensuite vérifiées avant l’enregistrement du compte.
+FIGURE 16. Interface « Ajouter un utilisateur »
+Après la création du compte, le système envoie automatiquement un e-mail de bienvenue
+à l’utilisateur concerné. Cet e-mail contient les informations nécessaires pour accéder à la
+plateforme.
+Page 47
+
+
+===== PAGE 60 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+FIGURE 17. Interface « E-mail de bienvenue »
+3.5.5
+Interface « Gérer les référentiels »
+Cette interface permet à l’administrateur de consulter et de gérer les référentiels utilisés par
+la plateforme. Elle offre les actions nécessaires pour ajouter, modifier, activer ou désactiver un
+élément.
+FIGURE 18. Interface « Gérer les référentiels »
+3.5.6
+Interface « Ajouter un référentiel »
+Cette interface permet d’ajouter un nouvel élément de référentiel en renseignant son code,
+son libellé, sa description et son statut. Une fois validé, l’élément devient disponible dans la
+liste des référentiels.
+Page 48
+
+
+===== PAGE 61 =====
+
+CHAPITRE 3. AUTHENTIFICATION ET GESTION DES ACCÈS
+FIGURE 19. Interface « Ajouter un référentiel »
+3.6 Conclusion
+Dans ce chapitre, nous avons présenté le premier sprint, consacré à l’authentification, à la
+gestion des comptes, aux rôles et aux référentiels. Le chapitre suivant portera sur la gestion du
+circuit d’importation.
+Page 49
+
+
+===== PAGE 62 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+Chapitre
+4
+Gestion
+des
+déclarations
+et
+documents
+4.1 Introduction
+Ce chapitre présente le deuxième sprint du projet. Il porte sur la gestion des déclarations
+d’importation côté importateur, depuis la création du dossier jusqu’à la génération du Fiche de
+suivi GUCE.
+4.2 Backlog du sprint 2
+Ce deuxième sprint porte sur la création, la préparation et le suivi des déclarations
+d’importation côté importateur. Il couvre la saisie du dossier, la gestion des marchandises,
+l’ajout des pièces jointes, l’aperçu des frais, la génération de la Fiche de suivi GUCE, les
+demandes liées au dossier ainsi que l’orchestration du workflow avec BPMN et Camunda. Les
+fonctionnalités retenues sont présentées dans le tableau 9.
+Page 50
+
+
+===== PAGE 63 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+TABLE 9. Backlog du Sprint 2
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+1
+Création
+de
+la
+déclaration
+En tant qu’importateur, je peux :
+• initier une déclaration d’importation.
+• renseigner les informations de l’importateur.
+• renseigner les informations du fournisseur.
+• saisir les informations générales de la
+déclaration.
+• sauvegarder la déclaration en brouillon.
+Importateur
+8
+2
+Gestion
+des
+marchandises
+En tant qu’importateur, je peux :
+• ajouter une marchandise à la déclaration.
+• renseigner la désignation, la quantité et la
+valeur.
+• consulter la liste des marchandises ajoutées.
+• modifier une marchandise avant
+confirmation.
+• supprimer une marchandise avant
+confirmation.
+Importateur
+5
+3
+Gestion des pièces
+jointes
+En tant qu’importateur, je peux :
+• consulter les documents obligatoires.
+• ajouter les pièces jointes nécessaires au
+dossier.
+• remplacer un document avant confirmation.
+• vérifier que les documents requis sont
+ajoutés.
+Importateur
+5
+Page 51
+
+
+===== PAGE 64 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+TABLE 9. Backlog du Sprint 2 – suite
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+4
+Consultation
+et
+suivi du dossier
+En tant qu’importateur, je peux :
+• consulter la liste de mes déclarations.
+• afficher les détails d’une déclaration.
+• suivre l’état d’avancement du dossier.
+• consulter les informations déjà saisies.
+Importateur
+5
+5
+Aperçu des frais
+En tant qu’importateur, je peux :
+• consulter l’aperçu des frais générés.
+• vérifier les montants calculés avant
+confirmation.
+• contrôler les informations utilisées pour le
+calcul.
+Importateur
+3
+6
+Confirmation
+et
+Fiche
+de
+Suivi
+GUCE
+En tant qu’importateur, je peux :
+• vérifier les informations saisies.
+• confirmer la déclaration d’importation.
+• permettre au système de générer la Fiche de
+suivi GUCE associée au dossier.
+• permettre au système de déclencher le
+processus BPMN dans Camunda après
+confirmation.
+Importateur
+5
+7
+Consultation Fiche
+de suivi GUCE
+En tant qu’importateur, je peux :
+• consulter la Fiche de suivi GUCE générée.
+• afficher les détails des montants à payer.
+• suivre le statut de la Fiche de suivi GUCE.
+Importateur
+3
+Page 52
+
+
+===== PAGE 65 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+TABLE 9. Backlog du Sprint 2 – suite
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+8
+Réponse
+au
+complément
+En tant qu’importateur, je peux :
+• consulter une demande de complément.
+• ajouter les informations demandées.
+• ajouter ou remplacer les pièces jointes
+nécessaires.
+• soumettre ma réponse afin de poursuivre le
+traitement du dossier.
+Importateur
+5
+9
+Demande
+de
+prorogation
+En tant qu’importateur, je peux :
+• initier une demande de prorogation.
+• saisir la durée souhaitée.
+• préciser le motif de la demande.
+• joindre une pièce justificative.
+• soumettre la demande pour traitement.
+Importateur
+5
+10 Demande
+de
+modification
+En tant qu’importateur, je peux :
+• initier une demande de modification.
+• modifier les informations générales de la
+déclaration.
+• modifier les marchandises si nécessaire.
+• ajouter ou remplacer les pièces jointes.
+• préciser le motif de la demande.
+• soumettre la demande pour traitement.
+Importateur
+5
+Page 53
+
+
+===== PAGE 66 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+4.3 Analyse du deuxième sprint
+Cette section présente les besoins fonctionnels traités durant le deuxième sprint. Elle permet
+de comprendre les actions réalisées par l’importateur lors de la création, du suivi et de la gestion
+des déclarations d’importation.
+4.3.1
+Diagramme de cas d’utilisation du Sprint 2
+Le diagramme de cas d’utilisation du sprint 2 regroupe les principales fonctionnalités liées
+à la gestion des déclarations d’importation. Il montre les interactions entre l’importateur et les
+fonctionnalités réalisées durant ce sprint.
+FIGURE 20. Diagramme de cas d’utilisation du sprint 2
+Page 54
+
+
+===== PAGE 67 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+4.3.2
+Descriptions textuelles des cas d’utilisation
+Cas d’utilisation « Initier et gérer une déclaration d’importation »
+Ce cas regroupe les actions principales réalisées par l’importateur lors de la création
+d’une déclaration d’importation. Il inclut la saisie des informations du dossier, l’ajout des
+marchandises et la gestion des pièces jointes.
+TABLE 10. Description textuelle du cas d’utilisation « Initier et gérer une déclaration
+d’importation »
+Nom
+du
+cas
+d’utilisation
+Initier et gérer une déclaration d’importation
+Acteur
+Importateur
+Résumé
+L’importateur crée une déclaration d’importation, renseigne
+les informations nécessaires, ajoute les marchandises et les
+pièces jointes du dossier.
+Pré-condition
+L’importateur est authentifié dans le système.
+Scénario nominal
+1. L’importateur
+accède
+à
+l’interface
+d’initiation
+d’une
+déclaration.
+2. Le système affiche le formulaire de création du dossier.
+3. L’importateur renseigne les informations de l’importateur,
+du
+fournisseur
+et
+les
+informations
+générales
+de
+la
+déclaration.
+4. L’importateur ajoute les marchandises associées au dossier.
+5. L’importateur ajoute les pièces jointes obligatoires.
+6. Le système vérifie les données saisies et les documents
+ajoutés.
+7. Le système enregistre la déclaration avec un statut brouillon
+ou en cours de préparation.
+Page 55
+
+
+===== PAGE 68 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+Enchaînements
+alternatifs
+— Données invalides : le système affiche un message d’erreur.
+— Informations obligatoires manquantes : l’enregistrement
+ou la progression est refusé.
+— Fichier invalide : le système refuse l’ajout de la pièce
+jointe.
+Post conditions
+La déclaration est créée et les informations du dossier sont
+enregistrées dans le système.
+Cas d’utilisation « Confirmer la déclaration et générer la Fiche de suivi GUCE »
+Ce cas décrit l’étape de vérification finale du dossier avant sa confirmation. Il inclut
+l’affichage de l’aperçu des frais, la confirmation de la déclaration, la génération de la Fiche
+de suivi GUCE et le déclenchement du workflow.
+TABLE 11. Description textuelle du cas d’utilisation « Confirmer la déclaration et générer la
+Fiche de suivi GUCE »
+Nom
+du
+cas
+d’utilisation
+Confirmer la déclaration et générer la Fiche de suivi GUCE
+Acteur
+Importateur
+Résumé
+L’importateur vérifie son dossier, consulte l’aperçu des frais,
+confirme la déclaration et obtient la fiche de suivi GUCE
+générée par le système. Après confirmation, le système
+déclenche le workflow de suivi du dossier.
+Pré-condition
+La déclaration est complète et les pièces obligatoires sont
+ajoutées.
+Page 56
+
+
+===== PAGE 69 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+Scénario nominal
+1. L’importateur consulte le récapitulatif de la déclaration.
+2. Le système affiche les informations du dossier et l’aperçu
+des frais.
+3. L’importateur vérifie les données saisies.
+4. L’importateur confirme la déclaration.
+5. Le système met à jour l’état de la déclaration.
+6. Le système génère la fiche de suivi GUCE associée au
+dossier.
+7. Le système déclenche le processus BPMN dans Camunda
+afin d’assurer le suivi du workflow.
+8. Le système affiche un message de confirmation.
+Enchaînements
+alternatifs
+— Déclaration incomplète : la confirmation est refusée.
+— Pièces obligatoires manquantes : le système bloque la
+confirmation.
+— Erreur de génération de fiche de suivi GUCE : le système
+affiche un message d’erreur.
+— Erreur de déclenchement du workflow : le système affiche
+un message d’erreur et conserve l’état du dossier.
+Post conditions
+La déclaration est confirmée, la fiche de suivi GUCE associée
+est générée et le processus BPMN de suivi est déclenché dans
+Camunda.
+Cas d’utilisation « Consulter et suivre les déclarations »
+Ce cas permet à l’importateur de consulter ses déclarations, de suivre leur état d’avancement
+et de consulter les informations liées aux fiches de suivi GUCE générées.
+TABLE 12. Description textuelle du cas d’utilisation « Consulter et suivre les déclarations »
+Page 57
+
+
+===== PAGE 70 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+Nom
+du
+cas
+d’utilisation
+Consulter et suivre les déclarations
+Acteur
+Importateur
+Résumé
+L’importateur consulte la liste de ses déclarations, affiche les
+détails d’un dossier, suit son état et consulte la fiche de suivi
+GUCE associée.
+Pré-condition
+L’importateur est authentifié et possède au moins une
+déclaration.
+Scénario nominal
+1. L’importateur accède à l’interface de consultation des
+déclarations.
+2. Le système affiche la liste des déclarations disponibles.
+3. L’importateur sélectionne une déclaration.
+4. Le système affiche les détails du dossier.
+5. L’importateur
+consulte
+l’état
+d’avancement
+de
+la
+déclaration.
+6. L’importateur consulte la fiche de suivi GUCE associée si
+elle existe.
+Enchaînements
+alternatifs
+— Aucune déclaration trouvée : le système affiche un message
+informatif.
+— Déclaration introuvable : le système affiche un message
+d’erreur.
+— fiche de suivi GUCE non encore générée : le système
+affiche une information à l’utilisateur.
+Post conditions
+Les informations du dossier, son état et sa fiche de suivi GUCE
+sont affichés à l’importateur.
+Page 58
+
+
+===== PAGE 71 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+Cas d’utilisation « Gérer les demandes liées à la déclaration »
+Ce cas regroupe les demandes réalisées par l’importateur après ou pendant le traitement
+d’une déclaration. Il inclut la réponse à une demande de complément, la demande de prorogation
+et la demande de modification.
+TABLE 13. Description textuelle du cas d’utilisation « Gérer les demandes liées à la
+déclaration »
+Nom
+du
+cas
+d’utilisation
+Gérer les demandes liées à la déclaration
+Acteur
+Importateur
+Résumé
+L’importateur répond aux demandes de complément et peut
+soumettre une demande de prorogation ou de modification liée
+à sa déclaration.
+Pré-condition
+L’importateur est authentifié et la déclaration existe dans le
+système.
+Scénario nominal
+1. L’importateur accède au dossier concerné.
+2. Le système affiche les actions disponibles selon l’état de la
+déclaration.
+3. L’importateur répond à une demande de complément si elle
+existe.
+4. L’importateur peut soumettre une demande de prorogation
+en indiquant le motif et la durée souhaitée.
+5. L’importateur peut soumettre une demande de modification
+en indiquant les informations à corriger et le motif.
+6. Le système enregistre la demande ou la réponse.
+7. Le système met à jour l’état du dossier ou de la demande.
+Page 59
+
+
+===== PAGE 72 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+Enchaînements
+alternatifs
+— Demande non autorisée selon l’état du dossier : le système
+bloque l’action.
+— Données invalides ou motif manquant : le système affiche
+un message d’erreur.
+— Pièce justificative manquante : la demande n’est pas
+soumise.
+Post conditions
+La
+réponse
+au
+complément
+ou
+la
+demande
+de
+prorogation/modification est enregistrée dans le système.
+4.4 Conception
+Dans cette section, nous présentons la conception du deuxième sprint à travers les
+diagrammes BPMN, le diagramme de classes et les diagrammes de séquence. Les diagrammes
+BPMN permettent de représenter l’enchaînement des étapes du circuit d’importation. Le
+diagramme de classes décrit la structure statique du système, les principales entités manipulées
+ainsi que les relations entre elles. Enfin, les diagrammes de séquence montrent les échanges
+entre l’importateur, les interfaces et le système.
+4.4.1
+Modélisation du workflow avec BPMN et Camunda
+Pour représenter le circuit de traitement des dossiers, nous avons utilisé la notation BPMN
+avec Camunda. BPMN permet de décrire les processus métier d’une manière claire, en montrant
+les étapes principales, les décisions possibles, les notifications envoyées et les échanges entre les
+différents acteurs. Camunda intervient comme moteur d’orchestration : il exécute les processus
+BPMN et assure le passage automatique d’une étape à une autre selon l’état du dossier.
+Dans notre projet, le workflow est déclenché par le système après la confirmation d’une
+déclaration d’importation. Cette orchestration permet de suivre l’évolution du dossier, de gérer
+les transitions d’état et de préparer les étapes suivantes du circuit d’importation. Elle concerne
+Page 60
+
+
+===== PAGE 73 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+principalement le processus global d’une déclaration d’importation, la demande de prorogation
+et la demande de modification.
+a)
+Processus de déclaration d’importation.
+Ce processus représente le circuit principal d’une déclaration d’importation. Il commence
+par l’initiation du dossier par l’importateur, puis l’ajout des marchandises et des pièces jointes,
+l’affichage de l’aperçu des frais et la confirmation de la déclaration. Après cette confirmation,
+le système génère la fiche de suivi GUCE et déclenche le processus BPMN dans Camunda afin
+d’assurer le suivi du workflow.
+FIGURE 21. Processus BPMN de traitement d’une déclaration d’importation
+b)
+Processus de demande de prorogation.
+Ce processus décrit la soumission d’une demande de prorogation par l’importateur.
+L’utilisateur accède à son dossier, saisit la durée souhaitée, précise le motif, ajoute une pièce
+justificative si nécessaire, puis soumet sa demande. Le système enregistre la demande, met à
+jour son statut et l’intègre dans le workflow afin de permettre son traitement par la douane.
+Page 61
+
+
+===== PAGE 74 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+FIGURE 22. Processus BPMN de demande de prorogation
+c)
+Processus de demande de modification.
+Ce processus présente la soumission d’une demande de modification par l’importateur.
+L’utilisateur modifie les informations nécessaires, ajoute ou remplace les pièces jointes, précise
+le motif de la demande, puis soumet la demande. Le système l’enregistre, met à jour son statut
+et l’intègre dans le workflow pour permettre son traitement ultérieur.
+FIGURE 23. Processus BPMN de demande de modification
+Page 62
+
+
+===== PAGE 75 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+4.4.2
+Diagramme de classes
+Le diagramme de classes présente la structure statique du module de déclaration
+d’importation. Il met en évidence les principales classes métier manipulées pendant ce sprint,
+notamment la déclaration d’importation, l’importateur, les marchandises, les pièces jointes et
+les informations liées à la fiche de suivi GUCE. Ce diagramme permet de mieux comprendre
+l’organisation des données, les attributs principaux de chaque classe ainsi que les relations
+existantes entre les différentes entités du système.
+Page 63
+
+
+===== PAGE 76 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+FIGURE 24. Diagramme de classes du sprint 2
+4.4.3
+Diagrammes de séquence
+Après la modélisation BPMN des processus, nous présentons les diagrammes de séquence.
+Ces diagrammes décrivent les échanges détaillés entre l’importateur, l’interface et le système
+pour les principaux scénarios du sprint.
+Page 64
+
+
+===== PAGE 77 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+4.4.3.1
+Diagramme de séquence « Initier une déclaration d’importation »
+Ce diagramme présente les étapes suivies lors de l’initiation d’une déclaration
+d’importation. L’importateur renseigne les informations principales du dossier, ajoute les
+marchandises et les pièces jointes nécessaires, puis le système enregistre la déclaration.
+FIGURE 25. Diagramme de séquence du cas d’utilisation « Initier une déclaration
+d’importation »
+4.4.3.2
+Diagramme de séquence « Demande de prorogation »
+Ce diagramme présente les échanges réalisés lorsqu’un importateur soumet une demande de
+prorogation liée à une déclaration d’importation. L’importateur sélectionne le dossier concerné,
+saisit la durée demandée, précise le motif, ajoute une pièce justificative si nécessaire, puis
+soumet la demande au système.
+Page 65
+
+
+===== PAGE 78 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+FIGURE 26. Diagramme de séquence du cas d’utilisation « Demande de prorogation »
+4.4.3.3
+Diagramme de séquence « Demande de modification »
+Ce diagramme décrit le processus de demande de modification d’une déclaration.
+L’importateur consulte le dossier concerné, modifie les informations nécessaires, renseigne le
+motif de la demande, puis soumet la demande au système pour traitement ultérieur.
+Page 66
+
+
+===== PAGE 79 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+FIGURE 27. Diagramme de séquence du cas d’utilisation « Demande de modification »
+4.5 Réalisation
+Cette partie présente les interfaces développées durant le deuxième sprint. Les captures
+d’écran illustrent les différentes étapes de création et de suivi d’une déclaration d’importation.
+Page 67
+
+
+===== PAGE 80 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+4.5.1
+Interface « Initier DI »
+4.5.1.1
+Interface « Initier DI — Importateur »
+Cette interface permet à l’importateur de renseigner les informations relatives à son identité
+lors de l’initiation d’une déclaration d’importation.
+FIGURE 28. Interface « Initier DI — Importateur »
+4.5.1.2
+Interface « Initier DI — Fournisseur »
+Cette interface permet à l’importateur de saisir les informations relatives au fournisseur
+associé à la déclaration d’importation.
+FIGURE 29. Interface « Initier DI — Fournisseur »
+Page 68
+
+
+===== PAGE 81 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+4.5.1.3
+Interface « Initier DI — Informations générales »
+Cette interface permet de renseigner les informations générales de la déclaration, notamment
+les données logistiques, financières et commerciales.
+FIGURE 30. Interface « Initier DI — Informations générales »
+4.5.1.4
+Interface « Initier DI — Marchandises »
+Cette interface permet à l’importateur de consulter la liste des marchandises ajoutées à la
+déclaration et d’en ajouter de nouvelles.
+FIGURE 31. Interface « Initier DI — Marchandises »
+Page 69
+
+
+===== PAGE 82 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+4.5.1.5
+Interface « Ajouter une marchandise »
+Cette interface permet à l’importateur d’ajouter une marchandise en renseignant sa
+désignation, son code tarifaire, sa quantité, son unité de mesure, son pays d’origine, son poids
+net et sa valeur FOB.
+FIGURE 32. Interface « Ajouter une marchandise »
+4.5.1.6
+Interface « Initier DI — Pièces jointes »
+Cette interface permet à l’importateur d’ajouter les documents obligatoires nécessaires à la
+constitution du dossier, tels que la facture pro-forma, la liste de colisage et le connaissement.
+FIGURE 33. Interface « Initier DI — Pièces jointes »
+Page 70
+
+
+===== PAGE 83 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+4.5.1.7
+Interface « Aperçu des frais »
+Après la saisie des informations et l’ajout des pièces jointes, le système affiche un aperçu
+des frais générés avant la confirmation de la déclaration.
+FIGURE 34. Interface « Aperçu des frais »
+4.5.2
+Interface « Consulter Fiche de suivi GUCE»
+Cette interface permet de consulter les informations détaillées d’une fiche de suivi GUCE,
+notamment la référence de la fiche de suivi GUCE, la référence du dossier, le montant, les frais
+et les procédures déclenchées.
+FIGURE 35. Interface « Consulter fiche de suivi GUCE »
+Page 71
+
+
+===== PAGE 84 =====
+
+CHAPITRE 4. GESTION DES DÉCLARATIONS ET DOCUMENTS
+4.6 Conclusion
+Dans ce chapitre, nous avons présenté le deuxième sprint, consacré à la création, au suivi et à
+la gestion des déclarations d’importation. Nous avons aussi présenté l’ajout des marchandises et
+des pièces jointes, l’aperçu des frais, la génération de la fiche de suivi GUCE, les demandes liées
+au dossier ainsi que l’orchestration du workflow. Le chapitre suivant portera sur le paiement, la
+validation du paiement et le traitement douanier.
+Page 72
+
+
+===== PAGE 85 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+Chapitre
+5
+Traitement des dossiers
+5.1 Introduction
+Ce chapitre présente le troisième sprint du projet. Il porte sur le paiement des fiches de suivi
+GUCE, la validation des paiements, la gestion des agents, le traitement douanier des dossiers et
+le traitement des demandes par les agents concernés.
+5.2 Backlog du sprint 3
+Ce troisième sprint porte sur la suite du circuit d’importation après la confirmation de la
+déclaration. Il couvre principalement la gestion des agents, le paiement des fiches de suivi
+GUCE, la validation des paiements, la transmission des dossiers à la douane et le traitement
+douanier des déclarations et des demandes associées. Le paiement peut être effectué en ligne
+via Stripe ou en espèces auprès des bureaux GUCE ou Campost. Les fonctionnalités retenues
+sont présentées dans le tableau 14.
+Page 73
+
+
+===== PAGE 86 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+TABLE 14. Backlog du Sprint 3
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+1
+Administration des
+agents
+En tant qu’administrateur GUCE/Campost
+ou administrateur douane, je peux :
+• créer des comptes agents selon mon
+périmètre.
+• consulter la liste des agents rattachés à mon
+service.
+• modifier les informations d’un agent.
+• bloquer ou débloquer un compte agent.
+• supprimer un compte agent non autorisé ou
+non utilisé.
+Admin
+GUCE/Campost,
+Admin
+Douane
+5
+2
+Paiement des fiches
+de suivi
+En tant qu’importateur, je peux :
+• consulter la fiche de suivi GUCE générée
+après confirmation de la déclaration.
+• choisir le mode de paiement souhaité.
+• effectuer un paiement en ligne via Stripe.
+• effectuer un paiement en espèces auprès
+d’un bureau GUCE ou Campost.
+• suivre l’état de paiement de ma fiche de
+suivi GUCE.
+Importateur
+8
+Page 74
+
+
+===== PAGE 87 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+TABLE 14. Backlog du Sprint 3 – suite
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+3
+Validation
+et
+transmission
+du
+paiement
+En tant qu’agent GUCE/Campost ou
+administrateur GUCE/Campost, je peux :
+• consulter les fiches payées, en attente ou à
+vérifier.
+• vérifier le résultat d’un paiement en ligne
+via Stripe.
+• valider un paiement effectué en espèces au
+bureau.
+• mettre à jour le statut de la fiche après
+vérification.
+• transmettre automatiquement le dossier à la
+douane après validation du paiement.
+Agent
+GUCE/Campost,
+Admin
+GUCE/Campost
+5
+4
+Consultation
+douanière
+des
+dossiers
+En tant qu’agent douane ou administrateur
+douane, je peux :
+• consulter les déclarations transmises après
+validation du paiement.
+• afficher les informations détaillées d’un
+dossier.
+• consulter les pièces jointes associées à la
+déclaration.
+• vérifier les données nécessaires avant la
+décision douanière.
+Agent
+Douane,
+Admin
+Douane
+5
+Page 75
+
+
+===== PAGE 88 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+TABLE 14. Backlog du Sprint 3 – suite
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+5
+Traitement
+douanier
+des
+déclarations
+En tant qu’agent douane ou administrateur
+douane, je peux :
+• analyser une déclaration d’importation
+transmise.
+• accepter une déclaration conforme.
+• refuser une déclaration non conforme.
+• demander un complément d’information en
+cas de dossier incomplet.
+• mettre à jour l’état du dossier selon la
+décision prise.
+Agent
+Douane,
+Admin
+Douane
+8
+6
+Traitement
+des
+demandes avancées
+En tant qu’agent douane ou administrateur
+douane, je peux :
+• consulter les demandes de prorogation
+soumises par les importateurs.
+• accorder ou rejeter une demande de
+prorogation.
+• consulter les demandes de modification
+liées aux déclarations.
+• approuver ou rejeter une demande de
+modification.
+• mettre à jour le statut de chaque demande
+traitée.
+Agent
+Douane,
+Admin
+Douane
+5
+Page 76
+
+
+===== PAGE 89 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+TABLE 14. Backlog du Sprint 3 – suite
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+7
+Notifications
+et
+suivi du dossier
+En tant qu’utilisateur concerné, je peux :
+• être notifié après validation du paiement.
+• être informé de la transmission du dossier à
+la douane.
+• recevoir la décision douanière liée au
+dossier.
+• suivre l’évolution du statut du dossier ou de
+la demande.
+Tous
+3
+5.3 Analyse du troisième sprint
+Cette section présente les besoins fonctionnels traités durant le troisième sprint. Elle permet
+de comprendre les actions réalisées par les agents GUCE/Campost, les agents douane et leurs
+administrateurs dans le circuit d’importation.
+5.3.1
+Diagramme de cas d’utilisation du Sprint 3
+Le sprint 3 comporte un unique diagramme de cas d’utilisation global. Ce diagramme
+synthétise l’ensemble des interactions entre le système et les différents acteurs du circuit
+d’importation : les agents et administrateurs de la douane, ainsi que les agents et administrateurs
+du GUCE/Campost.
+D’une part, les administrateurs (Douane et GUCE/Campost) assurent la gestion et le
+suivi des comptes des agents rattachés à leurs services respectifs. D’autre part, les agents
+opérationnels interviennent directement sur les dossiers :
+— L’agent GUCE/Campost s’occupe de la validation des paiements et de la transmission
+consécutive des dossiers vers la douane.
+Page 77
+
+
+===== PAGE 90 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+— L’agent douane intervient suite à cette transmission pour consulter les détails du dossier,
+vérifier les pièces jointes, et prononcer sa décision (accepter, refuser ou demander un
+complément d’information).
+FIGURE 36. Diagramme de cas d’utilisation global du Sprint 3
+5.3.2
+Descriptions textuelles des cas d’utilisation
+Cas d’utilisation « Gérer les agents GUCE/Campost »
+Ce cas décrit la gestion des agents GUCE et Campost par l’administrateur concerné. Il
+permet de créer, consulter, modifier, bloquer ou supprimer les comptes des agents.
+TABLE 15. Description textuelle du cas d’utilisation « Gérer les agents GUCE/Campost »
+Page 78
+
+
+===== PAGE 91 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+Nom
+du
+cas
+d’utilisation
+Gérer les agents GUCE/Campost
+Acteur
+Administrateur GUCE/Campost
+Résumé
+L’administrateur GUCE/Campost gère les comptes des agents
+rattachés à son service.
+Pré-condition
+L’administrateur est authentifié dans le système.
+Scénario nominal
+1. L’administrateur accède à l’espace de gestion des agents.
+2. Le système affiche la liste des agents.
+3. L’administrateur crée un nouveau compte agent.
+4. L’administrateur modifie les informations d’un agent.
+5. L’administrateur bloque, débloque ou supprime un compte
+agent.
+6. Le système enregistre l’action effectuée.
+Enchaînements
+alternatifs
+— Données invalides : le système affiche un message d’erreur.
+— Compte introuvable : l’action est refusée.
+Post conditions
+Les informations des agents GUCE/Campost sont mises à jour
+dans le système.
+Cas d’utilisation « Paiement et validation du paiement »
+Ce cas regroupe le paiement de la fiche de suivi GUCE par l’importateur et la validation du
+paiement par l’agent GUCE/Campost. Le paiement peut être effectué en ligne via Stripe ou en
+espèces auprès d’un bureau GUCE ou Campost.
+TABLE 16. Description textuelle du cas d’utilisation « Paiement et validation du paiement »
+Nom
+du
+cas
+d’utilisation
+Paiement et validation du paiement
+Page 79
+
+
+===== PAGE 92 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+Acteur
+Importateur,
+Agent
+GUCE/Campost,
+Administrateur
+GUCE/Campost
+Résumé
+L’importateur paie sa fiche de suivi GUCE en ligne ou en
+espèces, puis l’agent GUCE/Campost vérifie et valide le
+paiement.
+Pré-condition
+La fiche de suivi GUCE est générée et associée à une
+déclaration d’importation.
+Scénario nominal
+1. L’importateur consulte la fiche à payer.
+2. L’importateur choisit le mode de paiement.
+3. Si le paiement est en ligne, l’importateur effectue le
+paiement via Stripe.
+4. Si le paiement est en espèces, l’importateur effectue le
+paiement auprès d’un bureau GUCE ou Campost.
+5. L’agent GUCE/Campost consulte les fiches payées ou en
+attente.
+6. L’agent vérifie le paiement.
+7. L’agent valide le paiement.
+8. Le système met à jour le statut de la fiche.
+9. Le système transmet le dossier à la douane.
+Enchaînements
+alternatifs
+— Paiement en ligne échoué : le système affiche un message
+d’erreur.
+— Fiche de suivi GUCE déjà payée : la validation est refusée.
+— Fiche de suivi GUCE introuvable : le système affiche un
+message d’erreur.
+Post conditions
+Le paiement est validé et le dossier est transmis à la douane.
+Page 80
+
+
+===== PAGE 93 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+Cas d’utilisation « Gérer les agents douane »
+Ce cas décrit la gestion des agents douaniers par l’administrateur douane. Il permet de créer,
+consulter, modifier, bloquer ou supprimer les comptes des agents douane.
+TABLE 17. Description textuelle du cas d’utilisation « Gérer les agents douane »
+Nom
+du
+cas
+d’utilisation
+Gérer les agents douane
+Acteur
+Administrateur Douane
+Résumé
+L’administrateur
+douane
+gère
+les
+comptes
+des
+agents
+douaniers.
+Pré-condition
+L’administrateur douane est authentifié dans le système.
+Scénario nominal
+1. L’administrateur douane accède à l’espace de gestion des
+agents.
+2. Le système affiche la liste des agents douane.
+3. L’administrateur crée un compte agent douane.
+4. L’administrateur modifie les informations d’un agent.
+5. L’administrateur bloque, débloque ou supprime un compte
+agent.
+6. Le système enregistre les modifications.
+Enchaînements
+alternatifs
+— Données invalides : le système affiche un message d’erreur.
+— Compte agent introuvable : l’action est refusée.
+Post conditions
+Les informations des agents douane sont mises à jour dans le
+système.
+Page 81
+
+
+===== PAGE 94 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+Cas d’utilisation « Traiter les dossiers et les demandes »
+Ce cas regroupe les actions réalisées par l’agent douane et l’administrateur douane lors
+du traitement des dossiers. Il inclut la consultation des déclarations, la prise de décision, la
+demande de complément et le traitement des demandes de prorogation ou de modification.
+TABLE 18. Description textuelle du cas d’utilisation « Traiter les dossiers et les demandes »
+Nom
+du
+cas
+d’utilisation
+Traiter les dossiers et les demandes
+Acteur
+Agent Douane, Administrateur Douane
+Résumé
+L’agent douane consulte les dossiers transmis, traite les
+déclarations et prend une décision sur les demandes liées aux
+dossiers.
+Pré-condition
+Le dossier est transmis à la douane après validation du
+paiement.
+Scénario nominal
+1. L’agent douane accède à la liste des dossiers transmis.
+2. Le système affiche les déclarations à traiter.
+3. L’agent sélectionne un dossier.
+4. Le système affiche les détails du dossier et les pièces
+jointes.
+5. L’agent analyse la déclaration.
+6. L’agent accepte la déclaration, la refuse ou demande un
+complément d’information.
+7. L’agent consulte les demandes de prorogation ou de
+modification.
+8. L’agent accorde ou rejette une demande de prorogation.
+9. L’agent approuve ou rejette une demande de modification.
+10. Le système met à jour l’état du dossier ou de la demande.
+Page 82
+
+
+===== PAGE 95 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+Enchaînements
+alternatifs
+— Dossier non conforme : la déclaration est refusée.
+— Informations insuffisantes : une demande de complément
+est créée.
+— Demande non éligible : la demande de prorogation ou de
+modification est rejetée.
+Post conditions
+Le dossier ou la demande est traité et son statut est mis à jour.
+5.4 Conception
+Dans cette section, nous présentons la conception du troisième sprint à travers deux
+diagrammes de séquence principaux. Ces diagrammes permettent de représenter les échanges
+entre les acteurs, les interfaces et le système pour les fonctionnalités les plus importantes de ce
+sprint : le paiement de la Fiche de suivi GUCE et le traitement douanier du dossier.
+5.4.1
+Diagramme de séquence « Paiement de la Fiche de suivi GUCE »
+Ce diagramme présente le paiement d’une fiche par l’importateur. L’utilisateur consulte sa
+fiche, choisit le mode de paiement, puis effectue le paiement soit en ligne via Stripe, soit en
+espèces auprès d’un bureau GUCE ou Campost. Après l’opération, le système met à jour le
+statut de la fiche selon le résultat du paiement.
+Page 83
+
+
+===== PAGE 96 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+FIGURE 37. Diagramme de séquence du cas d’utilisation « Paiement de la Fiche de suivi
+GUCE »
+5.5 Réalisation
+Cette partie présente les interfaces développées durant le troisième sprint. Elles illustrent
+le paiement des fiches de suivi GUCE, la validation du paiement, la gestion des agents, le
+traitement douanier et le traitement des demandes.
+5.5.1
+Interface « Dashboard paiement »
+Cette interface permet à l’agent GUCE ou Campost de consulter les fiches générées, leurs
+statuts ainsi que les actions disponibles, notamment la consultation et la validation du paiement.
+Page 84
+
+
+===== PAGE 97 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+FIGURE 38. Interface « Dashboard paiement »
+5.5.2
+Interface « Paiement en ligne »
+Cette interface permet à l’importateur de payer sa Fiche de suivi GUCE en ligne via Stripe.
+Elle permet de lancer le paiement, de confirmer l’opération et de mettre à jour le statut de la
+Fiche de suivi GUCE après validation.
+FIGURE 39. Interface « Paiement en ligne via Stripe »
+5.5.3
+Interface « Valider paiement »
+Cette interface permet à l’agent GUCE ou Campost de valider le paiement d’une Fiche de
+suivi GUCE afin de poursuivre le traitement du dossier d’importation.
+Page 85
+
+
+===== PAGE 98 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+FIGURE 40. Interface « Valider paiement »
+5.5.4
+Interface « Gestion des agents GUCE/Campost »
+Cette interface permet à l’administrateur GUCE/Campost de consulter la liste des agents,
+de créer un nouvel agent, de modifier ses informations, de bloquer ou de supprimer un compte.
+FIGURE 41. Interface « Gestion des agents GUCE/Campost »
+5.5.5
+Interface « Gestion des agents douane »
+Cette interface permet à l’administrateur douane de gérer les comptes des agents douaniers.
+Elle permet notamment la création, la modification, le blocage et la suppression des agents.
+Page 86
+
+
+===== PAGE 99 =====
+
+CHAPITRE 5. TRAITEMENT DES DOSSIERS
+FIGURE 42. Interface « Gestion des agents douane »
+5.5.6
+Interface « Traitement des demandes »
+Cette interface permet à l’agent douane de consulter et de traiter les demandes de
+prorogation et de modification. L’agent peut analyser la demande, l’accepter ou la rejeter avec
+un motif.
+FIGURE 43. Interface « Traitement des demandes »
+5.6 Conclusion
+Dans ce chapitre, nous avons présenté le troisième sprint, consacré au paiement des fiches,
+à la validation des paiements, à la gestion des agents, au traitement douanier et au traitement
+des demandes. Ce sprint a permis de compléter la partie paiement et de poursuivre le circuit
+d’importation côté administration et douane.
+Page 87
+
+
+===== PAGE 100 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+Chapitre
+6
+Industrialisation
+DevOps
+et
+intelligence artificielle
+6.1 Introduction
+Ce chapitre présente le quatrième sprint du projet. Il porte sur l’industrialisation DevOps de
+la plateforme et l’intégration d’un micro-service intelligent d’analyse documentaire.
+6.2 Backlog du sprint 4
+Ce quatrième sprint concerne l’industrialisation DevOps de la plateforme, la supervision
+technique des micro-services et l’intégration d’un micro-service intelligent d’analyse
+documentaire. Les fonctionnalités retenues sont présentées dans le tableau 19.
+Page 88
+
+
+===== PAGE 101 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+TABLE 19. Backlog du Sprint 4
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+1
+Industrialisation
+DevOps
+En tant que développeur, je peux :
+• préparer les pipelines Jenkins du projet.
+• automatiser certaines étapes techniques.
+• récupérer le code source depuis le dépôt Git.
+• fiabiliser le cycle de développement.
+• rendre les opérations techniques répétables
+et traçables.
+Développeur
+5
+2
+Déploiement local
+En tant que développeur, je peux :
+• lancer la plateforme avec Docker Compose.
+• démarrer le frontend, l’API Gateway et les
+micro-services.
+• démarrer les bases de données et les
+services techniques.
+• vérifier l’état des conteneurs.
+• contrôler la disponibilité des services
+principaux.
+Développeur
+5
+3
+Qualité du code
+En tant que développeur, je peux :
+• analyser la qualité du code avec SonarQube.
+• mesurer la couverture des tests avec
+JaCoCo.
+• suivre les bugs, vulnérabilités et code
+smells.
+• vérifier le quality gate du service DI.
+• identifier les parties du code à améliorer.
+Développeur
+5
+Page 89
+
+
+===== PAGE 102 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+TABLE 19. Backlog du Sprint 4 – suite
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+4
+Supervision
+technique
+En tant que développeur, je peux :
+• exposer les métriques des micro-services.
+• collecter les métriques avec Prometheus.
+• visualiser les indicateurs dans Grafana.
+• suivre l’état global de la plateforme.
+• surveiller le trafic HTTP et les performances
+JVM.
+Développeur
+5
+5
+Analyse
+documentaire
+intelligente
+En tant qu’importateur, je peux :
+• joindre mes documents lors de l’initiation
+de ma déclaration.
+• obtenir une extraction automatique du
+contenu de mes documents.
+• bénéficier d’un mapping intelligent des
+champs, quel que soit le nommage utilisé.
+• recevoir les données structurées issues de
+mes documents joints.
+Importateur
+8
+6
+Comparaison
+documentaire
+En tant qu’importateur, je peux :
+• voir les écarts entre mes documents joints et
+les champs saisis.
+• consulter la valeur déclarée et la valeur
+détectée pour chaque incohérence.
+• être alerté en cas d’incohérence bloquante
+avant la soumission.
+• soumettre mon dossier uniquement si les
+données sont conformes.
+Importateur
+8
+Page 90
+
+
+===== PAGE 103 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+TABLE 19. Backlog du Sprint 4 – suite
+ID Fonctionnalité
+User Story
+Acteurs
+SP
+7
+Documentation
+et
+robustesse
+du
+service
+En tant que développeur, je peux :
+• documenter les endpoints du micro-service.
+• tester les API avec Swagger.
+• gérer les documents illisibles ou incomplets.
+• retourner des messages d’erreur contrôlés.
+• améliorer la robustesse du service.
+Développeur
+3
+6.3 Analyse et conception du sprint 4
+Cette section présente la conception adoptée durant le quatrième sprint. Elle décrit
+l’organisation générale de la chaîne DevOps, les outils utilisés pour l’automatisation, le
+déploiement local, l’analyse qualité et la supervision technique des micro-services.
+6.3.1
+Architecture DevOps proposée
+L’architecture DevOps proposée couvre le cycle technique de la plateforme, depuis la
+gestion du code source jusqu’au déploiement local et à la supervision. Elle s’appuie sur Git
+pour le versionnement, Jenkins pour l’automatisation, Docker Compose pour le déploiement
+local, SonarQube et JaCoCo pour l’analyse qualité, ainsi que Prometheus et Grafana pour
+l’observabilité.
+Cette architecture est organisée autour des éléments suivants :
+— Développement : gestion du code source et suivi des modifications.
+— Automatisation : préparation des tâches techniques avec Jenkins.
+— Déploiement local : lancement de l’ensemble de la plateforme avec Docker Compose.
+— Analyse qualité : suivi de la qualité du code et de la couverture des tests.
+— Supervision : collecte des métriques avec Prometheus et visualisation dans Grafana.
+Page 91
+
+
+===== PAGE 104 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+FIGURE 44. Architecture DevOps de la plateforme
+6.3.2
+Organisation de la chaîne DevOps
+Dans le cadre de ce sprint, plusieurs travaux DevOps ont été réalisés, notamment la
+préparation des pipelines Jenkins, l’intégration de SonarQube et JaCoCo, la mise en place du
+déploiement local avec Docker Compose ainsi que la supervision avec Prometheus et Grafana.
+Afin de garder une présentation claire et concise, nous présentons dans ce rapport les
+éléments les plus représentatifs : le pipeline de déploiement local, qui illustre l’intégration
+complète de la plateforme, et l’analyse qualité du service DI, qui représente le cœur fonctionnel
+de la gestion des déclarations d’importation.
+6.4 Réalisation de la chaîne CI/CD
+Dans ce sprint, plusieurs éléments de la chaîne CI/CD ont été mis en place afin d’améliorer
+l’industrialisation du projet. Les pipelines Jenkins ont permis d’automatiser certaines étapes
+techniques, comme la récupération du code, la préparation de l’environnement, les vérifications
+et le déploiement local de la plateforme.
+Afin d’éviter une présentation trop volumineuse, nous présentons principalement le pipeline
+de déploiement local. Ce pipeline permet de lancer l’ensemble de la plateforme dans un
+Page 92
+
+
+===== PAGE 105 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+environnement local à l’aide de Docker Compose et de vérifier la disponibilité des principaux
+composants.
+6.4.1
+Pipeline de déploiement local
+Le pipeline de déploiement local permet de préparer et de lancer l’ensemble des composants
+nécessaires au fonctionnement de la plateforme. Il facilite la validation de l’intégration globale
+entre les différents services.
+Le pipeline de déploiement local est organisé selon les étapes suivantes :
+• Récupération du code source : Jenkins récupère la dernière version du projet.
+• Arrêt de l’ancienne stack Docker : les anciens conteneurs sont arrêtés afin d’éviter les
+conflits.
+• Démarrage de la plateforme : Docker Compose lance le frontend, l’API Gateway, les
+micro-services, les bases de données et les services techniques.
+• Vérification des conteneurs : l’état des conteneurs Docker est contrôlé.
+• Vérification des services backend : les endpoints de santé des services sont vérifiés.
+• Vérification du frontend : l’interface Angular est contrôlée.
+• Vérification de la supervision : Prometheus et Grafana sont vérifiés.
+Ce pipeline permet de réduire les manipulations manuelles et de garantir un lancement
+cohérent de l’environnement local de la plateforme.
+FIGURE 45. Pipeline Jenkins de déploiement local
+Page 93
+
+
+===== PAGE 106 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+6.4.2
+Qualité du code avec SonarQube et JaCoCo
+SonarQube et JaCoCo ont été intégrés afin de suivre la qualité du code et la couverture
+des tests. Plusieurs services peuvent être analysés dans cette configuration. Dans ce rapport,
+nous présentons l’analyse du service DI comme exemple représentatif, car il constitue le cœur
+fonctionnel de la plateforme.
+SonarQube permet de suivre plusieurs indicateurs, notamment les bugs, les vulnérabilités,
+les code smells, la duplication et la maintenabilité. JaCoCo est utilisé pour mesurer la couverture
+des tests unitaires et générer des rapports permettant d’identifier les parties du code couvertes
+par les tests.
+a)
+Analyse du service DI.
+Le tableau de bord SonarQube du service DI permet de consulter les indicateurs liés à la
+fiabilité, à la sécurité, à la maintenabilité, à la couverture des tests et à la duplication du code. Il
+permet également de vérifier l’état du quality gate du service.
+FIGURE 46. Analyse SonarQube du service DI
+Page 94
+
+
+===== PAGE 107 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+6.4.3
+Intérêt de l’automatisation
+La mise en place des éléments de la chaîne CI/CD permet de rendre certaines étapes
+techniques plus rapides, plus fiables et plus répétables. Cette automatisation réduit les erreurs
+manuelles, facilite la validation de l’intégration entre les services et améliore le suivi technique
+du projet.
+6.5 Supervision et observabilité
+La supervision de la plateforme a été mise en place afin de suivre l’état technique des
+micro-services et de détecter rapidement les anomalies. Chaque service expose ses métriques
+via Spring Boot Actuator, puis Prometheus les collecte pour les rendre exploitables dans
+Grafana sous forme de tableaux de bord.
+6.5.1
+Vue globale de la plateforme
+La vue globale permet d’avoir une synthèse rapide de l’état général de la plateforme. Elle
+affiche notamment le statut global, le nombre de services disponibles, les cibles Prometheus
+actives, le débit des requêtes HTTP ainsi que les erreurs serveur.
+Les principaux indicateurs suivis sont :
+• État global : disponibilité générale de la plateforme;
+• Services disponibles : suivi des micro-services actifs;
+• Cibles Prometheus : contrôle des endpoints collectés;
+• Requêtes HTTP : suivi du nombre de requêtes traitées;
+• Erreurs 5xx : détection des erreurs serveur.
+Page 95
+
+
+===== PAGE 108 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+FIGURE 47. Vue globale de la supervision de la plateforme
+6.5.2
+Suivi du trafic HTTP
+Le suivi du trafic HTTP permet d’analyser les échanges entre les clients et les
+micro-services. Il fournit des informations sur le taux de requêtes, les erreurs côté client, les
+erreurs côté serveur et la latence moyenne.
+Les indicateurs HTTP suivis sont :
+• Taux de requêtes : nombre de requêtes traitées par les services;
+• Erreurs 4xx : erreurs liées aux requêtes invalides ou non autorisées;
+• Erreurs 5xx : erreurs internes des services;
+• Latence moyenne : temps moyen de réponse.
+Ces métriques permettent d’identifier les services les plus sollicités et les éventuels
+ralentissements.
+Page 96
+
+
+===== PAGE 109 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+FIGURE 48. Suivi du trafic HTTP des micro-services
+6.5.3
+Suivi des performances JVM
+Les micro-services backend étant développés avec Spring Boot, le suivi des performances
+JVM permet d’observer leur comportement interne. Cette partie du dashboard présente la
+mémoire utilisée, le heap, les threads actifs et l’utilisation CPU.
+Les indicateurs JVM suivis sont :
+• Mémoire heap utilisée : suivi de la mémoire consommée;
+• Utilisation du heap : contrôle de la consommation mémoire;
+• Threads actifs : observation du nombre de threads utilisés;
+• Utilisation CPU : mesure de la charge processeur.
+Ces informations facilitent l’analyse de la stabilité des services.
+Page 97
+
+
+===== PAGE 110 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+FIGURE 49. Suivi des performances JVM des micro-services
+Après la mise en place de la supervision technique, nous présentons le micro-service
+intelligent développé pour l’analyse documentaire.
+6.6 Micro-service intelligent d’analyse documentaire
+Cette section présente le micro-service intelligent développé durant le quatrième sprint. Il a
+pour objectif d’assister le traitement des dossiers d’importation en analysant automatiquement
+les documents joints, en extrayant les informations utiles et en les comparant avec les données
+saisies dans le formulaire de déclaration d’importation.
+6.6.1
+Contexte et objectif
+Dans un dossier d’importation, plusieurs documents commerciaux peuvent être exigés,
+comme la facture pro forma, la liste de colisage ou encore le connaissement. Ces documents
+contiennent des informations importantes qui doivent être cohérentes avec les données saisies
+dans le formulaire DI.
+Cependant, les erreurs documentaires peuvent entraîner des retards de traitement, des
+reprises au niveau de la douane et des coûts supplémentaires pour l’importateur. Les documents
+Page 98
+
+
+===== PAGE 111 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+les plus souvent concernés sont notamment la facture commerciale, la liste de colisage et le
+connaissement.
+FIGURE 50. Répartition des documents concernés par les erreurs documentaires
+L’objectif du micro-service est donc d’automatiser une partie de la vérification
+documentaire. Lorsqu’un document est joint au dossier, il est transmis au service avec son
+type déclaré. Le service extrait son contenu, le convertit dans un format métier structuré, puis
+le compare avec les données du formulaire afin d’identifier les écarts de conformité.
+6.6.2
+Stack technique utilisée
+Le micro-service d’analyse documentaire repose sur une stack Python adaptée au traitement
+de documents, à l’extraction de texte et à la structuration des données. Les principales
+technologies utilisées sont présentées dans le tableau 20.
+TABLE 20. Stack technique du micro-service d’analyse documentaire
+Technologie
+Rôle
+FastAPI
+Exposition des API d’extraction et de comparaison documentaire.
+PyMuPDF
+Lecture du texte contenu dans les PDF natifs.
+Page 99
+
+
+===== PAGE 112 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+TABLE 20. Stack technique du micro-service d’analyse documentaire – suite
+Technologie
+Rôle
+Pillow
+Prétraitement des images avant l’extraction OCR.
+Tesseract OCR
+Extraction du texte à partir des images et des PDF scannés.
+Groq / Llama 3.3
+70B
+Mapping sémantique du texte extrait vers un schéma JSON métier.
+Pydantic
+Validation du JSON métier obtenu après extraction et structuration.
+6.6.3
+Fonctionnement général du service
+La chaîne de traitement du micro-service suit plusieurs étapes successives. Le document
+entrant peut être un PDF natif, une image ou un PDF scanné. Le service commence par extraire
+le texte, puis reconstruit les informations utiles avant de les transmettre au modèle LLM. Le
+résultat est ensuite validé et comparé aux données du formulaire DI.
+FIGURE 51. Fonctionnement général du micro-service d’analyse documentaire
+Page 100
+
+
+===== PAGE 113 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+Le fonctionnement global peut être résumé comme suit :
+• réception du document joint au dossier;
+• extraction du texte selon le type du document;
+• reconstruction et nettoyage du texte extrait;
+• mapping sémantique vers un schéma JSON métier;
+• validation des données structurées;
+• comparaison avec les données du formulaire DI;
+• retour d’un résultat indiquant les champs conformes, les écarts et les alertes.
+6.6.4
+Extraction du texte par OCR
+L’étape d’OCR permet de produire un texte exploitable à partir du document source.
+Lorsque le document est un PDF natif, le texte est extrait directement. Lorsque le document
+est une image ou un PDF scanné, un prétraitement est appliqué avant l’extraction OCR afin
+d’améliorer la qualité du texte obtenu.
+FIGURE 52. Étapes d’extraction OCR d’un document scanné
+Dans notre système, l’OCR ne décide pas de la conformité du document. Il constitue une
+première transformation permettant d’obtenir une base textuelle propre et exploitable pour les
+étapes suivantes.
+Page 101
+
+
+===== PAGE 114 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+6.6.5
+Structuration des données avec le LLM
+Après l’extraction du texte, le service utilise un modèle LLM afin de convertir le contenu
+brut du document en données métier structurées. Le modèle reçoit le texte reconstruit, le type
+déclaré du document, le schéma JSON cible et les règles de mapping.
+FIGURE 53. Mapping sémantique des données documentaires avec le LLM
+La sortie de cette étape contient principalement :
+• le type de document détecté;
+• les avertissements éventuels;
+• le payload JSON structuré contenant les champs métier extraits.
+Le rôle du LLM est donc de transformer le texte du document en données exploitables. Il
+ne réalise pas la comparaison avec le formulaire DI; cette opération est assurée par une étape
+déterministe séparée.
+Page 102
+
+
+===== PAGE 115 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+6.6.6
+Comparaison documentaire
+La comparaison documentaire confronte le payload extrait du document avec le payload du
+formulaire DI. Cette étape s’appuie sur des règles déterministes et sur les champs utiles selon
+le type du document traité.
+Contrairement à l’étape LLM, la comparaison ne repose pas sur une génération automatique
+de texte. Elle applique des règles précises afin de vérifier la cohérence entre les informations
+extraites du document et les informations déclarées dans le formulaire. Elle permet ainsi de
+distinguer les champs conformes, les champs manquants et les incohérences bloquantes.
+Cette comparaison permet d’identifier :
+• les champs comparés;
+• les champs conformes;
+• les champs présentant des écarts;
+• les valeurs manquantes;
+• les incohérences bloquantes;
+• les alertes à remonter à l’utilisateur.
+Le résultat final indique si le dossier peut poursuivre son traitement ou s’il nécessite une
+correction au niveau des données saisies ou des documents fournis.
+6.6.7
+Résultat retourné par le service
+Le micro-service retourne un résultat structuré au format JSON. Ce résultat permet au
+système principal d’exploiter facilement les données extraites et les écarts détectés.
+Les principales sorties du service sont :
+• comparison.blocking : indique si une incohérence bloque le traitement;
+• comparedFields : liste des champs comparés;
+Page 103
+
+
+===== PAGE 116 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+• matchedFields : champs conformes entre le document et le formulaire;
+• mismatchFields : champs présentant des différences;
+• issues[] : liste des erreurs ou avertissements détectés.
+FIGURE 54. Entrées, moteur de comparaison et sorties du service
+6.6.8
+Apport du micro-service
+L’intégration de ce micro-service permet d’améliorer le contrôle documentaire des dossiers
+d’importation. Il assiste l’utilisateur et les agents dans la détection des incohérences entre les
+documents joints et les données déclarées.
+Les principaux apports sont :
+• réduction des erreurs documentaires;
+• amélioration de la cohérence entre les documents et le formulaire;
+• gain de temps lors de la vérification des dossiers;
+• meilleure traçabilité des écarts détectés;
+• aide à la décision avant la poursuite du traitement.
+Page 104
+
+
+===== PAGE 117 =====
+
+CHAPITRE 6. INDUSTRIALISATION DEVOPS ET INTELLIGENCE
+ARTIFICIELLE
+6.7 Conclusion
+Dans ce chapitre, nous avons présenté le quatrième sprint, consacré à l’industrialisation
+DevOps, à la supervision technique et à l’intégration d’un micro-service intelligent d’analyse
+documentaire. Ce sprint a permis d’améliorer la fiabilité du déploiement local, le suivi de
+la qualité du code, l’observabilité des micro-services et l’automatisation partielle du contrôle
+documentaire.
+Page 105
+
+
+===== PAGE 118 =====
+
+CONCLUSION GÉNÉRALE
+Conclusion Générale
+Ce mémoire de Licence, réalisé dans le cadre de la formation en Informatique à l’Institut
+Supérieur d’Informatique de Mahdia (ISIMA), a permis de mettre en pratique les connaissances
+théoriques acquises durant le parcours académique.
+À travers ce travail, une problématique précise a été étudiée, analysée et traitée selon une
+démarche méthodologique structurée. Les différentes phases du projet — analyse des besoins,
+conception, implémentation et validation — ont permis d’aboutir à une solution cohérente et
+fonctionnelle répondant aux objectifs fixés.
+Ce projet a également contribué au développement de compétences techniques et
+organisationnelles, notamment en matière de gestion de projet, de structuration d’un travail
+scientifique et d’utilisation d’outils informatiques adaptés.
+Toutefois, comme tout projet académique, certaines limites peuvent être identifiées. Elles
+ouvrent la voie à des perspectives d’amélioration et d’évolution, telles que :
+– L’optimisation des performances du système(temps de réponse, scalabilité et charge
+utilisateur).
+– L’ajout de nouvelles fonctionnalités :
+• Le développement d’un système d’intelligence artificielle de détection de fraude
+basé sur l’historique des acteurs (importateurs et fournisseurs) et la reconnaissance
+de patterns suspects;
+Page 106
+
+
+===== PAGE 119 =====
+
+CONCLUSION GÉNÉRALE
+• La création d’un module d’évaluation automatique du risque qui analyse en temps
+réel les déclarations en croisant données historiques, règles douanières et contexte
+économique.
+– L’intégration de technologies complémentaires.
+– L’extension du projet à un contexte plus large ou professionnel.
+En conclusion, ce mémoire constitue une étape importante dans le parcours universitaire et
+représente une expérience enrichissante tant sur le plan académique que personnel.
+Page 107
+
+
+===== PAGE 120 =====
+
+BIBLIOGRAPHIE
+Bibliographie
+[1]
+Ken SCHWABER et Jeff SUTHERLAND. Le Guide Scrum : Les règles du jeu. 2020. URL :
+https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-French.pdf (visité
+le 01/06/2026).
+[2]
+Visual Studio Code. URL : https://code.visualstudio.com/docs (visité le 10/05/2026).
+[3]
+IntelliJ IDEA. URL : https : / / www . jetbrains . com / idea / documentation/ (visité le
+10/05/2026).
+[4]
+Git. URL : https://git-scm.com/doc (visité le 10/05/2026).
+[5]
+Swagger. URL : https://swagger.io/docs/ (visité le 10/05/2026).
+[6]
+OpenAPI. URL : https://swagger.io/specification/ (visité le 10/05/2026).
+[7]
+Draw.io. URL : https://www.drawio.com/doc/ (visité le 10/05/2026).
+[8]
+TypeScript. URL : https://www.typescriptlang.org/docs/ (visité le 10/05/2026).
+[9]
+Angular. URL : https://angular.dev/ (visité le 10/05/2026).
+[10]
+PrimeNG. URL : https://primeng.org/ (visité le 10/05/2026).
+[11]
+Java. URL : https://docs.oracle.com/en/java/ (visité le 10/05/2026).
+[12]
+Spring Boot. URL : https://spring.io/projects/spring-boot (visité le 10/05/2026).
+[13]
+Camunda. URL : https://docs.camunda.io/ (visité le 10/05/2026).
+[14]
+Stripe. URL : https://docs.stripe.com/ (visité le 10/05/2026).
+Page 108
+
+
+===== PAGE 121 =====
+
+BIBLIOGRAPHIE
+[15]
+Apache Kafka. URL : https://kafka.apache.org/documentation/ (visité le 10/05/2026).
+[16]
+PostgreSQL. URL : https://www.postgresql.org/docs/ (visité le 10/05/2026).
+[17]
+MongoDB. URL : https://www.mongodb.com/docs/ (visité le 10/05/2026).
+[18]
+MinIO. URL : https://min.io/docs/minio/linux/index.html (visité le 10/05/2026).
+[19]
+Docker. URL : https://docs.docker.com/ (visité le 10/05/2026).
+[20]
+Jenkins. URL : https://www.jenkins.io/doc/ (visité le 10/05/2026).
+[21]
+SonarQube. URL : https : / / docs . sonarsource . com / sonarqube - server/ (visité le
+10/05/2026).
+[22]
+JUnit 5. URL : https://junit.org/junit5/docs/current/user-guide/ (visité le 10/05/2026).
+[23]
+JaCoCo. URL : https://www.jacoco.org/jacoco/trunk/doc/ (visité le 10/05/2026).
+[24]
+Prometheus. URL : https : / / prometheus . io / docs / introduction / overview/ (visité le
+10/05/2026).
+[25]
+Grafana. URL : https://grafana.com/docs/ (visité le 10/05/2026).
+[26]
+Redis. URL : https://redis.io/docs/latest/ (visité le 10/05/2026).
+[27]
+LaTeX. URL : https://www.latex-project.org/help/documentation/ (visité le 10/05/2026).
+[28]
+GUCE Cameroun. URL : https://www.guichetunique.cm/ (visité le 10/05/2026).
+Page 109
+
+
+===== PAGE 122 =====

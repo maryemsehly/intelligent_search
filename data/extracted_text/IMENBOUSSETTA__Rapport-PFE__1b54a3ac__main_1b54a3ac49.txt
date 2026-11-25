@@ -1,0 +1,3051 @@
+===== PAGE 1 =====
+
+École Nationale des Sciences
+de l’Informatique
+Rapport de Projet de Fin
+d’Études
+Présenté en vue de l’obtention du diplôme
+INGÉNIEUR EN INFORMATIQUE
+Conception et réalisation d’un module intelligent de validation
+des données des produits sous SAP Commerce Cloud
+Réalisé par :
+Mlle. Imen BOUSSETTA
+Entreprise d’accueil : DECADE
+Encadrant académique : Mme. Hela BOUKEF
+Encadrant professionnel : M. Aymen ELLOUZE
+Adresse : Sfax, Route de Gremda Km 3.5, Ceinture Bourguiba, Complexe Focus – 2ème
+étage
+Année scolaire : 2025 / 2026
+
+
+===== PAGE 2 =====
+
+Appréciations et signatures des
+encadrants
+
+
+===== PAGE 3 =====
+
+Chapitre 0 –
+2
+Résumé
+Ce projet s’inscrit dans le cadre de notre projet de fin d’études à l’École Nationale des
+Sciences de l’Informatique, en vue de l’obtention du diplôme d’ingénieur en informatique.
+Il a été réalisé au sein de DECADE sur une durée de six mois.
+L’objectif principal du projet est de concevoir une solution intelligente d’enrichissement
+et de validation des données produits intégrée à SAP Commerce pour ETANCO/SIMPSON.
+Cette solution permet d’automatiser la génération des descriptions produits, la traduction
+des contenus ainsi que la détection des anomalies et incohérences dans les données avant
+leur publication sur les plateformes e-commerce.
+Mots-clés : SAP Commerce, Intelligence artificielle, NLP, Enrichissement produit,
+Validation des données, E-commerce.
+Abstract
+This project is part of our end-of-study project at the National School of Computer
+Science, leading to the engineering degree in computer science. It was carried out at
+DECADE over a period of six months.
+The main objective of the project is to design an intelligent product enrichment and
+validation solution integrated into SAP Commerce for ETANCO/SIMPSON. The solution
+automates product description generation, content translation, and the detection of ano-
+malies and inconsistencies in product data before publication on e-commerce platforms.
+Keywords : SAP Commerce, Artificial Intelligence, NLP, Product Enrichment, Data
+Validation, E-commerce.
+Résumé Arabe
+2
+
+
+===== PAGE 4 =====
+
+Remerciements
+texte
+texte
+texte
+i
+
+
+===== PAGE 5 =====
+
+Table des matières
+Introduction Générale
+1
+1
+Présentation générale du projet
+4
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Présentation de l’organisme d’accueil . . . . . . . . . . . . . . . . . . . . .
+4
+1.2.1
+Présentation de l’entreprise : DECADE . . . . . . . . . . . . . . . .
+4
+1.2.2
+Types de projets
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2.3
+Présentation du client : ETANCO . . . . . . . . . . . . . . . . . . .
+5
+1.3
+Concepts de base . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.3.1
+Le commerce électronique
+. . . . . . . . . . . . . . . . . . . . . . .
+6
+1.3.2
+SAP Commerce Cloud . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+1.3.3
+L’intelligence artificielle générative
+. . . . . . . . . . . . . . . . . .
+9
+1.3.4
+Les grands modèles de langage . . . . . . . . . . . . . . . . . . . . .
+10
+1.4
+Cadre général du projet
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.4.1
+Contexte général
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.4.2
+Étude de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.4.3
+Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.5
+Pilotage du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.5.1
+Méthodologie Agile . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.5.2
+L’approche Scrum . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.5.3
+Backlog du produit . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2
+Analyse, Conception et Architecture
+18
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.2
+Analyse et Spécification des besoins . . . . . . . . . . . . . . . . . . . . . .
+18
+2.2.1
+Identification des acteurs . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.2.2
+Recueil des besoins fonctionnels . . . . . . . . . . . . . . . . . . . .
+19
+2.2.3
+Recueil des besoins non fonctionnels
+. . . . . . . . . . . . . . . . .
+20
+ii
+
+
+===== PAGE 6 =====
+
+Chapitre 0 – TABLE DES MATIÈRES
+iii
+2.3
+Modélisation des besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.3.1
+Diagramme de cas d’utilisation
+. . . . . . . . . . . . . . . . . . . .
+22
+2.3.2
+Diagramme de séquence système . . . . . . . . . . . . . . . . . . . .
+23
+2.3.3
+Diagramme de classes global . . . . . . . . . . . . . . . . . . . . . .
+24
+2.4
+Architecture globale
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.4.1
+Choix architecturaux . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.4.2
+Architecture et organisation des composants . . . . . . . . . . . . .
+26
+2.4.3
+Flux global de traitement
+. . . . . . . . . . . . . . . . . . . . . . .
+29
+2.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3
+Module d’enrichissement et de validation des produits
+32
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.2
+Architecture du microservice d’intelligence artificielle
+. . . . . . . . . . . .
+32
+3.2.1
+Couche des routes . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.2.2
+Couche des schémas de données . . . . . . . . . . . . . . . . . . . .
+34
+3.2.3
+Couche des services de traitement . . . . . . . . . . . . . . . . . . .
+35
+3.2.4
+Couche des modèles et composants d’intelligence artificielle . . . . .
+36
+3.3
+Module d’enrichissement intelligent . . . . . . . . . . . . . . . . . . . . . .
+37
+3.3.1
+Génération automatique des descriptions . . . . . . . . . . . . . . .
+37
+3.3.2
+Traduction multilingue . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+3.3.3
+Structure de la réponse du service d’enrichissement . . . . . . . . .
+43
+3.4
+Module de validation : contrôle de qualité automatique . . . . . . . . . . .
+44
+3.4.1
+Couche 1 : Validation structurelle . . . . . . . . . . . . . . . . . . .
+45
+3.4.2
+Couche 2 : Validation sémantique . . . . . . . . . . . . . . . . . . .
+46
+3.4.3
+Couche 3 : Corrections automatiques et suggestions . . . . . . . . .
+47
+3.4.4
+Couche 4 : Calcul du score de qualité . . . . . . . . . . . . . . . . .
+48
+3.4.5
+Standardisation de la réponse de validation . . . . . . . . . . . . . .
+49
+3.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4
+Intégration dans SAP Commerce Cloud
+51
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.2
+Présentation de SAP Commerce Cloud . . . . . . . . . . . . . . . . . . . .
+51
+4.2.1
+Organisation en couches . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.2.2
+Description des principales couches . . . . . . . . . . . . . . . . . .
+53
+4.2.3
+Notion de workflow . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.3
+Intégration du microservice IA dans SAP Commerce Cloud . . . . . . . . .
+54
+4.3.1
+Architecture de l’intégration . . . . . . . . . . . . . . . . . . . . . .
+55
+iii
+
+
+===== PAGE 7 =====
+
+Chapitre 0 – TABLE DES MATIÈRES
+iv
+4.3.2
+Communication REST entre les composants . . . . . . . . . . . . .
+55
+4.4
+Présentation du workflow d’enrichissement et de validation des produits . .
+57
+4.4.1
+Déroulement global . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+4.4.2
+Gestion des états du produit . . . . . . . . . . . . . . . . . . . . . .
+57
+4.5
+Réalisation du workflow d’enrichissement et de validation . . . . . . . . . .
+58
+4.5.1
+Configuration du workflow . . . . . . . . . . . . . . . . . . . . . . .
+58
+4.5.2
+Action 1 : Déclenchement du workflow
+. . . . . . . . . . . . . . . .
+59
+4.5.3
+Action 2 : Sélection des champs et des langues . . . . . . . . . . . .
+60
+4.5.4
+Action 3 : Enrichissement automatique du produit . . . . . . . . . .
+62
+4.5.5
+Action 4 : Validation automatique des résultats
+. . . . . . . . . . .
+63
+4.5.6
+Action 5 : Consultation des résultats
+. . . . . . . . . . . . . . . . .
+65
+4.5.7
+Action 6 : Validation du produit . . . . . . . . . . . . . . . . . . . .
+69
+4.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+70
+Conclusion générale et perspectives
+71
+A Annexe 1
+73
+Bibliographie
+74
+Netographie
+75
+iv
+
+
+===== PAGE 8 =====
+
+Liste des acronymes
+AI
+Artificial Intelligence
+API
+Application Programming Interface
+B2B
+Business-to-Business
+B2C
+Business-to-Consumer
+BLEU
+Bilingual Evaluation Understudy
+CRM
+Customer Relationship Management
+DAO
+Data Access Object
+DTO
+Data Transfer Object
+ERP
+Enterprise Resource Planning
+GPU
+Graphics Processing Unit
+HTML
+HyperText Markup Language
+HTTP
+HyperText Transfer Protocol
+IA
+Intelligence Artificielle
+JSON
+JavaScript Object Notation
+LLM
+Large Language Model
+LoRA
+Low-Rank Adaptation
+NLP
+Natural Language Processing
+NLLB
+No Language Left Behind
+ORM
+Object-Relational Mapping
+PEFT
+Parameter-Efficient Fine-Tuning
+PIM
+Product Information Management
+REST
+Representational State Transfer
+SMTP
+Simple Mail Transfer Protocol
+TAL
+Traitement Automatique des Langues
+v
+
+
+===== PAGE 9 =====
+
+Chapitre 0 – TABLE DES MATIÈRES
+vi
+UML
+Unified Modeling Language
+URL
+Uniform Resource Locator
+XML
+Extensible Markup Language
+vi
+
+
+===== PAGE 10 =====
+
+Introduction Générale
+Le commerce en ligne est devenu un canal de vente indispensable pour la plupart des
+entreprises. Sur une plateforme e-commerce, la qualité des informations présentées aux
+clients est un facteur déterminant pour réussir une vente. Des informations complètes et
+précises sur les produits ne constituent pas seulement un support technique, elles rassurent
+l’acheteur et diminuent les risques de retours. Pour les entreprises qui gèrent des milliers de
+références, comme c’est le cas dans le milieu industriel, les données relatives aux produits
+sont donc un actif stratégique qu’il faut savoir valoriser.
+Pourtant, la gestion d’un catalogue volumineux pose souvent des problèmes concrets
+aux équipes métier. Chez de nombreux distributeurs ou fabricants, l’enrichissement
+des informations reste une tâche essentiellement manuelle et répétitive. Les personnes
+chargées de l’administration du catalogue doivent souvent traduire des textes, rédiger des
+descriptions techniques et vérifier la cohérence de nombreux attributs des produits. Ce
+processus est long, coûteux et peut facilement laisser passer des erreurs humaines. Ces
+incohérences finissent par nuire à la crédibilité du site et à l’expérience de l’utilisateur
+final.
+L’évolution récente des technologies d’intelligence artificielle offre de nouvelles pistes
+pour simplifier ce travail. Les modèles de traitement du langage naturel, ou NLP, ainsi que
+les modèles de langage de grande taille (LLM), sont désormais capables de comprendre et
+de générer du texte avec une précision remarquable. Ces outils permettent d’automatiser
+des tâches qui, jusqu’à présent, nécessitaient une intervention humaine constante. En
+intégrant ces modèles dans les processus de gestion, il devient possible de traiter les
+données des produits plus rapidement tout en maintenant un niveau de qualité élevé.
+C’est dans ce contexte que s’inscrit mon projet de fin d’études au sein de l’entreprise
+DECADE [1]. Spécialisée dans les solutions de commerce électronique, DECADE
+accompagne ses clients dans la mise en place de plateformes performantes. Mon stage s’est
+concentré sur un besoin spécifique exprimé par ETANCO [2], une filiale du groupe Simpson
+Strong-Tie, qui fabrique et distribue des systèmes de fixation. Avec un catalogue technique
+très riche, l’entreprise cherchait un moyen efficace d’automatiser l’enrichissement et
+la vérification du contenu associé aux produits au sein de son outil de gestion, SAP
+1
+
+
+===== PAGE 11 =====
+
+Chapitre 0 – Introduction Générale
+2
+Commerce Cloud [3].
+Le travail que j’ai réalisé consiste à concevoir et développer un module intelligent
+capable d’assister les équipes d’ETANCO. L’idée principale est de proposer un système
+qui ne se contente pas de stocker des informations, mais qui aide activement à les améliorer.
+Ce module permet notamment de générer automatiquement des descriptions des produits
+détaillées à partir de simples caractéristiques techniques, de traduire les informations
+relatives aux produits en plusieurs langues et de détecter les anomalies ou les éléments
+manquants avant la mise en ligne.
+Pour répondre à ces besoins, j’ai mis en place une architecture qui fait le pont entre le
+monde du e-commerce et celui de l’intelligence artificielle. D’un côté, le système utilise Java
+et le framework Spring [?], qui sont les bases technologiques de SAP Commerce Cloud. De
+l’autre, j’ai développé une interface de services sous Python [?] avec le framework FastAPI
+[?] pour exploiter les modèles d’intelligence artificielle. Cette séparation permet d’utiliser
+le meilleur de chaque technologie : la robustesse de SAP pour la gestion commerciale et
+la flexibilité de Python pour les traitements d’intelligence artificielle.
+L’un des apports majeurs de cette solution est la mise en place d’un score de
+qualité pour chaque présentation de produit. Ce score permet aux responsables de voir
+immédiatement quelles données des produits sont prêtes à être publiées et lesquelles
+demandent une correction. En suggérant des modifications automatiques et en signalant
+les incohérences dans les caractéristiques des produits, l’outil devient un véritable assistant
+qui réduit considérablement le temps passé sur des tâches à faible valeur ajoutée. L’objectif
+final est de permettre aux équipes de se concentrer sur la stratégie plutôt que sur la
+correction manuelle de fichiers.
+Ce rapport présente l’intégralité des étapes de ce projet, de l’analyse initiale à la
+validation des résultats en production.
+Le chapitre 1 expose le contexte général du projet : qui est DECADE, qui est ETANCO,
+quels sont les enjeux du e-commerce et de la qualité des données, et quelle est précisément
+la problématique que nous cherchons à résoudre.
+Le chapitre 2 détaille l’analyse des besoins et la conception de l’architecture générale
+du système. Nous y présentons les besoins fonctionnels et non-fonctionnels, les acteurs
+impliqués, et la stratégie architecturale retenue (microservices découplés, API REST,
+séparation SAP/IA).
+Le chapitre 3 constitue le cœur technique du projet. Il détaille le module
+d’enrichissement et de validation des produits alimenté par l’intelligence artificielle.
+Nous y expliquons les pipelines d’enrichissement (génération de descriptions, traduction
+multilingue), les pipelines de validation (règles métier, analyse linguistique et sémantique),
+2
+
+
+===== PAGE 12 =====
+
+Chapitre 0 – Introduction Générale
+3
+le calcul du score qualité, et finalement l’intégration de cette intelligence dans SAP
+Commerce Cloud (services Java, workflows, extensions du Backoffice).
+Ces trois chapitres forment un tout cohérent : problématique →architecture →
+solution.
+3
+
+
+===== PAGE 13 =====
+
+Chapitre 1
+Présentation générale du projet
+1.1
+Introduction
+Ce chapitre présente le contexte général du projet ainsi que les éléments nécessaires à sa
+compréhension. Nous introduisons dans un premier temps l’organisme d’accueil DECADE
+Tunisie et le client concerné par le projet.
+Nous présentons ensuite les concepts fondamentaux liés au commerce électronique, à
+la gestion des informations des produits ainsi qu’aux technologies d’intelligence artificielle
+générative. Enfin, nous analysons le contexte du projet, l’existant et la problématique
+identifiée avant de présenter la solution proposée et la méthodologie de travail adoptée.
+1.2
+Présentation de l’organisme d’accueil
+Dans cette section, nous présentons l’organisme d’accueil, le client concerné par le
+projet ainsi que les principaux domaines dans lesquels ils exercent leurs activités.
+1.2.1
+Présentation de l’entreprise : DECADE
+DECADE [1] est une Entreprise de Services du Numérique (ESN) spécialisée dans le
+conseil et la réalisation de solutions e-commerce et de transformation digitale. Depuis sa
+création en 1988, elle s’est imposée comme un partenaire stratégique pour les entreprises
+souhaitant titulariser leur activité commerciale en ligne.
+L’expertise de DECADE repose sur une maîtrise approfondie des outils de vente
+en ligne, notamment SAP Commerce Cloud et sur une forte capacité à intégrer des
+problématiques complexes de gestion des informations des produits.
+4
+
+
+===== PAGE 14 =====
+
+Chapitre 1 – Présentation générale du projet
+5
+L’entreprise accompagne ses clients tout au long du cycle de vie de leurs projets, de
+la conception logicielle à l’optimisation continue, en mettant l’accent sur la qualité des
+contenus et l’efficacité des processus métier.
+Cette spécialisation dans le commerce électronique à forte valeur ajoutée constitue
+le cadre idéal pour ce projet de fin d’études, qui s’articule autour de l’amélioration du
+parcours d’enrichissement des informations des produits pour un client industriel majeur.
+L’identité visuelle de l’entreprise est illustrée par la Figure 1.1.
+Figure 1.1 – Logo de DECADE
+1.2.2
+Types de projets
+DECADE accompagne ses clients à travers des solutions adaptées à leurs objectifs
+stratégiques. Les principaux axes d’intervention de l’entreprise sont :
+— Solutions e-commerce : conception et développement de plateformes de vente
+robustes et évolutives.
+— Gestion des informations des produits (PIM/PXM) : mise en place de
+référentiels uniques pour centraliser et enrichir les données des produits.
+— Expérience utilisateur (UX/UI) : création de parcours d’achat ergonomiques et
+performants adaptés aux besoins des clients.
+— Marketplaces : déploiement de solutions permettant d’étendre l’offre commerciale
+via des écosystèmes multipartenaires.
+— Gestion de la relation client (CRM) : intégration d’outils de suivi et de fidélisation
+pour une meilleure connaissance du client.
+— Architectures API-first et Cloud : mise en œuvre de systèmes modulaires et
+flexibles facilitant l’interopérabilité entre les outils.
+1.2.3
+Présentation du client : ETANCO
+Dans le cadre de ce projet, DECADE intervient pour le compte d’ETANCO [2], une
+filiale du groupe international Simpson Strong-Tie. ETANCO est un acteur majeur en
+Europe dans la conception, la fabrication et la distribution de solutions de fixation et
+d’assemblage destinées à l’enveloppe du bâtiment. L’entreprise intervient dans plusieurs
+domaines, notamment la toiture, la façade, le bardage et l’étanchéité et s’adresse
+principalement aux professionnels du bâtiment.
+5
+
+
+===== PAGE 15 =====
+
+Chapitre 1 – Présentation générale du projet
+6
+Afin de répondre aux besoins de ses clients, ETANCO commercialise un catalogue
+comprenant plusieurs dizaines de milliers de références. Chaque produit est associé à
+de nombreuses informations, telles que des caractéristiques techniques, des descriptions,
+des documents réglementaires, des médias, des classifications ainsi que des traductions
+destinées aux différents marchés. La qualité, la cohérence et la disponibilité de ces
+informations sont essentielles pour assurer une présentation fiable des produits sur les
+différents canaux de diffusion de l’entreprise. La Figure 1.2 présente l’identité visuelle du
+groupe.
+Figure 1.2 – Logo d’ETANCO
+1.3
+Concepts de base
+Cette section introduit les notions fondamentales nécessaires à la compréhension de la
+circulation des informations au sein d’une interface de vente moderne.
+1.3.1
+Le commerce électronique
+Le commerce électronique, ou e-commerce, désigne l’échange de biens, de services ou
+d’informations par l’intermédiaire de réseaux informatiques, principalement Internet [4].
+Il ne se limite pas à l’acte d’achat, mais englobe l’ensemble du parcours client numérique.
+Les modèles de commerce électronique
+On distingue généralement deux modèles principaux selon la nature des acteurs
+impliqués :
+— B2C (Business-to-Consumer) : modèle dans lequel une entreprise commercialise
+directement ses produits ou services auprès des consommateurs finaux. Les achats
+concernent généralement de faibles quantités et le processus de décision est
+relativement rapide.
+— B2B (Business-to-Business) : modèle dans lequel les échanges s’effectuent entre
+entreprises. Les transactions portent souvent sur des produits techniques ou spécialisés,
+impliquent des volumes plus importants et suivent un processus d’achat plus structuré.
+6
+
+
+===== PAGE 16 =====
+
+Chapitre 1 – Présentation générale du projet
+7
+Le tableau 1.1 synthétise les disparités majeures entre ces deux approches.
+Table 1.1 – Comparaison entre les modèles e-commerce B2B et B2C
+Caractéristique
+E-commerce B2C
+E-commerce B2B
+Client cible
+Particulier
+(consommateur
+final)
+Professionnel
+(entreprise
+ou
+organisation)
+Processus
+d’achat
+Rapide,
+généralement
+réalisé
+par une seule personne
+Plus long, impliquant plusieurs
+intervenants et validations
+Volume / Prix
+Faibles quantités avec des prix
+fixes
+Volumes plus importants avec
+des prix négociés
+Relation client
+Relation
+ponctuelle
+orientée
+consommateur
+Relation durable fondée sur un
+partenariat commercial
+Catalogue
+Produits standardisés destinés
+au grand public
+Produits techniques avec des
+informations détaillées
+Cette comparaison met en évidence les différences fondamentales entre les deux
+approches e-commerce. Dans le contexte d’ETANCO, le modèle B2B prédomine : les
+clients sont des professionnels du bâtiment qui nécessitent des informations techniques
+précises, des catalogs complets et des relations commerciales structurées. Cette spécificité
+impose des exigences particulières en termes de qualité et d’exactitude des données des
+produits.
+Les systèmes intervenant dans le commerce électronique
+La gestion efficace d’une boutique en ligne repose sur l’interopérabilité de plusieurs
+logiciels métiers spécialisés :
+— ERP (Enterprise Resource Planning) : système d’information permettant de
+centraliser et de gérer les principales ressources de l’entreprise, telles que les stocks,
+les achats, les ventes, la production ou encore la comptabilité [5].
+— PIM (Product Information Management) : système dédié à la centralisation, à
+l’organisation et à l’enrichissement des informations des produits avant leur diffusion
+sur les différents canaux de vente [6].
+— Boutique en ligne : plateforme e-commerce accessible aux clients, permettant
+de consulter le catalogue, de rechercher des produits, de passer des commandes et
+d’effectuer des achats en ligne.
+— CRM (Customer Relationship Management) : système destiné à la gestion de
+la relation client, permettant de centraliser les interactions, de suivre les activités
+commerciales et d’améliorer la fidélisation des clients [7].
+7
+
+
+===== PAGE 17 =====
+
+Chapitre 1 – Présentation générale du projet
+8
+Cycle de vie des données d’un produit
+Pour garantir la pertinence de l’offre en ligne, les informations des produits suivent
+un cycle de vie structuré à travers les différents systèmes. L’architecture technique de ce
+flux est illustrée dans la Figure 1.3.
+Figure 1.3 – Flux de circulation des informations des produits dans l’écosystème
+e-commerce
+Les informations des produits circulent entre l’ERP, le PIM, la boutique en ligne et
+le CRM pour assurer la cohérence des données tout au long de leur cycle de vie. Les
+données de référence issues de l’ERP sont transmises au PIM, où elles sont enrichies et
+complétées avant d’être publiées sur la boutique en ligne. Les interactions générées par les
+clients, telles que les consultations, les commandes ou les achats, alimentent à leur tour
+les différents systèmes, notamment l’ERP pour le traitement des opérations commerciales
+et le CRM pour le suivi de la relation client.
+Cette circulation continue des informations permet à chacun d’accéder à des données
+fiables et à jour. Elle contribue ainsi à assurer la cohérence des catalogues des produits,
+à faciliter les échanges entre les applications et à offrir une expérience homogène aux
+utilisateurs sur l’ensemble des canaux de vente.
+8
+
+
+===== PAGE 18 =====
+
+Chapitre 1 – Présentation générale du projet
+9
+1.3.2
+SAP Commerce Cloud
+SAP Commerce Cloud [3] est une plateforme de commerce électronique développée
+par SAP. Elle permet aux entreprises de gérer leurs activités de vente en ligne ainsi que
+les principales informations associées aux produits, aux catalogues, aux clients, aux prix,
+aux stocks et aux commandes.
+La plateforme repose principalement sur le langage Java et sur le framework Spring, qui
+constituent la base de son environnement de développement. Son architecture modulaire
+permet de personnaliser son fonctionnement et d’ajouter de nouvelles fonctionnalités en
+développant des extensions adaptées aux besoins de l’entreprise.
+SAP Commerce Cloud fournit également un environnement d’administration, appelé
+Backoffice, permettant aux utilisateurs de gérer les différentes données de la plateforme et
+les processus associés au cycle de vie des produits. Les développeurs peuvent, de leur côté,
+intervenir sur les différents composants de la plateforme afin d’adapter son comportement
+ou de l’intégrer avec des systèmes externes.
+Cette architecture permet ainsi à SAP Commerce Cloud d’être adaptée aux besoins
+spécifiques de chaque entreprise et de communiquer avec des applications et des services
+externes. Elle offre notamment la possibilité d’étendre les fonctionnalités de la plateforme
+et de l’intégrer à différents systèmes afin de répondre aux exigences des processus métier.
+1.3.3
+L’intelligence artificielle générative
+Définition
+L’intelligence artificielle regroupe un ensemble de méthodes permettant à une machine
+d’exécuter des tâches qui nécessitent habituellement l’intervention de l’intelligence
+humaine, comme l’apprentissage, le raisonnement ou la résolution de problèmes. Au fil
+des années, les progrès réalisés dans ce domaine ont conduit à l’émergence de l’intelligence
+artificielle générative, une branche de l’IA capable de produire de nouveaux contenus à
+partir d’une consigne ou d’informations fournies en entrée.
+Contrairement aux approches classiques, qui sont principalement utilisées pour
+analyser des données ou effectuer des prédictions, l’intelligence artificielle générative
+cherche à créer un contenu cohérent en s’appuyant sur les connaissances acquises lors
+de sa phase d’apprentissage. Selon les modèles employés, elle peut générer du texte, des
+images, du code informatique, de l’audio ou encore de la vidéo.
+9
+
+
+===== PAGE 19 =====
+
+Chapitre 1 – Présentation générale du projet
+10
+Principales applications
+L’intelligence artificielle générative est aujourd’hui utilisée dans de nombreux domaines
+où la création de contenu occupe une place importante. Elle permet notamment de
+rédiger des textes, d’assister la traduction entre plusieurs langues, de générer des images,
+de produire du code informatique ou encore d’aider à la synthèse de documents. Son
+développement s’est fortement accéléré grâce aux avancées de l’apprentissage profond
+ainsi qu’à la disponibilité de grandes quantités de données utilisées pour entraîner les
+modèles.
+Au-delà de l’automatisation de certaines tâches, ces technologies constituent désormais
+un véritable outil d’assistance. Elles permettent d’améliorer la productivité des utilisateurs
+tout en facilitant la réalisation d’activités qui demandent habituellement un temps
+important de traitement.
+1.3.4
+Les grands modèles de langage
+Définition
+Les grands modèles de langage, désignés par l’acronyme LLM (Large Language
+Models), représentent l’une des applications les plus importantes de l’intelligence
+artificielle générative. Ils sont entraînés sur de très vastes collections de textes afin
+d’apprendre les structures du langage, le vocabulaire ainsi que les relations entre les mots
+et les phrases.
+Grâce à cet apprentissage, ces modèles sont capables de comprendre une consigne
+formulée en langage naturel et de produire une réponse adaptée au contexte. Leur
+fonctionnement repose sur l’analyse des séquences de mots afin de générer un texte
+cohérent en tenant compte des informations fournies par l’utilisateur.
+Capacités des grands modèles de langage
+Les LLM sont aujourd’hui capables de réaliser de nombreuses tâches liées au traitement
+automatique du langage naturel. Ils peuvent notamment rédiger des textes, reformuler un
+contenu, résumer des documents, répondre à des questions, traduire des informations d’une
+langue à une autre ou encore assister les utilisateurs dans la recherche d’informations.
+Leur polyvalence explique leur adoption croissante dans de nombreux secteurs
+d’activité. Qu’il s’agisse d’éducation, de santé, d’industrie ou de commerce électronique,
+ces modèles contribuent à faciliter le traitement des informations textuelles et ouvrent la
+voie à de nouvelles formes d’assistance intelligentes au sein des systèmes d’information.
+10
+
+
+===== PAGE 20 =====
+
+Chapitre 1 – Présentation générale du projet
+11
+1.4
+Cadre général du projet
+1.4.1
+Contexte général
+Avec l’évolution rapide du commerce électronique, les entreprises doivent aujourd’hui
+gérer des catalogues de produits de plus en plus volumineux et complexes. L’augmentation
+du nombre de références, la diversité des informations associées aux produits ainsi que la
+nécessité de diffuser ces contenus sur plusieurs canaux rendent la gestion des données des
+produits plus difficile.
+Dans un environnement B2B, cette complexité est davantage accentuée. Les produits
+proposés nécessitent généralement des informations techniques détaillées, des descriptions
+précises et des contenus adaptés aux différents marchés. La qualité des informations
+publiées devient alors un élément essentiel, car elle influence directement la compréhension
+des produits et la prise de décision des clients.
+Cependant, lorsque le volume des données augmente, maintenir un niveau de qualité
+constant représente un véritable défi. Les opérations d’enrichissement, de traduction
+et de vérification nécessitent des efforts importants de la part des équipes métier. Les
+traitements manuels peuvent ainsi ralentir la mise à disposition des produits et rendre
+plus difficile la détection des erreurs ou des informations incomplètes.
+Face à ces enjeux, les plateformes e-commerce modernes intègrent des solutions
+permettant d’organiser le cycle de vie des informations des produits, depuis leur création
+jusqu’à leur publication sur les différents canaux de vente.
+1.4.2
+Étude de l’existant
+Les plateformes de commerce électronique modernes, telles que SAP Commerce Cloud,
+proposent un ensemble de fonctionnalités permettant de gérer les différents processus
+liés à la commercialisation des produits. Elles offrent notamment un environnement
+d’administration destiné à la gestion des catalogues, au suivi des informations des produits
+et au contrôle des étapes nécessaires avant leur publication.
+Dans ce contexte, le Backoffice de SAP Commerce Cloud permet de centraliser les
+informations des produits et de gérer leur cycle de vie. Il peut ainsi être utilisé comme
+un référentiel de gestion des produits, en permettant aux utilisateurs métier de créer,
+compléter et mettre à jour les données avant leur diffusion sur les canaux de vente.
+11
+
+
+===== PAGE 21 =====
+
+Chapitre 1 – Présentation générale du projet
+12
+La plateforme propose plusieurs fonctionnalités couvrant les différentes étapes de
+gestion d’un produit :
+— Création et gestion des produits : permet aux utilisateurs de créer de nouvelles
+références, de modifier les informations existantes et d’organiser les produits selon leur
+structure métier.
+— Enrichissement des informations : permet de compléter les fiches des produits
+avec les différentes données nécessaires à leur présentation sur les canaux de vente.
+— Gestion multilingue : offre la possibilité de gérer les contenus dans plusieurs langues
+afin de répondre aux besoins des différents marchés.
+— Publication des produits : permet de rendre les produits disponibles sur les
+plateformes de vente après validation des informations nécessaires.
+— Validation des données : permet d’effectuer des contrôles afin de vérifier la
+complétude et la cohérence des informations avant leur publication.
+— Workflow d’approbation : structure le processus de validation en définissant
+différentes étapes de contrôle avant la mise en ligne définitive des produits.
+Malgré ces fonctionnalités, la gestion des informations repose encore largement sur
+des interventions humaines. Les tâches d’enrichissement, de rédaction des contenus et de
+traduction nécessitent un temps important et peuvent devenir difficiles à maintenir lorsque
+le nombre de produits augmente. Cette dépendance aux traitements manuels représente
+ainsi une limite pour garantir une qualité homogène des informations publiées à grande
+échelle.
+1.4.3
+Solution proposée
+Afin de répondre aux limites identifiées dans le processus actuel, la solution proposée
+consiste à intégrer une couche d’assistance intelligente dédiée à l’enrichissement et à la
+validation des informations des produits.
+Cette approche repose sur l’utilisation de techniques d’intelligence artificielle
+générative
+capables
+d’assister
+les
+utilisateurs
+dans
+certaines
+tâches
+nécessitant
+habituellement une intervention manuelle. Elle permet notamment d’améliorer la création
+des contenus textuels, d’accompagner la traduction des informations et de faciliter
+l’identification d’éventuelles incohérences dans les données.
+La solution s’intègre dans le processus existant de gestion des produits tout en
+conservant le rôle central des utilisateurs métier. Les suggestions générées par le système
+restent soumises à une validation humaine avant toute publication, afin de garantir la
+maîtrise des informations diffusées.
+12
+
+
+===== PAGE 22 =====
+
+Chapitre 1 – Présentation générale du projet
+13
+L’objectif n’est donc pas de remplacer les processus existants, mais de les compléter
+par des capacités d’analyse et d’assistance permettant de réduire les tâches répétitives,
+d’améliorer la qualité des informations et d’accélérer le traitement des catalogues des
+produits.
+Cette approche contribue ainsi à rendre le processus d’enrichissement plus fiable et
+plus efficace, tout en assurant un meilleur équilibre entre automatisation intelligente et
+contrôle humain.
+1.5
+Pilotage du projet
+La réussite d’un projet de développement logiciel repose en grande partie sur une
+méthodologie de travail adaptée. Celle-ci permet d’organiser les différentes activités du
+projet, de faciliter la communication entre les intervenants et d’assurer un suivi régulier
+de l’avancement. Dans le cadre de ce projet de fin d’études, une approche Agile basée
+sur la méthodologie Scrum a été adoptée afin de répondre efficacement aux besoins de
+l’entreprise et d’accompagner le développement progressif de la solution.
+1.5.1
+Méthodologie Agile
+La méthodologie Agile est une approche de gestion de projet fondée sur un
+développement itératif et incrémental. Contrairement aux méthodes traditionnelles, elle
+privilégie une évolution progressive de la solution à travers des cycles de développement
+courts, permettant d’intégrer rapidement les retours des parties prenantes et de s’adapter
+aux éventuelles évolutions des besoins.
+Cette approche favorise une collaboration continue entre les différents acteurs du
+projet, une meilleure visibilité sur l’avancement des travaux ainsi qu’une livraison
+progressive
+de
+fonctionnalités
+opérationnelles.
+Ces
+caractéristiques
+en
+font
+une
+méthodologie particulièrement adaptée au développement d’applications logicielles où les
+besoins peuvent évoluer au cours du projet.
+1.5.2
+L’approche Scrum
+Scrum est le cadre méthodologique Agile retenu pour l’organisation de ce projet. Il
+repose sur une succession de cycles de développement appelés Sprints, au cours desquels
+un ensemble de fonctionnalités est conçu, développé et validé. Cette organisation permet
+de suivre régulièrement l’avancement du projet, d’identifier rapidement les difficultés
+rencontrées et d’améliorer progressivement la solution développée.
+13
+
+
+===== PAGE 23 =====
+
+Chapitre 1 – Présentation générale du projet
+14
+Dans le cadre de ce stage, cette approche a permis de structurer le développement
+du microservice d’intelligence artificielle et son intégration avec SAP Commerce Cloud
+en planifiant les différentes activités sur plusieurs Sprints successifs. Des réunions de
+suivi régulières ont également facilité la validation des fonctionnalités développées et
+l’ajustement des objectifs tout au long du projet.
+La Figure 1.4 présente le principe général de fonctionnement de la méthodologie Scrum.
+Figure 1.4 – Principe de fonctionnement de la méthodologie Scrum
+Les rôles Scrum
+Dans le cadre de ce projet, les principaux rôles de Scrum ont été adaptés à
+l’organisation de l’équipe. Le Tableau 1.2 présente les différents rôles ainsi que leurs
+responsabilités.
+Table 1.2 – Répartition des rôles Scrum
+Rôle Scrum
+Acteur
+Responsabilités
+Product Owner
+L’équipe ETANCO
+Définition
+des
+besoins
+fonctionnels,
+priorisation des fonctionnalités et validation
+des livrables.
+Scrum Master
+M. Aymen Ellouze
+Coordination du projet, organisation des
+réunions de suivi et accompagnement de
+l’équipe de développement.
+Équipe
+de
+développement
+Stagiaire PFE
+Analyse
+des
+besoins,
+conception,
+développement,
+intégration,
+tests
+et
+documentation de la solution.
+14
+
+
+===== PAGE 24 =====
+
+Chapitre 1 – Présentation générale du projet
+15
+Planification des Sprints
+Après une première phase de formation consacrée à la découverte de l’environnement
+de développement et de SAP Commerce Cloud, le projet a été organisé en six Sprints.
+Chaque Sprint poursuivait un objectif précis et permettait de produire un incrément
+fonctionnel de la solution. Cette organisation a facilité le suivi de l’avancement du projet
+ainsi que la validation progressive des différents modules développés.
+Le Tableau 1.3 présente la planification des principaux Sprints réalisés au cours du
+projet.
+Table 1.3 – Planification des sprints du projet
+Sprint
+Modules / Activités
+Durée
+Formation
+Prise
+en
+main
+de
+l’environnement
+de
+développement,
+formation en intelligence artificielle et en développement
+Java/Spring, découverte de SAP Commerce Cloud et de son
+architecture, ainsi que mise en place de l’environnement de
+travail.
+4 semaines
+Sprint 1
+Analyse et spécification des besoins, étude de l’existant,
+définition des besoins fonctionnels et non fonctionnels,
+conception de la solution et élaboration des diagrammes UML.
+4 semaines
+Sprint 2
+Développement du module d’enrichissement intelligent :
+génération automatique des descriptions, enrichissement des
+informations et traduction multilingue.
+4 semaines
+Sprint 3
+Développement du module de validation : contrôle de la
+qualité des données, détection des anomalies, correction
+automatique et calcul du score de qualité.
+4 semaines
+Sprint 4
+Intégration des modules d’enrichissement et de validation
+dans SAP Commerce Cloud, développement des composants
+d’intégration
+et
+mise
+en
+place
+des
+échanges
+avec
+le
+microservice d’intelligence artificielle.
+5 semaines
+Sprint 5
+Tests fonctionnels et d’intégration, correction des anomalies,
+validation de la solution, amélioration des performances et
+finalisation de la documentation technique.
+3 semaines
+15
+
+
+===== PAGE 25 =====
+
+Chapitre 1 – Présentation générale du projet
+16
+Mécanisme de feedback
+Afin d’assurer un suivi régulier du projet, des réunions de type Daily Scrum étaient
+organisées chaque matin. Elles permettaient de faire le point sur les travaux réalisés,
+les tâches prévues pour la journée ainsi que les éventuelles difficultés rencontrées. En
+complément, une réunion d’avancement était tenue toutes les deux semaines avec le chef
+de projet afin de présenter les fonctionnalités développées, de recueillir les retours et de
+définir les objectifs prochains. Ces échanges ont favorisé une amélioration continue de la
+solution tout en garantissant son adéquation avec les besoins du projet.
+1.5.3
+Backlog du produit
+Le backlog constitue un élément essentiel de la méthodologie Scrum puisqu’il permet
+d’organiser et de suivre les travaux à réaliser tout au long du projet. Il offre une vision
+structurée des fonctionnalités à développer et facilite leur planification au cours des
+différents Sprints. Les besoins identifiés lors de la phase d’analyse sont progressivement
+transformés en activités concrètes afin de garantir une réalisation cohérente de la solution.
+Dans le cadre de ce projet, le développement a été organisé à l’aide d’un Sprint Backlog
+présenté dans le tableau 1.4. Pour chaque Sprint, les fonctionnalités retenues ont été
+décomposées en un ensemble de tâches permettant de guider les différentes étapes de
+développement. Cette organisation a facilité le suivi de l’avancement des travaux, la
+répartition des activités ainsi que la validation progressive des fonctionnalités réalisées.
+16
+
+
+===== PAGE 26 =====
+
+Chapitre 1 – Présentation générale du projet
+17
+Table 1.4 – Extrait du Sprint Backlog du projet
+User Story
+Tâches réalisées
+Enrichir
+automatiquement
+les
+champs
+vides
+des
+produits
+– Préparer les informations nécessaires à la génération.
+– Générer automatiquement les descriptions.
+– Vérifier la qualité des résultats obtenus.
+Traduire
+les
+informations
+des produits
+– Préparer les langues à traiter.
+– Traduire automatiquement les champs des produits.
+– Vérifier la cohérence des traductions.
+Vérifier
+la
+qualité
+des
+champs des produits
+– Contrôler la présence des champs obligatoires.
+– Identifier les anomalies détectées.
+– Calculer le score de qualité.
+Corriger
+automatiquement
+certaines anomalies
+– Identifier les erreurs pouvant être corrigées.
+– Appliquer les corrections automatiques.
+Intégrer la solution à SAP
+Commerce Cloud
+– Établir la communication entre les applications.
+– Lancer les traitements depuis SAP Commerce Cloud.
+– Récupérer et afficher les résultats.
+Tester et valider la solution
+– Réaliser les tests fonctionnels.
+– Corriger les anomalies détectées.
+– Valider le fonctionnement global de la solution.
+1.6
+Conclusion
+Dans ce chapitre, nous avons présenté le contexte général du projet ainsi que les
+principaux concepts nécessaires à sa compréhension. Après une présentation de l’entreprise
+d’accueil et de son domaine d’activité, nous avons introduit les notions essentielles relatives
+au commerce électronique, à la gestion des informations des produits et à l’intelligence
+artificielle générative.
+Cette étude a permis de mettre en évidence les enjeux liés à la gestion de catalogues
+des produits ainsi que les limites des traitements manuels, conduisant à la définition
+de la problématique et à la présentation d’une approche d’assistance intelligente pour
+l’enrichissement et la validation des données des produits.
+Enfin, nous avons présenté la méthodologie adoptée pour encadrer le développement
+du projet. Le chapitre suivant sera consacré à l’analyse des besoins et à la conception de
+la solution proposée.
+17
+
+
+===== PAGE 27 =====
+
+Chapitre 2
+Analyse, Conception et Architecture
+2.1
+Introduction
+Après avoir présenté le contexte du projet, les concepts nécessaires à sa compréhension
+ainsi que la problématique et la solution proposée dans le chapitre précédent, cette
+étape est consacrée à la conception de la solution. L’objectif est de traduire les besoins
+identifiés en une représentation structurée du système, en précisant ses fonctionnalités,
+ses interactions et son organisation technique.
+Dans ce chapitre, nous commençons par formaliser les besoins fonctionnels et non
+fonctionnels ainsi que les acteurs concernés. Nous présentons ensuite les principaux
+diagrammes UML permettant de modéliser les interactions, le déroulement des traitements
+et la structure du système. Enfin, nous définissons l’architecture globale de la solution,
+en précisant l’organisation de SAP Commerce Cloud, du microservice d’intelligence
+artificielle, leurs interfaces de communication ainsi que le flux global de traitement.
+2.2
+Analyse et Spécification des besoins
+Dans cette section, nous formalisons les exigences du système en distinguant les
+besoins fonctionnels, qui décrivent les services attendus et les besoins non fonctionnels, qui
+définissent les contraintes de qualité et de performance. Cette étape traduit les attentes
+métier en spécifications exploitables pour la conception.
+18
+
+
+===== PAGE 28 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+19
+2.2.1
+Identification des acteurs
+Tout système interactif repose sur une ou plusieurs catégories d’utilisateurs. Identifier
+précisément ces acteurs définit les fonctionnalités attendues.
+Le responsable de l’enrichissement du produit
+L’utilisateur principal du système est le responsable de l’enrichissement du produit. Il
+intervient dans la gestion, l’amélioration et la validation des fiches des produits au sein de
+SAP Commerce. Il crée, modifie ou valide régulièrement les données des produits avant
+leur publication.
+Son rôle consiste à garantir la qualité et la complétude des informations des produits.
+Le système proposé l’assiste en générant automatiquement des enrichissements et en
+signalant les anomalies détectées. Cependant, le responsable de l’enrichissement du
+produit conserve l’autorité finale : il examine les propositions du système et approuve
+ou rejette chaque suggestion en fonction de son jugement professionnel.
+2.2.2
+Recueil des besoins fonctionnels
+Les besoins fonctionnels décrivent les actions que le responsable de l’enrichissement du
+produit doit pouvoir accomplir au travers du système. Ils structurent l’interaction entre
+l’utilisateur et la solution.
+Enrichissement des contenus des produits
+Le
+responsable
+de
+l’enrichissement
+des
+produits
+doit
+pouvoir
+consulter
+les
+enrichissements générés automatiquement par le système pour chaque produit. Ces
+enrichissements incluent :
+— une description détaillée conçue pour présenter les caractéristiques principales du
+produit
+— un résumé court destiné à une présentation rapide sur les interfaces compactes
+— les traductions des contenus dans les langues demandées
+Ces propositions doivent être clairement présentées dans l’interface de SAP Commerce
+Backoffice, permettant au Responsable de l’enrichissement du produit d’accepter, modifier
+ou rejeter chaque suggestion.
+19
+
+
+===== PAGE 29 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+20
+Détection des anomalies
+Le système doit identifier automatiquement les problèmes présents dans les données
+des produits. Cela inclut :
+— les champs obligatoires absents ou non conformes aux règles définies
+— les erreurs de structure ou de format
+— les incohérences sémantiques ou linguistiques
+Cette détection permet au responsable de l’enrichissement du produit de corriger les
+défauts avant la publication et d’améliorer la qualité globale du catalogue.
+Validation des fiches des produits
+Le responsable de l’enrichissement du produit doit pouvoir consulter un score de
+qualité global pour chaque fiche du produit, accompagné d’une liste des anomalies
+détectées. Ce score synthétise les résultats de l’analyse technique et sémantique. Sur cette
+base, Le responsable de l’enrichissement du produit décide d’approuver la fiche ou d’exiger
+des corrections avant publication.
+2.2.3
+Recueil des besoins non fonctionnels
+Au-delà des fonctionnalités attendues, plusieurs besoins non fonctionnels ont été définis
+afin de garantir la qualité et la robustesse de la solution. Ces exigences concernent
+principalement la fiabilité, la performance, la sécurité, l’utilisabilité et la scalabilité du
+système.
+Fiabilité
+Le système doit fournir des enrichissements et des validations fiables afin d’améliorer la
+qualité des fiches des produits. Cette fiabilité repose sur une approche hybride combinant
+des règles métier et des modèles d’intelligence artificielle, tandis que le responsable de
+l’enrichissement du produit conserve la possibilité de valider les résultats proposés avant
+leur publication.
+20
+
+
+===== PAGE 30 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+21
+Performance
+Les traitements d’enrichissement et de validation doivent être réalisés dans un délai
+compatible avec le processus de gestion des produits. Afin de garantir des temps de
+réponse satisfaisants, la solution repose sur une architecture en microservices qui permet
+d’exécuter les traitements d’intelligence artificielle de manière indépendante, sans dégrader
+les performances de SAP Commerce.
+Sécurité
+Les échanges entre SAP Commerce et le microservice d’intelligence artificielle doivent
+être sécurisés afin de garantir la confidentialité et l’intégrité des données. Seules les
+informations nécessaires au traitement sont transmises, les communications sont protégées
+par le protocole HTTPS et les requêtes sont authentifiées afin de prévenir tout accès non
+autorisé.
+Utilisabilité
+La solution doit s’intégrer naturellement dans l’environnement SAP Commerce afin
+de préserver les habitudes de travail des utilisateurs. Les résultats d’enrichissement
+et de validation sont présentés directement dans le Backoffice à travers une interface
+claire et intuitive, permettant au responsable de l’enrichissement du produit d’identifier
+rapidement les recommandations proposées et de prendre les décisions appropriées.
+Scalabilité
+L’architecture modulaire de la solution doit permettre son évolution sans remettre
+en cause les composants existants. De nouveaux modèles d’intelligence artificielle, de
+nouvelles règles métier ou des fonctionnalités complémentaires peuvent ainsi être intégrés
+progressivement, sans impacter le fonctionnement global de SAP Commerce.
+2.3
+Modélisation des besoins
+Cette section modélise le système d’enrichissement et de validation des produits au
+travers de trois diagrammes UML [?] complémentaires : le diagramme de cas d’utilisation
+expose les scénarios métier, le diagramme de séquence détaille l’orchestration temporelle
+des échanges et le diagramme d’activités synthétise le flux de contrôle du traitement.
+21
+
+
+===== PAGE 31 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+22
+2.3.1
+Diagramme de cas d’utilisation
+Afin de préciser les fonctionnalités offertes par la solution ainsi que les interactions
+entre l’utilisateur et le système, un diagramme de cas d’utilisation a été élaboré. Celui-ci
+décrit les principales actions réalisées par le responsable de l’enrichissement des produits
+lors de la gestion d’un produit dans SAP Commerce Cloud. Il met en évidence les
+différentes fonctionnalités mises à sa disposition. Ces interactions sont illustrées dans
+la Figure 2.1.
+Figure 2.1 – Diagramme de cas d’utilisation
+Le diagramme montre que le responsable de l’enrichissement intervient à plusieurs
+étapes du processus. Il commence par s’authentifier, puis crée ou modifie le produit avant
+de lancer son traitement automatique. Celui-ci prend en compte les champs sélectionnés et
+permet de générer les enrichissements et les traductions nécessaires. Les recommandations
+produites par le microservice d’intelligence artificielle sont ensuite consultées par le
+responsable afin de l’assister dans sa prise de décision. Enfin, il conserve la responsabilité
+de valider le produit, garantissant ainsi que les résultats obtenus respectent les exigences
+métier et les objectifs de qualité des données.
+22
+
+
+===== PAGE 32 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+23
+2.3.2
+Diagramme de séquence système
+Le diagramme de séquence système décrit le déroulement chronologique des
+interactions entre le responsable de l’enrichissement des produits et le système
+d’enrichissement et de validation des produits. Il représente le système comme une boîte
+noire et met en évidence les échanges de requêtes et de réponses permettant d’exécuter le
+processus, depuis la création ou la modification d’un produit jusqu’à sa validation finale.
+Les différentes interactions sont présentées dans la Figure 2.2.
+Figure 2.2 – Diagramme de séquence
+Le diagramme de séquence de la figure 2.2 illustre les interactions entre le responsable
+de l’enrichissement des produits et le système d’enrichissement et de validation
+des produits. Le processus commence par la création ou la modification du produit et
+la sélection des champs à enrichir. Le système déclenche ensuite l’enrichissement, génère
+les contenus demandés et permet au responsable de consulter les résultats (étapes 1 à
+6).
+23
+
+
+===== PAGE 33 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+24
+Une fois les résultats consultés, le responsable peut les approuver ou les refuser.
+En cas d’approbation, le produit est publié et le processus prend fin. En cas de refus,
+l’enrichissement est relancé jusqu’à l’obtention d’un résultat validé (étapes 7 à 10). Le
+diagramme met ainsi en évidence le déroulement itératif du processus d’enrichissement.
+2.3.3
+Diagramme de classes global
+Le diagramme de classes présente la structure statique du système en décrivant les
+principales informations associées au produit ainsi que les traitements et résultats qui
+leur sont liés. Il permet de représenter les données utilisées lors de l’enrichissement et
+de la validation, notamment les informations du produit, les données transmises pour
+le traitement, les résultats obtenus, ainsi que les anomalies et les corrections identifiées.
+Les associations et les multiplicités précisent les liens entre ces différents éléments et
+permettent de représenter leur organisation au cours du processus. Cette modélisation est
+présentée dans la Figure 2.3.
+Figure 2.3 – Diagramme de classes global du système
+24
+
+
+===== PAGE 34 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+25
+La structure représentée distingue également les éléments liés à la gestion du produit
+de ceux utilisés pour les échanges avec le service d’intelligence artificielle. Ainsi, les
+informations nécessaires à l’enrichissement sont transmises puis associées aux résultats
+générés, tandis que la validation produit un résultat comprenant un score, un état, des
+anomalies éventuelles et les corrections correspondantes. Le diagramme permet ainsi de
+formaliser les relations entre les données manipulées et les résultats produits par les
+différents traitements.
+2.4
+Architecture globale
+L’architecture globale constitue une étape essentielle de la conception, puisqu’elle
+définit l’organisation générale de la solution et les interactions entre ses principaux
+composants. Dans le cadre de ce projet, la solution repose sur deux composants
+principaux : SAP Commerce Cloud et un microservice d’intelligence artificielle. Cette
+organisation permet d’intégrer les fonctionnalités d’enrichissement et de validation tout
+en conservant une séparation claire entre la plateforme de commerce et les traitements
+spécialisés.
+2.4.1
+Choix architecturaux
+Le choix d’une architecture composée de SAP Commerce Cloud et d’un microservice
+indépendant répond au besoin d’intégrer des fonctionnalités d’intelligence artificielle sans
+modifier profondément l’organisation existante de la plateforme. Les traitements liés à
+l’intelligence artificielle sont ainsi regroupés dans un composant spécialisé, indépendant
+de SAP Commerce Cloud.
+Cette séparation permet de distinguer les responsabilités des deux environnements.
+SAP Commerce Cloud conserve la gestion du processus métier, tandis que le microservice
+regroupe les traitements d’enrichissement et de validation. Cette organisation facilite
+également l’évolution des fonctionnalités d’intelligence artificielle, notamment l’ajout ou
+le remplacement de modèles, sans modifier directement la structure interne de SAP
+Commerce Cloud.
+La communication entre les deux composants repose sur des services REST et
+sur l’utilisation du format JSON. Ce choix permet de définir des interfaces d’échange
+indépendantes des technologies utilisées pour l’implémentation de chaque composant.
+Cette architecture présente ainsi plusieurs avantages :
+— Séparation des responsabilités : les fonctionnalités de la plateforme de commerce et
+les traitements d’intelligence artificielle sont regroupés dans des composants distincts.
+25
+
+
+===== PAGE 35 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+26
+— Modularité : le microservice peut évoluer indépendamment de SAP Commerce
+Cloud.
+— Évolutivité : de nouveaux traitements ou modèles d’intelligence artificielle peuvent
+être ajoutés progressivement.
+— Maintenabilité : l’isolation des traitements spécialisés facilite leur développement,
+leur modification et leur maintenance.
+— Faible couplage : les deux composants échangent uniquement à travers des interfaces
+REST définies.
+Cette organisation permet ainsi de bénéficier des mécanismes existants de SAP
+Commerce Cloud tout en intégrant des traitements d’intelligence artificielle dans un
+composant spécialisé et indépendant.
+2.4.2
+Architecture et organisation des composants
+L’architecture globale de la solution est représentée à travers un diagramme de
+composants. Celui-ci permet d’identifier les principaux éléments intervenant dans le
+système ainsi que les interfaces utilisées pour assurer leur communication.
+Diagramme de composants
+Le diagramme présenté dans la Figure 2.4 met en évidence les deux composants
+principaux de la solution ainsi que leurs principaux éléments internes et leurs interactions.
+Il permet notamment de distinguer les fonctionnalités assurées par SAP Commerce Cloud
+de celles prises en charge par le microservice d’intelligence artificielle.
+26
+
+
+===== PAGE 36 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+27
+Figure 2.4 – Architecture globale des composants
+L’architecture s’articule ainsi autour de SAP Commerce Cloud, qui constitue
+le composant central de gestion, et du microservice d’intelligence artificielle, qui
+regroupe les traitements spécialisés. Les deux composants sont reliés par une interface
+REST permettant l’échange de données structurées au format JSON.
+Composant SAP Commerce Cloud
+SAP Commerce Cloud constitue le composant chargé de la gestion du processus au
+sein de la plateforme. L’interaction avec le responsable de l’enrichissement s’effectue à
+travers le Backoffice, qui permet notamment de consulter et de gérer les produits et de
+déclencher les traitements prévus.
+27
+
+
+===== PAGE 37 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+28
+Le traitement s’appuie sur les services internes de la plateforme. Le service
+d’enrichissement prépare les informations nécessaires et assure l’intégration des
+résultats liés à l’enrichissement. Le service de validation exploite quant à lui les résultats
+retournés par le microservice afin de poursuivre le traitement de contrôle de la qualité.
+Les composants d’intégration REST assurent les échanges avec le microservice
+d’intelligence artificielle. Ils prennent en charge la préparation des requêtes, l’envoi des
+données nécessaires au traitement et la récupération des réponses.
+SAP Commerce Cloud assure également l’enregistrement des informations nécessaires
+au suivi du traitement. Les données concernées ainsi que les résultats obtenus peuvent
+ainsi être conservés dans la base de données de la plateforme pour leur consultation et
+leur exploitation ultérieure.
+Microservice d’intelligence artificielle
+Le microservice d’intelligence artificielle est une application indépendante dédiée aux
+traitements spécialisés du projet. Il expose des interfaces REST permettant de recevoir
+les demandes provenant de SAP Commerce Cloud et d’orienter chaque requête vers le
+traitement correspondant.
+Le traitement d’enrichissement prend en charge principalement la génération de
+descriptions et la traduction multilingue. Ces fonctionnalités permettent de produire
+les contenus nécessaires à partir des informations transmises par SAP Commerce Cloud.
+Le traitement de validation repose sur plusieurs mécanismes complémentaires. Le
+microservice applique les règles de validation, réalise une analyse sémantique et
+calcule un score de qualité. Ces traitements permettent d’identifier les anomalies et de
+produire les corrections ou recommandations associées.
+À l’issue du traitement, le microservice construit une réponse structurée contenant les
+résultats obtenus. Cette réponse est ensuite transmise à SAP Commerce Cloud au format
+JSON.
+Communication entre les composants
+La communication entre SAP Commerce Cloud et le microservice d’intelligence
+artificielle est assurée par une interface REST. Les échanges utilisent le protocole HTTP et
+des données structurées au format JSON. Cette approche permet aux deux composants
+de communiquer à travers des interfaces clairement définies, indépendamment de leur
+implémentation interne.
+28
+
+
+===== PAGE 38 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+29
+Deux opérations principales sont utilisées dans le cadre du projet :
+— POST /enrich : déclenche le traitement d’enrichissement, notamment la génération
+de descriptions et la traduction, puis retourne les résultats obtenus.
+— POST /valid : déclenche le traitement de validation et retourne les informations
+relatives à la qualité des données, notamment le score, le statut, les anomalies détectées
+et les corrections proposées.
+Pour chaque opération, SAP Commerce Cloud prépare une requête contenant les
+informations nécessaires au traitement. Cette requête est transmise au microservice à
+travers l’interface REST correspondante. Après exécution du traitement, le microservice
+retourne une réponse JSON contenant les résultats.
+Cette communication permet ainsi de maintenir une interface d’échange simple entre
+les deux composants tout en laissant chaque environnement gérer ses propres traitements.
+2.4.3
+Flux global de traitement
+Le flux global décrit l’enchaînement des opérations exécutées depuis le déclenchement
+du traitement dans SAP Commerce Cloud jusqu’à l’intégration des résultats retournés
+par le microservice d’intelligence artificielle. La Figure 2.5 présente les principales étapes
+de ce processus.
+Figure 2.5 – Flux global de traitement
+29
+
+
+===== PAGE 39 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+30
+Le processus débute dans le Backoffice de SAP Commerce Cloud, où le
+responsable de l’enrichissement effectue la création ou la modification d’un produit et
+déclenche le traitement correspondant.
+Dans un premier temps, SAP Commerce Cloud prépare les informations nécessaires
+à l’opération demandée. Les données sont extraites et structurées sous la forme d’une
+requête JSON, puis transmises au microservice d’intelligence artificielle à travers l’API
+REST.
+Une fois la requête reçue, le microservice commence par effectuer le traitement
+d’enrichissement. Cette étape comprend notamment la génération des descriptions et
+la traduction multilingue. Les résultats produits constituent ensuite la base du traitement
+de validation.
+La phase de validation est alors exécutée afin d’évaluer la qualité des données
+obtenues. Le microservice applique les règles de validation et réalise les contrôles prévus,
+notamment l’analyse sémantique et la détection des anomalies. À partir des résultats de
+ces contrôles, il calcule un score de qualité et génère les corrections ou recommandations
+associées.
+Une fois les traitements terminés, le microservice construit une réponse contenant les
+résultats obtenus, notamment les enrichissements proposés, le score de qualité, le statut de
+validation, les anomalies détectées et les corrections associées. Cette réponse est retournée
+à SAP Commerce Cloud au format JSON.
+Enfin, SAP Commerce Cloud récupère les résultats et les réintègre dans le processus
+métier. Les résultats peuvent être exploités pour mettre à jour les informations
+concernées, appliquer les corrections autorisées et conserver les données nécessaires au
+suivi du traitement. Les recommandations nécessitant une intervention humaine peuvent
+également être présentées au responsable de l’enrichissement afin qu’il puisse les consulter
+et prendre la décision appropriée.
+Ce flux permet ainsi d’assurer un enchaînement cohérent entre la gestion du processus
+dans SAP Commerce Cloud et l’exécution des traitements spécialisés au sein du
+microservice d’intelligence artificielle.
+30
+
+
+===== PAGE 40 =====
+
+Chapitre 2 – Analyse, Conception et Architecture
+31
+2.5
+Conclusion
+Ce chapitre a permis de transformer les besoins identifiés en une conception structurée
+de la solution. La spécification des exigences a défini les fonctionnalités attendues et
+les contraintes à respecter, tandis que la modélisation UML a permis de représenter
+les principales interactions, le déroulement du traitement et la structure des éléments
+manipulés.
+L’architecture définie repose sur une séparation entre SAP Commerce Cloud et un
+microservice d’intelligence artificielle, reliés par des interfaces REST. Cette organisation
+permet d’intégrer les traitements d’enrichissement et de validation tout en conservant
+une architecture modulaire et évolutive. Le flux global présenté formalise également
+l’enchaînement des différentes étapes, depuis le déclenchement du traitement jusqu’à
+l’exploitation des résultats dans SAP Commerce Cloud.
+La conception étant désormais établie, le chapitre suivant se concentre sur la
+mise en œuvre du microservice d’intelligence artificielle. Il présente son organisation
+interne, les modèles et mécanismes utilisés ainsi que l’implémentation des traitements
+d’enrichissement et de validation.
+31
+
+
+===== PAGE 41 =====
+
+Chapitre 3
+Module d’enrichissement et de
+validation des produits
+3.1
+Introduction
+Après avoir analysé les besoins de la solution, ainsi que sa conception et son
+architecture, ce chapitre est consacré à la réalisation du microservice d’intelligence
+artificielle. Celui-ci constitue le composant chargé de centraliser les traitements
+d’enrichissement et de validation des fiches produits, tout en restant indépendant de SAP
+Commerce Cloud.
+Dans un premier temps, l’architecture interne du microservice ainsi que l’organisation
+de ses différentes couches sont présentées. Le chapitre détaille ensuite le module
+d’enrichissement, à travers la génération automatique des descriptions et la traduction
+multilingue. Enfin, le module de validation est présenté à travers son moteur de règles,
+ses différents niveaux de contrôle, la gestion des corrections et le calcul du score de qualité.
+3.2
+Architecture
+du
+microservice
+d’intelligence
+artificielle
+Le microservice d’intelligence artificielle constitue le composant chargé d’exécuter
+les traitements intelligents de la solution. Il est développé de manière indépendante de
+SAP Commerce Cloud et communique avec celui-ci à travers des interfaces REST. Cette
+séparation permet de regrouper les traitements liés à l’enrichissement et à la validation
+dans un composant dédié, tout en conservant une interface de communication claire avec
+la plateforme e-commerce.
+32
+
+
+===== PAGE 42 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+33
+L’organisation interne du microservice repose sur quatre couches complémentaires :
+les routes, les schémas de données, les services de traitement et les modèles et
+composants d’intelligence artificielle. La Figure 3.1 présente cette organisation ainsi que le
+cheminement général des données entre SAP Commerce Cloud et les différents composants
+du microservice.
+Figure 3.1 – Architecture interne du microservice d’intelligence artificielle
+Le fonctionnement suit un principe de séparation des responsabilités. Une requête
+provenant de SAP Commerce Cloud est d’abord reçue par une route REST. Les données
+transmises sont ensuite représentées à l’aide de schémas adaptés au type de traitement
+demandé. La requête est alors prise en charge par le service correspondant, qui orchestre
+les opérations nécessaires et sollicite les modèles ou composants spécialisés. Une fois
+le traitement terminé, le résultat suit le chemin inverse avant d’être retourné à SAP
+Commerce Cloud sous la forme d’une réponse structurée.
+33
+
+
+===== PAGE 43 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+34
+3.2.1
+Couche des routes
+La couche des routes constitue l’interface d’entrée du microservice. Son rôle est de
+recevoir les requêtes provenant de SAP Commerce Cloud et de transmettre les données
+au composant interne approprié. Elle constitue ainsi la frontière entre le système externe
+et la logique interne du microservice.
+Les routes sont organisées selon les principales fonctionnalités offertes par le
+microservice. La route dédiée à l’enrichissement reçoit une demande visant à améliorer le
+contenu d’un produit. Elle déclenche le processus d’enrichissement qui peut notamment
+produire du contenu manquant ou adapter les informations dans les langues demandées.
+Les routes de validation sont destinées au contrôle de la qualité des données. Elles
+permettent de traiter chaque produit individuellement. Une route supplémentaire permet
+de vérifier la disponibilité du microservice et de s’assurer que celui-ci est opérationnel
+avant d’effectuer un traitement.
+La communication avec SAP Commerce Cloud repose sur le protocole HTTP et sur
+l’utilisation de données au format JSON. La route reçoit donc une requête contenant les
+informations nécessaires au traitement, puis transmet ces informations sous une forme
+adaptée aux services internes. Elle récupère ensuite le résultat produit par le traitement
+et le retourne au système appelant.
+La responsabilité de cette couche reste volontairement limitée à la gestion des échanges.
+Elle ne réalise pas elle-même la génération, la traduction ou la validation du contenu. Cette
+séparation évite de placer la logique métier directement dans les points d’entrée. Elle
+permet de conserver le rôle principal qui est d’assurer la communication entre l’extérieur
+et le microservice.
+3.2.2
+Couche des schémas de données
+La couche des schémas assure la structuration des données manipulées par le
+microservice. Elle définit la forme des informations acceptées en entrée ainsi que celle
+des résultats produits en sortie.
+Lorsqu’une requête arrive depuis une route, les informations reçues sont associées
+à un schéma correspondant au traitement demandé. Le schéma d’entrée représente les
+informations nécessaires au traitement du produit, tandis que les schémas de sortie
+permettent de représenter les résultats obtenus. Dans le cas de l’enrichissement, la réponse
+peut ainsi contenir les informations enrichies produites par le service. Dans le cas de la
+validation, elle peut représenter le résultat global du contrôle ainsi que les anomalies ou
+corrections identifiées.
+34
+
+
+===== PAGE 44 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+35
+Les schémas permettent d’assurer la cohérence des réponses retournées. Les différents
+services produisent leurs résultats selon une structure définie, ce qui facilite leur
+exploitation par la couche des routes puis par SAP Commerce Cloud. Ainsi, les composants
+internes ne dépendent pas directement de la manière dont les données sont transportées
+par les requêtes HTTP.
+Cette séparation entre les données et les traitements constitue donc un point important
+de l’architecture. Les services peuvent se concentrer sur la réalisation des traitements,
+tandis que les schémas garantissent que les informations échangées respectent une
+structure commune.
+3.2.3
+Couche des services de traitement
+La couche des services constitue le cœur fonctionnel du microservice. Elle prend en
+charge l’orchestration des traitements et assure la coordination entre les données reçues,
+les différentes opérations à effectuer et les composants d’intelligence artificielle sollicités.
+Deux responsabilités principales sont distinguées : l’enrichissement et la validation.
+Service d’enrichissement
+Le service d’enrichissement est chargé de coordonner les opérations permettant
+d’améliorer le contenu d’un produit. Il reçoit les données structurées depuis la couche des
+schémas et détermine les traitements nécessaires en fonction des informations disponibles
+et des objectifs de l’enrichissement.
+Le processus d’enrichissement repose principalement sur deux opérations. La première
+concerne la génération de contenu lorsque certaines informations doivent être complétées.
+La seconde concerne la traduction du contenu vers les langues demandées. Le service
+organise ces opérations et récupère les résultats produits par les composants d’intelligence
+artificielle avant de construire la réponse finale.
+Le service joue donc un rôle d’orchestrateur. Il ne constitue pas lui-même le modèle
+chargé de générer ou de traduire le contenu. Il détermine plutôt quand ces capacités
+doivent être utilisées et assure la circulation des données entre les différents composants.
+Cette organisation permet de modifier ou de remplacer un composant d’intelligence
+artificielle sans remettre en cause l’ensemble du fonctionnement du service.
+L’enrichissement constitue également la première étape du traitement lorsque les deux
+opérations sont réalisées successivement. Le contenu produit ou complété peut ensuite
+être transmis au processus de validation afin d’évaluer sa conformité et sa qualité.
+35
+
+
+===== PAGE 45 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+36
+Service de validation
+Le service de validation prend en charge l’évaluation de la qualité des données reçues.
+Contrairement au service d’enrichissement, son objectif n’est pas de compléter le contenu,
+mais d’identifier les éléments qui ne respectent pas les critères définis par la solution.
+Le traitement de validation combine plusieurs niveaux de contrôle. Les premières
+vérifications portent sur la structure et la cohérence des données. Elles permettent
+notamment de contrôler la présence des informations attendues, leur format et certaines
+contraintes associées à leur contenu.
+Le service peut ensuite solliciter différents mécanismes d’analyse pour examiner la
+qualité linguistique et sémantique du contenu. Les anomalies détectées sont regroupées afin
+de produire un résultat de validation exploitable par le système appelant. Lorsque cela est
+possible, le traitement distingue les corrections pouvant être appliquées automatiquement
+des anomalies nécessitant une intervention.
+Le service de validation assure également l’évaluation globale du résultat à travers
+un score de qualité. Celui-ci permet de synthétiser les différents contrôles réalisés et de
+faciliter l’interprétation du niveau de conformité du produit.
+Ainsi, le service de validation ne se limite pas à retourner une réponse binaire indiquant
+si un produit est valide ou non. Il coordonne plusieurs contrôles et rassemble leurs résultats
+afin de fournir une évaluation plus complète de la qualité du contenu.
+3.2.4
+Couche
+des
+modèles
+et
+composants
+d’intelligence
+artificielle
+La couche des modèles constitue la partie spécialisée du microservice. Elle regroupe
+les capacités utilisées par les services lorsqu’un traitement nécessite de la génération, de
+la traduction ou une analyse plus approfondie du contenu.
+Pour l’enrichissement, cette couche intervient principalement dans la génération et
+la traduction. Le composant de génération produit le contenu demandé à partir des
+informations disponibles, tandis que le composant de traduction adapte le contenu dans
+la langue cible. Les résultats sont ensuite transmis au service d’enrichissement, qui les
+intègre dans le résultat final.
+Pour la validation, les composants spécialisés interviennent selon la nature du contrôle
+à effectuer. Les mécanismes de validation peuvent examiner la structure des informations,
+la qualité linguistique du texte ou encore la cohérence sémantique du contenu. Ces
+traitements permettent de compléter les vérifications classiques par une analyse davantage
+orientée vers le contenu.
+36
+
+
+===== PAGE 46 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+37
+L’intérêt de cette organisation réside dans la séparation entre les capacités
+d’intelligence artificielle et la logique métier. Les modèles ne contrôlent pas directement
+les échanges avec SAP Commerce Cloud et ne déterminent pas l’organisation globale du
+traitement. Ils fournissent des capacités spécialisées qui sont sollicitées par les services en
+fonction du besoin.
+Cette séparation rend également l’architecture plus évolutive. Un modèle peut être
+amélioré, remplacé ou complété sans modifier les routes utilisées par SAP Commerce
+Cloud ni remettre en cause l’organisation générale des services. Le microservice conserve
+ainsi une distinction claire entre l’interface de communication, la logique de traitement et
+les capacités d’intelligence artificielle.
+3.3
+Module d’enrichissement intelligent
+L’objectif de l’enrichissement est d’améliorer la qualité et la richesse des fiches produits
+en générant automatiquement des descriptions détaillées, cohérentes et adaptées à partir
+des caractéristiques techniques disponibles. Il vise également à rendre les informations
+produits plus accessibles à différents utilisateurs grâce à leur disponibilité dans plusieurs
+langues. Cette automatisation permet de réduire le temps consacré à la saisie et à la
+rédaction manuelles, tout en favorisant une présentation homogène et cohérente des
+produits sur les différents canaux de vente. L’enrichissement constitue ainsi la première
+étape du traitement, avant la validation de la qualité du contenu produit.
+3.3.1
+Génération automatique des descriptions
+Principes des grands modèles de langage
+Les grands modèles de langage (LLM pour Large Language Models) sont des réseaux de
+neurones profonds entraînés sur d’énormes quantités de texte. Ils apprennent à prédire le
+mot suivant dans une phrase, facilitant ainsi la génération de texte cohérent et contextuel.
+Pour le projet, un modèle de langage est utilisé pour générer des descriptions de
+produits détaillées à partir de caractéristiques techniques simples.
+Comparaison et sélection du modèle
+Plusieurs modèles de langage existaient au moment du projet : GPT-4, Claude, Llama,
+Mistral et Qwen2.5 [?]. Le tableau 3.1 les compare selon les critères importants pour une
+utilisation industrielle.
+37
+
+
+===== PAGE 47 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+38
+Table 3.1 – Comparaison des modèles de langage
+Modèle
+Exécution
+Coût
+Confidentialité
+Intégration
+GPT-4
+API externe
+Élevé
+Données chez OpenAI
+Facile
+Claude
+API externe
+Élevé
+Données chez Anthropic
+Facile
+Llama
+Local/Cloud
+Moyen
+Complète
+Moyenne
+Mistral
+Local/Cloud
+Faible
+Complète
+Bonne
+Qwen2.5 7B
+Local
+Très
+faible
+Complète
+Excellente
+Qwen2.5 7B a été choisi comme meilleur compromis. Ce modèle de 7 milliards de
+paramètres peut s’exécuter localement sur du matériel grand public, sans envoyer les
+données des produits vers des services externes. Il est performant pour la génération de
+texte technique et son intégration dans le microservice est directe grâce à Ollama [?].
+Exécution locale avec Ollama
+L’exécution du modèle de génération est assurée par Ollama [?], une plateforme
+permettant de déployer et d’utiliser des modèles de langage de grande taille en local.
+Ollama fournit une interface REST qui facilite l’intégration des modèles au sein du
+microservice tout en simplifiant leur gestion et leur mise à jour.
+Le recours à une exécution locale répond à plusieurs exigences du projet. Le choix
+d’un modèle local répond aux impératifs de confidentialité propres au secteur industriel
+en évitant l’envoi des informations produits vers des services d’intelligence artificielle
+hébergés sur le cloud. Les données demeurent ainsi entièrement dans l’environnement de
+l’entreprise.
+Par ailleurs, cette approche supprime la dépendance vis-à-vis de services externes et
+de leur disponibilité. Le microservice peut continuer à fonctionner sans connexion à une
+API distante, ce qui améliore sa robustesse et assure une meilleure maîtrise des temps de
+réponse.
+Génération du résumé et de la description
+À la réception d’une requête, le microservice vérifie d’abord la présence des champs
+récapitulatif et description. Les contenus existants sont conservés afin de préserver les
+rédactions manuelles. Seuls les champs absents sont générés automatiquement à partir
+des informations disponibles. Le microservice construit ensuite un prompt contenant le
+nom, la catégorie, la marque et les caractéristiques techniques.
+38
+
+
+===== PAGE 48 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+39
+Ce prompt précise également les contraintes de rédaction à respecter par le
+modèle. Le résumé est limité à une phrase de quinze mots maximum, tandis que la
+description comporte deux à quatre phrases. Cette approche permet d’obtenir un contenu
+professionnel et homogène tout en limitant les variations entre les fiches des produits.
+Voici un exemple du type de prompt transmis au modèle :
+Exemple de prompt envoyé au modèle
+Génère une description professionnelle pour ce produit :
+— Nom : Moteur électrique
+— Catégorie : Motorisation industrielle
+— Caractéristiques :
+— Puissance : 50 W
+— Tension : 220 V
+— Protection : IP55
+La description doit être claire, complète et adaptée à un public industriel.
+Le prompt est ensuite transmis au modèle Qwen2.5, exécuté localement via Ollama. La
+réponse est retournée sous la forme d’un objet JSON contenant les deux champs générés.
+Le microservice extrait ces informations avant de les intégrer dans la réponse destinée à
+SAP Commerce Cloud.
+Avant de renvoyer le résultat, plusieurs contrôles sont réalisés pour assurer la pertinence
+des descriptions générées. Le microservice vérifie notamment la présence des champs
+attendus, la validité du format JSON et le respect de la longueur maximale imposée
+au résumé.
+En cas d’erreur de communication ou de génération, une nouvelle tentative est
+automatiquement effectuée. Si aucune réponse exploitable n’est obtenue après plusieurs
+essais, le titre du produit est utilisé comme valeur par défaut afin de garantir qu’aucune
+fiche du produit ne soit retournée avec des champs textuels vides.
+Cette gestion des erreurs fiabilise l’enrichissement et prévient toute interruption du flux
+de données. Elle permet également de limiter les risques liés à des réponses incomplètes
+ou mal formatées sans interrompre le traitement des produits.
+39
+
+
+===== PAGE 49 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+40
+3.3.2
+Traduction multilingue
+SAP Commerce Cloud doit alimenter des sites e-commerce dans plusieurs pays.
+Chaque fiche du produit doit être disponible en français, allemand, italien, espagnol,
+polonais, tchèque, hongrois, indonésien, russe, coréen, japonais, chinois simplifié, hindi,
+portugais, chinois traditionnel et certaines variantes régionales.
+La traduction manuelle serait extrêmement coûteuse et lente. Une traduction
+automatique de qualité est donc essentielle.
+Comparaison des modèles de traduction
+Plusieurs modèles de traduction neuronale existent : MarianMT, mBART-50, M2M100
+et NLLB [?]. Le modèle NLLB (No Language Left Behind) de Meta a été sélectionné
+pour sa couverture de 200 langues, ses performances élevées et sa compatibilité avec le
+fine-tuning.
+La version utilisée est facebook/nllb-200-distilled-600M, une version compacte de
+616 millions de paramètres qui offre un bon équilibre entre qualité et ressources requises.
+Présentation générale de NLLB
+NLLB [?] est un modèle Transformer de type Seq2Seq (séquence à séquence). Il prend
+une phrase en entrée et génère sa traduction en sortie. Le modèle a été entraîné sur des
+données de traduction couvrant 200 langues.
+Un point clé de NLLB est l’utilisation des codes FLORES-200. Chaque langue possède
+un code spécifique (par exemple fra_Latn pour le français, deu_Latn pour l’allemand). Le
+microservice convertit les codes de langues SAP Commerce Cloud vers ces codes FLORES
+avant la traduction.
+Fine-tuning avec LoRA
+Le modèle NLLB pré-entraîné fonctionne correctement, mais un fine-tuning a été
+réalisé pour adapter le modèle aux spécificités du projet : contexte industriel, vocabulaire
+technique, style de rédaction des fiches des produits.
+Le fine-tuning complet d’un modèle de 616 millions de paramètres nécessiterait
+énormément de mémoire GPU. Pour contourner ce problème, la technique LoRA
+(Low-Rank Adaptation) [?] a été utilisée. LoRA gèle la majorité des paramètres du modèle
+et n’entraîne que des petites matrices d’adaptation. Dans ce projet, seuls 1,18 million de
+paramètres ont été rendus entraînables, soit environ 0,19 % du total. Cette approche réduit
+les besoins en ressources tout en conservant de bonnes performances.
+40
+
+
+===== PAGE 50 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+41
+Jeu de données d’entraînement
+Les données proviennent directement du catalogue SAP Commerce Cloud d’un client
+B2B. Des phrases en anglais ont été extraites manuellement avec leurs traductions vers
+16 langues cibles.
+La structure du fichier JSON est simple : chaque entrée contient une phrase source
+en anglais et ses traductions. Pour enrichir l’apprentissage, des paires bidirectionnelles
+ont été générées : chaque traduction vers une langue cible est aussi utilisée comme source
+pour traduire vers l’anglais.
+Après génération bidirectionnelle, le jeu de données contenait environ 21 800 paires
+brutes. Il a été réduit à 5 000 exemples pour l’entraînement et 500 pour la validation,
+chacun limité à 256 tokens maximum. Cette réduction a été nécessaire en raison des
+contraintes de ressources GPU.
+Les langues incluses dans le fine-tuning sont : français, allemand, italien, espagnol,
+polonais, tchèque, hongrois, indonésien, russe, coréen, japonais, chinois simplifié, hindi,
+portugais et chinois traditionnel.
+Configuration de l’entraînement
+Le fine-tuning du modèle NLLB a été réalisé à l’aide de la méthode LoRA. Les
+hyperparamètres ont été choisis de manière à obtenir un compromis entre qualité
+d’apprentissage et contraintes matérielles. Le Tableau 3.2 présente les principaux
+paramètres retenus ainsi que leur justification.
+Table 3.2 – Principaux hyperparamètres utilisés lors du fine-tuning du modèle NLLB
+Paramètre
+Valeur
+Définition et justification
+Rang LoRA (r)
+8
+Définit la taille des matrices ajoutées par LoRA. Une
+valeur de 8 offre un bon compromis entre capacité
+d’adaptation et nombre de paramètres entraînés.
+LoRA Alpha
+16
+Contrôle l’influence des couches LoRA sur le modèle.
+Cette valeur permet une adaptation efficace tout en
+préservant les connaissances du modèle pré-entraîné.
+Learning rate
+10−4
+Détermine l’amplitude des mises à jour des poids.
+Cette valeur favorise une convergence progressive de
+l’entraînement.
+Nombre
+d’époques
+3
+Correspond au nombre de passages sur l’ensemble des
+données d’entraînement. Trois époques ont été retenues
+pour adapter le modèle sans prolonger inutilement
+l’entraînement.
+Batch effectif
+2
+Représente le nombre d’exemples utilisés à chaque mise
+à jour des poids. Cette valeur limite la consommation
+mémoire tout en assurant un apprentissage stable.
+41
+
+
+===== PAGE 51 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+42
+L’utilisation de LoRA, associée à une taille de lot réduite et à l’accumulation des
+gradients, a permis d’adapter le modèle NLLB dans ces contraintes matérielles sans
+nécessiter d’infrastructure de calcul spécialisée.
+Résultats du fine-tuning
+Le score BLEU (Bilingual Evaluation Understudy) [?] est une métrique de référence
+qui mesure la similarité n-grammatique entre la traduction générée par le modèle et une
+traduction de référence produite par un humain.
+L’évaluation sur 7 langues (30 échantillons chacune) donne un score BLEU moyen
+de 28,4, en progression significative par rapport aux 23,5 du modèle de base. Bien que
+modeste face aux 35 BLEU des modèles les plus performants, ce score confirme que
+le fine-tuning LoRA [?] sur un jeu de 5 000 paires adapte efficacement le modèle au
+vocabulaire technique et au style des fiches des produits, validant ainsi son déploiement
+en production.
+Fonctionnement du module de traduction dans le microservice
+Le module de traduction intégré au microservice assure la génération des différentes
+versions linguistiques des contenus produits tout en garantissant la cohérence et la fiabilité
+des données échangées avec SAP Commerce Cloud. Afin d’optimiser les temps de réponse,
+les ressources nécessaires au traitement linguistique sont initialisées au démarrage du
+microservice et maintenues en mémoire durant son exécution. Cette approche permet
+d’éviter les opérations répétitives de chargement et d’améliorer les performances globales
+du système.
+Le processus de traduction repose sur plusieurs étapes principales :
+— Adaptation des paramètres linguistiques : les codes de langues utilisés par SAP
+Commerce Cloud sont convertis vers le format attendu par le module de traduction.
+Cette étape assure l’interopérabilité entre les deux environnements et garantit une
+interprétation correcte des langues cibles.
+— Traitement des contenus multilingues : les différents champs textuels du produit,
+notamment le récapitulatif et la description, sont traités séparément pour chaque
+langue demandée. Cette organisation permet de préserver la structure des informations
+et d’assurer une correspondance précise entre les contenus sources et leurs variantes
+linguistiques.
+42
+
+
+===== PAGE 52 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+43
+— Gestion des erreurs de traitement : un mécanisme de secours est mis en place
+afin d’assurer la continuité du processus en cas d’indisponibilité ou d’échec lors de la
+génération d’une traduction. Dans ce cas, la version source du contenu est conservée
+afin d’éviter l’introduction de données incomplètes dans le catalogue produit.
+— Centralisation des résultats : les différentes versions linguistiques obtenues sont
+regroupées dans une structure de données unique avant leur transmission vers SAP
+Commerce Cloud. Cette organisation facilite la mise à jour cohérente des informations
+du produit au sein du catalogue.
+Ainsi, le module de traduction contribue à automatiser la gestion des contenus
+multilingues tout en maintenant la cohérence des informations échangées avec SAP
+Commerce Cloud. Son intégration au sein du microservice permet de centraliser le
+traitement linguistique, de simplifier les échanges avec le catalogue produit et d’assurer
+une mise à disposition fiable des différentes versions linguistiques.
+3.3.3
+Structure de la réponse du service d’enrichissement
+À l’issue du processus d’enrichissement, le microservice retourne une réponse
+structurée contenant les informations générées ainsi que les métadonnées nécessaires à
+leur intégration dans SAP Commerce Cloud. Cette organisation permet de séparer les
+contenus enrichis des informations de contrôle et facilite le traitement automatique de la
+réponse par le système appelant.
+La réponse de l’API d’enrichissement est composée principalement des éléments
+suivants :
+— Identifiant du produit : permet d’assurer la correspondance entre les données
+enrichies retournées et le produit concerné dans SAP Commerce Cloud.
+— Contenus générés : regroupe les champs textuels enrichis, notamment le récapitulatif
+et la description du produit dans la langue source.
+— Traductions associées : contient les différentes versions linguistiques générées pour
+les langues cibles demandées.
+— Informations de traitement : fournit l’état d’exécution de la demande ainsi que
+les éventuels messages liés au déroulement du processus.
+La réponse de l’API d’enrichissement est structurée de manière à regrouper les
+informations générées ainsi que les traductions associées. La box ci-dessous présente un
+exemple simplifié de la réponse JSON retournée par le microservice.
+43
+
+
+===== PAGE 53 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+44
+Exemple de réponse JSON de l’API d’enrichissement
+{
+"productCode": "PROD-001",
+"status": "SUCCESS",
+"enrichment": {
+"summary": "Résumé généré du produit",
+"description": "Description détaillée générée du produit"
+},
+"translations": {
+"fr": {
+"summary": "Résumé traduit",
+"description": "Description traduite"
+},
+"de": {
+"summary": "Übersetzte Zusammenfassung",
+"description": "Übersetzte Beschreibung"
+}
+}
+}
+3.4
+Module
+de
+validation
+:
+contrôle
+de
+qualité
+automatique
+Le module de validation assure que chaque fiche produit respecte un ensemble de
+critères de qualité avant d’être exploitée dans SAP Commerce Cloud. Il permet d’identifier
+les données manquantes, les erreurs de format ainsi que certaines incohérences susceptibles
+d’affecter la qualité du catalogue.
+La validation est organisée sous la forme d’un pipeline composé de plusieurs couches
+successives. Chaque couche intervient sur un aspect particulier de la qualité du contenu.
+La première repose principalement sur un moteur de règles chargé d’effectuer les contrôles
+structurels et les vérifications déterministes. Les couches suivantes complètent cette
+première analyse par des contrôles portant notamment sur la qualité linguistique et le
+contenu.
+44
+
+
+===== PAGE 54 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+45
+3.4.1
+Couche 1 : Validation structurelle
+La première couche du processus de validation a pour objectif de vérifier la conformité
+structurelle des données reçues avant toute analyse plus approfondie. Elle constitue
+une étape de filtrage permettant de détecter rapidement les erreurs susceptibles de
+compromettre les traitements suivants.
+Cette étape est assurée par un moteur de règles qui regroupe l’ensemble des
+critères de validation définis pour les données produits. Chaque règle correspond à une
+condition précise à vérifier sur les informations reçues. Le moteur parcourt ainsi les
+données et applique successivement les règles appropriées afin d’identifier les éventuelles
+non-conformités.
+L’utilisation d’un moteur de règles permet de séparer les critères de validation de
+la logique générale du service. Les règles peuvent ainsi être regroupées et organisées
+indépendamment du code de traitement, ce qui facilite leur compréhension, leur
+maintenance et leur évolution lorsque les critères de qualité du catalogue changent.
+Les règles sont principalement utilisées pour contrôler la présence, le format et
+la cohérence élémentaire des informations. Elles permettent notamment de vérifier les
+éléments suivants :
+— Présence des champs obligatoires : vérification que les informations indispensables
+à l’identification et à l’exploitation du produit sont renseignées, notamment son
+identifiant, son nom et les attributs considérés comme requis.
+— Conformité des types de données : vérification que chaque information respecte
+le type attendu. Par exemple, une valeur représentant un prix doit être numérique,
+tandis qu’une adresse URL doit respecter le type et le format attendus.
+— Respect des contraintes : contrôle de différentes contraintes définies pour les
+attributs, telles qu’un prix strictement positif, une longueur minimale pour certains
+contenus ou encore le respect du format d’une URL.
+— Validité des langues : vérification des codes de langue déclarés afin de s’assurer
+qu’ils peuvent être pris en charge par les traitements multilingues du microservice.
+— Cohérence des informations : détection de certaines incohérences simples entre les
+données reçues, lorsque celles-ci peuvent être identifiées à partir de règles déterministes.
+Le moteur de règles produit ensuite le résultat de chaque contrôle sous la forme d’une
+information exploitable par le service de validation. Lorsqu’une règle n’est pas respectée,
+l’anomalie identifiée est enregistrée avec les informations nécessaires à son interprétation.
+Cette organisation permet de conserver une trace des contrôles effectués et de distinguer
+les différentes anomalies détectées sur une même fiche produit.
+45
+
+
+===== PAGE 55 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+46
+Le moteur de règles constitue ainsi la première barrière de contrôle du pipeline.
+Il permet d’éliminer ou de signaler rapidement les problèmes pouvant être détectés
+de manière déterministe, avant de solliciter les mécanismes d’analyse linguistique et
+sémantique. Cette séparation permet d’utiliser chaque niveau de validation pour le type
+de contrôle auquel il est le mieux adapté.
+3.4.2
+Couche 2 : Validation sémantique
+Une fois la conformité structurelle vérifiée, le microservice procède à une analyse
+du contenu des informations textuelles. Contrairement à la validation structurelle, qui
+s’intéresse uniquement au format des données, cette seconde couche évalue leur qualité
+linguistique et leur cohérence sémantique.
+Cette analyse repose sur plusieurs mécanismes complémentaires.
+— Détection automatique de la langue : la bibliothèque langdetect [?] de Python
+identifie la langue réellement utilisée dans chaque contenu textuel afin de vérifier qu’elle
+correspond à la langue attendue pour le champ concerné. Une incohérence peut révéler
+une erreur de traduction, une mauvaise affectation des contenus multilingues ou une
+inversion des langues.
+— Analyse grammaticale et orthographique : les textes sont analysés à l’aide de
+la bibliothèque LanguageTool [?] de Python, qui détecte les erreurs d’orthographe,
+de grammaire, de ponctuation et certaines maladresses de formulation susceptibles de
+diminuer la qualité éditoriale de la fiche du produit.
+— Analyse contextuelle : certaines anomalies ne peuvent être détectées uniquement à
+partir de règles grammaticales. Le modèle de langage Qwen2.5 [?] est donc sollicité afin
+d’évaluer le contenu dans son contexte et d’identifier des formulations peu naturelles,
+des incohérences rédactionnelles ou des expressions pouvant être améliorées tout en
+conservant le sens initial du texte.
+Ces différents contrôles sont appliqués aussi bien aux contenus d’origine qu’aux
+descriptions traduites automatiquement par le modèle NLLB. Le module maintient ainsi
+une rigueur linguistique constante, quelle que soit la langue cible.
+46
+
+
+===== PAGE 56 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+47
+3.4.3
+Couche 3 : Corrections automatiques et suggestions
+La troisième couche du processus de validation est dédiée à la correction des anomalies
+détectées lors des étapes précédentes. Afin de garantir un équilibre entre automatisation
+et contrôle humain, le microservice distingue les corrections pouvant être appliquées sans
+risque de celles nécessitant une validation par le responsable de l’enrichissement des
+produits. Deux catégories de traitements sont ainsi mises en œuvre :
+— Corrections automatiques : elles concernent les anomalies de faible risque
+pouvant être résolues sans intervention humaine. Ces corrections améliorent la qualité
+technique des données sans modifier leur signification. Elles comprennent notamment
+le nettoyage des balises HTML incorrectes à l’aide de BeautifulSoup [?], la suppression
+des espaces superflus, la suppression des URLs locales ou invalides, la conversion des
+liens http vers https ainsi que la normalisation du format des unités techniques et de
+certains caractères. Une fois appliquées, ces modifications sont enregistrées directement
+dans SAP Commerce Cloud afin d’améliorer la qualité des fiches des produits.
+— Suggestions
+de
+correction
+: les anomalies nécessitant une compréhension
+du contexte ne sont pas corrigées automatiquement. Elles donnent lieu à des
+recommandations destinées au responsable de l’enrichissement des produits. Ces
+suggestions sont générées à partir des analyses réalisées par LanguageTool et par le
+modèle de langage Qwen2.5, qui propose une reformulation plus naturelle tout en
+préservant le sens du texte. Chaque recommandation transmise à SAP Commerce
+Cloud précise le champ concerné, l’anomalie détectée, la correction proposée ainsi que
+son niveau de sévérité. L’utilisateur conserve ainsi la décision finale et peut accepter,
+modifier ou refuser chaque proposition avant son application.
+Le responsable de l’enrichissement conserve ainsi le contrôle sur les modifications
+proposées et peut accepter, modifier ou refuser chaque suggestion avant son application.
+Cette séparation entre corrections automatiques et recommandations permet de concilier
+efficacité, fiabilité et maîtrise des contenus éditoriaux.
+47
+
+
+===== PAGE 57 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+48
+3.4.4
+Couche 4 : Calcul du score de qualité
+La dernière couche du processus de validation consiste à synthétiser l’ensemble des
+analyses réalisées précédemment sous la forme d’un score de qualité global. Ce score
+fournit une mesure quantitative permettant d’évaluer rapidement le niveau de conformité
+d’une fiche du produit et de faciliter sa prise en charge par les utilisateurs métier.
+Le calcul débute avec un score maximal de 100 points. Chaque anomalie détectée lors
+des différentes étapes de validation entraîne ensuite l’application d’une pénalité dont la
+valeur dépend de son niveau de sévérité. Plus une anomalie est susceptible d’affecter la
+qualité ou l’exploitabilité de la fiche du produit, plus la pénalité associée est importante.
+Cette approche présente plusieurs avantages. D’une part, elle distingue les erreurs
+critiques, qui empêchent l’utilisation correcte des données, des anomalies mineures ayant
+principalement un impact sur la qualité éditoriale. D’autre part, elle fournit un indicateur
+unique facilitant le suivi de l’évolution de la qualité des produits au fil des enrichissements
+successifs.
+Le score obtenu est également utilisé pour déterminer le statut global de validation de
+la fiche du produit. Selon les anomalies détectées et le score final obtenu, une fiche peut être
+considérée comme conforme, conforme avec réserves ou non conforme. Cette classification
+permet au responsable de l’enrichissement d’identifier rapidement les produits nécessitant
+une intervention prioritaire.
+Le tableau 3.3 présente les pénalités appliquées en fonction du niveau de sévérité des
+anomalies détectées.
+Table 3.3 – Pondération des anomalies selon leur niveau de sévérité
+Sévérité
+Pénalité appliquée
+Exemple d’anomalie
+CRITICAL
+-15 points
+Donnée obligatoire manquante, prix
+invalide
+HIGH
+-10 points
+Langue incorrecte, contenu HTML mal
+formé
+MEDIUM
+-5 points
+Erreur
+grammaticale
+ou
+orthographique
+LOW
+-1 point
+Titre trop long, caractères spéciaux
+inutiles
+La
+notation
+convertit
+les
+diagnostics
+techniques
+en
+un
+indicateur
+métier
+immédiatement exploitable par SAP Commerce Cloud. Il facilite la priorisation des
+corrections, le suivi de la qualité des catalogues produits et l’automatisation de certaines
+décisions métier tout en conservant une interprétation simple pour les utilisateurs.
+48
+
+
+===== PAGE 58 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+49
+3.4.5
+Standardisation de la réponse de validation
+Une fois le cycle de contrôle achevé, le microservice compile les résultats dans un
+format JSON normalisé afin d’assurer une intégration fluide avec SAP Commerce Cloud.
+Cette réponse constitue le socle décisionnel permettant au Product Manager d’évaluer la
+maturité d’une fiche du produit avant sa publication. Voilà un exemple de la structure
+JSON retournée par le module de validation.
+Exemple de réponse JSON du module de validation
+{
+"productCode": "PROD-001",
+"score": 85,
+"anomalies": [
+{
+"field": "description",
+"severity": "MEDIUM",
+"message": "Erreur d’orthographe détectée",
+"suggestion": "moteur électrique"
+}
+],
+"autoCorrections": [
+{
+"field": "content",
+"action": "HTML_CLEANUP",
+"applied": true
+}
+]
+}
+“‘
+L’analyse de cette structure montre que le microservice ne se limite pas à retourner
+un score global de qualité. La réponse fournit également des informations détaillées sur
+les anomalies détectées, notamment le champ concerné, leur niveau de sévérité ainsi
+que, lorsque cela est possible, une proposition de correction ou la trace des corrections
+appliquées automatiquement. Cette structuration facilite l’exploitation des résultats par
+SAP Commerce Cloud, qui peut présenter des recommandations précises au responsable
+de l’enrichissement des produits et assurer la traçabilité des traitements réalisés par le
+module de validation.
+49
+
+
+===== PAGE 59 =====
+
+Chapitre 3 – Module d’enrichissement et de validation des produits
+50
+3.5
+Conclusion
+Ce chapitre a présenté la conception et le fonctionnement du microservice d’intelligence
+artificielle développé dans le cadre de ce projet. Après avoir décrit son architecture générale
+et les technologies retenues, les différents modules qui le composent ont été détaillés, depuis
+la génération automatique des descriptions jusqu’à la traduction multilingue et au contrôle
+de la qualité des fiches des produits.
+Les mécanismes mis en œuvre reposent sur l’utilisation conjointe de modèles
+d’intelligence artificielle spécialisés et de règles de validation permettant d’automatiser
+une grande partie des opérations d’enrichissement tout en garantissant la cohérence et
+la fiabilité des données générées. L’organisation du module de validation en plusieurs
+couches successives assure une séparation claire des responsabilités, depuis la vérification
+structurelle des données jusqu’au calcul d’un score global de qualité, en passant par
+l’analyse sémantique et la gestion des corrections.
+L’approche retenue permet ainsi de disposer d’un microservice modulaire, indépendant
+de SAP Commerce Cloud et facilement évolutif, capable de centraliser les traitements
+d’intelligence artificielle tout en exposant des interfaces REST standardisées pour
+communiquer avec le système d’information.
+Le chapitre suivant est consacré à l’intégration de ce microservice au sein de SAP
+Commerce Cloud. Il présente les différents développements réalisés sur la plateforme,
+les mécanismes d’échange entre les deux composants ainsi que leur intégration dans les
+processus métier de gestion et d’enrichissement des fiches des produits.
+50
+
+
+===== PAGE 60 =====
+
+Chapitre 4
+Intégration dans SAP Commerce
+Cloud
+4.1
+Introduction
+Après avoir présenté dans le chapitre précédent la conception et la réalisation
+du microservice d’intelligence artificielle, ce chapitre est consacré à son intégration
+dans SAP Commerce Cloud. Cette intégration permet d’exploiter les fonctionnalités
+d’enrichissement, de traduction et de validation développées précédemment dans le
+processus de gestion des produits.
+Dans un premier temps, les principales caractéristiques de SAP Commerce Cloud
+ainsi que son organisation en couches sont présentées. La notion de workflow est ensuite
+introduite afin de préciser le mécanisme utilisé pour orchestrer les différentes étapes du
+processus. La communication entre SAP Commerce Cloud et le microservice est également
+décrite à travers les échanges REST mis en place.
+Enfin, la réalisation du workflow d’enrichissement et de validation est détaillée à
+travers ses différentes actions, depuis le déclenchement du traitement et la sélection des
+paramètres jusqu’à la consultation des résultats et la validation finale du produit.
+4.2
+Présentation de SAP Commerce Cloud
+Comme présenté dans le premier chapitre, SAP Commerce Cloud constitue la
+plateforme de commerce électronique sur laquelle repose la solution développée. Dans
+le cadre de ce projet, elle joue le rôle de système principal pour la gestion des produits et
+l’orchestration du processus d’enrichissement et de validation.
+51
+
+
+===== PAGE 61 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+52
+L’intégration réalisée s’appuie sur les différents composants de la plateforme afin
+de récupérer les données du produit, déclencher les traitements, communiquer avec
+le microservice d’intelligence artificielle et exploiter les résultats retournés. Cette
+organisation permet de conserver le microservice indépendant de SAP Commerce Cloud,
+tout en assurant son intégration au processus métier existant.
+4.2.1
+Organisation en couches
+L’architecture de SAP Commerce Cloud repose sur une organisation modulaire
+permettant de séparer les différentes responsabilités de l’application. Dans le cadre de ce
+projet, les principales couches mobilisées sont la couche Présentation, la couche Facade,
+la couche Service, la couche d’accès aux données et la couche Modèle.
+La Figure 4.1 présente une vue simplifiée de cette organisation ainsi que le rôle des
+principales couches utilisées dans la solution.
+Figure 4.1 – Organisation en couches de SAP Commerce Cloud
+52
+
+
+===== PAGE 62 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+53
+Ces différentes couches collaborent pour assurer le traitement des opérations liées à la
+gestion des produits et à l’exécution du workflow. Elles permettent également d’isoler la
+logique d’intégration avec le microservice d’intelligence artificielle au niveau des services
+métier.
+4.2.2
+Description des principales couches
+Couche Présentation
+La couche Présentation correspond au niveau d’interaction avec les utilisateurs. Dans
+la solution développée, le Backoffice permet au responsable de consulter et de gérer les
+produits ainsi que d’interagir avec les différentes étapes du workflow d’enrichissement et
+de validation.
+Couche Facade
+La couche Facade assure l’intermédiaire entre la présentation et les services métier.
+Elle expose des opérations adaptées aux besoins de l’interface tout en masquant les détails
+liés à l’implémentation des traitements.
+Couche Service
+La couche Service regroupe la logique métier et assure la coordination des différentes
+opérations du processus. Elle constitue également le principal point d’intégration avec le
+microservice d’intelligence artificielle.
+Dans le cadre de ce projet, les services développés permettent notamment de récupérer
+les informations nécessaires du produit, de préparer les données à transmettre, de
+déclencher les appels aux API REST du microservice et de traiter les résultats retournés.
+Couche d’accès aux données
+La couche d’accès aux données regroupe les mécanismes permettant de rechercher
+et de récupérer les informations nécessaires aux traitements métier. Elle assure ainsi la
+séparation entre les opérations d’accès aux données et la logique métier portée par les
+services.
+Couche Modèle
+La couche Modèle représente les entités métier manipulées par SAP Commerce Cloud.
+Ces entités sont notamment définies à l’aide des ItemTypes, qui permettent de décrire
+leurs attributs et leurs relations.
+53
+
+
+===== PAGE 63 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+54
+Dans le cadre de ce projet, le modèle Product est principalement utilisé pour
+accéder aux informations nécessaires au processus d’enrichissement et de validation. Ces
+informations sont ensuite préparées par la couche Service avant leur transmission au
+microservice d’intelligence artificielle.
+4.2.3
+Notion de workflow
+Le workflow correspond à un enchaînement structuré d’étapes permettant d’exécuter
+un processus selon un ordre défini. Il permet de représenter les différentes opérations du
+processus, les interventions du responsable ainsi que les conditions déterminant la suite
+du traitement.
+Dans SAP Commerce Cloud, une action représente une opération exécutée au cours
+du workflow. Elle peut être automatique, lorsqu’elle est prise en charge directement par
+le système, ou manuelle, lorsqu’une intervention du responsable est nécessaire.
+Une décision constitue un point de choix permettant de déterminer la prochaine étape
+du processus selon une condition ou une décision du responsable. Elle permet notamment
+d’accepter un résultat, de relancer un traitement ou de mettre fin au processus.
+Dans
+le
+cadre
+de
+ce
+projet,
+le
+workflow
+permet
+d’orchestrer
+le
+processus
+d’enrichissement et de validation des produits. Il coordonne les différentes actions réalisées
+dans SAP Commerce Cloud et les échanges avec le microservice d’intelligence artificielle.
+Les traitements effectués par ce microservice, notamment l’enrichissement, la traduction
+et la validation, sont détaillés dans le chapitre précédent.
+4.3
+Intégration
+du
+microservice
+IA
+dans
+SAP
+Commerce Cloud
+L’intégration du microservice d’intelligence artificielle dans SAP Commerce Cloud
+permet de déléguer les traitements d’enrichissement, de traduction et de validation à
+un composant externe, tout en conservant la gestion des produits et l’orchestration du
+processus au niveau de SAP Commerce Cloud. Le microservice reste ainsi indépendant
+de la plateforme et communique avec celle-ci à travers des interfaces REST.
+54
+
+
+===== PAGE 64 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+55
+4.3.1
+Architecture de l’intégration
+L’architecture mise en place repose sur deux composants principaux : SAP
+Commerce Cloud et le microservice d’intelligence artificielle. SAP Commerce
+Cloud assure l’orchestration du processus à travers le workflow et communique avec le
+microservice via les services d’intégration.
+Les échanges reposent sur deux API REST : POST /enrich, utilisée pour transmettre
+les données du produit et récupérer les résultats d’enrichissement, et POST /valid,
+destinée à transmettre les données à valider et à recevoir le score, les anomalies et les
+corrections proposées.
+Cette organisation permet de séparer les responsabilités : SAP Commerce Cloud
+gère le workflow et les données du produit, tandis que le microservice IA prend en
+charge les traitements d’enrichissement et de validation.
+La Figure 4.2 présente l’architecture générale de cette intégration.
+Figure 4.2 – Architecture de l’intégration
+4.3.2
+Communication REST entre les composants
+La communication entre SAP Commerce Cloud et le microservice d’intelligence
+artificielle repose sur des échanges REST via le protocole HTTP. Les appels sont réalisés
+à l’aide de RestTemplate et les données sont échangées au format JSON. Chaque requête
+et chaque réponse sont structurées autour de deux parties principales : les headers et le
+body.
+Les headers permettent notamment de préciser le format des données échangées ainsi
+que certaines informations relatives à l’application et au site concerné. Le body contient
+quant à lui les données nécessaires au traitement.
+55
+
+
+===== PAGE 65 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+56
+Requête HTTP
+Headers
+Content-Type: application/json
+Accept: application/json
+X-Client: PFE-APP
+X-Site-Id: <site>
+Accept-Language: en
+Body
+{
+"product": { ... }
+}
+Pour construire les requêtes et exploiter les réponses JSON, SAP Commerce Cloud
+utilise la bibliothèque Jackson de Java. La classe ObjectMapper permet de convertir les
+objets Java en données JSON lors de l’envoi et de transformer les réponses JSON reçues
+en objets Java.
+Pour l’enrichissement, les données sont transmises à travers l’endpoint POST /enrich.
+Le microservice retourne ensuite les résultats d’enrichissement sous forme d’une réponse
+JSON.
+Réponse HTTP – /enrich
+Headers
+Content-Type: application/json
+Body
+{
+"result": { ... }
+}
+Le même principe est appliqué à la validation à travers l’endpoint POST /valid. La
+requête contient les données à contrôler dans son body, tandis que la réponse retourne les
+résultats de validation.
+Ainsi, les échanges entre les deux composants restent simples et standardisés : SAP
+Commerce Cloud prépare les données, les transmet au format JSON et exploite les
+résultats retournés par le microservice.
+56
+
+
+===== PAGE 66 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+57
+4.4
+Présentation du workflow d’enrichissement et de
+validation des produits
+Le workflow mis en place dans SAP Commerce Cloud permet de structurer le processus
+d’enrichissement et de validation des produits. Il organise l’enchaînement des traitements
+automatiques et des interventions du responsable de l’enrichissement.
+4.4.1
+Déroulement global
+Le processus est piloté par le responsable de l’enrichissement des produits, qui
+constitue l’acteur humain du workflow. Il peut déclencher le traitement, consulter les
+résultats obtenus et intervenir lorsqu’une décision est requise.
+Le traitement débute par la sélection des champs et des langues à traiter. Le produit
+est ensuite transmis au microservice d’intelligence artificielle pour l’enrichissement, puis
+soumis à une validation automatique. Les résultats obtenus sont finalement présentés au
+responsable afin qu’il puisse les examiner.
+Trois choix sont alors possibles :
+— Accepter : les résultats proposés sont acceptés et le produit passe à l’étape de
+validation ;
+— Régénérer : l’enrichissement est relancé afin d’obtenir une nouvelle proposition ;
+— Quitter : le processus est interrompu et le produit reste dans l’état À vérifier.
+4.4.2
+Gestion des états du produit
+Le workflow permet de suivre l’évolution du produit à travers trois états principaux,
+correspondant aux différentes étapes du processus.
+Table 4.1 – États du produit au cours du workflow
+État
+Description
+À vérifier
+Produit en attente de traitement ou dont le processus
+a été interrompu.
+En cours de vérification
+Produit en cours de traitement et de validation par
+le workflow.
+Validé
+Produit ayant terminé avec succès le processus de
+vérification.
+57
+
+
+===== PAGE 67 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+58
+4.5
+Réalisation du workflow d’enrichissement et de
+validation
+La mise en œuvre du workflow repose sur plusieurs actions développées dans SAP
+Commerce Cloud afin d’assurer l’enchaînement des traitements et la gestion des différents
+états du produit. Chaque action correspond à une fonctionnalité précise du processus et
+peut faire intervenir des traitements automatiques, des services métier ou des interfaces
+destinées au responsable.
+4.5.1
+Configuration du workflow
+Après avoir défini le fonctionnement du workflow, sa configuration est réalisée dans
+SAP Commerce Cloud à l’aide du mécanisme Impex. Celui-ci permet d’importer des
+données dans la plateforme et notamment de créer, mettre à jour ou supprimer des
+instances d’ItemTypes. Il est ainsi utilisé pour initialiser les différents éléments nécessaires
+à la mise en place du workflow.
+Dans le cadre de ce projet, le fichier Impex permet notamment de déclarer le modèle
+du workflow ainsi que les modèles correspondant à ses différentes actions. Ces éléments
+constituent la structure de base sur laquelle repose l’exécution du processus.
+L’extrait suivant illustre la déclaration du workflow et d’une de ses actions :
+Extrait de la configuration Impex du workflow
+INSERT_UPDATE WorkflowTemplate; code; name[lang=fr];
+productEnrichmentWorkflow; Workflow d’enrichissement et de validation;
+INSERT_UPDATE WorkflowActionTemplate; code; name[lang=fr];
+productEnrichmentAction;
+Déclenchement du traitement;
+Dans cet extrait, l’instruction INSERT_UPDATE permet de créer l’élément s’il n’existe
+pas ou de le mettre à jour lorsqu’il existe déjà. Le premier bloc définit le modèle
+du workflow à travers son identifiant et son nom. Le second associe une action à ce
+workflow en précisant notamment le workflow auquel elle appartient et le nom de l’étape
+correspondante.
+Cette configuration constitue ainsi le point de départ de la réalisation du workflow.
+Les sections suivantes présentent les différentes actions développées ainsi que les
+fonctionnalités et interfaces associées à chacune d’elles.
+58
+
+
+===== PAGE 68 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+59
+4.5.2
+Action 1 : Déclenchement du workflow
+Cette première action correspond au déclenchement automatique du workflow
+d’enrichissement et de validation. Elle est initiée lorsque le produit passe à l’état À vérifier,
+qui constitue le point de départ du processus.
+Fonctionnement
+Lorsqu’un produit est placé dans l’état À vérifier, le workflow correspondant est
+automatiquement déclenché. Le produit entre alors dans le processus d’enrichissement
+et de validation et peut poursuivre vers les étapes suivantes définies dans le workflow.
+Implémentation
+La configuration de cette étape est réalisée à l’aide d’un fichier Impex. Celui-ci permet
+notamment de définir le workflow associé au produit ainsi que les paramètres nécessaires à
+son déclenchement. La configuration précise également le responsable de l’enrichissement
+auquel le traitement est attribué.
+Le fichier permet également de définir les éléments liés à la notification envoyée lors
+du démarrage du workflow, notamment le destinataire, le modèle utilisé et le contenu
+du message. Cette configuration permet d’automatiser l’information du responsable sans
+nécessiter d’intervention supplémentaire.
+Notification envoyée
+Une fois le workflow déclenché, une notification est automatiquement envoyée au
+responsable de l’enrichissement. Elle l’informe du lancement du traitement et lui permet
+d’identifier le produit concerné.
+La Figure 4.3 présente un exemple du courrier électronique généré lors du
+déclenchement du workflow.
+59
+
+
+===== PAGE 69 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+60
+Figure 4.3 – Notification envoyée lors du déclenchement du workflow
+Cette étape permet ainsi d’initialiser automatiquement le processus dès qu’un produit
+entre dans l’état À vérifier, tout en informant le responsable chargé du suivi du traitement.
+4.5.3
+Action 2 : Sélection des champs et des langues
+Cette deuxième action permet au responsable de définir les éléments du produit qui
+seront pris en charge par le processus d’enrichissement et de traduction. Elle offre ainsi
+la possibilité d’adapter le traitement aux besoins spécifiques de chaque produit.
+Fonctionnement
+À partir de l’interface de gestion du produit, le responsable peut sélectionner les
+champs à enrichir, les champs à traduire ainsi que les langues cibles. Ces paramètres
+déterminent les informations qui seront transmises aux traitements automatisés lors des
+étapes suivantes.
+La sélection est effectuée directement depuis les champs prévus à cet effet. Le
+responsable peut ainsi choisir uniquement les informations nécessitant un enrichissement
+ou une traduction, sans appliquer systématiquement le traitement à l’ensemble des
+données du produit.
+Implémentation
+Cette fonctionnalité repose sur l’ajout d’attributs spécifiques au modèle du produit
+dans SAP Commerce Cloud. Ces attributs permettent de conserver les choix effectués
+par le responsable et de les exploiter lors de la préparation de la requête destinée au
+microservice d’intelligence artificielle.
+60
+
+
+===== PAGE 70 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+61
+Les valeurs sélectionnées sont ensuite récupérées par le service chargé de préparer les
+données du produit. Elles permettent notamment de déterminer les champs à traiter ainsi
+que les langues dans lesquelles les contenus doivent être générés ou traduits.
+Interface de sélection
+Une interface dédiée a été intégrée à la fiche produit afin de regrouper les paramètres
+nécessaires au traitement. Comme le montre la Figure 4.4, la section Traduction permet
+au responsable de renseigner les champs à enrichir, les champs à traduire et les langues
+cibles.
+Figure 4.4 – Interface de sélection des champs et des langues
+Résultat.
+À l’issue de cette action, les choix effectués par le responsable sont associés au produit
+et seront utilisés lors du déclenchement de l’enrichissement automatique. La Figure 4.5
+présente un exemple de sélection des champs à enrichir, des champs à traduire et des
+langues cibles.
+61
+
+
+===== PAGE 71 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+62
+Figure 4.5 – Exemple de sélection des paramètres d’enrichissement
+4.5.4
+Action 3 : Enrichissement automatique du produit
+Cette action assure la communication entre SAP Commerce Cloud et le microservice
+d’intelligence artificielle afin de réaliser automatiquement l’enrichissement du produit.
+Elle constitue l’étape au cours de laquelle les paramètres sélectionnés précédemment sont
+transmis au microservice pour générer les contenus demandés.
+Fonctionnement
+L’action récupère les informations du produit ainsi que les champs et les langues
+sélectionnés par le responsable lors de l’étape précédente. Ces données sont ensuite
+préparées sous la forme d’une requête conforme au schéma attendu par l’API
+d’enrichissement.
+La requête est envoyée au microservice d’intelligence artificielle à travers l’API REST
+/enrich. Le microservice réalise alors les traitements d’enrichissement et de traduction
+demandés, puis retourne une réponse contenant les résultats générés.
+SAP Commerce Cloud récupère cette réponse et exploite les informations retournées
+afin de poursuivre le traitement du produit. Les résultats sont ainsi préparés pour les
+étapes suivantes du workflow, notamment la validation automatique et la consultation
+par le responsable.
+62
+
+
+===== PAGE 72 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+63
+Implémentation
+L’intégration repose sur un service dédié chargé d’assurer la communication avec le
+microservice. Celui-ci prépare les données du produit, construit l’objet de requête et
+effectue l’appel HTTP vers l’API /enrich.
+La réponse retournée par le microservice est ensuite désérialisée et traitée par SAP
+Commerce Cloud. Les données obtenues sont associées aux informations du produit afin
+de pouvoir être contrôlées lors de l’étape de validation.
+Cette organisation permet de séparer la logique d’intégration avec le microservice
+de la logique métier du workflow. L’action du workflow se charge ainsi de déclencher le
+traitement, tandis que le service dédié prend en charge la communication REST et le
+traitement de la réponse.
+Échange avec le microservice.
+Le processus repose sur un échange de données entre SAP Commerce Cloud et le
+microservice d’intelligence artificielle. SAP Commerce Cloud transmet les informations
+nécessaires à l’enrichissement dans une requête structurée, puis reçoit les contenus générés
+en réponse.
+L’utilisation d’une interface REST permet ainsi de maintenir le microservice
+indépendant de SAP Commerce Cloud tout en assurant son intégration au workflow.
+Résultat
+À l’issue de cette action, les résultats de l’enrichissement sont disponibles dans SAP
+Commerce Cloud et peuvent être soumis à l’étape suivante du workflow, consacrée à leur
+validation automatique.
+4.5.5
+Action 4 : Validation automatique des résultats
+Cette action intervient après l’enrichissement automatique du produit. Elle permet
+de contrôler les résultats générés par le microservice d’intelligence artificielle avant leur
+présentation au responsable.
+Fonctionnement
+À la suite de l’enrichissement, les résultats obtenus sont transmis au service de
+validation. Celui-ci prépare les données nécessaires et construit la requête destinée à l’API
+de validation du microservice.
+63
+
+
+===== PAGE 73 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+64
+SAP Commerce Cloud envoie alors la requête à l’API /valid. Le microservice exécute
+les différents contrôles définis dans le moteur de validation et retourne les résultats
+correspondants. La réponse reçue est ensuite récupérée et traitée par SAP Commerce
+Cloud afin de préparer les données qui seront présentées au responsable.
+Cette étape permet ainsi d’effectuer automatiquement les contrôles avant l’intervention
+humaine, tout en conservant les recommandations générées pour leur revue.
+Implémentation
+L’appel à l’API de validation repose sur un service dédié, chargé de préparer la requête,
+d’établir la communication REST avec le microservice et de traiter la réponse retournée.
+Le
+fonctionnement
+est
+similaire
+à
+celui
+de
+l’appel
+d’enrichissement
+présenté
+précédemment : SAP Commerce Cloud prépare les données, transmet une requête au
+microservice et exploite la réponse reçue. La différence réside dans la finalité du traitement,
+cette étape étant consacrée au contrôle des résultats produits lors de l’enrichissement.
+Notification de fin de traitement
+Une
+fois
+l’enrichissement
+et
+la
+validation
+terminés,
+une
+notification
+est
+automatiquement envoyée au responsable afin de l’informer que le traitement est terminé
+et que les recommandations sont prêtes pour consultation et validation.
+La Figure 4.6 présente un exemple du courrier électronique envoyé à l’issue du
+traitement.
+Figure 4.6 – Notification indiquant que les recommandations sont prêtes pour validation
+64
+
+
+===== PAGE 74 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+65
+À l’issue de cette action, les résultats enrichis et validés sont disponibles pour
+le responsable. Le workflow peut alors poursuivre vers l’étape de consultation des
+recommandations, au cours de laquelle celui-ci pourra examiner les propositions et décider
+de leur acceptation, de leur régénération ou de l’abandon du traitement.
+4.5.6
+Action 5 : Consultation des résultats
+Cette action constitue l’étape de contrôle humain du workflow. Une fois les traitements
+d’enrichissement et de validation terminés, le responsable accède aux résultats générés
+afin d’examiner les contenus proposés, les résultats de validation ainsi que les éventuelles
+anomalies et corrections identifiées.
+Résultats de l’enrichissement
+Les contenus générés par le microservice sont accessibles directement depuis la fiche
+du produit dans SAP Commerce Cloud. Le responsable peut ainsi consulter les valeurs
+enrichies ou traduites dans les langues sélectionnées lors de l’étape précédente.
+La Figure 4.7 présente l’interface permettant de consulter les résultats obtenus à l’issue
+du traitement d’enrichissement.
+Figure 4.7 – Interface de consultation des résultats d’enrichissement
+Cette interface permet au responsable de vérifier les contenus générés avant de prendre
+une décision concernant leur validation.
+65
+
+
+===== PAGE 75 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+66
+Résultats de la validation
+Les résultats de la validation sont regroupés dans une interface dédiée accessible depuis
+l’onglet Validation IA. Elle présente notamment le score obtenu, les anomalies identifiées
+ainsi que les corrections suggérées et les corrections appliquées automatiquement.
+La Figure 4.8 présente cette interface de synthèse des résultats de validation.
+Figure 4.8 – Interface de consultation des résultats de validation
+Cette interface offre ainsi une vue globale de la qualité du produit et permet d’accéder
+aux différents éléments nécessitant une vérification.
+Anomalies identifiées
+Lorsque le moteur de validation détecte une anomalie qui nécessite une intervention,
+celle-ci est enregistrée et associée au champ concerné ainsi qu’à un niveau de gravité et à
+une recommandation.
+La Figure 4.9 présente un exemple d’anomalie détectée sur le champ price. Dans
+cet exemple, l’anomalie est classée comme CRITICAL et le système recommande de
+renseigner le champ avec une valeur valide.
+66
+
+
+===== PAGE 76 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+67
+Figure 4.9 – Exemple d’une anomalie identifiée lors de la validation
+Les anomalies permettent ainsi d’orienter le responsable vers les informations
+nécessitant une correction avant la validation définitive du produit.
+Corrections suggérées
+Certaines anomalies peuvent donner lieu à une proposition de correction sans que
+celle-ci soit appliquée automatiquement. Le responsable conserve alors la possibilité
+d’examiner la modification proposée avant de l’accepter.
+La Figure 4.10 présente un exemple de correction suggérée. Elle indique notamment
+le champ concerné, l’ancienne valeur, la nouvelle valeur proposée ainsi que le type de
+correction. Dans cet exemple, la correction nécessite une validation du responsable.
+Figure 4.10 – Exemple d’une correction suggérée
+67
+
+
+===== PAGE 77 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+68
+Ce mécanisme permet de conserver une intervention humaine lorsque la modification
+proposée nécessite une vérification avant son application.
+Corrections automatiques
+À l’inverse, certaines corrections considérées comme sûres peuvent être appliquées
+automatiquement par le système. Ces corrections sont enregistrées afin de conserver la
+traçabilité de la modification effectuée.
+La Figure 4.11 présente un exemple de correction automatique portant sur le nettoyage
+et la normalisation d’une valeur. La correction est indiquée comme appliquée et ne
+nécessite pas de validation supplémentaire.
+Figure 4.11 – Exemple d’une correction appliquée automatiquement
+La distinction entre corrections suggérées et corrections automatiques permet ainsi
+de réserver l’intervention du responsable aux modifications nécessitant une appréciation,
+tout en automatisant les corrections simples.
+Prise de décision
+À l’issue de cette consultation, le responsable dispose de l’ensemble des informations
+nécessaires pour évaluer les résultats du traitement. Il peut alors accepter les
+recommandations, demander une nouvelle génération ou quitter le processus.
+En cas d’acceptation, le workflow poursuit son exécution vers l’étape de validation
+du produit. En cas de régénération, le traitement revient à l’étape d’enrichissement
+automatique afin de produire une nouvelle proposition. Enfin, en cas d’abandon, le produit
+conserve l’état À vérifier.
+68
+
+
+===== PAGE 78 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+69
+4.5.7
+Action 6 : Validation du produit
+Cette dernière action intervient lorsque le responsable accepte les résultats proposés
+lors de l’étape de consultation. Elle permet de finaliser le traitement et de clôturer le
+workflow.
+Fonctionnement
+Lorsque
+le
+responsable
+accepte
+les
+recommandations,
+le
+workflow
+poursuit
+automatiquement vers l’action de validation du produit. Celui-ci passe alors de l’état
+En cours de vérification à l’état Validé.
+Cette transition confirme l’acceptation des résultats et marque la fin du processus
+d’enrichissement et de validation.
+Implémentation
+L’action est implémentée dans SAP Commerce Cloud à travers une action dédiée du
+workflow. Son exécution consiste à mettre à jour automatiquement l’état de validation du
+produit. Une fois cette modification effectuée, aucune intervention supplémentaire n’est
+nécessaire et le workflow est clôturé.
+Résultat
+À l’issue de cette action, le produit est placé dans l’état Validé et le workflow arrive
+à son état final. Le processus est ainsi terminé après validation des résultats par le
+responsable.
+69
+
+
+===== PAGE 79 =====
+
+Chapitre 4 – Intégration dans SAP Commerce Cloud
+70
+4.6
+Conclusion
+Ce chapitre a présenté l’intégration du microservice d’intelligence artificielle dans SAP
+Commerce Cloud ainsi que la réalisation du workflow d’enrichissement et de validation.
+L’organisation en couches de la plateforme a permis de situer les différents composants
+impliqués, tandis que la communication REST assure les échanges avec le microservice
+tout en conservant son indépendance.
+La réalisation du workflow permet d’automatiser les traitements d’enrichissement et
+de validation tout en laissant au responsable le contrôle des résultats et la décision finale
+concernant leur acceptation, leur régénération ou l’abandon du traitement.
+Ainsi, la solution réalisée combine l’automatisation apportée par le microservice
+d’intelligence artificielle avec les mécanismes de gestion et de suivi de SAP Commerce
+Cloud. Le bilan global du projet, les objectifs atteints et les perspectives d’évolution
+seront présentés dans la conclusion générale.
+70
+
+
+===== PAGE 80 =====
+
+Conclusion générale et perspectives
+Au terme de ce projet de fin d’études réalisé au sein de DECADE pour répondre
+aux besoins d’ETANCO, nous avons conçu et réalisé une solution intelligente dédiée à
+l’enrichissement et à la validation des données des produits dans SAP Commerce Cloud.
+Ce travail répond à la problématique liée aux nombreuses tâches répétitives de rédaction,
+de traduction et de contrôle nécessaires à la gestion d’un catalogue de produits.
+La solution proposée repose sur un microservice d’intelligence artificielle indépendant
+de SAP Commerce Cloud. Celui-ci prend en charge les traitements d’enrichissement,
+notamment la génération de contenus et la traduction multilingue, ainsi que la validation
+de la qualité des données. Cette dernière combine plusieurs niveaux de contrôle permettant
+d’identifier les anomalies et de proposer des corrections, tout en fournissant un score global
+de qualité. La séparation entre les traitements d’intelligence artificielle et la plateforme
+e-commerce permet ainsi de conserver une architecture évolutive et faiblement couplée.
+L’intégration
+réalisée
+dans
+SAP
+Commerce
+Cloud
+permet
+d’exploiter
+ces
+fonctionnalités directement dans le processus de gestion des produits. Les échanges
+entre les deux composants reposent sur des API REST, tandis que le workflow assure
+l’enchaînement des différentes étapes, depuis le déclenchement de l’enrichissement jusqu’à
+la validation finale du produit.
+Un principe essentiel a guidé la conception de cette solution : l’intelligence
+artificielle a pour objectif d’assister le responsable et non de le remplacer. Elle
+prend en charge une partie des tâches répétitives et fournit des contenus, des corrections
+et des recommandations, mais le responsable conserve la maîtrise du processus. Il peut
+examiner les résultats, les accepter, demander une nouvelle génération ou interrompre
+le traitement. La décision finale reste ainsi sous son contrôle. Cette complémentarité
+permet de combiner l’automatisation apportée par l’intelligence artificielle avec l’expertise
+humaine.
+La réalisation de ce projet a ainsi permis d’aboutir à une solution fonctionnelle
+intégrant les traitements d’intelligence artificielle au sein de SAP Commerce Cloud, tout
+en mettant en pratique des compétences liées au développement de microservices, aux
+API REST, à l’intelligence artificielle et à l’intégration de solutions e-commerce.
+71
+
+
+===== PAGE 81 =====
+
+Chapitre – Intégration dans SAP Commerce Cloud
+72
+Plusieurs évolutions pourraient être envisagées afin de prolonger ce travail.
+Une première perspective serait d’intégrer une intelligence artificielle multimodale
+capable d’analyser les images associées aux produits en complément des informations
+textuelles. Elle pourrait notamment détecter des anomalies visuelles, identifier une
+image ne correspondant pas au produit ou relever des incohérences entre l’image et
+les informations disponibles. Les résultats seraient ensuite présentés au responsable sous
+forme d’alertes ou de recommandations, afin qu’il puisse prendre la décision appropriée.
+Une deuxième perspective concernerait le déploiement du microservice dans un
+environnement Cloud. Cela permettrait d’améliorer sa disponibilité, de faciliter sa mise
+à l’échelle en fonction du volume de traitements et de disposer de ressources adaptées à
+l’utilisation de modèles d’intelligence artificielle plus importants.
+Enfin, un mécanisme de retour utilisateur pourrait être ajouté afin d’exploiter les
+décisions du responsable et d’améliorer progressivement les règles de validation ainsi que
+les recommandations proposées par le système.
+Ainsi, ce projet constitue une première étape vers une gestion plus intelligente et plus
+efficace des informations des produits. Les perspectives envisagées permettraient d’étendre
+progressivement les capacités de la solution tout en conservant son principe fondamental :
+mettre l’intelligence artificielle au service du responsable, avec l’humain au
+centre de la décision.
+72
+
+
+===== PAGE 82 =====
+
+Annexe A
+Annexe 1
+73
+
+
+===== PAGE 83 =====
+
+Bibliographie
+74
+
+
+===== PAGE 84 =====
+
+Netographie
+[1] DECADE. Conseil et ingénierie e-commerce depuis 1988. https://www.decade.fr/
+agence/. Consulté le 01/06/2026.
+[2] ETANCO. Fabricant de fixations et systèmes pour l’enveloppe du bâtiment. https:
+//www.etanco.fr/. Consulté le 01/06/2026.
+[3] SAP. Sap commerce cloud - documentation officielle. https://help.sap.com/docs/
+SAP_COMMERCE_CLOUD. Consulté le 01/06/2026.
+[4] IBM. What is e-commerce ? https://www.ibm.com/topics/ecommerce. Consulté le
+01/06/2026.
+[5] SAP. Qu’est-ce qu’un erp (enterprise resource planning) ? https://www.sap.com/
+france/products/erp/what-is-erp.html. Consulté le 01/06/2026.
+[6] Akeneo. Qu’est-ce qu’un pim (product information management) ? https://www.
+akeneo.com/fr/qu-est-ce-qu-un-pim/. Consulté le 01/06/2026.
+[7] Salesforce.
+Qu’est-ce que le crm ?
+https://www.salesforce.com/fr/crm/
+definition-crm/. Consulté le 01/06/2026.
+75

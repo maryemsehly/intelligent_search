@@ -1,0 +1,2189 @@
+===== PAGE 1 =====
+
+Tunisian Republic
+Ministry of Higher
+Education and
+Scientific Research
+University of Monastir
+Higher Institute of
+Computer Science of
+Mahdia
+THESIS
+Order Number:
+LCE-IOT-3-2026-032
+Dissertation of Graduation
+Presented at
+Higher Institute of Computer Science of Mahdia
+Carried out at
+Alpha Computers and Consulting
+In view of obtaining the diploma of
+Bachelor’s Degree in Computer Engineering and Internet of Things
+Prepared by:
+Amine Ben Naima
+Hamza Zouaghi
+IoT Cooperative Monitor
+Industry 4.0 IoT Monitoring Platform
+Defended on: 15 June 2026
+before the jury composed of:
+President
+: Imen Toumia
+Reviewer
+: Hamdi Aloulou
+Academic Supervisor
+: Marwa Abdelhafidh
+Industrial Supervisor
+: Ferid Helali
+Academic Year: 2025–2026
+
+
+===== PAGE 2 =====
+
+Acknowledgments
+First of all, we would like to thank our academic supervisor, Marwa Abdelhafidh, for
+her guidance, availability, and helpful remarks during the preparation of this final-year
+project.
+We also thank our professional supervisor, Ferid Helali, for his advice, support, tech-
+nical guidance, and follow-up during the internship period.
+We would like to thank Alpha Computers and Consulting for welcoming us during
+our internship and giving us the opportunity to work in a professional environment. This
+experience helped us apply our engineering knowledge and improve our skills through
+a project related to industrial IoT monitoring, backend development, dashboard design,
+and service integration.
+Finally, we thank our families and friends for always being there for us. Their support,
+patience, and encouragement helped us a lot while preparing this work.
+i
+
+
+===== PAGE 3 =====
+
+List of Abbreviations
+API
+Application Programming Interface
+AWS
+Amazon Web Services
+CoAP
+Constrained Application Protocol
+HTTP
+HyperText Transfer Protocol
+IoT
+Internet of Things
+IT
+Information Technology
+MQTT
+Message Queuing Telemetry Transport
+REST
+Representational State Transfer
+SCADA
+Supervisory Control and Data Acquisition
+SMTP
+Simple Mail Transfer Protocol
+SQL
+Structured Query Language
+UML
+Unified Modeling Language
+ESP32
+Espressif 32-bit microcontroller platform
+ii
+
+
+===== PAGE 4 =====
+
+Contents
+Acknowledgments
+i
+List of Abbreviations
+ii
+General Introduction
+1
+1
+Preliminary Study
+3
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.2
+Host Organization Presentation . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.3
+Project Presentation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3.1
+Problem Statement . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3.2
+Project Objectives
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.4
+Existing Solutions Study and Critique
+. . . . . . . . . . . . . . . . . . . .
+5
+1.4.1
+Existing Solutions . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.4.2
+Comparative Study and Critique
+. . . . . . . . . . . . . . . . . . .
+6
+1.5
+Proposed Solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+2
+State of the Art
+8
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.2
+Industry 4.0 and Industrial IoT Monitoring . . . . . . . . . . . . . . . . . .
+8
+2.3
+IoT System Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.4
+Real-Time Supervision and Industrial Monitoring . . . . . . . . . . . . . .
+10
+2.5
+Communication Protocols for IoT Monitoring
+. . . . . . . . . . . . . . . .
+10
+2.6
+Web-Based Monitoring Platforms . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.7
+Data Acquisition and Storage
+. . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.8
+Diagnostic and Anomaly Detection . . . . . . . . . . . . . . . . . . . . . .
+12
+2.9
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+3
+Conceptual Study
+14
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+3.2
+Requirements Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+3.2.1
+Functional Requirements . . . . . . . . . . . . . . . . . . . . . . . .
+14
+iii
+
+
+===== PAGE 5 =====
+
+Contents
+3.2.2
+Non-Functional Requirements . . . . . . . . . . . . . . . . . . . . .
+15
+3.2.3
+Material and Technical Requirements . . . . . . . . . . . . . . . . .
+16
+3.3
+General Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+3.4
+UML Modeling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.4.1
+Modeling Tool . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.4.2
+Actor Identification . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.4.3
+Use Case View
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.4.4
+Static View . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3.4.5
+Dynamic View
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.4.6
+Deployment View . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4
+Realization and Validation
+33
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+4.2
+Working Environment
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+4.2.1
+Hardware Environment . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+4.2.2
+Software Environment
+. . . . . . . . . . . . . . . . . . . . . . . . .
+34
+4.2.3
+Development Tools . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+4.3
+Software Implementation Presentation
+. . . . . . . . . . . . . . . . . . . .
+35
+4.3.1
+General Runtime Overview . . . . . . . . . . . . . . . . . . . . . . .
+35
+4.3.2
+Dockerized Services . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+4.3.3
+Demonstration Scenario
+. . . . . . . . . . . . . . . . . . . . . . . .
+36
+4.4
+Implementation of the Monitoring Platform
+. . . . . . . . . . . . . . . . .
+37
+4.4.1
+Node-RED Telemetry Simulation . . . . . . . . . . . . . . . . . . .
+37
+4.4.2
+MQTT Communication and Payload . . . . . . . . . . . . . . . . .
+38
+4.4.3
+Backend Services and Data Persistence . . . . . . . . . . . . . . . .
+39
+4.4.4
+React Supervision Dashboard . . . . . . . . . . . . . . . . . . . . .
+40
+4.4.5
+Administrator Technician Management . . . . . . . . . . . . . . . .
+41
+4.4.6
+Physical Proof-of-Concept Attempt . . . . . . . . . . . . . . . . . .
+43
+4.5
+Diagnostic and Notification System . . . . . . . . . . . . . . . . . . . . . .
+44
+4.5.1
+Diagnostic Information . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.5.2
+Alert History
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+4.5.3
+Technician Email Alerts
+. . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.6
+Tests and Validation
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+48
+General Conclusion
+49
+Bibliography
+51
+iv
+
+
+===== PAGE 6 =====
+
+List of Figures
+1.1
+Logo of Alpha Computers and Consulting
+. . . . . . . . . . . . . . . . . .
+3
+2.1
+Industry 4.0 monitoring context . . . . . . . . . . . . . . . . . . . . . . . .
+8
+2.2
+Generic layered architecture of an IoT monitoring system . . . . . . . . . .
+9
+2.3
+Principle of a monitoring dashboard . . . . . . . . . . . . . . . . . . . . . .
+11
+2.4
+Diagnostic and anomaly detection principle . . . . . . . . . . . . . . . . . .
+13
+3.1
+General architecture of the monitoring platform . . . . . . . . . . . . . . .
+18
+3.2
+Modeling tools used for Chapter 3 diagrams . . . . . . . . . . . . . . . . .
+20
+3.3
+Use case diagram of the monitoring platform . . . . . . . . . . . . . . . . .
+21
+3.4
+Class diagram of the monitoring platform . . . . . . . . . . . . . . . . . . .
+26
+3.5
+Component diagram of the monitoring platform . . . . . . . . . . . . . . .
+27
+3.6
+Activity diagram of the monitoring flow . . . . . . . . . . . . . . . . . . . .
+28
+3.7
+Authentication sequence diagram
+. . . . . . . . . . . . . . . . . . . . . . .
+29
+3.8
+Create technician account sequence diagram . . . . . . . . . . . . . . . . .
+30
+3.9
+IoT data flow sequence diagram . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.10 Deployment diagram of the monitoring platform . . . . . . . . . . . . . . .
+32
+4.1
+Main software and development tools . . . . . . . . . . . . . . . . . . . . .
+34
+4.2
+Dockerized services running during platform execution
+. . . . . . . . . . .
+36
+4.3
+General dashboard overview of the monitoring platform . . . . . . . . . . .
+37
+4.4
+Node-RED telemetry simulation flow . . . . . . . . . . . . . . . . . . . . .
+38
+4.5
+MQTT telemetry evidence during platform execution . . . . . . . . . . . .
+38
+4.6
+Recent telemetry readings stored in PostgreSQL . . . . . . . . . . . . . . .
+40
+4.7
+Live monitoring values displayed on the dashboard
+. . . . . . . . . . . . .
+40
+4.8
+Historical charts displayed on the dashboard . . . . . . . . . . . . . . . . .
+41
+4.9
+Administrator interface for technician management
+. . . . . . . . . . . . .
+42
+4.10 Blocked technician login validation
+. . . . . . . . . . . . . . . . . . . . . .
+43
+4.11 Illustrative ESP32-based sensor acquisition setup
+. . . . . . . . . . . . . .
+44
+4.12 Diagnostic panel with status and decision information . . . . . . . . . . . .
+45
+4.13 Alert history displayed on the dashboard . . . . . . . . . . . . . . . . . . .
+46
+4.14 Technician alert email sent by the notification service . . . . . . . . . . . .
+47
+v
+
+
+===== PAGE 7 =====
+
+List of Tables
+1.1
+Main objectives of the project . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.2
+Comparison of existing monitoring solutions . . . . . . . . . . . . . . . . .
+6
+2.1
+Comparison of HTTP, WebSocket, and MQTT . . . . . . . . . . . . . . . .
+11
+3.1
+Functional requirements
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+3.2
+Non-functional requirements . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+3.3
+Material and technical requirements . . . . . . . . . . . . . . . . . . . . . .
+17
+3.4
+Actor identification . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+3.5
+Authenticate use case . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.6
+Manage technician accounts use case
+. . . . . . . . . . . . . . . . . . . . .
+23
+3.7
+Monitor machine state use case
+. . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.8
+Consult alerts and history use case
+. . . . . . . . . . . . . . . . . . . . . .
+25
+4.1
+Hardware environment . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+4.2
+Software environment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+4.3
+Runtime chain of the software implementation . . . . . . . . . . . . . . . .
+36
+4.4
+Demonstration scenario of the software implementation . . . . . . . . . . .
+37
+4.5
+Canonical telemetry payload . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.6
+Physical proof-of-concept elements
+. . . . . . . . . . . . . . . . . . . . . .
+44
+4.7
+Validation summary of the monitoring platform . . . . . . . . . . . . . . .
+48
+vi
+
+
+===== PAGE 8 =====
+
+General Introduction
+Industry is changing with the integration of digital technologies into production, main-
+tenance, supervision, and technical decision support. This change is associated with In-
+dustry 4.0, where industrial systems are no longer observed only through manual control
+or isolated equipment, but through connected environments capable of producing and
+using operational data. In this context, data becomes useful for understanding the state
+of equipment, following process behavior, and supporting technical decisions. Industrial
+digitalization therefore responds to the limits of traditional supervision methods, espe-
+cially when data is still collected manually, stored in separate documents, or checked only
+during periodic inspections.
+The Internet of Things contributes to this evolution by allowing data sources to be
+connected to supervision systems. A sensor-based monitoring system makes it possible
+to collect industrial parameters, organize them, and present them in a form that is easier
+to interpret. The value of such systems is not limited to displaying measurements. Their
+main interest is to provide a clearer view of the monitored environment and to help users
+identify abnormal situations at the right time.
+This is why real-time monitoring has
+become an important requirement in industrial contexts, where delayed information may
+reduce the usefulness of supervision and slow down the reaction of technical teams.
+These needs are particularly visible in agro-food environments, where production and
+storage activities may depend on operational parameters related to equipment behavior,
+process stability, and product conditions. In such contexts, supervision supports main-
+tenance, quality follow-up, and process continuity. However, the implementation of a
+monitoring system must remain practical. The collected data must be organized, inter-
+preted, and presented clearly, so that technicians can distinguish normal operation from
+abnormal conditions without being faced with an unnecessarily complex interface.
+This final year project is placed within this general framework of industrial digitaliza-
+tion and connected supervision. It concerns the study and realization of a platform for
+monitoring industrial and agro-food environments. The project aims to provide a cen-
+tralized view of sensor-based information and to support the identification of abnormal
+states in a monitored environment.
+This report is organized into four chapters.
+The first chapter, Preliminary Study,
+presents the internship context, the problem statement, the existing solutions study, and
+the proposed solution. The second chapter, State of the Art, introduces the concepts
+related to industrial digitalization, IoT-based monitoring, supervision systems, commu-
+nication principles, data management, and anomaly detection. The third chapter, Con-
+1
+
+
+===== PAGE 9 =====
+
+General Introduction
+ceptual Study, presents the requirements specification, the general architecture, and UML
+modeling. The fourth chapter, Realization and Validation, describes the working environ-
+ment, the implementation of the platform, its presentation, and the validation of its main
+functionalities.
+Finally, the report ends with a general conclusion.
+2
+
+
+===== PAGE 10 =====
+
+Chapter 1
+Preliminary Study
+1.1
+Introduction
+The preliminary study presents the general framework of the project before moving
+to the technical chapters. It introduces the internship context, the host organization, the
+problem addressed by the project, and the main orientation of the proposed solution. This
+step is necessary in an engineering report because it clarifies the need before discussing
+design and implementation choices.
+This chapter first presents Alpha Computers and Consulting, where the internship was
+carried out. It then introduces the project as a monitoring platform for industrial and
+agro-food environments. After that, it studies existing supervision solutions and explains
+their limits in relation to the project context. The chapter also presents the proposed
+solution and prepares the transition toward the state of the art.
+1.2
+Host Organization Presentation
+The final year internship was carried out within Alpha Computers and Consulting,
+an information technology company located in Mahdia. The company operates in the
+field of IT services and supports the development of digital solutions adapted to different
+client needs. Its activities are related to software development, digital transformation,
+connected systems, and technical assistance.
+Figure 1.1 presents the logo of Alpha Computers and Consulting.
+Figure 1.1: Logo of Alpha Computers and Consulting
+This internship provided a professional framework for applying the knowledge ac-
+quired during our academic training in computer engineering and Internet of Things. It
+also made it possible to work on a project related to industrial supervision, where soft-
+ware architecture, data communication, user access, and monitoring interfaces must be
+considered together.
+3
+
+
+===== PAGE 11 =====
+
+Chapter 1. Preliminary Study
+1.3
+Project Presentation
+The project entitled IoT Cooperative Monitor concerns the study and realization of a
+monitoring system for industrial and agro-food machines. The objective is to provide a
+centralized supervision system capable of presenting operational information and helping
+technicians follow the state of monitored equipment.
+The project is positioned within the context of monitoring operational parameters
+of agro-food machines. These parameters may include temperature, vibration, electrical
+current, weight, level, and machine state. Their observation helps technical users follow
+equipment behavior, identify abnormal operation, and consult supervision information in
+a structured way.
+The platform is used by two types of users: the Administrator and the Technician. The
+Administrator manages access to the platform and can consult supervision information
+when needed. The Technician follows the monitored machines, checks the sensor readings,
+observes the machine state, and uses alerts to help with maintenance actions.
+1.3.1
+Problem Statement
+In many industrial and agro food environments, monitoring is still done through man-
+ual readings, separate files, or isolated tools. These methods can be enough for simple fol-
+low up, but they become limited when several operational parameters have to be checked
+regularly.
+The main difficulty is the lack of a centralized and timely view of machine states and
+abnormal situations. When information about temperature, vibration, current, weight,
+level, or equipment state is fragmented, users may detect problems late, compare values
+with difficulty, or lose previous readings. This reduces the usefulness of monitoring and
+can delay the reaction of technical teams.
+The problem addressed by this project can therefore be expressed as follows: how can
+industrial supervision information be centralized in order to help identify abnormal states
+and provide a clear view of monitored machine parameters in an industrial and agro-food
+context?
+1.3.2
+Project Objectives
+The project objectives are summarized in Table 1.1.
+4
+
+
+===== PAGE 12 =====
+
+Chapter 1. Preliminary Study
+Table 1.1: Main objectives of the project
+Objective
+Description
+Centralize monitoring infor-
+mation
+Group the monitored machine data in one platform in
+order to reduce fragmented supervision.
+Support abnormal state iden-
+tification
+Help users distinguish normal machine operation from
+states that require technical attention.
+Store
+historical
+monitoring
+data
+Keep previous readings of operational parameters avail-
+able for consultation and later analysis.
+Organize technician access
+Allow the Administrator to create technician accounts
+so that authorized users can monitor machine data and
+consult alerts.
+1.4
+Existing Solutions Study and Critique
+Before presenting the proposed solution, it is useful to study existing solutions used
+for connected monitoring and industrial supervision. This study helps us understand the
+role of these platforms, their advantages, and their limits.
+1.4.1
+Existing Solutions
+Cloud IoT platforms are a common solution for connecting devices and managing data
+at a large scale. AWS IoT Core, for example, provides services for device connection, mes-
+sage exchange, and integration with cloud applications [1]. These platforms are useful for
+large distributed systems, but they require cloud configuration, service management, and
+specific technical knowledge that are not always necessary for a local academic platform.
+ThingsBoard is another IoT platform used for device management, data visualization,
+dashboards, and rule-based processing [2]. It offers many useful monitoring features and
+can be used in different contexts.
+However, using a complete existing platform may
+reduce the engineering contribution of the project, because several supervision functions
+are already provided by the tool.
+SCADA-oriented supervision systems are widely used in industrial environments. They
+are designed to monitor machines, production lines, and industrial processes, often with
+alarm management and control functions [3]. These systems are robust, but they are
+generally heavier, more specialized, and more adapted to industrial infrastructure than
+to an academic software implementation.
+Node-RED-based local monitoring is also used in many IoT contexts because it allows
+visual data flows to be created and connected to external services [4]. It is useful for
+5
+
+
+===== PAGE 13 =====
+
+Chapter 1. Preliminary Study
+simulation and testing, but by itself it does not provide a complete monitoring platform
+with user management, historical storage, organized dashboards, and validation logic.
+1.4.2
+Comparative Study and Critique
+Table 1.2 compares the studied solutions.
+Table 1.2: Comparison of existing monitoring solutions
+Solution
+Main purpose
+Accessibility
+Cost
+Communication
+support
+Limitations
+AWS IoT Core
+Managed cloud
+service for device
+connection and IoT
+message exchange.
+Available through
+the AWS cloud
+platform.
+Usage-based
+pricing.
+Supports MQTT,
+MQTT over
+WebSocket, and
+HTTP.
+Depends on an
+external provider
+and requires cloud
+configuration, cost
+monitoring, and
+service
+management.
+ThingsBoard
+IoT platform for
+device management,
+data collection,
+processing, and
+visualization.
+Available as
+self-hosted
+editions and cloud
+offerings.
+Open-source
+Community
+Edition with
+paid options.
+Supports MQTT,
+CoAP, and HTTP.
+Provides many
+ready-made
+functions, but
+customization and
+administration
+still require
+platform
+knowledge.
+SCADA systems
+Industrial
+supervision systems
+for monitoring and
+controlling
+processes.
+Usually deployed
+with specialized
+industrial
+configuration.
+Often
+commercial,
+depending on
+vendor and
+deployment
+size.
+Commonly based
+on industrial
+protocols and field
+equipment.
+Powerful for
+industrial control,
+but complex and
+heavy for a small
+academic
+monitoring
+platform.
+Node-RED local
+monitoring
+Flow-based tool for
+connecting devices,
+services, APIs, and
+data processing
+steps.
+Easy to install
+and use locally
+through a visual
+interface.
+Free and open
+source.
+Supports many
+connectors,
+including IoT and
+web protocols.
+Useful for rapid
+prototyping, but
+not a complete
+supervision
+platform by itself.
+1.5
+Proposed Solution
+The proposed solution is a modular monitoring platform for industrial and agro food
+machines. It follows a general supervision chain composed of data acquisition, commu-
+nication, processing, storage, visualization, and alerting. Each part has a specific role in
+the monitoring process.
+The platform receives operational data related to monitored parameters such as tem-
+perature, vibration, current, weight, level, and machine state. It organizes this informa-
+tion, stores the useful records, and displays them through a supervision interface. Its
+purpose is to give technicians a centralized view of the monitored machines instead of
+6
+
+
+===== PAGE 14 =====
+
+Chapter 1. Preliminary Study
+leaving information distributed between manual readings or separate tools. This cen-
+tralized view helps users follow equipment states, check previous information, and notice
+abnormal situations more easily.
+1.6
+Conclusion
+This chapter presented the preliminary study of the project. It introduced the host
+organization, the project context, the problem statement, and the main objectives. It
+also examined existing monitoring solutions and highlighted their limits in relation to
+connected industrial supervision.
+The proposed solution was presented at a general level in order to keep the detailed
+specification, design, and implementation for the following chapters. The next chapter
+introduces the state of the art related to the main concepts and technologies used in the
+proposed monitoring platform.
+7
+
+
+===== PAGE 15 =====
+
+Chapter 2
+State of the Art
+2.1
+Introduction
+This chapter presents the main concepts needed to understand the technical context of
+the project. It introduces industrial digitalization, Industrial IoT monitoring, IoT archi-
+tecture, real-time supervision, communication principles, data acquisition, data storage,
+web-based monitoring platforms, and diagnostic logic. The objective is not to describe
+the implemented system, but to present the technical background required before moving
+to the conceptual study.
+2.2
+Industry 4.0 and Industrial IoT Monitoring
+Industry 4.0 refers to the digital transformation of industrial systems through con-
+nected equipment, data exchange, automation, and supervision.
+It allows industrial
+activity to be observed through digital information instead of relying only on manual
+follow-up or isolated machines [5, 6].
+Industrial IoT applies the principles of the Internet of Things to industrial environ-
+ments. It connects equipment, sensors, and software services in order to collect operational
+data and support monitoring, maintenance, and technical decision making [7, 8]. In this
+context, monitoring platforms are used to transform measurements produced by machines,
+sensors, or connected data sources into readable information for technical users.
+Figure 2.1 presents the general place of monitoring in an Industry 4.0 context. It
+illustrates the link between the industrial field, the acquisition of operational data, and
+the supervision interface used by technical users.
+Figure 2.1: Industry 4.0 monitoring context
+8
+
+
+===== PAGE 16 =====
+
+Chapter 2. State of the Art
+2.3
+IoT System Architecture
+An IoT system is generally organized into layers. The perception layer contains the
+sensors or data sources. The communication layer transfers the collected information.
+The processing and storage layer organizes the data. The application layer presents the
+information to users [7].
+Figure 2.2 presents a generic layered architecture of an IoT monitoring system. It
+shows the separation between data collection, communication, processing, storage, and
+user interaction.
+Figure 2.2: Generic layered architecture of an IoT monitoring system
+9
+
+
+===== PAGE 17 =====
+
+Chapter 2. State of the Art
+2.4
+Real-Time Supervision and Industrial Monitor-
+ing
+Industrial monitoring consists in observing equipment, processes, or environmental
+conditions in order to understand their state. In industrial and agro-food environments,
+monitored information may concern temperature, vibration, electrical behavior, weight,
+level, or other operational indicators.
+Real-time supervision means that recent information is made available quickly enough
+to support technical reaction. This requirement is important in industrial contexts be-
+cause late information may reduce the value of monitoring when an abnormal state occurs.
+Several works on industrial IoT monitoring show that real-time data acquisition, web-
+based visualization, and alert mechanisms are commonly used to improve the follow-up
+of industrial processes and machine conditions [9, 10].
+A supervision system must therefore provide current values, historical views, and clear
+status information. The objective is not only to collect measurements, but also to make
+them usable by technicians who need to observe machine behavior and react when the
+monitored state becomes abnormal.
+2.5
+Communication Protocols for IoT Monitoring
+Communication protocols define how information is exchanged between devices, ser-
+vices, and applications. In a monitoring system, the selected communication approach
+must support repeated data exchange and clear routing of information.
+HTTP, WebSocket, and MQTT are common communication approaches in connected
+systems. HTTP is suitable for classical web requests. WebSocket is useful for live updates
+between a server and a web interface. MQTT follows a publish-subscribe model and is
+widely used for IoT telemetry because it is lightweight and adapted to machine-to-machine
+communication [11].
+Table 2.1 compares HTTP, WebSocket, and MQTT according to their principle,
+strength, limitation, and typical role in a monitoring platform.
+10
+
+
+===== PAGE 18 =====
+
+Chapter 2. State of the Art
+Table 2.1: Comparison of HTTP, WebSocket, and MQTT
+Approach
+Principle
+Strength
+Limitation
+Typical use in
+monitoring
+HTTP
+Request-response
+communication.
+Simple and widely
+supported.
+Less suitable for
+continuous telemetry.
+Queries and REST
+services.
+WebSocket
+Persistent bidirectional
+connection.
+Real-time
+server-to-client
+updates.
+Requires connection
+management.
+Live dashboards.
+MQTT
+Publish-subscribe
+messaging through a
+broker.
+Lightweight and
+decoupled.
+Requires broker and
+topic design.
+Sensor telemetry.
+2.6
+Web-Based Monitoring Platforms
+A web-based monitoring platform gives users access to operational information through
+a graphical interface. Its role is to present data in a clear form, usually through current
+values, historical charts, status indicators, and alert information. In the literature and
+in existing platforms, web dashboards are frequently used because they make monitored
+data accessible from a browser and allow technical users to consult information without
+directly accessing the acquisition devices [9, 12].
+Existing IoT platforms also show the importance of dashboards in supervision systems.
+ThingsBoard, for example, provides device management, data collection, processing, vi-
+sualization, and rule-based features for IoT applications [2]. Grafana is widely used to
+visualize time-series data and build monitoring dashboards from different data sources
+[12]. These examples show that visualization is an important layer in connected monitor-
+ing platforms.
+Figure 2.3 summarizes the general principle of a monitoring dashboard. we can see
+how monitored data can be prepared and presented through live values, historical charts,
+alerts, and status information.
+Figure 2.3: Principle of a monitoring dashboard
+The quality of a supervision interface does not depend only on the amount of data
+11
+
+
+===== PAGE 19 =====
+
+Chapter 2. State of the Art
+displayed. It also depends on the way information is organized so that technical users can
+quickly distinguish normal situations from critical ones.
+2.7
+Data Acquisition and Storage
+Data acquisition is the step that allows information to be collected from the monitored
+environment. In IoT monitoring, this information usually comes from sensors or connected
+data sources and is then transmitted to software services for processing and visualization.
+The acquisition stage must keep the meaning of the collected informations, their origin,
+and their time of collection.
+Data storage is also necessary because supervision does not only deal with the latest
+value. Historical information helps users consult previous states, follow the evolution of
+monitored parameters, and keep traces of abnormal situations. In IoT and industrial mon-
+itoring systems, storage may be based on relational databases, time-series databases, or
+cloud storage depending on the volume of data, query needs, and deployment constraints
+[13, 14].
+Relational databases remain useful when the system needs structured data, relations
+between entities, user accounts, alerts, and historical records. PostgreSQL is an example
+of an open-source relational database management system that supports structured stor-
+age and SQL queries [15]. Time-series databases are also frequently studied for sensor
+data because measurements are commonly associated with timestamps and continuous
+evolution over time [13].
+In an industrial monitoring context, the choice of storage technology must therefore
+consider both the structure of the information and the way it will be consulted later. User
+accounts, alerts, machine information, and historical readings require clear organization
+so that the supervision platform can keep traces and support later analysis.
+2.8
+Diagnostic and Anomaly Detection
+In an industrial monitoring system, collected data becomes useful when it helps users
+understand the state of the monitored environment. Diagnostic methods are used to inter-
+pret measurements, identify abnormal behavior, and support technical decision making.
+They help transform raw values into information that can be understood and used by
+technical users.
+Anomaly detection consists in identifying observations that differ from an expected
+behavior [16].
+In industrial supervision, an abnormal situation may be linked to an
+excessive value, a sudden variation, or a combination of several indicators. The diagnostic
+approach may rely on explicit rules, thresholds, statistical analysis, semantic knowledge,
+12
+
+
+===== PAGE 20 =====
+
+Chapter 2. State of the Art
+scoring logic, or learning-based methods depending on the available data and the level of
+maturity of the system [17, 18].
+Rule-based diagnostic methods are often used when the monitored process is known
+and when clear thresholds or operating conditions can be defined. For example, an ab-
+normal machine state may be detected when temperature, vibration, electrical current,
+weight, or level exceeds an accepted range. Learning-based approaches are more suitable
+when enough historical data is available to train models, but they require representative
+datasets and additional validation before being used in an operational context [19].
+Figure 2.4 presents the general principle of diagnostic and anomaly detection in a
+monitoring context. It shows that monitored values must first be prepared, then analyzed,
+classified, and finally used to support alerts, historical traces, or technical decisions.
+Figure 2.4: Diagnostic and anomaly detection principle
+2.9
+Conclusion
+This chapter presented the main concepts required to understand an industrial IoT
+monitoring platform. It introduced Industry 4.0, Industrial IoT, layered IoT architecture,
+real-time supervision, communication protocols, data acquisition, data storage, web-based
+monitoring platforms, and diagnostic logic.
+The chapter also strengthened the theoretical background with references to industrial
+monitoring, existing dashboard platforms, database technologies, and anomaly detection
+methods. The next chapter presents the conceptual study of the proposed system.
+13
+
+
+===== PAGE 21 =====
+
+Chapter 3
+Conceptual Study
+3.1
+Introduction
+This chapter presents the conceptual study of the proposed monitoring platform. It
+defines the requirements analysis, presents the general architecture, and models the system
+using UML diagrams. The objective is to clarify the expected behavior and organization
+of the platform before moving to the realization and validation phase.
+3.2
+Requirements Analysis
+Requirements analysis defines what the system must provide from a functional, non-
+functional, material, and technical point of view. This step helps identify the expected
+services, the quality constraints, and the main elements needed to design the monitoring
+platform.
+3.2.1
+Functional Requirements
+Table 3.1 presents the functional requirements of the platform. These requirements
+describe the main services expected from the system and define the actions that the
+Administrator and the Technician can perform according to their roles.
+14
+
+
+===== PAGE 22 =====
+
+Chapter 3. Conceptual Study
+Table 3.1: Functional requirements
+Requirement
+Description
+Authenticate users
+Allow authorized users to access the platform.
+Manage technician accounts
+Allow the Administrator to create, update, block,
+and delete technician accounts.
+Monitor machine state
+Allow users to follow the current state of monitored
+equipment according to their role.
+Consult current monitoring
+values
+Present recent monitoring values through the
+supervision interface.
+Consult historical information
+Allow users to consult previous monitoring
+information.
+Consult alerts
+Allow users to view alert information related to
+abnormal monitored situations.
+Support abnormal state
+identification
+Support the presentation of state information,
+anomaly scores, and decision reasons associated
+with monitored data.
+Present supervision
+information through a
+dashboard
+Provide an organized dashboard for values, history,
+and alerts.
+Send alert notification when
+necessary
+Notify concerned users when a monitored situation
+requires attention.
+3.2.2
+Non-Functional Requirements
+The proposed monitoring platform must also satisfy non-functional requirements.
+These requirements do not describe direct user actions, but they define the quality at-
+tributes and operational constraints of the system. They concern security, usability, re-
+liability, maintainability, data consistency, responsiveness, traceability, and extensibility.
+Table 3.2 presents these non-functional requirements.
+15
+
+
+===== PAGE 23 =====
+
+Chapter 3. Conceptual Study
+Table 3.2: Non-functional requirements
+Requirement
+Description
+Security
+Protect access to the platform and restrict actions
+according to user responsibilities.
+Usability
+Provide clear interfaces that allow users to read
+supervision information easily.
+Reliability
+Keep the monitoring chain coherent from data
+generation to display.
+Maintainability
+Organize the system into clear parts in order to
+simplify future corrections.
+Data consistency
+Preserve coherent monitoring information between
+message reception, storage, and visualization.
+Responsiveness
+Present recent monitoring information quickly
+enough to support technical reaction.
+Traceability
+Keep useful historical information about monitored
+states and alerts.
+Extensibility
+Allow the platform structure to support future
+additions without changing the whole design.
+3.2.3
+Material and Technical Requirements
+Material and technical requirements define the main resources and technical elements
+needed for the design and execution of the monitoring platform. They include the devel-
+opment machine, the simulated monitoring data source, the communication mechanism,
+the backend service, the database service, the supervision dashboard, and the notification
+mechanism. Table 3.3 presents these requirements.
+16
+
+
+===== PAGE 24 =====
+
+Chapter 3. Conceptual Study
+Table 3.3: Material and technical requirements
+Element
+Role
+Development machine
+Provides the working environment used to design,
+develop, and test the platform.
+Simulated monitoring data source
+Provides telemetry values and decision fields used
+by the supervision system.
+Network communication
+Ensures the exchange of monitoring information
+between the parts of the system.
+Backend service
+Handles telemetry validation, access control, API
+services, WebSocket updates, persistence
+coordination, and alert dispatch.
+Database service
+Stores user accounts, telemetry readings, alert
+records, and historical information.
+Supervision dashboard
+Presents current values, history, machine state,
+and alerts to users.
+Notification mechanism
+Sends credential or alert information to concerned
+users when required.
+3.3
+General Architecture
+The proposed platform is organized as a monitoring chain from simulated data gener-
+ation to supervision. This organization separates the main responsibilities of the system
+and makes the conceptual design easier to understand. The architecture keeps the data
+source, communication, backend, storage, supervision, and notification parts distinct,
+while keeping a clear flow between them.
+Figure 3.1 presents the general architecture of the monitoring platform. It shows how
+simulated machine telemetry is prepared by Node-RED, sent through MQTT, validated
+and stored by the backend, displayed on the dashboard, and used for alert notification
+when the received state requires attention.
+17
+
+
+===== PAGE 25 =====
+
+Chapter 3. Conceptual Study
+Figure 3.1: General architecture of the monitoring platform
+The data source layer is the origin of the monitored values. In the context of this
+project, it is represented by a Node-RED simulation source that produces periodic teleme-
+try for agro-food machines. The telemetry concerns operational parameters such as tem-
+perature, vibration, electrical current, weight, and level. The simulated source also pre-
+pares decision-related fields such as machine status, anomaly score, and decision reasons
+before the payload is published.
+The communication layer ensures the transmission of monitoring data from the simu-
+lated source to the backend service. In the proposed architecture, this exchange is based
+on a Mosquitto MQTT broker. This layer separates the production of telemetry data
+from its backend consumption and allows messages to be sent through a structured topic.
+18
+
+
+===== PAGE 26 =====
+
+Chapter 3. Conceptual Study
+The backend layer groups the services responsible for receiving and handling accepted
+telemetry. The FastAPI backend validates the received payload, exposes REST services,
+manages authenticated access, broadcasts live updates through the WebSocket endpoint,
+coordinates database persistence, and triggers alert email send when a warning or critical
+state is received.
+The database component stores the information required by the platform, including
+users, telemetry readings, alert records, and historical information. This storage is neces-
+sary because supervision does not only depend on the latest values, but also on previous
+readings and alert traces that may be consulted later.
+The notification service is used when the received telemetry indicates a warning or
+critical state. In that case, the backend uses the configured SMTP service to dispatch
+alert information to concerned technicians.
+The supervision layer is the interaction part of the platform. It contains the dashboard
+interface used by authenticated users. The Administrator accesses the platform to manage
+technician accounts and consult supervision data, while the Technician consults machine
+values, alerts, and history. Through this layer, monitoring information becomes readable
+and usable for maintenance follow-up.
+3.4
+UML Modeling
+UML modeling is used to represent the system from several views. These views de-
+scribe the actors, the available use cases, the static structure, the dynamic behavior, the
+logical components, and the deployment organization of the monitoring platform.
+3.4.1
+Modeling Tool
+The general architecture diagram was prepared using Mermaid [20], because it allows
+a clear layered architecture to be represented in a readable flowchart form. The UML dia-
+grams were prepared using draw.io, also known as diagrams.net [21], which provides UML
+notation support and allows the creation of use case, class, activity, sequence, component,
+and deployment diagrams.
+Figure 3.2 presents the modeling tools used for the diagrams of this chapter.
+19
+
+
+===== PAGE 27 =====
+
+Chapter 3. Conceptual Study
+Figure 3.2: Modeling tools used for Chapter 3 diagrams
+3.4.2
+Actor Identification
+Table 3.4 identifies the actors that interact with the monitoring platform. It distin-
+guishes the account management role of the Administrator from the operational monitor-
+ing role of the Technician.
+Table 3.4: Actor identification
+Actor
+Role
+Administrator
+Manages technician accounts and may consult
+supervision information for oversight and verification.
+Technician
+Monitors machine data, consults alerts and historical
+information, and uses the information to support
+maintenance actions.
+3.4.3
+Use Case View
+The use case view describes the services available to each actor.
+The actions are
+expressed from the point of view of the Administrator and the Technician.
+Figure 3.3 presents the use case diagram of the monitoring platform. It shows authen-
+tication, technician account management, machine monitoring, alert notification, and
+alert/history consultation.
+20
+
+
+===== PAGE 28 =====
+
+Chapter 3. Conceptual Study
+Figure 3.3: Use case diagram of the monitoring platform
+The alert-related relation is kept coherent with the following logic: after receiving an
+alert notification, the user may consult alerts and history in order to obtain more details
+about the monitored situation.
+The main use cases are described in Tables 3.5, 3.6, 3.7, and 3.8. Each table identifies
+the actor, objective, conditions, main scenario, and failure or alternative behavior of the
+corresponding use case.
+Table 3.5 describes the authentication use case. It explains how an Administrator
+or Technician accesses the platform and what happens when the submitted credentials
+cannot be accepted.
+21
+
+
+===== PAGE 29 =====
+
+Chapter 3. Conceptual Study
+Table 3.5: Authenticate use case
+Use case
+Authenticate
+Actor
+Administrator, Technician
+Objective
+Allow an authorized user to access the platform.
+Precondition
+The user has an existing account and access credentials.
+Postcondition
+The user accesses the services allowed by his role.
+Main scenario
+The user opens the authentication interface, enters his
+email and password, submits the form, and accesses the
+platform if the account exists, the password is valid, and
+the account is active.
+Failure scenario
+If the account does not exist or the password is invalid,
+the platform keeps the user on the authentication page
+and displays an invalid credentials message. If the account
+is blocked, the platform refuses access and displays a
+blocked account message.
+Table 3.6 describes the technician account management use case. It shows the Admin-
+istrator’s ability to create, update, block, or delete technician accounts.
+22
+
+
+===== PAGE 30 =====
+
+Chapter 3. Conceptual Study
+Table 3.6: Manage technician accounts use case
+Use case
+Manage technician accounts
+Actor
+Administrator
+Objective
+Manage the access of technicians to the monitoring
+platform.
+Precondition
+The Administrator is authenticated.
+Postcondition
+The selected technician account is created, updated,
+blocked, or deleted.
+Main scenario
+The Administrator opens the technician management
+interface, selects the required operation, provides the
+necessary information, and confirms the action. The
+platform applies the operation and updates the technician
+account information.
+Failure scenario
+If required fields are missing, the platform rejects the form
+and marks the missing information. If the email address is
+already used, the platform refuses account creation or
+update and displays a message about the duplicated email
+address. If a protected request is sent without
+Administrator privileges, the backend rejects the
+operation.
+Table 3.7 describes the machine monitoring use case.
+It shows how users consult
+current values and machine state through the supervision dashboard.
+23
+
+
+===== PAGE 31 =====
+
+Chapter 3. Conceptual Study
+Table 3.7: Monitor machine state use case
+Use case
+Monitor machine state
+Actor
+Technician (primary), Administrator (consultation and
+oversight access)
+Objective
+Follow the current state of monitored industrial
+equipment.
+Precondition
+The user is authenticated and monitoring data is available.
+Postcondition
+The user views the current machine state and supervision
+values according to his role.
+Main scenario
+The Technician opens the dashboard, selects a monitored
+machine, observes the displayed values and the
+informations provided by the platform. The Administrator
+may also consult the same supervision information for
+oversight.
+Alternative scenario
+If the telemetry data is not available for the selected
+machine, the dashboard displays a empty field for that
+machine and waits for a valid reading before showing
+updated state information.
+Table 3.8 describes the alert and history consultation use case. It explains how users
+review previous monitoring records and alert details after authentication.
+24
+
+
+===== PAGE 32 =====
+
+Chapter 3. Conceptual Study
+Table 3.8: Consult alerts and history use case
+Use case
+Consult alerts and history
+Actor
+Technician (primary), Administrator (consultation and
+oversight access)
+Objective
+Consult previous monitoring information and alert details.
+Precondition
+The user is authenticated and historical or alert
+information exists.
+Postcondition
+The user obtains a clearer view of previous states and
+alert situations.
+Main scenario
+The Technician opens the history or alert view, selects the
+needed information, and consults the displayed records to
+support maintenance follow-up. The Administrator may
+consult these records for verification and supervision
+oversight.
+Alternative scenario
+If no alert or historical record matches the selected
+criteria, the platform displays an empty results message
+and keeps the user on the same consultation page.
+3.4.4
+Static View
+The static view presents the main conceptual entities and logical components of the
+system. It clarifies the structure of the platform without describing implementation de-
+tails.
+Figure 3.4 presents the class diagram of the monitoring platform. It represents the
+main conceptual classes manipulated by the system, including users, monitored machines,
+telemetry readings, sensor values, decision information, alerts, and notifications.
+25
+
+
+===== PAGE 33 =====
+
+Chapter 3. Conceptual Study
+Figure 3.4: Class diagram of the monitoring platform
+Figure 3.5 presents the component diagram of the monitoring platform. It identifies the
+main software components and shows how the telemetry source, MQTT broker, backend,
+database, dashboard, and SMTP service interact.
+26
+
+
+===== PAGE 34 =====
+
+Chapter 3. Conceptual Study
+Figure 3.5: Component diagram of the monitoring platform
+The component diagram shows that Node-RED acts as the telemetry simulation source
+and prepares the canonical payload, including decision-related fields. Mosquitto sends this
+payload to the FastAPI backend. The backend validates the received data, manages au-
+thentication and role-based access, stores the data, exposes REST services, broadcasts
+live updates, and sends emails through the configured SMTP service when required.
+PostgreSQL stores users, readings, alerts, and historical information, while the React
+dashboard shows supervision information to authenticated users.
+3.4.5
+Dynamic View
+The dynamic view describes the order of interactions and the main workflows of the
+platform. It is represented through an activity diagram and sequence diagrams.
+Figure 3.6 presents the activity diagram of the monitoring flow. It describes how an
+authenticated user opens the dashboard, consults monitoring information, and reacts to
+an abnormal state through the supervision interface.
+27
+
+
+===== PAGE 35 =====
+
+Chapter 3. Conceptual Study
+Figure 3.6: Activity diagram of the monitoring flow
+Figure 3.7 presents the authentication sequence diagram.
+It shows the display of
+the authentication form, the submission of credentials, the verification of the account in
+PostgreSQL, and the success or failure response returned to the user.
+28
+
+
+===== PAGE 36 =====
+
+Chapter 3. Conceptual Study
+Figure 3.7: Authentication sequence diagram
+Figure 3.8 presents the sequence diagram for creating a technician account. It shows
+how the Administrator fills the creation form, how the backend validates and stores the
+account, and how the technician credentials are sent by SMTP email.
+29
+
+
+===== PAGE 37 =====
+
+Chapter 3. Conceptual Study
+Figure 3.8: Create technician account sequence diagram
+The creation scenario starts when the Administrator opens the technician manage-
+ment interface and fills in the account form. The dashboard sends the request to the
+backend, which validates the submitted data, stores the technician account, and requests
+the configured SMTP service to send the credentials. The dashboard then displays a
+confirmation message.
+Figure 3.9 presents the IoT data flow sequence diagram. It shows how Node-RED gen-
+erates simulated sensor values, applies rule-based decision logic, publishes the canonical
+telemetry payload through Mosquitto, and how the backend validates, stores, broadcasts,
+and dispatches alert emails when required.
+30
+
+
+===== PAGE 38 =====
+
+Chapter 3. Conceptual Study
+Figure 3.9: IoT data flow sequence diagram
+3.4.6
+Deployment View
+The deployment view shows where the main parts of the platform are executed and
+how they are connected. It gives a conceptual view of the runtime organization without
+entering into configuration details.
+Figure 3.10 presents the deployment diagram of the monitoring platform. It shows
+the separation between the telemetry simulation source, communication broker, backend
+service, database service, dashboard interface, and configured SMTP service in a local
+Docker-based execution environment.
+31
+
+
+===== PAGE 39 =====
+
+Chapter 3. Conceptual Study
+Figure 3.10: Deployment diagram of the monitoring platform
+3.5
+Conclusion
+This chapter defined the main requirements of the monitoring platform, presented its
+general architecture, and modeled the system using several UML views. The conceptual
+study clarified the expected services, the actors, the static structure, the dynamic behav-
+ior, and the deployment organization of the proposed solution. The next chapter presents
+the realization and validation of the platform.
+32
+
+
+===== PAGE 40 =====
+
+Chapter 4
+Realization and Validation
+4.1
+Introduction
+This chapter presents the realization and validation of the developed monitoring plat-
+form. After defining the requirements, the general architecture, and the UML modeling in
+the previous chapter, this part focuses on the implemented solution and on the validation
+of its main functions.
+The realized work corresponds to a Dockerized software implementation for indus-
+trial and agro-food monitoring.
+It integrates simulated telemetry generation, MQTT
+communication, backend services, data persistence, dashboard visualization, diagnostic
+information, technician management, and alert notification. The objective of this chap-
+ter is not to repeat the conceptual study, but to present the working environment, the
+implemented platform, and the tests carried out to verify the main functions.
+4.2
+Working Environment
+The working environment includes the hardware, software, and development tools
+used during the realization of the project. It provided the technical conditions required
+to develop, execute, test, and document the monitoring platform.
+4.2.1
+Hardware Environment
+The project was developed and tested on a development computer used as the main
+local execution environment. This machine hosted the different services of the platform
+during development and validation. Network access was also required to allow communi-
+cation between the Dockerized services and to test the dashboard from a web browser.
+Table 4.1 presents the hardware elements used during the realization and validation
+of the monitoring platform.
+33
+
+
+===== PAGE 41 =====
+
+Chapter 4. Realization and Validation
+Table 4.1: Hardware environment
+Element
+Role in the project
+Development computer
+Used to develop, execute, and test the different services of
+the monitoring platform.
+Local execution environment
+Used to run the Node-RED telemetry simulator, Mosquitto
+MQTT broker, FastAPI backend, PostgreSQL database,
+and React dashboard during validation.
+Network access
+Used to ensure communication between local services and
+to test the dashboard from a web browser.
+4.2.2
+Software Environment
+The platform services were organized using Docker and Docker Compose in order
+to simplify local execution and keep the runtime environment structured. Python and
+FastAPI were used for the backend service, PostgreSQL for persistent storage, Mosquitto
+for MQTT communication, Node-RED for simulated telemetry generation, React for the
+web dashboard, and a configured SMTP service for credential and alert emails [22, 23,
+24, 15, 11, 25, 26].
+Figure 4.1 presents the main software and development tools used during the realiza-
+tion of the platform.
+Figure 4.1: Main software and development tools
+Table 4.2 summarizes the role of the main software elements used during the realization
+of the platform.
+34
+
+
+===== PAGE 42 =====
+
+Chapter 4. Realization and Validation
+Table 4.2: Software environment
+Software
+Role in the project
+Docker and Docker
+Compose
+Used to isolate, organize, and run the platform services.
+Python and FastAPI
+Used to implement the backend service and expose the
+application services.
+PostgreSQL
+Used to store users, telemetry readings, alerts, and historical
+information.
+Mosquitto MQTT
+Used to route telemetry messages between the simulator and
+the backend.
+Node-RED
+Used as the telemetry simulation source of the platform.
+React
+Used to build the supervision dashboard.
+SMTP service
+Used to send technician credential emails and anomaly alert
+emails.
+4.2.3
+Development Tools
+Visual Studio Code was used as the main code editor for organizing and editing the
+project files [27]. A web browser was used to test the dashboard interface and to verify
+its interaction with the backend through REST requests and WebSocket live updates.
+Git was used for source-code version control and project tracking [28]. Mermaid and
+draw.io, also known as diagrams.net, were used to prepare architecture and UML diagrams
+[20, 21]. LaTeX was used to write and compile the academic report [29].
+4.3
+Software Implementation Presentation
+4.3.1
+General Runtime Overview
+The realized platform follows a software monitoring chain based on simulated teleme-
+try. Node-RED produces telemetry for the monitored machines and publishes it through
+Mosquitto MQTT. The FastAPI backend receives the messages, validates them, stores
+the accepted readings in PostgreSQL, and exposes them to the React dashboard through
+REST services and live WebSocket updates.
+Table 4.3 presents the main runtime components of the software implementation and
+the role of each one.
+35
+
+
+===== PAGE 43 =====
+
+Chapter 4. Realization and Validation
+Table 4.3: Runtime chain of the software implementation
+Component
+Role in the runtime chain
+Node-RED simulator
+Generates simulated telemetry for the monitored machines and
+prepares state-related fields used during the demonstration.
+Mosquitto MQTT broker
+Routes telemetry messages from the simulator to the backend
+through the configured MQTT topic.
+FastAPI backend
+Validates telemetry, exposes REST services, manages access
+control, stores accepted readings, broadcasts live updates, and
+handles alerts.
+PostgreSQL database
+Stores users, telemetry readings, alert records, and historical
+supervision information.
+React dashboard
+Presents live values, charts, alerts, diagnostic information, and
+administrator functions to authenticated users.
+SMTP service
+Sends technician credential emails and alert notifications when
+required.
+4.3.2
+Dockerized Services
+The platform was executed through Docker Compose.
+This organization made it
+possible to run the telemetry simulator, MQTT broker, backend, database, and dashboard
+as separate services in the same local execution environment.
+Figure 4.2 presents the Dockerized services of the platform during execution.
+Figure 4.2: Dockerized services running during platform execution
+4.3.3
+Demonstration Scenario
+The demonstration scenario verifies the complete supervision path.
+It starts with
+simulated readings for the monitored machines and ends with dashboard visualization,
+diagnostic consultation, alert storage, and email notification when the state requires at-
+tention.
+Table 4.4 presents the main steps of the demonstration scenario used to verify the
+implemented platform.
+36
+
+
+===== PAGE 44 =====
+
+Chapter 4. Realization and Validation
+Table 4.4: Demonstration scenario of the software implementation
+Step
+Action
+Expected observation
+1
+Start the Dockerized
+services.
+The simulator, broker, backend, database, and
+dashboard services are available.
+2
+Generate telemetry with
+Node-RED.
+Readings are produced for Hopper, Mixer, and
+Conveyor.
+3
+Publish telemetry through
+Mosquitto.
+MQTT messages are routed on the configured
+telemetry topic.
+4
+Process data in the backend.
+Accepted readings are stored and live updates
+are prepared for the dashboard.
+5
+Consult the dashboard.
+The user observes live values, historical charts,
+alerts, and diagnostic information.
+6
+Trigger a warning or critical
+state.
+The alert is recorded and an email notification is
+sent through the configured SMTP service.
+Figure 4.3 presents the general dashboard overview used during the demonstration.
+Figure 4.3: General dashboard overview of the monitoring platform
+4.4
+Implementation of the Monitoring Platform
+4.4.1
+Node-RED Telemetry Simulation
+Node-RED was used as the telemetry source of the platform. It simulates periodic
+readings for the monitored agro-food machines: Hopper, Mixer, and Conveyor.
+The
+37
+
+
+===== PAGE 45 =====
+
+Chapter 4. Realization and Validation
+generated values include temperature, vibration, electrical current, weight, and level.
+The simulation flow prepares a structured telemetry payload before publication. This
+payload contains the device identifier, machine name, timestamp, sensor values, machine
+state, anomaly score, and decision reason information used by the rest of the platform.
+Figure 4.4 presents the Node-RED flow used as the telemetry simulation source.
+Figure 4.4: Node-RED telemetry simulation flow
+4.4.2
+MQTT Communication and Payload
+Mosquitto was used as the MQTT broker between the telemetry simulator and the
+backend service. Node-RED publishes telemetry to the canonical topic, while the FastAPI
+backend subscribes to this topic in order to receive the monitoring data.
+The topic used by the platform is:
+cooperative/device/{device_id}/telemetry
+Figure 4.5 presents the MQTT/backend telemetry evidence captured during execution.
+It shows that telemetry messages reach the monitoring chain during runtime.
+Figure 4.5: MQTT telemetry evidence during platform execution
+Table 4.5 presents the main fields of the canonical telemetry payload exchanged in the
+monitoring chain.
+38
+
+
+===== PAGE 46 =====
+
+Chapter 4. Realization and Validation
+Table 4.5: Canonical telemetry payload
+Field
+Description
+device_id
+Identifier of the simulated monitored device.
+machine
+Name of the monitored machine, such as Hopper, Mixer, or
+Conveyor.
+tick
+Simulation counter used to follow generated readings.
+timestamp
+Date and time associated with the telemetry message.
+sensors.temperature
+Temperature value associated with the monitored machine.
+sensors.vibration
+Vibration value associated with the monitored machine.
+sensors.current_amp
+Electrical current value associated with the monitored
+machine.
+sensors.weight_kg
+Weight value associated with the monitored machine.
+sensors.level_percent
+Level percentage associated with the monitored machine.
+status
+Machine state used by the supervision dashboard and alert
+logic.
+anomaly_score
+Numerical score associated with the monitored state.
+decision_reason
+Explanation associated with the detected state.
+4.4.3
+Backend Services and Data Persistence
+The FastAPI backend represents the central service of the software platform. It sub-
+scribes to MQTT telemetry, validates the received payload, stores accepted readings,
+exposes REST services, manages authentication and role-based access, and broadcasts
+live updates to the React dashboard through the WebSocket endpoint.
+PostgreSQL was used to store persistent information. It stores user accounts, accepted
+telemetry readings, alert records, and historical monitoring data. This persistence allows
+the dashboard to display both recent values and previous records.
+Figure 4.6 presents recent telemetry readings stored in PostgreSQL after the backend
+accepts the incoming messages.
+39
+
+
+===== PAGE 47 =====
+
+Chapter 4. Realization and Validation
+Figure 4.6: Recent telemetry readings stored in PostgreSQL
+4.4.4
+React Supervision Dashboard
+The React dashboard is the supervision interface of the platform. It allows authen-
+ticated users to consult live sensor values, machine status, historical charts, alerts, and
+diagnostic information. The dashboard communicates with the backend through REST
+requests for stored data and through the WebSocket endpoint for live updates.
+Figure 4.7 presents the live values view used to consult the current state of the moni-
+tored machines.
+Figure 4.7: Live monitoring values displayed on the dashboard
+Figure 4.8 presents the historical chart view used to consult previous monitoring values.
+40
+
+
+===== PAGE 48 =====
+
+Chapter 4. Realization and Validation
+Figure 4.8: Historical charts displayed on the dashboard
+4.4.5
+Administrator Technician Management
+The platform includes an administration interface for technician account management.
+The Administrator can manage technician access, while the Technician uses the platform
+for operational monitoring, alert consultation, and maintenance follow-up.
+Figure 4.9 presents the technician management interface available to the Administra-
+tor.
+41
+
+
+===== PAGE 49 =====
+
+Chapter 4. Realization and Validation
+Figure 4.9: Administrator interface for technician management
+Account status is also considered during authentication. A blocked technician account
+is refused by the platform instead of being allowed to access the supervision interface.
+Figure 4.10 presents the blocked technician login validation.
+42
+
+
+===== PAGE 50 =====
+
+Chapter 4. Realization and Validation
+Figure 4.10: Blocked technician login validation
+4.4.6
+Physical Proof-of-Concept Attempt
+A physical proof-of-concept attempt was also considered during the project in order
+to relate the software platform to a possible real acquisition context. This attempt was
+based on an ESP32 NodeMCU board and sensor modules. Its purpose was to examine
+how physical readings could later be collected before being integrated into a monitoring
+chain.
+This work remained limited and was not used as the main verification basis of the
+project. The stable realization presented in this chapter remains the Dockerized soft-
+ware implementation based on Node-RED, Mosquitto, FastAPI, PostgreSQL, React, and
+SMTP notification. The ESP32 work was kept as an additional step showing the possi-
+bility of moving later from simulated telemetry toward real sensor acquisition.
+Table 4.6 presents the main elements considered in this physical proof-of-concept at-
+tempt.
+43
+
+
+===== PAGE 51 =====
+
+Chapter 4. Realization and Validation
+Table 4.6: Physical proof-of-concept elements
+Element
+Purpose
+ESP32 NodeMCU board
+Used as a possible acquisition board for reading physical
+sensor values.
+Sensor/ modules
+Used to represent simple monitored values in a physical
+setup.
+Monitoring chain
+Used as the target software environment for possible future
+integration.
+Figure 4.11 presents an illustrative ESP32-based sensor acquisition setup considered
+for the physical proof-of-concept attempt.
+Figure 4.11: Illustrative ESP32-based sensor acquisition setup
+4.5
+Diagnostic and Notification System
+4.5.1
+Diagnostic Information
+The dashboard displays diagnostic information associated with the received telemetry.
+This information includes the machine status, anomaly score, decision reasons, likely
+causes, and recommended checks. It helps the Technician interpret the monitored state
+without relying only on raw sensor values.
+Figure 4.12 presents the diagnostic panel used to consult state information and decision
+reasons.
+44
+
+
+===== PAGE 52 =====
+
+Chapter 4. Realization and Validation
+Figure 4.12: Diagnostic panel with status and decision information
+4.5.2
+Alert History
+When the monitored state becomes warning or critical, the platform stores an alert
+record. This makes it possible for the user to consult previous abnormal situations and
+to follow the evolution of machine states over time.
+Figure 4.13 presents the alert history displayed on the dashboard.
+45
+
+
+===== PAGE 53 =====
+
+Chapter 4. Realization and Validation
+Figure 4.13: Alert history displayed on the dashboard
+4.5.3
+Technician Email Alerts
+Email notification is handled by the backend through the configured SMTP service.
+MQTT is used only for telemetry transmission; it does not send emails. When an accepted
+reading corresponds to a warning or critical state, the backend records the alert and sends
+a notification to the concerned enabled technicians.
+Figure 4.14 presents an alert email received by a technician during validation.
+46
+
+
+===== PAGE 54 =====
+
+Chapter 4. Realization and Validation
+Figure 4.14: Technician alert email sent by the notification service
+4.6
+Tests and Validation
+The validation stage was carried out after the implementation screenshots had been
+collected. It was organized as a set of functional checks covering service execution, teleme-
+try transmission, persistence, dashboard display, technician management, account restric-
+tion, alert history, and email notification.
+Table 4.7 presents the validation summary of the monitoring platform. It records the
+objective, procedure, observed result, and validation status for each test.
+47
+
+
+===== PAGE 55 =====
+
+Chapter 4. Realization and Validation
+Table 4.7: Validation summary of the monitoring platform
+Test
+Objective
+Procedure
+Observed result
+Status
+Runtime services
+Verify that the platform services
+start correctly.
+Run the Docker
+Compose
+environment.
+Required services
+are available.
+Validated
+Telemetry
+simulation
+Verify that Node-RED generates
+monitoring data.
+Observe the
+simulator flow
+during execution.
+Machine telemetry
+is produced for the
+demonstration.
+Validated
+MQTT
+communication
+Verify that telemetry reaches the
+monitoring chain.
+Capture MQTT or
+backend telemetry
+evidence.
+Telemetry messages
+are visible during
+runtime.
+Validated
+Database
+persistence
+Verify that accepted readings are
+stored.
+Query PostgreSQL
+after telemetry
+reception.
+Recent readings are
+present in the
+database.
+Validated
+Dashboard
+display
+Verify that supervision
+information is visible.
+Open the React
+dashboard as an
+authenticated user.
+Live values and
+charts are displayed.
+Validated
+Diagnostic
+display
+Verify that state information
+supports interpretation.
+Open the
+diagnostic panel.
+Status, score,
+reasons, and checks
+are displayed.
+Validated
+Technician
+management
+Verify that the Administrator
+manages technician access.
+Open the
+administration
+interface.
+Technician
+management
+functions are
+available.
+Validated
+Account
+restriction
+Verify that blocked accounts are
+refused.
+Attempt login with
+a blocked
+technician account.
+Access is refused by
+the platform.
+Validated
+Alert history
+Verify that abnormal states are
+recorded.
+Trigger or observe
+warning and
+critical states.
+Alert records appear
+in the dashboard
+history.
+Validated
+Email
+notification
+Verify that alert emails are sent to
+technicians.
+Trigger an
+email-eligible
+warning or critical
+state.
+A technician alert
+email is received.
+Validated
+4.7
+Conclusion
+This chapter presented the realization and functional verification of the monitoring
+platform. It described the working environment, the runtime organization, the imple-
+mented monitoring chain, the dashboard interfaces, technician management, diagnostic
+information, alert history, and email notification.A limited ESP32-based physical proof-
+of-concept attempt was also presented as an additional step toward possible real sensor
+acquisition. The functional tests confirmed that the implemented software chain connects
+Node-RED, Mosquitto, FastAPI, PostgreSQL, React, and the configured SMTP service
+in a coherent monitoring workflow.
+48
+
+
+===== PAGE 56 =====
+
+General Conclusion
+This final year project focused on the study and realization of a monitoring platform
+for industrial and agro-food environments. The work started from the observation that
+manual follow-up and scattered supervision information can limit the ability of techni-
+cal users to observe machine states, consult previous readings, and react to abnormal
+situations in a timely manner. The proposed solution was therefore oriented toward the
+centralization of operational parameters such as temperature, vibration, electrical current,
+weight, level, machine state, and alert information.
+The preliminary study defined the project context, the host organization, the problem
+statement, and the proposed solution. The state of the art then presented the technical
+concepts related to Industry 4.0, IoT-based monitoring, real-time supervision, communi-
+cation protocols, web dashboards, data storage, and diagnostic methods. After that, the
+conceptual study specified the functional and non-functional requirements, identified the
+main actors, and modeled the system through architecture and UML diagrams.
+The realization part was carried out as a software implementation based on a local
+Dockerized environment. The monitoring chain connects a Node-RED telemetry source,
+Mosquitto MQTT communication, a FastAPI backend, PostgreSQL storage, a React dash-
+board, and an SMTP notification service. The implemented platform allows the Admin-
+istrator to manage technician accounts and allows the Technician to consult monitoring
+values, historical charts, diagnostic information, alert history, and email notifications re-
+lated to warning or critical states.
+The functional tests confirmed the coherence of the implemented chain. They verified
+service execution, telemetry transmission through MQTT, backend reception, database
+persistence, live dashboard display, diagnostic information, technician management, ac-
+count restriction, alert history, and email notification. These tests show that the platform
+achieves the main objectives defined at the beginning of the project in a controlled local
+environment.
+However, the realized work remains a software demonstration and not an industrial
+deployment. The telemetry source is simulated, the diagnostic logic is rule-based, and the
+thresholds are defined for demonstration and engineering-oriented testing. A complete
+industrial deployment would require calibrated physical sensors, connection to real ma-
+chines, long-term data collection, security hardening, and validation under real operating
+conditions.
+As perspectives, the platform can be extended by connecting real industrial sensors
+or controller data sources to the same MQTT-based monitoring chain.
+Further work
+49
+
+
+===== PAGE 57 =====
+
+General Conclusion
+may also include deployment on a secured server, improvement of diagnostic rules using
+operational feedback, and the collection of larger historical datasets to support more
+advanced decision-support methods. These extensions would strengthen the transition
+from a local monitoring implementation toward a more complete industrial supervision
+solution.
+50
+
+
+===== PAGE 58 =====
+
+Bibliography
+[1]
+Amazon Web Services. AWS IoT Core Developer Guide. url: https://docs.aws.
+amazon.com/iot/latest/developerguide/what-is-aws-iot.html (visited on
+05/22/2026).
+[2]
+ThingsBoard. ThingsBoard Open-source IoT Platform. url: https://thingsboard.
+io/ (visited on 05/22/2026).
+[3]
+Inductive Automation. What is SCADA? Supervisory Control and Data Acquisition
+Explained. url: https://inductiveautomation.com/resources/article/what-
+is-scada (visited on 05/22/2026).
+[4]
+OpenJS Foundation. Node-RED: Low-code programming for event-driven applica-
+tions. url: https://nodered.org/ (visited on 05/22/2026).
+[5]
+Heiner Lasi et al. “Industry 4.0”. In: Business & Information Systems Engineering
+6.4 (2014), pp. 239–242. doi: 10.1007/s12599-014-0334-4.
+[6]
+Jay Lee, Behrad Bagheri, and Hung-An Kao. “A Cyber-Physical Systems Architec-
+ture for Industry 4.0-Based Manufacturing Systems”. In: Manufacturing Letters 3
+(2015), pp. 18–23. doi: 10.1016/j.mfglet.2014.12.001.
+[7]
+Jie Lin et al. “A Survey on Internet of Things: Architecture, Enabling Technologies,
+Security and Privacy, and Applications”. In: IEEE Internet of Things Journal 4.5
+(2017), pp. 1125–1142. doi: 10.1109/JIOT.2017.2683200.
+[8]
+Hugh Boyes et al. “The Industrial Internet of Things (IIoT): An Analysis Frame-
+work”. In: Computers in Industry 101 (2018), pp. 1–12. doi: 10.1016/j.compind.
+2018.04.015.
+[9]
+Shaojun Gan et al. “IoT Based Energy Consumption Monitoring Platform for In-
+dustrial Processes”. In: 2018 UKACC 12th International Conference on Control
+(CONTROL). 2018, pp. 236–240. doi: 10.1109/CONTROL.2018.8516828.
+[10]
+A. H. Awad and Maazen Alsabaan. “Low-Cost IoT-Based Sensors Dashboard for
+Monitoring the State of Health of Mobile Harbor Cranes: Hardware and Software
+Description”. In: HardwareX (2024).
+[11]
+MQTT.org. MQTT: The Standard for IoT Messaging. url: https://mqtt.org/
+(visited on 05/14/2026).
+[12]
+Grafana Labs. Grafana Documentation: Time Series Visualizations. url: https://
+grafana.com/docs/grafana/latest/visualizations/panels-visualizations/
+visualizations/time-series/ (visited on 05/28/2026).
+51
+
+
+===== PAGE 59 =====
+
+Bibliography
+[13]
+Pawel Grzesik and Dariusz Mrozek. “Comparative Analysis of Time Series Databases
+in the Context of Edge Computing for IoT and Smart Systems”. In: Sensors 20.12
+(2020). doi: 10.3390/s20123596.
+[14]
+Edoardo Simanjuntak, M. A. Hossain, and A. Kurniawan. “Multiple Time Series
+Database on Microservice Architecture for IoT-Based Monitoring System”. In: Jour-
+nal of Big Data (2022). doi: 10.1186/s40537-022-00658-4.
+[15]
+PostgreSQL Global Development Group. PostgreSQL Documentation. url: https:
+//www.postgresql.org/docs/ (visited on 05/14/2026).
+[16]
+Varun Chandola, Arindam Banerjee, and Vipin Kumar. “Anomaly Detection: A Sur-
+vey”. In: ACM Computing Surveys 41.3 (2009), pp. 1–58. doi: 10.1145/1541880.
+1541882.
+[17]
+Kevin DeMedeiros, Abdeltawab Hendawi, and Miguel Alvarez. “A Survey of AI-
+Based Anomaly Detection in IoT and Sensor Networks”. In: Sensors 23.3 (2023),
+p. 1352. doi: 10.3390/s23031352.
+[18]
+A. Q. Khan et al. “Knowledge-Based Anomaly Detection: Survey, Challenges and
+Future Directions”. In: Engineering Applications of Artificial Intelligence (2024).
+doi: 10.1016/j.engappai.2024.108486.
+[19]
+Angelos Angelopoulos et al. “Tackling Faults in the Industry 4.0 Era: A Survey of
+Machine-Learning Solutions and Key Aspects”. In: Sensors 20.1 (2019), p. 109. doi:
+10.3390/s20010109.
+[20]
+Mermaid. Mermaid Documentation. url: https://mermaid.js.org/ (visited on
+05/28/2026).
+[21]
+JGraph Ltd. diagrams.net Documentation. url: https://www.diagrams.net/doc/
+(visited on 05/28/2026).
+[22]
+Docker Inc. Docker Documentation. url: https://docs.docker.com/ (visited on
+05/14/2026).
+[23]
+Docker Inc. Docker Compose Documentation. url: https://docs.docker.com/
+compose/ (visited on 05/14/2026).
+[24]
+FastAPI. FastAPI Documentation. url: https://fastapi.tiangolo.com/ (visited
+on 05/14/2026).
+[25]
+OpenJS Foundation. Node-RED Documentation. url: https://nodered.org/
+docs/ (visited on 05/14/2026).
+[26]
+Meta Open Source. React Documentation. url: https://react.dev/ (visited on
+05/14/2026).
+[27]
+Microsoft. Visual Studio Code Documentation. url: https://code.visualstudio.
+com/docs (visited on 05/29/2026).
+52
+
+
+===== PAGE 60 =====
+
+Bibliography
+[28]
+Software Freedom Conservancy. Git Documentation. url: https://git-scm.com/
+doc (visited on 05/29/2026).
+[29]
+LaTeX Project. LaTeX Documentation. url: https://www.latex-project.org/
+help/documentation/ (visited on 05/29/2026).
+53
+
+
+===== PAGE 61 =====

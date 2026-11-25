@@ -1,0 +1,4705 @@
+===== PAGE 1 =====
+
+                                                       
+Année Universitaire :2025-2026 
+ 
+Université Hassan II 
+    Casablanca 
+Faculté des Sciences Ben M’Sick 
+ 
+ 
+ 
+ 
+PROJET DE FIN D’ETUDES 
+ 
+En vue de l’obtention  
+ 
+Du diplôme de Licence d’Excellence 
+ 
+En  
+Intelligence Artificielle  
+Sous le thème  
+Pr. Said NOUH 
+Professeur à FSBM 
+Président 
+Pr. Khalid KANDALI 
+Professeur à FSBM 
+Examinateur 
+Pr. Mounir SADIQ 
+Professeur à FSBM 
+Examinateur 
+Pr. Tarik AHAJJAM  
+Professeur à FSBM 
+Encadrant 
+Présenté le 20 Juin 2026 par : 
+ 
+Khadija EL GHANDOURY 
+ 
+Ilyass AIT CHEIKH 
+Devant le jury composé de : 
+ 
+Détection Automatique de Glissements de Terrain 
+Par Deep Learning Multi-Modal 
+
+
+===== PAGE 2 =====
+
+ ِبِسْمِ اَّلله ِ الرهحْمَٰنِ الرهحِيم 
+ وَقُل رَّب ِّ زِّدِْنِّ عِّلْمًا 
+« Dis : Seigneur, accroît ma science. » 
+Sourate Taha (20), verset 114 
+
+
+===== PAGE 3 =====
+
+Remerciements
+Au terme de cette année de licence et à l’issue de la réalisation de ce projet de ﬁn d’études,
+nous tenons à exprimer notre profonde gratitude envers toutes les personnes qui ont contri-
+bué, de près ou de loin, à son aboutissement.
+Nos remerciements les plus sincères s’adressent en premier lieu à notre encadrant, M. AHA-
+JJAM Tarik, pour sa disponibilité, sa patience, ses précieux conseils et son accompagne-
+ment bienveillant tout au long de ce travail. Sa rigueur scientiﬁque et son soutien constant
+ont été pour nous une source de motivation inestimable.
+Nous adressons nos vifs remerciements aux membres du jury, Pr. Said NOUH, Pr. Khalid
+KANDALI et Pr. Mounir SADIQ, Professeurs à la Faculté des Sciences Ben M’Sik, pour
+l’honneur qu’ils nous font en acceptant d’examiner ce travail. Nous les remercions pour le
+temps consacré à la lecture de ce mémoire ainsi que pour leurs remarques et observations
+qui contribueront à l’enrichir.
+Nous remercions chaleureusement l’ensemble du corps enseignant du Département des Ma-
+thématiques et Informatique de la Faculté des Sciences Ben M’Sik pour la qualité de la
+formation dispensée au cours de notre parcours académique.
+Nous adressons également notre reconnaissance à nos chers collègues Zainab Jaafari et
+Ilyass Mifdal, dont la présence, le soutien et les échanges enrichissants ont rendu cette an-
+née mémorable.
+Enﬁn, et non des moindres, nous dédions ce travail à nos familles respectives, pour leur
+amour inconditionnel, leurs sacriﬁces et leurs encouragements constants tout au long de nos
+études. Sans elles, rien de tout cela n’aurait été possible.
+1
+
+
+===== PAGE 4 =====
+
+Résumé
+Les glissements de terrain constituent l’un des aléas naturels les plus meurtriers à l’échelle
+mondiale, provoquant chaque année des milliers de victimes et des dommages considérables
+aux infrastructures. Leur détection rapide et précise est un enjeu critique pour la gestion des
+catastrophes et la protection des populations. Ce projet de ﬁn d’études s’inscrit dans le do-
+maine de l’observation de la Terre par satellite et de l’apprentissage automatique.
+Il porte sur le développement d’un modèle de classiﬁcation binaire capable de distinguer au-
+tomatiquement les zones affectées par des glissements de terrain et des zones non affectées,
+en exploitant des données satellitaires multi-sources issues de deux instruments complémen-
+taires : Sentinel-2, fournissant des images optiques dans les bandes Rouge, Vert, Bleu et
+Proche Infrarouge (NIR) à 10 m de résolution, et Sentinel-1, fournissant des images radar
+SAR en polarisations VV et VH, particulièrement utiles en présence de couverture nuageuse.
+L’approche proposée combine une architecture de deep learning multi-modale avec un mé-
+canisme de fusion adaptative (GatedFusion) basé sur EfﬁcientNetV2-L, la Focal Loss pour la
+gestion du déséquilibre de classes (82,4 % négatifs / 17,6 % positifs) et une validation croisée
+en cinq plis. Le modèle atteint un score F1 de 0,905 sur le jeu de données de la compétition
+Zindi Landslide Detection Challenge.
+Mots-clés :
+— Glissement de terrain
+— Deep Learning
+— Fusion multimodale
+— SAR
+— EfﬁcientNetV2-L
+— GatedFusion
+— Sentinel-1
+— Sentinel-2
+— Observation de la Terre
+— Classiﬁcation binaire
+2
+
+
+===== PAGE 5 =====
+
+Abstract
+Landslides are among the most destructive natural hazards globally, causing thousands of ca-
+sualties and signiﬁcant infrastructure damage every year. Their rapid and accurate detection
+is critical for disaster management and population protection. This ﬁnal-year project lies at
+the intersection of Earth observation and machine learning.
+It focuses on developing a binary classiﬁcation model that automatically distinguishes landslide-
+affected areas from unaffected ones, using multi-source satellite data from two complemen-
+tary instruments : Sentinel-2, providing optical imagery in the Red, Green, Blue and Near-
+Infrared (NIR) bands at 10 m resolution, and Sentinel-1, providing SAR radar imagery in
+VV and VH polarizations, particularly useful under cloud cover.
+The proposed approach combines a multimodal deep learning architecture with an adap-
+tive fusion mechanism (GatedFusion) based on EfﬁcientNetV2-L, the Focal Loss to handle
+class imbalance (82.4 % negatives / 17.6 % positives), and ﬁve-fold cross-validation. The
+model reaches an F1 score of 0.905 on the Zindi Landslide Detection Challenge dataset.
+Keywords :
+— Landslide
+— Deep Learning
+— Multimodal Fusion
+— SAR
+— EfﬁcientNetV2-L
+— GatedFusion
+— Sentinel-1
+— Sentinel-2
+— Earth Observation
+— Binary Classiﬁcation
+3
+
+
+===== PAGE 6 =====
+
+Table des matières
+Introduction Générale
+12
+1
+Contexte et Problématique
+14
+1.1
+Les Glissements de Terrain : Déﬁnition et Classiﬁcation . . . . . . . . . . .
+14
+1.1.1
+Déﬁnition générale . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+1.1.2
+Facteurs déclencheurs
+. . . . . . . . . . . . . . . . . . . . . . . .
+15
+1.2
+Ampleur du Phénomène et Enjeux Sociaux
+. . . . . . . . . . . . . . . . .
+15
+1.2.1
+Bilan mondial . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+1.2.2
+Impact sur les infrastructures et l’environnement
+. . . . . . . . . .
+16
+1.2.3
+Glissements de terrain et changement climatique . . . . . . . . . .
+16
+1.3
+La Détection de Glissements de Terrain par Satellite . . . . . . . . . . . . .
+16
+1.3.1
+Pourquoi la télédétection? . . . . . . . . . . . . . . . . . . . . . .
+16
+1.3.2
+Imagerie optique : Sentinel-2 . . . . . . . . . . . . . . . . . . . . .
+17
+1.3.3
+Imagerie Radar SAR : Sentinel-1
+. . . . . . . . . . . . . . . . . .
+18
+1.3.4
+L’indice NDVI . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+1.4
+Description du Jeu de Données . . . . . . . . . . . . . . . . . . . . . . . .
+20
+1.4.1
+Structure générale du jeu de données . . . . . . . . . . . . . . . . .
+20
+1.4.2
+Variable cible et distribution . . . . . . . . . . . . . . . . . . . . .
+22
+1.4.3
+Inventaires de référence
+. . . . . . . . . . . . . . . . . . . . . . .
+22
+1.5
+Déﬁnition de la Problématique et des Besoins . . . . . . . . . . . . . . . .
+23
+1.5.1
+Analyse des besoins
+. . . . . . . . . . . . . . . . . . . . . . . . .
+23
+1.5.2
+Métrique d’évaluation : le score F1
+. . . . . . . . . . . . . . . . .
+23
+1.5.3
+Problématique formelle . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2
+État de l’Art
+25
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.2
+Approches Classiques : Analyse Visuelle et Indices Spectraux
+. . . . . . .
+25
+2.2.1
+Interprétation visuelle manuelle . . . . . . . . . . . . . . . . . . .
+25
+2.2.2
+Indices spectraux . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.2.3
+Analyse orientée objet (OBIA) . . . . . . . . . . . . . . . . . . . .
+26
+2.3
+Méthodes d’Apprentissage Automatique Classique
+. . . . . . . . . . . . .
+26
+2.3.1
+Support Vector Machine (SVM) . . . . . . . . . . . . . . . . . . .
+26
+4
+
+
+===== PAGE 7 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+2.3.2
+Random Forest . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+2.3.3
+XGBoost et méthodes de gradient boosting . . . . . . . . . . . . .
+27
+2.4
+Méthodes de Deep Learning
+. . . . . . . . . . . . . . . . . . . . . . . . .
+27
+2.4.1
+Réseaux de Neurones Convolutifs (CNN) . . . . . . . . . . . . . .
+27
+2.4.2
+Architectures Hybrides CNN-Transformer . . . . . . . . . . . . . .
+28
+2.4.3
+Modèles Multi-Modaux : Fusion de Données Hétérogènes . . . . .
+28
+2.4.4
+Transfert d’apprentissage . . . . . . . . . . . . . . . . . . . . . . .
+28
+2.5
+Comparaison des Approches Existantes
+. . . . . . . . . . . . . . . . . . .
+29
+2.6
+Étude de l’Existant et Limites Identiﬁées . . . . . . . . . . . . . . . . . . .
+29
+2.6.1
+Solutions et outils disponibles . . . . . . . . . . . . . . . . . . . .
+29
+2.6.2
+Limites des approches existantes . . . . . . . . . . . . . . . . . . .
+30
+2.7
+Cahier des Charges . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+2.7.1
+Objectif du cahier des charges . . . . . . . . . . . . . . . . . . . .
+30
+2.7.2
+Exigences fonctionnelles . . . . . . . . . . . . . . . . . . . . . . .
+30
+2.7.3
+Exigences non fonctionnelles
+. . . . . . . . . . . . . . . . . . . .
+36
+2.7.4
+Contraintes techniques . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3
+Conception
+39
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+3.2
+Architecture du système
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+3.2.1
+Vue d’ensemble de l’architecture . . . . . . . . . . . . . . . . . . .
+40
+3.2.2
+Vue logique : diagramme de packages . . . . . . . . . . . . . . . .
+41
+3.3
+Architecture client-serveur et environnement d’exécution . . . . . . . . . .
+42
+3.4
+Choix techniques . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+3.4.1
+Langage de programmation : Python . . . . . . . . . . . . . . . . .
+42
+3.5
+Frameworks et bibliothèques . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+3.6
+Format des données : NumPy (.npy / .npz) . . . . . . . . . . . . . . . . . .
+45
+3.7
+Pipeline de prétraitement . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+3.8
+Modélisation du système . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+3.8.1
+Architecture du modèle de deep learning
+. . . . . . . . . . . . . .
+46
+3.8.2
+Backbone EfﬁcientNet . . . . . . . . . . . . . . . . . . . . . . . .
+46
+3.8.3
+Branche SAR : réseau convolutif résiduel . . . . . . . . . . . . . .
+47
+3.8.4
+Module de fusion par portes (GatedFusion) . . . . . . . . . . . . .
+48
+3.8.5
+Diagramme de classes
+. . . . . . . . . . . . . . . . . . . . . . . .
+48
+3.8.6
+Diagramme de séquence : entraînement d’un pli . . . . . . . . . . .
+49
+3.9
+Stratégie d’entraînement et de validation . . . . . . . . . . . . . . . . . . .
+50
+3.9.1
+Validation croisée stratiﬁée . . . . . . . . . . . . . . . . . . . . . .
+50
+3.9.2
+Gestion du déséquilibre des classes
+. . . . . . . . . . . . . . . . .
+51
+3.9.3
+Augmentation de données
+. . . . . . . . . . . . . . . . . . . . . .
+51
+5
+
+
+===== PAGE 8 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3.10 Métrique d’évaluation : F1-Score . . . . . . . . . . . . . . . . . . . . . . .
+53
+3.11 Organisation du système en modules . . . . . . . . . . . . . . . . . . . . .
+54
+3.11.1 Décomposition modulaire
+. . . . . . . . . . . . . . . . . . . . . .
+54
+3.12 Description des modules
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+3.12.1 Module 1 : Chargement et prétraitement des données . . . . . . . .
+54
+3.12.2 Module 2 : Dataset et chargeur de données
+. . . . . . . . . . . . .
+55
+3.12.3 Module 3 : Architecture du modèle
+. . . . . . . . . . . . . . . . .
+55
+3.12.4 Module 4 : Entraînement par validation croisée . . . . . . . . . . .
+55
+3.12.5 Module 5 : Inférence . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+3.13 Hyperparamètres du système . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+3.14 Déploiement : application web de détection . . . . . . . . . . . . . . . . .
+57
+3.14.1 Objectif et principe . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+3.14.2 Architecture de l’application . . . . . . . . . . . . . . . . . . . . .
+57
+3.14.3 Diagramme de cas d’utilisation
+. . . . . . . . . . . . . . . . . . .
+58
+3.14.4 Déroulement d’une prédiction . . . . . . . . . . . . . . . . . . . .
+58
+3.15 Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+4
+Réalisation
+61
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+4.2
+Environnement de développement . . . . . . . . . . . . . . . . . . . . . .
+61
+4.2.1
+Matériel utilisé . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+4.2.2
+Logiciels et bibliothèques
+. . . . . . . . . . . . . . . . . . . . . .
+62
+4.3
+Données du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+4.3.1
+Description du dataset
+. . . . . . . . . . . . . . . . . . . . . . . .
+63
+4.3.2
+Structure des ﬁchiers . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+4.4
+Réalisation du pipeline en cinq phases . . . . . . . . . . . . . . . . . . . .
+63
+4.4.1
+Mise en place — Installation et compatibilité GPU P100 . . . . . .
+64
+4.4.2
+Phase 1 (Données) — Exploration et visualisation des données . . .
+64
+4.4.3
+Phase 2 (Préparation) — Prétraitement et création du cache NPZ . .
+65
+4.4.4
+Phase 3 (Entraînement) — Architecture du modèle . . . . . . . . .
+67
+4.4.5
+Phase 3 (Entraînement) — Stratégie d’entraînement . . . . . . . . .
+71
+4.4.6
+Phase 4 (Évaluation) — Optimisation du seuil de décision
+. . . . .
+75
+4.4.7
+Phase 4 (Évaluation) — Inférence avec Test-Time Augmentation (TTA) 75
+4.4.8
+Phase 5 (Déploiement) — Application web FastAPI
+. . . . . . . .
+76
+4.5
+Difﬁcultés rencontrées et solutions apportées
+. . . . . . . . . . . . . . . .
+77
+4.5.1
+Incompatibilité PyTorch — GPU P100
+. . . . . . . . . . . . . . .
+77
+4.5.2
+Déséquilibre des classes . . . . . . . . . . . . . . . . . . . . . . .
+77
+4.5.3
+Gestion de la mémoire GPU . . . . . . . . . . . . . . . . . . . . .
+78
+4.5.4
+Durée d’entraînement et sessions limitées . . . . . . . . . . . . . .
+78
+6
+
+
+===== PAGE 9 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+4.5.5
+Bruit speckle SAR . . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+4.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+5
+Tests et résultats
+80
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+5.2
+Stratégie de test . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+5.2.1
+Tests fonctionnels . . . . . . . . . . . . . . . . . . . . . . . . . . .
+80
+5.2.2
+Tests techniques de performance . . . . . . . . . . . . . . . . . . .
+81
+5.3
+Cas de test . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+81
+5.3.1
+Test 1 — Compatibilité GPU et installation PyTorch
+. . . . . . . .
+81
+5.3.2
+Test 2 — Chargement et statistiques des données . . . . . . . . . .
+82
+5.3.3
+Test 3 — Pipeline de données (Dataset + DataLoader)
+. . . . . . .
+82
+5.3.4
+Test 4 — Architecture du modèle MultiModal . . . . . . . . . . . .
+83
+5.3.5
+Test 5 — Boucle d’entraînement (première époque) . . . . . . . . .
+83
+5.3.6
+Test 6 — Reprise automatique des checkpoints . . . . . . . . . . .
+83
+5.3.7
+Test 7 — Inférence TTA sur le dataset de test . . . . . . . . . . . .
+84
+5.4
+Résultats de performance . . . . . . . . . . . . . . . . . . . . . . . . . . .
+84
+5.4.1
+Résultats par fold — Validation croisée . . . . . . . . . . . . . . .
+84
+5.4.2
+Résultats globaux OOF . . . . . . . . . . . . . . . . . . . . . . . .
+85
+5.4.3
+Convergence du modèle par époque . . . . . . . . . . . . . . . . .
+87
+5.4.4
+Résultats de la soumission Zindi . . . . . . . . . . . . . . . . . . .
+87
+5.5
+Analyse des résultats . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+88
+5.5.1
+Points forts du système . . . . . . . . . . . . . . . . . . . . . . . .
+88
+5.5.2
+Limites du système . . . . . . . . . . . . . . . . . . . . . . . . . .
+88
+5.6
+Récapitulatif des résultats . . . . . . . . . . . . . . . . . . . . . . . . . . .
+89
+Conclusion générale
+90
+Bibliographie
+93
+Annexes
+95
+7
+
+
+===== PAGE 10 =====
+
+Table des ﬁgures
+1.1
+Types de mouvements de terrain . . . . . . . . . . . . . . . . . . . . . . .
+15
+1.2
+Éboulement à Upper Island Cove : chute dun bloc rocheux sur la baie de la
+Conception
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+1.3
+Illustration des classes doccupation du sol : 1) eau, 2) bâtiment et infrastruc-
+tures, 3) sol nu, 4) végétation peu dense et 5) prairies selon Google Earth,
+Sentinel-2 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+1.4
+la composition colorée RVB de imagerie Sentinel-1 avec la moyenne tempo-
+relle (B : VV, V : VH, R : VV/VH) . . . . . . . . . . . . . . . . . . . . . .
+19
+1.5
+imagerie Sentinel-1 brut
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+3.1
+Pipeline de conception en cinq phases . . . . . . . . . . . . . . . . . . . .
+39
+3.2
+Architecture multimodale à double branche avec fusion adaptative GatedFusion 40
+3.3
+Diagramme de packages UML — vue logique du système
+. . . . . . . . .
+41
+3.4
+Pipeline de prétraitement des données satellitaires multi-sources . . . . . .
+45
+3.5
+Blocs unitaires dans l’architecture réseau EfﬁcientNetV2-Large. . . . . . .
+46
+3.6
+Architecture convolutionnelle résiduelle de la branche SAR . . . . . . . . .
+47
+3.7
+Diagramme de classes UML du système multimodal de détection (losange
+plein = composition)
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+3.8
+Diagramme de séquence UML — entraînement d’un pli de la validation croisée 50
+3.9
+Validation croisée stratiﬁée à 5 plis.
+. . . . . . . . . . . . . . . . . . . . .
+51
+3.10 Principe des techniques de mélange d’images Mixup et CutMix . . . . . . .
+53
+3.11 Diagramme de composants : organisation modulaire du système
+. . . . . .
+54
+3.12 Architecture de déploiement : application web FastAPI de détection (en bleu :
+requête; en vert : réponse)
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+3.13 Diagramme de cas d’utilisation application web FastAPI de détection (bleu :
+cas utilisateur; jaune : traitement serveur; gris : inférence modèle; rouge :
+extension) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+58
+3.14 Diagramme de séquence UML — traitement d’une requête de prédiction . .
+59
+4.1
+Résultat du test de convolution sur GPU P100 . . . . . . . . . . . . . . . .
+62
+4.2
+Distribution des classes dans le dataset . . . . . . . . . . . . . . . . . . . .
+63
+4.3
+Vériﬁcation compatibilité GPU . . . . . . . . . . . . . . . . . . . . . . . .
+64
+8
+
+
+===== PAGE 11 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+4.4
+Canaux optiques Sentinel-2 d’un exemple de glissement de terrain (64 × 64
+pixels) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+4.5
+Effet du ﬁltre médian 3 × 3 sur le canal SAR
+. . . . . . . . . . . . . . . .
+66
+4.6
+Distribution des valeurs des canaux avant normalisation (gauche) et après
+normalisation z-score (droite). Les moyennes deviennent 0 et les écarts-types 1. 67
+4.7
+Architecture multimodale à fusion adaptative (GatedFusion)
+. . . . . . . .
+67
+4.8
+Boucle d’entraînement
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+4.9
+Optimisation du seuil . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+75
+4.10 Interface de l’application web
+. . . . . . . . . . . . . . . . . . . . . . . .
+77
+5.1
+Scores F1 par fold et score OOF global. La ligne pointillée représente la
+moyenne (0,9141).
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+85
+5.2
+Matrice de confusion OOF (gauche) et courbe du F1score en fonction du
+seuil τ (droite). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+86
+5.3
+Courbes d’entraînement par fold — F1 de validation et val loss.
+. . . . . .
+86
+5.4
+Courbes d’entraînement : pertes (train / validation) et score F1 de validation
+par époque . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+87
+5.5
+Classement sur le leaderboard Zindi — score F1 ofﬁciel et date de soumission 87
+9
+
+
+===== PAGE 12 =====
+
+Liste des tableaux
+1.1
+Bandes Sentinel-2 utilisées dans le projet
+. . . . . . . . . . . . . . . . . .
+17
+1.2
+Polarisations Sentinel-1 utilisées dans le projet . . . . . . . . . . . . . . . .
+18
+1.3
+Composition détaillée des 12 bandes du jeu de données multi-source . . . .
+21
+1.4
+Distribution des classes dans le jeu de données . . . . . . . . . . . . . . . .
+22
+1.5
+Objectifs détaillés et critères de succès . . . . . . . . . . . . . . . . . . . .
+23
+2.1
+Comparaison des approches existantes et positionnement du projet . . . . .
+29
+3.1
+Organisation des répertoires du projet sur Google Drive . . . . . . . . . . .
+42
+4.1
+Comparaison des environnements matériels utilisés . . . . . . . . . . . . .
+62
+4.2
+Bibliothèques Python utilisées dans le projet . . . . . . . . . . . . . . . . .
+62
+5.1
+Cas de test 1 — Compatibilité GPU P100
+. . . . . . . . . . . . . . . . . .
+81
+5.2
+Cas de test 2 — Chargement du dataset
+. . . . . . . . . . . . . . . . . . .
+82
+5.3
+Cas de test 3 — Dimensions des tenseurs
+. . . . . . . . . . . . . . . . . .
+82
+5.4
+Cas de test 4 — Modèle MultiModal EfﬁcientNetV2-L . . . . . . . . . . .
+83
+5.5
+Cas de test 5 — Début de l’entraînement Fold 1 . . . . . . . . . . . . . . .
+83
+5.6
+Cas de test 6 — Système de reprise automatique . . . . . . . . . . . . . . .
+83
+5.7
+Cas de test 7 — Test-Time Augmentation
+. . . . . . . . . . . . . . . . . .
+84
+5.8
+SCORES F1 PAR FOLD — EFFICIENTNETV2-L @ 224PX (GPU P100)
+.
+84
+5.9
+Rapport de classiﬁcation OOF — EfﬁcientNetV2-L (seuil τ ∗= 0,31)
+. . .
+85
+5.10 Synthèse des résultats du projet . . . . . . . . . . . . . . . . . . . . . . . .
+89
+11
+Statistiques de normalisation calculées sur le jeu d’entraînement (Sentinel-1
+& Sentinel-2). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+95
+12
+Hyperparamètres — EfﬁcientNetV2-L . . . . . . . . . . . . . . . . . . . .
+101
+10
+
+
+===== PAGE 13 =====
+
+Liste des Abréviations
+AMP
+Automatic Mixed Precision
+BCE
+Binary Cross-Entropy
+CNN
+Convolutional Neural Network
+ESA
+Agence Spatiale Européenne
+GPU
+Graphics Processing Unit
+MSI
+MultiSpectral Instrument
+NDVI
+Normalized Difference Vegetation Index
+NIR
+Near-Infrared (Proche Infrarouge)
+OOF
+Out-Of-Fold
+RGB
+Red Green Blue
+SAR
+Synthetic Aperture Radar
+TTA
+Test Time Augmentation
+11
+
+
+===== PAGE 14 =====
+
+Introduction Générale
+1. Contexte général
+La planète Terre est soumise en permanence à des phénomènes naturels dont certains, lors-
+qu’ils surviennent à proximité de zones habitées, dégénèrent en catastrophes. Parmi ces phé-
+nomènes, les glissements de terrain occupent une place particulièrement préoccupante :
+selon les estimations scientiﬁques, ils causent chaque année plusieurs milliers de décès dans
+le monde et des pertes économiques considérables liées à la destruction d’habitations, de
+routes, de ponts et d’autres infrastructures critiques.
+L’essor des satellites d’observation de la Terre, et en particulier des missions Sentinel de
+l’Agence Spatiale Européenne (ESA) dans le cadre du programme Copernicus, a ouvert
+de nouvelles perspectives. Ces satellites permettent de surveiller l’ensemble de la surface
+terrestre de manière régulière, gratuite et automatique, en fournissant des images à haute
+résolution dans les heures suivant un événement. La combinaison de ces données avec les
+méthodes d’intelligence artiﬁcielle représente aujourd’hui la voie la plus prometteuse pour
+automatiser et accélérer la détection des glissements de terrain.
+2. Contexte spéciﬁque
+Notre projet s’inscrit dans ce cadre. Les méthodes traditionnelles de cartographie reposaient
+sur des reconnaissances de terrain ou des analyses manuelles : lentes, coûteuses et inappli-
+cables à grande échelle. Deux obstacles majeurs persistent malgré l’adoption des satellites :
+(1) la couverture nuageuse rend 30 à 40 % des images optiques inutilisables dans les zones
+montagneuses, précisément lors des événements de crise; (2) le déséquilibre des classes
+(82,4 % de zones normales contre 17,6 % de glissements) biaise les modèles naïfs vers la
+classe majoritaire.
+Nous disposons d’un jeu de données multi-source composé d’images issues de deux instru-
+ments complémentaires : les images optiques de Sentinel-2 (bandes RGB et NIR, précises
+mais inutilisables par temps nuageux) et les images radar SAR de Sentinel-1 (polarisations
+VV et VH, capables de pénétrer les nuages et de fournir une vision continue du terrain indé-
+pendamment des conditions météorologiques).
+12
+
+
+===== PAGE 15 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3. Problématique
+Dans quelle mesure est-il possible de construire un modèle de classiﬁcation
+binaire automatisé, ﬁable et généralisable, capable de détecter les glissements
+de terrain à partir de données satellitaires multi-sources (optique + SAR), en
+maintenant un niveau de performance élevé même en présence de couverture
+nuageuse et en gérant le fort déséquilibre des classes?
+4. Objectifs
+Objectif général : développer et évaluer un modèle d’apprentissage automatique multi-
+source pour la détection automatique des glissements de terrain, en combinant des données
+optiques (Sentinel-2) et des données radar SAR (Sentinel-1).
+Objectifs spéciﬁques :
+— Prétraiter et normaliser des données satellites multi-sources hétérogènes.
+— Concevoir une architecture de fusion adaptative (GatedFusion) gérant automatiquement
+la dégradation de l’optique due aux nuages.
+— Gérer le déséquilibre des classes par la Focal Loss.
+— Atteindre un score F1 supérieur à 0,90 en validation croisée cinq plis.
+— Produire une soumission compétitive sur la plateforme Zindi.
+5. Annonce du plan
+Le présent rapport est organisé en cinq chapitres.
+Le Chapitre 1 présente le contexte et la problématique : déﬁnition des glissements de terrain,
+description du jeu de données et des capteurs utilisés.
+Le Chapitre 2 dresse un état de l’art des méthodes existantes allant des approches classiques
+au deep learning multi-modal.
+Le Chapitre 3 expose la conception de l’architecture proposée.
+Le Chapitre 4 décrit la réalisation technique.
+Le Chapitre 5 présente les tests, les résultats obtenus et leur analyse critique.
+13
+
+
+===== PAGE 16 =====
+
+Chapitre 1
+Contexte et Problématique
+1.1
+Les Glissements de Terrain : Déﬁnition et Classiﬁcation
+1.1.1
+Déﬁnition générale
+Un glissement de terrain est un mouvement de masse rocheux, de sol ou de débris se dépla-
+çant sur une pente sous l’effet de la gravité. Ce phénomène géologique englobe une large
+variété de processus qui diffèrent par leur mécanisme de rupture, la nature des matériaux
+impliqués, la vitesse de déplacement et l’étendue géographique concernée.
+La classiﬁcation la plus utilisée dans la littérature scientiﬁque est celle de Varnes (1978) [15],
+révisée par Hungr et al. (2014) [16], qui distingue principalement les types suivants :
+— Chutes de blocs et éboulements (Falls) : détachement soudain de matériaux rocheux
+depuis une falaise ou une pente raide, avec chute libre et rebond.
+— Basculements (Topples) : rotation vers l’avant d’une masse rocheuse autour d’un point
+ou d’un axe pivot situé à la base du bloc.
+— Glissements plans ou rotationnels (Slides) : mouvement de masse sur une surface de
+rupture bien déﬁnie, plane ou courbe. C’est la forme la plus fréquente et la plus étudiée.
+— Étalements latéraux (Lateral Spreads) : extension horizontale d’une masse cohésive
+surmontant un matériau plus mou ou liquide.
+— Coulées (Flows) : mouvement continu de matériaux meubles ou saturés en eau, pouvant
+atteindre des vitesses très élevées.
+— Mouvements complexes : combinaison de plusieurs types précédents.
+14
+
+
+===== PAGE 17 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+FIGURE 1.1. Types de mouvements de terrain
+1.1.2
+Facteurs déclencheurs
+Les glissements de terrain résultent de la combinaison de facteurs prédisposants (fragilisant
+durablement la stabilité des pentes) et de facteurs déclencheurs (provoquant la rupture à un
+moment donné).
+Parmi les facteurs prédisposants, on retient notamment la nature lithologique (roches ar-
+gileuses, fracturées), la topographie (pentes fortes), la présence de failles géologiques, la
+déforestation et les modiﬁcations anthropiques. Les principaux facteurs déclencheurs sont :
+— Les précipitations intenses et prolongées : facteur déclencheur le plus fréquent à l’échelle
+mondiale. L’inﬁltration d’eau augmente la pression interstitielle dans le sol, réduisant la
+résistance au cisaillement jusqu’à provoquer la rupture.
+— Les séismes : les secousses sismiques induisent des accélérations dynamiques pouvant
+déstabiliser des versants déjà fragilisés. Le jeu de données de ce projet est spéciﬁquement
+basé sur des glissements déclenchés par des séismes (earthquake-triggered landslides).
+Des événements majeurs tels que Haïti (2010), Gorkha – Népal (2015) et Palu – Indoné-
+sie (2018) ont déclenché des dizaines de milliers de glissements en quelques secondes.
+— L’activité volcanique, la fonte des glaciers ou des facteurs anthropiques (vibrations
+industrielles, modiﬁcation du drainage) constituent des déclencheurs secondaires.
+1.2
+Ampleur du Phénomène et Enjeux Sociaux
+1.2.1
+Bilan mondial
+Les glissements de terrain ﬁgurent parmi les catastrophes naturelles les plus meurtrières
+après les séismes et les inondations. Froude & Petley (2018) [17] ont recensé plus de 4 862
+glissements mortels entre 2004 et 2016, ayant causé plus de 55 000 décès dans le monde, des
+chiffres probablement sous-estimés en raison des lacunes dans les inventaires, en particulier
+15
+
+
+===== PAGE 18 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+dans les pays en développement.
+Les régions les plus touchées sont l’Asie du Sud et du Sud-Est (Chine, Inde, Népal, In-
+donésie, Philippines), l’Amérique centrale et du Sud, ainsi que certaines zones de l’Afrique
+subsaharienne : ces régions cumulent une topographie montagnarde, des précipitations abon-
+dantes, une activité sismique élevée et une forte densité de population.
+FIGURE 1.2. Éboulement à Upper Island Cove : chute dun bloc rocheux sur la baie de la Conception
+1.2.2
+Impact sur les infrastructures et l’environnement
+Au-delà des pertes humaines, les glissements de terrain engendrent des coûts économiques
+considérables : destruction de routes, ponts, voies ferrées et réseaux d’eau potable; ense-
+velissement de villages entiers rendant les opérations de secours extrêmement difﬁciles;
+formation de barrages naturels sur les cours d’eau pouvant provoquer des inondations ca-
+tastrophiques lors de leur rupture; érosion des sols et destruction d’écosystèmes forestiers.
+1.2.3
+Glissements de terrain et changement climatique
+Le changement climatique constitue un facteur aggravant. L’augmentation de la fréquence et
+de l’intensité des épisodes de précipitations extrêmes entraînera mécaniquement une hausse
+du nombre de glissements. Certaines études projettent également une déstabilisation accrue
+des versants de montagne liée au recul des glaciers. Dans ce contexte, disposer de systèmes
+de détection rapides et ﬁables est plus que jamais une priorité stratégique.
+1.3
+La Détection de Glissements de Terrain par Satellite
+1.3.1
+Pourquoi la télédétection?
+La cartographie traditionnelle par voie terrestre présente des limitations majeures : lenteur
+(plusieurs semaines après l’événement), dangerosité pour les équipes et inapplicabilité dans
+les zones d’accès difﬁcile. La télédétection spatiale surmonte ces obstacles en permettant
+16
+
+
+===== PAGE 19 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+une couverture rapide, répétée et synoptique de zones étendues, souvent disponible dans les
+heures suivant un événement. L’observation de la Terre fournit deux grands types de capteurs
+complémentaires.
+1.3.2
+Imagerie optique : Sentinel-2
+Le satellite Sentinel-2 fait partie du programme Copernicus de l’ESA. Son instrument MSI
+(MultiSpectral Instrument) capture des images en 13 bandes spectrales. Pour ce projet, nous
+utilisons les quatre bandes à 10 mètres de résolution spatiale détaillées dans le Tableau 1.1.
+TABLE 1.1. Bandes Sentinel-2 utilisées dans le projet
+Bande
+Nom
+Longueur d’onde
+Utilité
+B02
+Bleu
+490 nm
+Détection de surfaces, eau
+B03
+Vert
+560 nm
+Végétation, contraste
+B04
+Rouge
+665 nm
+Végétation, sols nus
+B08
+NIR
+842 nm
+Biomasse, humidité du sol
+Les images optiques sont particulièrement adaptées à la détection de glissements car ils
+laissent des traces visuelles caractéristiques : modiﬁcation de la couleur du sol, disparition
+de la couverture végétale et ruptures de pente visibles.
+Limitation majeure. Sentinel-2 ne peut pas acquérir d’images utilisables en présence de
+nuages. Or, les événements déclencheurs (pluies intenses, typhons) s’accompagnent sys-
+tématiquement d’une couverture nuageuse dense, parfois persistante pendant plusieurs se-
+maines. C’est précisément dans ces situations critiques que la détection est la plus urgente et
+que les données optiques sont inutilisables.
+17
+
+
+===== PAGE 20 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+FIGURE 1.3. Illustration des classes doccupation du sol : 1) eau, 2) bâtiment et infrastructures, 3)
+sol nu, 4) végétation peu dense et 5) prairies selon Google Earth, Sentinel-2
+1.3.3
+Imagerie Radar SAR : Sentinel-1
+Le satellite Sentinel-1 embarque un instrument SAR (Synthetic Aperture Radar) en bande C
+(≈5,6 cm de longueur d’onde). Contrairement aux capteurs optiques passifs, le SAR émet
+ses propres ondes micro-ondes et mesure l’énergie rétrodiffusée par la surface terrestre. Ce
+principe actif lui confère deux avantages décisifs :
+— Indépendance vis-à-vis des conditions météorologiques : les micro-ondes traversent
+les nuages, le brouillard et la pluie sans atténuation signiﬁcative.
+— Acquisition de jour comme de nuit : le SAR ne dépend pas de l’éclairage solaire.
+Sentinel-1 acquiert des images en double polarisation (Tableau 1.2).
+TABLE 1.2. Polarisations Sentinel-1 utilisées dans le projet
+Polarisation
+Description
+VV
+Onde émise et reçue en polarisation verticale. Sensible à la rugosité de
+surface et aux structures orientées verticalement.
+VH
+Onde émise en vertical et reçue en horizontal (polarisation croisée). Sen-
+sible au volume de la végétation et aux structures complexes.
+18
+
+
+===== PAGE 21 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+Pour la détection de changements, le jeu de données inclut les bandes ∆VV et ∆VH, calcu-
+lées par soustraction de l’image pré-événement à l’image post-événement :
+∆V V = V Vpost −V Vpré
+∆V H = V Hpost −V Hpré
+(1.1)
+Ces différences de rétrodiffusion mettent en évidence les zones où la surface terrestre a été
+modiﬁée par le glissement (déforestation soudaine, exposition de sol nu, déplacement de
+matériaux).
+FIGURE 1.4. la composition colorée RVB de imagerie Sentinel-1 avec la moyenne temporelle (B :
+VV, V : VH, R : VV/VH)
+FIGURE 1.5. imagerie Sentinel-1 brut
+1.3.4
+L’indice NDVI
+Le NDVI (Normalized Difference Vegetation Index) est calculé à partir des bandes NIR et
+Rouge de Sentinel-2 :
+NDVI = NIR −Rouge
+NIR + Rouge
+(1.2)
+Sa plage de valeurs s’étend de −1 à +1 : une végétation dense correspond à des valeurs
+comprises entre 0,6 et 0,9, tandis que les sols nus présentent des valeurs autour de −0, 1
+à 0,2. Un glissement de terrain entraîne une destruction brutale de la végétation se traduisant
+par une chute marquée du NDVI dans les images post-événement.
+19
+
+
+===== PAGE 22 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+1.4
+Description du Jeu de Données
+1.4.1
+Structure générale du jeu de données
+Le jeu de données utilisé dans ce projet est issu de la compétition Zindi Landslide Detection
+Challenge et a été préparé par Lorenzo Nava, chercheur postdoctoral au sein du groupe
+Cambridge Complex and Multihazard (CoMHaz) de l’Université de Cambridge.
+Il est composé de patches multi-bandes (tuiles d’images carrées de 64 × 64 px, redimen-
+sionnées à 224×224 px lors du prétraitement), chacun étiqueté selon qu’il contient ou non un
+glissement de terrain. Chaque patch intègre 12 bandes issues de trois sources complémen-
+taires : imagerie optique Sentinel-2, imagerie radar SAR Sentinel-1 en orbite descendante, et
+imagerie SAR Sentinel-1 en orbite ascendante.
+Principe de la comparaison temporelle
+Une caractéristique fondamentale de ce jeu de données réside dans sa dimension bi-temporelle :
+pour chaque site, deux acquisitions sont disponibles une image pré-événement (avant le glis-
+sement) et une image post-événement (après le glissement). Les bandes dites « Différence »
+sont calculées comme suit :
+∆B = Bpost −Bpre
+(1.3)
+Ces bandes de différence constituent les indicateurs les plus directs des changements surve-
+nus sur le terrain : une valeur nulle indique l’absence de modiﬁcation, tandis qu’une valeur
+signiﬁcativement non nulle signale une perturbation potentielle liée à un glissement de ter-
+rain.
+Composition détaillée des 12 bandes
+Le Tableau 1.3 présente l’ensemble des bandes disponibles, organisées par source et par type.
+20
+
+
+===== PAGE 23 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+TABLE 1.3. Composition détaillée des 12 bandes du jeu de données multi-source
+Bande
+Source
+Orbite
+Canal
+Description
+1
+Sentinel-2
+—
+Rouge
+Réﬂectance optique, bande visible
+2
+Sentinel-2
+—
+Vert
+Réﬂectance optique, bande visible
+3
+Sentinel-2
+—
+Bleu
+Réﬂectance optique, bande visible
+4
+Sentinel-2
+—
+NIR
+Proche infrarouge, sensible à la végétation
+5
+Sentinel-1
+Descendant
+VV
+Rétrodiffusion radar co-polarisée
+6
+Sentinel-1
+Descendant
+VH
+Rétrodiffusion radar croisée
+7
+Sentinel-1
+Descendant
+∆VV
+Différence VV (post −pré)
+8
+Sentinel-1
+Descendant
+∆VH
+Différence VH (post −pré)
+9
+Sentinel-1
+Ascendant
+VV
+Rétrodiffusion radar co-polarisée
+10
+Sentinel-1
+Ascendant
+VH
+Rétrodiffusion radar croisée
+11
+Sentinel-1
+Ascendant
+∆VV
+Différence VV (post −pré)
+12
+Sentinel-1
+Ascendant
+∆VH
+Différence VH (post −pré)
+Total
+12 bandes d’entrée par patch
+Rôle complémentaire des trois modalités
+Les trois groupes de bandes jouent des rôles distincts et complémentaires dans la détection
+des glissements de terrain :
+— Bandes optiques (1–4) : Issues du capteur Sentinel-2 (résolution 10 m, Level-2A en
+réﬂectance de surface), elles permettent une interprétation visuelle de la scène couvert
+végétal, type de sol, morphologie du terrain. L’indice de végétation (NDVI) peut être cal-
+culé à partir des bandes Rouge et NIR pour évaluer les pertes de végétation consécutives
+à un glissement.
+— Bandes SAR descendantes (5–8) : Le radar à synthèse d’ouverture (SAR) de Sentinel-
+1 opère indépendamment des conditions lumineuses et météorologiques, ce qui le rend
+particulièrement robuste dans des zones souvent nuageuses. L’orbite descendante four-
+nit une géométrie d’illumination spéciﬁque sensible à certaines orientations de versants.
+Les bandes de différence (∆VV, ∆VH) capturent directement les modiﬁcations de la
+structure de surface induites par le glissement.
+— Bandes SAR ascendantes (9–12) : Complémentaires aux bandes descendantes, elles
+offrent un angle d’acquisition différent, réduisant les zones d’ombre radar (layover et
+foreshortening) inhérentes au relief montagneux et améliorant ainsi la couverture spatiale
+21
+
+
+===== PAGE 24 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+des changements détectés.
+Bandes critiques pour la détection
+Du point de vue de la détection automatique, les bandes de différence (bandes 7, 8, 11
+et 12) constituent les indicateurs les plus informatifs. Comme exprimé par l’équation (1.3),
+elles localisent précisément les zones ayant subi une modiﬁcation entre les deux dates d’ac-
+quisition. Le modèle d’apprentissage profond exploite ainsi une combinaison de trois types
+d’informations :
+1. La scène visuelle (bandes optiques) : apparence et contexte géographique du site.
+2. La structure du terrain (bandes SAR absolues) : rugosité de surface, humidité du
+sol, densité de végétation.
+3. Le signal de changement (bandes différentielles) : localisation et intensité des pertur-
+bations liées à l’événement.
+Cette richesse multi-modale et bi-temporelle constitue l’un des atouts majeurs du jeu de
+données pour la détection robuste des glissements de terrain par apprentissage profond.
+1.4.2
+Variable cible et distribution
+La variable cible est binaire : 1 pour un patch affecté par un glissement, 0 pour un patch non
+affecté. La distribution du jeu de données (Tableau 1.4) met en évidence un fort déséquilibre
+de classes.
+TABLE 1.4. Distribution des classes dans le jeu de données
+Classe
+Nombre d’échantillons
+Proportion
+Normal (0)
+5 892
+82,4 %
+Glissement (1)
+1 255
+17,6 %
+Total
+7 147
+100 %
+1.4.3
+Inventaires de référence
+Les étiquettes du jeu de données sont construites à partir d’inventaires de glissements dé-
+clenchés par des séismes, provenant d’événements réels documentés à l’échelle mondiale.
+Ces inventaires constituent la vérité terrain (ground truth) indispensable à l’entraînement
+supervisé.
+22
+
+
+===== PAGE 25 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+1.5
+Déﬁnition de la Problématique et des Besoins
+1.5.1
+Analyse des besoins
+Les utilisateurs cibles de ce type de système sont multiples : les autorités de gestion des
+catastrophes (protection civile, agences nationales de gestion des risques), qui ont besoin de
+cartes d’endommagement dans les heures suivant un événement; les organismes humani-
+taires (Croix-Rouge, OCHA) coordonnant les secours; et les ingénieurs et urbanistes inté-
+grant l’aléa dans la planiﬁcation de l’infrastructure.
+Les contraintes techniques à respecter sont les suivantes :
+— Robustesse aux conditions météorologiques : le modèle doit fonctionner même en l’ab-
+sence de données optiques utilisables.
+— Généralisabilité : les événements de test peuvent survenir dans des régions géographi-
+quement ou géologiquement différentes des événements d’entraînement.
+— Gestion du déséquilibre de classes : le score F1 est retenu comme métrique d’éva-
+luation, l’accuracy étant trompeuse (un modèle naïf prédisant toujours 0 atteint 82,4 %
+d’accuracy mais un F1 nul).
+— Transparence et explicabilité : les résultats doivent être interprétables aﬁn d’identiﬁer
+les bandes les plus discriminantes.
+Le Tableau 1.5 synthétise les objectifs et leurs critères de succès.
+TABLE 1.5. Objectifs détaillés et critères de succès
+Objectif
+Critère de succès
+Prétraitement multi-source
+Normalisation correcte, ﬁltre médian SAR
+Fusion adaptative
+GatedFusion apprenant à gérer les nuages
+Gestion du déséquilibre
+F1-score > 0,90 (et non accuracy)
+Robustesse
+Validation croisée 5-Fold, faible variance
+1.5.2
+Métrique d’évaluation : le score F1
+La métrique d’évaluation retenue est le score F1, déﬁni comme la moyenne harmonique de
+la précision (Precision) et du rappel (Recall) :
+F1 = 2 × Précision × Rappel
+Précision + Rappel
+avec
+Précision =
+TP
+TP + FP et Rappel =
+TP
+TP + FN
+(1.4)
+où TP, FP et FN désignent respectivement les vrais positifs, faux positifs et faux négatifs.
+Dans le contexte des glissements de terrain, les faux négatifs (zones affectées non détectées)
+23
+
+
+===== PAGE 26 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+sont particulièrement coûteux, car ils peuvent conduire à l’absence de secours dans des zones
+sinistrées. Le score F1 équilibre précision et rappel, ce qui en fait la métrique la plus adaptée
+à ce problème.
+1.5.3
+Problématique formelle
+Comment concevoir une architecture de deep learning capable de : (1) exploiter
+la complémentarité des modalités optique et SAR; (2) gérer automatiquement
+la dégradation de l’optique due aux nuages; et (3) détecter efﬁcacement les
+glissements malgré un fort déséquilibre de classes (82,4 % / 17,6 %)?
+24
+
+
+===== PAGE 27 =====
+
+Chapitre 2
+État de l’Art
+2.1
+Introduction
+La détection automatique des glissements de terrain par télédétection est un domaine de
+recherche en plein essor. Les travaux publiés couvrent un spectre large de méthodologies,
+allant des approches basées sur des règles expertes aux architectures de deep learning les plus
+récentes. Cette section présente une synthèse structurée, organisée autour de trois grandes
+catégories : méthodes classiques d’analyse d’image, méthodes d’apprentissage automatique,
+et méthodes de deep learning.
+2.2
+Approches Classiques : Analyse Visuelle et Indices Spec-
+traux
+2.2.1
+Interprétation visuelle manuelle
+Historiquement, la cartographie des glissements de terrain par satellite reposait sur l’interpré-
+tation visuelle manuelle d’images optiques par des experts. Cette approche, bien que précise
+pour des spécialistes expérimentés, présente des inconvénients rédhibitoires dans un contexte
+de réponse d’urgence : lenteur, absence de reproductibilité, inapplicabilité à grande échelle
+et forte dépendance à l’expérience de l’interprète.
+2.2.2
+Indices spectraux
+Avant l’avènement du deep learning, les méthodes semi-automatiques basées sur des indices
+spectraux ont constitué la première étape vers l’automatisation. Les indices les plus utilisés
+pour la détection de glissements sont :
+— Le NDVI (Normalized Difference Vegetation Index) : un glissement de terrain détruit la
+végétation et se traduit par une chute brutale du NDVI dans les images post-événement.
+— Le NDWI (Normalized Difference Water Index) : sensible à l’humidité du sol, utile pour
+25
+
+
+===== PAGE 28 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+identiﬁer les zones saturées en eau précédant un glissement.
+— Les indices de changement (différences d’images ou de rapports de bandes) entre les
+images pré et post-événement.
+Ces indices sont simples à calculer mais souffrent de nombreuses confusions spectrales : les
+zones de sol nu, les champs récoltés ou les zones brûlées présentent des signatures similaires
+à celles des glissements, générant de nombreux faux positifs.
+2.2.3
+Analyse orientée objet (OBIA)
+L’analyse orientée objet (Object-Based Image Analysis, OBIA) améliore notablement l’ap-
+proche pixel à pixel en regroupant les pixels en objets cohérents sur la base de critères spec-
+traux, texturaux et de forme. Stumpf & Kerle (2011) [18] ont démontré que l’OBIA réduit
+signiﬁcativement le bruit de sel-et-poivre caractéristique de la classiﬁcation pixel à pixel.
+Toutefois, l’OBIA reste dépendante d’une segmentation de bonne qualité et de règles déﬁ-
+nies manuellement, ce qui limite sa généralisabilité.
+2.3
+Méthodes d’Apprentissage Automatique Classique
+2.3.1
+Support Vector Machine (SVM)
+Les machines à vecteurs de support ont été parmi les premières méthodes d’apprentissage
+automatique appliquées à la détection de glissements. Le SVM cherche l’hyperplan à marge
+maximale séparant les pixels de glissement des pixels normaux dans un espace de carac-
+téristiques. Des noyaux non linéaires (RBF, polynomial) permettent de gérer des frontières
+de décision complexes. Le SVM nécessite cependant une ingénierie de features intensive
+(NDVI, indices texturaux, pentes MNT) et peine à généraliser à de nouvelles régions géo-
+graphiques.
+2.3.2
+Random Forest
+Le Random Forest est un algorithme d’ensemble construisant un grand nombre d’arbres de
+décision à partir de sous-échantillons aléatoires, puis agrégeant leurs prédictions par vote
+majoritaire. Ses atouts pour la détection de glissements sont :
+— Résistance au surapprentissage grâce au bagging.
+— Capacité à traiter des variables hétérogènes (bandes spectrales, indices, variables topo-
+graphiques).
+— Mesure native de l’importance des variables, offrant une interprétabilité intéressante.
+Ghorbanzadeh et al. (2019) [19] ont appliqué l’apprentissage automatique en combinant des
+26
+
+
+===== PAGE 29 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+données Sentinel-1, Sentinel-2 et GNSS pour la cartographie de la susceptibilité aux glisse-
+ments, obtenant des résultats satisfaisants tout en maintenant une haute interprétabilité.
+2.3.3
+XGBoost et méthodes de gradient boosting
+Le XGBoost (Extreme Gradient Boosting) construit itérativement des arbres de décision,
+chaque arbre cherchant à corriger les erreurs du précédent par descente de gradient. Il dé-
+montre des performances souvent supérieures au Random Forest sur des jeux de données
+tabulaires, avec une vitesse d’entraînement élevée. Pour les données satellitaires, XGBoost
+est généralement appliqué sur des vecteurs de features extraites des images (statistiques par
+patch, indices spectraux, moments texturaux) plutôt que directement sur les pixels bruts.
+2.4
+Méthodes de Deep Learning
+2.4.1
+Réseaux de Neurones Convolutifs (CNN)
+Les CNN (Convolutional Neural Networks) constituent une révolution dans le traitement
+d’images. Contrairement aux méthodes classiques, ils apprennent automatiquement des re-
+présentations hiérarchiques à partir des données brutes. Dans le domaine de la détection de
+glissements, plusieurs architectures se sont imposées :
+— U-Net : architecture encodeur-décodeur avec des connexions de saut (skip connections)
+combinant les features de haute et basse résolution. Initialement conçue pour la seg-
+mentation médicale, elle a été largement adoptée en télédétection. Des études basées sur
+U-Net appliqué à Sentinel-1 ont atteint des coefﬁcients de Dice jusqu’à 0,96 en valida-
+tion.
+— DeepLabV3+ : basée sur des convolutions dilatées et un module ASPP (Atrous Spatial
+Pyramid Pooling) capturant des contextes multi-échelles.
+— U2-Net : version améliorée de U-Net avec des blocs réseaux imbriqués, montrant des
+résultats légèrement supérieurs pour la détection de glissements par SAR.
+Nava et al. (2022) [20] ont proposé une approche CNN sur Sentinel-1 pour la détection
+de glissements co-sismiques, obtenant des F1-scores de 82 % sur des événements non vus
+lors de l’entraînement, ce qui démontre une bonne transférabilité géographique. Chen et al.
+(2024) ont proposé un réseau MFEWF atteignant des précisions de 88,8 % sur le séisme de
+Mainling (Chine, 2017).
+27
+
+
+===== PAGE 30 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+2.4.2
+Architectures Hybrides CNN-Transformer
+Les Vision Transformers (ViT) et leurs dérivés représentent l’état de l’art actuel en vision
+par ordinateur. Leur mécanisme d’attention (self-attention) leur permet de capturer des dé-
+pendances longue portée dans les images, complémentaires aux features locales des CNN.
+Fu et al. (2024) [21] ont proposé le modèle SCDUNet++, combinant CNN et transformer
+pour la segmentation de glissements à partir de Sentinel-2 et du MNT NASA-DEM, surpas-
+sant les architectures de référence (U-Net, U-Net++, DeepLabV3+, SegFormer, SwinUNet)
+sur tous les sites de test.
+2.4.3
+Modèles Multi-Modaux : Fusion de Données Hétérogènes
+L’intégration de sources de données multiples (optique + SAR + MNT) par des architec-
+tures multi-modales représente l’approche la plus prometteuse pour surmonter les limites de
+chaque modalité. Trois stratégies de fusion existent :
+— Fusion précoce (early fusion) : concaténation des bandes de différentes modalités en
+entrée du réseau. Simple mais ne permet pas au réseau d’apprendre des représentations
+spécialisées par modalité.
+— Fusion tardive (late fusion) : entraînement de réseaux séparés, fusion des sorties avant
+la décision ﬁnale. Permet une spécialisation, mais ignore les interactions inter-modalités.
+— Fusion intermédiaire (intermediate fusion) : fusion à un niveau intermédiaire des repré-
+sentations, capturant les interactions entre modalités tout en maintenant une spécialisa-
+tion partielle. C’est généralement l’approche la plus performante – c’est notre choix.
+Nava et al. (2026) [22] ont développé une approche DNN sur Sentinel-1 pour 73 000 glisse-
+ments co-sismiques couvrant 11 événements sismiques. En utilisant l’IA explicable (XAI),
+ils ont démontré que les bandes de détection de changement (∆VV et ∆VH) sont plus dis-
+criminantes que la rétrodiffusion brute post-événement.
+2.4.4
+Transfert d’apprentissage
+Le transfert d’apprentissage consiste à initialiser un réseau avec des poids pré-entraînés sur
+un grand jeu de données (ImageNet ou un autre jeu de télédétection) avant de l’adapter au
+problème cible. Cette approche est particulièrement pertinente lorsque les données étiquetées
+sont rares. Fu et al. (2024) [21] ont démontré que le transfer learning améliore l’IoU de 8,33
+à 27,5 % et le F1 de 6,58 points par rapport aux prédictions directes sans ﬁne-tuning.
+28
+
+
+===== PAGE 31 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+2.5
+Comparaison des Approches Existantes
+Le Tableau 2.1 synthétise les principales caractéristiques des approches étudiées et posi-
+tionne notre contribution.
+TABLE 2.1. Comparaison des approches existantes et positionnement du projet
+Approche
+Données
+Nuages
+Déséquilibre
+F1 typique
+OBIA
+Optique
+Non
+Non
+∼0,70
+SVM
+Optique + fea-
+tures
+Non
+Non
+∼0,70
+Random Forest
+Multi-source
+Partiel
+Partiel
+∼0,78
+CNN U-Net (SAR)
+SAR
+Oui
+Partiel
+∼0,82
+DualNet (Opt+SAR)
+Optique + SAR
+Partiel
+Partiel
+∼0,84
+SCDUNet++ (Opt+MNT)
+Optique
++
+MNT
+Non
+Partiel
+∼0,88
+Notre approche
+Optique + SAR
+Oui (adapt.)
+Oui (FL)
+0,905
+2.6
+Étude de l’Existant et Limites Identiﬁées
+2.6.1
+Solutions et outils disponibles
+Plusieurs outils et systèmes opérationnels existent pour la cartographie automatique des glis-
+sements de terrain :
+— Copernicus Emergency Management Service (CEMS) : service de cartographie rapide
+d’urgence de l’Union Européenne. Efﬁcace mais lent et non entièrement automatisé.
+— SAR-LRA : outil de détection rapide par apprentissage profond développé par Nava et al.
+(2026) [22], librement disponible, spécialisé dans la détection rapide de glissements co-
+sismiques à partir de Sentinel-1. Utilisé avec succès lors du séisme de Hualien (Taïwan,
+2024) malgré une couverture nuageuse totale.
+— Google Earth Engine (GEE) : plateforme de traitement géospatial en nuage donnant
+accès aux données Sentinel-1/2, mais sans pipeline automatisé dédié aux glissements.
+— Sen12Landslides (2025) : jeu de données multi-modal large échelle contenant 75 000
+annotations de glissements dans 15 régions mondiales, avec des images Sentinel-1, Sentinel-
+2 et un MNT Copernicus.
+29
+
+
+===== PAGE 32 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+2.6.2
+Limites des approches existantes
+Malgré les avancées remarquables de la littérature, plusieurs limitations persistent et justi-
+ﬁent pleinement notre contribution :
+— Dépendance aux données optiques : la majorité des études privilégie les données op-
+tiques, plus interprétables, mais inutilisables par temps nuageux. La résilience aux nuages
+reste un déﬁouvert.
+— Problème de transférabilité : les modèles entraînés sur des événements sismiques spéci-
+ﬁques généralisent imparfaitement à de nouveaux contextes géologiques ou climatiques.
+— Déséquilibre des classes : les zones touchées par des glissements sont toujours mino-
+ritaires dans les jeux de données réels, ce qui biaise les modèles naïfs vers la classe
+majoritaire.
+— Manque de transparence : la plupart des modèles de deep learning sont des boîtes
+noires. Leur adoption opérationnelle exige des méthodes d’explicabilité (SHAP, Grad-
+CAM) encore rarement intégrées.
+— Complexité du prétraitement SAR : les images SAR nécessitent des corrections géo-
+métriques spéciﬁques (correction du relief, élimination du speckle) qui restent un frein à
+l’adoption large.
+Notre projet se propose de répondre à ces limitations en construisant un pipeline d’apprentis-
+sage automatique multi-source, combinant les forces de l’imagerie optique et du SAR dans
+un cadre uniﬁé, transparent et évalué rigoureusement par le score F1.
+2.7
+Cahier des Charges
+2.7.1
+Objectif du cahier des charges
+Ce cahier des charges est organisé en trois volets complémentaires. Le premier concerne les
+exigences fonctionnelles, c’est-à-dire ce que le système doit faire. Le second couvre les exi-
+gences non fonctionnelles, qui déﬁnissent comment il doit le faire (performance, robustesse,
+maintenabilité). Le troisième détaille les contraintes techniques, qui encadrent l’espace de
+solutions acceptables compte tenu de l’environnement matériel et logiciel disponible.
+2.7.2
+Exigences fonctionnelles
+Les exigences fonctionnelles décrivent les fonctions que le système doit obligatoirement
+remplir pour être considéré comme complet. Elles sont classées par module logique et ac-
+compagnées d’une justiﬁcation explicite.
+30
+
+
+===== PAGE 33 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+Module F1 Ingestion et prétraitement des données multi-sources
+Le système doit être capable de charger et de traiter les données satellitaires issues de deux
+instruments hétérogènes (Sentinel-2 et Sentinel-1), dont les plages de valeurs et les propriétés
+physiques sont fondamentalement différentes. Cette capacité conditionne toute la chaîne de
+traitement aval.
+F1.1 Chargement des patches NumPy Le système doit charger les ﬁchiers .npy
+bruts de dimension 64×64×12 et les redimensionner à 224×224 pixels aﬁn d’assurer
+la compatibilité avec le backbone EfﬁcientNetV2-L pré-entraîné sur ImageNet. Le re-
+dimensionnement doit utiliser une interpolation bilinéaire pour préserver la continuité
+spatiale.
+Justiﬁcation : Le format NumPy compact est le format natif du dataset Zindi. Le
+redimensionnement à 224Œ224 correspond à la résolution d’entrée standard des ar-
+chitectures pré-entraînées, garantissant la réutilisation des poids ImageNet.
+F1.2
+Séparation des modalités Le système doit séparer les 12 canaux en deux
+groupes distincts : les canaux optiques [0:4] (B4-Rouge, B3-Vert, B2-Bleu, B8-NIR) et
+les canaux SAR [4:12] (VV↑, VH↑, ∆VV↑, ∆VH↑, VV↓, VH↓, ∆VV↓, ∆VH↓). Ces
+deux groupes doivent ensuite être traités par des branches spécialisées indépendantes.
+Justiﬁcation : Les deux modalités ont des propriétés physiques, des plages de va-
+leurs et des signiﬁcations sémantiques radicalement différentes. Une branche dédiée à
+chaque modalité permet au réseau d’apprendre des représentations spécialisées, supé-
+rieures à celles d’une fusion précoce naïve.
+F1.3 Filtrage du bruit speckle SAR Le système doit appliquer un ﬁltre médian de
+taille 3×3 indépendamment sur chacun des 8 canaux SAR, avant toute normalisation.
+Ce ﬁltrage doit préserver les transitions spatiales nettes (contours des glissements) tout
+en réduisant le bruit multiplicatif granuleux.
+Justiﬁcation : Le bruit speckle est un artefact inhérent à l’imagerie SAR qui intro-
+duit des variations aléatoires d’intensité pixel par pixel. Le ﬁltre médian (préféré au
+ﬁltre moyen) élimine les valeurs aberrantes isolées sans estomper les discontinuités de
+rétrodiffusion caractéristiques des limites de glissement [13, 14].
+31
+
+
+===== PAGE 34 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+F1.4 Calcul du cloud score Le système doit calculer un indicateur scalaire de qualité
+des données optiques, appelé cloud score, selon la formule :
+cloud_score = 0,7 × σ
+(meanRGB −0,75
+0,08
+)
++ 0,3 × σ
+(0,08 −stdRGB
+0,03
+)
+∈[0, 1]
+Ce scalaire doit être calculé sur les trois premiers canaux optiques (RGB) et transmis
+comme entrée supplémentaire au module de fusion GatedFusion.
+Justiﬁcation : La couverture nuageuse dégrade silencieusement les données optiques
+sans déclencher d’erreur explicite. Un indicateur de qualité quantitatif permet au mo-
+dule de fusion d’adapter dynamiquement la pondération des modalités selon les condi-
+tions atmosphériques réelles.
+F1.5 Normalisation z-score adaptée Le système doit normaliser chaque canal par
+les statistiques (moyenne et écart-type) calculées sur l’ensemble du dataset d’entraî-
+nement, et non par les statistiques ImageNet. La formule est :
+ˆxc =
+xc −µc
+σc + 10−6
+Justiﬁcation : Les valeurs de réﬂectance Sentinel-2 sont dans [0, 10000] et les valeurs
+SAR sont en décibels (négatives). L’utilisation des statistiques ImageNet introduirait
+un biais systématique majeur incompatible avec ces plages.
+F1.6 Mise en cache des données prétraitées Le système doit sauvegarder les don-
+nées prétraitées dans des ﬁchiers .npz (format NumPy compressé) contenant les
+champs optical, sar et cloud_score. Le prétraitement ne doit être exécuté
+qu’une seule fois; les itérations suivantes doivent charger directement depuis le cache.
+Justiﬁcation : Le prétraitement implique des opérations coûteuses (ﬁltre médian, cal-
+cul du cloud score) qui, répétées à chaque époque, multiplieraient le temps d’entraîne-
+ment par un facteur 20. Sur Kaggle (sessions limitées à 12 heures), ce gain est critique
+pour la faisabilité du projet.
+32
+
+
+===== PAGE 35 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+Module F2 Augmentation de données
+F2.1 Augmentations géométriques cohérentes multi-canaux Le système doit appli-
+quer des transformations géométriques aléatoires (ﬂips horizontal et vertical, rotation
+à 90ˇr, décalage-zoom-rotation légère, suppression de régions aléatoires) de manière
+synchronisée sur les 12 canaux du patch, aﬁn de préserver la cohérence spatiale entre
+les modalités optique et SAR.
+Justiﬁcation : Appliquer des transformations géométriques indépendantes sur les
+deux modalités détruirait leur correspondance pixel-à-pixel, rendant la fusion impos-
+sible.
+F2.2 Augmentations photométriques sur les canaux RGB Le système doit appli-
+quer des perturbations de luminosité, de contraste et de saturation exclusivement sur
+les 3 premiers canaux optiques (RGB), en excluant le canal NIR et les canaux SAR
+qui ont des propriétés physiques distinctes.
+Justiﬁcation : Les variations d’éclairage et de conditions atmosphériques affectent les
+canaux de luminosité visible mais pas le canal NIR ni le signal radar.
+F2.3 Mixup et CutMix synchronisés Le système doit implémenter Mixup (Zhang
+et al., 2018) [9] et CutMix (Yun et al., 2019) [10] en appliquant le même coefﬁcient
+de mélange λ ou le même masque binaire M simultanément sur les deux modalités
+optique et SAR d’un même batch. Ces augmentations ne doivent s’activer qu’après la
+troisième époque d’entraînement.
+Justiﬁcation : Mixup et CutMix améliorent la régularisation et la généralisation, mais
+nécessitent que le modèle ait d’abord stabilisé ses poids de base avant d’introduire des
+exemples synthétiques interpolés.
+Module F3 Architecture du modèle de classiﬁcation
+F3.1 Branche optique EfﬁcientNetV2-L avec transfer learning Le système doit
+intégrer EfﬁcientNetV2-L pré-entraîné sur ImageNet comme backbone de la branche
+optique, adapté à 4 canaux d’entrée (et non 3) et produisant un vecteur de représenta-
+tion de dimension Dopt ≈1280.
+Justiﬁcation : EfﬁcientNetV2-L offre le meilleur rapport précision/vitesse parmi les
+architectures disponibles. Le transfer learning depuis ImageNet apporte une initialisa-
+tion de qualité, réduisant le nombre d’époques nécessaires à la convergence.
+33
+
+
+===== PAGE 36 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+F3.2 Branche SAR avec CNN résiduel entraîné depuis zéro Le système doit inclure
+une branche SAR basée sur une architecture pyramidale de blocs convolutifs résiduels
+(32 →64 →128 →256 ﬁltres), entraînée from scratch, produisant un vecteur de
+représentation de 256 dimensions.
+Justiﬁcation : Aucun pré-entraînement n’est disponible pour les données SAR (les
+modèles ImageNet ne contiennent pas d’images radar). Une architecture résiduelle
+légère mais profonde est adaptée à la taille de notre dataset.
+F3.3 Module GatedFusion cloud-aware Le système doit implémenter un module
+de fusion adaptative GatedFusion calculant un vecteur de pondération α ∈[0, 1]512
+selon :
+α = σ
+(
+W2 · ReLU(W1 · [o ; s ; c])
+)
+f = α ⊙o + (1 −α) ⊙s
+Ce module doit recevoir explicitement le cloud score c comme troisième entrée aﬁn
+d’apprendre à réduire la contribution optique lorsque la qualité des données optiques
+est dégradée.
+Justiﬁcation : Une fusion statique (concaténation ﬁxe) ne peut pas s’adapter aux
+conditions atmosphériques variables. Le vecteur α de dimension 512 permet 512 po-
+litiques de fusion indépendantes, une par dimension de représentation.
+F3.4 Classiﬁcateur ﬁnal avec double régularisation Le système doit inclure un
+classiﬁcateur ﬁnal de la forme Dropout(0,4) →Linear(512→256) →ReLU →Dro-
+pout(0,3) →Linear(256→1), produisant un logit brut (sans sigmoïde).
+Justiﬁcation : Le double Dropout assure une régularisation progressive. La sortie en
+logit brut est requise par BCEWithLogitsLoss, numériquement plus stable que
+l’application séparée de sigmoïde puis de BCE, en particulier en précision ﬂoat16.
+34
+
+
+===== PAGE 37 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+Module F4 Entraînement et évaluation
+F4.1 Gestion du déséquilibre par Focal Loss Le système doit utiliser la Focal Loss
+avec les paramètres α = 0,25 et γ = 2,0 comme fonction de perte principale :
+FL(pt) = −0,25 · (1 −pt)2 · log(pt)
+Justiﬁcation : Le déséquilibre de classes 4,7 :1 (5 892 normaux / 1 255 glissements)
+biaise une BCE standard vers la classe majoritaire. La Focal Loss réduit la contribu-
+tion des exemples faciles d’un facteur 324 par rapport aux exemples difﬁciles, for-
+çant le réseau à se concentrer sur les glissements difﬁciles à discriminer (Lin et al.,
+ICCV 2017) [8].
+F4.2 Validation croisée 5-Fold stratiﬁée Le système doit implémenter une vali-
+dation croisée en cinq plis avec StratifiedKFold, garantissant que chaque pli
+maintient le ratio 82,4 %/17,6 % de la distribution originale. Les probabilités Out-Of-
+Fold (OOF) doivent être collectées pour une évaluation sans data leakage.
+Justiﬁcation : Un simple découpage train/validation unique pourrait produire une es-
+timation biaisée par chance. La validation stratiﬁée en cinq plis fournit une estimation
+non biaisée de la performance en généralisation avec une variance signiﬁcativement
+réduite.
+F4.3 Optimisation du seuil de décision Le système doit rechercher le seuil optimal
+τ ∗par scan de 81 valeurs régulièrement espacées dans [0,10; 0,90] sur les probabilités
+OOF, en maximisant le score F1 :
+τ ∗= arg
+max
+τ∈[0,10, 0,90] F1
+(
+ˆy(τ), ytrue
+)
+Justiﬁcation : Le seuil par défaut τ = 0,50 n’est pas optimal en présence de dés-
+équilibre. Sur notre dataset, τ ∗= 0,31 apporte un gain de +0,043 de F1 par rapport à
+τ = 0,50.
+F4.4 Test Time Augmentation (TTA ×4) En phase d’inférence, le système doit
+produire 4 prédictions par patch (original + ﬂip horizontal + ﬂip vertical + rotation
+180ˇr) et en faire la moyenne avant d’appliquer le seuil τ ∗.
+Justiﬁcation : Le TTA réduit la variance des prédictions en exploitant l’invariance
+aux symétries des glissements de terrain, améliorant la robustesse du système face à
+des patches présentant des orientations non vues lors de l’entraînement.
+35
+
+
+===== PAGE 38 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+Module F5 Déploiement et mise en service
+Une fois le modèle entraîné et évalué, le système doit pouvoir être exploité par un utilisateur
+ﬁnal en dehors de l’environnement de développement.
+F5.1 Application web de prédiction Le système doit fournir une application web,
+développée avec le framework FastAPI et exécutée localement, permettant à un utili-
+sateur de téléverser une tuile satellitaire au format .npy (64 × 64 × 12) et d’obtenir
+une prédiction sans manipuler de code. L’interface doit afﬁcher la probabilité produite
+par le modèle ainsi que la classe prédite (´n Glissement ˙z ou ´n Normal ˙z). Justiﬁca-
+tion : La valeur opérationnelle d’un modèle de détection ne se concrétise que s’il est
+accessible à des utilisateurs non spécialistes. Une interface web légère rend le système
+utilisable par les services de gestion des risques.
+F5.2 Cohérence du prétraitement à l’inférence L’application de déploiement doit
+reproduire exactement la chaîne de prétraitement déﬁnie pour l’entraînement : sépara-
+tion des 12 canaux, recalcul du cloud score sur les canaux RGB, ﬁltre médian sur les
+canaux SAR, normalisation z-score et redimensionnement à 224 × 224. La décision
+ﬁnale doit appliquer le seuil optimal τ ∗= 0,31 déterminé lors de l’évaluation.
+Justiﬁcation : Tout écart entre le prétraitement d’entraînement et celui d’inférence
+dégrade silencieusement les performances. Reproduire la chaîne à l’identique garantit
+que le modèle reçoit en production des données strictement comparables à celles vues
+durant l’apprentissage.
+2.7.3
+Exigences non fonctionnelles
+Les exigences non fonctionnelles précisent les qualités que doit présenter le système indé-
+pendamment de ses fonctions, notamment en termes de performance, de robustesse et de
+maintenabilité.
+Performance
+NF1 Score F1 minimal Le système doit atteindre un score F1 supérieur à 0,90 en
+validation croisée Out-Of-Fold sur le dataset de 7 147 patches. Ce seuil correspond
+au niveau de performance requis pour être considéré comme compétitif par rapport à
+l’état de l’art multi-modal.
+36
+
+
+===== PAGE 39 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+NF2 Robustesse à la couverture nuageuse En présence de données optiques dégra-
+dées (cloud score élevé), le système ne doit pas subir de chute de F1 supérieure à 5
+points par rapport à son score nominal. Le module GatedFusion doit basculer automa-
+tiquement vers la modalité SAR sans intervention manuelle.
+NF3 Stabilité inter-folds L’écart-type du F1 entre les cinq plis doit rester inférieur à
+0,020, indiquant que les performances sont stables et non dépendantes d’un partition-
+nement particulier des données.
+Efﬁcacité computationnelle
+NF4 Compatibilité GPU Kaggle P100 L’entraînement complet (5 folds, ensemble
+des époques avec arrêt précoce) doit pouvoir s’exécuter dans une session Kaggle de
+12 heures maximum sur un GPU Tesla P100 de 16 Go de VRAM. Le batch size, la
+précision de calcul (AMP ﬂoat16) et les mécanismes de nettoyage mémoire inter-folds
+doivent être conﬁgurés en conséquence.
+NF5 Gestion de la mémoire GPU La consommation mémoire de pointe ne doit
+pas dépasser 14 Go (réserve de 2 Go pour le système). Entre deux folds consécutifs,
+une séquence obligatoire de libération mémoire (del model, gc.collect(),
+torch.cuda.empty_cache()) doit être exécutée.
+Maintenabilité et reproductibilité
+NF6
+Reproductibilité des résultats Les résultats doivent être reproductibles à
+±0,001 de F1 en ﬁxant les graines aléatoires de PyTorch, NumPy et Python random
+(seed=42) au début de chaque fold.
+NF7 Mécanisme de reprise sur interruption Le système doit sauvegarder un check-
+point (.pth) contenant l’état du modèle, de l’optimiseur et du scheduler à chaque
+amélioration du F1 de validation. En cas d’interruption (timeout Kaggle, décon-
+nexion), le meilleur modèle doit pouvoir être rechargé et l’entraînement reprendre
+sans perte.
+37
+
+
+===== PAGE 40 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+Déploiement
+NF8 Temps de réponse de la prédiction Une fois le modèle chargé en mémoire,
+l’application web doit retourner le résultat d’une prédiction (téléversement, prétraite-
+ment et inférence) en quelques secondes, aﬁn de garantir une expérience utilisateur
+ﬂuide. Le modèle ne doit être chargé qu’une seule fois, au démarrage du serveur.
+Justiﬁcation : Recharger le modèle à chaque requête introduirait une latence de plu-
+sieurs secondes inutile. Un chargement unique au démarrage rend le temps de réponse
+dominé par la seule inférence, compatible avec une utilisation interactive.
+2.7.4
+Contraintes techniques
+Les contraintes techniques encadrent l’espace de solutions acceptables et doivent être res-
+pectées sans possibilité de dérogation.
+CT1 Environnement matériel. GPU Tesla P100 16 Go (architecture sm_60), dis-
+ponible exclusivement sur la plateforme Kaggle. Toute dépendance à des instructions
+CUDA postérieures à sm_60 est interdite.
+CT2 Versions logicielles. PyTorch 2.4.1+cu118 : le build compilé pour CUDA 11.8
+conserve le support de l’architecture sm_60, contrairement aux builds CUDA 12.x des
+versions récentes qui l’ont abandonnée. Python 3.10, CUDA 11.8, timm ≥0.9 (pour
+EfﬁcientNetV2), Albumentations ≥1.3 (pour les augmentations multi-canaux).
+CT3 Format des données d’entrée. Fichiers .npy de dimension 64 × 64 × 12,
+étiquettes binaires (0 ou 1) dans un ﬁchier CSV séparé. Aucune donnée externe au
+dataset Zindi ne peut être utilisée pour l’entraînement.
+CT4
+Précision
+numérique
+ﬂoat16.
+L’entraînement
+en
+précision
+mixte
+ﬂoat16/ﬂoat32 via AMP est obligatoire pour tenir dans les contraintes mémoire de la
+P100. Les logits doivent être clampés dans [−20, 20] et la fonction nan_to_num()
+doit être appelée sur les gradients pour éviter les NaN en ﬂoat16.
+CT5 Métrique d’évaluation exclusive. Le score F1 (classe positive : glissement)
+est la seule métrique d’optimisation retenue. L’accuracy, l’AUC-ROC et la précision
+seule sont des métriques secondaires d’information, non utilisées pour les décisions
+de sélection de modèle.
+38
+
+
+===== PAGE 41 =====
+
+Chapitre 3
+Conception
+3.1
+Introduction
+Cette partie présente la conception de notre solution de détection automatique des glisse-
+ments de terrain. Après avoir analysé le problème et étudié l’existant dans la Partie I, nous
+déﬁnissons désormais l’architecture technique adoptée, modélisons les composants du sys-
+tème, justiﬁons nos choix technologiques et organisons les différents modules qui constituent
+notre pipeline.
+La conception est structurée selon un pipeline en cinq phases, allant de l’acquisition des
+données jusqu’à la mise à disposition du modèle auprès de l’utilisateur ﬁnal :
+1. Données — acquisition et description des tuiles satellitaires multi-sources (optique
+Sentinel-2 et radar Sentinel-1);
+2. Préparation — ﬁltrage du bruit, calcul du cloud score, mise en cache, normalisation
+et augmentation des données;
+3. Entraînement — architecture multimodale à fusion adaptative, fonction de perte adap-
+tée au déséquilibre et validation croisée;
+4. Évaluation — mesure des performances par le score F1 et optimisation du seuil de
+décision;
+5. Déploiement — intégration du modèle dans une application web permettant une pré-
+diction interactive.
+1. Données
+Tuiles Sentinel-1/2
+64 × 64 × 12
+2. Préparation
+Filtrage, cloud score,
+cache, normalisation
+3. Entraînement
+Fusion adaptative,
+Focal Loss, K-Fold
+4. Évaluation
+Score F1, OOF,
+seuil τ ∗
+5. Déploiement
+Application web
+FastAPI
+FIGURE 3.1. Pipeline de conception en cinq phases
+Les sections suivantes détaillent l’architecture générale et la modélisation UML du système,
+puis chacune des cinq phases de ce pipeline.
+39
+
+
+===== PAGE 42 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3.2
+Architecture du système
+3.2.1
+Vue d’ensemble de l’architecture
+Notre système repose sur une architecture de type pipeline de traitement séquentiel, adap-
+tée aux tâches de classiﬁcation binaire sur données multi-modales. Elle s’articule autour de
+trois grandes étapes : la collecte et le prétraitement des données satellitaires, l’entraînement
+d’un modèle de deep learning, et la génération des prédictions ﬁnales.
+L’originalité de cette architecture réside dans la fusion de deux modalités complémentaires :
+les images optiques (capteurs Sentinel-2) et les images radar SAR (capteurs Sentinel-1).
+Cette fusion permet de compenser les lacunes propres à chaque modalité notamment la cou-
+verture nuageuse qui rend les images optiques inutilisables par les données SAR qui, insen-
+sibles aux conditions météorologiques, offrent une couverture continue du terrain.
+Sentinel-1 (SAR)
+8 canaux
+Prétraitement
+SAR
+Filtre médian
+Normalisation
+Resize 224Œ224
+CNN résiduel
+(from scratch)
+3 blocs résiduels
+Sentinel-2 (Optique)
+4 canaux (RGB+NIR)
+Prétraitement
+Optique
+Cloud score
+Normalisation
+Resize 224Œ224
+EfﬁcientNetV2-L
+(préentraîné
+ImageNet)
+GatedFusion (fusion adaptative)
+ffusion = α · fopt + (1 −α) · fSAR
+avec α = g(cloud_score) (ré-
+seau de portes, sigmoïde)
+Classiﬁcateur
+Dropout Linear(512256)
+ReLU Dropout Linear(2561)
+Décision binaire
+p = σ(logit) ∈[0, 1]
+Seuil optimal τ ∗= 0,31
+cloud_score
+FIGURE 3.2. Architecture multimodale à double branche avec fusion adaptative GatedFusion
+40
+
+
+===== PAGE 43 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3.2.2
+Vue logique : diagramme de packages
+Au-delà de l’architecture interne du modèle, le système peut être décrit, d’un point de vue
+logiciel, comme un ensemble de packages (modules logiques) reliés par des relations de dé-
+pendance. Le diagramme de packages UML de la ﬁgure 3.3 présente cette vue d’ensemble :
+chaque package regroupe les composants d’une phase du pipeline, et les ﬂèches en pointillés
+(dépendances ´n use ˙z) indiquent quels packages s’appuient sur quels autres.
+Données
+Acquisition Sentinel-1 / 2,
+jeu de données Zindi
+Préparation
+Filtrage SAR, cloud score,
+cache .npz, normalisation
+Entraînement
+Validation croisée 5-Fold,
+Focal Loss, AdamW
+Évaluation
+Score F1, prédictions OOF,
+seuil τ ∗, TTA
+Modèle
+MultiModalModel :
+branches optique / SAR,
+GatedFusion, classiﬁeur
+Déploiement
+Application web FastAPI,
+prétraitement + inférence locale
+´nuse˙z
+´nuse˙z
+´nuse˙z
+´nuse˙z
+´nuse˙z
+´nuse˙z
+FIGURE 3.3. Diagramme de packages UML — vue logique du système
+Cette organisation met en évidence le couplage faible entre les phases : le package Modèle
+ne dépend d’aucun autre (il se limite à la déﬁnition de l’architecture), tandis que le package
+Déploiement réutilise à la fois le Modèle entraîné et la chaîne de Préparation, ce qui garantit
+un traitement identique en entraînement et en production.
+41
+
+
+===== PAGE 44 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3.3
+Architecture client-serveur et environnement d’exécu-
+tion
+Le projet est conçu selon une architecture cloud-based exploitant la plateforme Google Co-
+lab comme environnement de calcul, et Google Drive comme système de stockage persistant.
+Cette organisation présente plusieurs avantages dans le contexte d’un projet académique :
+accès gratuit à des GPU de haute performance (NVIDIA P100/T4), absence d’infrastructure
+matérielle à gérer, et collaboration facilitée.
+L’organisation des répertoires est la suivante :
+TABLE 3.1. Organisation des répertoires du projet sur Google Drive
+Répertoire
+Contenu
+data/train_data/
+Fichiers d’entraînement au format .npy (12
+canaux)
+data/test_data/
+Fichiers de test au format .npy
+data/models_v4/
+Poids des modèles entraînés (.pth)
+data/submissions_v4/
+Fichiers de soumission au format CSV
+Pour optimiser les performances d’entraînement, un système de cache local est utilisé : les
+ﬁchiers bruts .npy sont prétraités une seule fois et stockés au format .npz sur le SSD local
+de Colab, ce qui accélère les chargements d’un facteur 20 par rapport à une lecture directe
+depuis Drive.
+3.4
+Choix techniques
+3.4.1
+Langage de programmation : Python
+Le Python a été retenu comme langage principal du projet. Ce choix s’impose naturellement
+dans le domaine du machine learning pour plusieurs raisons :
+— Richesse de son écosystème scientiﬁque (NumPy, Pandas, Matplotlib) et de ses biblio-
+thèques de deep learning.
+— Lisibilité du code et facilité de prototypage.
+— Large communauté et documentation abondante dans le domaine de l’IA.
+3.5
+Frameworks et bibliothèques
+Les bibliothèques et frameworks utilisés dans ce projet sont les suivants :
+42
+
+
+===== PAGE 45 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+PyTorch est le framework principal de deep learning utilisé dans ce pro-
+jet. Il permet la déﬁnition, l’entraînement et l’évaluation des modèles de
+réseaux de neurones de manière ﬂexible et efﬁcace, avec un support natif
+pour le calcul sur GPU.
+timm (PyTorch Image Models) est une bibliothèque spécialisée qui donne
+accès à une large collection de backbones pré-entraînés, notamment
+EfﬁcientNetV2-L, facilitant le transfert d’apprentissage sur des tâches de
+vision par ordinateur.
+Albumentations est une bibliothèque d’augmentation de données hautes
+performances. Elle propose un ensemble riche de transformations géomé-
+triques (rotations, recadrages, retournements) et photométriques (lumino-
+sité, contraste, bruit) pour enrichir les données d’entraînement.
+NumPy est la bibliothèque fondamentale pour le calcul scientiﬁque en Py-
+thon. Elle est utilisée ici pour la manipulation efﬁcace des tableaux multi-
+dimensionnels, opérations vectorielles et transformations numériques sur
+les données.
+Pandas est utilisé pour la gestion des métadonnées et des labels du jeu de
+données. Il permet la lecture, le ﬁltrage et la manipulation des ﬁchiers CSV
+contenant les annotations et informations associées aux images.
+Scikit-learn intervient principalement pour la validation croisée stratiﬁée,
+garantissant une répartition équilibrée des classes entre les folds d’entraî-
+nement et de validation, ainsi que pour le calcul des métriques d’évaluation
+(F1-score, précision, rappel).
+43
+
+
+===== PAGE 46 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+OpenCV (cv2) est une bibliothèque de traitement d’images en temps réel.
+Elle est employée pour le chargement, le redimensionnement et les transfor-
+mations préliminaires des images avant leur passage dans le pipeline d’en-
+traînement.
+SciPy complète NumPy avec des algorithmes scientiﬁques avancés. Dans
+ce projet, il est utilisé spéciﬁquement pour l’application du ﬁltre médian
+aﬁn de réduire le bruit de type speckle présent dans les images radar SAR
+(Sentinel-1).
+Matplotlib est la bibliothèque de référence pour la visualisation en Py-
+thon. Elle est utilisée pour tracer les courbes d’apprentissage, afﬁcher les
+matrices de confusion et produire les graphiques illustrant les résultats ex-
+périmentaux.
+FastAPI est un framework web moderne et performant pour Python. Il est
+utilisé pour le déploiement local du modèle entraîné sous forme d’API de
+prédiction : le backend reçoit les tuiles satellitaires, exécute l’inférence et
+renvoie le résultat de classiﬁcation au format JSON.
+HTML / CSS / JavaScript constituent les technologies front-end de l’inter-
+face utilisateur. HTML structure le formulaire de téléversement d’images,
+CSS assure la mise en forme visuelle de la page, et JavaScript gère l’envoi
+asynchrone des requêtes vers le backend FastAPI ainsi que l’afﬁchage dynamique du résultat
+de classiﬁcation sans rechargement de la page.
+44
+
+
+===== PAGE 47 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3.6
+Format des données : NumPy (.npy / .npz)
+Les données satellitaires sont stockées au format NumPy binaire. Chaque échantillon est
+un ﬁchier .npy contenant un tenseur de dimensions 64 × 64 × 12, représentant une tuile
+satellitaire de 12 canaux. Le format .npz (version compressée) est utilisé pour le cache, ce
+qui permet de stocker optique, SAR et cloud score séparément dans un même ﬁchier tout en
+réduisant l’espace disque.
+3.7
+Pipeline de prétraitement
+Le prétraitement des données est une étape critique qui conditionne directement la qualité de
+l’apprentissage. Notre pipeline de prétraitement comprend les étapes suivantes :
+1. Chargement des données brutes : chaque échantillon est un tableau NumPy de di-
+mensions 64 × 64 × 12, regroupant 4 canaux optiques (Rouge B4, Vert B3, Bleu B2,
+Proche-infrarouge NIR B8) et 8 canaux SAR (VV et VH en orbites ascendante et
+descendante, avec leurs différences temporelles).
+2. Filtrage du bruit speckle SAR : les images radar présentent un bruit granuleux ca-
+ractéristique appelé speckle. Nous appliquons un ﬁltre médian 3Œ3 sur chaque canal
+SAR, ce qui réduit signiﬁcativement ce bruit tout en préservant les contours et struc-
+tures importantes du terrain.
+3. Calcul du cloud score : un score de couverture nuageuse est calculé à partir des trois
+canaux optiques visibles (RGB), en combinant la luminosité moyenne et la faible tex-
+ture des pixels selon une heuristique de réﬂectance. Ce score, normalisé entre 0 et 1,
+est utilisé par le module GatedFusion.
+4. Mise en cache NPZ : les données prétraitées — canaux optiques bruts, canaux SAR
+ﬁltrés et cloud score — sont sauvegardées au format .npz (format NumPy com-
+pressé). Cette étape n’est exécutée qu’une seule fois.
+5. Normalisation par canal : la moyenne et l’écart-type de chaque canal sont calculés
+une fois pour toutes sur l’ensemble d’entraînement (et non à partir des statistiques
+ImageNet, inadaptées au contexte satellitaire). La normalisation z-score proprement
+dite est ensuite appliquée à la volée lors du chargement de chaque échantillon par le
+Dataset. Les statistiques utilisées sont présentées dans le Tableau 11 (Annexe A).
+1. Fichier brut
+.npy
+64 × 64 × 12
+2. Filtre médian
+noyau 3 × 3
+8 canaux SAR
+3. Cloud score
+heuristique RGB
+scalaire ∈[0, 1]
+4. Cache
+.npz compressé
+optique brut
++ SAR ﬁltré + cloud
+5. Normalisation
+z-score par canal
+à la volée
+Modèle
+tenseurs
+optique + SAR
+entrée
+exécuté une seule fois
+à chaque batch
+FIGURE 3.4. Pipeline de prétraitement des données satellitaires multi-sources
+45
+
+
+===== PAGE 48 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3.8
+Modélisation du système
+3.8.1
+Architecture du modèle de deep learning
+Le cur de notre solution est un réseau de neurones convolutifs (CNN) composé de deux sous-
+systèmes distincts qui traitent chaque modalité de façon indépendante avant de les fusionner.
+3.8.2
+Backbone EfﬁcientNet
+Nous utilisons un backbone EfﬁcientNetV2-L pré-entraîné (issu de la bibliothèque timm)
+comme extracteur de caractéristiques. EfﬁcientNet est une famille de réseaux de neurones
+profonds reconnue pour son excellent compromis entre précision, efﬁcacité en nombre de
+paramètres et rapidité d’entraînement, ce qui en fait un choix pertinent pour des applications
+réelles à ressources limitées [5].
+La variante EfﬁcientNetV2-Large, proposée par Tan et Le (2021) [6], a été spéciﬁquement
+conçue pour améliorer le compromis entre performance et coût computationnel. Contraire-
+ment à EfﬁcientNetV1, qui applique un facteur de mise à léchelle uniforme [5], Efﬁcient-
+NetV2 adopte une approche basée sur le Neural Architecture Search (NAS) orientée entraî-
+nement.
+Le bloc MBConv, introduit dans MobileNetV2 [7], repose sur des convolutions séparables
+en profondeur combinées à des mécanismes squeeze-and-excitation. EfﬁcientNetV2 intro-
+duit également le bloc Fused-MBConv [6], permettant d’améliorer signiﬁcativement la vi-
+tesse d’entraînement.
+Dans notre approche, ce backbone constitue la branche optique du modèle : il est adapté
+pour accepter des entrées à 4 canaux (RGB + proche infrarouge) issues de Sentinel-2. Les
+données radar SAR ne transitent pas par ce backbone; elles sont traitées séparément par une
+branche dédiée, décrite dans la section suivante.
+FIGURE 3.5. Blocs unitaires dans l’architecture réseau EfﬁcientNetV2-Large.
+46
+
+
+===== PAGE 49 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3.8.3
+Branche SAR : réseau convolutif résiduel
+Contrairement aux images optiques, les images radar SAR présentent des statistiques très
+différentes de celles des images naturelles : présence de bruit speckle et réﬂectance liée à la
+rugosité du sol plutôt qu’à la couleur. Un backbone pré-entraîné sur ImageNet n’est donc pas
+adapté à cette modalité. La branche SAR est par conséquent un réseau convolutif entraîné
+à partir de zéro, spéciﬁquement conçu pour les 8 canaux radar (polarisations VV et VH en
+orbites ascendante et descendante, ainsi que leurs différences temporelles).
+Cette branche, nommée ImprovedSARBranch, s’appuie sur des connexions résiduelles [4].
+Ces connexions, qui ajoutent l’entrée d’un bloc à sa sortie, facilitent la propagation du gra-
+dient et permettent d’entraîner un réseau relativement profond sans souffrir du problème de
+disparition du gradient. La branche se compose des éléments suivants :
+— un bloc d’entrée (stem) — une convolution suivie d’une normalisation par lots et d’une
+activation ReLU, qui porte les 8 canaux radar à 32 cartes de caractéristiques;
+— trois blocs résiduels (ResidualConvBlock) successifs, qui doublent progressive-
+ment la profondeur (32 →64 →128 →256) tout en réduisant de moitié la résolution
+spatiale à chaque étape;
+— une mise en commun adaptative (adaptive average pooling) suivie d’une couche entiè-
+rement connectée, qui produit le vecteur de caractéristiques ﬁnal de 256 dimensions.
+Ce vecteur de 256 dimensions résume l’information radar de la tuile; il est ensuite transmis,
+au même titre que les caractéristiques optiques, au module de fusion adaptative décrit ci-
+dessous.
+FIGURE 3.6. Architecture convolutionnelle résiduelle de la branche SAR
+47
+
+
+===== PAGE 50 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3.8.4
+Module de fusion par portes (GatedFusion)
+L’un des apports techniques majeurs de notre système est le module GatedFusion. Face au
+problème de la couverture nuageuse qui rend les images optiques partiellement ou totale-
+ment inutilisables, nous avons conçu un mécanisme d’attention adaptatif : le module calcule
+un cloud score (score de couverture nuageuse) pour chaque image, puis pondère dynami-
+quement la contribution des données optiques en fonction de leur qualité. Lorsque l’image
+optique est très nuageuse (score élevé), le module réduit automatiquement son poids et s’ap-
+puie davantage sur les données SAR.
+Ce comportement est formalisé par la relation suivante :
+ffinal = α · fopt + (1 −α) · fSAR
+avec
+α = g(cloud_score)
+(3.1)
+où g est une fonction de porte apprise par le réseau, et fopt, fSAR sont les vecteurs de carac-
+téristiques extraits de chaque modalité.
+3.8.5
+Diagramme de classes
+Le diagramme de classes de la ﬁgure 3.7 présente les principales entités logicielles du sys-
+tème, telles qu’elles sont effectivement implémentées dans le code. Le système s’articule
+autour de la classe centrale MultiModalModel, qui compose trois sous-composants : la
+branche optique (EfficientNetV2-L), la branche radar ImprovedSARBranch et le
+module de fusion adaptative GatedFusion. La classe LandslideDataset alimente le
+modèle en tenseurs, tandis que FocalLoss supervise l’apprentissage.
+48
+
+
+===== PAGE 51 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+MultiModalModel
+´nnn.Module˙z
+– backbone : EfﬁcientNetV2-L
+– sar_branch : ImprovedSARBranch
+– fusion : GatedFusion
+– classiﬁer : nn.Sequential
++ forward(optical, sar, cloud) : Tensor
+LandslideDataset
+´nDataset˙z
+– df : DataFrame
+– cache_path : str
+– geom_tf / photo_tf : Compose
+– opt/sar_mean, opt/sar_std
++ __len__() : int
++ __getitem__(idx) : tuple
+FocalLoss
+´nnn.Module˙z
+– alpha : ﬂoat = 0.25
+– gamma : ﬂoat = 2.0
++ forward(logits, targets) : Tensor
+GatedFusion
+´nnn.Module˙z
+– opt_proj : Linear
+– sar_proj : Linear
+– gate : nn.Sequential (Sigmoid)
++ forward(opt_f, sar_f, cloud) : Tensor
+ImprovedSARBranch
+´nnn.Module˙z
+– stem : Conv–BN–ReLU
+– block1..3 : ResidualConvBlock
+– pool : AdaptiveAvgPool2d
+– fc : Linear(256→256)
++ forward(x) : Tensor
+ResidualConvBlock
+´nnn.Module˙z
+– conv1, bn1, conv2, bn2
+– shortcut : Conv2d / Identity
++ forward(x) : Tensor
+3
+alimente
+supervise
+FIGURE 3.7. Diagramme de classes UML du système multimodal de détection (losange plein =
+composition)
+3.8.6
+Diagramme de séquence : entraînement d’un pli
+Le diagramme de séquence de la ﬁgure 3.8 décrit les interactions dynamiques entre les com-
+posants lors de l’entraînement d’un pli de la validation croisée. La fonction d’orchestration
+train_model_config instancie les jeux de données et le chargeur, puis exécute, pour
+chaque époque, le cycle lecture d’un lot →propagation avant →calcul de la perte →ré-
+tropropagation. À la ﬁn de chaque époque, une phase de validation et un mécanisme d’arrêt
+précoce déterminent si un nouveau point de contrôle doit être sauvegardé.
+49
+
+
+===== PAGE 52 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+train_model_
+conﬁg
+Landslide
+Dataset
+DataLoader
+MultiModal
+Model
+FocalLoss
+AdamW
+créer Dataset (train / val)
+créer DataLoader (batch = 24)
+loop [pour chaque époque — 50]
+lot (opt, sar, cloud, label)
+forward(opt, sar, cloud)
+logits
+forward(logits, label)
+loss (Focal)
+backward + step()
+validate() + early stopping
+save_checkpoint (meilleur F1)
+FIGURE 3.8. Diagramme de séquence UML — entraînement d’un pli de la validation croisée
+3.9
+Stratégie d’entraînement et de validation
+3.9.1
+Validation croisée stratiﬁée
+Pour obtenir une évaluation robuste et généraliser sur des données non vues, nous utilisons
+une validation croisée stratiﬁée à 5 plis (Stratiﬁed K-Fold, K = 5). La stratiﬁcation garantit
+que la proportion de glissements et de cas normaux est maintenue dans chaque pli, ce qui est
+essentiel face au déséquilibre des classes (environ 4,7 :1).
+Chaque modèle est entraîné sur 4 plis et évalué sur le 5e, puis les prédictions de test de chaque
+pli sont moyennées pour former la prédiction ﬁnale.
+50
+
+
+===== PAGE 53 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+FIGURE 3.9. Validation croisée stratiﬁée à 5 plis.
+3.9.2
+Gestion du déséquilibre des classes
+Le jeu de données présente un déséquilibre marqué entre les deux classes (ratio ≈4,7 :1).
+Deux mécanismes complémentaires sont mis en œuvre pour y remédier :
+— Focal Loss : la fonction de perte Focal Loss, paramétrée avec α = 0.25 et γ = 2.0, réduit
+le poids des exemples faciles et pénalise davantage les erreurs sur les exemples difﬁciles
+à classiﬁer (notamment les vrais glissements mal détectés). Elle constitue le mécanisme
+principal de gestion du déséquilibre.
+— Optimisation du seuil de décision : plutôt que de rééquilibrer artiﬁciellement les classes,
+le seuil de classiﬁcation est optimisé a posteriori sur les prédictions hors-pli (OOF), ce
+qui ajuste le compromis précision/rappel sans biaiser l’entraînement.
+3.9.3
+Augmentation de données
+L’augmentation de données est une technique de régularisation essentielle : elle accroît arti-
+ﬁciellement la diversité du jeu d’entraînement en appliquant des transformations aléatoires
+aux échantillons, ce qui réduit le surapprentissage et améliore la généralisation. Compte tenu
+de la taille modérée du jeu de données (7 147 tuiles) et de son déséquilibre, cette étape est dé-
+terminante. Les transformations sont mises en œuvre avec la bibliothèque Albumentations.
+Trois familles d’augmentation sont combinées.
+51
+
+
+===== PAGE 54 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+Augmentations géométriques
+Les augmentations géométriques modiﬁent la disposition spatiale des pixels. Elles sont ap-
+pliquées de façon strictement identique aux 12 canaux d’une même tuile, aﬁn de préserver
+la correspondance pixel-à-pixel entre les modalités optique et SAR : toute transformation
+désynchronisée détruirait l’alignement nécessaire à la fusion. Les transformations retenues
+sont :
+— le retournement horizontal et vertical (ﬂip);
+— la rotation de 90ˇr (et ses multiples);
+— une transformation afﬁne légère combinant translation, mise à l’échelle et rotation de
+faible amplitude;
+— la suppression aléatoire de régions (coarse dropout), qui masque de petits carrés de
+l’image pour empêcher le modèle de dépendre d’une zone unique.
+Ces transformations sont physiquement légitimes : un glissement de terrain reste un glisse-
+ment quelle que soit l’orientation de la tuile.
+Augmentations photométriques
+Les augmentations photométriques modiﬁent l’intensité et la colorimétrie des pixels sans
+en changer la géométrie. Contrairement aux transformations géométriques, elles sont appli-
+quées uniquement aux trois canaux optiques visibles (RGB) : les canaux SAR, exprimés en
+décibels, et le canal proche infrarouge n’ont pas de sémantique colorimétrique et ne doivent
+pas être altérés de cette manière. Elles comprennent :
+— l’ajustement aléatoire de la luminosité et du contraste;
+— la variation de teinte et de saturation.
+Elles simulent la variabilité des conditions d’acquisition (ensoleillement, angle solaire, cali-
+bration du capteur).
+Mélange d’images : Mixup et CutMix
+Au-delà des transformations appliquées à une seule image, deux techniques de mélange
+de paires d’images sont employées : Mixup [9] et CutMix [10]. Toutes deux combinent
+deux échantillons d’entraînement ainsi que leurs étiquettes, ce qui régularise le modèle en
+l’empêchant de mémoriser des exemples isolés et en lissant les frontières de décision. La
+ﬁgure 3.10 illustre leur principe.
+52
+
+
+===== PAGE 55 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+Image xA
++
+Image xB
+→
+Mixup
+˜x = λxA + (1 −λ)xB
+Image xA
++
+Image xB
+→
+CutMix
+région de xB collée sur xA
+FIGURE 3.10. Principe des techniques de mélange d’images Mixup et CutMix
+Mixup construit une image virtuelle par combinaison linéaire de deux images xA et xB,
+pondérée par un coefﬁcient λ ∈[0, 1] tiré d’une loi Bêta :
+˜x = λ xA + (1 −λ) xB,
+˜y = λ yA + (1 −λ) yB.
+L’image obtenue est une superposition translucide des deux images; son étiquette devient
+elle aussi un mélange. Le modèle apprend ainsi un comportement linéaire entre les exemples,
+ce qui lisse ses prédictions.
+CutMix procède différemment : au lieu de fondre les images, il découpe une région rec-
+tangulaire de l’image xB et la colle sur l’image xA. Le coefﬁcient λ correspond alors à la
+proportion de surface conservée de xA, et l’étiquette est mélangée selon cette même propor-
+tion :
+˜y = λ yA + (1 −λ) yB,
+λ = 1 −aire de la région collée
+aire totale de la tuile .
+Contrairement à Mixup, les pixels de la région collée proviennent intégralement de xB :
+l’information locale reste donc nette, ce qui complète utilement le lissage global apporté par
+Mixup.
+Ces deux techniques ne sont activées qu’après les premières époques d’entraînement une
+fois que le modèle a commencé à converger sur les images non mélangées et sont appliquées
+avec une probabilité de 0,5.
+3.10
+Métrique d’évaluation : F1-Score
+Compte tenu du fort déséquilibre entre les classes, l’accuracy n’est pas une métrique ap-
+propriée (un classiﬁeur naïf prédisant toujours la classe majoritaire atteindrait une accuracy
+de ≈82,4% sans jamais détecter un glissement). Nous utilisons donc le F1-score comme
+53
+
+
+===== PAGE 56 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+métrique principale, qui est la moyenne harmonique de la précision et du rappel, déﬁni par :
+F1 = 2 × Précision × Rappel
+Précision + Rappel
+(3.2)
+Un seuil de classiﬁcation optimal est déterminé par une recherche sur l’intervalle [0.10, 0.90]
+sur les prédictions hors-pli (OOF), permettant de maximiser le F1-score.
+3.11
+Organisation du système en modules
+3.11.1
+Décomposition modulaire
+Notre système est structuré en modules indépendants et cohésifs, ce qui facilite la mainte-
+nance, les tests et l’évolution de chaque composant.
+Module 1 — Chargement & Prétraitement
+lecture .npy, ﬁltre médian SAR, cloud score, cache .npz
+Module 2 — Dataset & DataLoader
+LandslideDataset, augmentations, normalisation, mise en lots
+Module 3 — Architecture du modèle
+MultiModalModel : EfﬁcientNetV2-L, ImprovedSARBranch, GatedFusion
+Module 4 — Entraînement (validation croisée)
+Focal Loss, AdamW, CosineAnnealingLR, 5-Fold, early stopping
+Module 5 — Inférence & Soumission
+TTA ×4, seuil optimal τ ∗, génération du ﬁchier CSV
+patches
+.npy bruts
+cache
+.npz
+checkpoints
+.pth
+soumission
+.csv
+FIGURE 3.11. Diagramme de composants : organisation modulaire du système
+3.12
+Description des modules
+3.12.1
+Module 1 : Chargement et prétraitement des données
+Ce module est responsable de la lecture des ﬁchiers .npy bruts depuis le disque, de l’appli-
+cation du ﬁltre médian sur les canaux SAR, du calcul du cloud score, et de la sauvegarde en
+cache .npz. Il s’agit d’une étape exécutée une seule fois avant l’entraînement pour ne pas
+pénaliser les temps d’itération.
+54
+
+
+===== PAGE 57 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3.12.2
+Module 2 : Dataset et chargeur de données
+La classe LandslideDataset hérite de torch.utils.data.Dataset et implé-
+mente le protocole PyTorch de chargement de données. Elle prend en charge :
+— le chargement des ﬁchiers cache .npz,
+— la normalisation par canal,
+— l’application des augmentations Albumentations selon le mode (entraînement / valida-
+tion),
+— la fourniture de tuples (tenseur d’entrée, label) au DataLoader.
+3.12.3
+Module 3 : Architecture du modèle
+Ce module déﬁnit l’architecture complète du réseau de neurones. Les 12 canaux d’entrée
+ne sont pas traités par un backbone unique : ils sont répartis entre deux branches spécia-
+lisées. Les 4 canaux optiques (RGB + proche infrarouge, issus de Sentinel-2) sont conﬁés
+au backbone EfficientNetV2-L pré-entraîné, instancié via la bibliothèque timm; sa
+première couche de convolution, initialement prévue pour 3 canaux RGB, est adaptée à 4
+canaux par une initialisation appropriée des poids (réutilisation des poids ImageNet pour les
+canaux RGB et initialisation dédiée du canal NIR). Les 8 canaux radar SAR (polarisations
+VV et VH en orbites ascendante et descendante, ainsi que leurs différences temporelles) sont
+traités séparément par la branche ImprovedSARBranch, un réseau convolutif entraîné de
+zéro (from scratch) reposant sur des connexions résiduelles. Les vecteurs de caractéristiques
+produits par les deux branches sont enﬁn combinés par le module GatedFusion, déﬁni
+comme un sous-module PyTorch (nn.Module).
+3.12.4
+Module 4 : Entraînement par validation croisée
+Ce module orchestre l’entraînement complet du système : il instancie les plis de validation
+croisée, gère les cycles d’époques, calcule la Focal Loss, met à jour les poids par rétro-
+propagation, et applique une politique de early stopping avec une patience de 12 époques.
+Le scheduler de taux d’apprentissage (CosineAnnealingLR) est utilisé pour afﬁner la
+convergence.
+3.12.5
+Module 5 : Inférence
+En inférence, les prédictions sont améliorées par Test-Time Augmentation (TTA ×4) :
+chaque image de test est présentée quatre fois au réseau sous différentes transformations
+géométriques (1) image originale, (2) retournement horizontal, (3) retournement vertical
+et (4) rotation à 180ˇr (équivalente à un retournement horizontal suivi d’un retournement
+vertical). Les quatre probabilités obtenues sont ensuite moyennées, ce qui réduit la variance
+55
+
+
+===== PAGE 58 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+du modèle et stabilise la prédiction. Le seuil optimal déterminé sur les données OOF est enﬁn
+appliqué pour produire les étiquettes binaires ﬁnales, qui sont exportées au format CSV.
+3.13
+Hyperparamètres du système
+Les hyperparamètres ont été soigneusement choisis pour garantir la reproductibilité, la sta-
+bilité de l’entraînement et de bonnes performances de généralisation.
+— Graine aléatoire (SEED) = 42 : La graine aléatoire est ﬁxée à 42 aﬁn d’assurer une re-
+productibilité totale des expériences, en éliminant toute source de variabilité non contrôlée
+lors des initialisations et des découpages de données.
+— Nombre de plis (K-Fold) = 5 : Une validation croisée à 5 plis est adoptée pour réaliser
+un bon équilibre entre le biais et la variance de l’évaluation, tout en maintenant un coût
+computationnel raisonnable.
+— Nombre d’époques = 50 : L’entraînement est limité à 50 époques, un plateau de conver-
+gence ayant été observé empiriquement entre la 20e et la 30e époque, au-delà duquel les
+gains restent marginaux.
+— Taille de lot (batch) = 24 : La taille de lot est ﬁxée à 24 exemples, valeur adaptée
+à la mémoire VRAM disponible de 16 Go sur le GPU P100, garantissant une utilisation
+optimale sans dépassement mémoire.
+— Taux d’apprentissage = 10−4 : Un taux d’apprentissage de 10−4 est retenu, valeur
+standard pour le ﬁne-tuning de backbones pré-entraînés, permettant une convergence stable
+sans déstabiliser les poids initiaux.
+— Régularisation (weight decay) = 10−5 : Un coefﬁcient de régularisation de 10−5 est ap-
+pliqué pour prévenir légèrement le surapprentissage sans contraindre excessivement l’opti-
+misation du modèle.
+— Patience (early stopping) = 12 : La patience de l’arrêt précoce est déﬁnie à 12 époques
+consécutives sans amélioration, laissant ainsi au modèle sufﬁsamment de temps pour sortir
+d’un éventuel plateau temporaire.
+— Gradient clipping = 1.0 : Le gradient clipping est activé avec une valeur seuil de 1.0
+aﬁn d’assurer la stabilité numérique lors de l’entraînement en précision mixte, en évitant
+les explosions de gradient.
+— Focal Loss α = 0.25 : Le paramètre α de la Focal Loss est réglé à 0.25 pour favoriser la
+détection de la classe minoritaire, compensant ainsi le déséquilibre de classes présent dans
+le jeu de données.
+— Focal Loss γ = 2.0 : Le paramètre γ est ﬁxé à 2.0, conformément à la valeur standard
+établie par Lin et al. (2017), modulant la contribution des exemples faciles pour concentrer
+l’apprentissage sur les cas difﬁciles.
+56
+
+
+===== PAGE 59 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3.14
+Déploiement : application web de détection
+3.14.1
+Objectif et principe
+Les phases précédentes produisent un modèle entraîné, sauvegardé sous forme de points
+de contrôle (.pth). Pour rendre ce modèle exploitable en dehors de l’environnement de
+développement (le notebook), une application web a été conçue. Elle permet à un utilisateur,
+sans compétence particulière en programmation, de charger une tuile satellitaire et d’obtenir
+immédiatement un diagnostic : glissement ou zone normale.
+L’application repose sur le framework FastAPI, retenu pour sa légèreté, ses performances
+et sa simplicité de mise en œuvre. Elle adopte une architecture découplée : un backend
+expose une API d’inférence, tandis qu’un frontend statique (page web) consomme cette API.
+L’ensemble est exécuté localement, ce qui évite toute dépendance à une infrastructure cloud
+et garantit la conﬁdentialité des données traitées.
+3.14.2
+Architecture de l’application
+L’application adopte une architecture client–serveur à trois niveaux :
+— Niveau présentation (frontend) — une page web statique (HTML, CSS et JavaScript)
+afﬁchée dans le navigateur; elle permet de téléverser un ﬁchier et envoie la requête à
+l’API via un appel fetch asynchrone;
+— Niveau application (backend FastAPI) — une API exposant deux points d’accès :
+/health (état du service) et /predict (prédiction); elle reçoit le ﬁchier, exécute
+la chaîne de prétraitement et orchestre l’inférence;
+— Niveau modèle (inférence) — l’ensemble des cinq modèles issus de la validation croi-
+sée. Les cinq jeux de poids sont chargés une seule fois au démarrage du serveur; chaque
+prédiction moyenne leurs sorties et applique en outre la Test-Time Augmentation.
+Navigateur
+(client)
+Page web
+HTML / CSS / JS
+• téléverse le ﬁchier
+• afﬁche le résultat
+Backend FastAPI
+(application, exécution locale)
+1. Lecture du ﬁchier (NumPy)
+2. Séparation 12 →4 + 8 canaux
+3. Recalcul du cloud score (RGB)
+4. Filtre médian + normalisation
+5. Décision : seuil τ ∗= 0,31
+Ensemble de modèles
+MultiModalModel × 5
+5 jeux de poids .pth
++ Test-Time Augmentation
+→probabilité p ∈[0, 1]
+POST /predict : ﬁchier .npy
+réponse : classe + probabilité
+tenseurs optique + SAR + cloud
+score p
+FIGURE 3.12. Architecture de déploiement : application web FastAPI de détection (en bleu :
+requête; en vert : réponse)
+57
+
+
+===== PAGE 60 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+3.14.3
+Diagramme de cas d’utilisation
+Application web de détection de glissements de terrain
+Utilisateur
+Backend FastAPI
+MultiModalModel
+Téléverser une tuile .npy (64x64x12)
+Soumettre la requête de prédiction
+Lire et séparer les 12 canaux
+Recalculer le cloud score (RGB)
+Appliquer ﬁltre médian + normalisation z-score
+Lancer l’inférence et appliquer le seuil τ ∗
+Consulter le résultat (classe + probabilité)
+Afﬁcher un message d’erreur (ﬁchier invalide)
+´n include ˙z
+´n include ˙z
+´n include ˙z
+´n include ˙z
+´n include ˙z
+´n extend ˙z
+FIGURE 3.13. Diagramme de cas d’utilisation application web FastAPI de détection (bleu : cas
+utilisateur; jaune : traitement serveur; gris : inférence modèle; rouge : extension)
+3.14.4
+Déroulement d’une prédiction
+Lorsqu’un utilisateur soumet une tuile satellitaire, la requête suit les étapes suivantes :
+1. Téléversement — l’utilisateur charge un unique ﬁchier .npy contenant la tuile com-
+plète de dimensions 64 × 64 × 12 (les 12 canaux regroupés).
+2. Réception — le backend FastAPI reçoit le ﬁchier et le lit à l’aide de NumPy.
+3. Séparation des modalités — le backend sépare les 12 canaux en 4 canaux optiques
+(RGB + proche infrarouge) et 8 canaux SAR.
+4. Recalcul du cloud score — le score de couverture nuageuse est recalculé à partir des
+trois canaux visibles (RGB), selon la même heuristique que celle employée lors de la
+phase de préparation des données.
+5. Prétraitement — application du ﬁltre médian sur les canaux SAR, normalisation
+z-score (avec les statistiques de l’ensemble d’entraînement) et redimensionnement à
+224 × 224, aﬁn de reproduire exactement les conditions de l’entraînement.
+58
+
+
+===== PAGE 61 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+6. Inférence — les tenseurs optique et SAR ainsi que le cloud score sont transmis à
+l’ensemble des cinq modèles; chaque modèle produit une probabilité, renforcée par
+Test-Time Augmentation, et la moyenne des cinq constitue la probabilité ﬁnale dans
+l’intervalle [0, 1].
+7. Décision — la probabilité p est comparée au seuil optimal τ ∗= 0,31 déterminé lors
+de la phase d’évaluation : si p ≥0,31, la tuile est classée ´n Glissement ˙z, sinon
+´n Normal ˙z.
+8. Afﬁchage — la page web afﬁche la probabilité obtenue ainsi que la classe prédite.
+Le fait de recalculer le cloud score et d’appliquer rigoureusement le même prétraitement
+côté serveur garantit la cohérence entre l’entraînement et l’inférence : en production, le
+modèle reçoit des données strictement comparables à celles vues pendant l’apprentissage, ce
+qui évite toute dégradation des performances liée à un écart de traitement.
+Utilisateur
+Navigateur
+Backend FastAPI
+MultiModal
+Model
+sélectionne le ﬁchier .npy
+POST /predict (.npy)
+lecture + séparation des 12 canaux
+recalcul cloud score + prétraitement
+forward(optique, SAR, cloud)
+score p ∈[0, 1]
+comparaison au seuil τ ∗= 0,31
+réponse : classe + probabilité
+afﬁche le résultat
+FIGURE 3.14. Diagramme de séquence UML — traitement d’une requête de prédiction
+3.15
+Conclusion
+Ce chapitre a présenté la conception de notre système, structurée en cinq phases : données,
+préparation, entraînement, évaluation et déploiement. La solution repose sur une architec-
+ture multimodale EfﬁcientNetV2 dotée d’un mécanisme de fusion adaptative (GatedFusion)
+conçu pour les contraintes du terrain (couverture nuageuse, bruit SAR), et se prolonge par
+une application web FastAPI qui rend le modèle exploitable de manière interactive. Cette
+59
+
+
+===== PAGE 62 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+structure modulaire assure la robustesse du système face à l’hétérogénéité des données. Le
+chapitre suivant détaille la réalisation technique et l’analyse des résultats obtenus.
+60
+
+
+===== PAGE 63 =====
+
+Chapitre 4
+Réalisation
+4.1
+Introduction
+Ce chapitre décrit la mise en œuvre concrète du système de détection automatique des glis-
+sements de terrain. La réalisation suit les cinq phases du pipeline de conception présenté au
+chapitre précédent — Données, Préparation, Entraînement, Évaluation et Déploiement
+— précédées d’une phase de mise en place de l’environnement de travail. Pour chacune de
+ces phases, ce chapitre détaille les choix d’implémentation, les extraits de code signiﬁcatifs
+et les difﬁcultés rencontrées.
+L’objectif est de concevoir un modèle d’apprentissage profond capable de classer des patches
+d’images satellitaires en deux catégories : zone de glissement de terrain (label 1) ou zone
+normale (label 0), puis de rendre ce modèle exploitable au travers d’une application web.
+4.2
+Environnement de développement
+4.2.1
+Matériel utilisé
+Le projet a été développé sur deux plateformes cloud distinctes selon les phases du travail.
+Pour le prétraitement et les premières expérimentations, la plateforme Google Colaboratory
+a été utilisée, offrant un accès gratuit à un GPU NVIDIA T4 (16 GB de VRAM) et 25 GB
+de RAM. Pour l’entraînement ﬁnal du modèle, la plateforme Kaggle a été privilégiée grâce à
+la disponibilité du GPU NVIDIA Tesla P100 (16 GB de VRAM), plus performant pour les
+opérations de calcul intensif.
+Le choix du P100 a été déterminant : son architecture sm_60 et sa mémoire de 16 GB ont
+permis d’augmenter la taille des batches (BATCH_SIZE = 24 au lieu de 16 sur T4) et de
+réduire signiﬁcativement le temps d’entraînement par époque.
+61
+
+
+===== PAGE 64 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+TABLE 4.1. Comparaison des environnements matériels utilisés
+Paramètre
+Google Colab (prétraitement)
+Kaggle (entraînement ﬁnal)
+GPU
+NVIDIA T4 16 GB
+NVIDIA Tesla P100 16 GB
+Architecture
+sm_75
+sm_60
+RAM
+∼12 GB
+∼13 GB
+Stockage
+Google Drive (15 GB)
+Datasets Kaggle
+Durée session
+12h max
+12h max
+4.2.2
+Logiciels et bibliothèques
+L’ensemble du projet est développé en Python 3.10. Le tableau 4.2 présente les principales
+bibliothèques utilisées et leur rôle.
+TABLE 4.2. Bibliothèques Python utilisées dans le projet
+Bibliothèque
+Rôle
+PyTorch
+Framework d’apprentissage profond
+timm
+Backbones pré-entraînés (EfﬁcientNet)
+albumentations
+Augmentation des données
+NumPy
+Calcul matriciel, gestion des arrays
+Pandas
+Chargement et manipulation des CSV
+scikit-learn
+Métriques (F1, K-Fold, matrice de confusion)
+SciPy
+Filtre médian pour le débruitage SAR
+Matplotlib
+Visualisation des données
+OpenCV
+Traitement d’images complémentaire
+FastAPI
+API web de déploiement local du modèle (backend)
+Version PyTorch : 2.4.1rcu18
+Dépôt GitHub : Torque
+FIGURE 4.1. Résultat du test de convolution sur GPU P100
+62
+
+
+===== PAGE 65 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+4.3
+Données du projet
+4.3.1
+Description du dataset
+Le dataset provient du challenge Zindi de détection de glissements de terrain. Il comprend
+des patches satellitaires de 64×64 pixels à 12 canaux au total : 4 canaux optiques Sentinel-2
+(Rouge B4, Vert B3, Bleu B2, NIR B8) et 8 canaux radar Sentinel-1 SAR (polarisations VV
+et VH en orbites ascendantes et descendantes, ainsi que leurs différences inter-date).
+Le dataset présente un fort déséquilibre de classes : environ 82,4% des échantillons appar-
+tiennent à la classe 0 (zone normale) et seulement 17,6% à la classe 1 (glissement de terrain).
+Ce déséquilibre constitue l’un des principaux déﬁs du projet.
+FIGURE 4.2. Distribution des classes dans le dataset
+4.3.2
+Structure des ﬁchiers
+Les données brutes sont stockées en ﬁchiers NumPy (.npy), un ﬁchier par patch de forme
+(64, 64, 12). Le CSV d’entraînement associe chaque identiﬁant à son label (0 ou 1); le CSV
+de test contient uniquement les identiﬁants.
+— train.csv : identiﬁants et labels des échantillons d’entraînement
+— test.csv : identiﬁants des échantillons à prédire
+— train_data/ : ﬁchiers .npy d’entraînement
+— test_data/ : ﬁchiers .npy de test
+4.4
+Réalisation du pipeline en cinq phases
+Cette section détaille la réalisation technique du système, organisée selon les cinq phases du
+pipeline de conception (ﬁgure 3.1) : Données, Préparation, Entraînement, Évaluation et
+63
+
+
+===== PAGE 66 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+Déploiement. Une phase préliminaire de mise en place de l’environnement (installation et
+compatibilité GPU) précède l’ensemble.
+4.4.1
+Mise en place — Installation et compatibilité GPU P100
+La première difﬁculté rencontrée a été la compatibilité entre PyTorch et l’architecture sm_60
+du GPU P100. Les versions récentes de PyTorch compilées avec CUDA 12.x ont abandonné
+le support de cette architecture, provoquant des erreurs de type ´n no kernel image available ˙z.
+La solution a consisté à installer une version spéciﬁque compilée avec CUDA 11.8 :
+Listing 4.1. Installation de PyTorch compatible P100
+1
+pip install torch==2.4.1+cu118
+De plus, les paramètres cuDNN ont dû être ajustés. L’option benchmark=True, qui opti-
+mise normalement les performances, causait des erreurs sur le P100 :
+Listing 4.2. Conﬁguration cuDNN pour P100
+1
+torch.backends.cudnn.benchmark
+= False
+# eviter les erreurs sm_60
+2
+torch.backends.cudnn.deterministic = True
+# garantir la
+reproductibilite
+FIGURE 4.3. Vériﬁcation compatibilité GPU
+4.4.2
+Phase 1 (Données) — Exploration et visualisation des données
+Avant l’entraînement, une exploration visuelle des données a permis de mieux comprendre
+les caractéristiques des deux classes.
+Canaux optiques Sentinel-2
+Les 4 canaux optiques ont été visualisés individuellement et sous forme de compositions
+colorées : composition RGB naturelle, composition fausse couleur NIR-R-G (utile pour la
+végétation) et indice NDVI, calculé selon :
+NDVI =
+BNIR −BRouge
+BNIR + BRouge + ε
+(4.1)
+où ε = 10−8 évite la division par zéro.
+64
+
+
+===== PAGE 67 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+FIGURE 4.4. Canaux optiques Sentinel-2 d’un exemple de glissement de terrain (64 × 64 pixels)
+4.4.3
+Phase 2 (Préparation) — Prétraitement et création du cache NPZ
+Plutôt que de charger et traiter les ﬁchiers .npy à chaque époque, les données prétraitées
+sont converties une seule fois en ﬁchiers .npz (format compressé NumPy), créant un cache
+qui accélère le chargement pendant l’entraînement d’un facteur 20 à 30.
+Le prétraitement comprend deux opérations :
+— Filtrage du bruit speckle SAR par un ﬁltre médian 3 × 3. Le speckle est un bruit
+multiplicatif inhérent aux images radar; le ﬁltre médian l’atténue tout en préservant les
+contours importants.
+— Calcul d’un score de nuages (cloud_score) pour chaque patch optique, combinant la
+luminosité moyenne et la faible texture des pixels.
+Le code complet de la fonction de prétraitement est fourni en Annexe B. Une fois le cache
+constitué, les données sont servies au modèle par une classe LandslideDataset qui, à
+la volée, applique les augmentations, normalise chaque canal (z-score) et redimensionne les
+tuiles à 224 × 224 : son code est donné en Annexe C et les pipelines d’augmentation en
+Annexe D.
+65
+
+
+===== PAGE 68 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+FIGURE 4.5. Effet du ﬁltre médian 3 × 3 sur le canal SAR
+Normalisation par canal
+Les valeurs des 12 canaux (4 optiques Sentinel-2, 8 SAR Sentinel-
+1) présentent des plages très hétérogènes : les réﬂectances optiques sont typiquement com-
+prises entre 0 et 10 000, tandis que les valeurs SAR (en décibels) sont négatives (de lordre de
+-20 à 0). Appliquer les statistiques de normalisation dImageNet (moyenne et écart-type cal-
+culés sur des images naturelles RGB) serait totalement inadapté à notre contexte satellitaire.
+Aussi, nous avons calculé les statistiques (moyenne µ et écart-type σ) uniquement sur len-
+semble dentraînement de notre jeu de données, canal par canal. Ces valeurs sont ensuite
+utilisées à la volée par la classe LandslideDataset pour normaliser chaque patch :
+xnorm = x −µ
+σ + ε
+avec ε = 10−6 pour éviter la division par zéro.
+Le tableau 11 (voir Annexe A) présente les valeurs de µ et σ pour les 12 canaux. La ﬁgure ci-
+dessous visualise la distribution des valeurs avant et après normalisation, montrant lefﬁcacité
+du récentrage et de la mise à léchelle.
+66
+
+
+===== PAGE 69 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+FIGURE 4.6. Distribution des valeurs des canaux avant normalisation (gauche) et après
+normalisation z-score (droite). Les moyennes deviennent 0 et les écarts-types 1.
+4.4.4
+Phase 3 (Entraînement) — Architecture du modèle
+Principe de la fusion multimodale
+Le modèle traite simultanément les données optiques et les données SAR au moyen d’une
+architecture multimodale à fusion adaptative (gated fusion). Deux branches parallèles
+extraient des représentations propres à chaque modalité, puis un module de fusion piloté par
+une porte (gate) combine dynamiquement ces représentations en fonction du cloud_score :
+lorsque la couverture nuageuse est élevée, la porte accorde davantage de poids à la branche
+SAR; lorsque le ciel est dégagé, elle privilégie la branche optique. Contrairement à une
+simple fusion par concaténation, cette pondération est apprise et recalculée pour chaque
+échantillon.
+FIGURE 4.7. Architecture multimodale à fusion adaptative (GatedFusion)
+67
+
+
+===== PAGE 70 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+L’architecture s’articule autour de quatre éléments :
+— Branche optique — un backbone EfficientNetV2-L pré-entraîné sur ImageNet,
+adapté à 4 canaux d’entrée (RGB + proche infrarouge);
+— Branche SAR — un réseau convolutif résiduel (ImprovedSARBranch) entraîné à
+partir de zéro, qui transforme les 8 canaux radar en un vecteur de 256 dimensions;
+— Module de fusion — GatedFusion, qui projette les deux représentations dans un
+espace commun de 512 dimensions et calcule la pondération adaptative;
+— Classiﬁeur — une tête entièrement connectée (Dropout →Linear 512→256 →
+ReLU →Dropout →Linear 256→1) produisant le score de glissement.
+Branche optique : EfﬁcientNetV2-L
+Le backbone de la branche optique est EfﬁcientNetV2-L, pré-entraîné sur ImageNet via
+la bibliothèque timm. Ce modèle traite des images de 224 × 224 px et offre un excellent
+compromis entre précision et vitesse d’entraînement sur P100.
+Les images satellitaires comportant 4 canaux (RGB + NIR) au lieu des 3 canaux RVB clas-
+siques, le backbone est instancié directement avec l’argument in_chans=4. La biblio-
+thèque timm adapte alors automatiquement les poids du premier bloc de convolution en
+réutilisant les poids pré-entraînés des 3 canaux et en initialisant le 4e canal à partir de leur
+moyenne :
+Listing 4.3. Instanciation du backbone à 4 canaux
+1
+self.backbone = timm.create_model(
+2
+’tf_efficientnetv2_l’, pretrained=True,
+3
+in_chans=4, num_classes=0, global_pool=’’)
+Branche SAR : réseau convolutif résiduel
+La branche SAR (ImprovedSARBranch) est un réseau convolutif résiduel entraîné à par-
+tir de zéro. Elle se compose d’un bloc d’entrée (stem) ramenant les 8 canaux radar à 32 cartes
+de caractéristiques, suivi de trois blocs résiduels (ResidualConvBlock) qui doublent
+progressivement la profondeur (32 →64 →128 →256) tout en réduisant la résolution spa-
+tiale. Une mise en commun adaptative (adaptive average pooling) et une couche linéaire
+produisent enﬁn un vecteur de 256 dimensions.
+Listing 4.4. Branche SAR : bloc résiduel et réseau convolutif
+1
+import torch, torch.nn as nn, torch.nn.functional as F
+2
+3
+class ResidualConvBlock(nn.Module):
+4
+def __init__(self, in_ch, out_ch, stride=1):
+5
+super().__init__()
+68
+
+
+===== PAGE 71 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+6
+self.conv1 = nn.Conv2d(in_ch, out_ch, 3, stride, 1, bias=
+False)
+7
+self.bn1
+= nn.BatchNorm2d(out_ch)
+8
+self.conv2 = nn.Conv2d(out_ch, out_ch, 3, padding=1, bias=
+False)
+9
+self.bn2
+= nn.BatchNorm2d(out_ch)
+10
+self.shortcut = (
+11
+nn.Sequential(nn.Conv2d(in_ch, out_ch, 1, stride, bias=
+False),
+12
+nn.BatchNorm2d(out_ch))
+13
+if in_ch != out_ch or stride != 1 else nn.Identity())
+14
+15
+def forward(self, x):
+16
+out = F.relu(self.bn1(self.conv1(x)))
+17
+out = self.bn2(self.conv2(out))
+18
+return F.relu(out + self.shortcut(x))
+# connexion
+residuelle
+19
+20
+21
+class ImprovedSARBranch(nn.Module):
+22
+"""8 canaux SAR -> vecteur de 256 dimensions."""
+23
+def __init__(self, out_dim=256):
+24
+super().__init__()
+25
+self.stem
+= nn.Sequential(
+26
+nn.Conv2d(8, 32, 3, padding=1, bias=False),
+27
+nn.BatchNorm2d(32), nn.ReLU(True))
+28
+self.block1 = ResidualConvBlock(32,
+64,
+stride=2)
+29
+self.block2 = ResidualConvBlock(64,
+128, stride=2)
+30
+self.block3 = ResidualConvBlock(128, 256, stride=2)
+31
+self.pool
+= nn.AdaptiveAvgPool2d(1)
+32
+self.fc
+= nn.Linear(256, out_dim)
+33
+34
+def forward(self, x):
+35
+x = self.block3(self.block2(self.block1(self.stem(x))))
+36
+return self.fc(self.pool(x).flatten(1))
+Fusion adaptative : GatedFusion
+Le module GatedFusion ne se contente pas de concaténer les deux représentations : il
+calcule une porte α à partir de la concaténation des features optiques projetées, des features
+SAR projetées et du cloud_score. La sortie fusionnée est la combinaison pondérée
+ffusion = α ⊙fopt + (1 −α) ⊙fSAR,
+69
+
+
+===== PAGE 72 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+où α ∈[0, 1]512 est produit par un petit réseau terminé par une activation sigmoïde. Ce
+mécanisme permet au modèle d’ajuster, échantillon par échantillon, la conﬁance accordée à
+chaque modalité.
+Listing 4.5. Module de fusion adaptative GatedFusion
+1
+class GatedFusion(nn.Module):
+2
+"""Fusion adaptative pilotee par le cloud score."""
+3
+def __init__(self, opt_dim, sar_dim=256, fused_dim=512):
+4
+super().__init__()
+5
+self.opt_proj = nn.Linear(opt_dim, fused_dim)
+6
+self.sar_proj = nn.Linear(sar_dim, fused_dim)
+7
+self.gate = nn.Sequential(
+8
+nn.Linear(fused_dim * 2 + 1, 256), nn.ReLU(True),
+9
+nn.Dropout(0.2), nn.Linear(256, fused_dim), nn.Sigmoid())
+10
+11
+def forward(self, opt_feat, sar_feat, cloud):
+12
+op = self.opt_proj(opt_feat)
+13
+sp = self.sar_proj(sar_feat)
+14
+alpha = self.gate(torch.cat([op, sp, cloud], dim=1))
+15
+return alpha * op + (1 - alpha) * sp
+# combinaison ponderee
+Assemblage : la classe MultiModalModel
+La classe MultiModalModel assemble les trois composants. Lors de la propagation avant,
+la branche optique et la branche SAR produisent chacune leur vecteur de caractéristiques; le
+module GatedFusion les combine en tenant compte du cloud score; enﬁn, le classiﬁeur
+produit le logit ﬁnal.
+Listing 4.6. Assemblage du modèle multimodal
+1
+import timm
+2
+3
+class MultiModalModel(nn.Module):
+4
+def __init__(self, backbone=’tf_efficientnetv2_l’,
+5
+img_size=224, pretrained=True):
+6
+super().__init__()
+7
+# Branche optique : EfficientNetV2-L adapte a 4 canaux
+8
+self.backbone = timm.create_model(
+9
+backbone, pretrained=pretrained, in_chans=4,
+10
+num_classes=0, global_pool=’’)
+11
+with torch.no_grad():
+12
+opt_dim = self.backbone(
+13
+torch.zeros(1, 4, img_size, img_size)).shape[1]
+14
+self.pool
+= nn.AdaptiveAvgPool2d(1)
+15
+self.sar_branch = ImprovedSARBranch(out_dim=256)
+16
+self.fusion
+= GatedFusion(opt_dim, 256, 512)
+70
+
+
+===== PAGE 73 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+17
+self.classifier = nn.Sequential(
+18
+nn.Dropout(0.4), nn.Linear(512, 256),
+19
+nn.ReLU(True), nn.Dropout(0.3), nn.Linear(256, 1))
+20
+21
+def forward(self, optical, sar, cloud):
+22
+of = self.pool(self.backbone(optical)).flatten(1)
+# branche
+optique
+23
+sf = self.sar_branch(sar)
+# branche
+SAR
+24
+fused = self.fusion(of, sf, cloud)
+# fusion
+adaptative
+25
+return self.classifier(fused)
+# logit
+final
+4.4.5
+Phase 3 (Entraînement) — Stratégie d’entraînement
+Validation croisée stratiﬁée à 5 folds
+Une validation croisée stratiﬁée à 5 folds a été mise en place pour obtenir une estimation
+ﬁable des performances et exploiter l’intégralité des données. La stratiﬁcation garantit que
+chaque fold conserve la même proportion de classes que le dataset global, indispensable
+vu le déséquilibre 82,4 %/17,6 %. Les prédictions Out-Of-Fold (OOF) permettent ensuite
+d’optimiser le seuil de décision.
+Fonction de perte : Focal Loss
+La Focal Loss a été choisie pour gérer le déséquilibre de classes. Elle réduit le poids des
+exemples bien classiﬁés (faciles) et concentre l’apprentissage sur les exemples difﬁciles :
+LFocal = −α (1 −pt)γ log(pt)
+(4.2)
+avec α = 0,25 et γ = 2,0.
+Optimiseur et planiﬁcateur de taux d’apprentissage
+L’optimiseur AdamW est utilisé avec un taux d’apprentissage initial η0 = 10−4 et une régu-
+larisation L2 (weight_decay = 10−5). Un planiﬁcateur CosineAnnealingLR fait décroître η
+de 10−4 à 10−6 sur l’ensemble des époques :
+ηt = ηmin + 1
+2(η0 −ηmin)
+(
+1 + cos
+( πt
+T
+))
+(4.3)
+71
+
+
+===== PAGE 74 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+Mixed Precision Training
+L’entraînement en précision mixte (AMP — Automatic Mixed Precision) a été activé via
+torch.cuda.amp. Cette technique utilise le format float16 là où c’est possible, rédui-
+sant de 30 à 40% la consommation mémoire et accélérant l’entraînement sur le GPU P100.
+Gradient Clipping et Gradient Scaling
+En complément de la précision mixte, deux mécanismes supplémentaires stabilisent l’entraî-
+nement et évitent les overﬂow numériques.
+Gradient Scaling
+Lors de l’utilisation de torch.cuda.amp, les calculs en float16
+peuvent entraîner un underﬂow (des gradients trop petits deviennent nuls). Pour contour-
+ner ce problème, un gradient scaler multiplie la perte par un grand facteur (initialement
+216 = 65536) avant la rétropropagation. Les gradients sont ensuite divisés par le même
+facteur avant la mise à jour des poids. Le facteur de scaling est ajusté dynamiquement : il
+augmente en labsence doverﬂow, diminue sinon. Cette technique est intégrée dans PyTorch
+via torch.cuda.amp.GradScaler.
+Gradient Clipping
+Les gradients peuvent parfois exploser (valeurs excessivement grandes),
+notamment en début dentraînement ou en présence de données mal conditionnées. Pour li-
+miter leur norme, nous appliquons un gradient clipping de norme maximale ∥∇∥2 ≤1,0.
+Cette opération est effectuée après le unscaling des gradients et avant la mise à jour des
+paramètres. Elle améliore la stabilité numérique et la convergence du modèle.
+Ces deux dispositifs (scaling et clipping) sont essentiels pour garantir un entraînement stable
+avec la précision mixte sur le GPU P100.
+Early Stopping
+Un mécanisme d’arrêt précoce surveille le score F1 sur le fold de validation à chaque époque.
+L’entraînement d’un fold s’arrête si le F1 ne s’améliore pas pendant 12 époques consécu-
+tives (PATIENCE = 12). Le meilleur checkpoint est sauvegardé automatiquement.
+72
+
+
+===== PAGE 75 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+FIGURE 4.8. Boucle d’entraînement
+Augmentation des données
+Deux types d’augmentation ont été appliqués :
+— Augmentations géométriques (ﬂip horizontal/vertical, rotation 90ˇr, déplacement/zoom/-
+rotation aléatoire, CoarseDropout) appliquées conjointement aux canaux optiques et SAR
+pour maintenir la cohérence spatiale.
+— Augmentations photométriques (variations de luminosité, contraste, teinte) appliquées
+uniquement aux 3 canaux RGB, jamais aux canaux SAR dont la physique est différente.
+La technique Mixup/CutMix a également été appliquée avec une probabilité de 50% lors
+de l’entraînement, créant des exemples synthétiques par interpolation de paires d’images. Le
+code des pipelines d’augmentation (géométrique et photométrique) ainsi que de la fonction
+de mélange Mixup/CutMix est fourni en Annexe D.
+Mise en uvre de la boucle d’entraînement
+Les techniques décrites ci-dessus (Focal Loss, AdamW, CosineAnnealingLR, précision mixte,
+early stopping) sont articulées au sein de la boucle d’entraînement. La fonction train_one_epoch
+effectue une passe complète sur les données : propagation avant en précision mixte, calcul
+de la perte, rétropropagation mise à l’échelle par le GradScaler, écrêtage du gradient
+(gradient clipping) puis pas d’optimisation.
+Listing 4.7. Entraînement d’une époque
+1
+def train_one_epoch(model, loader, criterion, optimizer,
+73
+
+
+===== PAGE 76 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+2
+scaler, scheduler, device, epoch):
+3
+model.train()
+4
+for optical, sar, cloud, target in loader:
+5
+optical, sar
+= optical.to(device), sar.to(device)
+6
+cloud, target = cloud.to(device), target.to(device)
+7
+8
+# Mixup / CutMix actives apres les premieres epoques
+9
+if epoch > 3 and random.random() < MIX_PROB:
+10
+optical, sar, target, target_b, lam = \
+11
+mix_batch(optical, sar, target)
+12
+13
+optimizer.zero_grad()
+14
+with torch.cuda.amp.autocast():
+# precision mixte
+(AMP)
+15
+logits = model(optical, sar, cloud).squeeze(1)
+16
+loss
+= criterion(logits, target)
+17
+scaler.scale(loss).backward()
+# backward mis a l
+’echelle
+18
+scaler.unscale_(optimizer)
+19
+torch.nn.utils.clip_grad_norm_(
+# gradient
+clipping
+20
+model.parameters(), GRAD_CLIP)
+21
+scaler.step(optimizer)
+22
+scaler.update()
+23
+scheduler.step()
+#
+CosineAnnealingLR
+La boucle externe parcourt les cinq folds de la validation croisée. Pour chaque fold, un nou-
+veau modèle est instancié et entraîné; le meilleur point de contrôle (selon le F1 de validation)
+est sauvegardé, et l’early stopping interrompt le fold si le F1 stagne pendant douze époques.
+Listing 4.8. Boucle de validation croisée à 5 folds
+1
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+2
+3
+for fold, (tr_idx, va_idx) in enumerate(skf.split(df, df[’label’])):
+4
+model
+= MultiModalModel(’tf_efficientnetv2_l’, 224).to(device
+)
+5
+criterion = FocalLoss(alpha=0.25, gamma=2.0)
+6
+optimizer = torch.optim.AdamW(model.parameters(),
+7
+lr=1e-4, weight_decay=1e-5)
+8
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+9
+optimizer, T_max=EPOCHS, eta_min=1e-6)
+10
+scaler
+= torch.cuda.amp.GradScaler()
+# AMP
+11
+12
+best_f1, patience = 0.0, 0
+13
+for epoch in range(EPOCHS):
+74
+
+
+===== PAGE 77 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+14
+train_one_epoch(model, train_loader, criterion, optimizer,
+15
+scaler, scheduler, device, epoch)
+16
+f1 = validate(model, valid_loader, device)
+17
+if f1 > best_f1:
+# amelioration du
+F1
+18
+best_f1, patience = f1, 0
+19
+torch.save({’model_state_dict’: model.state_dict()},
+20
+f’efficientnetv2_l_fold{fold}.pth’)
+21
+else:
+22
+patience += 1
+23
+if patience >= PATIENCE:
+# early stopping
+24
+break
+4.4.6
+Phase 4 (Évaluation) — Optimisation du seuil de décision
+Le modèle produit une probabilité continue p ∈[0, 1]. La conversion en classe binaire dépend
+d’un seuil τ. Pour les datasets déséquilibrés, le seuil par défaut τ = 0,5 n’est pas optimal.
+Une recherche exhaustive a été effectuée sur les prédictions OOF en faisant varier τ de 0,1 à
+0,9 par pas de 0,01 et en sélectionnant le seuil qui maximise le score F1 :
+τ ∗= arg
+max
+τ∈[0.1,0.9] F1
+(
+ytrue, 1{pOOF≥τ}
+)
+(4.4)
+FIGURE 4.9. Optimisation du seuil
+4.4.7
+Phase 4 (Évaluation) — Inférence avec Test-Time Augmentation
+(TTA)
+Pour améliorer la robustesse des prédictions ﬁnales, la Test-Time Augmentation (TTA) a
+été appliquée. Pour chaque patch de test, 4 prédictions sont calculées : image originale, ﬂip
+horizontal, ﬂip vertical, et double ﬂip. La probabilité ﬁnale est la moyenne de ces 4 prédic-
+tions :
+75
+
+
+===== PAGE 78 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+pTTA(x) = 1
+4
+∑
+t∈T
+p(t(x))
+(4.5)
+où T = {id, ﬂipH, ﬂipV, ﬂipHV}.
+La TTA réduit l’impact des variations d’orientation et améliore généralement le score F1 de
+0,5 à 1 point de pourcentage.
+4.4.8
+Phase 5 (Déploiement) — Application web FastAPI
+La dernière phase rend le modèle exploitable en dehors du notebook au moyen d’une ap-
+plication web développée avec FastAPI et exécutée localement. Son architecture client–
+serveur découplée et son principe de fonctionnement ont été détaillés au chapitre précédent
+(ﬁgure 3.12); cette section en décrit la réalisation technique.
+Structure de l’application
+L’application est organisée en deux parties distinctes :
+— un backend (API FastAPI) qui expose deux points d’accès : /health (vériﬁcation de
+l’état du service) et /predict (réception du ﬁchier .npy, prétraitement, inférence et
+renvoi du résultat au format JSON);
+— un frontend statique (HTML, CSS, JavaScript) qui constitue l’interface utilisateur et
+communique avec le backend par des requêtes fetch.
+Les cinq modèles de l’ensemble (un par fold de la validation croisée) sont chargés une seule
+fois au démarrage du serveur, à partir des points de contrôle (.pth) sauvegardés lors de
+la phase d’entraînement; cela évite de les recharger à chaque requête et réduit le temps de
+réponse.
+Chaîne de prédiction côté serveur
+La chaîne de prédiction reproduit ﬁdèlement le prétraitement de la phase 2 (séparation des
+canaux, recalcul du cloud score, ﬁltre médian, normalisation), garantissant la cohérence entre
+l’entraînement et l’inférence. Pour chaque requête sur /predict, la tuile est prétraitée puis
+soumise à l’inférence ensembliste : les cinq modèles produisent chacun une probabilité
+(renforcée par Test-Time Augmentation), dont la moyenne est comparée au seuil optimal
+τ ∗= 0,31 pour produire la classe ﬁnale. Le code complet de l’API est fourni en Annexe E.
+Interface utilisateur
+L’interface web se compose d’un formulaire de téléversement et d’une zone d’afﬁchage du
+résultat. Après soumission d’une tuile, la page présente la probabilité renvoyée par le mo-
+76
+
+
+===== PAGE 79 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+dèle ainsi que la classe prédite (´n Glissement ˙z ou ´n Normal ˙z).
+FIGURE 4.10. Interface de l’application web
+4.5
+Difﬁcultés rencontrées et solutions apportées
+4.5.1
+Incompatibilité PyTorch — GPU P100
+La difﬁculté la plus critique au début du projet a été l’incompatibilité entre PyTorch et
+l’architecture CUDA sm_60 du GPU P100. Les versions récentes de PyTorch (≥2.2 avec
+CUDA 12.x) ont abandonné le support de sm_60, provoquant des erreurs ´n no kernel image
+available ˙z lors de la moindre opération sur GPU.
+La solution a consisté à installer le build compilé pour CUDA 11.8 de PyTorch (version
+2.4.1+cu118) : ce build conserve le support de l’architecture sm_60, là où les builds
+CUDA 12.x l’ont abandonné. L’option benchmark de cuDNN, qui tentait de sélectionner
+dynamiquement le kernel le plus rapide et échouait sur P100, a également été désactivée.
+4.5.2
+Déséquilibre des classes
+Le ratio ∼4,7 :1 entre classe normale et glissement risquait de biaiser le modèle vers la
+prédiction systématique de la classe majoritaire. Plusieurs stratégies ont été combinées pour
+y remédier :
+— Utilisation de la Focal Loss (α = 0,25, γ = 2,0)
+— Validation croisée stratiﬁée préservant le ratio de classes
+77
+
+
+===== PAGE 80 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+— Optimisation du seuil τ ∗sur les prédictions OOF
+— Score F1 comme métrique principale (plutôt que l’accuracy)
+4.5.3
+Gestion de la mémoire GPU
+L’entraînement d’EfﬁcientNetV2-L sur des images à 12 canaux avec un batch de taille 24
+présentait des risques de dépassement de la VRAM. Les techniques suivantes ont été appli-
+quées :
+— Mixed Precision Training (float16) — réduction de ∼40% de la mémoire
+— Libération explicite après chaque fold via gc.collect() et torch.cuda.empty_cache()
+— Gradient clipping (∥∇∥2 ≤1,0) pour éviter les explosions de gradients
+4.5.4
+Durée d’entraînement et sessions limitées
+L’entraînement de 5 folds × 50 époques peut dépasser la limite de 12 heures d’une ses-
+sion Kaggle. Le système de checkpoint et de reprise automatique permet d’interrompre et
+reprendre l’entraînement sans perte de progression.
+4.5.5
+Bruit speckle SAR
+Les images SAR présentent naturellement un bruit de speckle qui brouille les informations
+utiles. L’application systématique d’un ﬁltre médian 3 × 3 pendant le prétraitement a permis
+de réduire ce bruit tout en préservant les structures géomorphologiques importantes pour la
+détection des glissements.
+4.6
+Conclusion
+Ce chapitre a présenté la mise en œuvre complète du système de détection automatique
+de glissements de terrain. À partir de données satellitaires brutes multimodales (optique
+Sentinel-2 et radar SAR Sentinel-1), le projet a abouti à un pipeline complet incluant :
+— Le prétraitement et la mise en cache des données (ﬁltre médian SAR, calcul du cloud_score)
+— Une architecture multimodale à fusion adaptative basée sur EfﬁcientNetV2-L
+— Un protocole d’entraînement robuste : validation croisée stratiﬁée à 5 folds, Focal Loss,
+CosineAnnealing, Mixed Precision
+— Une inférence améliorée par Test-Time Augmentation
+— Un système de reprise automatique adapté aux contraintes des sessions cloud
+— Une application web FastAPI de déploiement local, rendant le modèle exploitable de
+manière interactive
+78
+
+
+===== PAGE 81 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+Les difﬁcultés techniques rencontrées compatibilité GPU, déséquilibre de classes, gestion
+mémoire, sessions limitées ont toutes été surmontées par des solutions adaptées. Le système
+est modulaire, reproductible (seed ﬁxe) et opérationnel dans les contraintes des plateformes
+cloud gratuites.
+Ces résultats ouvrent des perspectives d’amélioration par l’intégration de données terrain
+supplémentaires, l’utilisation d’architectures de type Vision Transformer (ViT, Swin Trans-
+former), ou l’exploitation de séries temporelles d’images pour capturer la dynamique des
+glissements.
+79
+
+
+===== PAGE 82 =====
+
+Chapitre 5
+Tests et résultats
+5.1
+Introduction
+Ce chapitre valide le système de détection automatique de glissements de terrain développé
+dans les chapitres précédents. Il présente la stratégie de tests mise en place, les cas de test
+fonctionnels et techniques exécutés, ainsi qu’une analyse critique des résultats obtenus.
+Les tests portent sur deux dimensions : la vériﬁcation que chaque composant du pipeline
+fonctionne correctement (tests fonctionnels), et l’évaluation des performances de classiﬁ-
+cation sur les données réelles du challenge Zindi (tests de performance). Tous les résultats
+chiffrés sont issus directement des notebooks d’entraînement et des sorties JSON générées
+sur Kaggle avec le GPU Tesla P100.
+5.2
+Stratégie de test
+5.2.1
+Tests fonctionnels
+Les tests fonctionnels vériﬁent que chaque module du pipeline s’exécute sans erreur et pro-
+duit une sortie conforme aux attentes. Ils couvrent sept composants principaux.
+1. Compatibilité GPU P100 : vériﬁer que PyTorch détecte le GPU, que CUDA est opé-
+rationnel et qu’une opération de convolution s’exécute sur l’architecture sm_60.
+2. Chargement des données : vériﬁer que les ﬁchiers CSV et les caches .npz se chargent
+correctement.
+3. Pipeline Dataset : vériﬁer que le DataLoader produit des tenseurs de forme atten-
+due pour les deux modalités.
+4. Architecture du modèle : vériﬁer que le modèle multimodal accepte les entrées de
+dimensions correctes.
+5. Boucle d’entraînement : vériﬁer que la loss diminue et que les checkpoints sont sau-
+vegardés.
+80
+
+
+===== PAGE 83 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+6. Reprise automatique : vériﬁer que l’entraînement reprend correctement à partir de
+checkpoints existants, sans ré-entraîner les plis déjà calculés.
+7. Inférence TTA : vériﬁer que les quatre augmentations produisent des prédictions
+moyennées correctement.
+5.2.2
+Tests techniques de performance
+Les tests de performance évaluent la qualité des prédictions. Ils reposent sur deux méca-
+nismes.
+— Validation croisée OOF (5 folds) : chaque fold est prédit par un modèle qui ne l’a jamais
+vu. Le F1 OOF est la métrique de référence interne.
+— Soumission Zindi : le score F1 ofﬁciel calculé sur les étiquettes cachées du dataset de
+test.
+La métrique principale retenue est le score F1, plus appropriée que l’accuracy pour un data-
+set déséquilibré (82,4 % de classe 0 vs 17,6 % de classe 1).
+5.3
+Cas de test
+5.3.1
+Test 1 — Compatibilité GPU et installation PyTorch
+TABLE 5.1. Cas de test 1 — Compatibilité GPU P100
+Attribut
+Détail
+Objectif
+Vériﬁer que PyTorch 2.4.1+cu118 fonctionne sur architecture sm_60
+Action
+Installer PyTorch, exécuter un test de convolution sur GPU
+Résultat attendu
+GPU Tesla P100 détecté, Conv test réussi, VRAM afﬁchée
+Résultat obtenu
+Réussi
+Sortie réelle
+Version PyTorch : 2.4.1+cu118
+CUDA disponible : True
+GPU détecté : Tesla P100-PCIE-16GB
+VRAM : 17.1 GB
+Conv test : torch.Size([1, 32, 64, 64]) -- OK
+81
+
+
+===== PAGE 84 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+5.3.2
+Test 2 — Chargement et statistiques des données
+TABLE 5.2. Cas de test 2 — Chargement du dataset
+Attribut
+Détail
+Objectif
+Vériﬁer l’intégrité du dataset et la répartition des classes
+Action
+Charger train.csv, test.csv et compter les caches
+Résultat attendu
+7 147 échantillons train, 5 398 test, déséquilibre connu
+Résultat obtenu
+Réussi
+Sortie réelle
+Train : 7147 | Test : 5398
+Class 0 : 5892 (82.4%)
+Class 1 : 1255 (17.6%)
+Ratio : 4.7:1
+Cache train : 7147 fichiers | Cache test : 5397 fichiers
+5.3.3
+Test 3 — Pipeline de données (Dataset + DataLoader)
+TABLE 5.3. Cas de test 3 — Dimensions des tenseurs
+Attribut
+Détail
+Objectif
+Vériﬁer que le Dataset produit des tenseurs de forme correcte
+Action
+Instancier LandslideDataset, récupérer un batch
+Résultat attendu
+Optique : (B, 4, 224, 224), SAR : (B, 8, 224, 224), cloud : scalaire
+Résultat obtenu
+Réussi
+Sortie réelle
+opt : torch.Size([4, 224, 224])
+SAR : torch.Size([8, 224, 224])
+cloud : 0.700
+Dataset OK
+82
+
+
+===== PAGE 85 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+5.3.4
+Test 4 — Architecture du modèle MultiModal
+TABLE 5.4. Cas de test 4 — Modèle MultiModal EfﬁcientNetV2-L
+Attribut
+Détail
+Objectif
+Vériﬁer le forward pass du modèle
+Action
+Instancier le modèle, passer un batch de 2 échantillons
+Résultat attendu
+Sortie de forme (2, 1), aucune erreur CUDA
+Résultat obtenu
+Réussi
+Sortie réelle
+Model OK | output:torch.Size([2, 1]) | opt_dim:1280
+5.3.5
+Test 5 — Boucle d’entraînement (première époque)
+TABLE 5.5. Cas de test 5 — Début de l’entraînement Fold 1
+Attribut
+Détail
+Objectif
+Vériﬁer que l’entraînement démarre et que la loss diminue
+Action
+Lancer train_model_config() sur le Fold 1
+Résultat attendu
+Loss < 0,10, F1 validation > 0,70 dès l’époque 1
+Résultat obtenu
+Réussi
+Sortie réelle
+Epoch 01 | train=0.0373 | val=0.0340
+thr=0.25 | f1=0.7537
+New best F1: 0.7537
+5.3.6
+Test 6 — Reprise automatique des checkpoints
+TABLE 5.6. Cas de test 6 — Système de reprise automatique
+Attribut
+Détail
+Objectif
+Vériﬁer la reprise sans re-entraînement des folds déjà terminés
+Action
+Relancer train_model_config() avec 3 checkpoints existants
+Résultat attendu
+Folds 1–3 chargés depuis le disque, pas re-entraînés
+Résultat obtenu
+Réussi
+Sortie réelle
+Already trained folds: [1, 2, 3]
+Fold 1 -> Checkpoint found -> skip, OOF chargé
+Fold 2 -> Checkpoint found -> skip, OOF chargé
+Fold 3 -> Checkpoint found -> skip, OOF chargé
+83
+
+
+===== PAGE 86 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+5.3.7
+Test 7 — Inférence TTA sur le dataset de test
+TABLE 5.7. Cas de test 7 — Test-Time Augmentation
+Attribut
+Détail
+Objectif
+Vériﬁer que la TTA produit 5 398 prédictions cohérentes
+Action
+Appeler predict_with_tta() sur les 5 folds
+Résultat attendu
+Tableau de probabilités de forme (5398, ) sans valeur NaN
+Résultat obtenu
+Réussi
+Sortie réelle
+TTA OK
+Thr=0.31 | Landslides: 652 / 5398
+-> submission_v2l_thr0.31.csv généré
+5.4
+Résultats de performance
+5.4.1
+Résultats par fold — Validation croisée
+Le modèle EfﬁcientNetV2-L a été entraîné en validation croisée stratiﬁée à 5 folds sur le
+GPU Tesla P100. Le tableau 5.8 présente les scores obtenus.
+TABLE 5.8. SCORES F1 PAR FOLD — EFFICIENTNETV2-L @ 224PX (GPU P100)
+Fold
+Score F1
+(validation)
+Seuil τ ∗
+Statut
+1
+0,9059
+0,30
+Réussi
+2
+0,8911
+0,24
+Réussi
+3
+0,9331
+0,32
+Réussi
+4
+0,9228
+0,42
+Réussi
+5
+0,9175
+0,31
+Réussi
+Moyenne
+0,9141
+0,31
+—
+Ecart-type
+0,0144
+—
+—
+Le faible écart-type (0,014) conﬁrme la stabilité du modèle à travers les différentes partitions
+du dataset. Le score F1 ne descend jamais en dessous de 0,89.
+84
+
+
+===== PAGE 87 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+FIGURE 5.1. Scores F1 par fold et score OOF global. La ligne pointillée représente la moyenne
+(0,9141).
+5.4.2
+Résultats globaux OOF
+Les prédictions Out-Of-Fold (OOF) agrégées sur les 7 147 échantillons d’entraînement donnent :
+F1-Score OOF global : 0,9050
+Seuil optimal τ ∗: 0,31
+Mean F1 (5 folds) : 0,9141
+Le rapport de classiﬁcation complet est présenté dans le tableau 5.9.
+TABLE 5.9. Rapport de classiﬁcation OOF — EfﬁcientNetV2-L (seuil τ ∗= 0,31)
+Classe
+Précision
+Rappel
+F1-Score
+Support
+0 — Normal
+0,9818
+0,9773
+0,9795
+5 892
+1 — Glissement
+0,8955
+0,9147
+0,9050
+1 255
+Accuracy
+0,9663
+7 147
+Macro avg
+0,9386
+0,9460
+0,9423
+7 147
+Weighted avg
+0,9666
+0,9663
+0,9664
+7 147
+Ces résultats montrent que le modèle détecte 91,5 % des glissements (rappel classe 1) tout
+en maintenant une précision de 89,6 %.
+85
+
+
+===== PAGE 88 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+FIGURE 5.2. Matrice de confusion OOF (gauche) et courbe du F1score en fonction du seuil τ
+(droite).
+FIGURE 5.3. Courbes d’entraînement par fold — F1 de validation et val loss.
+86
+
+
+===== PAGE 89 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+5.4.3
+Convergence du modèle par époque
+La progression du score F1 de validation traduit la dynamique d’apprentissage :
+— Époque 1 : F1 = 0,7537 dès la première passe, grâce aux poids pré-entraînés ImageNet.
+— Époques 1–10 : montée rapide vers F1 ≈0,87–0,90.
+— Convergence : plateau atteint autour des époques 20–30, Early Stopping à PATIENCE =
+12.
+FIGURE 5.4. Courbes d’entraînement : pertes (train / validation) et score F1 de validation par
+époque
+5.4.4
+Résultats de la soumission Zindi
+Les prédictions ﬁnales sur les 5 398 échantillons de test ont été soumises sur la plateforme
+Zindi :
+Fichier soumis : submission_v2l_thr0.31.csv
+Glissements détectés : 652 / 5 398 (12,1 %)
+Seuil appliqué : τ ∗= 0,31 (optimal OOF)
+FIGURE 5.5. Classement sur le leaderboard Zindi — score F1 ofﬁciel et date de soumission
+87
+
+
+===== PAGE 90 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+5.5
+Analyse des résultats
+5.5.1
+Points forts du système
+1. Performances élevées sur un dataset difﬁcile. Un F1-Score de 0,905 sur la classe minori-
+taire est remarquable compte tenu du déséquilibre initial de 4,7 :1. Les approches naïves sans
+Focal Loss produisent généralement des scores inférieurs à 0,60 sur ce type de conﬁguration.
+2. Stabilité inter-folds. L’écart-type de 0,014 entre les 5 folds conﬁrme que le modèle géné-
+ralise de manière cohérente et n’est pas en sur-apprentissage sur une partition particulière.
+3. Fusion multimodale efﬁcace. La combinaison des données optiques Sentinel-2 et SAR
+Sentinel-1 permet au modèle d’exploiter des sources d’information complémentaires : les
+images optiques fournissent une information texturale et spectrale (végétation, sol nu) tandis
+que le SAR apporte une information sur la structure de surface, indépendante des conditions
+météorologiques.
+4. Convergence rapide. Dès la première époque, le modèle atteint F1 = 0,754, ce qui traduit
+l’efﬁcacité du transfert de poids ImageNet adaptés aux 4 canaux d’entrée multispectraux.
+5. Robustesse aux contraintes matérielles. Le mécanisme de reprise automatique des check-
+points a permis de conduire l’entraînement en plusieurs sessions Kaggle sans perte de pro-
+gression.
+5.5.2
+Limites du système
+1. Évaluation limitée au jeu d’entraînement. Le score F1 OOF (0,905) est calculé sur les
+données d’entraînement. Le score ofﬁciel Zindi reste la seule mesure ﬁable sur des données
+vraiment inédites.
+2. Faux négatifs résiduels. Malgré la Focal Loss, le modèle génère encore des faux négatifs
+(glissements manqués). Dans un contexte de prévention des risques naturels, ces omissions
+sont particulièrement problématiques.
+3. Résolution spatiale limitée. Les patches Sentinel-2 à 10 m/pixel peuvent ne pas repré-
+senter avec sufﬁsamment de détails les glissements de petite taille (< 100 m).
+4. Fenêtre temporelle non contrôlée. Bien que les canaux SAR différentiels (∆VV, ∆VH)
+encodent déjà l’information de changement entre deux acquisitions temporelles pré-calculées
+dans le dataset, le modèle ne dispose pas de la durée exacte séparant ces deux acquisitions.
+Il ne peut donc pas distinguer un glissement récent à fort signal d’un glissement ancien en
+phase de régénération végétale dont la signature s’est progressivement atténuée.
+5. Dépendance aux plateformes cloud. L’entraînement requiert un GPU avec au moins
+16 GB de VRAM, rendant le système dépendant des plateformes cloud avec des limitations
+88
+
+
+===== PAGE 91 =====
+
+Détection de Glissements de Terrain
+PFE 2025/2026
+de session.
+5.6
+Récapitulatif des résultats
+TABLE 5.10. Synthèse des résultats du projet
+Critère
+Valeur / Observation
+Statut
+F1-Score OOF (classe 1)
+0,905 sur 7 147 échantillons
+Réussi
+Précision (classe 1)
+0,896
+Réussi
+Rappel (classe 1)
+0,915
+Réussi
+Accuracy globale
+96,6 %
+Réussi
+Stabilité inter-folds
+Ecart-type = 0,014
+Réussi
+Temps/époque (P100)
+∼3–5 min pour 239 batches
+Réussi
+Tests fonctionnels (7/7)
+Tous réussis
+Réussi
+89
+
+
+===== PAGE 92 =====
+
+Conclusion générale
+Rappel des objectifs
+Ce projet de ﬁn d’études avait pour objectif principal de concevoir et développer un système
+de détection automatique des glissements de terrain à partir d’images satellitaires multimo-
+dales. L’enjeu était de tirer parti de la complémentarité des données optiques Sentinel-2 et
+radar SAR Sentinel-1 pour classiﬁer des patches d’images en deux catégories : glissement /
+normal.
+Les objectifs techniques ﬁxés en début de projet étaient les suivants :
+1. Construire un pipeline de prétraitement adapté aux données multispectrales et SAR
+(débruitage speckle, normalisation, cache efﬁcace).
+2. Concevoir une architecture multimodale capable de fusionner les deux modalités.
+3. Gérer le déséquilibre de classes (4,7 :1) par des techniques appropriées.
+4. Entraîner et valider le modèle dans les contraintes d’une plateforme cloud gratuite
+(Kaggle GPU P100, sessions de 12 heures).
+Bilan
+L’ensemble des objectifs techniques a été atteint. Le pipeline développé couvre la totalité du
+cycle de vie d’un projet d’apprentissage profond appliqué à la télédétection : de l’ingestion
+des données brutes jusqu’à la soumission des prédictions ﬁnales.
+Sur le plan technique, le projet a permis d’acquérir une maîtrise concrète des techniques d’ap-
+prentissage profond pour la vision par ordinateur (backbones EfﬁcientNet, transfer learning,
+Mixed Precision Training, augmentation de données), appliquées à un domaine spéciﬁque : la
+détection de phénomènes géomorphologiques à partir d’images satellitaires multispectrales.
+Les difﬁcultés rencontrées compatibilité PyTorch/GPU P100, gestion du déséquilibre de
+classes, contraintes de sessions limitées ont toutes été surmontées, ce qui a renforcé nos
+compétences en débogage et en ingénierie de systèmes ML.
+90
+
+
+===== PAGE 93 =====
+
+Conclusion générale
+PFE 2025/2026
+Résultats obtenus
+Les résultats dépassent les attentes initiales :
+— F1-Score OOF de 0,905 sur la classe minoritaire (glissements), pour un déséquilibre de
+4,7 :1.
+— Accuracy globale de 96,6 % sur les 7 147 échantillons.
+— Stabilité remarquable : écart-type inter-folds de 0,014.
+— Convergence rapide : F1 = 0,754 dès la première époque grâce au transfer learning.
+— 7 tests fonctionnels sur 7 réussis.
+Résultat clé : Le modèle EfﬁcientNetV2-L multimodal entraîné en validation croisée
+à 5 folds avec Focal Loss et TTA atteint un F1-Score OOF de 0,9050 sur les données
+Zindi de détection de glissements de terrain.
+Limites
+Les canaux SAR différentiels encodent déjà l’information de changement entre deux acqui-
+sitions temporelles, pré-calculée dans le dataset. Cependant, le modèle ne dispose pas de la
+fenêtre temporelle entre les deux acquisitions, ce qui ne lui permet pas de distinguer un glis-
+sement récent à fort signal d’un glissement ancien en phase de régénération végétale dont la
+signature s’est atténuée. Une limite complémentaire est la taille du dataset (7 147 patches)
+et sa diversité géographique restreinte, ce qui peut freiner la généralisation à des régions non
+représentées dans les données d’entraînement, comme les zones montagneuses du Maroc.
+Perspectives
+Court terme :
+— Intégration de données topographiques (MNT — Modèle Numérique de Terrain) comme
+canal supplémentaire.
+— Expérimentation avec des architectures Transformer (ViT, Swin Transformer).
+Moyen terme :
+— Exploitation de séries temporelles d’images Sentinel pour capturer la dynamique tempo-
+relle des glissements.
+— Développement d’un module de segmentation pour localiser précisément les zones de
+glissement au sein du patch.
+91
+
+
+===== PAGE 94 =====
+
+Conclusion générale
+PFE 2025/2026
+Long terme :
+— Déploiement d’un service de surveillance opérationnel pour le territoire marocain, ali-
+menté en continu par les acquisitions Sentinel.
+— Application à d’autres risques naturels (inondations, feux de forêt).
+En conclusion, ce projet a démontré la faisabilité et l’efﬁcacité de l’apprentissage profond
+multimodal pour la détection de glissements de terrain à partir d’images satellitaires. Il
+constitue une contribution concrète au domaine de la télédétection appliquée à la gestion
+des risques naturels.
+92
+
+
+===== PAGE 95 =====
+
+Bibliographie
+[1] I. Goodfellow, Y. Bengio et A. Courville, Deep Learning. MIT Press, 2016.
+[2] C. M. Bishop, Pattern Recognition and Machine Learning. Springer, 2006.
+[3] A. Géron, Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow,
+3e éd. O’Reilly Media, 2022.
+[4] K. He, X. Zhang, S. Ren et J. Sun, ´n Deep Residual Learning for Image Recognition ˙z,
+Proc. IEEE Conf. on Computer Vision and Pattern Recognition (CVPR), pp. 770–778,
+2016.
+[5] M. Tan et Q. V. Le, ´n EfﬁcientNet : Rethinking Model Scaling for Convolutional Neural
+Networks ˙z, Proc. Int. Conf. on Machine Learning (ICML), 2019.
+[6] M. Tan et Q. V. Le, ´n EfﬁcientNetV2 : Smaller Models and Faster Training ˙z, Proc. Int.
+Conf. on Machine Learning (ICML), 2021.
+[7] M. Sandler, A. Howard, M. Zhu, A. Zhmoginov et L.-C. Chen, ´n MobileNetV2 : In-
+verted Residuals and Linear Bottlenecks ˙z, Proc. IEEE Conf. on Computer Vision and
+Pattern Recognition (CVPR), 2018.
+[8] T.-Y. Lin, P. Goyal, R. Girshick, K. He et P. Dollár, ´n Focal Loss for Dense Object
+Detection ˙z, Proc. IEEE Int. Conf. on Computer Vision (ICCV), pp. 2980–2988, 2017.
+[9] H. Zhang, M. Cissé, Y. N. Dauphin et D. Lopez-Paz, ´n mixup : Beyond Empirical Risk
+Minimization ˙z, Proc. Int. Conf. on Learning Representations (ICLR), 2018.
+[10] S. Yun, D. Han, S. J. Oh, S. Chun, J. Choe et Y. Yoo, ´n CutMix : Regularization Stra-
+tegy to Train Strong Classiﬁers with Localizable Features ˙z, Proc. IEEE Int. Conf. on
+Computer Vision (ICCV), pp. 6023–6032, 2019.
+[11] T. Baltruaitis, C. Ahuja et L.-P. Morency, ´n Multimodal Machine Learning : A Survey
+and Taxonomy ˙z, IEEE Transactions on Pattern Analysis and Machine Intelligence,
+vol. 41, no 2, pp. 423–443, 2019.
+[12] D. Ramachandram et G. W. Taylor, ´n Deep Multimodal Learning : A Survey on Recent
+Advances and Trends ˙z, IEEE Signal Processing Magazine, vol. 34, no 6, pp. 96–108,
+2017.
+[13] J.-S. Lee, ´n Speckle Analysis and Smoothing of Synthetic Aperture Radar Images ˙z,
+Computer Graphics and Image Processing, vol. 17, no 1, pp. 24–32, 1981.
+[14] V. S. Frost, J. A. Stiles, K. S. Shanmugan et J. C. Holtzman, ´n A Model for Radar
+Images and Its Application to Adaptive Digital Filtering of Multiplicative Noise ˙z,
+93
+
+
+===== PAGE 96 =====
+
+Bibliographie
+PFE 2025/2026
+IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 4, no 2, pp. 157–
+166, 1982.
+[15] D. J. Varnes, ´n Slope Movement Types and Processes ˙z, dans Landslides : Analysis
+and Control, Special Report 176, Transportation Research Board, Washington D.C.,
+pp. 11–33, 1978.
+[16] O. Hungr, S. Leroueil et L. Picarelli, ´n The Varnes Classiﬁcation of Landslide Types,
+an Update ˙z, Landslides, vol. 11, no 2, pp. 167–194, 2014.
+[17] M. J. Froude et D. N. Petley, ´n Global Fatal Landslide Occurrence from 2004 to
+2016 ˙z, Natural Hazards and Earth System Sciences, vol. 18, pp. 2161–2181, 2018.
+DOI : 10.5194/nhess-18-2161-2018.
+[18] A. Stumpf et N. Kerle, ´n Object-Oriented Mapping of Landslides Using Random Fo-
+rests ˙z, Remote Sensing of Environment, vol. 115, no 10, pp. 2564–2577, 2011.
+[19] O. Ghorbanzadeh, T. Blaschke, K. Gholamnia, S. R. Meena, D. Tiede et J. Aryal,
+´n Evaluation of Different Machine Learning Methods and Deep-Learning Convolutio-
+nal Neural Networks for Landslide Detection ˙z, Remote Sensing, vol. 11, no 2, art. 196,
+2019.
+[20] L. Nava, O. Monserrat et F. Catani, ´n Improving Landslide Detection on SAR Data
+Through Deep Learning ˙z, IEEE Geoscience and Remote Sensing Letters, vol. 19,
+pp. 1–5, 2022.
+[21] R. Fu et al., ´n Landslide Mapping Based on a Hybrid CNN-Transformer Network and
+Deep Transfer Learning Using Remote Sensing Images with Topographic and Spectral
+Features ˙z, International Journal of Applied Earth Observation and Geoinformation,
+2024.
+[22] L. Nava, A. C. Mondini, K. Bhuyan, C. Fang, O. Monserrat, A. Novellino et F. Catani,
+´n Sentinel-1 SAR-Based Globally Distributed Co-seismic Landslide Detection by Deep
+Neural Networks ˙z, Geoscientiﬁc Model Development, vol. 19, pp. 167–195, 2026.
+[23] R.
+Wightman,
+PyTorch
+Image
+Models
+(timm).
+https://github.com/
+huggingface/pytorch-image-models, 2024.
+[24] A. Buslaev et al., ´n Albumentations : Fast and Flexible Image Augmentations ˙z, Infor-
+mation, vol. 11, no 2, art. 125, 2020.
+[25] ESA Sentinel Online, Sentinel-1 et Sentinel-2 Technical Guides. https://
+sentinel.esa.int, 2024.
+[26] Zindi Africa, Landslide Detection Challenge. https://zindi.africa, 2023.
+94
+
+
+===== PAGE 97 =====
+
+Annexes
+Annexe A — Statistiques de normalisation calculées sur le
+jeu d’entraînement
+TABLE 11. Statistiques de normalisation calculées sur le jeu d’entraînement (Sentinel-1 &
+Sentinel-2).
+Canal
+Moyenne
+Écart-type
+Canaux optiques (Sentinel-2)
+Rouge (B4)
+1792.36
+1262.56
+Vert (B3)
+1880.33
+1190.77
+Bleu (B2)
+1820.38
+1195.43
+NIR (B8)
+3126.46
+1420.43
+Canaux SAR (Sentinel-1)
+VV ascendant
+−10.41
+7.87
+VH ascendant
+−18.45
+9.92
+∆VV ascendant
+−0.85
+3.68
+∆VH ascendant
+−0.63
+3.67
+VV descendant
+−11.11
+6.19
+VH descendant
+−19.61
+9.29
+∆VV descendant
+0.55
+2.36
+∆VH descendant
+−0.18
+3.06
+Annexe B — Code : fonction de prétraitement
+Listing 1. Prétraitement d’un ﬁchier .npy en cache .npz
+1
+from scipy.ndimage import median_filter
+2
+import numpy as np
+3
+4
+def preprocess_one(npy_path, npz_path):
+5
+data
+= np.load(npy_path)
+# (64, 64, 12)
+6
+optical
+= data[:, :, :4].astype(np.float32)
+7
+sar_raw
+= data[:, :, 4:].astype(np.float32)
+95
+
+
+===== PAGE 98 =====
+
+Annexes
+PFE 2025/2026
+8
+9
+# Filtre median 3x3 pour le bruit speckle SAR
+10
+sar_filt = np.stack(
+11
+[median_filter(sar_raw[:,:,i], size=3) for i in range(8)],
+12
+axis=-1
+13
+)
+14
+15
+# Cloud score (sur les canaux RGB)
+16
+rgb_mean = optical[:,:,:3].mean(axis=-1)
+17
+rgb_std
+= optical[:,:,:3].std(axis=-1)
+18
+bright
+= 1 / (1 + np.exp(-(rgb_mean - 0.75) / 0.08))
+19
+low_tex
+= 1 / (1 + np.exp(-(0.08 - rgb_std)
+/ 0.03))
+20
+cloud
+= float((0.7*bright + 0.3*low_tex).mean().clip(0,1))
+21
+22
+np.savez_compressed(npz_path, optical=optical,
+23
+sar=sar_filt, cloud_score=cloud)
+Annexe C — Code : classe Dataset
+Listing 2. Classe LandslideDataset : chargement, augmentation et normalisation
+1
+import numpy as np, cv2, torch
+2
+from torch.utils.data import Dataset
+3
+4
+class LandslideDataset(Dataset):
+5
+def __init__(self, df, cache_dir, is_train=True,
+6
+geom_tf=None, photo_tf=None):
+7
+self.df
+= df.reset_index(drop=True)
+8
+self.cache_dir = cache_dir
+9
+self.is_train = is_train
+10
+self.geom_tf, self.photo_tf = geom_tf, photo_tf
+11
+# statistiques de normalisation (calculees sur le train)
+12
+self.opt_mean, self.opt_std = OPT_MEAN, OPT_STD
+13
+self.sar_mean, self.sar_std = SAR_MEAN, SAR_STD
+14
+15
+def __len__(self):
+16
+return len(self.df)
+17
+18
+def __getitem__(self, idx):
+19
+row
+= self.df.iloc[idx]
+20
+data
+= np.load(f"{self.cache_dir}/{row[’id’]}.npz")
+21
+optical, sar = data[’optical’], data[’sar’]
+22
+cloud = np.float32(data[’cloud_score’])
+23
+24
+# --- augmentations (entrainement uniquement) ---
+25
+if self.is_train:
+96
+
+
+===== PAGE 99 =====
+
+Annexes
+PFE 2025/2026
+26
+stack
+= np.concatenate([optical, sar], axis=-1)
+# 12
+canaux
+27
+stack
+= self.geom_tf(image=stack)[’image’]
+#
+geometrique
+28
+optical, sar = stack[..., :4], stack[..., 4:]
+29
+rgb = self.photo_tf(image=optical[..., :3])[’image’] #
+photometrique
+30
+optical[..., :3] = rgb
+31
+32
+# --- normalisation z-score + redimensionnement ---
+33
+optical = (optical - self.opt_mean) / self.opt_std
+34
+sar
+= (sar
+- self.sar_mean) / self.sar_std
+35
+optical = cv2.resize(optical, (224, 224))
+36
+sar
+= cv2.resize(sar,
+(224, 224))
+37
+38
+optical = torch.from_numpy(optical).permute(2, 0, 1).float()
+39
+sar
+= torch.from_numpy(sar).permute(2, 0, 1).float()
+40
+cloud
+= torch.tensor([cloud], dtype=torch.float32)
+41
+target
+= torch.tensor(row[’label’], dtype=torch.float32)
+42
+return optical, sar, cloud, target
+Annexe D — Code : augmentation des données
+Listing 3. Pipelines d’augmentation géométrique et photométrique
+1
+import albumentations as A
+2
+3
+# Augmentations geometriques : appliquees aux 12 canaux simultanement
+4
+geom_tf = A.Compose([
+5
+A.HorizontalFlip(p=0.5),
+6
+A.VerticalFlip(p=0.5),
+7
+A.RandomRotate90(p=0.5),
+8
+A.ShiftScaleRotate(shift_limit=0.06, scale_limit=0.10,
+9
+rotate_limit=15, p=0.5),
+10
+A.CoarseDropout(max_holes=8, max_height=8, max_width=8, p=0.3),
+11
+])
+12
+13
+# Augmentations photometriques : appliquees uniquement aux canaux RGB
+14
+photo_tf = A.Compose([
+15
+A.RandomBrightnessContrast(brightness_limit=0.2,
+16
+contrast_limit=0.2, p=0.5),
+17
+A.HueSaturationValue(hue_shift_limit=10, sat_shift_limit=15,
+18
+val_shift_limit=10, p=0.5),
+19
+])
+Listing 4. Fonction de mélange Mixup / CutMix
+97
+
+
+===== PAGE 100 =====
+
+Annexes
+PFE 2025/2026
+1
+import numpy as np, random, torch
+2
+3
+def mix_batch(optical, sar, target):
+4
+"""Applique aleatoirement Mixup ou CutMix sur un mini-lot."""
+5
+perm = torch.randperm(optical.size(0))
+6
+if random.random() < 0.5:
+# --- Mixup ---
+7
+lam = np.random.beta(0.2, 0.2)
+8
+optical = lam * optical + (1 - lam) * optical[perm]
+9
+sar
+= lam * sar
++ (1 - lam) * sar[perm]
+10
+else:
+# --- CutMix ---
+11
+lam
+= np.random.beta(1.0, 1.0)
+12
+H, W = optical.shape[2:]
+13
+rh, rw = int(H*np.sqrt(1-lam)), int(W*np.sqrt(1-lam))
+14
+cy, cx = np.random.randint(H), np.random.randint(W)
+15
+y1, y2 = np.clip([cy-rh//2, cy+rh//2], 0, H)
+16
+x1, x2 = np.clip([cx-rw//2, cx+rw//2], 0, W)
+17
+optical[:, :, y1:y2, x1:x2] = optical[perm, :, y1:y2, x1:x2]
+18
+sar[:, :, y1:y2, x1:x2]
+= sar[perm, :, y1:y2, x1:x2]
+19
+lam = 1 - ((x2-x1)*(y2-y1) / (H*W))
+# ratio de
+surface
+20
+return optical, sar, target, target[perm], lam
+Annexe E — Code : application web (API FastAPI)
+Backend — serveur FastAPI (api.py). L’API charge l’ensemble des cinq modèles au
+démarrage et expose deux points d’accès : /health et /predict.
+Listing 5. Serveur FastAPI : points d’accès /health et /predict
+1
+from fastapi import FastAPI, UploadFile, File, HTTPException
+2
+from fastapi.middleware.cors import CORSMiddleware
+3
+import numpy as np, tempfile, os
+4
+from preprocess import preprocess_npy
+5
+from utils import load_ensemble_models, predict_ensemble
+6
+7
+# Chemins des 5 points de controle (un par fold)
+8
+CHECKPOINT_PATHS = [f"models/efficientnetv2_l_224_fold{k}.pth"
+9
+for k in range(5)]
+10
+TTA_FLIPS, GLOBAL_THRESHOLD = 4, 0.31
+11
+12
+app = FastAPI(title="Landslide Detection API")
+13
+app.add_middleware(CORSMiddleware, allow_origins=["*"],
+14
+allow_methods=["*"], allow_headers=["*"])
+15
+16
+# Chargement de l’ensemble des 5 modeles au demarrage du serveur
+17
+ensemble_models = load_ensemble_models(CHECKPOINT_PATHS)
+98
+
+
+===== PAGE 101 =====
+
+Annexes
+PFE 2025/2026
+18
+19
+@app.get("/health")
+# verification de l’etat du
+service
+20
+async def health():
+21
+return {"status": "ok", "models_loaded": len(ensemble_models),
+22
+"threshold": GLOBAL_THRESHOLD, "tta_flips": TTA_FLIPS}
+23
+24
+@app.post("/predict")
+# endpoint principal de
+prediction
+25
+async def predict(file: UploadFile = File(...)):
+26
+if not file.filename.endswith(’.npy’):
+27
+raise HTTPException(400, "Seuls les fichiers .npy sont
+acceptes")
+28
+# sauvegarde temporaire du fichier televerse
+29
+with tempfile.NamedTemporaryFile(delete=False, suffix=".npy") as
+tmp:
+30
+tmp.write(await file.read()); tmp_path = tmp.name
+31
+opt, sar, cloud = preprocess_npy(tmp_path)
+# .npy ->
+tenseurs
+32
+os.unlink(tmp_path)
+33
+# inference ensembliste (5 folds) avec Test-Time Augmentation
+34
+proba, decision = predict_ensemble(
+35
+ensemble_models, opt.unsqueeze(0), sar.unsqueeze(0),
+36
+cloud.unsqueeze(0), tta_flips=TTA_FLIPS,
+37
+global_threshold=GLOBAL_THRESHOLD)
+38
+return {"probability": round(proba, 4), "decision": decision,
+39
+"cloud_score": round(float(cloud.item()), 4),
+40
+"message": "Glissement detecte" if decision else "Zone
+normale"}
+Inférence ensembliste et TTA (utils.py). La prédiction ﬁnale est la moyenne des pro-
+babilités des cinq folds, chacune renforcée par Test-Time Augmentation.
+Listing 6. Chargement de l’ensemble et prédiction avec TTA
+1
+import torch, numpy as np
+2
+from model import MultiModalModel
+3
+4
+DEVICE = torch.device("cpu")
+5
+6
+def load_ensemble_models(fold_paths, backbone=’tf_efficientnetv2_l’):
+7
+"""Charge les 5 modeles (un par fold)."""
+8
+models = []
+9
+for path in fold_paths:
+10
+model = MultiModalModel(backbone, img_size=224,
+11
+pretrained=False).to(DEVICE)
+12
+ckpt = torch.load(path, map_location=DEVICE)
+13
+model.load_state_dict(ckpt[’model_state_dict’])
+99
+
+
+===== PAGE 102 =====
+
+Annexes
+PFE 2025/2026
+14
+model.eval()
+15
+models.append(model)
+16
+return models
+17
+18
+def predict_single_with_tta(model, opt, sar, cloud, tta_flips=4):
+19
+"""Prediction d’un modele avec Test-Time Augmentation."""
+20
+with torch.no_grad():
+21
+probs = [torch.sigmoid(model(opt, sar, cloud)).item()]
+22
+flips = [[3], [2], [2, 3]]
+# horizontal, vertical,
+H+V
+23
+for d in flips[:tta_flips - 1]:
+24
+p = torch.sigmoid(model(torch.flip(opt, d),
+25
+torch.flip(sar, d), cloud)).item
+()
+26
+probs.append(p)
+27
+return float(np.mean(probs))
+28
+29
+def predict_ensemble(models, opt, sar, cloud,
+30
+tta_flips=4, global_threshold=0.31):
+31
+"""Moyenne des probabilites des 5 folds, puis decision par seuil.
+"""
+32
+probs = [predict_single_with_tta(m, opt, sar, cloud, tta_flips)
+33
+for m in models]
+34
+mean_prob = float(np.mean(probs))
+35
+return mean_prob, int(mean_prob >= global_threshold)
+100
+
+
+===== PAGE 103 =====
+
+Annexes
+PFE 2025/2026
+Annexe F — Hyperparamètres du modèle
+TABLE 12. Hyperparamètres — EfﬁcientNetV2-L
+Hyperparamètre
+Valeur
+Backbone
+tf_efficientnetv2_l (ImageNet)
+Image size
+224 × 224 px
+Canaux optiques
+4 (B2, B3, B4, B8)
+Canaux SAR
+8 (VV/VH asc/desc + diff.)
+Batch size
+24
+Epochs max
+50
+Early stopping
+Patience = 12
+Optimiseur
+AdamW (η0 = 10−4, wd = 10−5)
+Planiﬁcateur
+CosineAnnealingLR (ηmin = 10−6)
+Focal Loss alpha
+0,25
+Focal Loss gamma
+2,0
+Gradient clipping
+1,0
+Mixed Precision
+ﬂoat16 (AMP)
+Seed
+42
+Folds
+5 (StratiﬁedKFold)
+TTA
+4 aug. (id, ﬂipH, ﬂipV, ﬂipHV)
+Seuil opt.
+τ ∗= 0,31
+GPU
+NVIDIA Tesla P100 16 GB (CUDA 11.8)
+101

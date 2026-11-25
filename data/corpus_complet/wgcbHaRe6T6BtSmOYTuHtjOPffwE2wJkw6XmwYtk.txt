@@ -1,0 +1,2671 @@
+===== PAGE 1 =====
+
+ 
+ 
+Tunisian Republic 
+ 
+ 
+ 
+University of Monastir 
+Higher Institute of Computer Science  
+of Mahdia 
+ 
+THESIS 
+Order Number: MP-EXR-2-2025-007  
+Ministry of Higher Education and 
+Scientific Research 
+ 
+ 
+ 
+DISSERTATION OF GRADUATION 
+                                                 
+Presented at 
+ 
+Higher Institute of Computer Science of Mahdia 
+                                                 
+ Carried out at 
+ 
+CYEN 
+ 
+ 
+In view of obtaining the diploma of 
+ 
+Master's in Computer Engineering - Network Expert 
+ 
+Prepared by: 
+ 
+Ayoub Elhouche 
+ 
+     
+PoCH – AI-Powered Policy Cheker 
+ 
+ 
+ 
+Defended on: :  13 december 2025   
+before the jury composed of: 
+ 
+ 
+President 
+ : Bessem Zaabar 
+Reviewer 
+ : Ghannay Sana 
+Academic Supervisor 
+ : Ines Ben hassine 
+Industrial Supervisor 
+: Iva Tasheva 
+ 
+ 
+ 
+Academic Year:   2024-2025 
+
+
+===== PAGE 2 =====
+
+Dedication
+To my family and friends,
+This work is lovingly dedicated to my family, whose unwavering support, endless
+encouragement, and patient understanding have been my constant source of strength and
+motivation throughout this journey. Your belief in me has been a guiding light.
+To my dear friends, thank you for the moments of levity, the shared struggles, the insightful
+conversations, and for always being there. Your friendship has made this challenging
+endeavor more manageable and infinitely more enjoyable.
+Your collective presence in my life has been invaluable. This achievement is as much yours
+as it is mine.
+
+
+===== PAGE 3 =====
+
+Acknowledgments
+I would like to express my sincere gratitude to my academic supervisor, Ms. Ines BEN
+HASSINE, for her insightful guidance, unwavering support, and constructive feedback
+throughout the duration of this project. Her expertise was invaluable in shaping the di-
+rection of this research and development.
+I am also deeply grateful to my professional supervisor at CYEN, Ms. Iva TASHEVA.
+Thank you for providing me with the opportunity to undertake this internship, for your
+invaluable mentorship, and for generously sharing your practical knowledge of cybersecurity
+challenges, particularly within the compliance sector.
+ii
+
+
+===== PAGE 4 =====
+
+Contents
+List of Figures
+ix
+List of Tables
+x
+General Introduction
+1
+1
+General Framework of the Project
+3
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+Presentation of the Host Organization: CYEN . . . . . . . . . . . . . . . . .
+4
+1.2.1
+Overview of the Host Organization . . . . . . . . . . . . . . . . . . .
+4
+1.2.2
+Missions of the Organization . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.3
+Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.4
+Problem Statement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.5
+Analysis of Existing Solutions . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.5.1
+EU AI Act Compliance Checker . . . . . . . . . . . . . . . . . . . . .
+6
+1.5.2
+Compliance.ai . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+1.6
+Proposed Solution: The PoCH Platform
+. . . . . . . . . . . . . . . . . . . .
+8
+1.7
+Methodological Approach
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.7.1
+Strengths of the Scrum Methodology . . . . . . . . . . . . . . . . . .
+10
+1.7.2
+The Scrum Team Structure
+. . . . . . . . . . . . . . . . . . . . . . .
+11
+1.8
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2
+Analysis and Requirements Specification
+13
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.2
+Analysis and Requirements Specification . . . . . . . . . . . . . . . . . . . .
+14
+2.2.1
+Identification of Actors . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2.2.2
+Specification of Functional Requirements (FR) . . . . . . . . . . . . .
+14
+2.2.2.1
+FR1: Multi-Format Document Ingestion . . . . . . . . . . .
+14
+iii
+
+
+===== PAGE 5 =====
+
+Contents
+2.2.2.2
+FR2: Regulation Framework Selection . . . . . . . . . . . .
+15
+2.2.2.3
+FR3: The "Dissection" & Human-in-the-Loop Review . . . .
+15
+2.2.2.4
+FR4: Reporting and Export . . . . . . . . . . . . . . . . . .
+15
+2.2.3
+Specification of Non-Functional Requirements (NFR) . . . . . . . . .
+15
+2.2.3.1
+Performance
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+15
+2.2.3.2
+Security & Privacy (Stateless Design) . . . . . . . . . . . . .
+16
+2.2.3.3
+Usability
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.3
+System Design Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.3.1
+Global Use Case Diagram
+. . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.3.2
+System Architecture: Package Class Diagram
+. . . . . . . . . . . . .
+17
+2.4
+Project Management: Scrum & Collaboration
+. . . . . . . . . . . . . . . . .
+20
+2.4.1
+Roles and Team Structure . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.4.2
+Sprint Planning and Tracking . . . . . . . . . . . . . . . . . . . . . .
+20
+2.4.3
+Communication Rituals and Infrastructure . . . . . . . . . . . . . . .
+21
+2.4.3.1
+The "Bi-Weekly Sync" . . . . . . . . . . . . . . . . . . . . .
+21
+2.4.3.2
+Secure Internal Communication . . . . . . . . . . . . . . . .
+22
+2.4.4
+Project Phasing and Sprint Roadmap . . . . . . . . . . . . . . . . . .
+22
+2.5
+Tools and Technical Architecture
+. . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.5.1
+The Tech Stack . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.5.2
+Physical Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+3
+Sprint 1: Feasibility Study and Prototyping Strategy
+26
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.2
+Sprint 1 Objectives and Backlog . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.2.1
+Sprint Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.2.2
+Sprint Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.3
+Use Case and Sequence Diagram . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.4
+Phase A: The Enterprise API Experiment
+. . . . . . . . . . . . . . . . . . .
+29
+3.4.1
+Methodology
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.4.2
+Results and The Privacy Block
+. . . . . . . . . . . . . . . . . . . . .
+29
+3.5
+Phase B: Transition to Open Source (Local Hosting)
+. . . . . . . . . . . . .
+30
+iv
+
+
+===== PAGE 6 =====
+
+Contents
+3.5.1
+The Local Hardware Challenge
+. . . . . . . . . . . . . . . . . . . . .
+30
+3.5.2
+Model Selection Methodology: . . . . . . . . . . . . . . . . . . . . . .
+30
+3.5.2.1
+Instruction Following (Priority #1) . . . . . . . . . . . . . .
+30
+3.5.2.2
+Reasoning & Problem Solving . . . . . . . . . . . . . . . . .
+30
+3.5.2.3
+Broad Multitask Knowledge . . . . . . . . . . . . . . . . . .
+31
+3.5.3
+Benchmarking and Limitations
+. . . . . . . . . . . . . . . . . . . . .
+31
+3.5.4
+Outcome: The "Hardware Wall" . . . . . . . . . . . . . . . . . . . . .
+32
+3.6
+System Architecture Diagram (POC Phase)
+. . . . . . . . . . . . . . . . . .
+32
+3.7
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+4
+Sprint 2: Cloud Migration and Methodology Experimentation
+34
+4.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+4.2
+Sprint Objectives and Backlog . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+4.2.1
+Sprint Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+4.2.2
+Sprint Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+4.3
+Use Case and Sequence Diagrams . . . . . . . . . . . . . . . . . . . . . . . .
+36
+4.4
+Infrastructure Deployment: The Hetzner GPU Server . . . . . . . . . . . . .
+37
+4.4.1
+Market Research and Vendor Selection . . . . . . . . . . . . . . . . .
+37
+4.4.2
+Server Specifications
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+4.5
+Security and Environment Setup . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+4.5.1
+User Creation and SSH Hardening
+. . . . . . . . . . . . . . . . . . .
+38
+4.5.2
+Software Stack Installation . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.6
+Validation and Remote Access . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.6.1
+Server Validation . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.6.2
+Remote Access Configuration
+. . . . . . . . . . . . . . . . . . . . . .
+40
+4.7
+The Inference Engine: Optimizing Ollama
+. . . . . . . . . . . . . . . . . . .
+41
+4.7.1
+Moving Beyond Default Limits
+. . . . . . . . . . . . . . . . . . . . .
+41
+4.8
+Advanced Methodology Experiments
+. . . . . . . . . . . . . . . . . . . . . .
+41
+4.8.1
+Experiment A: The "Two-Phase" Critic Approach . . . . . . . . . . .
+42
+4.8.2
+Experiment B: The "Scratchpad" (Chain-of-Thought) Method
+. . . .
+42
+4.9
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+v
+
+
+===== PAGE 7 =====
+
+Contents
+5
+Sprint 3: System Optimization and The "Official Method"
+44
+5.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+5.2
+Sprint Objectives and Backlog . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+5.2.1
+Sprint Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+45
+5.2.2
+Sprint Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+5.3
+Use Case and Sequence Diagrams . . . . . . . . . . . . . . . . . . . . . . . .
+46
+5.4
+High-Performance Inference Setup: vLLM Integration . . . . . . . . . . . . .
+47
+5.4.1
+Why vLLM? . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+5.4.2
+Enforcing Consistency: The "Guided JSON" Mechanism
+. . . . . . .
+48
+5.5
+Implementation of the "Official Method" (The Stable Pipeline) . . . . . . . .
+49
+5.5.1
+Step 1: Dissection and The "Rule Pool" Creation
+. . . . . . . . . . .
+49
+5.5.2
+Step 2: Human-in-the-Loop (HITL) Validation . . . . . . . . . . . . .
+50
+5.5.3
+Step 3: Parallel Control-Centric Analysis . . . . . . . . . . . . . . . .
+50
+5.6
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+6
+Sprint 4: Validation, Hardening, and Final Polish
+52
+6.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+6.2
+Sprint Objectives and Backlog . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+6.2.1
+Sprint Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+6.2.2
+Sprint Backlog
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+6.3
+Use Case and Sequence Diagrams . . . . . . . . . . . . . . . . . . . . . . . .
+54
+6.4
+Large-Scale Validation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+6.4.1
+Dataset Selection: The "EU University" Benchmark . . . . . . . . . .
+56
+6.4.2
+Testing Methodology . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+6.4.3
+Quantitative Results: The "Evolution of Intelligence" . . . . . . . . .
+56
+6.4.4
+Qualitative Analysis: The "Flawed Genius" Paradox . . . . . . . . . .
+58
+6.4.5
+Framework Specific Stress Test: DORA (The "A++" Result) . . . . .
+59
+6.5
+Security Hardening and OWASP Audit . . . . . . . . . . . . . . . . . . . . .
+60
+6.5.1
+Part A: OWASP Top 10 (Web Application Security)
+. . . . . . . . .
+60
+6.5.1.1
+Injection Flaws (OS Command Injection) . . . . . . . . . .
+60
+6.5.1.2
+Cryptographic Failures
+. . . . . . . . . . . . . . . . . . . .
+60
+6.5.1.3
+Security Logging & Monitoring . . . . . . . . . . . . . . . .
+61
+vi
+
+
+===== PAGE 8 =====
+
+Contents
+6.5.1.4
+Server-Side Request Forgery (SSRF) . . . . . . . . . . . . .
+61
+6.5.2
+Part B: OWASP Top 10 for LLMs (AI Specifics) . . . . . . . . . . . .
+61
+6.5.2.1
+LLM01: Prompt Injection (Jailbreaking) . . . . . . . . . . .
+61
+6.5.2.2
+LLM02: Insecure Output Handling (XSS) . . . . . . . . . .
+62
+6.5.2.3
+LLM04: Model Denial of Service (DoS) . . . . . . . . . . . .
+62
+6.5.2.4
+LLM06: Sensitive Information Disclosure . . . . . . . . . . .
+62
+6.6
+Supply Chain Security: Software Bill of Materials (SBOM) . . . . . . . . . .
+62
+6.6.1
+1. Backend Dependencies (Python) . . . . . . . . . . . . . . . . . . .
+63
+6.6.2
+2. Frontend Dependencies (Client-Side) . . . . . . . . . . . . . . . . .
+63
+6.6.3
+3. Infrastructure & System Environment . . . . . . . . . . . . . . . .
+64
+6.6.4
+4. AI Models & Data Assets . . . . . . . . . . . . . . . . . . . . . . .
+64
+6.7
+Interface Refinement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+6.8
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+General Conclusion
+66
+Perspectives and Future Work
+68
+References
+70
+vii
+
+
+===== PAGE 9 =====
+
+List of Figures
+1.1
+Cyen Logo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.2
+EU AI Act Compliance Checker Logo . . . . . . . . . . . . . . . . . . . . . .
+7
+1.3
+Compliance AI Logo
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8
+1.4
+Scrum Methodologie Cycle . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.1
+Global Use Case Diagram: Analyst Workflow and Admin Maintenance
+. . .
+17
+2.2
+Package Class Diagram: Modular Architecture of the PoCH Backend
+. . . .
+19
+2.3
+Project Knowledge Base: Google Drive and Sprint Planning Sheet . . . . . .
+20
+2.4
+Project Knowledge Base: Google Drive and Sprint Planning Sheet . . . . . .
+21
+2.5
+Zoom Logo
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.6
+Private Mail Server Setup for secure internal communication. . . . . . . . . .
+22
+2.7
+Final Physical and Logical Architecture . . . . . . . . . . . . . . . . . . . . .
+24
+3.1
+Use case Diagram Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.2
+Sequence Diagram Sprint 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.3
+Experimental Architecture during Sprint 2: Leveraging Colab for GPU of-
+floading. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+4.1
+Use case Diagram Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+4.2
+Sequence Diagram Sprint 2 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+4.3
+Output of nvidia-smi confirming the RTX 4000 Ada GPU and Driver Status. 40
+4.4
+XRDP Login Interface for the ’Intern’ Account.
+. . . . . . . . . . . . . . . .
+40
+4.5
+Hardened SSH Server Configuration . . . . . . . . . . . . . . . . . . . . . . .
+40
+5.1
+Use case Diagram Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+5.2
+Sequence Diagram Sprint 3 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+5.3
+Comparison of Time Spent per Policy (Manual vs PoCH) . . . . . . . . . . .
+51
+6.1
+Sprint 4 Use Case Diagram: Hardening and Testing . . . . . . . . . . . . . .
+54
+viii
+
+
+===== PAGE 10 =====
+
+List of Figures
+6.2
+Sprint 4 Sequence Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+55
+6.3
+Performance Evolution: Radar Chart comparing Initial vs. Final Test Runs .
+58
+ix
+
+
+===== PAGE 11 =====
+
+List of Tables
+3.1
+Sprint 1 Backlog: Research and Prototyping . . . . . . . . . . . . . . . . . .
+28
+3.2
+Local Model Benchmarking (Sprint 1) . . . . . . . . . . . . . . . . . . . . . .
+31
+4.1
+Sprint 2 Backlog: Infrastructure and Reasoning
+. . . . . . . . . . . . . . . .
+35
+4.2
+Hetzner GEX44 Server Specifications . . . . . . . . . . . . . . . . . . . . . .
+38
+5.1
+Sprint 3 Backlog: Stabilization and Optimization
+. . . . . . . . . . . . . . .
+46
+6.1
+Sprint 4 Backlog: Validation and Hardening . . . . . . . . . . . . . . . . . .
+54
+6.2
+Validation Test Metrics (Framework: CYFUN-ESSENTIALS)
+. . . . . . . .
+57
+6.3
+SBOM: Backend Components (Managed via pip)
+. . . . . . . . . . . . . . .
+63
+6.4
+SBOM: Frontend Libraries (CDN Loaded) . . . . . . . . . . . . . . . . . . .
+63
+6.5
+SBOM: Operating Environment . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+6.6
+SBOM: AI Model Weights . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+x
+
+
+===== PAGE 12 =====
+
+General Introduction
+In an era defined by rapid digital transformation, cybersecurity has transcended its role as
+a purely technical safeguard to become a cornerstone of global economic stability. As cyber
+threats grow in sophistication, governments and international bodies have responded with
+a stringent wave of regulations. The European Union, through the European Parliament,
+has been particularly aggressive in setting global standards, enforcing frameworks such as
+the General Data Protection Regulation (GDPR) [1] and the Digital Operational Resilience
+Act (DORA)[2]. These initiatives have created a ripple effect worldwide, compelling organi-
+zations not only to secure their infrastructures but to demonstrate rigorous adherence to a
+complex, ever-expanding web of legal requirements.
+However, this regulatory expansion has introduced significant operational friction. The
+variations between frameworks—ranging from the prescriptive controls of ISO 27001[3] to
+the risk-based approaches of NIST[4] and the specific mandates of national laws—create a
+landscape of immense complexity. For compliance officers and security auditors, the challenge
+is no longer just understanding security, but managing the sheer volume of textual analysis
+required to map internal policies against these external mandates. The resulting "compliance
+fatigue" often leads to manual errors, inconsistencies, and significant financial burdens for
+organizations attempting to keep pace with legal changes.
+Artificial Intelligence, and specifically the advancement of Large Language Models (LLMs)[5],
+has emerged as a transformative force capable of addressing this disparity. While AI is rev-
+olutionizing fields from coding to creative writing, its potential in Governance, Risk, and
+Compliance (GRC) is particularly profound. By leveraging Natural Language Processing
+(NLP) to automate the interpretation and mapping of regulatory texts, AI offers a pathway
+to bridge the gap between static policy documents and dynamic legal requirements. This
+project explores the practical application of such technologies, aiming to harness the power of
+AI to streamline compliance auditing while navigating the technical challenges of accuracy,
+privacy, and control.
+1
+
+
+===== PAGE 13 =====
+
+General Introduction
+Report Structure
+This report is organized into six chapters, reflecting the iterative "Research-Action"
+methodology adopted throughout the project lifecycle:
+• Chapter 1: General Framework of the Project establishes the context within
+the host organization (CYEN), defines the problem of manual compliance auditing,
+and outlines the proposed AI-driven solution.
+• Chapter 2: Analysis and Requirements Specification details the functional and
+non-functional requirements of the system. It also defines the actors, the Scrum project
+management approach, and the collaborative tools used by the team.
+• Chapter 3:
+Sprints 1 & 2 – Feasibility Study covers the initial exploratory
+phase. It documents the testing of Enterprise APIs and the subsequent attempts to
+run open-source models on local hardware, highlighting the limitations that drove the
+architectural pivot.
+• Chapter 4:
+Sprint 3 – Cloud Migration and Experimentation details the
+deployment of the dedicated Hetzner GPU infrastructure.
+It analyzes the "failed"
+experiments with advanced reasoning techniques (such as the Critic and Scratchpad
+methods) that faced stability issues.
+• Chapter 5: Sprint 4 – System Optimization presents the final, stable solution. It
+explains the implementation of the "Official Method" using vLLM, the smart_split_policy
+algorithm, and the parallel control-centric analysis pipeline.
+• Chapter 6:
+Sprint 5 – Validation and Hardening provides the quantitative
+results of the "20-Policy Benchmark." It also includes a comprehensive security audit
+(OWASP Top 10) and the Software Bill of Materials (SBOM), demonstrating the
+system’s readiness for production.
+The report concludes with a General Conclusion summarizing the project’s contribu-
+tions and a discussion on Perspectives and Future Work.
+2
+
+
+===== PAGE 14 =====
+
+1
+General Framework of the Project
+3
+
+
+===== PAGE 15 =====
+
+Chapter 1. General Framework of the Project
+1.1
+Introduction
+This chapter outlines the general framework of the project. We begin by presenting the host
+organization, CYEN, followed by an analysis of the problem statement and the limitations
+of current solutions. Finally, we detail the proposed solution and the Agile Research-Action
+methodology adopted to navigate the technological uncertainties inherent in this R&D ini-
+tiative.
+1.2
+Presentation of the Host Organization: CYEN
+1.2.1
+Overview of the Host Organization
+CYEN is a specialized cybersecurity consulting firm dedicated to helping organizations nav-
+igate the complex landscape of digital security and compliance. Established with a focus
+on high-level expertise, CYEN provides strategic guidance to ensure that client infrastruc-
+tures are not only secure against threats but also compliant with international and local
+regulations.
+The company operates at the intersection of technical security (Audits, Pentesting) and
+governance (GRC - Governance, Risk, and Compliance). This dual focus makes CYEN an
+ideal environment for developing a tool that requires both deep understanding of regulatory
+texts and advanced technical implementation of AI models.
+Figure 1.1: Cyen Logo
+1.2.2
+Missions of the Organization
+In the context of Compliance Technology, CYEN’s mission revolves around several key pillars:
+• Regulatory Guidance: Assisting clients in achieving certification and compliance
+with frameworks such as ISO 27001[3], GDPR[1], and the Digital Operational Re-
+silience Act (DORA)[2].
+4
+
+
+===== PAGE 16 =====
+
+Chapter 1. General Framework of the Project
+• Risk Management: Identifying vulnerabilities in organizational processes and propos-
+ing mitigation strategies.
+• Innovation in GRC: Developing tools and methodologies to streamline the auditing
+process, reducing the "compliance fatigue" often faced by CISOs and security teams.
+• Support of other SME’s: Collaborating with other SME’s to develop Open-Source
+tools that help with difficult compliance gaps.
+1.3
+Objectives
+The project aims to establish an intelligent, automated auditing framework with the following
+primary objectives:
+• Automate Regulatory Mapping: drastically reduce the time required to cross-
+reference internal policies against external regulations by replacing manual "Excel-
+based" mapping with AI-driven analysis.
+• Ensure Granular Precision: Move beyond generic document summaries to provide
+a clause-by-clause dissection, ensuring that every specific internal rule is validated
+against the corresponding regulatory control.
+• Guarantee Data Sovereignty: Provide an architecture that allows for high-performance
+AI reasoning without sensitive organizational data ever leaving the secure, self-hosted
+infrastructure (eliminating the risk of public API data leaks).
+These goals seek to deliver a versatile solution applicable to the diverse portfolio of
+CYEN’s clients, ranging from financial institutions to critical infrastructure providers.
+1.4
+Problem Statement
+Compliance teams currently operate in a high-pressure environment where the volume of
+regulatory requirements far outpaces human processing capacity. They rely on manual veri-
+fication methods that are static, labor-intensive, and disconnected from the dynamic nature
+of legal frameworks.
+5
+
+
+===== PAGE 17 =====
+
+Chapter 1. General Framework of the Project
+⇒Lack of a unified, automated tool capable of auditing internal documents
+against multiple regulations with both high accuracy and strict data privacy.
+Challenges
+• Operational Burden and Scalability: Compliance officers spend hundreds of bil-
+lable hours manually reading PDFs and updating spreadsheets. When a regulation
+is updated (e.g., ISO 27001:2013 to 2022), the entire mapping process must often be
+restarted from scratch, creating a perpetual backlog.
+• Subjectivity and Inconsistency: Manual auditing is inherently subjective. Dif-
+ferent analysts may interpret the same regulatory control differently, leading to in-
+consistent audit results and "compliance gaps" that are only discovered during official
+certifications.
+• Data Privacy Constraints: While powerful AI tools exist (e.g., ChatGPT, Claude),
+they cannot be used for confidential client data due to privacy policies especially for
+EU based Companies. Compliance teams are therefore "locked out" of using modern
+productivity accelerators.
+• Granularity Gap:
+Existing automated tools often provide high-level summaries
+("This document is 80% compliant") but fail to identify exactly which sentence in
+a policy violates which specific sub-article of a regulation.
+1.5
+Analysis of Existing Solutions
+To contextualize our approach, we analyzed existing market solutions that attempt to solve
+regulatory alignment.
+1.5.1
+EU AI Act Compliance Checker
+The European Commission introduced the AI Act Compliance Checker[6], a specialized tool
+designed to clarify obligations under the new AI Act.
+6
+
+
+===== PAGE 18 =====
+
+Chapter 1. General Framework of the Project
+• Strengths: It is the authoritative source for this specific legislation, offering high
+accuracy and direct alignment with EU legal definitions.
+It serves as an excellent
+reference implementation for rule-based checking.
+• Weaknesses: Its scope is rigidly limited to the AI Act. It cannot be adapted to check
+a company’s "Password Policy" against NIST or DORA, rendering it a niche tool rather
+than a comprehensive GRC solution.
+Figure 1.2: EU AI Act Compliance Checker Logo
+1.5.2
+Compliance.ai
+Compliance.ai[7] is an enterprise-grade platform that uses machine learning to monitor reg-
+ulatory changes and map them to internal policies, specifically targeting the financial sector.
+• Strengths: It excels at "Regulatory Change Management"—automatically alerting
+companies when laws change. It offers a broad coverage of financial regulations and
+strong workflow features for large teams.
+• Weaknesses:
+– Complexity and Cost: It is a massive Enterprise GRC platform with a high
+barrier to entry, making it unsuitable for agile audits or smaller consulting en-
+gagements.
+– "Black Box" Analysis: As a proprietary SaaS solution, it offers limited visibility
+into how the AI reaches its conclusions, and it does not allow the user to host
+7
+
+
+===== PAGE 19 =====
+
+Chapter 1. General Framework of the Project
+the model locally, which is a disqualifying factor for highly sensitive, air-gapped
+environments.
+Figure 1.3: Compliance AI Logo
+1.6
+Proposed Solution: The PoCH Platform
+Our graduation project consists of developing PoCH (Policy Checker), a specialized
+platform designed to transform the compliance auditing workflow from a manual, error-
+prone task into an automated, intelligent process.
+Unlike generic AI tools that offer vague summaries, PoCH is engineered to serve as a
+precise "Compliance Assistant." It bridges the gap between raw regulatory texts and internal
+organizational policies by leveraging state-of-the-art Large Language Models (LLMs) within
+a strictly controlled, private infrastructure.
+Our solution distinguishes itself through a set of key innovations designed to meet the
+rigorous demands of cybersecurity consultants:
+• Granular "Dissection" Engine: Instead of processing documents as a whole, the
+system intelligently slices policies into atomic "rules" (Clauses/Articles). This allows for
+deep, line-by-line verification against regulations, eliminating the "needle in a haystack"
+problem.
+8
+
+
+===== PAGE 20 =====
+
+Chapter 1. General Framework of the Project
+• Human-in-the-Loop (HITL) Workflow: We reject the "Black Box" approach. The
+solution provides an interactive interface where the Compliance Analyst can review,
+edit, or delete the extracted rules before the AI analysis begins, ensuring that the
+machine verifies exactly what the human intends.
+• Data Sovereignty and Security: To guarantee that sensitive internal policies never
+leave the secure perimeter, the entire solution is self-hosted on dedicated GPU infras-
+tructure (Hetzner Cloud). No data is sent to public APIs (like OpenAI or Google),
+ensuring total compliance with strict NDA and privacy requirements.
+• Multi-Framework Agility: The platform is designed to be agnostic. It allows the
+user to dynamically select from a library of regulations—including DORA, GDPR,
+ISO 27001, NIST, AND Many More !—making it a versatile tool for various
+audit scenarios.
+• Automated Professional Reporting: To replace hours of manual report writ-
+ing, PoCH automatically generates detailed audit reports in .docx and .pdf formats.
+These reports include compliance scores, gap analysis, and specific remediation advice
+ready for client delivery.
+• Control-Centric Analysis: The system utilizes a parallel processing architecture
+that checks the entire pool of internal rules against each specific regulatory control,
+ensuring a holistic audit that mimics the reasoning of a senior consultant.
+• Ergonomic User Interface: Recognizing that compliance officers may not be tech-
+nical experts, we designed a simple, web-based interface (No-Code) that abstracts the
+complexity of the underlying Python/vLLM backend.
+In summary, PoCH aims to act as a force multiplier for the CYEN team, drastically
+reducing the time required for gap analysis while maintaining the high standards of accuracy
+required in the cybersecurity consulting domain.
+9
+
+
+===== PAGE 21 =====
+
+Chapter 1. General Framework of the Project
+1.7
+Methodological Approach
+Given the innovative nature of this project, a traditional V-Model or Waterfall approach
+was deemed unsuitable. The project relies on cutting-edge Large Language Models, a field
+where capabilities change rapidly. Therefore, we adopted an Agile Scrum methodology
+[8]combined with a Research-Action[9] approach[9].
+1.7.1
+Strengths of the Scrum Methodology
+Scrum was selected because it relies on the following key assets, which align perfectly with
+our R&D constraints:
+• Autonomy and Freedom: It offers significant autonomy to the development team,
+allowing for creative problem-solving without rigid, top-down constraints.
+• Continuous Monitoring: It emphasizes daily or bi-weekly synchronization meetings
+to ensure regular tracking of progress and obstacles.
+• Rapid Adaptability: The framework allows for immediate intervention and pivoting
+when technical hypotheses fail (e.g., switching from Local LLMs to Cloud GPUs).
+• Collaboration: It fosters continuous teamwork and transparent communication be-
+tween the technical implementer and business stakeholders.
+• Incremental Predictability: By adopting a progressive approach, we can increase
+the predictability of the final outcome, delivering functional blocks (POC, then Alpha,
+then Beta) rather than waiting for a "Big Bang" release.
+10
+
+
+===== PAGE 22 =====
+
+Chapter 1. General Framework of the Project
+Figure 1.4: Scrum Methodologie Cycle
+1.7.2
+The Scrum Team Structure
+Standard Scrum defines three specific roles, which we adapted for this project context:
+• Scrum Master: The facilitator who ensures the team adheres to Scrum theory and
+practices. They act as a mediator to remove impediments that block the development
+team’s progress.
+• Product Owner (PO): The individual responsible for maximizing the value of the
+product. They define the project characteristics, manage the roadmap, and prioritize
+tasks for each sprint based on business value and stakeholder recommendations.
+• Development Team: The group of professionals who work together to convert the
+Product Owner’s requirements into a potentially shippable product increment at the
+end of each sprint.
+11
+
+
+===== PAGE 23 =====
+
+Chapter 1. General Framework of the Project
+1.8
+Conclusion
+This chapter has established the context of the project within CYEN. We identified the
+critical inefficiencies in manual compliance auditing and the risks of using generic AI. The
+proposed "AI Compliance Checker" aims to solve these issues through a private, granular
+analysis pipeline.
+In the following chapter, we will detail the functional and non-functional requirements
+of this system and define the project management structure that guided our development.
+12
+
+
+===== PAGE 24 =====
+
+2
+Analysis and Requirements Specification
+13
+
+
+===== PAGE 25 =====
+
+Chapter 2. Analysis and Requirements Specification
+2.1
+Introduction
+Following the definition of the general framework, this chapter details the analysis and de-
+sign phase of the PoCH (Policy Checker) project. We will define the functional and
+non-functional requirements necessary to build a robust compliance auditing tool. Further-
+more, we outline the project management methodology, identifying the actors, the Scrum
+process adopted, and the technical architecture designed to support the "Human-in-the-
+Loop" workflow.
+2.2
+Analysis and Requirements Specification
+2.2.1
+Identification of Actors
+The system is designed around two primary actors:
+• The Compliance Analyst (Primary User): A non-technical domain expert (e.g.,
+GRC Consultant) responsible for auditing documents. They require a simple, web-
+based interface to upload policies and review violations without interacting with code.
+• The System Administrator (Dev/Ops): Responsible for maintaining the [10] in-
+frastructure, monitoring the vLLM[11] model service uptime, and ensuring the Nginx[12]
+security configurations remain active to support the analysts’ requests.
+2.2.2
+Specification of Functional Requirements (FR)
+The functional requirements describe the specific behaviors of the PoCH system.
+2.2.2.1
+FR1: Multi-Format Document Ingestion
+The system must accept various input formats to accommodate different client workflows.
+• File Upload: Support for .pdf, .docx, .txt, and .md files.
+• Direct Input: A "Paste Text" feature for quick snippets.
+• Constraint: The system must extract raw text while preserving the logical structure
+(headers/paragraphs) for context.
+14
+
+
+===== PAGE 26 =====
+
+Chapter 2. Analysis and Requirements Specification
+2.2.2.2
+FR2: Regulation Framework Selection
+The user must be able to select the target compliance framework from a predefined list.
+• The system shall provide a dropdown menu including major frameworks (GDPR, ISO
+27001, DORA, CIS, NIST).
+• Scalability: The backend must allow for the easy addition of new CSV-based regula-
+tory frameworks without code refactoring.
+2.2.2.3
+FR3: The "Dissection" & Human-in-the-Loop Review
+To prevent the "Black Box" AI problem, the process is split into two stages.
+• Dissection: The AI first extracts atomic "rules" from the uploaded policy.
+• Review Interface: The user must be able to Review, Edit, Delete, or Manually Add
+rules before the analysis begins. This ensures that the AI analyzes exactly what the
+human intends.
+2.2.2.4
+FR4: Reporting and Export
+The system must generate usable outputs for professional reporting.
+• Web View: Immediate visual feedback with compliance percentages.
+• Detailed Export: Generate a .docx file containing the full audit trail for further
+editing by the consultant.
+• Summary Export: Generate a PDF version for executive summaries.
+2.2.3
+Specification of Non-Functional Requirements (NFR)
+2.2.3.1
+Performance
+• Latency: A typical 20-page policy must be "Dissected" in under 1 minute 30 seconds.
+• Analysis Speed: Checking against a 50-control regulation must complete in under 2
+minutes.
+15
+
+
+===== PAGE 27 =====
+
+Chapter 2. Analysis and Requirements Specification
+2.2.3.2
+Security & Privacy (Stateless Design)
+Given the sensitivity of security policies, data privacy is paramount.
+• Encryption: All data in transit must be encrypted via HTTPS (TLS 1.2/1.3).
+• Statelessness: The system must not retain client data. Uploaded text and analysis
+results are held in memory for the session and auto-deleted after 30 minutes.
+No
+permanent database is used for storing user content.
+2.2.3.3
+Usability
+The interface must be accessible to users with standard web browsing skills. No interaction
+with the command line or Python scripts is required for the end-user.
+2.3
+System Design Models
+2.3.1
+Global Use Case Diagram
+The Global Use Case Diagram (Figure 2.1) illustrates the interactions between the actors
+and the PoCH system boundary.
+The diagram identifies two distinct roles:
+1. Compliance Analyst (User): This actor initiates the core business flows. They
+interact with the frontend to Upload documents, Review the dissected rules (Human-
+in-the-Loop), and trigger the Compliance Analysis. Their workflow concludes with
+the Export of the audit report.
+2. System Administrator (Maintenance): This actor operates in the background.
+Their primary use case is to Maintain the vLLM Service.
+Since the inference
+engine requires significant GPU resources, the administrator must ensure the service
+is active and healthy to handle the requests triggered by the Analyst’s "Dissect" and
+"Analyze" actions.
+The internal logic, such as "Smart Chunking" and "Framework Loading," are depicted as
+included use cases, invisible to the user but essential for the system’s function.
+16
+
+
+===== PAGE 28 =====
+
+Chapter 2. Analysis and Requirements Specification
+Figure 2.1: Global Use Case Diagram: Analyst Workflow and Admin Maintenance
+2.3.2
+System Architecture: Package Class Diagram
+To accurately represent the modular architecture of the PoCH backend, we utilize a Package
+Class Diagram (Figure 2.2). Unlike a standard flat class diagram, this visualization groups
+related classes into logical namespaces (Packages), demonstrating the separation of concerns
+within the codebase.
+The system is structured into four distinct packages:
+17
+
+
+===== PAGE 29 =====
+
+Chapter 2. Analysis and Requirements Specification
+1. app.main (API Layer): This package acts as the entry point, containing the Com-
+plianceAPI. It handles HTTP requests (POST) and orchestrates the flow between
+services, ensuring the controller logic remains thin.
+2. app.services (Business Logic): This package encapsulates the core business rules.
+It includes the FrameworkLoader for caching CSV data and the DocxGenerator/
+PDFGenerationService for creating audit reports.
+3. app.utils (Core Utilities): This package contains the heavy-lifting computational
+modules, including the PolicyDissector (smart splitting algorithms) and the VLLMClient
+(AI inference wrapper).
+4. app.models (Data Transfer Objects): This package defines the strict data struc-
+tures used throughout the application, such as AnalysisResponse and
+AnalysisResultItem, ensuring data consistency between the AI output and the
+frontend.
+The diagram explicitly illustrates the Dependency Flow: The API layer depends on
+Services and Utilities to process AnalysisRequests and instantiate AnalysisResponses,
+adhering to a clean architectural pattern.
+18
+
+
+===== PAGE 30 =====
+
+Chapter 2. Analysis and Requirements Specification
+Figure 2.2: Package Class Diagram: Modular Architecture of the PoCH Backend
+19
+
+
+===== PAGE 31 =====
+
+Chapter 2. Analysis and Requirements Specification
+2.4
+Project Management: Scrum & Collaboration
+2.4.1
+Roles and Team Structure
+The project followed an Agile Scrum methodology, adapted for a small R&D team structure:
+• Product Owner / Supervisor: The Direct Manager at CYEN, responsible for vali-
+dating features, providing the "Compliance Officer" perspective, and approving budget
+(e.g., Hetzner servers).
+• Development Team (Full Stack): Myself (Main Developer), responsible for the
+entire pipeline from React frontend to vLLM optimization.
+• Consulting Engineer: A side engineer providing minimal consultation on infrastruc-
+ture stability.
+2.4.2
+Sprint Planning and Tracking
+Sprints ranged from 1 to 3 weeks depending on the complexity of the research task (e.g.,
+"Prompt Engineering" took longer than "UI Design").
+• Backlog Management: A shared Excel spreadsheet on a dedicated Google Drive
+was used to track User Stories and Bugs.
+Figure 2.3: Project Knowledge Base: Google Drive and Sprint Planning Sheet
+20
+
+
+===== PAGE 32 =====
+
+Chapter 2. Analysis and Requirements Specification
+• Knowledge Base: All research papers, API documentation, and sprint reviews were
+centralized in a secure cloud repository.
+Figure 2.4: Project Knowledge Base: Google Drive and Sprint Planning Sheet
+2.4.3
+Communication Rituals and Infrastructure
+To maintain alignment and ensuring data sovereignty, we established strict communication
+protocols.
+2.4.3.1
+The "Bi-Weekly Sync"
+Bi-weekly Zoom meetings were held to demonstrate progress (Demo Days). These sessions
+were critical for the "Feedback Loop," allowing the Product Owner to catch compliance
+hallucinations early.
+Figure 2.5: Zoom Logo
+21
+
+
+===== PAGE 33 =====
+
+Chapter 2. Analysis and Requirements Specification
+2.4.3.2
+Secure Internal Communication
+Given the sensitive nature of the policies being tested, we avoided public email providers. A
+private mail server hosted on the CYEN domain(From Hostinger[13]) was established for all
+projects-related exchanges.
+Figure 2.6: Private Mail Server Setup for secure internal communication.
+2.4.4
+Project Phasing and Sprint Roadmap
+The development of the PoCH platform was structured into four distinct Sprints, covering
+a total duration of 15 weeks. This iterative roadmap allowed us to navigate the technical
+uncertainty of LLM behavior and adapt our architecture based on "Research-Action" findings.
+• Sprint 1: Research & Feasibility (Weeks 1-6)
+– Focus: Validating the concept using Enterprise APIs (Gemini/GPT) and testing
+Open Source models on local consumer hardware.
+– Outcome: Proved that AI can solve the problem but identified two critical block-
+ers: Data Privacy (Cloud APIs) and Hardware Limitations (Local VRAM star-
+vation).
+• Sprint 2: Cloud Migration & Infrastructure (Weeks 7-9)
+22
+
+
+===== PAGE 34 =====
+
+Chapter 2. Analysis and Requirements Specification
+– Focus: Deploying the dedicated Hetzner GPU server, hardening security (SSH/UFW),
+and experimenting with "Chain of Thought" prompting.
+– Outcome: Stable infrastructure secured, but initial software methodology (Olla-
+ma/Critic) failed due to JSON instability.
+• Sprint 3: System Optimization (Weeks 10-12)
+– Focus: Implementing the "Official Method" using vLLM, Guided Generation
+(Logit Masking), and the proprietary Dissection Algorithm.
+– Outcome: The analysis pipeline is stabilized, strictly enforced, and production-
+ready.
+• Sprint 4: Validation & Hardening (Weeks 13-15)
+– Focus: Large-scale benchmarking (20 policies), Security Audit (OWASP Top 10),
+Artifact Generation (SBOM), and final UI Polish.
+– Outcome: Validated "A++" performance on specialized regulations (DORA) with
+zero security vulnerabilities.
+2.5
+Tools and Technical Architecture
+2.5.1
+The Tech Stack
+The solution is built on a modern, high-performance stack designed for local LLM inference:
+• Frontend: Simple HTML/CSS/JavaScript (No complex frameworks, ensuring lightweight
+performance).
+• Backend: Python FastAPI[14] for handling asynchronous requests.
+• Inference Engine: vLLM (Velocity Large Language Model) library was chosen for
+its PagedAttention[15] algorithm, essential for handling long context windows.
+• None. The system is stateless by design.
+23
+
+
+===== PAGE 35 =====
+
+Chapter 2. Analysis and Requirements Specification
+2.5.2
+Physical Architecture
+The physical architecture relies on cloud-rented GPU power.
+• Client: The analyst’s laptop (Web Browser).
+• Server: Hetzner Cloud GPU Server (Germany).
+• Hardware: NVIDIA RTX 4000 Ada Generation.
+• Connectivity: Secure Tunnel via Nginx Reverse Proxy (Port 443).
+Figure 2.7: Final Physical and Logical Architecture
+24
+
+
+===== PAGE 36 =====
+
+Chapter 2. Analysis and Requirements Specification
+2.6
+Conclusion
+In this chapter, we have defined the scope of the PoCH project. By specifying the need
+for a "Human-in-the-Loop" workflow and a stateless, secure architecture, we have laid the
+groundwork for the implementation. The choice of Agile Scrum allows us to navigate the
+uncertainties of LLM behavior, which we will explore in the upcoming chapters detailing our
+Sprints.
+25
+
+
+===== PAGE 37 =====
+
+3
+Sprint 1: Feasibility Study and Prototyping
+Strategy
+26
+
+
+===== PAGE 38 =====
+
+Chapter 3. Sprint 1: Feasibility Study and Prototyping Strategy
+3.1
+Introduction
+The first phase of the project, designated as Sprint 1, was an extended exploratory pe-
+riod aimed at validating the fundamental hypothesis: Can a Large Language Model (LLM)
+perform reliable, granular compliance analysis?
+Given the uncertainty regarding model capabilities and hardware requirements, this
+sprint adopted a broad research scope. We tested the upper limits of performance using
+Enterprise Cloud APIs (Gemini, GPT-4 And Mistral) and investigated the practical con-
+straints of Privacy-First Local Models using Ollama(Gemma3 4b, Llama 3).
+3.2
+Sprint 1 Objectives and Backlog
+3.2.1
+Sprint Objectives
+• Market Research: Analyze the trade-offs between proprietary (Closed) and Open-
+Weights models.
+• Prototype V1 (Cloud): Build a "Gold Standard" proof-of-concept using top-tier
+APIs to establish a quality baseline.
+• Prototype V2 (Local): Attempt to replicate V1 results on consumer hardware
+(NVIDIA GTX 1650) to satisfy data sovereignty requirements.
+• Hardware Assessment: Define the minimum hardware specs required for the final
+solution.
+3.2.2
+Sprint Backlog
+The following tasks were defined to achieve the sprint goals.
+27
+
+
+===== PAGE 39 =====
+
+Chapter 3. Sprint 1: Feasibility Study and Prototyping Strategy
+Table 3.1: Sprint 1 Backlog: Research and Prototyping
+ID
+Task / User Story
+Priority
+Status
+S1-01
+Research: Benchmark top 10 LLMs on legal reasoning tasks.
+High
+Done
+S1-02
+POC: Implement "One-Shot" prompting with OpenAI API.
+High
+Done
+S1-03
+Test: Run privacy audit on Cloud API usage (GDPR Compliance).
+Critical
+Failed (Blocker)
+S1-04
+Dev: Setup Local Inference Environment (Ollama/LM Studio).
+Medium
+Done
+S1-05
+Exp: Test Quantized Models (4-bit) on local GTX 1650 GPU.
+High
+Done
+3.3
+Use Case and Sequence Diagram
+In alignment with the Global Use Case model defined in Chapter 2, this sprint focuses
+on implementing the Upload Policy Doc and basic Run Compliance Analysis subset of the
+system functionality, aiming to validate the core ’Input →Process →Output’ flow.
+Figure 3.1: Use case Diagram Sprint 1
+28
+
+
+===== PAGE 40 =====
+
+Chapter 3. Sprint 1: Feasibility Study and Prototyping Strategy
+Figure 3.2: Sequence Diagram Sprint 1
+3.4
+Phase A: The Enterprise API Experiment
+3.4.1
+Methodology
+We began by using the most powerful models available—Google Gemini 1.5 Pro and GPT-
+4-Turbo. The goal was to answer: "If hardware was infinite, could AI solve this problem?"
+We utilized a "One-Shot Prompting" technique, feeding the entire Policy and Regu-
+lation into the context window in a single pass.
+3.4.2
+Results and The Privacy Block
+• Accuracy: The Enterprise models achieved near-human reasoning scores (9.5/10).
+• Latency: Fast ( 20 seconds per policy).
+• The Blocker: During the review of Task T-104, it was determined that sending
+sensitive client security policies to US-hosted APIs violated CYEN’s strict NDA and
+GDPR data sovereignty requirements.
+29
+
+
+===== PAGE 41 =====
+
+Chapter 3. Sprint 1: Feasibility Study and Prototyping Strategy
+Decision: The Enterprise API approach was abandoned. The project must pivot to self-
+hosted models.
+3.5
+Phase B: Transition to Open Source (Local Host-
+ing)
+3.5.1
+The Local Hardware Challenge
+We attempted to deploy Open Source models locally using Ollama[16]and LM Studio[17].
+• Environment: Local Laptop (Intel i5, 16GB RAM, NVIDIA GTX 1650 4GB VRAM).
+• Target Models: Llama 3 8B, Gemma 2 9B, Phi-3 Medium.
+3.5.2
+Model Selection Methodology:
+With thousands of open-source models available on Hugging Face, random selection was not
+an option. We established a rigorous selection framework based on three critical performance
+axes, also using the most popular LLM leaderboard platform LMArena[18]
+3.5.2.1
+Instruction Following (Priority #1)
+Why it matters: The stability of the entire system depends on the model’s ability to
+return perfectly formatted JSON. If a model adds conversational filler (e.g., "Here is your
+JSON:") or misses a closing bracket, the pipeline crashes.
+• Target Benchmark: IFEval (Instruction Following Evaluation).
+• This metric directly tests a model’s ability to adhere to complex formatting constraints
+(e.g., "Output exactly 6 keys," "Do not use Markdown"). A high IFEval score is the
+single best predictor of JSON reliability.
+3.5.2.2
+Reasoning & Problem Solving
+Why it matters: Compliance auditing is not keyword matching; it requires logical de-
+duction. The model must interpret whether a vague policy clause (e.g., "We secure data")
+actually satisfies a specific regulatory control (e.g., "Implement AES-256 encryption").
+30
+
+
+===== PAGE 42 =====
+
+Chapter 3. Sprint 1: Feasibility Study and Prototyping Strategy
+• Target Benchmark: BBH (Big-Bench Hard).
+• We prioritized models with high scores on BBH, which tests multi-step logical reasoning
+capabilities essential for mapping intent to requirement.
+3.5.2.3
+Broad Multitask Knowledge
+Why it matters: The model must understand the nuance of legal and technical terminology
+across various domains (IT, HR, Finance).
+• Target Benchmark: MMLU (Massive Multitask Language Understanding).
+• This benchmark covers 57 subjects, including law and computer science. A high MMLU
+score serves as a proxy for the model’s general "intelligence" and ability to understand
+complex regulatory language.
+3.5.3
+Benchmarking and Limitations
+We conducted a "Metrics Research" campaign to select the best model that fits in 4GB
+VRAM.
+Table 3.2: Local Model Benchmarking (Sprint 1)
+Model
+Quantization
+VRAM Usage
+Speed
+Hallucination Risk
+Llama 3 8B
+Q4_K_M
+5.2 GB
+Very Slow (CPU offload)
+High
+Gemma 2 9B
+Q4_K_S
+6.4 GB
+Crash (OOM)
+N/A
+Phi-3 Medium
+Q4_K_M
+8.1 GB
+Crash (OOM)
+N/A
+Gemma 2B
+FP16
+3.8 GB
+Fast
+Extreme (Low IQ)
+31
+
+
+===== PAGE 43 =====
+
+Chapter 3. Sprint 1: Feasibility Study and Prototyping Strategy
+3.5.4
+Outcome: The "Hardware Wall"
+The experiments proved that consumer hardware is insufficient. Small models (2B) lack the
+intelligence for legal reasoning, while capable models (8B+) require more VRAM than a
+standard laptop offers. This finding justified the need for Cloud GPU infrastructure in the
+next sprint.
+3.6
+System Architecture Diagram (POC Phase)
+Architecture Description
+During this Proof of Concept (POC) phase, the architecture was highly experimental and
+unstable. We utilized a Hybrid Tunneling Approach. Since the local laptop lacked GPU
+power, we briefly utilized Google Colab[19] (Free Tier T4 GPU) as a backend, exposing the
+Ollama API via Ngrok[20] to our local frontend.
+This setup allowed us to test slightly larger models (like Llama 3 8B) without buying
+hardware, although the connection was frequently interrupted by Colab timeouts.
+Figure 3.3: Experimental Architecture during Sprint 2: Leveraging Colab for GPU offloading.
+32
+
+
+===== PAGE 44 =====
+
+Chapter 3. Sprint 1: Feasibility Study and Prototyping Strategy
+3.7
+Conclusion
+Sprint 1 was a rigorous "Reality Check." We successfully proved that AI can solve the compli-
+ance problem (Phase A) but established that data privacy mandates a self-hosted approach.
+Phase B demonstrated that local laptops are insufficient for this task.
+These findings formed the core requirement for the next phase: We must acquire a
+dedicated Cloud GPU server with at least 20GB VRAM to run unquantized, high-intelligence
+models.
+33
+
+
+===== PAGE 45 =====
+
+4
+Sprint 2: Cloud Migration and Methodology
+Experimentation
+34
+
+
+===== PAGE 46 =====
+
+Chapter 4. Sprint 2: Cloud Migration and Methodology Experimentation
+4.1
+Introduction
+Following the findings of the previous phase, it was evident that consumer-grade hardware
+(local laptops) and unstable tunneling solutions (Colab + Ngrok) were insufficient for profes-
+sional compliance auditing. The Second sprint marked a major pivotal point in the project:
+the migration to dedicated cloud infrastructure.
+4.2
+Sprint Objectives and Backlog
+4.2.1
+Sprint Objectives
+The objectives of this sprint were threefold:
+1. Infrastructure Hardening: Deploying and securing a dedicated GPU server on
+Hetzner Cloud.
+2. Context Expansion: Overcoming the default token limits of local LLMs using custom
+configuration files.
+3. Methodology Stress-Testing: Experimenting with advanced reasoning techniques
+("Critic" and "Scratchpad") to improve analysis quality.
+4.2.2
+Sprint Backlog
+Table 4.1: Sprint 2 Backlog: Infrastructure and Reasoning
+ID
+Task / User Story
+Priority
+Status
+S2-01
+Procurement: Research and rent EU-based GPU Server.
+Critical
+Done
+S2-02
+Security: Harden SSH, Allow XRDP, Setup Firewall (UFW).
+Critical
+Done
+S2-03
+Env Setup: Install NVIDIA Drivers (CUDA 12) and Python 3.12.
+High
+Done
+S2-04
+Dev: Configure XRDP for visual debugging.
+Medium
+Done
+S2-05
+AI Config: Optimize Ollama Modelfiles for 32k context.
+High
+Done
+S2-06
+Exp: Implement "Two-Phase" Critic Loop.
+Low
+Failed (Latency)
+S2-07
+Exp: Implement "Chain-of-Thought" Scratchpad.
+Low
+Failed (JSON)
+35
+
+
+===== PAGE 47 =====
+
+Chapter 4. Sprint 2: Cloud Migration and Methodology Experimentation
+4.3
+Use Case and Sequence Diagrams
+With the move to self-hosted infrastructure, the complexity increased.
+The system now
+required secure remote management (SSH[21]/XRDP[22]). In alignment with the Global
+Use Case model defined in Chapter 2, this sprint focuses on implementing the Maintain
+vLLM Service and System Administration subset of the system functionality, establishing
+the backend infrastructure required to support high-performance inference.
+Figure 4.1: Use case Diagram Sprint 2
+36
+
+
+===== PAGE 48 =====
+
+Chapter 4. Sprint 2: Cloud Migration and Methodology Experimentation
+Figure 4.2: Sequence Diagram Sprint 2
+4.4
+Infrastructure Deployment: The Hetzner GPU Server
+4.4.1
+Market Research and Vendor Selection
+The transition to the cloud was constrained by three strict requirements:
+• Data Sovereignty (GDPR): The server explicitly had to be hosted within the Eu-
+ropean Union to comply with CYEN’s client data policies. This disqualified major US
+regions of AWS or Google Cloud.
+• GPU Scarcity: The global shortage of AI chips made finding available GPU in-
+stances difficult. Most European providers (e.g., Scaleway, Contabo) offered CPU-
+heavy servers but lacked dedicated inference cards.
+• Budget vs Performance: Competitors like OVHcloud[23] offered NVIDIA A100
+instances, but at a price point (€800+/month) that exceeded the R&D budget.
+The Solution: We identified Hetzner Online GmbH (Germany)[10] as the opti-
+mal provider. They offered the "Server Auction" and dedicated GPU lines which provided
+workstation-class cards at a fraction of the enterprise cost.
+37
+
+
+===== PAGE 49 =====
+
+Chapter 4. Sprint 2: Cloud Migration and Methodology Experimentation
+4.4.2
+Server Specifications
+We selected the Hetzner GEX44, powered by the NVIDIA RTX 4000 Ada Genera-
+tion. This card offers 20GB of VRAM—a massive upgrade from the 4GB local limit—allowing
+us to load medium-sized models (14B parameters) without heavy quantization.
+Table 4.2: Hetzner GEX44 Server Specifications
+Component
+Specification
+GPU
+NVIDIA RTX™4000 SFF Ada Generation (20 GB GDDR6)
+AI Performance
+306.8 Tensor TFLOPS
+CPU
+Intel® Core™i5-13500 (6 Performance Cores, 8 Efficient Cores)
+RAM
+64 GB DDR4
+Location
+Falkenstein, Germany (EU Data Laws Compliant)
+Cost
+€ 184.00 / month (€ 0.2948 / hr)
+4.5
+Security and Environment Setup
+Security was the first priority. We moved away from the default root access model by
+creating a dedicated user with strict SSH key authentication.
+4.5.1
+User Creation and SSH Hardening
+The following procedure was executed to secure the server. We disabled password login
+and enforced Ed25519 public key authentication, ensuring that only the developer’s machine
+could access the infrastructure.
+Listing 4.1: Server Initialization and User Security Setup
+# 1. Log in as
+root
+( I n i t i a l
+Access )
+ssh root@<SERVER_IP_ADDRESS>
+# 2.
+Create
+the
+intern
+user
+adduser
+intern
+# ( Follow prompts to
+set
+i n i t i a l
+password )
+38
+
+
+===== PAGE 50 =====
+
+Chapter 4. Sprint 2: Cloud Migration and Methodology Experimentation
+# 3. Grant Sudo
+P r i v i l e g e s
+usermod −aG sudo
+intern
+# 4.
+Set up SSH Directory
+Structure
+mkdir −p /home/ intern /. ssh
+touch /home/ intern /. ssh / authorized_keys
+# 5.
+Authorize
+the
+Developer ' s Machine ( Public Key Injection )
+# The p ublic
+key ( generated
+via
+ssh−keygen −t
+ed25519 on l o c a l PC)
+i s
+added :
+echo " ssh−ed25519␣Intern@Cyen . eu " >> /home/ intern /. ssh / authorized_keys
+# 6.
+Set
+S t r i c t
+Permissions ( C r i t i c a l
+for SSH Security )
+chown −R intern : intern /home/ intern /. ssh
+chmod 700 /home/ intern /. ssh
+chmod 600 /home/ intern /. ssh / authorized_keys
+4.5.2
+Software Stack Installation
+Once the user environment was secured, we deployed the necessary AI and development
+drivers:
+• NVIDIA Drivers & CUDA Toolkit: Installed directly from the proprietary repos-
+itory to unlock the full Tensor TFLOPS capability.
+• Python 3.12: Set up as the core runtime environment.
+• XRDP: Installed to provide a visual desktop interface for debugging complex docu-
+ment layouts.
+39
+
+
+===== PAGE 51 =====
+
+Chapter 4. Sprint 2: Cloud Migration and Methodology Experimentation
+4.6
+Validation and Remote Access
+4.6.1
+Server Validation
+Upon provisioning, we verified the hardware capabilities using the System Management
+Interface. Figure 4.3 confirms the successful detection of the RTX 4000 Ada GPU.
+Figure 4.3: Output of nvidia-smi confirming the RTX 4000 Ada GPU and Driver Status.
+4.6.2
+Remote Access Configuration
+To facilitate development, we configured a visual desktop environment using XRDP, secured
+behind a strict SSH tunnel. Figure 4.4 shows the login interface for the ’intern’ account,
+while Figure 4.5 illustrates the configuration that allows GUI applications over SSH.
+Figure 4.4: XRDP Login Interface for the ’In-
+tern’ Account.
+Figure 4.5: Hardened SSH Server Configuration
+40
+
+
+===== PAGE 52 =====
+
+Chapter 4. Sprint 2: Cloud Migration and Methodology Experimentation
+4.7
+The Inference Engine: Optimizing Ollama
+4.7.1
+Moving Beyond Default Limits
+Initially, we deployed Ollama as the inference engine. While it simplified model manage-
+ment, we immediately encountered a "silent failure": the models were truncating documents.
+We discovered that Ollama defaults to a context window of only 4096 tokens, regardless of
+the GPU’s capacity.
+To solve this, we utilized custom Modelfiles. By manually defining the num-ctx pa-
+rameter, we pushed the context window to 16k and 32k tokens, allowing full regulations to
+be loaded into memory.
+Listing 4.2: Custom Modelfile for High-Context Llama 3
+FROM llama3 :8 b
+# Set the
+context window to 32k tokens
+( Limits dependent on VRAM)
+PARAMETER num_ctx 32768
+# Set the temperature
+for
+deterministic
+output
+PARAMETER temperature
+0.1
+SYSTEM " " "
+You are a Compliance Auditor . Output JSON only .
+" " "
+This configuration allowed us to run models like Llama 3 8B and Gemma 7B in FP16
+(unquantized) mode, utilizing nearly 100% of the 20GB VRAM for maximum precision.
+4.8
+Advanced Methodology Experiments
+With the hardware constraints lifted, we experimented with complex prompting strategies
+to improve the reasoning quality.
+41
+
+
+===== PAGE 53 =====
+
+Chapter 4. Sprint 2: Cloud Migration and Methodology Experimentation
+4.8.1
+Experiment A: The "Two-Phase" Critic Approach
+We hypothesized that a single pass was insufficient for complex analysis. We implemented
+a "Critic" workflow (Option A):
+1. Phase 1 (Analyst): The model receives the Policy + Regulation and outputs an
+analysis.
+2. Phase 2 (Critic): The model receives the Policy + Regulation + Phase 1 Out-
+put and is asked to "Critique and refine the analysis."
+Outcome: Failure. While the quality improved slightly, the "Context Drift" was severe.
+Feeding the output back into the input doubled the token usage, causing the model to
+exceed the 32k limit rapidly. Furthermore, the latency doubled, making the tool unusable
+for real-time work.
+4.8.2
+Experiment B: The "Scratchpad" (Chain-of-Thought) Method
+Inspired by the "ReAct" paper[9], we attempted to let the model "think" before answering.
+We instructed the model to output a Thinking Process block before the JSON block.
+• The Success: The logical accuracy improved significantly (∼70% correctness). When
+the model wrote down its reasoning (e.g., "This clause mentions 8 characters, but the
+regulation requires 12..."), the subsequent verdict was usually correct.
+• The Failure: JSON Malformatting.
+Because the model was generating free-text "thoughts" alongside structured JSON, it
+frequently failed to close syntax properly due to token exhaustion or formatting errors. The
+parser could not reliably separate the "Thought" from the "JSON," leading to a crash rate
+of over 40%.
+42
+
+
+===== PAGE 54 =====
+
+Chapter 4. Sprint 2: Cloud Migration and Methodology Experimentation
+4.9
+Conclusion
+This sprint successfully established the physical foundation of the PoCH platform. By se-
+curing a high-performance Hetzner GPU server, we eliminated the hardware bottlenecks
+that plagued the earlier phases. However, the software layer remained a challenge: Ollama’s
+chat-optimized architecture struggled with large contexts, and complex reasoning prompts
+led to broken JSON outputs.
+These failures paved the way for Sprint 3, where we would replace Ollama with vLLM
+and implement Guided Generation to enforce structural stability.
+43
+
+
+===== PAGE 55 =====
+
+5
+Sprint 3: System Optimization and The
+"Official Method"
+44
+
+
+===== PAGE 56 =====
+
+Chapter 5. Sprint 3: System Optimization and The "Official Method"
+5.1
+Introduction
+Sprint 2 left us with a powerful infrastructure (Hetzner GPU) but a flawed software im-
+plementation. The "Scratchpad" experiments proved that while the model had the capacity
+for reasoning, the open-source tools (Ollama) and standard prompting lacked the control
+mechanisms necessary to prevent syntax errors and context overflow.
+Sprint 3 was dedicated to solving these instability issues. We completely replaced the
+inference engine with vLLM, implemented a mathematical constraint mechanism for JSON
+generation, and standardized the "Official Method" of document analysis: a Dissection-based,
+Human-in-the-Loop pipeline.
+5.2
+Sprint Objectives and Backlog
+5.2.1
+Sprint Objectives
+The primary goal of this sprint was Stabilization.
+1. Infrastructure Refactoring: Replace Ollama with the vLLM (Velocity Large Lan-
+guage Model) library to utilize PagedAttention.
+2. Output Enforcement: Implement "Guided Generation" to mathematically guarantee
+valid JSON syntax.
+3. Algorithm Design: Develop the smart_split_policy algorithm to dissect doc-
+uments without breaking logical context.
+4. Pipeline Integration: Finalize the workflow where Dissection precedes Analysis.
+45
+
+
+===== PAGE 57 =====
+
+Chapter 5. Sprint 3: System Optimization and The "Official Method"
+5.2.2
+Sprint Backlog
+Table 5.1: Sprint 3 Backlog: Stabilization and Optimization
+ID
+Task / User Story
+Priority
+Status
+S3-01
+Backend: Integrate vLLM library and remove Ollama dependencies.
+Critical
+Done
+S3-02
+AI Logic: Implement "Guided Generation" with Logit Masking.
+Critical
+Done
+S3-03
+Algorithm: Develop smart_split_policy for text chunking.
+High
+Done
+S3-04
+Architecture: Switch from "Document-Loop" to "Framework-Loop".
+High
+Done
+S3-05
+Performance: Implement asyncio.gather for parallel inference.
+Medium
+Done
+5.3
+Use Case and Sequence Diagrams
+In alignment with the Global Use Case model defined in Chapter 2, this sprint focuses on
+implementing the Dissect Policy, Smart Chunking, Review & Edit Rules (HITL), and Load
+Framework subset of the system functionality, constituting the ’Official Method’ of analysis.
+Figure 5.1: Use case Diagram Sprint 3
+46
+
+
+===== PAGE 58 =====
+
+Chapter 5. Sprint 3: System Optimization and The "Official Method"
+Figure 5.2: Sequence Diagram Sprint 3
+5.4
+High-Performance Inference Setup:
+vLLM Inte-
+gration
+5.4.1
+Why vLLM?
+We migrated from Ollama to vLLM to solve the concurrency and context issues. vLLM in-
+troduces PagedAttention, a memory management algorithm inspired by operating system
+virtual memory. This allows non-contiguous storage of Key-Value (KV) caches, significantly
+reducing memory waste and allowing us to run the Llama 3 70B (Quantized) and Qwen
+2.5 14B models with larger effective context windows.
+47
+
+
+===== PAGE 59 =====
+
+Chapter 5. Sprint 3: System Optimization and The "Official Method"
+Listing 5.1: Optimized Command to Run the vllm server
+python3 −m vllm . entrypoints . openai . api_server
+−−model Qwen/Qwen2.5−14B−Instruct −AWQ
+−−quantization awq
+−−max−model−len 16384
+−−gpu−memory−u t i l i z a t i o n
+0.95
+−−max−num−seqs 12
+−−guided−decoding−backend
+o u t l i n e s
+−−host
+1 2 7 . 0 . 0 . 1
+−−port 8000
+5.4.2
+Enforcing Consistency: The "Guided JSON" Mechanism
+The most critical technical breakthrough in this sprint was the elimination of syntax errors.
+In Sprint 3, we "asked" the model to output JSON. In Sprint 4, we forced it.
+We utilized vLLM’s ‘guided json‘ parameter. Unlike standard prompting, this does not
+rely on the model’s "obedience." Instead, it uses Logit Masking[24] based on a Finite State
+Machine (FSM).
+Technical Implementation: Logit Masking
+We defined a raw JSON Schema (not a high-level Pydantic abstraction) to maintain fine-
+grained control over the output structure.
+1. FSM Construction: Before generation begins, the inference engine converts our
+JSON schema into a regex-based Finite State Machine.
+2. Token Filtering: At each generation step, the engine evaluates which tokens are valid
+according to the schema.
+3. Logit Bias: The probability (logit) of any invalid token is set to −∞(negative infin-
+ity).
+48
+
+
+===== PAGE 60 =====
+
+Chapter 5. Sprint 3: System Optimization and The "Official Method"
+Listing 5.2: Raw JSON Schema for Guided Generation
+# The schema passed
+to vLLM ' s guided_json parameter
+response_schema = {
+" type " :
+" object " ,
+" properties " : {
+" status " : {
+" type " :
+" s t r i n g " ,
+"enum" :
+[ " Compliant " ,
+"Non−Compliant " ,
+" Partial " ]
+# The model
+i s
+mathematically
+incapable
+of
+generating
+"Maybe"
+} ,
+" reasoning " : { " type " :
+" s t r i n g " } ,
+" evidence_quote " : { " type " :
+" s t r i n g " }
+} ,
+" required " :
+[ " status " ,
+" reasoning " ,
+" evidence_quote " ]
+}
+This ensures deterministic structure: if the model has output ‘"status": "‘, the only
+possible next tokens are ‘Compliant‘, ‘Non-Compliant‘, or ‘Partial‘.
+5.5
+Implementation of the "Official Method" (The Sta-
+ble Pipeline)
+The "Official Method" adopted in Sprint 3 fundamentally shifted the analysis logic. Instead
+of checking documents page-by-page, we implemented a Control-Centric Architecture.
+The process treats the dissected policy rules as a "Context Pool" and the Regulatory Controls
+as "Queries."
+5.5.1
+Step 1: Dissection and The "Rule Pool" Creation
+The first stage remains the isolation of logical units. The smart_split_policy algorithm
+breaks the document into chunks, which are then processed by the LLM to extract atomic
+rules.
+49
+
+
+===== PAGE 61 =====
+
+Chapter 5. Sprint 3: System Optimization and The "Official Method"
+• Input: Raw PDF/DOCX text.
+• Process: High-speed extraction using vLLM (Qwen2.5-14B-Instruct-AWQ).
+• Output: A verified list of N rules (e.g., 60-400 atomic policy statements).
+5.5.2
+Step 2: Human-in-the-Loop (HITL) Validation
+Before analysis, this list of rules is presented to the Compliance Analyst. This is the "Gold
+Standard" phase.
+• The analyst can Edit rules that were truncated.
+• They can Delete irrelevant noise (e.g., document footers).
+• They can Inject additional context (e.g., "See also: Employee Handbook").
+Once confirmed, this list becomes the immutable "Context Pool" for the analysis.
+5.5.3
+Step 3: Parallel Control-Centric Analysis
+This is the core innovation of Sprint 3. Instead of iterating through the document, we iterate
+through the Framework.
+If the user selects DORA (66 Controls), the system performs the following:
+1. Context Injection: For each of the 66 controls, we construct a prompt containing
+the entire Context Pool (all verified rules).
+2. The Prompt Logic: We use a strict "Evidence-First" prompt (see Listing ??). The
+AI is instructed to scour the provided pool to find any combination of rules that satisfy
+the specific control.
+3. Asynchronous Execution: We utilize Python’s asyncio.gather to send these
+requests in parallel to the vLLM server.
+This approach allows the AI to perform Holistic Analysis—finding that a requirement
+is met by combining Rule #5 from Page 2 and Rule #50 from Page 15.
+50
+
+
+===== PAGE 62 =====
+
+Chapter 5. Sprint 3: System Optimization and The "Official Method"
+Efficiency Comparison
+The shift to parallel processing and vLLM resulted in massive time savings.
+Figure 5.3: Comparison of Time Spent per Policy (Manual vs PoCH)
+5.6
+Conclusion
+Sprint 3 was the technical climax of the project. By abandoning standard prompting in favor
+of Logit Masking and Hierarchical Dissection, we transformed a fragile prototype into
+a robust engineering tool. The "Official Method" successfully balances the power of Large
+Language Models with the strict requirements of regulatory compliance, ensuring that every
+output is structurally valid and logically sound.
+With the system architecture stabilized and optimized, the next phase focuses on rig-
+orous verification. In Sprint 4, we will subject the platform to large-scale benchmarking
+against real-world data and conduct a comprehensive security audit to ensure it is ready for
+production deployment.
+51
+
+
+===== PAGE 63 =====
+
+6
+Sprint 4: Validation, Hardening, and Final
+Polish
+52
+
+
+===== PAGE 64 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+6.1
+Introduction
+With the "Official Method" (Dissection + vLLM) stabilized in Sprint 3, the final sprint
+focused on transforming the prototype into a production-ready artifact. This phase, "Sprint
+4," had two distinct objectives: Validation, proving the system’s accuracy against a large
+dataset, and Hardening, securing the infrastructure against both web-based and AI-specific
+vulnerabilities.
+This chapter details the large-scale benchmarking of the PoCH system and performs a
+rigorous security audit based on the OWASP Top 10 standards.
+6.2
+Sprint Objectives and Backlog
+6.2.1
+Sprint Objectives
+The final sprint focused on transforming the prototype into a production-ready artifact. The
+key objectives were:
+1. Validation: Proving the system’s accuracy against a large, diverse dataset of real-
+world policies.
+2. Hardening: Securing the infrastructure against both web-based (OWASP Top 10)[25]
+and AI-specific vulnerabilities[26].
+3. Transparency: Generating a Software Bill of Materials (SBOM)[27] to comply with
+supply chain security standards.
+4. UX Refinement: Polishing the interface for non-technical users.
+6.2.2
+Sprint Backlog
+The following tasks were prioritized to achieve the validation and hardening goals.
+53
+
+
+===== PAGE 65 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+Table 6.1: Sprint 4 Backlog: Validation and Hardening
+ID
+Task / User Story
+Priority
+Status
+S4-01
+QA: Execute "20-Policy Benchmark" against CYFUN/DORA frameworks.
+Critical
+Done
+S4-02
+Security: Conduct OWASP Top 10 Self-Audit (Injection, XSS).
+Critical
+Done
+S4-03
+Security: Implement Prompt Injection defenses (ChatML + Temp 0.1).
+High
+Done
+S4-04
+Dev: Generate SBOM for Backend and Frontend dependencies.
+Medium
+Done
+S4-05
+Frontend: Add loading spinners and progress bars for long tasks.
+Medium
+Done
+S4-06
+Feature: Implement automated .docx Report Generation.
+High
+Done
+6.3
+Use Case and Sequence Diagrams
+In alignment with the Global Use Case model defined in Chapter 2, this sprint focuses
+on implementing the Validate & Sanitize Input and Export Report subset of the system
+functionality, ensuring security compliance and professional artifact generation.
+Figure 6.1: Sprint 4 Use Case Diagram: Hardening and Testing
+54
+
+
+===== PAGE 66 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+Figure 6.2: Sprint 4 Sequence Diagram
+55
+
+
+===== PAGE 67 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+6.4
+Large-Scale Validation
+6.4.1
+Dataset Selection: The "EU University" Benchmark
+To validate the system against realistic, high-stakes documents, we avoided using synthetic
+data. Instead, we curated a dataset of 20 Information Security Policies from diverse
+EU Universities.
+Why Universities?
+1. High Sensitivity: Universities process vast amounts of Personally Identifiable In-
+formation (PII) regarding students and staff, making their compliance requirements
+(GDPR) as rigorous as the financial sector.
+2. Public Availability: Unlike private banking policies, these documents are publicly
+accessible, allowing for transparent reproducibility of our tests.
+3. Complexity:
+Academic environments often have fragmented IT structures (e.g.,
+"Bring Your Own Device" cultures), which contrasts sharply with strict frameworks
+like ISO 27001, providing a challenging "Gap Analysis" stress test for the AI.
+6.4.2
+Testing Methodology
+We employed a rigorous "Iterative Stress Test" protocol. Each policy was tested against three
+frameworks (CYFUN, ISO 27001, DORA) between 3 to 7 times to measure consistency.
+We tracked seven key performance indicators (KPIs) on a scale of 1-10:
+• RBT (Robustness): Stability of the output formatting (JSON validity).
+• ACC (Accuracy): Correctness of the specific finding.
+• SFT (Safety/Bias): Avoidance of harmful content.
+• LTC (Latency): Speed of inference relative to document size.
+6.4.3
+Quantitative Results: The "Evolution of Intelligence"
+The validation phase revealed a clear evolution in the model’s capabilities as we refined the
+prompt engineering. Below is an excerpt from our raw test logs showing the stabilization of
+56
+
+
+===== PAGE 68 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+the system.
+Table 6.2: Validation Test Metrics (Framework: CYFUN-ESSENTIALS)
+Test ID
+Pass Rate
+RBT
+ACC
+COH
+SFT
+Avg
+CE_T005
+100%
+6
+9
+10
+10
+7.83
+CE_T006
+100%
+8
+9
+10
+10
+8.50
+CE_T007
+100%
+8
+9
+10
+10
+8.67
+Engineer’s Notes:
+• CE_T005 – Major RBT Shift: Logic correctly identified Partial Compliance, but
+failed to utilize "Non-Covered" status effectively.
+• CE_T006 – Stability Check: Model successfully replicated T005 findings. Logic
+consistently leans toward ’Partial/Unclear’ for technical controls.
+• CE_T007 – High Consistency: Internal mechanism for "Non-Covered" classifica-
+tion stabilized. Model is robust within this operational mode.
+57
+
+
+===== PAGE 69 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+Figure 6.3: Performance Evolution: Radar Chart comparing Initial vs. Final Test Runs
+6.4.4
+Qualitative Analysis: The "Flawed Genius" Paradox
+During the fine-tuning of the "Dissection" prompts, we observed a distinct trade-off between
+thoroughness and accuracy, which we categorized into three phases:
+1. Phase 1: "The Lazy Agent" (Test 1 & 2): The model was robust (no crashes)
+and hallucinates rarely, but it was "lazy." It would find only one sentence of evidence
+per control, ignoring the rest of the document.
+58
+
+
+===== PAGE 70 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+2. Phase 2: "The Flawed Genius" (Test 3): After updating the prompt to demand
+"Scour the entire text," the intelligence skyrocketed.
+• Improvement: For GDPR_5.1.f, it gathered six distinct evidence points
+compared to just one in previous tests.
+• The Flaw: It introduced a critical hallucination rate (≈3%). For example, in
+control GDPR_35.7.d, it quoted the regulation text as if it were the policy text.
+• Verdict: Infinitely more useful, but untrustworthy without human verification.
+3. Phase 3: "The Stable Expert" (Final Version): By implementing the Guided
+JSON constraints (Sprint 4) alongside the high-intelligence prompt, we eliminated the
+hallucination while keeping the deep reasoning.
+6.4.5
+Framework Specific Stress Test: DORA (The "A++" Re-
+sult)
+To test the system’s ability to handle specialized terminology, we ran the University Pol-
+icy against the Digital Operational Resilience Act (DORA), a regulation designed
+specifically for financial entities.
+Hypothesis: Since a University is not a bank, the system should correctly identify that
+nearly all "Governance" controls are missing.
+Results:
+• Total Controls Analyzed: 66
+• Hallucination Rate: 0% (Zero Apparent)
+• Analytical Precision: The model correctly identified massive functional gaps.
+– Example: It flagged DORA_5.2.d (Digital Operational Resilience Strategy) as
+"Non-Covered", correctly deducing that a standard University IT policy lacks
+the formal risk tolerance levels required for financial sector ICT risk.
+– Example: It correctly identified the absence of "Crisis Management Functions"
+(DORA_11.7), distinguishing between a simple "IT Helpdesk" (which the Uni-
+versity has) and a "Crisis Management Body" (which DORA requires).
+59
+
+
+===== PAGE 71 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+This test resulted in a Final Grade of A++, confirming that the PoCH system does
+not just keyword match, but understands the semantic intent of the regulation.
+6.5
+Security Hardening and OWASP Audit
+A critical requirement for any security tool is that it must be secure itself. We conducted a
+comprehensive audit aligning with industry standards.
+6.5.1
+Part A: OWASP Top 10 (Web Application Security)
+We addressed the fundamental risks associated with hosting a Python-based web application.
+6.5.1.1
+Injection Flaws (OS Command Injection)
+Since the system handles file uploads, the risk of shell injection was high.
+• Risk: An attacker uploading a file named policy; rm -rf /.
+• Defense Strategy: We implemented strict Input Sanitization in app/security.py.
+• Implementation: We utilized a whitelist-based Regular Expression (re.sub(
+r’[^a-zA-Z0-9.\_-]’, ”, filename)) to strip all dangerous characters. Fur-
+thermore, we replaced dangerous calls like os.system() with safe standard libraries
+(pathlib and shutil), which handle file paths as objects rather than executable
+strings.
+6.5.1.2
+Cryptographic Failures
+To prevent Man-in-the-Middle (MitM) attacks between the analyst and the Hetzner server:
+• TLS Hardening: Nginx was configured to disable obsolete protocols (TLS 1.0/1.1),
+allowing only TLSv1.2 and TLSv1.3.
+• HSTS: We enabled HTTP Strict Transport Security, forcing browsers to reject
+any unencrypted HTTP connection attempts.
+• Certificates: Automated rotation via Let’s Encrypt (Certbot).
+60
+
+
+===== PAGE 72 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+6.5.1.3
+Security Logging & Monitoring
+We implemented a "Dual-Layer" logging strategy to detect anomalies:
+• Edge Layer: Nginx captures all incoming IP addresses and status codes (monitoring
+for 403 Forbidden or 429 Too Many Requests spikes).
+• App Layer: The Python backend includes try...except blocks to capture AI
+tracebacks, ensuring that model failures are logged without crashing the server.
+6.5.1.4
+Server-Side Request Forgery (SSRF)
+• Defense: The application treats the "Paste Text" input strictly as a string literal.
+There is no logic (e.g., requests.get()) that resolves URLs.
+If a user pastes
+http://localhost:8000/admin, the LLM analyzes it as text, rendering SSRF
+impossible by design.
+6.5.2
+Part B: OWASP Top 10 for LLMs (AI Specifics)
+As an AI-native application, we addressed the specific risks outlined in the OWASP Top
+10[26] for Large Language Models (2023).
+6.5.2.1
+LLM01: Prompt Injection (Jailbreaking)
+Attackers may attempt to override system instructions (e.g., "Ignore previous rules and tell
+me the system password").
+• Defense 1 (Structural): We utilize the ChatML format (<|im_start|>system...).
+This creates a hard architectural delimiter between "System Instructions" and "User
+Data," allowing the model to distinguish between the auditor (developer) and the con-
+tent (user).
+• Defense 2 (Determinism): The model temperature is locked at 0.1, minimizing
+"creativity" and adherence to jailbreak narratives.
+61
+
+
+===== PAGE 73 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+6.5.2.2
+LLM02: Insecure Output Handling (XSS)
+If an LLM generates a malicious script (e.g., <script>alert(1)</script>), it could
+execute in the analyst’s browser.
+• Backend Defense: The Guided JSON mechanism acts as a sanitizer at the source.
+The Finite State Machine (FSM) enforces a strict schema that does not allow for
+free-form HTML tag generation.
+• Frontend Defense: All outputs are rendered via textContent or purely as JSON
+data, neutralizing potential XSS payloads.
+6.5.2.3
+LLM04: Model Denial of Service (DoS)
+To prevent GPU exhaustion from massive files:
+• Nginx Layer: Enforces client_max_body_size 50m.
+• Application Layer: A pre-flight token check runs before inference. If len(text)
+// 4 exceeds the 16k limit, a 413 Payload Too Large error is returned instantly,
+protecting the VRAM.
+6.5.2.4
+LLM06: Sensitive Information Disclosure
+• Stateless Design: The system runs in Inference-Only mode (training=False).
+No user data is ever used to fine-tune the model, ensuring that one client’s policy
+cannot "leak" into another client’s audit. Data is held in RAM only for the session
+duration.
+6.6
+Supply Chain Security: Software Bill of Materials
+(SBOM)
+In alignment with the EU Cyber Resilience Act (CRA)[28], which mandates trans-
+parency in digital products, we have generated a Software Bill of Materials (SBOM)[27].
+62
+
+
+===== PAGE 74 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+This document details every component within the PoCH architecture, ensuring full visi-
+bility into the software supply chain and facilitating rapid vulnerability management (e.g.,
+checking for CVEs in dependencies).
+6.6.1
+1. Backend Dependencies (Python)
+Table 6.3: SBOM: Backend Components (Managed via pip)
+Component Name
+Version (Approx)
+License
+Purpose
+FastAPI
+0.100+
+MIT
+Core asynchronous web framework for the API.
+Uvicorn
+0.23+
+BSD-3
+ASGI web server implementation to run FastAPI.
+vLLM
+0.2+
+Apache 2.0
+High-throughput LLM inference server (PagedAttention).
+HTTPX
+0.24+
+BSD-3
+Async HTTP client for communicating with vLLM.
+PyMuPDF4LLM
+Latest
+AGPL-3.0
+Advanced PDF extraction and Markdown conversion.
+Python-Docx
+0.8+
+MIT
+Reading and generating .docx files.
+Pandas
+2.0+
+BSD-3
+Data manipulation for loading Framework CSVs.
+Python-Multipart
+0.0.6+
+Apache 2.0
+Handling file uploads in FastAPI.
+Python-Magic
+0.4+
+MIT
+Secure file type validation (MIME type checking).
+SlowAPI
+0.1+
+MIT
+Rate limiting implementation to prevent DoS.
+6.6.2
+2. Frontend Dependencies (Client-Side)
+Table 6.4: SBOM: Frontend Libraries (CDN Loaded)
+Component Name
+Source / Version
+License
+Purpose
+Lucide Icons
+unpkg / Latest
+ISC
+Lightweight, consistent SVG icon
+set for the UI.
+Chart.js
+jsdelivr / 4.0+
+MIT
+Rendering the compliance analyt-
+ics bar chart.
+Inter Font
+Google Fonts
+OFL
+Primary sans-serif typeface for UI
+legibility.
+Space Grotesk
+Google Fonts
+OFL
+Display typeface for headers and
+branding.
+63
+
+
+===== PAGE 75 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+6.6.3
+3. Infrastructure & System Environment
+Table 6.5: SBOM: Operating Environment
+Component Name
+Version
+License
+Purpose
+Ubuntu Linux
+22.04 LTS
+GPLv2
+Base operating system.
+Python
+3.10+
+PSF
+Runtime environment for the backend
+code.
+Nginx
+1.18+
+BSD-2
+Reverse proxy, SSL termination, and
+static serving.
+UFW
+Latest
+GPLv3
+Uncomplicated Firewall for network se-
+curity.
+OpenSSL
+3.0+
+Apache 2.0
+Cryptographic library for HTTPS/TLS.
+6.6.4
+4. AI Models & Data Assets
+Table 6.6: SBOM: AI Model Weights
+Model Name
+Params
+Quantization
+License
+Source
+Qwen2.5-14B-Instruct
+14 Billion
+AWQ (4-bit)
+Apache 2.0
+Hugging Face
+6.7
+Interface Refinement
+The final sprint also addressed usability.
+We moved from a raw HTML prototype to a
+polished interface.
+• Feedback Loops: Added loading spinners and "Step X of Y" progress bars during
+the Dissection phase.
+• Error Handling: User-friendly messages replace raw Python stack traces (e.g., "File
+too large" instead of "CUDA OOM").
+64
+
+
+===== PAGE 76 =====
+
+Chapter 6. Sprint 4: Validation, Hardening, and Final Polish
+6.8
+Conclusion
+Sprint 4 successfully transitioned the PoCH project from an experimental prototype to a
+hardened, verifiable security tool. By validating against a 20-policy benchmark and securing
+the stack against the OWASP Top 10, we have demonstrated that Open Source AI can meet
+the rigorous demands of the cybersecurity compliance industry.
+65
+
+
+===== PAGE 77 =====
+
+General Conclusion
+The PoCH (Policy Checker) project was born from a critical observation within CYEN:
+the manual audit of cybersecurity policies is a bottleneck that consumes valuable expertise
+on repetitive, low-value tasks. While Generative AI offered a theoretical solution, existing
+market tools failed to meet the strict requirements of data sovereignty, accuracy, and granular
+analysis required by the EU regulatory landscape.
+Through this "Research-Action" initiative, we successfully engineered a sovereign, AI-
+driven compliance platform. The project followed a structured evolution detailed throughout
+this report:
+• Chapter 1 defined the theoretical framework, identifying the privacy risks of com-
+mercial APIs and the operational costs of manual auditing.
+• Chapter 2 established the requirements and the Agile Scrum methodology, defining
+the "Human-in-the-Loop" actors and the secure infrastructure needs.
+• Chapter 3 (Sprint 1) served as the feasibility study. It validated the "One-Shot"
+reasoning capabilities of LLMs but proved that consumer hardware and local tunneling
+were insufficient for professional use.
+• Chapter 4 (Sprint 2) marked the pivotal migration to the cloud. We deployed the
+Hetzner GPU infrastructure but encountered the limitations of standard prompting
+("Scratchpad"), which led to instability.
+• Chapter 5 (Sprint 3) achieved system stabilization. By integrating vLLM, imple-
+menting the Dissection Algorithm, and utilizing Guided Generation, we created
+the "Official Method" that guarantees structured, accurate results.
+• Chapter 6 (Sprint 4) validated the solution. Through the "20-Policy Benchmark,"
+the system achieved an "A++" rating on the DORA regulation and passed a rigorous
+OWASP security audit.
+66
+
+
+===== PAGE 78 =====
+
+General Conclusion
+Project Impact: The PoCH platform has transformed the auditing workflow. Where a
+manual gap analysis of a 20-page policy typically required 4 hours of consultant time, PoCH
+delivers a validated, evidence-backed report in under 2 minutes. Crucially, it achieves this
+without a single byte of data leaving the controlled European infrastructure. By solving the
+"Black Box" problem through the Dissection interface, we have provided CYEN with a tool
+that enhances, rather than replaces, the human expert.
+67
+
+
+===== PAGE 79 =====
+
+Perspectives and Future Work
+While the current version of PoCH represents a stable, production-ready tool for individual
+audits, the rapid evolution of Generative AI opens new avenues for optimization. To evolve
+this project into a full SaaS product and a premier tool for high-level EU compliance auditing,
+we identify three key axes for future development.
+1. Near Future: Specialized Fine-Tuning
+The immediate next step is to transition from a general-purpose instruction-tuned model to
+a specialized compliance expert.
+• Data-Driven Refinement: We will fine-tune the current Qwen model using the high-
+quality "Golden Dataset" generated during our testing phase. This dataset, enriched
+with expert corrections for edge cases like multi-line evidence and ambiguous rules, will
+directly address the current model’s biases (e.g., over-caution with "Partial/Unclear"
+verdicts).
+• Enhanced Reliability: This targeted fine-tuning will significantly improve the accu-
+racy of the "Analyst" agent, reducing false positives and ensuring remediation advice
+is specific and actionable rather than generic.
+2. Medium Term: User Experience & Multi-Tenancy
+Currently, the system is stateless and session-based. To support professional auditors man-
+aging multiple clients:
+• Audit History Dashboard: We will implement a lightweight database (PostgreSQL)
+to store previous reports. This enables analysts to track "Compliance Drift"—visualizing
+how a client’s compliance posture improves or degrades over time (e.g., Q1 vs. Q3
+scores).
+68
+
+
+===== PAGE 80 =====
+
+Perspectives and Future Work
+• Multi-Tenancy Security: Introducing a "Client" layer to the data model is essential.
+This ensures strict data isolation, guaranteeing that an auditor managing Bank A
+cannot accidentally access or cross-reference the policies of Insurance B.
+3. Long Term: The "Sovereign Compliance Model"
+Our ultimate vision is to move beyond open-source weights to a proprietary, sovereign foun-
+dation model.
+• Training a Specialist Model: We envision training a dedicated compliance model
+from scratch or continuing pre-training on a massive corpus of EU regulations (GDPR,
+DORA, AI Act), millions of anonymized corporate policies, and historical compliance
+gap scenarios.
+• A "Hands-on" Tool for Majors: This specialized model would possess an innate
+"legal intuition" that general models lack. It would become an indispensable "hands-on"
+tool for major consultancy firms (like Deloitte, KPMG) and EU regulatory bodies, ca-
+pable of detecting subtle, systemic compliance gaps that standard tools miss. It would
+transition PoCH from a document checker into a "Governance Intelligence Platform"
+capable of auditing the entire regulatory posture of multinational organizations.
+69
+
+
+===== PAGE 81 =====
+
+References
+[1] General data protection regulation (gdpr).
+https://gdpr-info.eu/.
+Accessed:
+16/08/2025.
+[2] Regulation (eu) 2022/2554 (digital operational resilience act). https://eur-lex.europa.e
+u/eli/reg/2022/2554/oj. Accessed: 16/08/2025.
+[3] Iso/iec 27001:2022 information security management. https://www.iso.org/standard/2
+7001. Accessed: 16/08/2025.
+[4] Nist national institute of standards and technology. https://www.nist.gov/. Accessed:
+11/09/2025.
+[5] Llm large language model. https://en.wikipedia.org/wiki/Large_language_model.
+Accessed: 10/08/2025.
+[6] Ai act compliance checker by the the european commission. https://ai-act-service-
+desk.ec.europa.eu/en/eu-ai-act-compliance-checker. Accessed: 12/09/2025.
+[7] Compliance.ai software by complaince.ai.
+https://www.compliance.ai/.
+Accessed:
+13/09/2025.
+[8] The scrum guide. https://scrumguides.org/scrum-guide.html. Accessed: 16/09/2025.
+[9] Shunyu Yao et al. React: Synergizing reasoning and acting in language models. https:
+//arxiv.org/abs/2210.03629. Accessed: 29/08/2025.
+[10] Hetzner cloud documentation. https://docs.hetzner.com/cloud/. Accessed: 02/09/2025.
+[11] vllm: Easy, fast, and cheap llm serving. https://docs.vllm.ai/en/latest/. Accessed:
+15/09/2025.
+[12] Nginx documentation. https://nginx.org/en/docs/. Accessed: 15/10/2025.
+[13] Hostinger web hosting company. https://www.hostinger.com/. Accessed: 18/10/2025.
+70
+
+
+===== PAGE 82 =====
+
+References
+[14] Fastapi documentation. https://fastapi.tiangolo.com/. Accessed: 10/08/2025.
+[15] Woosuk Kwon et al. Efficient memory management for large language model serving
+with pagedattention. https://arxiv.org/abs/2309.06180. Accessed: 15/09/2025.
+[16] Ollama: Get up and running with llama 3.
+https://github.com/ollama/ollama.
+Accessed: 20/08/2025.
+[17] Lm studio. https://lmstudio.ai/. Accessed: 11/08/2025.
+[18] Lmarena: Comparison and ranking the performance of llms. https://lmarena.ai/leade
+rboard. Accessed: 20/08/2025.
+[19] Google cloud-based service. https://colab.research.google.com/. Accessed: 20/08/2025.
+[20] Ngrok secure public tunnels provider. https://ngrok.com/. Accessed: 20/08/2025.
+[21] Ssh secure shell. https://lmstudio.ai/. Accessed: 28/08/2025.
+[22] Xrdp remote desktop protocol for linux. https://lmstudio.ai/. Accessed: 28/08/2025.
+[23] Ovhcloud: Cloud computing and web hosting. https://www.ovhcloud.com/en/. Ac-
+cessed: 02/09/2025.
+[24] Logitmasking : Control model behavior by modifying the output probabilities (logits).
+https://www.researchgate.net/figure/The-overview-of-logit-level-masking-Logit-level-
+masking-calculates-the-action_fig1_372495291. Accessed: 16/09/2025.
+[25] Owasp top 10. https://owasp.org/www-project-top-ten/. Accessed: 15/10/2025.
+[26] Owasp top 10 for large language models. https://owasp.org/www-project-top-10-for-
+large-language-models/. Accessed: 15/10/2025.
+[27] Sbom - software bill of materials (sbom) machine-readable inventory of all software
+components. https://www.cisa.gov/sbom. Accessed: 15/10/2025.
+[28] Cyber resilience act (cra) - european commission. https://digital-strategy.ec.europa.e
+u/en/policies/cyber-resilience-act. Accessed: 15/08/2025.
+71
+
+
+===== PAGE 83 =====
+
+2%
+INDICE DE SIMILITUDE 0%
+SOURCES INTERNET
+1%
+PUBLICATIONS
+2%
+COPIES DE L'ÉTUDIANT
+1
+2%
+2
+1%
+Exclure les citations
+Arret
+Exclure la bibliographie Arret
+Exclure les
+correspondances
+< 1%
+Ayoub Elhouch
+RAPPORT DE SIMILITUDE
+SOURCES PRINCIPALES
+Submitted to University of Carthage
+Copie de l'étudiant
+Submitted to University of Manouba
+Copie de l'étudiant

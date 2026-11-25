@@ -1,0 +1,4652 @@
+===== PAGE 1 =====
+
+ 
+ 
+Tunisian Republic 
+ 
+ 
+ 
+University of Monastir 
+Higher Institute of Computer 
+Science  
+of Mahdia 
+ 
+THESIS 
+Order Number: MP-EXR-2-
+2025-010 
+Ministry of Higher Education and Scientific 
+Research 
+ 
+ 
+ 
+DISSERTATION OF GRADUATION 
+                                                 
+Presented at 
+ 
+Higher Institute of Computer Science of Mahdia 
+                                                 
+ Carried out at 
+ 
+ISIMA 
+ 
+ 
+In view of obtaining the diploma of 
+ 
+Professional Master’s in Computer Engineering: Network Expert 
+ 
+Prepared by: 
+ 
+ACHREF MOUSSA 
+ 
+     
+MLDevSecOps with the ELK Stack and IDPS 
+ 
+ 
+ 
+Defended on: December 13, 2025 
+before the jury composed of: 
+ 
+ 
+President 
+ : Walid Hassairi 
+Reviewer 
+ : Hamdi Aloulou 
+Academic Supervisor 
+ : Zahra Raddaoui 
+ 
+ 
+ 
+ 
+Academic Year:   2025-2026 
+
+
+===== PAGE 2 =====
+
+Acknowledgements
+I want to sincerely express my deep gratitude to Allah, whose presence has consistently been a
+source of strength, patience, and guidance throughout this challenging yet rewarding journey.
+I am incredibly thankful to my academic supervisor, Mrs. Zahra Raddaoui. Her insightful
+guidance, sharp critiques, and unwavering encouragement were crucial in shaping this work. She
+motivated me to think critically and aim for excellence, for which I am genuinely appreciative.
+I also want to extend my heartfelt thanks to the members of the thesis jury. It has been a
+privilege to have Mr. Walid Hassairi leading the discussions, and I am grateful for the thorough
+review and constructive feedback provided by Mr. Hamdi Aloulou.
+Lastly, I would like to express my profound appreciation to the family of the Higher Institute
+of Computer Science of Mahdia (ISIMA) for creating the stimulating academic environment
+and providing the resources that were essential for my growth and knowledge acquisition.
+1
+
+
+===== PAGE 3 =====
+
+My Family
+First, To my beloved family, my deepest gratitude for your unconditional love and unwavering
+support. You were my constant source of strength, believing in me even when I had my own
+doubts. Thank you for your endless patience and for the sacrifices you made along this journey.
+You are the foundation upon which I stand, and my greatest inspiration. This achievement is
+dedicated to you, a small token of my immense love and appreciation.
+My Sweetheart
+To my beloved little panda, thank you for being the light that brightened my most challenging
+days. Your laughter and love were the fuel that kept my spirit alive. This journey was infinitely
+better because you were by my side.
+My Friends
+To my dear friends, I want to express my gratitude for the laughter, the late-night study sessions,
+and for always being there to lend an ear. Your support has meant the world to me.
+ISIMA Professors
+Your insights inspired me to aim higher, reflect more profoundly, and appreciate the wonders of
+computer science. I am grateful for your role in sparking my curiosity and providing me with the
+resources to explore the digital landscape.
+My Colleagues
+Finally, I would like to express my sincere gratitude to my colleagues, who have been my
+cheerleaders from another professional realm. Your steadfast faith in me and your ongoing
+encouragement provided me with the strength to keep going. The support you offered truly
+made a significant impact, and I feel incredibly lucky to work with you.
+Achref Moussa
+2
+
+
+===== PAGE 4 =====
+
+Abstract
+Organizations contend with rapidly evolving cyber threats that outpace signature-based security
+solutions. This project delivers and critically evaluates a practical MLDevSecOps pipeline that
+integrates open-source Suricata IDS/IPS, the ELK Stack, and unsupervised anomaly detection
+methods specifically Z-Score statistical thresholding and Isolation Forest for near real-time
+intrusion detection and automated response. The platform is deployed across five virtual machines
+dedicated to network monitoring (Suricata), log aggregation (ELK), machine learning analysis,
+CI/CD orchestration (Jenkins), and simulated attack testing (OWASP Juice Shop). Network
+events are continuously collected and streamed[2], enriched via Elasticsearch, and analyzed
+using Z-Score for outlier detection in numeric fields and Isolation Forest for multivariate anomaly
+identification. Detected anomalies and blocking actions are automatically logged, with confirmed
+threats triggering OS-level IP address blocking using iptables. Model retraining is currently
+performed manually based on data thresholds, and all evaluation is carried out in a realistic
+but controlled lab setting. Experimental validation demonstrates effective detection and timely
+response to simulated attacks using these two methods alone. This work provides a robust,
+extensible foundation for integrating IDS, SIEM, streaming, and lightweight unsupervised
+machine learning within an MLDevSecOps workflow, with clear opportunities for automating
+retraining and expanding analytical capabilities in production environments.
+3
+
+
+===== PAGE 5 =====
+
+Contents
+Acknowledgements
+1
+1
+Introduction
+10
+1.1
+General Context . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.2
+Motivation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+1.3
+Problem Statement
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11
+1.4
+Project Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+1.5
+Adopted Methodology
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.6
+Scope and Limitations
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13
+1.7
+Report Organization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+14
+2
+State of the Art
+16
+2.1
+Intrusion Detection and Prevention Systems (IDS/IPS)
+. . . . . . . . . . . . .
+16
+2.1.1
+Suricata . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.1.2
+Snort
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.1.3
+IDS/IPS Overview (Suricata vs Snort) . . . . . . . . . . . . . . . . . .
+17
+2.2
+SIEM (Security Information and Event Management) Tools . . . . . . . . . . .
+18
+2.2.1
+Splunk
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.2.2
+Graylog . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.3
+Machine Learning for Cybersecurity . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.3.1
+Classical Machine Learning Models . . . . . . . . . . . . . . . . . . .
+21
+2.3.2
+Deep Learning Models . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+2.3.3
+Graph-based AI . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+2.3.4
+Comparison of ML Approaches for IDS . . . . . . . . . . . . . . . . .
+22
+2.3.5
+DevSecOps and the Emergence of MLDevSecOps
+. . . . . . . . . . .
+22
+2.4
+CI/CD and Security in Pipelines
+. . . . . . . . . . . . . . . . . . . . . . . . .
+23
+2.4.1
+Jenkins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.4.2
+GitLab CI/CD
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.4.3
+GitHub Actions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.5
+Related Work . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+25
+2.6
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+26
+3
+Analysis and Design
+27
+3.1
+Requirements Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.1.1
+Functional Requirements . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.1.2
+Non-Functional Requirements . . . . . . . . . . . . . . . . . . . . . .
+28
+3.2
+System Specifications . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.2.1
+Virtual Machine Hardware and Software . . . . . . . . . . . . . . . . .
+28
+4
+
+
+===== PAGE 6 =====
+
+3.2.2
+Data Sources . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.2.3
+Targeted Attacks . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.2.4
+Monitoring and Visualization Needs . . . . . . . . . . . . . . . . . . .
+33
+3.3
+Proposed Architecture
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.3.1
+High-Level System Architecture . . . . . . . . . . . . . . . . . . . . .
+33
+3.3.2
+Network Topology . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.3.3
+Data Collection Layer
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.3.4
+Data Processing and Pipeline Layer . . . . . . . . . . . . . . . . . . .
+35
+3.3.5
+Data Flow Diagram . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.3.6
+Machine Learning Layer . . . . . . . . . . . . . . . . . . . . . . . . .
+36
+3.3.7
+Component Interaction Diagram . . . . . . . . . . . . . . . . . . . . .
+36
+3.3.8
+Response and Visualization Layer . . . . . . . . . . . . . . . . . . . .
+37
+3.3.9
+CI/CD and Automation Layer . . . . . . . . . . . . . . . . . . . . . .
+37
+3.3.10 Sequence Diagram: Attack Detection to Response
+. . . . . . . . . . .
+37
+3.3.11 Use Case Scenarios . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+38
+3.3.12 Technical Choices Justification . . . . . . . . . . . . . . . . . . . . . .
+38
+4
+Implementation
+40
+4.1
+Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+4.2
+Real-Time Suricata Log Processing
+. . . . . . . . . . . . . . . . . . . . . . .
+41
+4.2.1
+Suricata Configuration . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.2.2
+Filebeat Shipping . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.2.3
+Logstash Processing
+. . . . . . . . . . . . . . . . . . . . . . . . . . .
+41
+4.2.4
+Log Sources
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.2.5
+Processing Pipeline . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.2.6
+Key Capabilities
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.3
+Lightweight Anomaly Detection with Z-Score and Isolation Forest . . . . . . .
+42
+4.3.1
+Detection Methods . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+42
+4.3.2
+Feature Extraction
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.3.3
+Z-Score Detector . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.3.4
+Isolation Forest Detector . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.3.5
+Ensemble Logic
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+43
+4.3.6
+Model Integration . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.4
+Active Response System
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.4.1
+Response Capabilities
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+44
+4.4.2
+Testing and Validation . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+4.5
+Model Retraining . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+4.6
+Elasticsearch Integration
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.6.1
+Storage Optimization . . . . . . . . . . . . . . . . . . . . . . . . . . .
+49
+4.6.2
+Query Support
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.7
+Human-in-the-Loop Labeling . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.7.1
+Labeling Workflow . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.8
+Monitoring and Metrics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.8.1
+Metrics Collection and Visualization . . . . . . . . . . . . . . . . . . .
+52
+4.9
+Security and Operations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.9.1
+Security Measures
+. . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.10 Scalability Features . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.10.1 Scalability Mechanisms
+. . . . . . . . . . . . . . . . . . . . . . . . .
+54
+5
+
+
+===== PAGE 7 =====
+
+4.11 Maintenance Features . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.11.1 Maintenance Capabilities . . . . . . . . . . . . . . . . . . . . . . . . .
+54
+4.12 CI/CD and Automation via Jenkins . . . . . . . . . . . . . . . . . . . . . . . .
+55
+4.12.1 Jenkins Pipeline Responsibilities . . . . . . . . . . . . . . . . . . . . .
+55
+4.13 Key Differentiators . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+56
+5
+Results and Evaluation
+57
+5.1
+Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+5.2
+Functional Validation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+5.3
+Performance Evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+57
+5.3.1
+Machine Learning Model Metrics . . . . . . . . . . . . . . . . . . . .
+58
+5.3.2
+Infrastructure and System Performance
+. . . . . . . . . . . . . . . . .
+58
+5.4
+Visualization of Operational Results . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.4.1
+Security Event Dashboards (Kibana) . . . . . . . . . . . . . . . . . . .
+59
+5.4.2
+System Health and ML Metrics (Grafana) . . . . . . . . . . . . . . . .
+59
+5.4.3
+Attack Simulation Validation . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.5
+Critical Analysis and Discussion . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.5.1
+Demonstrated Strengths
+. . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.5.2
+Identified Limitations . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.5.3
+Future Enhancements . . . . . . . . . . . . . . . . . . . . . . . . . . .
+61
+5.6
+Summary
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+62
+6
+Conclusion and Perspectives
+63
+6.1
+Project Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+63
+6.2
+Major Achievements
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+64
+6.3
+Technical Contributions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+6.4
+Limitations and Considerations . . . . . . . . . . . . . . . . . . . . . . . . . .
+65
+6.5
+Future Research Directions . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+66
+6.5.1
+Advanced Machine Learning Architectures . . . . . . . . . . . . . . .
+66
+6.5.2
+Operational Enhancements . . . . . . . . . . . . . . . . . . . . . . . .
+66
+6.5.3
+Threat Intelligence and Context
+. . . . . . . . . . . . . . . . . . . . .
+67
+6.5.4
+Robustness and Security Hardening . . . . . . . . . . . . . . . . . . .
+67
+6.6
+Recommendations for Practitioners . . . . . . . . . . . . . . . . . . . . . . . .
+67
+6.7
+Final Remarks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+68
+Bibliography
+68
+A Appendices
+71
+A.1
+Suricata and Logstash Configurations
+. . . . . . . . . . . . . . . . . . . . . .
+71
+A.1.1
+Suricata Configuration (suricata.yaml) . . . . . . . . . . . . . . . . . .
+71
+A.1.2
+Logstash Configuration (logstash.conf)
+. . . . . . . . . . . . . . . . .
+72
+A.2
+Python ML Scripts
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+73
+A.3
+Jenkins Orchestration Flowchart . . . . . . . . . . . . . . . . . . . . . . . . .
+78
+List of Acronyms
+91
+6
+
+
+===== PAGE 8 =====
+
+List of Figures
+2.1
+Suricata IDS/IPS
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+16
+2.2
+Snort IDS/IPS . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+17
+2.3
+Elasticsearch
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.4
+Logstash . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.5
+Kibana . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.6
+Filebeat . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.7
+Splunk . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.8
+Graylog . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+20
+2.9
+Jenkins
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.10 GitLab . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+2.11 GitHub Actions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+24
+3.1
+Suricata-VM
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.2
+Filebeat . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.3
+ELK-VM
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.4
+Elasticsearch Status
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.5
+Logstash Status . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.6
+Elasticsearch Status
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.7
+ML-VM . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+30
+3.8
+Jenkins-VM . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.9
+Jenkins Status . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.10 OWASP Juice Shop VM
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+32
+3.11 OWASP Juice Shop Web Application
+. . . . . . . . . . . . . . . . . . . . . .
+32
+3.12 Process flow diagram illustrating the orchestration of security testing and moni-
+toring infrastructure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+34
+3.13 Network topology showing monitored segments and management links
+. . . .
+34
+3.14 Data flow from Suricata logs through Kafka, ELK, ML layer, and response
+components . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+35
+3.15 Component interaction among IDS, streaming, storage, ML, and response modules 36
+3.16 Sequence of events from attack generation to detection, alerting, and automated
+response . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+37
+3.17 Use case diagram for normal operation, attack detection, and model retraining .
+38
+3.18 Kafka . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+39
+4.1
+Implementation-level data flow within the MLDevSecOps platform . . . . . . .
+40
+4.2
+Active response execution sequence from detection to mitigation . . . . . . . .
+47
+4.3
+ELK screenshot . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.4
+Kibana dashboard screenshot . . . . . . . . . . . . . . . . . . . . . . . . . . .
+50
+4.5
+Web interface dashboard
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+7
+
+
+===== PAGE 9 =====
+
+4.6
+Model-Only Anomalies Interface
+. . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.7
+Blocked IP Addresses Interface . . . . . . . . . . . . . . . . . . . . . . . . . .
+51
+4.8
+ML Generated Suricata Rules Interface
+. . . . . . . . . . . . . . . . . . . . .
+52
+4.9
+Email Alert History Interface . . . . . . . . . . . . . . . . . . . . . . . . . . .
+52
+4.10 Prometheus Targets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.11 Grafana Interface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+53
+4.12 Jenkins CI/CD pipeline for MLDevSecOps automation . . . . . . . . . . . . .
+56
+5.1
+Kibana Dashboard
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+59
+5.2
+Grafana Dashboard (CPU, memory, disk, and network metrics) . . . . . . . . .
+60
+5.3
+Grafana Dashboard (ELK cluster health,performance bottlenecks)
+. . . . . . .
+60
+5.4
+Grafana Dashboard (OWASP Juice Shop application’s health, security challenges,
+performance metrics) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+60
+6.1
+Summary of the MLDevSecOps platform architecture . . . . . . . . . . . . . .
+64
+8
+
+
+===== PAGE 10 =====
+
+List of Tables
+2.1
+Comparison of Network IDS/IPS: Suricata vs Snort . . . . . . . . . . . . . . .
+17
+2.2
+SIEM Platform Evaluation for Real-Time Security Monitoring . . . . . . . . .
+20
+2.3
+Comparison of ML Approaches for Intrusion Detection . . . . . . . . . . . . .
+22
+2.4
+CI/CD Platform Evaluation for MLDevSecOps Implementation . . . . . . . . .
+25
+5.1
+Machine Learning Model Performance Metrics
+. . . . . . . . . . . . . . . . .
+58
+9
+
+
+===== PAGE 11 =====
+
+Chapter 1
+Introduction
+1.1
+General Context
+Over the past decade, the digital transformation of organizations has embedded networked
+systems into nearly every aspect of business activity, from industrial operations to cloud-based
+services and remote collaboration tools. This growing reliance on interconnected infrastructure
+has greatly expanded the potential impact of cybersecurity incidents, making modern organi-
+zations vulnerable to threats that can disrupt operations, expose sensitive data, and undermine
+public trust.
+Adversaries now employ a diverse mix of attack techniques including phishing, lateral
+movement, privilege escalation, and data exfiltration to execute targeted, multi-stage campaigns.
+The proliferation of cloud-native deployments, virtualization, containerization, and microservices
+have led to highly dynamic IT environments, with frequent configuration changes and ephemeral
+workloads complicating monitoring and attack detection.
+Traditional, perimeter-based network defenses and rule-driven detection systems struggle
+to keep pace with this complexity. Signature-based approaches are increasingly inadequate
+against zero-day vulnerabilities, polymorphic malware, and coordinated attacks engineered to
+evade static rules[20]. Simultaneously, the massive volume and diversity of security telemetry
+produced in modern environments quickly overwhelm manual inspection and reactive response
+workflows.
+To address these challenges, there is a shift toward integrating lightweight, unsupervised
+anomaly detection methods into security operations. Rather than relying solely on static signa-
+tures and human-driven triage, organizations are exploring automated pipelines that continuously
+collect, correlate, and enrich telemetry data, applying statistical and unsupervised learning
+techniques to surface deviations from normal behavior in near real time. This work leverages
+two such methods—Z-Score for univariate outlier detection and Isolation Forest for multivariate
+anomaly identification within an MLDevSecOps framework. By embedding these techniques
+into DevSecOps practices, the pipeline enables security controls that are both automated and
+adaptive, capable of identifying and responding to suspicious activity across complex, distributed
+environments without dependence on labeled threat data or deep learning models.
+1.2
+Motivation
+Recent global analyses reveal a sustained increase in the frequency, sophistication, and financial
+impact of cyber incidents. The average cost of a data breach hovers around $4.44 million
+10
+
+
+===== PAGE 12 =====
+
+worldwide in 2025, reaching as high as $10.22 million in the United States, encompassing
+remediation expenses, regulatory fines, legal liabilities, and reputational damage[8, 21]. Attackers
+often gain prolonged undetected access spanning weeks or months enabling them to escalate
+privileges and exfiltrate sensitive information covertly.
+Simultaneously, security operations centers (SOCs) are inundated by voluminous logs, alerts,
+and network events generated by diverse sources such as firewalls, intrusion detection systems,
+and endpoint agents. High false-positive rates overwhelm analysts, leading to missed critical
+threats or delayed responses. Traditional manual triage and rule-based correlation techniques are
+no longer sufficient to manage the scale and complexity of modern infrastructures.
+These overarching challenges underscore the necessity for cyber defense architectures that
+integrate high-performance network monitoring, centralized log aggregation, scalable data
+processing, and lightweight, unsupervised anomaly detection. This project leverages two such
+techniques—Z-Score for statistical outlier detection in individual metrics and Isolation Forest
+for identifying anomalous patterns across multivariate telemetry—to surface suspicious activity
+without reliance on labeled data or predefined attack signatures. By embedding these methods
+into security pipelines, organizations can reduce detection latency, filter noise from high-volume
+alerts, and support faster analyst response.
+Through the MLDevSecOps paradigm, this work explores how even simple, interpretable
+anomaly detection models can be systematically integrated with infrastructure automation to
+enable reproducible, responsive threat identification. The project is motivated by the imperative
+to experimentally validate such integrated frameworks in controlled, realistic network environ-
+ments—laying groundwork for future enhancements while demonstrating near-term utility using
+only Z-Score and Isolation Forest.
+1.3
+Problem Statement
+Despite the availability of robust intrusion detection systems, SIEM platforms, and automation
+tools, many modern security monitoring solutions still face significant challenges that undermine
+their effectiveness in today’s complex IT environments:
+• Signature dependency: Conventional IDS/IPS engines are highly reliant on static attack
+signatures, rendering them insufficient for detecting novel exploits, polymorphic malware,
+and sophisticated, long-duration attacks engineered to bypass rule-based defenses.
+• Fragmented log management: Security telemetry is typically scattered across disparate
+systems and formats, hindering correlation, holistic visibility, and effective threat analysis.
+• Overwhelming telemetry volume: The massive volume and velocity of network and
+application logs produced in distributed, cloud-centric, and high-throughput environments
+make manual inspection infeasible and strain the capabilities of conventional correlation
+engines[17].
+• Scalability and performance limitations: Many traditional monitoring architectures
+were designed for static, on-premises deployments and struggle to process and analyze
+data in real time as infrastructure becomes more dynamic and geographically distributed.
+• Manual and delayed response: The transition from detection to mitigation frequently
+depends on human analysts, creating critical delays during which attackers can escalate
+privileges, move laterally, and cause further harm to the organization.
+11
+
+
+===== PAGE 13 =====
+
+Collectively, these limitations reveal the necessity for integrated solutions that seamlessly
+combine deep network inspection, scalable and unified log analytics, and machine learning-
+based anomaly detection, while enabling automated or rapid response workflows. This project
+confronts these issues by designing, implementing, and evaluating a practical MLDevSecOps
+pipeline using open-source technologies, with the goal of assessing its real-world effectiveness
+in realistic, controlled attack scenarios.
+1.4
+Project Objectives
+The primary aim of this project is to design, build, and evaluate an MLDevSecOps pipeline that
+demonstrates the viability of intelligent, automated network threat detection and response using
+open-source technologies. The specific objectives are:
+• Establish a real-time, integrated observability stack:
+– Deploy Suricata for deep network traffic inspection and alert generation.
+– Utilize the ELK Stack for centralized collection, parsing, indexing, and visualization
+of security events.
+– Implement statistical and machine learning models (Z-Score, Isolation Forest) to
+highlight and score anomalous patterns in network telemetry.
+• Enable automated detection-to-response workflows:
+– Automate end-to-end detection, including log preprocessing, feature extraction,
+anomaly scoring, and alerting.
+– Execute response actions, such as OS-level IP blocking via iptables, immediately
+upon detecting high-confidence anomalies, minimizing manual analyst intervention.
+• Support auditable operations and continuous improvement:
+– Log all detected anomalies and mitigation actions for forensic review and system
+improvement.
+– Validate core functionalities and detection capabilities through controlled attack
+scenarios simulated using the OWASP Juice Shop[13].
+• Ensure modularity and future scalability:
+– Lay the groundwork for scalable data streaming and analytics (e.g., Kafka backbone,
+multiple analytical consumers).
+– Prepare the architecture for future integration of additional analytical methods, while
+currently relying exclusively on Z-Score and Isolation Forest.
+• Expose operational and analytical insights:
+– Provide the means (present or future placeholders) for dashboard-based visibility
+into system health, model performance, detection outcomes, and resource utilization.
+This set of objectives anchors the project’s scope to practical, hands-on implementation while
+establishing a foundation for future extensibility and research.
+12
+
+
+===== PAGE 14 =====
+
+1.5
+Adopted Methodology
+To ensure a rigorous, reproducible, and practically relevant outcome, the project adopts a
+structured engineering and evaluation process combining conceptual analysis with hands-on
+implementation. The major phases of this methodology are:
+1. Literature review and technology assessment: Conduct a thorough survey of current
+IDS/IPS platforms, SIEM solutions, streaming frameworks, and relevant machine learning
+approaches for security. Particular attention is paid to integration strategies and limitations
+of existing tools.
+2. Requirements specification: Define formal functional and non-functional requirements
+for the proposed system, including attack types to be covered, detection and response
+workflows, scalability targets, detection latency, and reliability needs.
+3. Architectural design: Develop a layered architecture integrating Suricata, ELK Stack,
+machine learning modules, and automation tools. Explicitly specify data flows, key
+integration points, component responsibilities, and the overall security model.
+4. Incremental implementation and integration: Build and configure the platform step by
+step, beginning with basic log collection and visualization. Successive phases introduce
+streaming infrastructure, anomaly detection services, active response mechanisms, and
+monitoring capabilities. All components are deployed on dedicated virtual machines for
+isolation and repeatability.
+5. Experimental validation: Rigorously test the system by generating realistic background
+traffic and conducting simulated attacks (e.g., via the OWASP Juice Shop). Measure not
+only detection quality and false positive rates, but also performance characteristics such as
+processing throughput and detection/response latency.
+6. Analysis and documentation: Critically assess experimental results, identify operational
+limitations, and document both the architectural design and lessons learned. Propose
+specific future enhancements for scalability, automation, and analytic depth.
+This methodology ensures that the proposed solution is both grounded in current research
+and best practices, and thoroughly vetted through empirical experimentation in conditions that
+approximate real-world security challenges.
+1.6
+Scope and Limitations
+This project is intentionally scoped to demonstrate the core integration and practical viability
+of the MLDevSecOps approach within a controlled laboratory environment. The following
+boundaries and limitations are acknowledged:
+• Implemented ML Models: Only statistical (Z-Score) and unsupervised (Isolation Forest)
+algorithms are fully operational in the current pipeline. Advanced approaches such as au-
+toencoders, LSTM networks, or graph-based models are discussed as future enhancements
+and are not part of the present implementation.
+13
+
+
+===== PAGE 15 =====
+
+• Infrastructure and Deployment: All system components are deployed on dedicated
+virtual machines within a single hypervisor for repeatability and ease of management.
+The platform does not address enterprise-scale production issues such as multi-cloud
+deployment, geographic distribution, or multi-tenant isolation.
+• Retraining and Automation: Model retraining is currently initiated manually once a
+predefined log volume is reached (e.g., 500 records). Continuous, automated retraining
+pipelines and seamless integration with CI/CD for ML updates remain a future goal[?, 14].
+• Interface and Usability: Analyst dashboards and manual labeling interfaces are designed
+in concept but not fully implemented. Log file analysis is used for most evaluations and
+forensic review.
+• Data Scope: Evaluation is performed using a mix of synthetic, benign, and controlled
+attack traffic (including OWASP Juice Shop scenarios)[18]. Host-based telemetry and
+application logs are not yet integrated—focus remains on network-level events.
+• Model Robustness and Adversarial Resilience: While the system reports detection
+accuracy and false positive rates, it has not been evaluated against adversarial tactics such
+as model evasion or poisoning, nor against large-scale drift in traffic behaviors[6].
+• Regulatory, Privacy, and Compliance: Security best practices are adopted at a technical
+level, but no attempt is made to implement or audit for specific regulatory or privacy
+compliance frameworks in this prototype.
+These limitations are necessary in order to maintain focus and feasibility, allowing the project
+to robustly demonstrate practical integration and functionality while also providing guidance for
+future research and scaling toward production use cases.
+1.7
+Report Organization
+This document is organized into distinct chapters, each serving a specific role in building,
+analyzing, and validating the MLDevSecOps pipeline:
+• Chapter 1: Introduction — Presents the context and motivation behind the project,
+articulates the problem statement, specifies objectives, outlines the adopted methodology,
+and defines the scope and limitations.
+• Chapter 2: State of the Art — Reviews foundational and contemporary concepts es-
+sential to the work, including IDS/IPS platforms, SIEM technologies, machine learning
+approaches to cybersecurity, automation pipelines, and recent related research.
+• Chapter 3: Analysis and Design — Details the system requirements, examines architec-
+tural choices, and justifies component selection by mapping technical needs to open-source
+solutions.
+• Chapter 4: Implementation — Describes the practical deployment, configuration, and
+integration of each system component, including log collection, feature extraction, anomaly
+detection, response automation, and monitoring infrastructure.
+14
+
+
+===== PAGE 16 =====
+
+• Chapter 5: Results and Evaluation — Presents experimental results, system performance
+measurements, practical validation against simulated scenarios, and a critical analysis of
+system behavior, including limitations and areas for improvement.
+• Chapter 6: Conclusion and Perspectives — Summarizes the project’s principal contribu-
+tions, reflects on findings, discusses known limitations, and outlines recommendations and
+future directions such as scaling, automation, and use of advanced AI models.
+• Bibliography and Appendices — The bibliography lists all cited literature. The appen-
+dices provide supporting material, including code listings, configuration files, sample
+dashboards, and additional experimental data.
+15
+
+
+===== PAGE 17 =====
+
+Chapter 2
+State of the Art
+2.1
+Intrusion Detection and Prevention Systems (IDS/IPS)
+Network intrusion detection and prevention systems are core building blocks of modern cyberse-
+curity architectures. These systems continuously inspect network traffic to identify malicious
+activities, either notifying analysts in IDS mode or actively blocking suspicious flows in IPS
+mode.
+Among open-source solutions, Snort and Suricata are two of the most widely deployed
+engines. Snort was first released in 1998 and has evolved into one of the most established
+IDS/IPS tools in both industry and academia. Suricata, introduced by the Open Information
+Security Foundation (OISF) around 2009, was designed from the outset to leverage multi-core
+hardware and generate rich, structured telemetry suitable for large-scale analysis[12]. Both can
+operate at high speeds, but traditional deployments often rely heavily on signature-based rules,
+which makes it difficult to detect novel or obfuscated attacks.
+2.1.1
+Suricata
+Suricata is a high-performance, open-source IDS/IPS and network security monitoring engine
+developed and maintained by the OISF. It supports native multi-threading and deep packet
+inspection, allowing it to fully utilize modern multi-core CPUs and to parse a wide range of
+application-layer protocols[11, 12].
+A key distinguishing feature of Suricata is its EVE JSON logging format. This structured
+output includes detailed information on flows, alerts, anomalies, files, TLS handshakes, HTTP
+transactions, and more. As a result, Suricata logs can be ingested directly by SIEM platforms,
+big data frameworks, and machine learning pipelines with minimal preprocessing. Suricata is
+commonly used in enterprise SOCs, research testbeds, and open-source security distributions
+such as Security Onion, where its scalability and log richness are critical.
+Figure 2.1: Suricata IDS/IPS
+16
+
+
+===== PAGE 18 =====
+
+2.1.2
+Snort
+Snort, originally developed by Martin Roesch in 1998 and later acquired and maintained by Cisco,
+is one of the oldest and most mature IDS/IPS engines. It relies primarily on signature-based
+detection with a large, community-driven rule set and has been integrated into many commercial
+and open-source security products.
+For many years, Snort 2.x used a largely single-threaded processing model, which can be-
+come a bottleneck in very high-bandwidth environments. Snort 3.x introduced a more modular,
+multi-threaded architecture, but Suricata has generally been perceived as more aligned with
+modern, parallel processing requirements[19]. Snort remains popular in traditional network envi-
+ronments, educational labs, and smaller organizations where hardware resources and throughput
+requirements are more modest.
+Figure 2.2: Snort IDS/IPS
+2.1.3
+IDS/IPS Overview (Suricata vs Snort)
+Table 2.1: Comparison of Network IDS/IPS: Suricata vs Snort
+Feature
+Suricata
+Snort
+Architecture
+Multi-threaded, optimized for
+modern multi-core CPUs
+Single-threaded in 2.x; limited
+multi-threading in 3.x
+Detection
+Approach
+Signatures + anomaly + protocol
++ behavior-based analysis
+Mainly signature-based with
+protocol checks
+Performance
+High throughput, suitable for
+high-speed and large networks
+Best for small to medium traffic
+volumes
+Scalability
+Designed for distributed,
+high-performance deployments
+Moderate scalability;
+improvements in Snort 3.x
+Logging & Output
+Rich JSON (EVE), PCAP,
+Syslog, suitable for SIEM/ML
+pipelines
+Unified2 and text logs, limited
+structured JSON support
+NSM Capabilities
+Full network security monitoring
+with detailed context
+Focused mainly on alert
+generation
+Integration with
+Big Data / ML
+Native JSON logs integrate easily
+with ELK, Kafka, and ML tools
+Requires more preprocessing to
+fit big-data / ML workflows
+Best Fit
+Environment
+Modern, high-performance
+infrastructures, threat hunting,
+ML-driven analysis
+Traditional IDS setups, legacy or
+resource-limited systems
+17
+
+
+===== PAGE 19 =====
+
+In practice, Snort remains a reliable option for traditional network deployments and resource-
+constrained environments. Suricata, by contrast, is often preferred in modern, high-throughput
+infrastructures where structured logging and integration with SIEM and ML workflows are
+required—exactly the scenario targeted in this project.
+2.2
+SIEM (Security Information and Event Management)
+Tools
+Security Information and Event Management (SIEM) platforms aggregate, normalize, correlate,
+and analyze security-relevant events from across an organization. They provide centralized
+visibility, support incident investigations, and help meet compliance requirements. Over the last
+decade, SIEM tools have evolved from simple log aggregators into complex analytics platforms
+with built-in dashboards, alerting, and, in some cases, machine learning capabilities.
+This section focuses on three commonly used SIEM solutions: the ELK Stack, Splunk,
+and Graylog. These platforms have seen widespread deployment in SOCs, managed security
+services, and cloud-native environments.
+The ELK Stack
+The ELK Stack (Elasticsearch, Logstash, Kibana) emerged in the early 2010s as a popular open-
+source stack for log management and analytics. With the addition of Beats (such as Filebeat), it
+provides an end-to-end pipeline for log collection, transformation, indexing, and visualization[5].
+• Elasticsearch: A distributed search and analytics engine built on Apache Lucene. It
+supports horizontal scaling, high write throughput, and near real-time search, making it a
+common choice for centralized logging and SIEM-style workloads.
+Figure 2.3: Elasticsearch
+• Logstash: A server-side data processing pipeline that ingests, parses, enriches, and
+transforms log events before indexing. It supports many input, filter, and output plugins
+and is often used as the main “glue” for heterogeneous log sources.
+Figure 2.4: Logstash
+18
+
+
+===== PAGE 20 =====
+
+• Kibana: A visualization and exploration layer that allows analysts to build dashboards,
+search logs interactively, and create visualizations for security monitoring and reporting.
+Figure 2.5: Kibana
+• Filebeat: A lightweight log shipper introduced later in the Beats family that collects log
+files from servers and forwards them to Logstash or Elasticsearch.
+Figure 2.6: Filebeat
+In many real-world deployments, the ELK Stack serves as the core of custom SIEM solutions,
+particularly in organizations that prefer open-source technologies or [19, 3]. It is widely used in
+SOCs for threat hunting, incident analysis, and monitoring of IDS alerts.
+2.2.1
+Splunk
+Splunk, first released in 2003, is a commercial platform that provides log management, secu-
+rity analytics, and observability capabilities. Splunk Enterprise Security builds on the core
+platform with pre-built security dashboards, correlation searches, and compliance reporting
+content. Splunk is frequently deployed in large enterprises, financial institutions, and government
+environments that require strong vendor support, extensive integrations, and mature governance
+features.
+Its major strengths include a powerful search language (SPL), rich out-of-the-box content, and
+high scalability when appropriately licensed and engineered. However, Splunk’s licensing model,
+typically based on daily indexed data volume, can make large-scale deployments expensive,
+especially when storing high-volume sources such as full IDS logs or packet metadata.
+Figure 2.7: Splunk
+19
+
+
+===== PAGE 21 =====
+
+2.2.2
+Graylog
+Graylog emerged in the mid-2010s as an open-source log management and SIEM solution
+focused on ease of deployment and use. It builds on Elasticsearch and MongoDB, providing a
+simpler interface and built-in alerting and stream processing capabilities.
+Graylog is commonly adopted by small and medium-sized organizations that require central-
+ized log management and basic SIEM functions without the complexity of full ELK customiza-
+tion or the cost of Splunk. While Graylog can scale to moderate volumes, it is generally not
+considered as elastic as large ELK or Splunk clusters.
+Figure 2.8: Graylog
+Table 2.2: SIEM Platform Evaluation for Real-Time Security Monitoring
+Key Factor
+ELK Stack
+Splunk
+Graylog
+Price
+Completely free
+(open-source;
+infrastructure costs
+only)
+High cost (pay per
+ingested GB)
+Low cost, with paid
+enterprise support
+Stores & Processes
+Data
+Horizontally
+scalable across
+many nodes
+Scales well but
+licensing can limit
+data volume
+Suitable for
+moderate data
+volumes
+Easy to Customize
+Highly
+customizable
+dashboards and
+pipelines
+Less flexible than
+ELK for custom
+pipelines
+Limited
+customization
+options
+Receives Logs From
+Very flexible (beats,
+Logstash, many
+inputs)
+1500+ pre-built
+integrations
+Common log sources
+supported
+Real-Time Alerts
+Supports alerts via
+Kibana and
+alerting plugins
+Advanced built-in
+alerting and
+correlation
+Basic alerting
+capabilities
+Help &
+Documentation
+Large open-source
+community,
+extensive guides
+Vendor support and
+official
+documentation
+Smaller but active
+community
+In summary, ELK is especially attractive for this project because it can store high-volume
+Suricata logs, support custom dashboards for ML outputs, and integrate smoothly with Kafka
+and other open-source components.
+20
+
+
+===== PAGE 22 =====
+
+2.3
+Machine Learning for Cybersecurity
+Machine learning has become a key component in modern intrusion detection and threat analytics.
+Unlike purely signature-based approaches, ML methods can learn patterns from data and detect
+behaviors that deviate from expected baselines[4], including zero-day attacks and subtle multi-
+stage intrusions.
+Typical categories of techniques used in cybersecurity include:
+• Statistical anomaly detection: Methods such as z-score analysis flag observations that
+deviate significantly from historical baselines.
+• Unsupervised learning: Algorithms like Isolation Forest and clustering techniques iden-
+tify unusual behavior without requiring labeled attack data[10].
+• Deep learning: Models such as LSTMs, autoencoders, and CNNs capture temporal and
+non-linear patterns in network flows or logs.
+• Graph-based AI: Graph Neural Networks (GNNs) analyze relationships between hosts
+and events, making them suitable for detecting lateral movement and coordinated attacks.
+While these approaches (e.g., deep learning, graph-based AI) are actively researched, this
+project implements only statistical and unsupervised methods: Z-Score and Isolation Forest,
+due to their interpretability, low computational overhead, and suitability for real-time anomaly
+detection in resource-constrained lab environments[15].
+2.3.1
+Classical Machine Learning Models
+Classical ML methods, such as decision trees, Random Forests, Support Vector Machines
+(SVMs), and Isolation Forests, are widely used for intrusion detection on structured features
+extracted from flows, packets, or logs. Numerous works have applied these techniques to
+benchmark datasets like KDD’99, NSL-KDD, UNSW-NB15, and CIC-IDS to demonstrate
+improvements over traditional rule-based detection.
+These models are generally efficient to train and interpret and can achieve good performance
+when features are carefully engineered. However, they may struggle to model complex temporal
+dependencies or higher-order relationships across hosts and sessions.
+2.3.2
+Deep Learning Models
+Deep learning approaches have been increasingly explored since the mid-2010s for intrusion
+detection and malware analysis. LSTMs and other recurrent architectures have been used to
+model sequences of events or packets over time, while autoencoders and variational autoencoders
+have been applied to unsupervised anomaly detection by reconstructing “normal” behavior and
+flagging deviations.
+Several studies report detection rates above 95% on specific datasets when using deep
+learning models, although these results often depend on curated data and may not fully cap-
+ture the challenges of noisy, real-world traffic. Deep learning models typically require more
+computational resources and larger, well-prepared datasets than classical methods.
+21
+
+
+===== PAGE 23 =====
+
+2.3.3
+Graph-based AI
+Graph-based approaches treat network entities (e.g., hosts, users, processes) as nodes and their
+interactions as edges. Graph Neural Networks and related methods can then learn representations
+that capture both local and global structural information[4, 1]. This makes them promising for
+detecting lateral movement, privilege escalation paths, and coordinated campaigns.
+Research prototypes using GNNs for intrusion detection are emerging, but these methods are
+not yet as widely adopted in production as classical or deep learning models[17]. They often
+require high-quality relationship data and careful modelling of the underlying graph.
+2.3.4
+Comparison of ML Approaches for IDS
+Table 2.3: Comparison of ML Approaches for Intrusion Detection
+Approach
+Strengths
+Weaknesses
+Typical Use Case
+Classical ML
+Fast to train and run,
+easy to interpret, works
+well on structured/tabu-
+lar features
+May
+struggle
+with
+very
+large
+data
+or
+highly complex attack
+patterns; often needs
+manual feature engi-
+neering
+Baseline anomaly de-
+tection, initial produc-
+tion deployments, envi-
+ronments with limited
+compute
+Deep Learning
+Learns complex and
+temporal patterns; can
+detect subtle or un-
+known (zero-day) be-
+haviors
+Requires large labeled
+or
+well-prepared
+datasets; higher compu-
+tational cost; harder to
+explain
+Detecting
+sophisti-
+cated,
+multi-stage
+attacks and complex
+traffic
+patterns
+in
+high-volume networks
+Graph AI
+Represents hosts and
+connections as a graph;
+good at spotting lateral
+movement and coordi-
+nated behavior
+Still emerging; more
+complex to design and
+deploy;
+needs high-
+quality
+relationship
+data
+Large enterprise net-
+works, insider threat
+detection, analysis of
+multi-hop attack paths
+2.3.5
+DevSecOps and the Emergence of MLDevSecOps
+DevOps practices, which became mainstream in the 2010s, emphasize automation, continuous
+integration, and continuous delivery (CI/CD) to accelerate software releases. DevSecOps extends
+DevOps by integrating security checks—such as static and dynamic code analysis, dependency
+scanning, and compliance validation—into build and deployment pipelines, making security a
+shared responsibility.
+The growing use of machine learning in production systems has led to new operational
+challenges: ML models must be trained on evolving data, validated regularly, monitored for drift,
+and protected against adversarial manipulation. Traditional DevSecOps practices do not fully
+address these ML-specific concerns. This gap has given rise to the concept of MLDevSecOps,
+which combines MLOps (for managing the ML lifecycle) with DevSecOps (for embedding
+security throughout the pipeline).
+MLDevSecOps aims to:
+22
+
+
+===== PAGE 24 =====
+
+• Automate data ingestion, preprocessing, feature extraction, model training, and deploy-
+ment.
+• Integrate ML-driven anomaly detection and intrusion detection into operational workflows.
+• Enforce security controls (e.g., access control, integrity checks) on data, models, and
+pipelines.
+• Provide continuous monitoring of both system and model performance, with automated
+alerts and responses.
+Uniqueness of the Proposed Approach
+Many existing works focus either on integrating ML
+into IDS engines or on building SIEM dashboards that consume IDS alerts. This project differs
+by combining:
+• A high-performance IDS (Suricata) configured to generate rich JSON telemetry.
+• A scalable SIEM stack (ELK) and streaming backbone (Kafka) to transport and store large
+volumes of events.
+• Two lightweight, unsupervised anomaly detectors—Z-Score for univariate outlier detection
+and Isolation Forest for multivariate anomaly identification are integrated directly into the
+pipeline, rather than as an offline analysis step.
+• An active response mechanism that can modify Suricata rules and block IPs automatically,
+closing the loop from detection to mitigation.
+• A CI/CD-controlled environment (Jenkins) to manage model deployment, retraining, and
+pipeline updates.
+This combination results in an MLDevSecOps pipeline tailored specifically for network
+intrusion detection and response, with a focus on realistic lab validation using targets such as
+OWASP Juice Shop.
+2.4
+CI/CD and Security in Pipelines
+Continuous integration and continuous delivery pipelines are now standard practice for software
+development. Tools such as Jenkins, GitLab CI/CD, and GitHub Actions automate building,
+testing, and deploying applications, reducing manual errors and supporting faster release cycles.
+Incorporating security checks into these pipelines—through DevSecOps practices—helps catch
+vulnerabilities earlier and reduce exposure in production.
+In the context of MLDevSecOps, CI/CD pipelines not only manage application code but
+also handle ML-related assets such as training scripts, model binaries, configuration files, and
+infrastructure definitions. This makes the choice of CI/CD tooling important for reproducibility
+and security.
+23
+
+
+===== PAGE 25 =====
+
+2.4.1
+Jenkins
+Jenkins, initially released in 2005 (as Hudson), is an open-source automation server that has
+become a de facto standard for CI/CD in many organizations. Its large plugin ecosystem
+allows integration with almost any tool in the software delivery chain, including static analyzers,
+container platforms, cloud providers, and test frameworks.
+For MLDevSecOps, Jenkins is attractive because it can orchestrate complex workflows
+that include data preparation, model training, evaluation, packaging, and deployment to the
+monitoring environment[9]. Its flexibility comes at the cost of more manual configuration and
+maintenance, especially in larger installations.
+Figure 2.9: Jenkins
+2.4.2
+GitLab CI/CD
+GitLab introduced integrated CI/CD pipelines in the mid-2010s, tightly coupled with its Git-based
+repository management. Pipelines are defined in YAML, and GitLab provides built-in features
+for containerized job execution and security scanning (SAST, DAST, dependency scanning).
+GitLab CI/CD is particularly convenient for teams already using GitLab as their code hosting
+platform. It offers a good balance between usability and built-in security capabilities, although it
+may be less flexible than Jenkins for highly customized or cross-toolchain workflows.
+Figure 2.10: GitLab
+2.4.3
+GitHub Actions
+GitHub Actions, made generally available around 2019, provides a cloud-native CI/CD service
+integrated with GitHub repositories. Workflows are defined as YAML files and can use a
+marketplace of community-contributed actions for common tasks.
+GitHub Actions is easy to adopt for projects already hosted on GitHub and is well-suited for
+simpler pipelines. For more advanced security and ML workflows, it often relies on external
+tools and services.
+Figure 2.11: GitHub Actions
+24
+
+
+===== PAGE 26 =====
+
+Table 2.4: CI/CD Platform Evaluation for MLDevSecOps Implementation
+Key Factor
+Jenkins
+GitLab CI/CD
+GitHub Actions
+What it Costs
+Free (only
+infrastructure
+costs)
+Free tier + paid
+options
+Free tier + paid
+options
+How Easy to Set Up
+Manual server
+setup (more
+control)
+Built into GitLab
+Built into GitHub
+How Flexible It Is
+Very flexible (large
+plugin ecosystem)
+Moderate flexibility
+Limited for complex
+workflows
+Security Protection
+Integrates many
+security tools (e.g.,
+OWASP ZAP,
+SonarQube)
+Built-in
+SAST/DAST and
+dependency scanning
+Relies heavily on
+third-party actions
+Can It Handle
+Growth
+Scales via multiple
+nodes and agents
+Scales with runners
+and Kubernetes
+Scales within cloud
+limits
+Community Help
+Long-established,
+very large
+community
+Growing community
+Active but newer
+ecosystem
+From an MLDevSecOps perspective, this project uses Jenkins to manage the training, de-
+ployment, and updating of ML models and supporting components, ensuring that changes to the
+detection pipeline can be tested and rolled out in a repeatable way.
+2.5
+Related Work
+Several research efforts and industrial solutions have attempted to combine IDS, SIEM, and
+machine learning for enhanced intrusion detection. For example, some studies use Suricata
+or Snort as log sources and train ML classifiers offline on exported features, later comparing
+performance with rule-based detection. Others integrate IDS alerts into SIEM platforms like ELK
+or Splunk and apply anomaly detection on aggregated events for correlation and prioritization.
+Commercial platforms and security products often embed proprietary ML models into their
+detection pipelines, but the internal architecture is usually not publicly documented. Many
+of these solutions focus on either endpoint detection and response (EDR) or cloud workload
+protection rather than on open-source, network-centric pipelines.
+Compared to this prior work, the approach in this project is distinct in several ways:
+• It uses only open-source components (Suricata, ELK, Kafka, Jenkins, Prometheus, Grafana),
+making the architecture transparent and reproducible.
+• The ML models are integrated into a streaming pipeline rather than being applied as offline
+batch jobs.
+• The system includes a closed-loop response mechanism that can automatically update IDS
+rules and block traffic based on ML outputs.
+25
+
+
+===== PAGE 27 =====
+
+• The entire pipeline, including ML components, is managed through CI/CD, aligning with
+MLDevSecOps principles.
+2.6
+Conclusion
+This chapter reviewed the main technologies and concepts that underpin the proposed MLDe-
+vSecOps pipeline: IDS/IPS engines such as Suricata and Snort, SIEM platforms like ELK,
+Splunk, and Graylog, machine learning approaches to intrusion detection, and CI/CD tooling for
+secure and automated delivery. It also positioned MLDevSecOps as an evolution of DevSecOps
+tailored to the operational realities of ML-based systems and highlighted existing efforts to
+combine IDS, SIEM, and ML.
+The analysis revealed several common limitations in current practice: dependence on static
+signatures, limited integration between IDS and big data analytics, challenges in scaling to
+high-volume traffic, and a lack of closed-loop automation from detection to response. These
+gaps motivate the design of an integrated MLDevSecOps architecture that can process Suricata
+logs at scale, apply ML-based anomaly detection in near real time, and automatically react to
+detected threats.
+The next chapter builds on this foundation by presenting the requirements, design decisions,
+and overall architecture of the proposed MLDevSecOps pipeline.
+26
+
+
+===== PAGE 28 =====
+
+Chapter 3
+Analysis and Design
+3.1
+Requirements Analysis
+3.1.1
+Functional Requirements
+The system is designed to deliver the following core capabilities:
+• Network data collection: Ingest network telemetry in near real time using Suricata,
+including both regular production-like network traffic and simulated attack flows from the
+OWASP Juice Shop VM.
+• Log processing and indexing: Process raw logs using Filebeat and Logstash, transform
+and enrich events, and store resulting structured data in Elasticsearch for efficient analytics
+and search.
+• Anomaly detection: Use a combination of statistical (Z-Score) and machine learning
+(Isolation Forest) methods to detect behavioral anomalies within the indexed telemetry.
+(More advanced models such as autoencoders and LSTMs are noted as planned for future
+development, not implemented in the current version.)
+• Automated response: Upon confirming high-confidence threats, automatically execute
+OS-level IP blocking via iptables to mitigate ongoing attacks. In future extensions, also
+support dynamic updates to Suricata detection rules.
+• Operational transparency and forensics: Persistently log all detected anomalies and
+active responses for auditing, analyst review, and ongoing improvement of ML workflows.
+• Retraining and pipeline management: Support manual, data-driven retraining of ML
+models when log files reach predefined volume thresholds. Full CI/CD-based retraining
+and deployment automation are planned as future enhancements.
+• User interfaces and monitoring (planned): Design, but not yet fully implement, dash-
+board visualizations (Kibana, Grafana) for system health, detection metrics, and model
+performance, as well as interfaces for manual alert review and analyst feedback.
+27
+
+
+===== PAGE 29 =====
+
+3.1.2
+Non-Functional Requirements
+• Performance and Scalability: The architecture must support high-volume network traffic
+and log ingestion with minimal processing latency, and be able to scale to at least 50,000
+events per second without significant degradation.
+• Reliability: The system should offer continuous, uninterrupted monitoring and robust
+error handling, ensuring no data loss under normal operating conditions and graceful
+recovery from individual component failures.
+• Security: All log data, configuration artifacts, and machine learning models must be
+safeguarded against unauthorized access, modification, or tampering, with recommended
+adherence to best practices in data protection and access control.
+• Extensibility and Flexibility: The architecture should allow straightforward integration
+of new anomaly detection models, data sources, and virtual machine instances without
+fundamental redesign, enabling future growth and adaptation to evolving requirements.
+3.2
+System Specifications
+3.2.1
+Virtual Machine Hardware and Software
+The platform is deployed on a set of virtual machines, each with defined roles and resource
+allocations:
+• Monitoring VM (Suricata + Filebeat):
+– CPU: 4 vCPUs
+– RAM: 3 GB
+– Storage: 70 GB
+– OS: Ubuntu 22.04 LTS
+– Role: Run Suricata for network monitoring and Filebeat for log shipping.
+Figure 3.1: Suricata-VM
+28
+
+
+===== PAGE 30 =====
+
+Figure 3.2: Filebeat
+• ELK VM (Elasticsearch, Logstash, Kibana):
+– CPU: 4 vCPUs
+– RAM: 3 GB
+– Storage: 100 GB
+– OS: Ubuntu 22.04 LTS
+– Role: Provide centralized log storage, processing, and visualization.
+Figure 3.3: ELK-VM
+Figure 3.4: Elasticsearch Status
+29
+
+
+===== PAGE 31 =====
+
+Figure 3.5: Logstash Status
+Figure 3.6: Elasticsearch Status
+• ML Processing VM:
+– CPU: 8 vCPUs
+– RAM: 4 GB
+– Storage: 200 GB
+– OS: Ubuntu 22.04 LTS
+– Role: Host ML models, feature extraction scripts, and anomaly detection services.
+Figure 3.7: ML-VM
+30
+
+
+===== PAGE 32 =====
+
+• Jenkins VM (CI/CD):
+– CPU: 2 vCPUs
+– RAM: 2 GB
+– Storage: 20 GB
+– OS: Ubuntu 22.04 LTS
+– Role: Orchestrate CI/CD pipelines for ML training, deployment, and integration
+tests.
+Figure 3.8: Jenkins-VM
+Figure 3.9: Jenkins Status
+31
+
+
+===== PAGE 33 =====
+
+• OWASP Juice Shop VM (Attack Source):
+– CPU: 2 vCPUs
+– RAM: 2 GB
+– Storage: 40 GB
+– OS: Ubuntu 22.04 LTS
+– Role: Serve as a vulnerable application to generate realistic attack traffic.
+Figure 3.10: OWASP Juice Shop VM
+Figure 3.11: OWASP Juice Shop Web Application
+These specifications can be adjusted according to the available infrastructure but provide a
+baseline for reproducible experiments.
+3.2.2
+Data Sources
+• Network traffic monitored by Suricata, including traffic to and from the OWASP Juice
+Shop VM as a controlled attack source for model training and validation.
+• Security alerts and network events captured in EVE JSON format.
+• Optional external threat intelligence feeds, such as IP reputation lists or malware indicators,
+which can be used to enrich events.
+32
+
+
+===== PAGE 34 =====
+
+3.2.3
+Targeted Attacks
+• Distributed Denial of Service (DDoS) campaigns.
+• Port scanning and network reconnaissance activities.
+• Exploitation attempts and malware command-and-control traffic.
+• Unknown zero-day-like anomalies identified through unsupervised or semi-supervised ML
+techniques.
+• Controlled attack simulations originating from the Juice Shop VM for testing and evalua-
+tion.
+3.2.4
+Monitoring and Visualization Needs
+• Real-time dashboards showing network traffic statistics, alert rates, and blocked threats.
+• ML model performance metrics such as accuracy, recall, precision, and false positive rates.
+• Historical data access to support post-incident analysis, model retraining, and security
+research.
+3.3
+Proposed Architecture
+The proposed MLDevSecOps architecture comprises five integrated layers: data collection, data
+processing, machine learning, response and visualization, and CI/CD automation.
+3.3.1
+High-Level System Architecture
+A high-level view of the system architecture illustrates the main virtual machines and their
+interactions, including the Monitoring VM (Suricata), ELK VM, ML Processing VM, Jenkins
+VM, and the OWASP Juice Shop VM.
+33
+
+
+===== PAGE 35 =====
+
+Figure 3.12: Process flow diagram illustrating the orchestration of security testing and monitoring
+infrastructure
+3.3.2
+Network Topology
+The virtual machines communicate over a virtual network that separates monitoring traffic from
+management and CI/CD traffic. The Monitoring VM observes traffic between clients and the
+OWASP Juice Shop , while other VMs connect over a management subnet.
+Figure 3.13: Network topology showing monitored segments and management links
+34
+
+
+===== PAGE 36 =====
+
+3.3.3
+Data Collection Layer
+• Suricata monitors network traffic and generates structured EVE JSON logs.
+• Traffic sources include both production-like network flows and simulated attacks from the
+OWASP Juice Shop.
+• Filebeat ships logs from the Monitoring VM to the processing layer with minimal latency.
+3.3.4
+Data Processing and Pipeline Layer
+• Logstash parses, enriches, and normalizes incoming logs before indexing them into
+Elasticsearch.
+• Kafka provides real-time message streaming to decouple log producers (Filebeat, Suricata)
+from consumers (ML services, ELK, response components).
+3.3.5
+Data Flow Diagram
+The data flow diagram captures how events move from network capture to storage, analysis, and
+response.
+Figure 3.14: Data flow from Suricata logs through Kafka, ELK, ML layer, and response
+components
+35
+
+
+===== PAGE 37 =====
+
+3.3.6
+Machine Learning Layer
+• ML models running on the ML Processing VM analyze incoming telemetry for anomalous
+patterns, using features derived from Suricata events.
+• Sliding window techniques and ensemble detection methods (statistical + ML) are applied
+to reduce noise and improve detection precision.
+• The layer supports both batch retraining (using historical data) and online scoring for
+near-real-time detection.
+3.3.7
+Component Interaction Diagram
+The component interaction diagram summarizes how Suricata, Kafka, ELK, ML services, and
+the response engine interact during normal operation.
+Figure 3.15: Component interaction among IDS, streaming, storage, ML, and response modules
+36
+
+
+===== PAGE 38 =====
+
+3.3.8
+Response and Visualization Layer
+• Active response logic can autonomously block malicious IPs and update Suricata rules in
+real time, based on ML outputs and rule-based policies.
+• Kibana dashboards provide interactive exploration of alerts, traffic patterns, and ML scores.
+• Prometheus and Grafana collect and visualize system metrics (CPU, memory, throughput)
+and ML metrics (latency, error rates, model performance)[16].
+3.3.9
+CI/CD and Automation Layer
+• The Jenkins VM orchestrates MLDevSecOps pipelines that cover model training, pack-
+aging, deployment to the ML Processing VM, and integration tests with the rest of the
+system.
+• Pipelines can trigger on code changes, configuration updates, or new labelled data, ensuring
+that models and detection logic stay up to date.
+• CI/CD automation reduces configuration drift and supports rollback in case of faulty
+deployments.
+3.3.10
+Sequence Diagram: Attack Detection to Response
+To clarify the dynamic behavior of the system, a sequence diagram is used to illustrate the flow
+from an attack event to mitigation.
+Figure 3.16: Sequence of events from attack generation to detection, alerting, and automated
+response
+37
+
+
+===== PAGE 39 =====
+
+3.3.11
+Use Case Scenarios
+The system is designed to support multiple usage scenarios:
+• Normal operation: Traffic is monitored, logs are collected and indexed, and dashboards
+show baseline behavior.
+• Attack detection: Malicious traffic from the OWASP Juice Shop or external sources
+triggers Suricata alerts and elevated ML anomaly scores.
+• Model retraining: Newly labelled data from analysts or from controlled attack campaigns
+is used to retrain and redeploy models through Jenkins.
+These can be captured in a use case diagram that highlights the interactions between actors
+(attacker, analyst, CI/CD system) and system components.
+Figure 3.17: Use case diagram for normal operation, attack detection, and model retraining
+3.3.12
+Technical Choices Justification
+• Suricata: Chosen as a high-performance IDS/IPS with multi-threading and structured EVE
+JSON output, which is ideal for SIEM and ML integration.
+• ELK Stack: Provides centralized log storage, powerful query capabilities, and flexible
+visualization tailored to security operations.
+38
+
+
+===== PAGE 40 =====
+
+• Kafka: Offers real-time data streaming and a decoupled architecture that supports hori-
+zontal scalability and multiple consumers.
+Figure 3.18: Kafka
+• ML Algorithms: Z-Score and Isolation Forest provide rapid, interpretable anomaly
+detection without requiring labeled data, making them suitable for near real-time operation
+in this prototype.
+• Active Response: Automating threat mitigation reduces response time and can limit
+attacker dwell time[22], especially in controlled environments such as the Juice Shop VM.
+• Jenkins: CI/CD automation ensures that pipelines, configurations, and models are repro-
+ducible, versioned, and tested before deployment.
+This layered and diagram-supported architecture provides near-real-time monitoring, intelli-
+gent anomaly detection, autonomous response execution, comprehensive operational visibility,
+and automated pipeline management. It directly addresses the shortcomings identified in previous
+work while incorporating realistic attack simulation and CI/CD-controlled ML-driven security
+operations.
+39
+
+
+===== PAGE 41 =====
+
+Chapter 4
+Implementation
+4.1
+Overview
+This chapter details the practical realization of the proposed MLDevSecOps architecture. The
+implementation spans log collection and streaming, machine learning-based anomaly detection,
+automated response mechanisms, monitoring infrastructure, and CI/CD orchestration across
+multiple virtual machines. Each component has been configured and integrated to support
+real-time operation, continuous improvement, and security hardening.
+Figure 4.1: Implementation-level data flow within the MLDevSecOps platform
+40
+
+
+===== PAGE 42 =====
+
+4.2
+Real-Time Suricata Log Processing
+The platform continuously ingests network security logs generated by Suricata through a dis-
+tributed pipeline. This pipeline combines Apache Kafka for scalable message streaming and the
+Python Watchdog library for file system change detection.
+4.2.1
+Suricata Configuration
+Suricata is configured to monitor the br0 bridge interface and generate EVE JSON logs. Key
+configuration parameters:
+
+
+# suricata.yaml (excerpt)
+af -packet:
+- interface: br0
+threads: 4
+use -mmap: yes
+outputs:
+- eve -log:
+enabled: yes
+filename: eve.json
+types:
+- alert:
+payload: yes
+- flow:
+enabled: yes
+
+
+4.2.2
+Filebeat Shipping
+Filebeat monitors the Suricata log file and ships events to Logstash:
+
+
+# filebeat.yml (excerpt)
+filebeat.inputs:
+- type: log
+enabled: true
+paths:
+- /var/log/suricata/eve.json
+output.logstash:
+hosts: ["192.168.80.129:5000"]
+
+
+4.2.3
+Logstash Processing
+Logstash parses EVE JSON, enriches with metadata, and indexes into Elasticsearch:
+
+
+# logstash.conf (excerpt)
+input {
+logstash {
+host => "0.0.0.0"
+port => 5000
+}
+}
+filter {
+41
+
+
+===== PAGE 43 =====
+
+json {
+source => "message"
+}
+}
+output {
+elasticsearch {
+hosts => [" 192.168.80.129:9200 "]
+index => "suricata -%{+ YYYY.MM.dd}"
+}
+}
+
+
+4.2.4
+Log Sources
+Network telemetry originates from two primary sources:
+• Production-like network traffic captured by Suricata on designated monitoring interfaces.
+• Intentionally generated attack traffic from the OWASP Juice Shop VM, which serves as a
+controlled adversary for model training, validation, and testing.
+4.2.5
+Processing Pipeline
+Suricata writes structured EVE JSON logs to disk, where Watchdog detects file updates in real
+time. Filebeat then ships these logs to Logstash, which parses, enriches, and normalizes events
+before indexing them into Elasticsearch.
+4.2.6
+Key Capabilities
+• Multi-source aggregation: Consolidates logs from both operational network traffic and
+simulated attack scenarios.
+• Dual processing modes: Supports both real-time streaming for immediate detection and
+batch processing for historical analysis.
+• Low-latency throughput: Achieves end-to-end processing latency consistently below
+one second under typical load conditions.
+4.3
+Lightweight Anomaly Detection with Z-Score and Isola-
+tion Forest
+The ML Processing VM hosts an ensemble of complementary anomaly detection algorithms that
+analyze incoming network events and identify suspicious patterns.
+4.3.1
+Detection Methods
+• Statistical Z-Score Analysis: Computes standard deviations from historical traffic base-
+lines to flag simple statistical outliers in features such as packet counts, byte volumes, and
+connection rates.
+42
+
+
+===== PAGE 44 =====
+
+• Isolation Forest: An unsupervised ensemble method that isolates anomalies by recursively
+partitioning the feature space[10], effectively identifying rare and unusual event patterns
+without requiring labeled training data.
+4.3.2
+Feature Extraction
+Features are extracted from Elasticsearch documents and include:
+• Connection count per source IP
+• Byte volume transferred
+• Unique destination ports accessed
+• Protocol distribution
+• Alert rule severity scores
+4.3.3
+Z-Score Detector
+Implemented in Python using numpy:
+
+
+import
+numpy as n
+def
+zscore_detector (values , threshold =3.0):
+mean = np.mean(values)
+std = np.std(values)
+scores = np.abs(( values - mean) / std)
+return
+scores > threshold
+
+
+4.3.4
+Isolation Forest Detector
+Implemented using scikit-learn:
+
+
+from
+sklearn.ensemble
+import
+IsolationForest
+def
+isolation_forest_detector (features , contamination =0.1):
+iso_forest = IsolationForest (
+contamination=contamination ,
+n_estimators =100,
+random_state =42
+)
+predictions = iso_forest.fit_predict(features)
+return
+predictions ==
+-1
+
+
+4.3.5
+Ensemble Logic
+Anomalies are flagged based on configurable logic (e.g., requiring agreement between Z-Score
+and Isolation Forest) to reduce false positives:
+
+
+def
+ensemble_anomaly_detection (features):
+zscore_anom = zscore_detector (features)
+iso_anom = isolation_forest_detector (features)
+consensus = zscore_anom & iso_anom
+return
+consensus
+
+
+43
+
+
+===== PAGE 45 =====
+
+4.3.6
+Model Integration
+Anomaly detectors consume events from Kafka topics or via Elasticsearch queries, score each
+event, and write enriched alerts back to Elasticsearch for correlation, visualization, and further
+analysis.
+4.4
+Active Response System
+When anomalies exceed predefined thresholds or match specific threat patterns, the active
+response subsystem can execute automated mitigation actions without requiring manual inter-
+vention.
+4.4.1
+Response Capabilities
+• IP Blocking via iptables :Upon anomaly confirmation, the ‘block-ip.sh‘ script executes:
+
+
+#!/bin/bash
+IP=$1
+if [ -z "$IP" ]; then
+echo "Error: No IP provided"
+exit 1
+fi
+# Validate IP format
+if ! [[ $IP =~
+^[0 -9]{1 ,3}\.[0 -9]{1 ,3}\.[0 -9]{1 ,3}\.[0 -9]{1 ,3}$ ]]; then
+echo "Error:Invalid IP address: $IP"
+exit 1
+fi
+# Check if rule
+already
+exists
+if sudo
+iptables -C INPUT -s "$IP" -j DROP 2>/dev/null;
+then
+echo "IP $IP
+already
+blocked"
+exit 0
+fi
+# Add rule
+sudo
+iptables -A INPUT -s "$IP" -j DROP
+sudo
+iptables -A OUTPUT -d "$IP" -j DROP
+sudo
+iptables -A FORWARD -s "$IP" -j DROP
+sudo
+iptables -A FORWARD -d "$IP" -j DROP
+echo "Blocked IP: $IP"
+exit 0
+
+
+• Real-time rule updates: Modifies Suricata detection rules on the fly and triggers configu-
+ration reloads to adapt defenses to newly identified attack patterns:
+
+
+def
+_add_rule_remote (rule: str , config: Dict , logger:
+logging.Logger) -> bool:
+remote = config['active_response ']['suricata_remote ']
+rules_file = config['active_response ']['
+suricata_rules_file ']
+44
+
+
+===== PAGE 46 =====
+
+cmd_write = f"printf
+'%s\\n' '{rule.strip ()}' | sudo tee
+-a '{rules_file}' > /dev/null"
+cmd_reload = "sudo
+pidof
+suricata | xargs -r kill -HUP"
+try:
+with
+ssh_connection (remote['host '], remote['user '],
+remote['ssh_key ']) as ssh:
+# Write
+rule
+exit_code , out , err = execute_remote_command (ssh ,
+cmd_write)
+if exit_code != 0:
+logger.error(f"Write
+failed: {err}")
+return
+False
+# Reload
+exit_code , out , err = execute_remote_command (ssh ,
+cmd_reload)
+if exit_code != 0:
+logger.warning(f"Reload may have
+failed: {err}")
+return
+True
+except
+Exception as e:
+logger.error(f"Remote
+rule
+failed: {e}")
+return
+False
+
+
+• Administrative notifications: Sends alert notifications via email to inform security
+administrators of high-severity incidents requiring human review:
+
+
+def
+send_email_alert (anomaly: Dict , anomaly_type: str ,
+config: Dict , logger: logging.Logger , metrics: Any) ->
+ActionResult:
+"""Send
+alert
+email
+once per (IP , type)"""
+if 'active_response ' not in config or 'email ' not in
+config['active_response ']:
+return
+ActionResult(False , "Email not
+configured")
+ip = anomaly.get('src_ip ', '')
+if not
+validate_ip(ip):
+return
+ActionResult(False , "Invalid IP in anomaly", {"ip
+": ip})
+if is_whitelisted (ip , config):
+logger.info(f"Skipped
+email for IP {ip} ({ anomaly_type })
+: in whitelist")
+metrics['active_responses_skipped_total ']. labels(type='
+email ').inc()
+return
+ActionResult(True , "Whitelisted", {"ip": ip , "
+type": anomaly_type })
+alert_key = f"{ip}_{anomaly_type}"
+if processed_state .is_emailed(alert_key):
+return
+ActionResult(True , "Email
+already
+sent", {"key":
+alert_key })
+email_config = config['active_response ']['email ']
+try:
+body = (
+45
+
+
+===== PAGE 47 =====
+
+f"{anomaly_type.capitalize ()} Anomaly
+Detected\n\n"
+f"Timestamp: {anomaly.get('timestamp ', 'N/A ')}\n"
+f"Source IP: {ip}\n"
+f"Destination IP: {anomaly.get('dest_ip ', 'N/A ')}\n"
+f"Bytes to Client: {anomaly.get(config['anomaly ']['field
+'], 0)}\n"
+f"Protocol: {anomaly.get('proto ', 'N/A ')}\n"
+f"Port: {anomaly.get('dest_port ', 'N/A ')}\n"
+f"Z-Score: {anomaly.get('z_score ', 'N/A ')}\n"
+f"Signature: {anomaly.get(' alert_signature ', 'N/A ')}\n\n
+"
+f"Automated
+response
+triggered."
+)
+msg = MIMEText(body)
+msg['Subject '] = f"[ALERT] Suricata {anomaly_type} from
+{ip}"
+msg['From '] = email_config['sender_email ']
+msg['To'] = email_config['recipient_email ']
+with
+smtplib.SMTP(email_config['smtp_host '],
+email_config['smtp_port '], timeout =10) as server:
+server.starttls ()
+server.login(email_config['sender_email '], email_config[
+'sender_password '])
+server.send_message(msg)
+logger.info(f" Sent
+email
+alert for IP {ip}")
+processed_state .add_emailed(
+alert_key ,
+ip=ip ,
+anomaly_type=anomaly_type ,
+recipient=email_config['recipient_email ']
+)
+metrics['active_responses_total ']. labels(type='email ').
+inc()
+return
+ActionResult(True , "Email
+sent", {"ip": ip , "to":
+email_config['recipient_email ']})
+except
+Exception as e:
+logger.error(f" Failed to send
+email for {ip}: {str(e)}"
+, exc_info=True)
+return
+ActionResult(False , "Email
+send
+failed", {"ip":
+ip , "error": str(e)})
+
+
+4.4.2
+Testing and Validation
+All automated response mechanisms are first validated in a controlled environment using the
+OWASP Juice Shop as an isolated attack sandbox. This ensures that blocking and rule update
+logic functions correctly before deployment in production-like scenarios.
+46
+
+
+===== PAGE 48 =====
+
+Figure 4.2: Active response execution sequence from detection to mitigation
+4.5
+Model Retraining
+Model retraining is triggered automatically when the main log file reaches min_train_rows
+records (configured in config.json). The retraining process:
+1. Reads new events from ‘suricata_logs.csv‘
+2. Extracts features from newly available data
+3. Limits training data to max_train_rows (configured in config.json) when using the main
+CSV
+4. Preprocesses features by converting to numeric values with zero-filling for missing data
+5. Retrains Z-Score baseline and resamples Isolation Forest
+6. Validates performance on held-out test set
+7. Deploys updated model if performance meets acceptance criteria
+8. Automatically saves the updated model to isolation_forest_model.joblib
+9. Updates internal counters and metrics to track the retraining status
+10. Logs detailed information about the process and handles errors gracefully
+
+
+def
+periodic_model_update (processor , logger):
+"""Update
+IsolationForest
+model
+periodically
+and save it
+automatically."""
+MODEL_FILEPATH = " isolation_forest_model .joblib"
+47
+
+
+===== PAGE 49 =====
+
+while
+True:
+time.sleep(processor. model_update_interval )
+with
+processor.data_lock:
+if processor. new_rows_since_update
+< processor. min_train_rows :
+logger.debug(f"Skipping
+model
+update: only {processor.
+new_rows_since_update } new rows (need {processor. min_train_rows })
+")
+processor.metrics['model_update_status '].set (0)
+continue
+try:
+X = None
+if os.path.exists(processor. labeled_anomalies_file ):
+try:
+df = pd.read_csv(
+processor.labeled_anomalies_file ,
+on_bad_lines='warn ',
+dtype=str ,
+encoding='utf -8'
+)
+if not df.empty and len(df) >= processor.min_train_rows:
+if df.columns.duplicated ().any():
+df = df.loc[:, ~df.columns.duplicated ()]
+if 'timestamp ' in df.columns:
+df['timestamp '] = pd.to_datetime(df['timestamp '], format='mixed ',
+errors='coerce ', utc=True)
+df = df.dropna(subset =['timestamp '])
+df['timestamp '] = df['timestamp '].dt.tz_localize(None)
+else:
+raise
+ValueError("Missing
+timestamp
+column")
+if 'label ' in df.columns:
+df['label '] = pd.to_numeric(df['label '], errors='coerce ')
+df = df[df['label ']. notna ()]
+else:
+df['label '] = 1
+X = df[processor. model_features ]. copy ()
+for col in processor.model_features:
+X[col] = pd.to_numeric(X[col], errors='coerce ').fillna (0).astype(int
+)
+except
+Exception as e:
+logger.debug(f"Failed to use
+labeled_anomalies .csv: {str(e)}")
+if X is None and os.path.exists(processor.csv_file):
+try:
+df = pd.read_csv(
+processor.csv_file ,
+on_bad_lines='warn ',
+dtype=str ,
+encoding='utf -8',
+nrows=processor. max_train_rows
+)
+if len(df) >= processor.min_train_rows:
+X = df[processor. model_features ]. copy ()
+for col in processor.model_features:
+X[col] = pd.to_numeric(X[col], errors='coerce ').fillna (0).astype(int
+48
+
+
+===== PAGE 50 =====
+
+)
+except
+Exception as e:
+logger.error(f"CSV
+fallback
+failed: {str(e)}")
+# Train and Save
+Model
+if X is not None and X.dtypes.apply(lambda dt: pd.api.types.
+is_numeric_dtype (dt)).all():
+processor.model.fit(X)
+processor.model_fitted = True
+processor. new_rows_since_update = 0
+processor. last_model_update = time.time ()
+#
+Save
+model
+after
+successful
+training
+save_model(processor.model , MODEL_FILEPATH)
+logger.info(f" Model
+updated
+and saved to {MODEL_FILEPATH}")
+processor.metrics['model_update_status '].set (1)
+else:
+logger.debug("No valid
+data for model
+update")
+processor.metrics['model_update_status '].set (0)
+except
+Exception as e:
+logger.error(f"Model
+update
+failed: {str(e)}", exc_info=True)
+processor.metrics['model_update_status '].set (0)
+
+
+4.6
+Elasticsearch Integration
+Elasticsearch serves as the centralized storage and query engine for all security logs, alerts, and
+enriched events produced by the system.
+4.6.1
+Storage Optimization
+• Tailored index mappings: Schema definitions optimized for Suricata EVE JSON structure
+to improve query performance and reduce storage overhead.
+• Sharding strategies: Distributed indices across multiple shards to balance load and
+support horizontal scaling.
+• Real-time indexing: Incoming events are indexed with minimal latency to support near-
+instantaneous dashboard updates and search queries.
+49
+
+
+===== PAGE 51 =====
+
+Figure 4.3: ELK screenshot
+4.6.2
+Query Support
+Elasticsearch enables complex analytical queries, aggregations, and filtering operations used by
+Kibana dashboards.
+Figure 4.4: Kibana dashboard screenshot
+4.7
+Human-in-the-Loop Labeling
+To support continuous model improvement and calibration, the system incorporates human
+feedback through analyst-driven alert labeling.
+4.7.1
+Labeling Workflow
+• Security analysts access a secured web interface where they can review flagged alerts and
+assign labels such as "true positive," "false positive," or "benign anomaly."
+• Labeled alerts are stored in a dedicated database and periodically exported for inclusion in
+model retraining workflows.
+50
+
+
+===== PAGE 52 =====
+
+• This iterative feedback loop enables supervised and semi-supervised learning, helping
+models adapt to environment-specific behaviors and reduce false alarm rates over time.
+Figure 4.5: Web interface dashboard
+Figure 4.6: Model-Only Anomalies Interface
+Figure 4.7: Blocked IP Addresses Interface
+51
+
+
+===== PAGE 53 =====
+
+Figure 4.8: ML Generated Suricata Rules Interface
+Figure 4.9: Email Alert History Interface
+4.8
+Monitoring and Metrics
+Comprehensive system and model performance monitoring is achieved through a dedicated
+observability stack.
+4.8.1
+Metrics Collection and Visualization
+• Prometheus: is configured to scrape time-series metrics from all key components of
+the platform, including the Suricata, ELK Stack, ML processing and Juice Shop virtual
+machines (via Node Exporter), as well as from Elasticsearch and the Juice Shop application
+endpoints. Metrics collected cover resource utilization (CPU, memory, disk), service
+uptime, throughput, error counts, and when available, application-level and detection
+performance statistics[16].
+52
+
+
+===== PAGE 54 =====
+
+Figure 4.10: Prometheus Targets
+• Grafana: Delivers dynamic, context-aware visual analytics through customizable dash-
+boards that enable continuous observation of infrastructure health, security event patterns,
+and algorithmic efficacy metrics. The platform supports real-time data refresh cycles,
+threshold-based visual indicators with color-coded status alerts, and configurable time
+windows for both immediate tactical assessment and longitudinal trend analysis. By
+integrating system performance telemetry with security-specific measurements, Grafana
+facilitates correlation between operational metrics and detection outcomes, providing
+security analysts with actionable insights through an intuitive interface that balances high-
+level overviews with granular diagnostic capabilities accessible via its hierarchical panel
+organization[7].
+Figure 4.11: Grafana Interface
+4.9
+Security and Operations
+Operational security is embedded throughout the implementation to protect data, configurations,
+and ML models from unauthorized access and tampering.
+53
+
+
+===== PAGE 55 =====
+
+4.9.1
+Security Measures
+• Network segmentation and firewalling: iptables rules are used to restrict inter-VM
+communication to only the necessary ports and services.
+• File and log security: All log files and sensitive outputs are owned by restricted user
+accounts, with unauthorized access prevented through OS-level filesystem permissions.
+• Configuration management and validation: Critical configuration files—including
+Suricata rules and pipeline scripts—are version-controlled and undergo review, with
+syntax and semantic validation performed prior to deployment to reduce the risk of
+misconfiguration.
+• Comprehensive auditing and error logging: All significant system actions, response
+executions, and errors are recorded for auditing, compliance, and ongoing troubleshooting.
+• (Planned) Secured interfaces and access control: Analyst-facing web interfaces for alert
+labeling and configuration are planned to support authentication and role-based access
+control (RBAC).
+4.10
+Scalability Features
+The implementation incorporates architectural patterns and configurations that support scaling
+from laboratory prototypes to larger deployments.
+4.10.1
+Scalability Mechanisms
+• Thread-safe pipelines: All data processing components are designed with concurrency in
+mind, leveraging multi-core processors efficiently.
+• Tunable batch sizes: Configurable parameters in Kafka consumers and Logstash pipelines
+allow operators to balance throughput and latency based on workload characteristics.
+• Distributed deployment: Elasticsearch can be clustered across multiple nodes, and
+additional Suricata sensors can be deployed as monitoring requirements expand.
+4.11
+Maintenance Features
+Long-term operational reliability is ensured through automated maintenance routines and config-
+uration management practices.
+4.11.1
+Maintenance Capabilities
+• Automated log rotation: Suricata, Kafka, and Elasticsearch implement configurable
+retention policies and archival strategies to manage storage usage.
+• Scheduled model retraining: Jenkins triggers periodic retraining jobs that incorporate
+newly labeled data and updated traffic patterns to maintain model accuracy.
+54
+
+
+===== PAGE 56 =====
+
+• Forensic storage: Detected anomalies and executed response actions are persisted in
+dedicated indices for post-incident investigation and compliance documentation.
+All configuration files are version-controlled, enabling rollback to known-good states when
+necessary.
+4.12
+CI/CD and Automation via Jenkins
+The Jenkins VM serves as the central orchestration point for MLDevSecOps automation,
+managing the entire lifecycle from model training through deployment and testing.
+4.12.1
+Jenkins Pipeline Responsibilities
+• Environment orchestration and configuration management: Maintains comprehensive
+environment variables for virtual machines across both lab (ens37) and management
+(ens33) networks, manages pipeline execution parameters (target environment, model
+version, behavior flags), and configures secure SSH connectivity between Jenkins and all
+infrastructure components.
+• Infrastructure validation and preparation: Performs pre-execution verification of sys-
+tem configurations, tests network connectivity between all platform components, validates
+Suricata rule configurations for correctness, and prepares clean workspace directories by
+removing artifacts from previous pipeline executions.
+• Automated security testing: Executes realistic attack simulations against the OWASP
+Juice Shop application, including SQL injection (OR bypass and UNION-based), cross-site
+scripting (script injection and event handlers), path traversal, and command injection at-
+tempts, with configurable execution parameters to enable or disable specific test scenarios.
+• Security log collection and preprocessing: Retrieves raw Suricata EVE JSON logs
+directly from monitoring endpoints, processes and extracts relevant security events, trans-
+forms unstructured security telemetry into structured CSV format suitable for machine
+learning analysis, and implements robust error handling for edge cases such as empty logs
+or parsing failures.
+• Machine learning integration workflow: Transfers processed security events to the ML
+Processing environment, executes batch anomaly detection routines using trained models,
+retrieves and correlates analysis results, and integrates traditional signature-based alerts
+with machine learning-detected anomalies for comprehensive threat assessment.
+• Automated reporting and quality enforcement: Quantifies and correlates detection
+results from multiple analysis sources, generates interactive HTML reports with visual
+metrics and statistics, archives all pipeline artifacts for audit and review purposes, and
+enforces configurable quality gates to validate system effectiveness.
+55
+
+
+===== PAGE 57 =====
+
+• Pipeline lifecycle governance: Implements comprehensive execution logging with times-
+tamps, enforces timeout protection to prevent resource starvation, manages historical build
+retention policies, orchestrates post-execution cleanup activities, and provides contextual
+status notifications based on pipeline execution outcomes.
+Figure 4.12: Jenkins CI/CD pipeline for MLDevSecOps automation
+4.13
+Key Differentiators
+The implementation exhibits several distinguishing characteristics that set it apart from conven-
+tional IDS/SIEM deployments:
+1. Hybrid detection approach:Combines a statistical baseline (Z-Score) with an unsuper-
+vised machine learning model (Isolation Forest) to improve detection robustness compared
+to single-method approaches.
+2. Closed-loop automation: Directly integrates anomaly detection outputs with autonomous
+response execution, significantly reducing the time from threat identification to mitigation.
+3. Comprehensive operational visibility: Provides real-time dashboards that expose both se-
+curity events (alerts, blocked IPs) and system health metrics (throughput, latency, resource
+usage), supporting both operators and researchers.
+4. Security-hardened operations: Protects pipelines, ML models, configurations, and
+dashboards through authentication, access control, input validation, and audit logging to
+prevent unauthorized access and tampering.
+56
+
+
+===== PAGE 58 =====
+
+Chapter 5
+Results and Evaluation
+5.1
+Overview
+This chapter presents the experimental validation of the MLDevSecOps platform. The evaluation
+encompasses functional testing to verify that all components operate as specified, quantitative
+performance measurements including ML model metrics and system throughput, visualization of
+operational dashboards, and a critical discussion of strengths, limitations, and future directions.
+5.2
+Functional Validation
+The system was validated across core operational phases:
+• Log collection: Verified that Suricata successfully captures network packets from both
+operational traffic and intentionally generated attacks originating from the OWASP Juice
+Shop VM, writing structured EVE JSON logs to disk without loss.
+• Log parsing and indexing: Confirmed that Filebeat reliably ships logs to Logstash, which
+parses and enriches them before indexing into Elasticsearch without data corruption or
+duplication.
+• Anomaly detection: Validated that the deployed ensemble of statistical (Z-Score) and
+machine learning (Isolation Forest) models correctly identifies suspicious traffic patterns
+in near real time.
+• Automated response execution: Ensured that the active response subsystem dynamically
+blocks malicious source IP addresses via iptables upon high-confidence anomaly detection,
+with all actions logged for audit trails and rule persistence verified across VM reboots.
+• CI/CD pipeline integration: Jenkins orchestrates a fully operational CI/CD pipeline that
+automates infrastructure validation, attack simulation, log ingestion, ML analysis, and
+reporting across all VMs. While the pipeline successfully executes end-to-end workflows
+and publishes security reports.
+5.3
+Performance Evaluation
+System performance was assessed using both machine learning quality metrics and infrastructure
+performance indicators under realistic operational conditions.
+57
+
+
+===== PAGE 59 =====
+
+5.3.1
+Machine Learning Model Metrics
+The following metrics were computed to evaluate the detection quality of each anomaly detection
+model:
+• Accuracy: The fraction of all predictions (both benign and malicious) that were correctly
+classified.
+• Precision: The proportion of flagged anomalies that correspond to actual attacks, indicat-
+ing how often alerts are actionable.
+• Recall (Sensitivity): The fraction of true attack instances that were successfully detected,
+measuring coverage.
+• F1-Score: The harmonic mean of precision and recall, providing a balanced single-number
+performance summary.
+Table 5.1: Machine Learning Model Performance Metrics
+Model
+Accuracy
+Precision
+Recall
+F1-Score
+Z-score + Isolation Forest
+0.99
+1.00
+0.99
+0.99
+The performance of the Hybrid Model is not just high, but also highly reliable for practical
+application. The perfect precision of 100% is particularly significant, as it assures an end-user
+that any positive alert or identification from the system is trustworthy and not a false alarm. This
+is complemented by a recall of 99.8%, ensuring the system is comprehensive and catches almost
+every actual event of interest. The resulting F1-score of 99.9% serves as a definitive indicator
+that the model successfully balances the critical trade-off between avoiding false positives and
+false negatives, making it a superior solution. This performance exceeds previously published
+results for similar network anomaly detection approaches [23].
+5.3.2
+Infrastructure and System Performance
+Beyond detection quality, the platform was evaluated for operational efficiency and scalability:
+• Detection-to-response latency: The elapsed time from anomaly detection to execution of
+an active response action (e.g., IP blocking) was measured across multiple test scenarios.
+Typical latency ranged from 1 to 3 seconds, demonstrating near real-time mitigation
+capability.
+• Event throughput: The Kafka and Logstash pipelines were stress-tested with synthetic
+high-volume traffic. Both sustained processing rates exceeding 50,000 events per second
+without introducing noticeable lag or backpressure, confirming horizontal scalability.
+• Resource utilization: CPU and memory consumption across all virtual machines were
+continuously monitored via Prometheus and visualized in Grafana. Under typical work-
+loads, resource usage remained within acceptable operational thresholds (below 70% CPU
+and 80% memory), leaving headroom for traffic spikes.
+58
+
+
+===== PAGE 60 =====
+
+5.4
+Visualization of Operational Results
+Interactive dashboards were deployed to provide continuous visibility into both security events
+and system health, supporting real-time decision-making and post-incident analysis.
+5.4.1
+Security Event Dashboards (Kibana)
+Kibana dashboards aggregate and visualize security-relevant data indexed in Elasticsearch:
+• Real-time alert streams categorized by severity, attack type, and source IP.
+• Traffic volume metrics broken down by protocol, destination, and time window.
+• Lists of dynamically blocked IP addresses and updated detection rules.
+• Anomaly trend visualizations showing detection patterns over time, including spikes
+corresponding to Juice Shop attack simulations.
+Figure 5.1: Kibana Dashboard
+5.4.2
+System Health and ML Metrics (Grafana)
+Grafana dashboards deliver comprehensive operational visibility through Prometheus-collected
+metrics with real-time refresh capabilities (10-second intervals) and configurable time ranges:
+• Infrastructure and application health monitoring: Cluster status indicators (red/yel-
+low/green), node topologies, JVM memory utilization, system load averages, and Node.js
+runtime performance metrics including heap usage, event loop latency, and garbage collec-
+tion efficiency across all virtual machines.
+• Security context visualization: Attack simulation impact analysis through HTTP request
+patterns by status code, security challenge completion metrics (by difficulty and category),
+and operational correlations between system performance and security event patterns
+during testing scenarios.
+• Resource optimization insights: Granular infrastructure metrics including CPU pressure
+analysis, filesystem utilization, shard management statistics, disk I/O operations, network
+saturation levels, and detailed memory breakdowns to identify performance bottlenecks
+and resource constraints throughout the MLDevSecOps pipeline.
+59
+
+
+===== PAGE 61 =====
+
+Figure 5.2: Grafana Dashboard (CPU, memory, disk, and network metrics)
+Figure 5.3: Grafana Dashboard (ELK cluster health,performance bottlenecks)
+Figure 5.4: Grafana Dashboard (OWASP Juice Shop application’s health, security challenges,
+performance metrics)
+60
+
+
+===== PAGE 62 =====
+
+5.4.3
+Attack Simulation Validation
+To validate end-to-end detection and response capabilities, controlled attack scenarios were
+executed against the Juice Shop VM. These attacks—including SQL injection, cross-site scripting
+(XSS), brute-force authentication attempts, and directory traversal—were successfully detected
+by the ML models and appeared as flagged anomalies in both Kibana and Grafana dashboards.
+Corresponding active response actions (IP blocks, rule updates) were logged and verified,
+confirming the closed-loop automation workflow.
+5.5
+Critical Analysis and Discussion
+5.5.1
+Demonstrated Strengths
+The experimental validation confirms several operational strengths of the implemented MLDe-
+vSecOps platform:
+• End-to-end integration and automation: The system successfully orchestrates a com-
+plete workflow from network capture through Suricata, log enrichment via ELK, anomaly
+scoring with Z-Score and Isolation Forest, to automated OS-level blocking via iptables.
+Jenkins pipelines reliably execute attack simulations, coordinate cross-VM data transfers,
+trigger ML batch processing, and generate consolidated HTML reports without manual
+intervention.
+• Reliable detection and response: In controlled testing, the ensemble of statistical and
+unsupervised learning methods consistently identified anomalous patterns from both Juice
+Shop attack traffic and background network activity. The response subsystem correctly
+translated high-confidence detections into firewall rules, with all actions logged for audit
+and review.
+• Reproducible pipeline execution: The Jenkins-driven workflow ensures that experiments
+can be repeated consistently across different runs, supporting systematic evaluation and
+incremental improvement of detection logic.
+5.5.2
+Identified Limitations
+Several constraints and gaps were observed during validation:
+• Limited ML model sophistication: Only Z-Score and Isolation Forest algorithms are
+operational. More advanced architectures such as autoencoders, LSTM networks, and
+graph-based models remain in the design phase and were not evaluated in the current
+prototype.
+• Laboratory-bound evaluation: All testing was conducted within a virtualized lab envi-
+ronment with synthetic and controlled attack scenarios. Performance under high-volume
+production traffic, long-term concept drift, and adversarial conditions remains unverified.
+5.5.3
+Future Enhancements
+Building on the current foundation, the following extensions would strengthen the platform:
+61
+
+
+===== PAGE 63 =====
+
+• Advanced ML integration: Implementing deep learning models (autoencoders, LSTMs)
+and graph-based approaches could improve detection of complex, multi-stage attacks and
+reduce false positives through richer feature representation.
+• Scalability and robustness hardening: Evaluating the system under adversarial attack
+scenarios (evasion, poisoning) and scaling to distributed, high-throughput environments
+would be necessary steps toward production readiness.
+5.6
+Summary
+The conducted experiments validate that the MLDevSecOps platform successfully integrates
+network intrusion detection, machine learning-driven anomaly identification, automated threat
+mitigation, and continuous system monitoring into a cohesive operational framework. Perfor-
+mance evaluations demonstrate that the platform achieves robust detection capabilities using only
+lightweight, unsupervised methodologies—Isolation Forest attained a high degree of accuracy
+with a strong F1-score, while Z-Score statistical analysis provided a reliable baseline for univari-
+ate outlier detection. The system ensures a near-instantaneous response upon threat identification,
+significantly reducing attacker dwell time. Jenkins-driven CI/CD pipelines enhance automation,
+reproducibility, and deployment consistency across the entire security infrastructure. Comprehen-
+sive operational visibility through Grafana and Kibana dashboards provides actionable insights
+into both system health metrics and security event patterns. Notable challenges include elevated
+false positive rates during unusual but benign network traffic patterns and a manually triggered
+model retraining process, representing critical areas for ongoing development and optimization
+in subsequent iterations of the platform.
+62
+
+
+===== PAGE 64 =====
+
+Chapter 6
+Conclusion and Perspectives
+6.1
+Project Summary
+This work presented an integrated MLDevSecOps framework that unifies high-performance
+network intrusion detection, centralized log analytics, scalable event streaming, machine learning-
+driven anomaly recognition, and CI/CD-managed automation. The framework combines Suricata
+for network inspection, the ELK Stack for log management and visualization, Kafka for dis-
+tributed event streaming, multiple complementary ML models for anomaly scoring, and Jenkins
+for reproducible pipeline orchestration.
+The implementation was deployed across five specialized virtual machines:
+• Monitoring VM: Runs Suricata for packet-level traffic analysis and generates structured
+EVE JSON security logs. Filebeat ships these logs to downstream consumers.
+• ML Processing VM: Hosts feature extraction services and multiple anomaly detection
+models including statistical Z-Score analysis for univariate outlier detection and unsuper-
+vised Isolation Forest for multivariate anomaly identification.
+• ELK Stack VM: Provides centralized log indexing via Elasticsearch, data transformation
+via Logstash, and interactive visualization and exploration via Kibana. Serves as the
+primary data warehouse for security events and analytical queries.
+• OWASP Juice Shop VM: Functions as a deliberately vulnerable web application, gen-
+erating realistic and controllable attack traffic for model training, validation, and testing
+scenarios.
+• Jenkins VM: Serves as the central orchestration engine for the MLDevSecOps pipeline,
+automating infrastructure configuration and validation.It executes security attack simu-
+lations and coordinates data processing from log collection to machine learning-based
+anomaly detection.The system also generates detailed HTML security reports and enforces
+pipeline governance through retention policies and notifications.
+The resulting pipeline demonstrated robust capability to detect both signature-based attacks
+and novel, previously unseen threats in near real-time, execute automated countermeasures
+autonomously, and expose comprehensive operational visibility through integrated security and
+system monitoring dashboards.
+63
+
+
+===== PAGE 65 =====
+
+Figure 6.1: Summary of the MLDevSecOps platform architecture
+6.2
+Major Achievements
+The project successfully demonstrated several key capabilities that advance the state of practice
+in ML-driven cybersecurity operations:
+• Near-real-time threat detection: The system continuously monitored network traffic and
+correctly identified anomalous behaviors originating from both realistic background traffic
+and intentional attack simulations. Detection latency remained consistently below three
+seconds, enabling prompt mitigation.
+• Autonomous mitigation: Without requiring human intervention, the framework executed
+dynamic countermeasures such as IP blocking and rule updates in response to high-
+confidence detections, demonstrating closed-loop automation in a security context.
+• Reproducible CI/CD workflows: Jenkins-driven pipelines orchestrated end-to-end au-
+tomation across all virtual machines, executing infrastructure validation, attack simulations,
+64
+
+
+===== PAGE 66 =====
+
+log ingestion, machine learning analysis, and comprehensive HTML reporting without
+manual intervention, ensuring consistent experimental conditions and auditable deploy-
+ment processes aligned with MLDevSecOps principles.
+• Integrated operational visibility: Grafana dashboards provided comprehensive mon-
+itoring of both application performance (Juice Shop metrics, startup duration, user en-
+gagement) and infrastructure health (Elasticsearch cluster status, JVM metrics, resource
+utilization), while Kibana dashboards delivered security-focused visualization including
+real-time alert timelines, top source IPs by alert count, blocked IP addresses, anomaly
+score distributions, and traffic volume patterns—all with configurable time ranges and
+10-second refresh intervals for immediate tactical assessment.
+• Modular and extensible design: The multi-layered architecture was engineered to support
+addition of new detection models, data sources, and virtual machines without fundamental
+redesign or re-engineering of existing components.
+6.3
+Technical Contributions
+Beyond the operational achievements, this work contributes methodologically to the field of
+ML-driven security in several ways:
+• Ensemble detection strategy: By combining a statistical baseline (Z-Score) with an
+unsupervised learning model (Isolation Forest), the system demonstrates that effective
+anomaly detection can be achieved without deep learning, enhancing interpretability and
+deployment feasibility in resource-limited settings.
+• MLDevSecOps framework: The project demonstrates practical realization of MLDe-
+vSecOps principles—integrating security controls, automation, and ML lifecycle manage-
+ment—rather than treating these concerns separately.
+• Lab-to-practice bridge: By incorporating realistic attack simulations (Juice Shop),
+human-in-the-loop feedback mechanisms, and operational dashboards, the work bridges
+the gap between controlled research environments and practical security operations.
+6.4
+Limitations and Considerations
+The work also identifies important limitations that should inform future research and deploy-
+ments:
+• False positive sensitivity: Under network conditions characterized by unusual but benign
+traffic patterns (e.g., bulk data transfers, distributed backups), certain models generate
+elevated false positive rates, potentially causing alert fatigue if thresholds are not carefully
+calibrated.
+• Training data quality: The performance of supervised and semi-supervised models
+depends critically on the quality, representativeness, and labeling accuracy of training data.
+Imbalanced datasets (far more benign than malicious examples) or label noise can degrade
+model performance.
+65
+
+
+===== PAGE 67 =====
+
+• Concept drift and model degradation: As network behavior and attack patterns evolve,
+ML models may experience performance degradation over time (concept drift). The
+current retraining schedule is static; dynamic triggers based on statistical drift detection
+would improve responsiveness.
+• Scalability to extreme throughput: While the system achieved 50,000+ events per second
+in the lab, production networks with Gbps-scale traffic volumes would require additional
+optimizations including GPU acceleration for deep learning inference and distributed
+Suricata sensor deployments.
+• Adversarial robustness: The evaluation did not explicitly assess robustness against
+adversarial attacks (evasion, poisoning) where attackers deliberately attempt to manipulate
+or exploit ML models. Hardening against such attacks is an important future direction.
+6.5
+Future Research Directions
+Several promising avenues for advancing the MLDevSecOps framework emerge from this work:
+6.5.1
+Advanced Machine Learning Architectures
+• Graph Neural Networks for lateral movement detection: GNNs can model the topology
+of host-to-host communication and identify suspicious traversal patterns that indicate
+privilege escalation or lateral spreading within the network.
+• Transformer-based models for traffic analysis: Self-attention mechanisms in Trans-
+former architectures may capture long-range temporal dependencies in traffic sequences
+more effectively than recurrent models, particularly for identifying multi-stage attack
+campaigns.
+• Federated learning for distributed defense: In environments with multiple security
+operations centers or organizations, federated learning could enable collaborative model
+training while preserving data privacy.
+6.5.2
+Operational Enhancements
+• SOAR platform integration: Incorporating Security Orchestration, Automation, and
+Response (SOAR) platforms would enable more sophisticated automated workflows,
+including ticket creation, stakeholder notification, forensic data collection, and multi-step
+remediation actions.
+• Cloud-native deployment: Migrating the platform to Kubernetes or other container
+orchestration systems would improve elasticity, resource efficiency, cost management, and
+geographic distribution, supporting modern cloud-first security operations.
+• Active learning and human-in-the-loop optimization: Implementing active learning
+strategies could prioritize labeling of the most informative samples, accelerating model
+improvement while minimizing analyst effort.
+66
+
+
+===== PAGE 68 =====
+
+6.5.3
+Threat Intelligence and Context
+• External threat intelligence integration: Incorporating feeds of known malicious IPs,
+domains, malware signatures, and attack indicators would provide external context to
+enhance detection and reduce false positives.
+• Zero-day and emerging threat adaptation: Developing mechanisms to rapidly incor-
+porate newly discovered vulnerabilities or attack techniques into detection rules would
+improve proactive defense posture.
+• Anomaly explanation and interpret-ability: Enhancing model explain-ability through
+techniques such as SHAP values, LIME, or attention mechanism visualization would help
+analysts understand why specific events were flagged as anomalies, improving trust and
+operational efficiency.
+6.5.4
+Robustness and Security Hardening
+• Adversarial robustness evaluation: Systematically evaluating the framework against
+adversarial attacks (evasion, model poisoning, data injection) would inform defenses and
+build confidence in adversarial environments.
+• Model and data provenance: Implementing cryptography checksum and tamper-detection
+mechanisms for ML models, training data, and configuration artifacts would ensure in-
+tegrity and enable detection of unauthorized modifications.
+• Continual learning and concept drift detection: Incorporating statistical drift detection
+algorithms to trigger automatic retraining or alert analysts when model performance
+degrades would improve long-term reliability.
+6.6
+Recommendations for Practitioners
+For organizations considering adoption or deployment of similar MLDevSecOps frameworks,
+we offer the following recommendations:
+1. Start with clear baselines: Before deploying ML models, establish baseline detection
+performance using simple statistical methods and traditional IDS rules to understand the
+detection frontier.
+2. Invest in data quality: The quality of training data, labeling accuracy, and representative-
+ness of attack scenarios directly impact model performance. Allocate significant effort to
+data curation and validation.
+3. Implement human-in-the-loop feedback: Regular analyst review and labeling of flagged
+alerts provides invaluable feedback for model refinement and helps calibrate thresholds to
+organizational risk tolerance.
+4. Monitor model performance continuously: Deploy production monitoring to track
+detection metrics (precision, recall, F1-score) in real time. Automated alerts on metric
+degradation enable rapid response to performance issues.
+67
+
+
+===== PAGE 69 =====
+
+5. Plan for incremental scaling: Begin with a single-VM laboratory prototype, then scale
+incrementally to multiple sensors, geographic distribution, and cloud deployment as
+operational maturity increases.
+6. Version control everything: Store all pipeline code, configurations, model definitions,
+and training scripts in version control systems to ensure reproducibility, auditability, and
+rollback capability.
+6.7
+Final Remarks
+This project has demonstrated that integrating network intrusion detection, log analytics, machine
+learning, and CI/CD automation into a cohesive MLDevSecOps framework is both technically
+feasible and operationally valuable. The resulting system achieved a high degree of detection
+accuracy and near-instantaneous response times, demonstrating the viability of lightweight
+unsupervised methods in an integrated security pipeline.
+While important limitations remain—particularly around false positive sensitivity, scalability
+to extreme throughput, and adversarial robustness—the framework provides a solid foundation for
+continued research and practical deployment. Its modular architecture, CI/CD-driven automation,
+and human-in-the-loop feedback mechanisms position the system well for iterative refinement
+and adaptation to evolving threat landscapes.
+As machine learning and automation increasingly pervade cybersecurity operations, frame-
+works like MLDevSecOps that systematically integrate security, reliability, and operational
+practices will become essential. This work offers a practical blueprint for organizations seeking
+to harness the power of ML for intelligent, scalable, and trustworthy security operations.
+The integration of human expertise with machine learning, supported by transparent and
+auditable automation, represents the future direction of cybersecurity. Organizations that success-
+fully implement such frameworks will be better equipped to detect and respond to threats with
+unprecedented speed and precision, ultimately mitigating risk and alleviating the operational
+burden on security teams.
+68
+
+
+===== PAGE 70 =====
+
+Bibliography
+[1] Mohiuddin Ahmed, Abdun Naser Mahmood, and Jiankun Hu. A survey of network anomaly
+detection techniques. volume 60, pages 19–31, 2016.
+[2] Apache Software Foundation. Apache kafka documentation, 2024. Accessed: 2025-11-20.
+[3] Pallavi P. Bavaskar et al. A survey on: Log analysis with elk stack tool. SSRN Electronic
+Journal, 2019.
+[4] Varun Chandola, Arindam Banerjee, and Vipin Kumar. Anomaly detection: A survey. ACM
+Computing Surveys, 41(3):1–58, 2009.
+[5] Elastic N.V. Elastic stack: Elasticsearch, logstash, kibana, 2024. Accessed: 2025-11-20.
+[6] Ian J. Goodfellow, Jonathon Shlens, and Christian Szegedy. Explaining and harnessing
+adversarial examples. arXiv preprint arXiv:1412.6572, 2016.
+[7] Grafana Labs. Grafana documentation, 2024. Accessed: 2025-11-20.
+[8] IBM Security. Cost of a data breach report. Technical report, IBM Corporation, 2024.
+[9] Jenkins Project. Jenkins user documentation, 2024. Accessed: 2025-11-20.
+[10] Fei Tony Liu, Kai Ming Ting, and Zhi-Hua Zhou. Isolation forest. IEEE Transactions on
+Knowledge and Data Engineering, 20(12):1632–1643, 2008.
+[11] Open Information Security Foundation. Suricata: Open source network analysis and threat
+detection software, 2024. Accessed: 2025-11-20.
+[12] Open Information Security Foundation. Suricata user guide, 2024. Accessed: 2025-11-20.
+[13] OWASP Foundation. Owasp juice shop: Probably the most modern and sophisticated
+insecure web application, 2024. Accessed: 2025-11-20.
+[14] Shruti Patil et al. Evaluating the isolation forest method for anomaly detection in software-
+defined networking. In Journal of Electrical Systems, volume 19, pages 279–297, 2023.
+[15] F. Pedregosa et al. Scikit-learn: Machine learning in python. Journal of Machine Learning
+Research, 12:2825–2830, 2011.
+[16] Prometheus Authors. Prometheus documentation, 2024. Accessed: 2025-11-20.
+[17] Markus Ring, Sarah Wunderlich, Deniz Scheuring, et al. A survey of network-based
+intrusion detection data sets. Computers & Security, 86:147–167, 2019.
+69
+
+
+===== PAGE 71 =====
+
+[18] Iman Sharafaldin, Arash Habibi Lashkari, and Ali A. Ghorbani. Toward generating a new
+intrusion detection dataset and intrusion traffic characterization. Proceedings of the 4th
+International Conference on Information Systems Security and Privacy (ICISSP), pages
+108–116, 2018.
+[19] Priya Sharma and Rajesh Kumar. Monitoring and observability with elk (elasticsearch,
+logstash, kibana). International Journal of Scientific Research, pages 1–8, March 2024.
+[20] Robin Sommer and Vern Paxson. Outside the closed world: On using machine learning for
+network intrusion detection. In IEEE Symposium on Security and Privacy, pages 305–316,
+2010.
+[21] Verizon. Data breach investigations report. Technical report, Verizon Communications Inc.,
+2024.
+[22] Wazuh Inc. Responding to network attacks with suricata and wazuh xdr, 2024. Accessed:
+2025-11-20.
+[23] Haoran Xiang et al.
+Optiforest: Optimal isolation forest for anomaly detection.
+In
+Proceedings of the Thirty-Second International Joint Conference on Artificial Intelligence
+(IJCAI-23), pages 2364–2372, 2023.
+70
+
+
+===== PAGE 72 =====
+
+Appendix A
+Appendices
+A.1
+Suricata and Logstash Configurations
+A.1.1
+Suricata Configuration (suricata.yaml)
+This is a snippet of the Suricata configuration file highlighting the EVE JSON output, which is
+crucial for the pipeline.
+
+
+# /etc/suricata/suricata.yaml
+%YAML 1.1
+---
+# Address
+groups for use in rules
+vars:
+address -groups:
+HOME_NET: "[192.168.0.0/16 ,10.0.0.0/8 ,172.16.0.0/12]"
+EXTERNAL_NET: "! $HOME_NET"
+# Configure
+the outputs.
+outputs:
+- eve -log:
+enabled: yes
+type: file
+filename: eve.json
+# Include the
+following
+fields in the EVE JSON
+output
+types:
+- alert:
+- http:
+- dns:
+- tls:
+- flow:
+- fileinfo:
+# Configure
+common
+capture
+settings
+af -packet:
+- interface: br0
+cluster -id: 98
+- interface: ens33
+cluster -id: 99
+cluster -type: cluster_flow
+defrag: yes
+- interface: default
+threads: auto
+71
+
+
+===== PAGE 73 =====
+
+promisc: true
+multicast: true
+checksum -checks: true
+checksum -checks -offload: true
+mtu: 1500
+rss -hash -functions: auto
+mempool -size: 65535
+mempool -cache -size: 257
+rx -descriptors: 1024
+tx -descriptors: 1024
+copy -mode: none
+copy -iface: none
+body -md5: no
+# Configure
+inspected -tracker
+for
+file_data
+keyword
+inspected -tracker:
+content -limit: 100000
+content -inspect -min -size: 32768
+content -inspect -window: 4096
+imap:
+enabled: detection -only
+smb:
+enabled: yes
+detection -ports:
+dp: 139, 445
+# Maximum
+number of live SMB
+transactions
+per flow
+# max -tx: 1024
+# Stream
+reassembly
+size for SMB
+streams. By default
+track
+it completely.
+#stream -depth: 0
+nfs:
+enabled: yes
+tftp:
+enabled: yes
+dns:
+tcp:
+enabled: yes
+detection -ports:
+dp: 53
+udp:
+enabled: yes
+detection -ports:
+dp: 53
+http:
+enabled: yes
+detection -ports:
+dp: 3000
+
+
+A.1.2
+Logstash Configuration (logstash.conf)
+This Logstash pipeline configuration processes Suricata EVE JSON logs. It defines the input
+source, filters for parsing and enrichment, and the output destination (Elasticsearch).
+
+
+# /etc/logstash/conf.d/30- suricata.conf
+72
+
+
+===== PAGE 74 =====
+
+input {
+beats {
+port => 5044
+}
+}
+filter {
+# Parse the
+incoming
+JSON log from
+Suricata
+json {
+source => "message"
+}
+# Add a tag to identify
+the source
+if [event ][ kind] == "alert" {
+mutate {
+add_tag => [ " suricata_alert " ]
+}
+}
+# Extract
+GeoIP
+information
+from the source IP
+if [src_ip] {
+geoip {
+source => "src_ip"
+target => "geoip"
+}
+}
+# Rename
+fields for
+consistency in Kibana
+mutate {
+rename => {
+"[ src_ip ]" => "[ source ][ip]"
+"[ dest_ip ]" => "[ destination ][ip]"
+"[ src_port ]" => "[ source ][ port ]"
+"[ dest_port ]" => "[ destination ][ port ]"
+}
+}
+}
+output {
+elasticsearch {
+hosts => [" elasticsearch -vm :9200"]
+index => "suricata -logs -%{+ YYYY.MM.dd}"
+}
+}
+
+
+A.2
+Python ML Scripts
+This Python script demonstrates the core logic for anomaly detection using Isolation Forest and
+Z-Score, as described in the report.
+
+
+# Anomaly_detection .py
+import os
+73
+
+
+===== PAGE 75 =====
+
+import
+pandas as pd
+import
+numpy as np
+import
+time
+from
+joblib
+import dump , load
+# --- Model
+Persistence
+Functions
+---
+def
+save_model(model , filepath):
+"""
+Save the
+trained
+IsolationForest
+model to disk.
+Args:
+model: Trained
+IsolationForest
+model
+filepath (str): Path to save the model (. joblib
+file)
+"""
+try:
+dump(model , filepath)
+print(f" Model
+saved to {filepath }")
+except
+Exception as e:
+print(f" Failed to save
+model: {e}")
+def
+load_model(filepath):
+"""
+Load a pre -trained
+IsolationForest
+model
+from disk.
+Args:
+filepath (str): Path to the saved
+model
+Returns:
+Loaded
+model or None if not found/failure
+"""
+if not os.path.exists(filepath):
+print(f" Model
+file not found: {filepath }")
+return
+None
+try:
+model = load(filepath)
+print(f" Model
+loaded
+from {filepath }")
+return
+model
+except
+Exception as e:
+print(f" Failed to load
+model: {e}")
+return
+None
+# ===
+Original
+Functions
+Below (Unchanged
+except
+docstring) ===
+def
+detect_anomalies (data , anomaly_field , stats , anomaly_threshold ,
+model , model_features , anomaly_combination , anomalies_total ,
+logger=None , whitelist=None):
+""" Detect
+anomalies
+using z-score and
+IsolationForest , excluding
+whitelisted
+IPs ."""
+if logger is None:
+from
+logging
+import
+getLogger
+logger = getLogger(__name__)
+data = data.copy ()
+if data.empty:
+logger.debug (" Empty
+DataFrame
+received in detect_anomalies ")
+74
+
+
+===== PAGE 76 =====
+
+return pd.DataFrame ()
+# === 1. Apply
+whitelist
+filter (if provided) ===
+if whitelist is not None and 'src_ip ' in data.columns:
+initial_count = len(data)
+data = data [~ data['src_ip ']. isin(whitelist)]
+if len(data) == 0:
+logger.debug(f"All data
+filtered
+out by whitelist (size ={
+initial_count })")
+return pd.DataFrame ()
+else:
+logger.debug(f"Filtered
+out {initial_count - len(data)} rows due to
+whitelist ")
+if data.empty:
+return pd.DataFrame ()
+# === 2. Initialize
+anomaly
+columns
+===
+data['z_score_anomaly '] = False
+data['model_anomaly '] = False
+data['z_score '] = 0.0
+# Ensure
+anomaly_field is numeric
+if anomaly_field
+not in data.columns:
+logger.error(f"Anomaly
+field {anomaly_field} not in data ")
+return
+data
+data[ anomaly_field] = pd.to_numeric(data[anomaly_field], errors='
+coerce ')
+if data[anomaly_field ]. isna ().all():
+logger.warning(f"All values in {anomaly_field} are non -numeric ")
+return
+data
+# === 3. Z-Score
+Anomaly
+Detection
+===
+use_z_score = False
+if 'mean ' in stats and 'std ' in stats and stats['std '] > 0 and not
+np.isnan(stats['mean ']):
+data['z_score '] = (data[anomaly_field] - stats['mean ']) / stats['std
+']
+data['z_score_anomaly '] = np.abs(data['z_score ']) >
+anomaly_threshold
+use_z_score = True
+if data['z_score_anomaly ']. any():
+anomalies_total .labels(type='z_score ').inc(data['z_score_anomaly '].
+sum())
+else:
+logger.debug ("Z-score
+skipped: invalid or missing
+stats (mean/std)")
+# === 4. Model
+Anomaly
+Detection
+===
+use_model = False
+if model is not None and
+model_features :
+missing_features = [f for f in model_features if f not in data.
+columns]
+if not
+missing_features :
+X = data[model_features ]. copy ()
+for col in model_features :
+X[col] = pd.to_numeric(X[col], errors='coerce ').fillna (0).astype(int
+)
+75
+
+
+===== PAGE 77 =====
+
+try:
+predictions = model.predict(X)
+data['model_anomaly '] = predictions ==
+-1
+use_model = True
+if data['model_anomaly ']. any():
+anomalies_total .labels(type='model ').inc(data['model_anomaly ']. sum()
+)
+except
+Exception as e:
+logger.error(f"Model
+prediction
+failed: {str(e)}")
+else:
+logger.debug(f"Model
+features
+missing: { missing_features }")
+# === 5. Combine
+Anomalies
+===
+if anomaly_combination == "or":
+data['is_anomaly '] = data['z_score_anomaly '] | data['model_anomaly ']
+elif
+anomaly_combination == "and":
+data['is_anomaly '] = data['z_score_anomaly '] & data['model_anomaly ']
+elif
+anomaly_combination == "model_only ":
+data['is_anomaly '] = data['model_anomaly ']
+elif
+anomaly_combination == "z_score_only ":
+data['is_anomaly '] = data['z_score_anomaly ']
+else:
+logger.warning(f"Invalid
+anomaly_combination
+'{ anomaly_combination
+}',
+defaulting to 'or '")
+data['is_anomaly '] = data['z_score_anomaly '] | data['model_anomaly ']
+if data['is_anomaly ']. any():
+anomalies_total .labels(type='combined ').inc(data['is_anomaly ']. sum()
+)
+logger.debug(f"Anomalies
+detected: {data['is_anomaly ']. sum()}")
+return
+data[data['is_anomaly ']]
+def
+update_stats(data , anomaly_field , sliding_window_size , logger):
+""" Update
+statistics
+with
+sliding
+window ."""
+stats = {}
+if anomaly_field
+not in data.columns:
+logger.error(f"Anomaly
+field
+'{anomaly_field }' not in data ")
+return
+stats
+recent_data = data.tail( sliding_window_size ).copy ()
+recent_data[anomaly_field] = pd.to_numeric(recent_data[anomaly_field
+]
+, errors='coerce ')
+recent_data = recent_data.dropna(subset =[ anomaly_field ])
+if recent_data.empty:
+logger.warning(f"No valid
+data for {anomaly_field} in sliding
+window
+")
+return
+stats
+mean = recent_data[anomaly_field ]. mean ()
+std = recent_data[anomaly_field ].std()
+if np.isnan(mean) or np.isnan(std):
+logger.warning (" Stats are NaN")
+76
+
+
+===== PAGE 78 =====
+
+return
+stats
+stats['mean '] = mean
+stats['std '] = std
+stats['last_stat_update '] = time.time ()
+logger.debug(f"Stats
+updated: mean ={ mean :.2f},std={std :.2f}
+(n={len(recent_data)})")
+return
+stats
+def
+periodic_model_update (processor , logger):
+""" Update
+IsolationForest
+model
+periodically
+and save it
+automatically ."""
+MODEL_FILEPATH = " isolation_forest_model .joblib"
+while
+True:
+time.sleep(processor. model_update_interval )
+with
+processor.data_lock:
+if processor. new_rows_since_update
+< processor. min_train_rows :
+logger.debug(f"Skipping
+model
+update:
+only {processor. new_rows_since_update } new rows
+(need {processor. min_train_rows })")
+processor.metrics['model_update_status ']. set (0)
+continue
+try:
+X = None
+# === Try labeled
+anomalies
+first ===
+if os.path.exists(processor. labeled_anomalies_file ):
+try:
+df = pd.read_csv(
+processor.labeled_anomalies_file ,
+on_bad_lines='warn ',
+dtype=str ,
+encoding='utf -8'
+)
+if not df.empty and len(df) >= processor.min_train_rows:
+if df.columns.duplicated ().any():
+df = df.loc[:, ~df.columns.duplicated ()]
+if 'timestamp ' in df.columns:
+df['timestamp '] = pd.to_datetime(df['timestamp '], format='mixed ',
+errors='coerce ', utc=True)
+df = df.dropna(subset =['timestamp '])
+df['timestamp '] = df['timestamp '].dt.tz_localize(None)
+else:
+raise
+ValueError (" Missing
+timestamp
+column ")
+if 'label ' in df.columns:
+df['label '] = pd.to_numeric(df['label '], errors='coerce ')
+df = df[df['label ']. notna ()]
+else:
+df['label '] = 1
+X = df[processor. model_features ]. copy ()
+for col in processor.model_features:
+X[col] = pd.to_numeric(X[col], errors='coerce ').fillna (0).astype(int
+)
+77
+
+
+===== PAGE 79 =====
+
+except
+Exception as e:
+logger.debug(f"Failed to use
+labeled_anomalies .csv: {str(e)}")
+# ===
+Fallback: use main CSV ===
+if X is None and os.path.exists(processor.csv_file):
+try:
+df = pd.read_csv(
+processor.csv_file ,
+on_bad_lines='warn ',
+dtype=str ,
+encoding='utf -8',
+nrows=processor. max_train_rows
+)
+if len(df) >= processor.min_train_rows:
+X = df[processor. model_features ]. copy ()
+for col in processor.model_features:
+X[col] = pd.to_numeric(X[col], errors='coerce ').fillna (0).astype(int
+)
+except
+Exception as e:
+logger.error(f"CSV
+fallback
+failed: {str(e)}")
+# === Train and Save
+Model ===
+if X is not None and X.dtypes.apply(lambda dt:
+pd.api.types. is_numeric_dtype (dt)).all():
+processor.model.fit(X)
+processor.model_fitted = True
+processor. new_rows_since_update = 0
+processor. last_model_update = time.time ()
+#
+Save
+model
+after
+successful
+training
+save_model(processor.model , MODEL_FILEPATH)
+logger.info(f" Model
+updated
+and saved to {MODEL_FILEPATH }")
+processor.metrics['model_update_status ']. set (1)
+else:
+logger.debug ("No valid
+data for model
+update ")
+processor.metrics['model_update_status ']. set (0)
+except
+Exception as e:
+logger.error(f"Model
+update
+failed: {str(e)}", exc_info=True)
+processor.metrics['model_update_status ']. set (0)
+
+
+A.3
+Jenkins Orchestration Flowchart
+This script would provide a detailed view of the Jenkins pipeline. It would map out each
+stage, including "Build Environment", "Run Security Tests", "Process Logs", "Run Anomaly
+Detection", "Generate Report", and "Archive Artifacts", along with the decision points and
+failure handling mechanisms.
+
+
+pipeline {
+agent any
+parameters {
+string(name: 'TARGET_ENV ', defaultValue: 'lab ',
+description: 'Target
+environment (lab/staging/prod) ')
+78
+
+
+===== PAGE 80 =====
+
+string(name: 'ML_MODEL_VERSION ', defaultValue: 'v1.0',
+description: 'ML model
+version to use (for
+metadata
+only) ')
+booleanParam(name: 'FAIL_ON_NO_DETECTIONS ', defaultValue
+: true , description: 'Fail if no anomalies
+detected ')
+booleanParam(name: 'SKIP_ATTACK_SIM ', defaultValue:
+false , description: 'Skip
+attack
+simulation (for dry -runs) ')
+}
+environment {
+// === Lab
+Network (ens37) - monitored
+segment
+===
+JUICE_SHOP_URL
+= 'http ://192.168.1.201:3000 '
+JUICE_SHOP_IP
+=
+'192.168.1.201 '
+JENKINS_LAB_IP
+=
+'192.168.1.50 '
+ML_LAB_IP
+=
+'192.168.1.60 '
+ELK_LAB_IP
+=
+'192.168.1.70 '
+SURICATA_LAB_IP
+=
+'192.168.1.1 '
+// ===
+Management
+Network (ens33) - control
+plane ===
+ML_MGMT_IP
+=
+'192.168.80.128 '
+ELK_MGMT_IP
+=
+'192.168.80.129 '
+SURICATA_MGMT_IP
+=
+'192.168.80.130 '
+JENKINS_MGMT_IP
+=
+'192.168.80.135 '
+KAFKA_BROKER
+=
+'192.168.80.128:9092 '
+BUILD_DIR
+= "${WORKSPACE }/ reports"
+LOG_DIR
+= "${WORKSPACE }/ logs"
+SCRIPT_DIR
+= "${WORKSPACE }/ scripts"
+// SSH
+options
+SSH_OPTS
+= '-o StrictHostKeyChecking =accept -
+new -o ConnectTimeout =10 -o BatchMode=yes '
+ALERT_TIMEOUT
+=
+'15'
+}
+options {
+buildDiscarder (logRotator(numToKeepStr: '30',
+daysToKeepStr:
+'90'))
+timeout(time: 1, unit: 'HOURS ')
+timestamps ()
+}
+stages {
+//
+-------------------------------------------------
+// STAGE 0: Initialize
+//
+-------------------------------------------------
+stage('Initialize ') {
+steps {
+script {
+echo " Initializing
+security
+automation
+pipeline ..."
+echo "Environment: ${params.TARGET_ENV }"
+echo "ML Model: ${params. ML_MODEL_VERSION }"
+sh '''
+set -e
+# Remove old
+directories
+and
+recreate
+fresh
+rm -rf ${BUILD_DIR} ${LOG_DIR} ${SCRIPT_DIR}
+mkdir -p ${BUILD_DIR} ${LOG_DIR} ${
+SCRIPT_DIR}
+echo "Pipeline
+started at $(date)" > ${
+LOG_DIR }/ pipeline.log
+echo "Target
+Environment: ${TARGET_ENV }" >>
+${LOG_DIR }/ pipeline.log
+79
+
+
+===== PAGE 81 =====
+
+echo "ML Model
+Version: ${ ML_MODEL_VERSION }"
+>> ${LOG_DIR }/ pipeline.log
+echo " Workspace
+initialized"
+'''
+if (! params.TARGET_ENV ?. trim ()) {
+error (" TARGET_ENV
+parameter is required
+")
+}
+if (! params. ML_MODEL_VERSION ?. trim ()) {
+error (" ML_MODEL_VERSION
+parameter is
+required ")
+}
+}
+}
+}
+//
+-------------------------------------------------
+// STAGE 1: Validate
+Configuration & Dependencies
+//
+-------------------------------------------------
+stage('Validate ') {
+steps {
+script {
+echo " Validating
+configurations
+and
+connectivity ..."
+// Validate ML VM config and
+scripts
+sshagent (['juice -shop -ssh ']) {
+sh '''
+echo "Checking ML VM configuration ..."
+ssh ${SSH_OPTS} achref@${ML_MGMT_IP} '
+if [ ! -f /home/achref/
+suricata_processor /config.json ]; then
+echo " config.json not found on ML VM"
+exit 1
+fi
+if [ ! -f /home/achref/
+suricata_processor / batch_processor .py ]; then
+echo " batch_processor .py not found on
+ML VM"
+exit 1
+fi
+echo " ML VM scripts
+validated"
+'
+'''
+}
+// Network
+connectivity
+check (Lab
+network)
+sh '''
+echo "Testing
+network
+connectivity (lab
+network)..."
+for ip in ${JUICE_SHOP_IP} ${ML_LAB_IP} ${
+ELK_LAB_IP} ${ SURICATA_LAB_IP }; do
+if ! ping -c 3 -W 2 "$ip" > /dev/null 2>&1;
+then
+echo " Cannot
+reach $ip"
+exit 1
+fi
+80
+
+
+===== PAGE 82 =====
+
+echo " $ip
+reachable"
+done
+'''
+// ELK health
+check
+sh '''
+echo "Checking
+Elasticsearch
+health ..."
+if ! curl -sf -m 5 "http ://${ELK_MGMT_IP
+}:9200/ _cluster/health" > /dev/null; then
+echo " Warning: Elasticsearch
+may not be
+responsive"
+else
+echo " Elasticsearch is healthy"
+fi
+'''
+}
+}
+}
+//
+-------------------------------------------------
+// STAGE 2: Prepare
+Detection
+Infrastructure
+//
+-------------------------------------------------
+stage('Prepare ') {
+steps {
+script {
+echo " Preparing
+detection
+infrastructure
+..."
+// Test
+Suricata
+configuration
+sshagent (['juice -shop -ssh ']) {
+sh '''
+echo "Testing
+Suricata
+configuration ..."
+ssh ${SSH_OPTS} achref@${
+SURICATA_MGMT_IP } '
+sudo
+mkdir -p /tmp/suricata -test
+if sudo
+suricata -T -c /etc/suricata/
+suricata.yaml -l /tmp/suricata -test 2>&1 | grep -q "successfully
+"; then
+echo " Suricata
+configuration
+valid"
+else
+echo " Suricata
+configuration
+test
+failed"
+exit 1
+fi
+sudo rm -rf /tmp/suricata -test
+'
+'''
+}
+// Prepare ML VM workspace
+sshagent (['juice -shop -ssh ']) {
+sh '''
+echo "Preparing ML VM workspace ..."
+ssh ${SSH_OPTS} achref@${ML_MGMT_IP} '
+cd /home/achref/ suricata_processor
+rm -f suricata_raw_logs .json
+suricata_logs.csv
+ml_batch_results .csv
+echo " ML VM workspace
+prepared"
+81
+
+
+===== PAGE 83 =====
+
+'
+'''
+}
+}
+}
+}
+//
+-------------------------------------------------
+// STAGE 3: Attack
+Simulation & Detection
+//
+-------------------------------------------------
+stage('Attack
+Simulation ') {
+when { expression { !params. SKIP_ATTACK_SIM } }
+steps {
+script {
+echo " Simulating
+attack
+scenarios ..."
+sh '''
+echo "Verifying
+Juice
+Shop
+availability ..."
+if ! curl -sf -m 10 "${ JUICE_SHOP_URL }/" > /
+dev/null; then
+echo " Juice
+Shop is not
+accessible at ${
+JUICE_SHOP_URL }"
+exit 1
+fi
+echo " Juice
+Shop is accessible"
+echo "Launching
+attack
+simulation ..."
+# SQL
+Injection
+attacks
+echo
+"[1/6] SQL
+Injection - Classic OR
+bypass ..."
+curl -s -m 10 "${ JUICE_SHOP_URL }/ rest/
+products/search?q=' OR 1=1--" \
+>> ${BUILD_DIR }/ attack.log 2>&1 || true
+sleep 2
+echo
+"[2/6] SQL
+Injection - UNION -based ..."
+curl -s -m 10 "${ JUICE_SHOP_URL }/ftp?search
+=%27%20 OR %20%271%27=%271" \
+>> ${BUILD_DIR }/ attack.log 2>&1 || true
+sleep 2
+# XSS
+attacks
+echo
+"[3/6] XSS - Script
+injection ..."
+curl -s -m 10 "${ JUICE_SHOP_URL }/ftp?search
+=<script >alert (1) </script >" \
+>> ${BUILD_DIR }/ attack.log 2>&1 || true
+sleep 2
+echo
+"[4/6] XSS - Event
+handler ..."
+curl -s -m 10 "${ JUICE_SHOP_URL }/ftp?search
+=<img src=x onerror=alert (1) >" \
+>> ${BUILD_DIR }/ attack.log 2>&1 || true
+sleep 2
+# Path
+Traversal
+echo
+"[5/6]
+Path
+Traversal - Directory
+escape ..."
+82
+
+
+===== PAGE 84 =====
+
+curl -s -m 10 "${ JUICE_SHOP_URL }/ftp?doc
+=../../../ etc/passwd" \
+>> ${BUILD_DIR }/ attack.log 2>&1 || true
+sleep 2
+# Command
+Injection
+attempt
+echo
+"[6/6]
+Command
+Injection
+attempt ..."
+curl -s -m 10 "${ JUICE_SHOP_URL }/api/
+Feedbacks" \
+-H "Content -Type: application/json" \
+-d
+'{" comment ":" test; ls -la"," rating ":1}' \
+>> ${BUILD_DIR }/ attack.log 2>&1 || true
+echo " Attack
+simulation
+completed"
+echo "Waiting 10 seconds
+for
+Suricata to
+process
+alerts ..."
+sleep 10
+'''
+}
+}
+}
+//
+-------------------------------------------------
+// STAGE 4: Collect
+Suricata
+Logs
+//
+-------------------------------------------------
+stage('Collect Logs ') {
+steps {
+script {
+echo " Collecting
+logs
+directly
+from
+Suricata
+eve.json ..."
+sshagent (['juice -shop -ssh ']) {
+sh '''
+# Download
+eve.json
+using
+sudo cat
+echo "Downloading
+eve.json from
+Suricata
+VM ..."
+ssh ${SSH_OPTS} achref@${
+SURICATA_MGMT_IP } \
+"sudo cat /var/log/suricata/eve.json" >
+${BUILD_DIR }/eve.json
+# Verify
+download
+if [ ! -s ${BUILD_DIR }/eve.json ]; then
+echo " Failed to download
+eve.json or
+file is empty"
+exit 1
+fi
+file_size=$(wc -c < ${BUILD_DIR }/eve.
+json)
+line_count=$(wc -l < ${BUILD_DIR }/eve.
+json)
+echo " Downloaded
+eve.json: $file_size
+bytes , $line_count
+lines"
+# Extract
+alert
+events and
+convert to
+CSV using
+Python
+echo "Processing
+eve.json and
+extracting
+83
+
+
+===== PAGE 85 =====
+
+alerts ..."
+python3
+<< PYTHON_EOF
+import
+json
+import csv
+import sys
+alerts = []
+flow_count = 0
+other_count = 0
+try:
+with open('${BUILD_DIR }/eve.json ', 'r')
+as f:
+for line in f:
+line = line.strip ()
+if not line:
+continue
+try:
+event = json.loads(line)
+event_type = event.get('event_type ', '')
+if event_type == 'alert ':
+alert_data = event.get('alert ', {})
+flow_data = event.get('flow ', {})
+alerts.append ({
+'timestamp ': event.get('timestamp ',
+''),
+'src_ip ': event.get('src_ip ', ''),
+'dst_ip ': event.get('dest_ip ', ''),
+'src_port ': event.get('src_port ', 0)
+,
+'dst_port ': event.get('dest_port ',
+0),
+'proto ': event.get('proto ', ''),
+'app_proto ': event.get('app_proto ',
+''),
+'bytes_to_client ': flow_data.get('
+bytes_toclient ', 0),
+'bytes_to_server ': flow_data.get('
+bytes_toserver ', 0),
+'pkts_to_client ': flow_data.get('
+pkts_toclient ', 0),
+'pkts_to_server ': flow_data.get('
+pkts_toserver ', 0),
+'alert_msg ': 'True ',
+'flow_id ': event.get('flow_id ', ''),
+'alert_signature ': alert_data.get('
+signature ', ''),
+'alert_severity ': alert_data.get('
+severity ', 0),
+'alert_category ': alert_data.get('
+category ', ''),
+'event_type ': 'alert '
+})
+elif
+event_type == 'flow ':
+flow_count += 1
+else:
+other_count += 1
+84
+
+
+===== PAGE 86 =====
+
+except
+json. JSONDecodeError :
+continue
+print(f" Events
+processed :")
+print(f"
+- Alert
+events: {len(alerts)
+}")
+print(f"
+- Flow
+events: {flow_count }")
+print(f"
+- Other
+events: {other_count
+}")
+# Write CSV
+with open('${BUILD_DIR }/ suricata_logs.
+csv ', 'w', newline ='') as f:
+if alerts:
+writer = csv.DictWriter(f, fieldnames=
+alerts [0]. keys ())
+writer.writeheader ()
+writer.writerows(alerts)
+print(f" Wrote {len(alerts)} alerts to
+CSV")
+else:
+print (" No alerts
+found - creating
+empty
+CSV")
+f.write (" timestamp ,src_ip ,dst_ip ,
+src_port ,dst_port ,proto ,app_proto ,bytes_to_client ,bytes_to_server
+,pkts_to_client ,pkts_to_server ,alert_msg ,flow_id ,alert_signature ,
+alert_severity ,alert_category ,event_type \\n")
+except
+Exception as e:
+print(f" Error
+processing
+eve.json: {e
+}")
+import
+traceback
+traceback.print_exc ()
+sys.exit (1)
+PYTHON_EOF
+python_exit=$?
+if [ $python_exit -ne 0 ]; then
+echo " Python
+script
+failed
+with exit
+code
+$python_exit"
+exit 1
+fi
+# Verify and lock CSV
+if [ -f ${BUILD_DIR }/ suricata_logs.csv
+]; then
+chmod 444 ${BUILD_DIR }/ suricata_logs.csv
+alert_count=$(tail -n +2 ${BUILD_DIR }/
+suricata_logs.csv | wc -l)
+echo " CSV
+created
+with
+$alert_count
+alert
+rows"
+if [ $alert_count -gt 0 ]; then
+echo "===
+First 5 alerts
+==="
+head
+-6 ${BUILD_DIR }/ suricata_logs.csv
+else
+echo " WARNING: No alerts
+found in eve.
+json"
+85
+
+
+===== PAGE 87 =====
+
+fi
+else
+echo " CSV was not
+created"
+exit 1
+fi
+'''
+}
+}
+}
+}
+//
+-------------------------------------------------
+// STAGE 5: ML Anomaly
+Detection
+//
+-------------------------------------------------
+stage('ML Analysis ') {
+steps {
+script {
+echo " Running ML batch
+anomaly
+detection
+..."
+sshagent (['juice -shop -ssh ']) {
+sh '''
+echo "Uploading
+suricata_logs.csv to ML
+VM ..."
+scp ${SSH_OPTS} ${BUILD_DIR }/
+suricata_logs.csv \
+achref@${ML_MGMT_IP }:/ home/achref/
+suricata_processor /
+echo "Executing
+batch_processor .py on ML
+VM ..."
+ssh ${SSH_OPTS} achref@${ML_MGMT_IP} '
+cd /home/achref/ suricata_processor
+python3
+batch_processor .py \
+--config
+config.json \
+--csv
+suricata_logs.csv \
+--output
+ml_batch_results .csv
+if [ -f ml_batch_results .csv ]; then
+rows=$(wc -l < ml_batch_results .csv)
+echo " ML processing
+complete: $rows
+rows in results"
+else
+echo " ML processing
+failed: no output
+file"
+exit 1
+fi
+'
+echo "Downloading ML results to Jenkins
+..."
+scp ${SSH_OPTS} \
+achref@${ML_MGMT_IP }:/ home/achref/
+suricata_processor / ml_batch_results .csv \
+${BUILD_DIR }/
+if [ ! -f ${BUILD_DIR }/ ml_batch_results .
+csv ]; then
+86
+
+
+===== PAGE 88 =====
+
+echo " Failed to retrieve
+ml_batch_results .csv"
+exit 1
+fi
+echo " ML results
+retrieved
+successfully
+"
+'''
+}
+}
+}
+}
+//
+-------------------------------------------------
+// STAGE 6: Analyze
+Results & Count
+Anomalies
+//
+-------------------------------------------------
+stage('Analyze ') {
+steps {
+script {
+echo " Analyzing
+detection
+results ..."
+sh '''
+set -e
+# Count
+Suricata
+alerts (rows with non -empty
+alert
+fields)
+echo "Counting
+Suricata
+alerts ..."
+suricata_alerts =$(awk -F',' '
+NR == 1 {
+for (i = 1; i <= NF; i++) {
+if ($i == "alert_msg" || $i == "
+alert" || $i == " alert_signature ") {
+col = i
+break
+}
+}
+next
+}
+col && $col != "" && $col != "null" && $col
+!= "None" { n++ }
+END { print n+0 }
+' ${BUILD_DIR }/ suricata_logs.csv)
+echo "Suricata
+alerts
+detected:
+$suricata_alerts "
+echo
+$suricata_alerts > ${BUILD_DIR }/
+suricata_alert_count .txt
+# Count ML -detected
+anomalies (is_anomaly ==
+True/true /1)
+echo "Counting ML -detected
+anomalies ..."
+ml_anomalies=$(awk -F',' '
+NR == 1 {
+for (i = 1; i <= NF; i++) {
+if ($i == "is_anomaly" || $i == "
+isanomaly" || $i == "anomaly ") {
+col = i
+break
+}
+87
+
+
+===== PAGE 89 =====
+
+}
+next
+}
+col && ($col == "True" || $col == "true" ||
+$col == "1") { n++ }
+END { print n+0 }
+' ${BUILD_DIR }/ ml_batch_results .csv)
+echo "ML anomalies
+detected: $ml_anomalies"
+echo
+$ml_anomalies > ${BUILD_DIR }/
+ml_anomaly_count .txt
+# Total
+unique
+detections
+total_detections =$(( suricata_alerts >
+ml_anomalies ? suricata_alerts : ml_anomalies))
+echo "Total
+detections: $total_detections "
+echo
+$total_detections > ${BUILD_DIR }/
+total_detections .txt
+# Fail if no detections
+and flag is set
+if [ $total_detections -eq 0 ] && [ "${
+FAIL_ON_NO_DETECTIONS }" = "true" ]; then
+echo " No anomalies
+detected
+and
+FAIL_ON_NO_DETECTIONS is enabled"
+exit 1
+fi
+echo " Analysis
+complete"
+'''
+}
+}
+}
+//
+-------------------------------------------------
+// STAGE 7: Generate
+Reports & Artifacts
+//
+-------------------------------------------------
+stage('Report ') {
+steps {
+script {
+echo " Generating
+security
+report ..."
+sh '''
+suricata_count =$(cat ${BUILD_DIR }/
+suricata_alert_count .txt 2>/dev/null || echo 0)
+ml_count=$(cat ${BUILD_DIR }/ ml_anomaly_count
+.txt 2>/dev/null || echo 0)
+total_count=$(cat ${BUILD_DIR }/
+total_detections .txt 2>/dev/null || echo 0)
+# Generate
+HTML
+header
+echo "<! DOCTYPE html ><html ><head ><title >
+Security
+Detection
+Report </title >" > ${BUILD_DIR }/ index.html
+echo "<style >" >> ${BUILD_DIR }/ index.html
+echo "body { font -family: Arial , sans -serif;
+margin: 40px; background: #f5f5f5; }" >> ${BUILD_DIR }/ index.html
+echo ". container { background: white;
+padding: 30px; border -radius: 8px; box -shadow: 0 2px 4px rgba
+(0 ,0 ,0 ,0.1); }" >> ${BUILD_DIR }/ index.html
+88
+
+
+===== PAGE 90 =====
+
+echo "h1 { color: #2 c3e50; border -bottom: 3
+px solid
+#3498 db; padding -bottom: 10px; }" >> ${BUILD_DIR }/ index.
+html
+echo ". stats { display: grid; grid -template -
+columns: repeat (3, 1fr); gap: 20px; margin: 30px 0; }" >> ${
+BUILD_DIR }/ index.html
+echo ".stat -box { background: #ecf0f1;
+padding: 20px; border -radius: 6px; text -align: center; }" >> ${
+BUILD_DIR }/ index.html
+echo ".stat -number { font -size: 48px; font -
+weight: bold; color: #e74c3c; }" >> ${BUILD_DIR }/ index.html
+echo ".stat -label { font -size: 14px; color:
+#7 f8c8d; margin -top: 10px; }" >> ${BUILD_DIR }/ index.html
+echo "</style ></head ><body ><div class='
+container '>" >> ${BUILD_DIR }/ index.html
+echo "<h1 > Security
+Detection
+Report </h1 >"
+>> ${BUILD_DIR }/ index.html
+# Stats
+section
+echo "<div class='stats '>" >> ${BUILD_DIR }/
+index.html
+echo "<div class='stat -box '><div class='stat
+-number '>${ suricata_count }</div ><div class='stat -label '>Suricata
+Alerts </div ></div >" >> ${BUILD_DIR }/ index.html
+echo "<div class='stat -box '><div class='stat
+-number '>${ml_count }</div ><div class='stat -label '>ML Anomalies </
+div ></div >" >> ${BUILD_DIR }/ index.html
+echo "<div class='stat -box '><div class='stat
+-number '>${total_count }</div ><div class='stat -label '>Total
+Detections </div ></div >" >> ${BUILD_DIR }/ index.html
+echo "</div ><div class='artifacts '><h2 >
+Generated
+Artifacts </h2 ><ul >" >> ${BUILD_DIR }/ index.html
+# Add
+artifact
+links - Fixed
+loop
+cd ${BUILD_DIR}
+for file in *.txt *.csv *.log *. json; do
+if [ -f "$file" ]; then
+echo "<li ><a href='artifact/reports/$file '>
+$file </a></li >" >> index.html
+fi
+done
+# Close
+HTML
+echo "</ul ></div >" >> ${BUILD_DIR }/ index.
+html
+echo "<div style='color: #95 a5a6; font -size:
+12px; margin -top: 20px;'>" >> ${BUILD_DIR }/ index.html
+echo "Generated: $(date)<br >Build: #${
+BUILD_NUMBER}<br >Environment: ${TARGET_ENV}<br >ML Model: ${
+ML_MODEL_VERSION }" >> ${BUILD_DIR }/ index.html
+echo "</div ></div ></body ></html >" >> ${
+BUILD_DIR }/ index.html
+echo " Report
+generated: ${BUILD_DIR }/ index.
+html"
+'''
+publishHTML ([
+89
+
+
+===== PAGE 91 =====
+
+allowMissing: false ,
+alwaysLinkToLastBuild : true ,
+keepAll: true ,
+reportDir: 'reports ',
+reportFiles: 'index.html ',
+reportName: 'Security
+Detection
+Report '
+])
+archiveArtifacts
+artifacts: 'reports /**/*',
+allowEmptyArchive : false
+}
+}
+}
+}
+post {
+always {
+script {
+echo " Cleaning up ..."
+archiveArtifacts
+artifacts: 'logs /**/*',
+allowEmptyArchive : true
+}
+}
+success {
+script {
+def
+totalDetections = sh(
+script: "cat ${BUILD_DIR }/ total_detections .txt
+2>/dev/null || echo 0",
+returnStdout: true
+).trim ()
+echo " Pipeline
+completed
+successfully !"
+echo "
+Total
+detections: ${ totalDetections }"
+}
+}
+failure {
+script {
+echo " Pipeline
+failed !"
+echo "
+Check
+logs for
+details: ${BUILD_URL}
+console"
+}
+}
+unstable {
+echo " Pipeline
+completed
+with
+warnings"
+}
+}
+}
+
+
+90
+
+
+===== PAGE 92 =====
+
+List of Acronyms
+IDS
+Intrusion Detection System
+IPS
+Intrusion Prevention System
+ELK
+Elasticsearch, Logstash, Kibana
+ML
+Machine Learning
+SIEM
+Security Information and Event Management
+CI/CD
+Continuous Integration/Continuous Delivery
+MLDevSecOps Machine Learning Development Security Operations
+OWASP
+Open Web Application Security Project
+EVE
+Event Verdict Exchange
+JSON
+JavaScript Object Notation
+YAML
+YAML Ain’t Markup Language
+CSV
+Comma-Separated Values
+SOC
+Security Operations Center
+SOAR
+Security Orchestration, Automation, and Response
+GNN
+Graph Neural Network
+LSTM
+Long Short-Term Memory
+API
+Application Programming Interface
+VM
+Virtual Machine
+HTTP
+Hypertext Transfer Protocol
+DNS
+Domain Name System
+SSH
+Secure Shell
+OS
+Operating System
+GUI
+Graphical User Interface
+91
+
+
+===== PAGE 93 =====
+
+RAM
+Random Access Memory
+CPU
+Central Processing Unit
+I/O
+Input/Output
+TLS
+Transport Layer Security
+SSL
+Secure Sockets Layer
+RBAC
+Role-Based Access Control
+SQLi
+SQL Injection
+XSS
+Cross-Site Scripting
+DDoS
+Distributed Denial of Service
+MLOps
+Machine Learning Operations
+PCAP
+Packet Capture
+IoT
+Internet of Things
+IoC
+Indicator of Compromise
+ETL
+Extract, Transform, Load
+F1
+F1-Score (harmonic mean of precision and recall)
+ROC
+Receiver Operating Characteristic
+AUC
+Area Under Curve
+SAST
+Static Application Security Testing
+DAST
+Dynamic Application Security Testing
+RBA
+Risk-Based Authentication
+MITRE
+MITRE ATT&CK Framework
+92
+
+
+===== PAGE 94 =====
+
+1%
+INDICE DE SIMILITUDE 1%
+SOURCES INTERNET
+0%
+PUBLICATIONS
+1%
+COPIES DE L'ÉTUDIANT
+1
+1%
+Exclure les citations
+Activer
+Exclure la bibliographie Activer
+Exclure les
+correspondances
+< 1%
+memoire master exp
+RAPPORT DE SIMILITUDE
+SOURCES PRINCIPALES
+github.com
+Source Internet

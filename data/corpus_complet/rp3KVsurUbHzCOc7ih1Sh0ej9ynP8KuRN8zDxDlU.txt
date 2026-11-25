@@ -1,0 +1,2091 @@
+===== PAGE 1 =====
+
+ 
+ 
+République Tunisienne 
+ 
+ 
+ 
+Université de Monastir 
+Institut Supérieur d’Informatique de 
+Mahdia 
+ 
+MEMOIRE 
+ 
+N° d’ordre: LCS-GLSI-3-
+2025-079  
+Ministère de l’Enseignement Supérieur et 
+de la Recherche Scientifique  
+ 
+ 
+ 
+MEMOIRE  
+                                                 
+Présenté à 
+ 
+Institut Supérieur d’Informatique de Mahdia 
+                                                 
+ Effectué à 
+ 
+ISIMA 
+ 
+ 
+En vue de l’obtention du diplôme de 
+ 
+Licence  Computer Science : Génie Logiciel et Système d'Information 
+Licence  Computer Science : Génie Logiciel et Système d'Information 
+ 
+Elaboré par : 
+ 
+KARKOUB SABRINE, AMOR MEY 
+ 
+     
+SmartLivestockCare :Système Intelligent de Surveillance et de Gestion des 
+Bétails et de leurs Nourritures par un Système Embarqué et Intelligence 
+Artificielle 
+ 
+ 
+ 
+Soutenu le :  12 juin 2025  
+devant le  jury composé de : 
+ 
+ 
+Président 
+ : Afef Ahmed 
+Rapporteur 
+: Najoua Achoura 
+Encadreur Académique 
+ : Wided Bendaoud 
+Encadrant   Professionnel 
+: Isima Isima 
+ 
+ 
+ 
+
+
+===== PAGE 2 =====
+
+Remerciements
+Nous tenons à exprimer notre sincère gratitude à toutes les personnes qui nous ont
+soutenus et accompagnés tout au long de la réalisation de ce projet.
+Nous remercions chaleureusement notre encadrante, madame , Wided BEN DAOUD,
+pour son accompagnement précieux, sa disponibilité constante et ses conseils avisés, qui
+ont grandement contribué à l’orientation et à la réussite de notre travail.
+Nous exprimons également notre reconnaissance à l’ensemble des enseignants pour la
+qualité de leur enseignement et leur engagement, qui ont été essentiels à l’acquisition des
+compétences nécessaires à la conduite de ce projet.
+Nos remerciements vont également à l’ Institut supérieur d’informatique de
+Mahdia (ISIMA), pour les moyens matériels et pédagogiques mis à notre disposition,
+ainsi que pour le cadre favorable à l’apprentissage et à l’innovation qu’elle offre à ses
+étudiants.
+Enfin, nous remercions nos familles et nos proches pour leur soutien moral, leur pa-
+tience et leurs encouragements continus, qui nous ont permis d’avancer avec confiance
+tout au long de ce parcours.
+i
+
+
+===== PAGE 3 =====
+
+Table des matières
+Liste des figures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+iii
+Liste des tableaux . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+iv
+Liste des abréviations
+vi
+Introduction Générale
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1
+1
+Cadre général du projet
+2
+1.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.2
+Problématiques . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.3
+Présentation du projet . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2
+1.4
+Étude de l’existant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3
+1.5
+Solution proposée . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.6
+Objectifs spécifiques du projet . . . . . . . . . . . . . . . . . . . . . . . . .
+4
+1.7
+Recensement des besoins . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.7.1
+Besoins fonctionnels
+. . . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.7.2
+Besoins non fonctionnels . . . . . . . . . . . . . . . . . . . . . . . .
+5
+1.8
+Choix méthodologique
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+1.9
+Adaptabilité du système à différents types d’élevage . . . . . . . . . . . . .
+6
+1.10 Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6
+2
+Architecture technologique du système SmartLivestockCare
+7
+2.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7
+2.2
+Architecture du système IoT
+. . . . . . . . . . . . . . . . . . . . . . . . .
+7
+2.2.1
+Choix des composants matériels
+. . . . . . . . . . . . . . . . . . .
+7
+2.2.2
+Etapes de programmation et de développement embarqué . . . . .
+8
+2.2.3
+Communication des données
+. . . . . . . . . . . . . . . . . . . . .
+9
+2.2.4
+Visualisation et stockage des données . . . . . . . . . . . . . . . . .
+10
+2.2.5
+Synchronisation des fichiers CSV avec Syncthing . . . . . . . . . . .
+10
+2.2.6
+ESP32-CAM : dispositif autonome de capture d’images . . . . . . .
+10
+2.2.7
+Schéma du système IOT . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.3
+Intégration de l’Intelligence Artificielle (IA)
+. . . . . . . . . . . . . . . . .
+12
+2.3.1
+Introduction à l’IA . . . . . . . . . . . . . . . . . . . . . . . . . . .
+12
+2.3.2
+Outils et environnements IA utilisés . . . . . . . . . . . . . . . . . .
+15
+2.3.3
+Application de l’IA à l’élevage . . . . . . . . . . . . . . . . . . . . .
+16
+2.3.4
+Schéma de l’Intelligence Artificielle (IA) — Architecture IA et Don-
+nées
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+18
+2.4
+Pipeline de données du système SmartLivestockCare : IoT vers IA . . . . .
+19
+2.5
+Conclusion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+21
+ii
+
+
+===== PAGE 4 =====
+
+3
+Réalisation et Résultats du projet
+22
+3.1
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.2
+Résultats du système embarqué . . . . . . . . . . . . . . . . . . . . . . . .
+22
+3.2.1
+Affichage du test du système embarqué . . . . . . . . . . . . . . . .
+22
+3.2.2
+Transmission des Données via MQTT Mosquitto . . . . . . . . . . .
+23
+3.2.3
+Visualisation via Node-RED . . . . . . . . . . . . . . . . . . . . . .
+24
+3.2.4
+Évaluation des résultats obtenus . . . . . . . . . . . . . . . . . . . .
+28
+3.3
+Résultats de la partie Intelligence Artificielle . . . . . . . . . . . . . . . . .
+29
+3.3.1
+Préparation des données . . . . . . . . . . . . . . . . . . . . . . . .
+29
+3.3.2
+Modélisation et Entraînement . . . . . . . . . . . . . . . . . . . . .
+31
+3.3.3
+Résultats et Évaluations . . . . . . . . . . . . . . . . . . . . . . . .
+33
+3.4
+Conclusion
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+46
+Conclusion Générale
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+47
+iii
+
+
+===== PAGE 5 =====
+
+Table des figures
+2.1
+Mosquitto . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9
+2.2
+Node-Red . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10
+2.3
+Architecture du systeme IOT
+. . . . . . . . . . . . . . . . . . . . . . . . .
+11
+2.4
+Architecture fonctionnelle du système intelligent développé pour la
+surveillance des bovins . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+19
+2.5
+Architecture globale du système SmartLivestockCare
+. . . . . . . . . . . .
+21
+3.1
+Affichage des données capteurs sur le moniteur série Arduino IDE . . . . .
+23
+3.2
+Suivi de la communication MQTT entre l’ESP32, Mosquitto et Node-RED
+24
+3.3
+Préparation du Dashboard . . . . . . . . . . . . . . . . . . . . . . . . . . .
+27
+3.4
+Interface du tableau de bord . . . . . . . . . . . . . . . . . . . . . . . . . .
+28
+3.5
+Affichage de données dans Tableau de bord Node-Red et moniteur série IDE
+29
+3.6
+Capture d’écran du code de découpage des données accélérométriques en
+séquences temporelles glissantes pour le LSTM.
+. . . . . . . . . . . . . . .
+30
+3.7
+Capture des résultats de la classification d’images (malade/sain) à l’aide
+du modèle . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+31
+3.8
+Prédiction sur les images de vaches (Saine vs Malade) . . . . . . . . . . . .
+33
+3.9
+Score de précision (accuracy) et rapport de classification
+. . . . . . . . . .
+34
+3.10 Distrubution de fréquence cardiaque
+. . . . . . . . . . . . . . . . . . . . .
+35
+3.11 Matrice de confusion pour le modèle Random Forest . . . . . . . . . . . . .
+36
+3.12 Distribution de température du corps . . . . . . . . . . . . . . . . . . . . .
+37
+3.13 Distribution de l’apport vs besoin en UFL
+. . . . . . . . . . . . . . . . . .
+37
+3.14 Apport nutritionnel estimé (UFL) en fonction de la température . . . . . .
+38
+3.15 Importance des variables nutritionnelles et environnementales
+. . . . . . .
+38
+3.16 Courbe ROC du modèle binaire (Stress vs Normal)
+. . . . . . . . . . . . .
+39
+3.17 Comparaison des performances des modèles : Random Forest vs XGBoost .
+39
+3.18 Distribution des Variables Nutritionnelles . . . . . . . . . . . . . . . . . . .
+40
+3.19 classification_report
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+40
+3.20 Interface – Page d’accueil de l’application Streamlit . . . . . . . . . . . . .
+41
+3.21 Interface – Diagnostic visuel par IA (vache saine / malade) . . . . . . . . .
+42
+3.22 Interface – Alimentation et environnement en temps réel
+. . . . . . . . . .
+43
+3.23 Interface – Détection des comportements critiques (LSTM) . . . . . . . . .
+44
+3.24 Interface – Historique des alertes critiques détectées . . . . . . . . . . . . .
+45
+3.25 Interface – Surveillance des signes vitaux et diagnostic de santé
+. . . . . .
+46
+iv
+
+
+===== PAGE 6 =====
+
+Liste des tableaux
+2.1
+Classification des types d’IA par capacité et par fonctionnement . . . . . .
+13
+2.2
+Différences entre un modèle d’IA et un agent intelligent . . . . . . . . . . .
+14
+2.3
+Les principaux types de modèles d’Intelligence Artificielle . . . . . . . . . .
+15
+2.4
+Résumé des jeux de données utilisés dans le projet SmartLivestockCare. . .
+18
+v
+
+
+===== PAGE 7 =====
+
+Liste des abréviations
+AI : Intelligence Artificielle
+CNN : Convolutional Neural Network
+IoT : Internet des Objets
+LSTM : Long Short-Term Memory
+MQTT : Message Queuing Telemetry Transport
+UFL : Ultra Fréquence Localisation
+vi
+
+
+===== PAGE 8 =====
+
+Introduction général
+À une époque où l’agriculture mondiale fait face à des défis sans précédent - le dérè-
+glement climatique, la pénurie de main-d’œuvre, l’émergence de maladies animales, l’aug-
+mentation des exigences en matière de bien-être animal - la transition vers une agriculture
+intelligente et durable n’est plus une option, mais une urgence.
+C’est dans cet environnement dynamique que SmartLivestockCare s’intègre, un projet
+innovant à l’interface de l’agriculture, de l’intelligence artificielle et de l’Internet des ob-
+jets. Ce n’est pas simplement une application ou une plateforme : c’est une nouvelle façon
+de penser à l’élevage, une fusion de technologies avancées et de l’instinct des éleveurs,
+entre la science des données et l’attention portée au vivant. Développé pour répondre aux
+besoins de toutes les espèces animales - bovins, ovins, caprins, équins, volailles - ce système
+fournit une surveillance continue, intelligente et autonome de la santé, du comportement
+et de l’environnement des animaux. Il anticipe, détecte, avertit et assiste. Il offre à chaque
+agriculteur, même le plus isolé, les moyens d’agir avec précision, réactivité et calme. Pour
+démontrer sa faisabilité et son efficacité, ce projet se concentre initialement sur un cas
+emblématique : les vaches, un véritable pilier de nombreuses fermes. En intégrant des cap-
+teurs biométriques, des modèles d’apprentissage, des machines prédictifs et une interface
+visuelle intuitive, SmartLivestockCare transforme une ferme en un écosystème intelligent
+où chaque donnée devient une action préventive. Ce projet est bien plus qu’un simple
+outil : c’est une vision d’une agriculture réconciliée avec la technologie, où l’innovation
+devient un levier de respect, d’éthique, de performance et d’humanité. En mettant la
+technologie au service de la vie, SmartLivestockCare pose les bases d’un nouveau mo-
+dèle agricole, plus résilient, plus efficace et profondément respectueux des animaux et des
+personnes qui les élèvent.
+Notre rapport s’articule autour de trois chapitres principaux, retraçant les étapes clés
+du projet. Il débute par une introduction générale définissant le contexte, les objectifs et
+l’intérêt de la solution proposée. Le deuxième chapitre explore les technologies mobilisées,
+telles que l’internet des objets et l’intelligence artificielle. Enfin, le dernier chapitre est
+consacré à la mise en œuvre technique du système. Des annexes viennent compléter le
+contenu avec des schémas, extraits de code et sources utilisées.
+1
+
+
+===== PAGE 9 =====
+
+Chapitre 1
+Cadre général du projet
+1.1
+Introduction
+Le présent chapitre trace les contours de notre projet, en exposant d’une part les
+contraintes et les aspirations du terrain, et d’autre part, les limites manifestes des systèmes
+traditionnels. Il dresse aussi un état des lieux des solutions technologiques existantes, tout
+en justifiant nos choix d’architecture et de méthodologie pour répondre à des besoins réels,
+concrets et pressants.
+1.2
+Problématiques
+Dans le contexte de l’agriculture moderne, les éleveurs sont confrontés à des enjeux
+majeurs. Les méthodes classiques de gestion du troupeau montrent ses limites, lorsqu’il
+s’agit de suivre en temps réel la santé, la localisation ou le comportement des animaux.
+De plus, sans détection précoce, les maladies et les blessures sont souvent identifiées trop
+tard, ce qui engendre des pertes financières notables.
+En ce qui concerne l’alimentation, l’absence de contrôle qualité, l’approximation dans
+les rations ou la conservation inadéquate des aliments peuvent nuire à la santé du bétail, et
+entraîner une baisse de productivité et occasionner du gaspillage important. Les systèmes
+classiques présentent plusieurs limites :
+— Faible automatisation, nécessitant une surveillance humaine constante.
+— Incapables de fournir une vision globale et en temps réel.
+— Incompatibilité avec les nouvelles technologies comme l’intelligence artificielle (IA)
+ou l’internet des objets (IoT) .
+1.3
+Présentation du projet
+L’élevage moderne, à l’ère du numérique, ne peut plus se contenter de pratiques em-
+piriques et manuelles[1]. Les éleveurs, soumis à une pression croissante en matière de
+rentabilité, de bien-être animal et de durabilité, se retrouvent souvent démunis face à la
+complexité grandissante de la gestion quotidienne de leurs troupeaux. Dans ce contexte
+où les enjeux agricoles se complexifient, le recours à des outils modernes, réactifs et intel-
+ligents devient incontournable. C’est dans cette perspective que nous lançons un projet
+innovant, destiné à révolutionner profondément les pratiques d’élevage [2].
+2
+
+
+===== PAGE 10 =====
+
+Ce projet adopte une approche novatrice, focalisée sur la collecte et l’analyse en temps
+réel des données essentielles concernant la santé, le comportement et les déplacements
+des animaux d’élevage. L’objectif principal est de fournir aux éleveurs une vision claire
+et instantanée de leur cheptel, facilitant ainsi la prise de décisions, l’amélioration de la
+productivité, la prévention des risques sanitaires et l’optimisation des ressources.
+Au-delà d’une simple automatisation, ce système vise à établir une relation plus in-
+telligente, éthique et durable entre l’homme, l’animal et son environnement. Grâce à une
+plateforme intuitive, les utilisateurs pourront gérer leur élevage de façon proactive, tout
+en allégeant leur charge de travail quotidienne.
+Ce projet s’inscrit dans une vision tournée vers l’avenir : celle d’une agriculture connec-
+tée, plus humaine, plus performante et respectueuse du bien-être animal. Notre projet est
+nommé SmartLivestockCare.
+1.4
+Étude de l’existant
+Le développement de l’IoT, de l’intelligence artificielle a favorisé l’émergence de nom-
+breuses solutions innovantes dans le domaine de l’élevage bovin intelligent, notamment
+pour le suivi de la santé et du comportement des animaux d’élevage. Différents projets
+ont été développés, tant dans le milieu académique qu’en entreprise, afin d’améliorer la
+gestion des troupeaux, la détection précoce des maladies et l’automatisation de certaines
+tâches de suivi. Cependant, L’analyse des projets en cours montre plusieurs limites com-
+munes : faible utilisation des données, manque d’analyse intelligente ou de comportement
+animal, forte dépendance à Internet et manque de flexibilité dans certains systèmes fer-
+més. Cette étude cherche donc à évaluer ces solutions, et à comprendre leurs avantages et
+leurs inconvénients, afin de suggérer des pistes pour créer des systèmes plus complets, ef-
+ficaces et adaptatifs sur le terrain. Ces limitations peuvent être techniques, fonctionnelles
+ou économiques, comme nous le verrons ci-dessous.
+Smart Cow Monitoring System using IoT (2019)
+Ce projet s’appuie sur une carte des ESP8266 reliée à des capteurs physiologiques (tem-
+pérature, fréquence cardiaque, humidité), avec le transfert des données vers l’application
+mobile via une connexion Wi-Fi. Ce projet présente des restrictions majeurs comme :
+— Les données sont limitées à des paramètres physiologiques, sans tenir compte du
+comportement ou de l’environnement.
+— Manque de mécanismes d’analyse intelligents (pas d’algorithmes d’apprentissage
+automatique).
+— La dépendance au Wi-Fi, qui limite l’utilisation dans les zones rurales à faible cou-
+verture.
+Cattle Monitoring Using Raspberry Pi and Cloud (2020)
+Une caméra, quelques capteurs, et un envoi vers Firebase. L’interprétation ? Des règles
+statiques, sans IA.
+— Traitement cloud uniquement.
+— Pas de modèles prédictifs.
+— Dépendance constante à Internet.
+3
+
+
+===== PAGE 11 =====
+
+Moocall / Cowlar – Solutions commerciales
+Des objets connectés séduisants sur le papier.
+— Très chers.
+— Fermés et peu transparents : boîte noire.
+— Peu adaptables ou interconnectables avec d’autres outils.
+1.5
+Solution proposée
+SmartLivestockCare s’impose comme une percée technologique audacieuse dans le do-
+maine de l’élevage bovin, en fusionnant harmonieusement l’Internet des Objets, la vision
+artificielle et l’intelligence artificielle dans une solution intelligente, agile et évolutive. Vé-
+ritable sentinelle numérique du cheptel, cette plateforme embarquée orchestre un réseau
+complexe de capteurs (température, humidité, accéléromètres, GPS. . .) et de modules
+visuels pilotés par des microcontrôleurs ESP32, pour capter en temps réel les signaux vi-
+taux, les dynamiques comportementales et les variables environnementales des animaux.
+Les flux de données, riches et hétérogènes, sont traités à la volée via des algorithmes
+d’apprentissage automatique — qu’il s’agisse de réseaux de neurones convolutifs ou de
+forêts aléatoires — selon un traitement hybride entre périphérie et cloud. L’ossature logi-
+cielle, propulsée par le protocole MQTT, assure une transmission fluide et résiliente même
+en conditions de connectivité instable, tandis que les données sont archivées de manière
+structurée pour garantir une traçabilité optimale. Pensée dans une logique de modularité,
+d’accessibilité open source et de robustesse énergétique, SmartLivestockCare transcende
+les contraintes des environnements ruraux pour offrir une veille sanitaire proactive, une
+gouvernance optimisée du troupeau et une rationalisation stratégique des coûts. Ce n’est
+pas seulement un outil technologique — c’est une révolution silencieuse au service d’une
+agriculture plus lucide, durable et profondément humaine.
+1.6
+Objectifs spécifiques du projet
+Le projet SmartLiveStockCare vise à atteindre plusieurs objectifs stratégiques pour
+améliorer l’efficacité et la rentabilité des élevages :
+— Optimisation dans le suivi de la santé animale : Mettre en œuvre des solutions inno-
+vantes de surveillance de la santé en temps réel, permettant une détection précoce
+des maladies et une gestion proactive des soins vétérinaires.
+— Amélioration des coûts d’exploitation : Réduisez les coûts d’exploitation en auto-
+matisant les processus de gestion, en optimisant l’utilisation des ressources et en
+réduisant les dépenses liées à la maintenance et à l’alimentation.
+— Augmentation optimale de la productivité : Maximiser la productivité en utilisant
+des technologies avancées pour améliorer les rendements des exploitations agricoles,
+tout en garantissant le bien-être des animaux et la durabilité des pratiques agricoles.
+— Développement technologique continu : Assurer un développement technologique
+constant en intégrant les dernières innovations dans le domaine de l’agriculture
+intelligente, afin de garantir une adaptation continue aux évolutions du marché et
+aux besoins des exploitations agricoles.
+4
+
+
+===== PAGE 12 =====
+
+1.7
+Recensement des besoins
+Nous présentons les divers besoins fonctionnels et non fonctionnels de notre projets
+1.7.1
+Besoins fonctionnels
+SmartLivestockCare agit comme un véritable gardien numérique du troupeau, orches-
+trant une symphonie technologique où chaque capteur joue sa partition. Conçu pour
+s’adapter à tous les types d’animaux d’élevage, ce système polyvalent vise à optimiser la
+surveillance et le bien-être de l’ensemble des espèces. Dans le cadre de ce projet, nous
+avons choisi de nous concentrer particulièrement sur les vaches, en raison de leur impor-
+tance économique, de la richesse des données disponibles et de la complexité de leur suivi
+comportemental.Il s’agit de :
+— Scruter sans relâche les signaux vitaux à l’aide de capteurs multifonctions (tempé-
+rature, humidité, rythme cardiaque, GPS, accéléromètre, etc.) répartis sur les bêtes
+et dans l’environnement.
+— Immortaliser le quotidien du troupeau en capturant, à intervalles cadencés, images
+et vidéos via des caméras embarquées, toujours en éveil.
+— Décrypter l’invisible en temps réel : grâce à des modèles d’IA embarqués, le système
+détecte les moindres écarts de conduite — qu’il s’agisse d’une démarche hésitante,
+d’une immobilité suspecte ou d’un signe avant-coureur de maladie, sans oublier les
+indices subtils de chaleur ou de mise bas imminente.
+— Conserver précieusement chaque fragment d’information dans des fichiers CSV, syn-
+chronisés automatiquement via Syncthing et organisés dans un environnement Ana-
+conda local, assurant une accessibilité fiable et structurée des données.
+— Lancer l’alerte à la moindre anomalie : SMS fulgurant, notification mobile vibrante,
+ou e-mail ciblé — l’éleveur reste toujours dans la boucle.
+— Offrir une visualisation limpide et riche sur un tableau de bord dynamique et inter-
+actif, véritable cockpit de pilotage zootechnique.
+— Plonger dans le passé pour consulter l’historique détaillé d’un animal.
+— Orchestrer une gestion multi-animal fluide, chaque bête étant identifiée de manière
+unique, comme une entité numérique autonome.
+1.7.2
+Besoins non fonctionnels
+— Fiabilité sans faille : le système doit tenir la cadence, 24 heures sur 24, 7 jours sur
+7, avec une constance quasi clinique.
+— Coût de mise en œuvre réduit.
+— Évolutivité agile : ajouter un nouveau capteur ou intégrer une nouvelle bête ne
+devrait jamais être un casse-tête — le système doit respirer la flexibilité.
+— Accessibilité budgétaire : basé sur des composants éprouvés et bon marché comme
+l’ESP32, caméras compactes et capteurs standardisés, il démocratise la high-tech à
+l’échelle de la ferme.
+— Interface douce et intuitive : un tableau de bord qui parle aussi bien aux doigts
+qu’aux yeux, accessible depuis un smartphone, une tablette ou un vieux PC.
+— Maintenance sans tracas : qu’il s’agisse de mises à jour logicielles ou de changement
+de matériel, tout doit se faire sans douleur.
+5
+
+
+===== PAGE 13 =====
+
+1.8
+Choix méthodologique
+Le projet s’appuie sur une approche méthodologique agile combinant plusieurs étapes :
+— Conception matérielle : choix et intégration des capteurs adaptés à chaque fonction-
+nalité (suivi de la santé, géolocalisation).
+— Développement logiciel : codage des capteurs via l’environnement Arduino IDE ,
+développement Python pour l’IA et création du dashboard avec Streamlit.
+— Acquisition de données : Des tests sont effectués sur un échantillon de vaches, avec
+enregistrement des informations via Wi-Fi et transmission par protocole MQTT .
+— Traitement IA : Utilisation d’algorithmes supervisés ou non supervisés pour classer
+les données ou identifier des anomalies
+— Évaluation : Analyse de la fiabilité, de la consommation énergétique , de la robustesse
+et de la réactivité.
+1.9
+Adaptabilité du système à différents types d’éle-
+vage
+Notre projet SmartLivestockCare a été pensé pour s’adapter à plusieurs types d’ani-
+maux d’élevage, tels que les vaches, les moutons ou les chèvres. Il peut donc être utilisé
+dans divers contextes agricoles. Dans notre travail, nous avons choisi de l’appliquer aux
+vaches comme exemple concret d’expérimentation.
+1.10
+Conclusion
+Le projet SmartLivestockCare répond à une nécessité vitale du monde agricole : faire
+plus, mieux, avec moins. Moins de pertes, moins d’approximation, moins de distance
+entre le problème et sa solution. En alliant capteurs intelligents, intelligence artificielle
+et interface connectée, nous proposons une réponse puissante et pragmatique aux défis
+contemporains de l’élevage. Ce chapitre n’est pas qu’un état des lieux : il est un appel à
+transformer la pratique par la donnée, à placer la technologie au cœur du vivant — non
+pas comme une finalité, mais comme un levier d’humanité.
+Dans la chapitre suivant, nous allons parler de l’architecture du système IOT et Inté-
+gration de l’Intelligence Artificielle AI.
+6
+
+
+===== PAGE 14 =====
+
+Chapitre 2
+Architecture technologique du système
+SmartLivestockCare
+2.1
+Introduction
+Dans ce chapitre, nous décrivons l’architecture technologique de notre projet Smart-
+LivestockCare, qui combine l’Internet des Objets IoT pour collecter des données sur les
+vaches et leur environnement, ainsi que des modèles d’Intelligence Artificielle AI pour le
+traitement intelligent.
+2.2
+Architecture du système IoT
+L’idée derrière ce projet est de rendre la surveillance du bétail aussi efficace et réac-
+tive que possible. Ce processus vise à améliorer la prise de décision pour l’agriculteur et
+à garantir le bien-être animal.
+Cette section présente l’infrastructure IoT, y compris les capteurs utilisés (température,
+fréquence cardiaque, activité, etc.), les microcontrôleurs (ESP32, ESP-CAM) et la com-
+munication des données
+2.2.1
+Choix des composants matériels
+2.2.1.1
+Microcontrôleur ESP32
+Au cœur du dispositif embarqué bat le ESP32[3], un microcontrôleur de nouvelle gé-
+nération, discret mais redoutablement polyvalent. Son double module Wi-Fi/Bluetooth le
+destine naturellement aux applications IoT.
+Ses missions sont multiples, presque chorégraphiées :
+— Lecture capteur : température interne, fréquence cardiaque, mouvements — tout
+passe par lui.
+— Traitement local : premières opérations, filtrage des parasites, conversion de for-
+mats.
+— Communication : envoi fluide et rapide des données vers un serveur via Wi-Fi.
+7
+
+
+===== PAGE 15 =====
+
+2.2.1.2
+Capteurs embarqués
+Pour la surveillance des animaux, chaque animal équipée devient une source d’infor-
+mations précieuses. Pour cela, nous utilisons les principaux capteurs embarqués suivants.
+— DS18B20 (température) : un thermomètre numérique avec haute précision, pour
+traquer les hausses fébriles ou les baisses inquiétantes[4].
+—
+MPU6050 (accéléromètre/gyroscope) : capte les moindres déplacements, of-
+frant une fenêtre sur l’activité journalière ou l’apparition d’agitation[5].
+—
+AD8232 (Capteur cardiaque) : un outil discret pour mesurer le rythme car-
+diaque et ainsi évaluer le stress, la douleur ou les anomalies physiologiques[6].
+—
+GPS NEO-6M V2 : Ce module GPS permet de géolocaliser l’animal en temps
+réel, en fournissant des données de latitude, longitude et altitude. Il est équipé d’une
+antenne externe pour une meilleure réception satellite, même en zone rurale[7].
+—
+MQ135 : Capteur de gaz nocifs utilisé pour mesurer la qualité de l’air autour de
+l’animal. Il détecte notamment l’ammoniac, le dioxyde de carbone (CO2), et d’autres
+composants volatils présents dans les zones d’élevage[8].
+—
+DHT11 : Capteur numérique combiné de température et d’humidité. Il permet de
+surveiller le microclimat corporel ou ambiant de l’animal, avec une grande précision,
+afin de détecter d’éventuelles anomalies thermiques ou de confort[9].
+Ces dispositifs agissent comme des sentinelles silencieuses, assurant une veille biolo-
+gique continue.
+2.2.2
+Etapes de programmation et de développement embarqué
+Le développement embarqué a été réalisé à l’aide de l’environnement Arduino IDE[10],
+largement utilisé pour sa simplicité, sa syntaxe proche du langage C/C++, ainsi que sa
+large compatibilité avec les bibliothèques adaptées au microcontrôleur ESP32.
+Le programme implémenté sur l’ESP32 repose sur les fonctionnalités suivantes :
+— Connexion au réseau Wi-Fi pour assurer l’accès au broker distant.
+— Communication via le protocole MQTT, en utilisant une bibliothèque légère et op-
+timisée.
+— Lecture et interprétation des données capteurs (température, mouvement, etc.) via
+les interfaces entrée/sortie à usage général(GPIO).
+La structure du code suit une logique séquentielle :
+1. Initialisation des composants matériels et des connexions réseau .
+2. Acquisition cyclique des données à intervalles réguliers .
+3. Publication des mesures vers le broker Mosquitto sous forme de messages MQTT .
+4. Vérification des connexions avec gestion des erreurs pour garantir la continuité du
+service.
+Cette programmation permet une collecte automatisée, stable et extensible des don-
+nées, posant les bases d’un système IoT robuste et évolutif pour le suivi de la santé
+animale.
+8
+
+
+===== PAGE 16 =====
+
+2.2.3
+Communication des données
+La communication dans un système IoT repose sur l’échange de données entre objets
+connectés(comme des capteurs embarqués sur un ESP32) et plateformes de supervision
+ou de traitement (comme Node-RED). Ce processus suit une architecture asynchrone et
+décentralisée, optimisée pour les environnements à faible débit ou instables. La légèreté
+des protocoles utilisés garantit une transmission fluide et réactive des informations.
+2.2.3.1
+Protocole MQTT
+Le choix du protocole MQTT[11] ne relève pas du hasard. Ultra-léger, conçu pour
+les environnements contraints, il repose sur une architecture éditeur/abonné (publish/-
+subscribe). C’est un modèle simple, mais d’une efficacité redoutable. Il est utilisé comme
+suit :
+— Le ESP32 joue le rôle de l’émetteur (publisher).
+— Les données transitent via un broker MQTT.
+— Les interfaces ou services consommateurs (comme Node-RED) s’abonnent pour re-
+cevoir les messages.
+2.2.3.2
+Outil Mosquitto
+Dans cette architecture IoT, la gestion des échanges MQTT est assurée par Mos-
+quitto[12], un courtier libre réputé pour sa légèreté et sa fiabilité. Il occupe une place
+centrale en supervisant les connexions, en distribuant les messages aux clients abonnés,
+et en assurant une transmission sécurisée et efficace.
+Pour orchestrer les flux de données, Mosquitto agit comme un pivot de communication :
+— Il centralise les informations transmises par les ESP32 .
+— Il redirige instantanément les flux vers les applications clientes telles que Node-RED
+.
+— Il garantit des échanges rapides,fiables et sécurisés.
+En somme, Mosquitto représente la colonne vertébrale du système, assurant une commu-
+nication stable et continue entre les objets connectés et les services de supervision.
+La Figure 2.1 montre le logo de Mosquitto, un broker MQTT léger et open source.
+Ce logo, représentant un moustique stylisé, fait référence au nom du projet et illustre la
+simplicité ainsi que l’efficacité de cet outil dans les architectures IoT.
+Figure 2.1 – Mosquitto
+9
+
+
+===== PAGE 17 =====
+
+2.2.4
+Visualisation et stockage des données
+Dans l’univers de l’IoT, voir c’est comprendre. C’est ici qu’intervient Node-RED[13],
+un outil de développement visuel qui donne vie aux données.
+Il interprète les messages MQTT en provenance de Mosquitto. de plus, il alimente
+un tableau de bord visuel, constitué de jauges dynamiques, courbes de tendance, et des
+alertes colorées.
+Accessible depuis un navigateur, cette interface place l’éleveur au centre du dispositif,
+en lui offrant un regard instantané et synthétique sur l’état de ses animaux.
+En outre, pour permettre une analyse rétrospective et préparer les données à des
+traitements par intelligence artificielle, toutes les mesures collectées sont automatiquement
+enregistrées dans des fichiers CSV via Node-RED. Chaque enregistrement comprend un
+horodatage précis, le type de capteur concerné, ainsi que la valeur mesurée. Ce jeu de
+données brut constitue la base d’entraînement pour les modèles de machine learning,
+facilitant la détection précoce de comportements anormaux ou de signes avant-coureurs
+de maladies.
+La Figure 2.2 présente le logo de Node-RED, un environnement de programmation en
+flux permettant de connecter facilement des dispositifs matériels, des API et des services
+en ligne.
+Figure 2.2 – Node-Red
+2.2.5
+Synchronisation des fichiers CSV avec Syncthing
+Syncthing [14] est utilisé pour assurer la synchronisation automatique et sécurisée des
+fichiers CSV générés par Node-RED, après la collecte et le traitement des données issues
+des capteurs connectés à l’ESP32 via le protocole MQTT. Contrairement aux solutions
+basées sur le cloud, Syncthing permet un transfert en temps réel des fichiers vers un autre
+ordinateur — poste d’analyse, serveur de stockage ou terminal d’expert vétérinaire —
+tout en préservant la confidentialité des données. Ce mécanisme garantit une exploitation
+rapide et fiable des mesures pour les besoins d’analyse intelligente, de détection précoce
+ou d’archivage sécurisé.
+2.2.6
+ESP32-CAM : dispositif autonome de capture d’images
+Dans le cadre de ce projet, l’ESP32-CAM [15]a été exploitée en tant que module au-
+tonome dédié à la capture d’images dans un environnement d’élevage. Elle a été utilisée
+pour photographier les vaches à intervalles réguliers, dans le but de fournir des données
+visuelles à une plateforme d’intelligence artificielle externe. Grâce à sa connectivité Wi-Fi,
+10
+
+
+===== PAGE 18 =====
+
+l’ESP32-CAM assure la transmission des images capturées, au format JPEG, vers un ser-
+veur distant via le protocole HTTP. Ce fonctionnement indépendant permet de spécialiser
+ce composant dans la tâche de collecte d’images, sans alourdir le système principal. Ce
+choix permet également de bénéficier de la légèreté et de la facilité de déploiement de
+l’ESP32-CAM, tout en s’appuyant sur une architecture distribuée où l’analyse est confiée
+à une unité de traitement plus performante.
+2.2.7
+Schéma du système IOT
+Dans le projet SmartLivestockCare, la composante IoT vise à développer une plate-
+forme embarquée pour surveiller en temps réel les signes vitaux des vaches. L’architecture
+repose sur un ESP32 connecté à des capteurs biométriques, transmettant les données via
+MQTT à un broker Mosquitto.
+Ces données sont ensuite affichées sur une interface Node-RED, permettant une vi-
+sualisation claire et immédiate de l’état de santé des animaux. Enfin, un export CSV
+permet une exploitation ultérieure via des algorithmes d’IA, pour la détection précoce
+d’anomalies (Voir Figure 2.3).
+Figure 2.3 – Architecture du systeme IOT
+Le schéma d’architecture relie les composants suivants.
+1. Les capteurs (collecte)
+11
+
+
+===== PAGE 19 =====
+
+Chaque animal est équipé de capteurs recueillant en temps réel des données biolo-
+giques et environnementales essentielles. Le DS18B20 mesure la température cor-
+porelle, détectant fièvre ou hypothermie. Le MPU6050 surveille les mouvements et
+l’orientation pour identifier activités et anomalies. Le AD8232 suit le rythme car-
+diaque, utile pour évaluer stress et troubles de santé. Le GPS NEO-6M V2 localise
+précisément chaque animal. Le MQ135 analyse la qualité de l’air, notamment NH3
+et CO2. Enfin, le DHT11 mesure température et humidité ambiantes.
+2.
+L’ESP32 (traitement et publication)
+L’ESP32 est un microcontrôleur clé dans les systèmes connectés. Il collecte les don-
+nées des capteurs, les traite localement par formatage, filtrage ou algorithmes simples
+pour en améliorer la qualité. Ensuite, il publie ces données via Wi-Fi sous forme de
+messages vers un broker MQTT. Ce mécanisme assure une communication rapide
+et efficace avec d’autres dispositifs ou plateformes dans une architecture IoT.
+3.
+Le broker MQTT (transport)
+Le broker MQTT, Mosquitto, joue un rôle clé dans la transmission des données
+d’un système IoT. Il sert d’intermédiaire entre les émetteurs, tels que l’ESP32, et
+les applications consommatrices, comme Node-RED. Lorsqu’un message est publié
+par l’ESP32, le broker le reçoit et le distribue en temps réel à tous les abonnés du
+sujet. Grâce au protocole MQTT, léger et adapté aux faibles débits, il assure une
+communication rapide, fiable et efficace, idéale pour les environnements IoT.
+4.
+Node-RED (visualisation)
+Node-RED est une interface graphique de gestion de flux, simplifiant la création
+d’applications IoT. Il permet de concevoir des tableaux de bord interactifs, affichant
+les données sous forme de graphiques, jauges ou alertes visuelles. Les informations
+des capteurs peuvent y être analysées, filtrées et transformées selon des règles per-
+sonnalisées. En cas de dépassement de seuils, Node-RED génère automatiquement
+des alertes, facilitant une réponse rapide aux événements détectés.
+5.
+L’export CSV (analyse intelligente)
+L’export CSV est une étape essentielle pour l’analyse des données collectées. Les in-
+formations des capteurs sont automatiquement converties en fichiers CSV, un format
+simple et universellement compatible. Ces fichiers facilitent leur traitement via des
+outils comme Excel, Python ou des plateformes de data science. Cette méthode per-
+met un suivi historique fiable et prépare le terrain à des analyses avancées, incluant
+intelligence artificielle et apprentissage automatique. Elle offre ainsi la possibilité
+d’extraire des tendances, détecter des anomalies et améliorer la performance globale
+du système.
+6.
+Syncthing (synchronisation automatique des fichiers CSV)
+Syncthing est un outil libre qui permet de synchroniser automatiquement des fichiers
+( les fichiers CSV) entre plusieurs appareils sans passer par un cloud. Il assure une
+synchronisation sécurisée en temps réel via le réseau local ou Internet.
+2.3
+Intégration de l’Intelligence Artificielle (IA)
+2.3.1
+Introduction à l’IA
+L’intelligence artificielle (IA) est une branche de l’informatique qui s’intéresse à l’étude
+des agents artificiels capables de percevoir leur environnement et d’agir de manière au-
+12
+
+
+===== PAGE 20 =====
+
+tonome. Elle permet aux machines de simuler certaines fonctions cognitives humaines
+telles que l’apprentissage, la pensée, la planification, la perception et la compréhension du
+langage.
+L’IA peut être distinguée selon deux grandes classifications, présentées dans la table
+2.1.
+Table 2.1 – Classification des types d’IA par capacité et par fonctionnement
+Type d’IA
+Description
+Source(s)
+Classification par capacité
+IA Faible (ou étroite)
+Spécialisée dans une seule tâche, comme la re-
+connaissance vocale ou faciale. Elle ne possède
+pas de conscience ni de compréhension générale.
+[16], [17]
+IA Générale
+Capable de raisonner et d’apprendre comme un
+humain dans divers domaines. Ce type d’IA est
+encore théorique.
+[16], [18]
+IA Super-intelligente
+Hypothétique, elle dépasserait les capacités in-
+tellectuelles humaines dans tous les domaines et
+poserait des questions éthiques importantes.
+[16], [17]
+Classification par fonctionnement
+IA Réactive
+Réagit uniquement à l’environnement actuel,
+sans mémoire (ex : Deep Blue).
+[16], [19]
+IA à mémoire limitée
+Utilise des expériences passées pour prendre des
+décisions (ex : voitures autonomes).
+[19], [20]
+IA avec théorie de
+l’esprit
+Hypothétique. Pourrait comprendre émotions,
+intentions, et pensées d’autrui.
+[18], [21]
+IA auto-consciente
+Purement
+spéculative.
+L’IA
+aurait
+une
+conscience de soi propre et serait capable
+d’autoréflexion.
+[16], [17]
+Une fois que les types d’IA ont été classés selon leurs capacités et leurs mécanismes de
+fonctionnement, il est utile de distinguer entre deux concepts souvent confondus : le modèle
+d’IA, qui est une unité d’apprentissage et de traitement, et l’agent intelligent, qui observe,
+réfléchit et agit dans un environnement réel.Le tableau ci-dessous présente de manière
+synthétique les principales différences entre un modèle d’IA et un agent intelligent.(voir
+Table 2.2)
+13
+
+
+===== PAGE 21 =====
+
+Table 2.2 – Différences entre un modèle d’IA et un agent intelligent
+Aspect
+Modèle d’IA
+Agent intelligent
+Définition
+Un modèle d’IA est un sys-
+tème algorithmique ou une mé-
+thode calculatoire entraîné à
+reconnaître des motifs, estimer
+des résultats ou catégoriser des
+données.
+Un agent intelligent est une en-
+tité autonome capable de cap-
+ter son entourage, prendre des
+décisions et exécuter des ac-
+tions ciblées.
+[16], [17]
+Fonction principale
+Anticiper des résultats, recon-
+naître des comportements ou
+des objets, prendre une déci-
+sion spécifique à une situation.
+Observer, traiter l’information,
+décider et agir dans un envi-
+ronnement dynamique.
+[16], [19]
+Entrées / Sorties
+Entrées
+:
+données
+(images,
+texte, capteurs). Sortie : pré-
+diction ou classification.
+Entrée : perceptions de l’en-
+vironnement. Sortie : actions
+dans l’environnement.
+[16], [18]
+Autonomie
+Pas autonome ; il nécessite sou-
+vent un système ou agent pour
+être utilisé.
+Autonome ; il peut agir de ma-
+nière proactive, souvent en uti-
+lisant un ou plusieurs modèles
+d’IA.
+[17], [19]
+Exemples
+Modèle de classification (ex :
+CNN, LSTM, Random Forest).
+ChatGPT, BERT, modèle de
+détection YOLO.
+Robot mobile, voiture auto-
+nome, assistant virtuel, agent
+dans un jeu vidéo.
+[20]
+Utilisation
+Composant appartenant à une
+structure plus complexe.
+Système complet ou entité ca-
+pable d’interaction.
+[16], [17]
+Exemple : Un agent intelligent peut observer une vache équipée d’instruments de
+mesure pour détecter le stress, les comportements inhabituels et les déséquilibres nutri-
+tionnels.
+Dès que la distinction entre un modèle d’IA et un agent intelligent est établie, il est
+approprié de s’intéresser aux différentes catégories de modèles d’intelligence artificielle,
+en fonction de leurs méthodes d’apprentissage et de leurs applications. Le tableau suivant
+présente les principaux types de modèles d’intelligence artificielle, en les classant selon
+leurs caractéristiques et usages.(voir Table 2.3 )
+14
+
+
+===== PAGE 22 =====
+
+Table 2.3 – Les principaux types de modèles d’Intelligence Artificielle
+Type de modèle
+Approche
+d’appren-
+tissage
+Objectif et caractéristiques
+Modèles supervi-
+sés
+Apprentissage supervisé
+(supervised learning)
+Utilisent des données étiquetées
+pour apprendre à prédire une sor-
+tie à partir d’une entrée.
+Exemples : régression linéaire,
+SVM, réseaux de neurones pro-
+fonds.
+Modèles non su-
+pervisés
+Apprentissage non super-
+visé (unsupervised lear-
+ning)
+Identifient des structures ou re-
+groupements dans des données
+non étiquetées.
+Exemples : k-means, PCA, au-
+toencodeurs.
+Modèles par ren-
+forcement
+Apprentissage par ren-
+forcement (reinforcement
+learning)
+L’agent apprend à prendre des dé-
+cisions par essais-erreurs, en rece-
+vant des récompenses ou pénali-
+tés.
+Exemples : Q-learning, Deep Q-
+Network (DQN).
+Modèles
+auto-
+supervisés
+Apprentissage
+auto-
+supervisé
+Génèrent automatiquement des
+étiquettes à partir des données
+elles-mêmes.
+Exemples : BERT, GPT (utilisés
+en traitement du langage natu-
+rel).
+Modèles
+hy-
+brides
+Combinaison
+de
+plu-
+sieurs approches
+Intègrent plusieurs formes d’ap-
+prentissage (supervisé, non super-
+visé, renforcement) pour renfor-
+cer la performance globale.
+2.3.2
+Outils et environnements IA utilisés
+Les modules d’intelligence artificielle de SmartLivestockCare utilisent des outils logi-
+ciels, des bibliothèques scientifiques et d’environnements de travail adaptés aux contraintes
+du domaine agricole connecté.
+Tous les modèles ont été développés en Python, grâce à son vaste écosystème de
+bibliothèques qui traitent du traitement de données, de l’apprentissage automatique et de
+l’apprentissage profond. Parmi les plus importants, nous trouvons.
+— Pandas, NumPy :qui sont indispensables pour manipuler, nettoyer et analyser les
+données des capteurs et du comportement animal.
+— Scikit-learn :est utilisé pour créer des modèles classiques comme Random Forest,
+SVM ou KNN ainsi que pour construire et exporter des pipelines de traitement.
+15
+
+
+===== PAGE 23 =====
+
+— TensorFlow et Keras : sont utilisés pour des réseaux neuronaux profonds, en particu-
+lier pour LSTM, qui sont essentiels pour la détection de comportements et l’analyse
+temporelle.
+— Matplotlib, Seaborn, Plotly :s’occupent de la visualisation, de l’exploration des don-
+nées et de la création de graphiques de tableaux de bord.
+Le projet a été entièrement développé dans un environnement Anaconda
+,
+facilitant la gestion des dépendances et la reproductibilité des expérimentations. Les no-
+tebooks Jupyter ont été utilisés pour les phases de prototypage, d’analyse exploratoire et
+d’évaluation des modèles.
+2.3.3
+Application de l’IA à l’élevage
+L’élevage moderne fait face à de nombreux défis, en particulier en ce qui concerne
+la productivité, la santé animale et le bien-être. Grâce à l’intelligence artificielle, il est
+possible de répondre plus rapidement et efficacement aux besoins des animaux. L’IA
+permet l’automatisation de la surveillance des animaux, la détection précoce des signes
+de fatigue, de maladie ou de stress, et l’optimisation de la gestion de l’alimentation et des
+ressources environnementales.
+Dans SmartLivestockCare, l’IA est au cœur du système. Elle transforme des flux de
+données en informations exploitables, facilitant ainsi des décisions rapides et fiables. Grâce
+à des modèles d’analyse comportementale et des outils de prévision, l’IA devient un véri-
+table assistant intelligent au cœur de l’exploitation.
+2.3.3.1
+Algorithmes IA utilisés
+Notre projet SmartLivestockCare, est basé sur différents algorithmes d’intelligence
+artificielle, adaptés aux différents aspects : santé, nutrition/environnement, comportement
+et vision par ordinateur. Ces algorithmes ont été sélectionnés en fonction de la nature des
+données collectées (capteurs physiologiques, données environnementales, vidéos, etc.) et
+de leur capacité à fournir des résultats fiables en contexte temps réel.
+Les algorithmes de classification : Random Forest, XGBoost [22],[23] utilisés pour pré-
+dire les conditions de santé en fonction des données physiologiques (température, fréquence
+cardiaque) et nutritionnelles. Ces algorithmes offrent un bon compromis entre précision
+et rapidité, avec de bonnes performances et une interprétabilité utile pour un diagnostic
+rapide. Les réseaux de neurones récurrents (en particulier les LSTM (Long Short-Term
+Memory)) [24] ont été choisis en raison de leur capacité à analyser des séries temporelles de
+capteurs inertiels. Ces algorithmes permettent de détecter des comportements anormaux
+dans des séquences. Les réseaux convolutifs (CNN) (Convolutional Neural Networks) [25]
+sont utilisés pour la capture d’images en temps réel (via ESP32-CAM) afin d’identifier
+visuellement si la vache est en bonne santé ou malade. Méthodes de détection d’anomalies
+[26] : Sur la base de fenêtres temporelles glissantes et de seuils statistiques, les alertes sont
+automatiquement déclenchées lorsque le comportement s’écarte de la norme.
+2.3.3.2
+Modules IA développés
+Notre projet SmartLivestockCare intègre une série de modules intelligents, chaque
+module ayant une fonction spécifique, comme la prévision de l’état de santé, la détection
+16
+
+
+===== PAGE 24 =====
+
+des comportements anormaux et l’analyse de l’environnement. Les modèles sous-jacents
+ont été formés et optimisés avec des données hétérogènes (simulées et réelles) pour garantir
+une exécution fluide sur des plateformes intégrées (ESP32) ou des unités de traitement
+locales.
+— Module de surveillance de la santé des vaches :
+Ce module a pour but de détecter automatiquement l’état de santé général des
+vaches à travers des données physiologiques telles que la température corporelle et
+la fréquence cardiaque (BPM). Il utilise un modèle basé sur un classifieur Random
+Forest, et qui a été entraîné pour reconnaître huit états de santé différents : healthy
+(Vache en bonne santé), fever(Fièvre : température corporelle élevée), heart disease,
+heating (Pathologie cardiaque (anomalie du rythme), Heating (Chaleur / Œstrus),
+et salmonellosis (infection bactérienne : (température + fréquence anormale)).
+Ce module est conçu pour fonctionner en continu sur microcontrôleur, avec déclen-
+chement d’alertes en cas de détection d’un état critique.
+— Module de détection du stress nutritionnel et environnemental :
+Ce module combine les données environnementales (température, humidité, qualité
+de l’air) et nutritionnelles (apport et besoin énergétique journalier) pour évaluer le
+niveau de stress global de l’animal. Il intègre deux modèles complémentaires :
+— un modèle XGBoost, utilisé pour la classification binaire (stress / non stress)
+à partir d’un instant précis ;
+— un modèle LSTM capable de capturer des tendances temporelles sur des fe-
+nêtres de 10 pas de temps pour prédire l’évolution du stress à court terme.
+Ce module joue un rôle clé dans l’anticipation des épisodes de stress liés à l’envi-
+ronnement ou à une sous-alimentation chronique.
+— Module de détection en temps réel des comportements anormaux :
+Ce module exploite les données d’activité physique provenant d’un accéléromètre
+(MPU6050) pour détecter les comportements anormaux ou critiques (ex. agitation,
+immobilité prolongée, chutes). Il repose sur un modèle de type LSTM, entraîné
+sur des séquences temporelles. Ce modèle est capable de traiter des données en
+streaming, et de générer une alerte en temps réel lorsqu’un comportement anormal
+est détecté.
+2.3.3.3
+Datasets utilisés, sources et modèles associés
+Le système SmartLivestockCare repose sur la qualité et la diversité des données uti-
+lisées pour l’entraînement des modèles intelligents. Plusieurs jeux de données provenant
+de sources fiables et pertinentes dans le domaine de l’élevage intelligent. Ces datasets
+couvrent des aspects variés : santé, comportement, nutrition et environnement, et vision
+par ordinateur pour la détection visuelle de maladies.
+Le tableau 2.4 ci-dessous présente le résumé suivant qui présente les jeux de données
+exploités dans notre projet SmartLivestockCare, accompagnés de leurs sources et de leur
+rôle spécifique dans le projet.
+17
+
+
+===== PAGE 25 =====
+
+Table 2.4 – Résumé des jeux de données utilisés dans le projet SmartLivestockCare.
+Nom du
+Dataset
+Source
+Description
+Contenu
+Apport au projet
+cow-health-
+vital-signs-
+datasets
+[27]
+Signes vitaux
+simulés :
+température, SpO2,
+fréquence cardiaque
+pour différents
+états.
+CSV
+contenant 176
+000 lignes et 8
+classes (fièvre,
+grossesse,
+etc.).
+Modèle de
+classification de santé
+à partir de capteurs
+physiologiques.
+ActBeCalf
+[28]
+Comportements de
+veaux annotés via
+accéléromètre :
+couché, debout,
+marche.
+Séries
+temporelles
+accX, accY,
+accZ avec
+étiquettes
+comportemen-
+tales.
+Modèle LSTM pour la
+détection en temps
+réel du comportement.
+AirQuality
+_UCI
++ donnees
+_alimenta-
+tion
+_100.csv
+UCI Air Quality [29]
+Données nutrition
+compilées
+manuellement
+(INRA, Feedipedia,
+Paulo Salgado).
+Qualité de l’air
+(NOx, CO,
+benzène) et apports
+nutritionnels
+(protéines, énergie).
+Fusion
+environnement
++ nutrition
+avec label
+binaire de
+stress.
+Modèles XGBoost et
+LSTM pour la
+prédiction du stress
+environnemental.
+Lumpy Skin
+Disease
+Dataset
+Kaggle – LSD
+Dataset [30]
+Images de vaches
+atteintes (ou non)
+de la maladie
+nodulaire
+contagieuse.
+1400+ images
+classées
+(infecté/non).
+Modèle CNN de
+détection visuelle de
+maladies.
+2.3.4
+Schéma de l’Intelligence Artificielle (IA) — Architecture IA
+et Données
+La figure ci-dessous présente l’architecture fonctionnelle du système intelligent dé-
+veloppé pour la surveillance des bovins. Il commence par différents types de données,des
+données variées (physiologiques, comportementales, environnementales, nutritionnelles, et
+visuelles). Ces données sont ensuite analysées par plusieurs modèles d’intelligence artifi-
+cielle, santé (RandomForest/LSTM), comportement (CNN/LSTM), environnement (XG-
+Boost), et détection visuelle (CNN). Les outils utilisés pour créer ces modèles sont Python,
+Scikit-learn, TensorFlow, XGBoost, Streamlit. Enfin, les résultats sont présentés à l’éle-
+veur via une application visuelle et interactive.
+18
+
+
+===== PAGE 26 =====
+
+Figure 2.4 – Architecture fonctionnelle du système intelligent développé pour la
+surveillance des bovins
+2.4
+Pipeline de données du système SmartLivestock-
+Care : IoT vers IA
+Notre projet SmartLivestockCare fonctionne grâce à une communication stable et
+efficace entre les capteurs IoT et les modules d’analyse IA. Cette intégration utilise une
+architecture modulaire et robuste qui permet de collecter, traiter et utiliser les données
+presque en temps réel. Dans la suite, nous présentons le flux détaillé de cette transmission
+19
+
+
+===== PAGE 27 =====
+
+(voir figure 2.5).
+1. Acquisition des données via ESP32 + Capteurs : Chaque animal est équipé
+de capteurs (température, fréquence cardiaque, activité, gaz, etc.) connectés à un
+microcontrôleur ESP32. Ces capteurs recueillent en continu des données sur la santé,
+l’environnement et le comportement. De plus, un module ESP32-CAM prend des
+photos et des vidéos pour permettre une analyse visuelle ou une surveillance à
+distance.
+2. Transmission via MQTT : Les données numériques et les informations d’image
+sont envoyées en temps réel via le protocole MQTT à un courtier Mosquitto, qui
+peut être installé soit localement, soit sur un serveur distant.Ce protocole permet
+une communication temps réel, fiable et adaptée aux réseaux contraints, facilitant
+l’intégration des microcontrôleurs au système global.
+3. Traitement et redirection via Node-RED : Node-RED agit comme un orches-
+trateur de flux ; Il reçoit les messages MQTT, les convertit si nécessaire puis les
+archive dans un fichier CSV bien organisé. Les images, en revanche, sont envoyées
+dans des dossiers spéciaux pour être traitées plus tard.
+4. Stockage et synchronisation des données : Les fichiers CSV et les images sont
+automatiquement transférés à la station de traitement IA via Syncthing, ce qui
+permet des mises à jour de données rapides et fiables pour l’analyse.
+5. Traitement IA dans l’environnement Anaconda : L’environnement Anaconda
+est utilisé pour gérer des modèles d’intelligence artificielle, tels que ceux qui prédisent
+l’état de santé des vaches, détectent des comportements anormaux ou reconnaissent
+des images. Les données sont synchronisées puis traitées automatiquement, à la fois
+régulièrement à des intervalles définis et en temps réel, selon les besoins.
+6. Affichage et pilotage via Dashboard Streamlit : Enfin, les résultats des mo-
+dules IA sont affichés dans un tableau de bord Streamlit, qui montre clairement les
+indicateurs, les alertes en temps réel, ainsi que l’historique du comportement et de
+l’état de santé.
+20
+
+
+===== PAGE 28 =====
+
+Figure 2.5 – Architecture globale du système SmartLivestockCare
+Cette architecture garantit une connexion solide entre terrain et intelligence artifi-
+cielle, qui permet une prise de décision rapide, autonome et bien documentée, adaptée à
+l’agriculture moderne et au bien-être animal.
+2.5
+Conclusion
+Ce chapitre a présenté en détail l’architecture complète de notre projet SmartLivesto-
+ckCare, depuis les capteurs IoT jusqu’aux modules d’intelligence artificielle. Nous avons
+détaillé le choix des composants, le développement embarqué, et comment les données
+sont transmises et mises à jour automatiquement. De plus, nous avons expliqué aussi
+l’intégration IoT-AI.
+Dans le chapitre suivant, nous allons présenter la mise en œuvre pratique du système,
+son déploiement sur le terrain et les résultats obtenus à travers les différents tests, analyses
+et validations des modules développés.
+21
+
+
+===== PAGE 29 =====
+
+Chapitre 3
+Réalisation et Résultats du projet
+3.1
+Introduction
+Dans ce chapitre, nous partageons les étapes concrètes de notre projet, depuis la mise
+en place du système embarqué jusqu’aux résultats obtenus grâce à l’intelligence artificielle.
+3.2
+Résultats du système embarqué
+3.2.1
+Affichage du test du système embarqué
+Au début du projet, les données des capteurs ont été envoyées en temps réel vers le
+moniteur série de l’Arduino IDE via la carte ESP32. Cette étape a servi à tester le bon
+fonctionnement du système et à visualiser les premières mesures dans des conditions de
+test. L’affichage était clair, bien structuré, et permettait de vérifier rapidement chaque
+capteur (voir figure 3.1).
+22
+
+
+===== PAGE 30 =====
+
+Figure 3.1 – Affichage des données capteurs sur le moniteur série Arduino IDE
+Les résultats obtenus dans la figure 3.1 ont montré que les capteurs fonctionnaient
+correctement et de manière stable :
+GPS (NEO-6M) : Position non disponible, ce qui peut être dû à une absence de
+visibilité satellite lors du test.
+DS18B20 : température corporelle de 38,5 °C, valeur normale.
+AD8232 : signal cardiaque stable, électrodes bien placées.
+MQ135 : mesure brute indiquant un air de bonne qualité.
+DHT11 : 24.9 °C et 56.1 % d’humidité, mesures cohérentes et stables. Conditions am-
+biantes classiques.
+MPU6050 : accéléromètre et gyroscope fournissant des données sur les mouvements et
+l’orientation de l’animal.
+Cette étape a validé la fiabilité des capteurs et préparé le terrain pour les prochaines
+phases : transmission via MQTT.
+3.2.2
+Transmission des Données via MQTT Mosquitto
+Après la lecture des capteurs, l’ESP32 publie les données en utilisant le protocole
+MQTT, particulièrement adapté aux systèmes IoT grâce à sa légèreté et sa rapidité.
+Pour les tests initiaux, le broker Mosquitto a été installé en local, puis déployé sur un
+serveur cloud pour assurer une accessibilité à distance. Chaque capteur envoie ses données
+sur un topic dédié, ce qui simplifie la gestion et le traitement des flux d’information. La
+figure 3.2 montre le déroulement correct de cette étape.
+23
+
+
+===== PAGE 31 =====
+
+Figure 3.2 – Suivi de la communication MQTT entre l’ESP32, Mosquitto et Node-RED
+L’ESP32SmartLivestock (le nom donné à l’ESP32 dans la configuration MQTT) publie
+régulièrement des messages MQTT via des topics spécifiques à chaque capteur :
+— /Livestock/tempVache (température corporelle)
+— /Livestock/freqCardiaque (rythme cardiaque)
+— /Livestock/humEnv (humidité ambiante)
+— /Livestock/tempEnv (température ambiante)
+— /Livestock/gaz (qualité de l’air)
+— /Livestock/mouvement (activité/mouvement)
+Ces messages sont reçus par le broker Mosquitto, puis transmis à Node-RED, comme
+le montrent les logs « Received PUBLISH » et « Sending PUBLISH ».
+Des échanges réguliers de PINGREQ et PINGRESP assurent la connexion continue
+entre l’ESP32, Node-RED et le broker, garantissant une communication stable.
+En cas de fin de délai, l’ESP32 se reconnecte automatiquement, démontrant une gestion
+fiable des interruptions temporaires.
+Cette étape confirme l’intégration réussie du protocole MQTT dans SmartLivestock-
+Care, rendant chaque capteur une source de données en temps réel pour la visualisation
+et l’analyse.
+3.2.3
+Visualisation via Node-RED
+Après la publication des données sur les différents topics MQTT par l’ESP32, l’étape
+suivante consiste à exploiter la plateforme Node-RED pour la visualisation en temps réel.
+Ce processus s’articule autour de deux volets complémentaires : d’une part, la conception
+et la configuration du tableau de bord interactif, et d’autre part, la représentation dyna-
+mique des données transmises. Cette intégration permet une interprétation immédiate des
+24
+
+
+===== PAGE 32 =====
+
+informations issues des capteurs, tout en offrant une interface claire et réactive, essentielle
+pour le suivi continu des paramètres vitaux du cheptel.
+3.2.3.1
+Préparation du Dashboard
+La phase de préparation du tableau de bord dans Node-RED est cruciale pour la
+visualisation en temps réel des données. Elle consiste à mettre en place le cheminement
+des données depuis leur réception via les topics MQTT jusqu’à leur affichage dynamique
+sur l’interface utilisateur web de Node-RED. Cette préparation se décompose en plusieurs
+étapes clés impliquant différents types de nœuds :
+• Nœuds d’Entrée MQTT :
+— Description : les nœuds d’entrée MQTT (mqtt in) sont le point de départ de ce flux
+de données. Ils sont configurés pour s’abonner aux topics MQTT spécifiques sur
+lesquels l’ESP32 publie les données collectées.
+— Rôle dans la Préparation du Dashboard : Ces nœuds sont fondamentaux car ils
+assurent la réception en temps réel de toutes les données des capteurs depuis le
+broker MQTT. Chaque type de donnée (température, fréquence cardiaque, mouve-
+ment, etc.) nécessite généralement son propre nœud d’entrée MQTT pour isoler et
+acheminer les informations correctement.
+• Nœuds de Fonction :
+— Description : Ces nœuds (function) permettent d’exécuter du code JavaScript per-
+sonnalisé sur le msg.payload entrant. Cette capacité est essentielle pour manipuler
+les données brutes reçues via MQTT avant leur affichage ou leur stockage.
+— Rôle : Les nœuds de fonction jouent un rôle essentiel dans la préparation d’un dash-
+board en assurant le pré-traitement intelligent des données. Ils permettent d’abord
+le parsage des données, en extrayant les informations pertinentes à partir de charges
+utiles complexes, telles que des chaînes JSON ou des trames binaires. Ensuite, ils
+assurent la transformation des données, en convertissant les unités de mesure, en
+mettant à l’échelle les valeurs, ou en effectuant les calculs nécessaires pour rendre les
+lectures exploitables — par exemple, en traduisant des données brutes de capteurs
+en valeurs physiques compréhensibles. Les nœuds de fonction permettent également
+le formatage des messages, en adaptant le contenu du msg.payload pour qu’il cor-
+responde aux exigences spécifiques des widgets du tableau de bord, comme la struc-
+turation d’objets avec des propriétés x et y pour les graphiques temporels. Enfin,
+ils jouent un rôle dans le filtrage ou le conditionnement des données, en appliquant
+une logique permettant d’ignorer les lectures erronées ou de ne traiter les données
+que lorsqu’elles répondent à certaines conditions prédéfinies. Ce travail en amont est
+indispensable pour garantir la clarté, la fiabilité et la pertinence des informations
+affichées sur le dashboard.
+• Nœuds de Sortie Fichier :
+— Description : Ces nœuds (file) sont configurés pour écrire les données traitées dans
+des fichiers locaux, typiquement au format CSV (Comma Separated Values).
+— Rôle dans la Préparation du Dashboard (indirect) : Bien qu’ils ne contribuent pas
+directement à la visualisation en temps réel sur le tableau de bord, ces nœuds sont
+un élément crucial de la stratégie globale de gestion des données. Ils permettent
+l’enregistrement et la persistance des données pour des analyses historiques, du dé-
+bogage ou comme sauvegarde. Cette journalisation peut potentiellement être utilisée
+25
+
+
+===== PAGE 33 =====
+
+pour alimenter des éléments du tableau de bord affichant des tendances historiques,
+bien que leur fonction principale ici soit l’archivage.
+• Nœuds de Tableau de Bord :
+— Description : Ce sont les widgets d’interface utilisateur (UI) de la palette node-
+red-dashboard qui permettent de visualiser les données sur le tableau de bord web.
+Ils sont choisis en fonction du type de visualisation requis (texte simple, jauge,
+graphique, carte géographique, etc.).
+— Rôle : Dans la préparation d’un dashboard, cette étape représente la phase finale
+du traitement des données avant leur affichage visuel. Chaque flux de données, une
+fois pré-traité à l’aide des nœuds de fonction (ou parfois directement via les nœuds
+MQTT lorsque les données ne nécessitent aucune transformation), est dirigé vers
+un widget spécifique du tableau de bord. Différents types de nœuds d’interface
+sont utilisés selon la nature des données à afficher. Par exemple, les nœuds texte
+(ui_text) permettent de présenter des valeurs numériques simples ou de courts
+messages, comme la température d’une vache ou sa fréquence cardiaque. Le nœud
+carte GPS (ui_gmap) est utilisé pour afficher des coordonnées géographiques en
+temps réel, souvent issues de flux tels que « GPS Data » ou après traitement avec un
+nœud comme « Parse GPS CSV ». D’autres nœuds courants complètent l’interface :
+les nœuds jauge (ui_gauge) permettent de représenter une valeur actuelle dans une
+plage donnée – idéale pour des indicateurs comme la température ou l’humidité –
+tandis que les nœuds graphique (ui_chart) offrent une visualisation des données
+temporelles, essentielle pour suivre les tendances de paramètres comme le rythme
+cardiaque (ECG), le mouvement ou la qualité de l’air. Enfin, bien que les nœuds
+de groupe et d’onglet (ui_group, ui_tab) ne soient pas visibles dans l’interface
+de manière explicite, ils structurent la disposition des widgets, facilitant ainsi une
+navigation logique et intuitive pour l’utilisateur final.
+La figure 3.3 , illustrant le "Flux 6" de Node-RED, représente l’ensemble du pipeline
+de traitement des données capteurs, depuis leur acquisition jusqu’à leur visualisation et
+leur archivage.
+26
+
+
+===== PAGE 34 =====
+
+Figure 3.3 – Préparation du Dashboard
+3.2.3.2
+Affichage dynamique des données via le tableau de bord
+Une fois les données des capteurs de l’ESP32 ingérées, traitées et formatées au sein
+des flux Node-RED, l’étape suivante consiste à les rendre accessibles et intelligibles pour
+l’utilisateur. Ceci est réalisé au travers d’un tableau de bord web interactif, configuré dans
+Node-RED, qui assure une visualisation dynamique et en temps réel des informations
+collectées.
+La figure 3.4 ci-dessous présente l’interface utilisateur du tableau de bord finalisé,
+intitulé "livestock". Cette désignation confirme l’application du système à la surveillance
+d’animaux d’élevage. L’organisation du tableau de bord est conçue pour offrir une lecture
+claire et rapide des différents paramètres, regroupés logiquement par catégorie.
+Le tableau de bord est structuré en plusieurs sections distinctes, chacune dédiée à
+l’affichage d’un type de donnée spécifique :
+• Température Corporelle (tempVache) : Cette section affiche la "Température cor-
+porelle" de l’animal, exprimée en "°C".
+• Électrocardiogramme (freqCardiaque) : Sous le libellé "ECG", cette section est
+dédiée à la visualisation des signaux ou des indicateurs dérivés de l’électrocardiogramme,
+permettant d’évaluer l’activité cardiaque de l’animal.
+• Données de Mouvement et d’Orientation (Données MPU6050) : Regroupant les
+informations issues du capteur MPU6050 , cette partie du tableau de bord présente : Un
+indicateur général de "Mouvement". Les valeurs d’accélération sur les trois axes spatiaux :
+"Accel X", "Accel Y", et "Accel Z". Les valeurs de rotation (gyroscopiques) sur les trois
+axes : "Gyro X", "Gyro Y", et "Gyro Z".
+• Température Environnementale (tempEnv) : Cette section affiche la "Temp Environ-
+nement" en "°C", fournissant une mesure de la température ambiante de l’environnement
+où se situe l’animal.
+• Humidité Environnementale (humEnv) : Indiquant l’"Humidité" en "%", cette partie
+27
+
+
+===== PAGE 35 =====
+
+du tableau de bord permet de surveiller le taux d’humidité de l’environnement, un facteur
+important pour le confort et la santé animale.
+• Qualité du Gaz (gaz) : La section "Gaz" est destinée à présenter les données relatives
+à la concentration ou à la qualité de certains gaz dans l’environnement immédiat de
+l’animal, potentiellement pour la détection d’anomalies.
+• Données GPS (gps) : Bien que vide sur l’aperçu présenté, la présence de cette section
+indique une intégration future ou en attente des données de localisation GPS, permettant
+de suivre la position géographique de l’animal sur une carte, complétant ainsi l’ensemble
+des paramètres de surveillance.
+Chaque donnée est présentée à l’aide de widgets d’affichage de valeurs textuelles ou
+numériques simples, garantissant une lisibilité maximale et une mise à jour instantanée
+des informations à mesure qu’elles sont reçues et traitées. L’interface globale est épurée,
+mettant l’accent sur la fonctionnalité et l’accessibilité des données critiques, ce qui en fait
+un outil efficace pour le suivi et l’analyse en temps réel.
+Figure 3.4 – Interface du tableau de bord
+3.2.4
+Évaluation des résultats obtenus
+La concrétisation des interfaces de visualisation constitue un résultat fondamental
+de ce projet. Le tableau de bord Node-RED, notamment, permet un suivi dynamique
+et intuitif de l’ensemble des paramètres capteurs (tels que la température corporelle, le
+mouvement, et les conditions environnementales). Cette représentation graphique et en
+temps réel confirme l’efficacité de la chaîne intégrée d’acquisition, de traitement et de
+transmission des données. Elle assure une compréhension immédiate de l’état du système
+et de l’évolution des informations cruciales. Cet affichage clair et accessible valide la
+capacité de notre solution à fournir une surveillance continue et pertinente, attestant
+ainsi de l’atteinte des objectifs fixés en matière de supervision (voir figure 3.5).
+28
+
+
+===== PAGE 36 =====
+
+Figure 3.5 – Affichage de données dans Tableau de bord Node-Red et moniteur série
+IDE
+3.3
+Résultats de la partie Intelligence Artificielle
+Cette section présente les étapes clés et les résultats de l’IA dans notre projet
+3.3.1
+Préparation des données
+Dans cette section, les étapes de préparation appliquées à tous les jeux de données
+sont décrites en détails afin d’assurer la cohérence et la robustesse des modèles d’IA.
+3.3.1.1
+Nettoyage et traitement initial
+: Avant toute phase de modélisation, un nettoyage approfondi des données a été effectué
+par l’application des tâches suivantes.
+— Suppression des valeurs manquantes (NaN) et doublons.
+— Correction des timestamps au bon format (datetime64).
+— Suppression des valeurs aberrantes (ex : température > 42 °C).
+— Prétraitement des images : redimensionnement en 224x224 pixels.
+3.3.1.2
+Normalisation et encodage
+La normalisation est essentielle pour éviter que certaines variables dominent l’appren-
+tissage. Les données numériques sont normalisées, et les labels catégoriels encodés.
+29
+
+
+===== PAGE 37 =====
+
+3.3.1.3
+Création de fenêtres temporelles
+Pour entraîner un modèle LSTM sur des données séquentielles issues de l’accéléro-
+mètre, les données sont découpées en séquences glissantes de 10 pas de temps. Chaque
+séquence est associée à un label unique, basé sur l’étiquette du dernier pas de la séquence
+(voir fig 3.6).
+Figure 3.6 – Capture d’écran du code de découpage des données accélérométriques en
+séquences temporelles glissantes pour le LSTM.
+3.3.1.4
+Fusion de données multi-sources
+Les données physiologiques, accélérométriques, environnementales et les résultats de
+classification d’images (via CNN) sont fusionnés par timestamp.
+L’objectif est de créer un seul pipeline de données aligné temporellement, prêt à ali-
+menter les modèles multi-modalité.
+30
+
+
+===== PAGE 38 =====
+
+Figure 3.7 – Capture des résultats de la classification d’images (malade/sain) à l’aide
+du modèle .
+3.3.1.5
+Séparation des ensembles
+Pour garantir une évaluation objective des modèles, les données ont été divisées en
+trois ensembles distincts :
+— Entraînement(70%) : utilisé pour ajuster les poids du modèle.
+— Validation (15%) : utilisé pour évaluer les performances intermédiaires pendant l’en-
+traînement.
+— (20%) : utilisé pour évaluer les performances finales du modèle sur des données
+jamais vues.
+Pour les images, les fichiers présents dans les répertoires /healthy/ et /sick/ ont été
+répartis aléatoirement dans des sous-dossiers train/, val/ et test/, tout en conservant
+la balance des classes.
+Concernant les données temporelles (accéléromètre, capteurs physiologiques), la sépa-
+ration a été effectuée avant la création des fenêtres temporelles afin d’éviter toute fuite
+d’information.
+3.3.2
+Modélisation et Entraînement
+Cette section détaille les différentes architectures de modèles implémentées pour la
+classification de l’état de santé et du comportement des vaches, ainsi que leur entraînement
+31
+
+
+===== PAGE 39 =====
+
+avec les données préparées.
+3.3.2.1
+Modèle comportemental
+Ce système permet de surveiller en continu le comportement des vaches à l’aide d’un
+petit capteur de mouvement appelé MPU6050, fixé sur l’animal. Ce capteur mesure les
+mouvements sur trois directions différentes (avant/arrière, gauche/droite, haut/bas).
+Toutes les 10 secondes environ, le système analyse une série de ces mouvements pour
+vérifier si la vache agit normalement — par exemple si elle marche, se repose ou mange
+— ou si elle montre un comportement anormal, aussi appelé critique.
+Un comportement critique, c’est un comportement qui peut indiquer un danger ou un
+problème de santé : par exemple, une chute, des mouvements agités inhabituels, ou une
+absence totale de mouvement alors qu’elle devrait être active.
+Pour apprendre à reconnaître ces situations, le système a été entraîné à partir d’un
+grand nombre d’exemples réels (plus de 220 000) issus d’une base de données appelée
+ActBeCalf, contenant les mouvements de jeunes vaches (veaux) enregistrés dans différentes
+situations.
+Une fois mis en place dans une ferme, le capteur envoie les données au système, qui
+les compare à ce qu’il a appris. Si un comportement critique est détecté, une alerte peut
+être envoyée automatiquement à l’éleveur. Cela permet d’intervenir rapidement en cas de
+problème et d’améliorer la santé et le bien-être des animaux.
+3.3.2.2
+Modèle de santé basé sur les signes vitaux
+Ce système sert à surveiller automatiquement la santé des vaches. Il utilise deux petits
+capteurs placés sur l’animal :
+Un capteur de température (DS18B20), qui mesure la température du corps,
+Un capteur cardiaque (AD8232), qui mesure les battements du cœur (comme un élec-
+trocardiogramme).
+Ces deux capteurs envoient leurs mesures en temps réel à un petit ordinateur (comme
+un ESP32). Le système compare alors ces valeurs à une base de données d’exemples
+appelée cow-health-vital-signs-datasets, qui contient différents cas de santé simulés (vaches
+malades ou en bonne santé).
+Grâce à cela, le modèle peut deviner l’état de santé de la vache parmi 5 possibilités
+(Saine,Fièvre,Maladie du cœur,Chaleur (période de reproduction)et Salmonellose (infec-
+tion)).
+Les résultats sont affichés automatiquement sur un écran ou un tableau de bord (
+avec une application web comme Streamlit), et une alerte peut être envoyée si l’animal
+semble malade. Ce système permet ainsi de surveiller la santé des vaches sans intervention
+humaine constante, en analysant les signes vitaux en continu.
+3.3.2.3
+Modèle de détection du stress (fusion nutrition + environnement)
+Ce système permet de détecter automatiquement si une vache est stressée en utilisant
+deux types de données comme entrées. D’abord, les données nutritionnelles, comme la
+quantité de nourriture consommée, le type d’aliment donné et les besoins énergétiques
+de la vache (issues du fichier donnees_alimentations_100.csv). Ensuite, les données envi-
+ronnementales, comme la température, l’humidité, la qualité de l’air et les gaz polluants
+(issues du fichier AirQualityUCI.csv). Ces données peuvent être mesurées en temps réel
+32
+
+
+===== PAGE 40 =====
+
+par des capteurs . Le modèle (par exemple XGBoost ou LSTM) prend en entrée toutes
+ces mesures et calcule si la vache reçoit assez d’énergie et si son environnement est sain.
+La sortie du modèle est un simple résultat : “stress” ou “pas de stress”. Si un stress est
+détecté, une alerte peut être déclenchée automatiquement et affichée dans un tableau de
+bord, afin que l’éleveur puisse intervenir rapidement pour améliorer les conditions de la
+vache.
+3.3.2.4
+Modèle de vision par caméra embarquée
+Ce système utilise une petite caméra fixée sur une vache (par exemple une ESP32-
+CAM) pour prendre des photos de son apparence, comme son pelage et sa peau. Il sert à
+détecter si une vache est malade ou en bonne santé, simplement en regardant son corps.
+Pour apprendre à faire cela, le système a été entraîné avec un ensemble de photos appe-
+lées Lumpy Disease Dataset. Ce dossier contient des images de vaches saines et d’autres
+atteintes d’une maladie appelée maladie nodulaire contagieuse, qui provoque des bosses vi-
+sibles sur la peau. En regardant beaucoup de ces photos, le système a appris à reconnaître
+les signes de la maladie.
+Avant l’entraînement, chaque photo est :
+— Redimensionnée pour qu’elles aient toutes la même taille
+— Ajustée pour que les couleurs soient comparables
+— Et parfois modifiée légèrement (retournée, assombrie, etc.) pour apprendre à recon-
+naître la maladie même si la photo change un peu
+Ensuite, un programme spécial (appelé modèle) est capable de regarder une nouvelle
+photo et de dire si la vache semble malade ou non. Ce système peut être utilisé directement
+dans une ferme, grâce à la caméra. Par exemple :Une caméra prend une photo de la
+vache,Le système analyse l’image,Et affiche un résultat clair : "sain" ou "malade". Si une
+maladie est détectée, une alerte peut être envoyée automatiquement à l’éleveur, via un
+écran ou une application. Cela permet de gagner du temps, de réagir rapidement, et de
+mieux protéger les animaux, sans avoir besoin de les examiner un par un tous les jours.
+3.3.3
+Résultats et Évaluations
+3.3.3.1
+Modèle de Vision (Classification d’images : vache saine vs malade)
+Le modèle de vision par ordinateur prédit si une vache est saine ou malade à partir
+d’une image. La figure 3.8 affiche des images tests avec leur étiquette prédite.
+Figure 3.8 – Prédiction sur les images de vaches (Saine vs Malade)
+33
+
+
+===== PAGE 41 =====
+
+3.3.3.2
+Modèle de Santé (Random Forest basé sur les signes vitaux)
+Le modèle Random Forest a été utilisé pour classer les états de santé des vaches à
+partir de leurs signes vitaux (température, BPM). Les résultats présentés par la figure 3.9
+montrent la performance du modèle.
+Figure 3.9 – Score de précision (accuracy) et rapport de classification
+Le modèle réussit à bien deviner l’état de santé des vaches dans environ 85 %, ce qui est
+assez fiable. Pour chaque problème de santé (comme la fièvre ou une maladie cardiaque),
+nous regardons plusieurs chiffres importants.
+La précision montre à quel point le modèle est juste quand il dit qu’une vache a ce
+problème : par exemple, si la précision est de 85 % pour la fièvre, cela veut dire que sur
+100 vaches que le modèle dit avoir de la fièvre, 85 l’ont vraiment.
+Le rappel (Recall) montre combien de fois le modèle trouve vraiment toutes les vaches
+qui ont ce problème : un rappel de 85 % pour la fièvre signifie qu’il détecte bien 85 vaches
+malades sur 100 qui ont vraiment la fièvre.
+Le f1-score combine ces deux mesures pour donner une idée générale de la qualité du
+modèle. Le support indique combien de cas réels il y avait pour chaque problème (ici 4400
+vaches par problème). Enfin, des moyennes calculées sur tous les problèmes montrent que
+le modèle est globalement performant et équilibré, c’est-à-dire qu’il fait bien son travail
+pour toutes les maladies qu’il doit reconnaître.
+La figure 3.10 montre la répartition des fréquences cardiaques des vaches selon leur état
+de santé. Chaque couleur correspond à un groupe (sain ou malade). Nous voyons que la
+fréquence cardiaque varie selon la santé de la vache, ce qui aide à identifier les signes de
+stress ou de maladie.
+34
+
+
+===== PAGE 42 =====
+
+Figure 3.10 – Distrubution de fréquence cardiaque
+La matrice de confusion (figure 3.11) montre en détail les performances du modèle
+en comparant les vraies étiquettes des vaches (en ligne) avec les prédictions faites par
+le modèle (en colonne). Chaque case indique combien de fois une condition réelle a été
+prédite comme telle ou confondue avec une autre. Par exemple, la diagonale correspond
+aux bonnes classifications, c’est-à-dire quand la prédiction correspond bien à la réalité.
+Les valeurs en dehors de la diagonale représentent les erreurs de classification, quand une
+condition a été mal identifiée. Cette matrice aide à comprendre quelles conditions sont
+bien détectées et où le modèle fait des erreurs.
+35
+
+
+===== PAGE 43 =====
+
+Figure 3.11 – Matrice de confusion pour le modèle Random Forest
+La figure 3.12 montre comment la température corporelle varie selon l’état de santé
+des vaches. Chaque couleur représente un groupe de santé différent. On voit ainsi quelles
+températures sont les plus fréquentes pour chaque groupe, ce qui aide à détecter les signes
+de maladie comme la fièvre.
+36
+
+
+===== PAGE 44 =====
+
+Figure 3.12 – Distribution de température du corps
+3.3.3.3
+Modèle Nutrition-Environnement
+Ce modèle prédit l’état de stress des vaches à partir de variables nutritionnelles (UFL)
+et environnementales (température, humidité, etc.).
+La figure 3.13 montre la répartition de l’énergie apportée aux vaches (en vert) compa-
+rée à leurs besoins énergétiques quotidiens (en rouge), mesurés en UFL. Elle permet de
+visualiser si les vaches reçoivent assez d’énergie pour leurs besoins. Si l’apport est souvent
+inférieur au besoin, cela peut indiquer un risque de stress ou de sous-alimentation.
+Figure 3.13 – Distribution de l’apport vs besoin en UFL
+La figure 3.14 montre comment l’apport nutritionnel estimé (en UFL) varie en fonc-
+tion de la température extérieure. Chaque point représente une mesure, et les couleurs
+37
+
+
+===== PAGE 45 =====
+
+indiquent le type d’aliment donné aux vaches. Cela permet de voir si certains aliments
+sont plus apportés à différentes températures, et comment la température peut influencer
+la nutrition des vaches.
+Figure 3.14 – Apport nutritionnel estimé (UFL) en fonction de la température
+La figure 3.15 montre l’importance de chaque variable utilisée par le modèle pour faire
+ses prédictions. Plus la barre est longue, plus la variable influence la décision du modèle.
+Cela aide à comprendre quelles données sont les plus utiles pour détecter l’état de santé
+des vaches.
+Figure 3.15 – Importance des variables nutritionnelles et environnementales
+Le courbe ROC (Figure 3.16) montre la capacité du modèle à bien distinguer entre les
+vaches malades et saines. Elle trace le taux de vraies détections (vrais positifs) en fonction
+38
+
+
+===== PAGE 46 =====
+
+des erreurs (faux positifs) à différents seuils de décision. Plus la courbe est proche du
+coin supérieur gauche, meilleur est le modèle. Le score AUC (entre 0 et 1) résume cette
+performance : plus il est proche de 1, plus le modèle est performant.
+Figure 3.16 – Courbe ROC du modèle binaire (Stress vs Normal)
+Le modèle XGBoost a été choisi comme le plus performant pour cette tâche de clas-
+sification multi-classes. Il atteint une F1-score moyenne de 0.9983, contre 0.9932 pour
+Random Forest et seulement 0.4175 pour la régression logistique. Ces résultats montrent
+que XGBoost est le plus adapté au contexte de détection de stress basé sur les données
+nutritionnelles et environnementales. La Figure 3.17 illustre cette comparaison de perfor-
+mances entre les modèles Random Forest et XGBoost.
+Figure 3.17 – Comparaison des performances des modèles : Random Forest vs XGBoost
+La figure 3.18 montre des boxplots qui illustrent la distribution de deux variables nu-
+tritionnelles importantes : la quantité de nourriture consommée par jour en kilogrammes,
+et les besoins énergétiques quotidiens en UFL. Les boxplots permettent de visualiser la
+médiane, la dispersion, ainsi que la présence éventuelle de valeurs extrêmes ou aberrantes
+pour chaque variable. Cela aide à comprendre comment ces données nutritionnelles varient
+entre les différentes observations.
+39
+
+
+===== PAGE 47 =====
+
+Figure 3.18 – Distribution des Variables Nutritionnelles
+3.3.3.4
+Modèle Comportemental Temps Réel (LSTM)
+La figure 3.19 illustre la performance du modèle LSTM utilisé pour détecter en temps
+réel les comportements des vaches. Le modèle classe les données en deux catégories : « 0 »
+(comportement normal) et « 1 » (comportement critique). La précision très élevée (proche
+de 1.00 pour la classe 0 et 0.91 pour la classe 1) montre que le modèle fait peu d’erreurs
+lorsqu’il prédit ces comportements. Le rappel indique que le modèle détecte bien presque
+toutes les vraies occurrences de chaque comportement, avec 94 % de détection pour la
+classe critique. Le f1-score, qui combine précision et rappel, confirme une très bonne
+qualité globale du modèle. Enfin, l’accuracy de 100 % signifie que sur toutes les données,
+le modèle classe correctement presque tous les comportements, ce qui est excellent pour
+une application en temps réel.
+Figure 3.19 – classification_report
+3.3.3.5
+Application / Dashboard (Streamlit)
+L’application SmartLivestockCare Dashboard a été développée en Streamlit pour per-
+mettre une interaction simple, efficace et en temps réel avec le système embarqué de
+surveillance des vaches. Elle se compose de plusieurs pages interactives.
+La première Page 1 – Accueil (Figure 3.20) présente le projet, les objectifs, et la
+structure du système.
+40
+
+
+===== PAGE 48 =====
+
+Figure 3.20 – Interface – Page d’accueil de l’application Streamlit
+La figure 3.21 permet de charger une image de vache, d’obtenir un diagnostic visuel
+(sain/malade) à l’aide d’un modèle ResNet18, et d’afficher les prédictions.
+41
+
+
+===== PAGE 49 =====
+
+Figure 3.21 – Interface – Diagnostic visuel par IA (vache saine / malade)
+La troisième page (Figure 3.22) affiche les données nutritionnelles et environnementales
+collectées (température, humidité, CO2, etc.), avec un indicateur de stress.
+42
+
+
+===== PAGE 50 =====
+
+Figure 3.22 – Interface – Alimentation et environnement en temps réel
+43
+
+
+===== PAGE 51 =====
+
+La figure 3.23 donne une visualisation en temps réel des comportements critiques à
+partir de données accélérométriques (modèle LSTM).
+Figure 3.23 – Interface – Détection des comportements critiques (LSTM)
+La cinquième (Figure 3.24) présente l’historique des événements critiques détectés avec
+leurs timestamps, état de santé, et possibilité d’exporter.
+44
+
+
+===== PAGE 52 =====
+
+Figure 3.24 – Interface – Historique des alertes critiques détectées
+Enfin, la figure 3.25 affiche les mesures vitales (température, BPM) en temps réel, et
+prédit l’état de santé à l’aide du modèle RandomForest.
+45
+
+
+===== PAGE 53 =====
+
+Figure 3.25 – Interface – Surveillance des signes vitaux et diagnostic de santé
+3.4
+Conclusion
+Ce chapitre a détaillé l’ensemble des méthodes et algorithmes mis en œuvre dans le
+cadre du système SmartLivestockCare, depuis la préparation des données jusqu’à l’entraî-
+nement et l’intégration des modèles prédictifs. Les différents modules, qu’ils soient basés
+sur des capteurs embarqués, des modèles IA ou des tableaux de bord, ont été conçus pour
+fonctionner de manière complémentaire afin de fournir un outil fiable et exploitable par
+les éleveurs.
+46
+
+
+===== PAGE 54 =====
+
+Conclusion génerale
+Le projet SmartLivestockCare a pour objectif de moderniser l’élevage des vaches en
+utilisant des technologies avancées comme des capteurs connectés et l’intelligence artifi-
+cielle.
+L’idée est de surveiller automatiquement la santé et le comportement des animaux,
+sans que l’éleveur ait besoin d’être toujours présent.
+Pour cela, des capteurs placés sur les vaches mesurent différentes informations comme
+la température du corps, le rythme cardiaque, les mouvements, et la qualité de l’environ-
+nement (air, nourriture, humidité).
+Toutes ces données sont envoyées vers un système central qui les analyse en temps réel
+grâce à des programmes intelligents.
+Ces programmes peuvent détecter des situations anormales telles qu’une maladie, du
+stress, une mauvaise alimentation ou des comportements inhabituels.
+Une application simple permet ensuite d’afficher les résultats et d’envoyer des alertes
+en cas de problème.
+En plus de ces capteurs, le projet utilise aussi des caméras pour détecter visuelle-
+ment certaines maladies, comme la maladie de la peau nodulaire, grâce à des modèles de
+reconnaissance d’image.
+Ce système permet donc d’intervenir plus rapidement, d’améliorer le bien-être des
+animaux et de réduire les pertes pour l’éleveur.
+Pour réaliser ce projet, nous avons utilisé des microcontrôleurs, des capteurs, des
+connexions sans fil, et développé des modèles d’intelligence artificielle capables d’analyser
+les données physiologiques, comportementales et visuelles.
+Une plateforme web a également été créée pour suivre les résultats en temps réel.
+Ce projet nous a permis d’apprendre de nombreuses compétences techniques comme
+la programmation, l’électronique, l’analyse de données, mais aussi des compétences per-
+sonnelles comme l’autonomie, la rigueur, le travail en équipe et la gestion d’un projet
+complet.
+À l’avenir, ce système pourrait être testé sur de vrais troupeaux, comparé aux obser-
+vations des vétérinaires, adapté à d’autres espèces animales, et amélioré avec des caméras
+thermiques ou des systèmes de reconnaissance du visage des animaux.
+47
+
+
+===== PAGE 55 =====
+
+Bibliographie
+[1] IDELE - Institut de l’Élevage. Disponible sur : https ://idele.fr/ (consulté le 5 mars
+2025).
+[2] Agri-Mutuel - Actualité agricole. Disponible sur : https ://www.agri-mutuel.com/
+(consulté le 6 mars 2025).
+[3] Espressif Systems, "ESP-IDF Programming Guide". Disponible sur : https ://docs.espressif.com/p
+idf (consulté le 15 février 2025).
+[4] Random Nerd Tutorials, "ESP32 with DS18B20 Temperature Sensor". Disponible
+sur : https ://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/ (consulté
+le 20 février 2025).
+[5] Random Nerd Tutorials, "MPU6050 Accelerometer and Gyroscope Tutorial". Dis-
+ponible sur : https ://randomnerdtutorials.com/mpu6050-accelerometer-gyroscope-arduino/
+(consulté le 22 février 2025).
+[6] Last Minute Engineers, "AD8232 ECG Module Arduino Tutorial". Disponible sur :
+https ://lastminuteengineers.com/ad8232-ecg-module-arduino-tutorial/ (consulté le 23 fé-
+vrier 2025).
+[7] Random Nerd Tutorials, "ESP32 with Neo-6M GPS Module". Disponible sur :
+https ://randomnerdtutorials.com/esp32-neo-6m-gps/ (consulté le 25 février 2025).
+[8] Random Nerd Tutorials, "MQ-135 Air Quality Sensor Arduino Tutorial". Dispo-
+nible sur : https ://randomnerdtutorials.com/arduino-mq-135-air-quality-sensor/ (consulté
+le 26 février 2025).
+[9] Random Nerd Tutorials, "ESP32 with DHT11/DHT22 Temperature and Humidity
+Sensor". Disponible sur : https ://randomnerdtutorials.com/esp32-dht11-dht22-temperature-
+humidity-arduino-ide/ (consulté le 27 février 2025).
+[10] Arduino, "Arduino IDE – Logiciel Officiel". Disponible sur : https ://www.arduino.cc/en/softwar
+(consulté le 1er mars 2025).
+[11] MQTT.org, "MQTT – Message Queuing Telemetry Transport". Disponible sur :
+https ://mqtt.org/ (consulté le 3 mars 2025).
+[12] Mosquitto MQTT Broker, "Documentation". Disponible sur : https ://mosquitto.org/documenta
+(consulté le 4 mars 2025).
+[13] Node-RED. Disponible sur : https ://nodered.org/ (consulté le 8 mars 2025).
+[14] Syncthing – Continuous File Synchronization. Disponible sur : https ://sync-
+thing.net/ (consulté le 10 mars 2025).
+[15] Espressif, "ESP32-CAM – Camera Module". Disponible sur : https ://www.espressif.com/en/pro
+cam (consulté le 12 mars 2025).
+[16] Stuart Russell et Peter Norvig, Artificial Intelligence : A Modern Approach, 3
+édition, Pearson, 2016.
+[17] Poole, D., Mackworth, A., Goebel, R., Computational Intelligence : A Logical
+Approach, Oxford University Press, 1998.
+[18] DeepAI, "Artificial Intelligence - Glossary and Terms". Disponible sur : https ://deepai.org/mach
+learning-glossary-and-terms/artificial-intelligence (consulté le 9 mars 2025).
+[19] IBM, "What is Artificial Intelligence ?". Disponible sur : https ://www.ibm.com/cloud/learn/wha
+is-artificial-intelligence (consulté le 11 mars 2025).
+[20] TutorialsPoint, "Artificial Intelligence Agents". Disponible sur : https ://www.tutorialspoint.com
+(consulté le 15 mars 2025).
+[21] Towards Data Science. Disponible sur : https ://towardsdatascience.com/ (consulté
+le 16 mars 2025).
+48
+
+
+===== PAGE 56 =====
+
+[22] Breiman, L. (2001). Random Forests. Machine Learning, 45(1), 5–32. https ://-
+doi.org/10.1023/A :1010933404324 (consulté le 11 février 2025)
+[23] Chen, T.,
+Guestrin, C. (2016). XGBoost : A Scalable Tree Boosting System.
+Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery
+and Data Mining. https ://doi.org/10.1145/2939672.2939785 (consulté le 18 février 2025)
+[24] Hochreiter, S., Schmidhuber, J. (1997). Long Short-Term Memory. Neural Com-
+putation, 9(8), 1735–1780. https ://doi.org/10.1162/neco.1997.9.8.1735 (consulté le 18
+février 2025)
+[25] LeCun, Y., Bottou, L., Bengio, Y.,
+Haffner, P. (1998). Gradient-Based Lear-
+ning Applied to Document Recognition. Proceedings of the IEEE, 86(11), 2278–2324.
+https ://doi.org/10.1109/5.726791 (consulté le 20 février 2025)
+[26] Chandola, V., Banerjee, A., Kumar, V. (2009). Anomaly Detection : A Survey.
+ACM Computing Surveys (CSUR), 41(3), 1–58. https ://doi.org/10.1145/1541880.1541882
+(consulté le 17 février 2025)
+[27] Cow Health Vital Signs Dataset. Disponible sur : https ://github.com/harshaljadhav5001/cow-
+health-vital-signs-datasets (consulté le 15 février 2025).
+[28] MmCows – Multimodal Cattle Monitoring Dataset. Disponible sur : https ://-
+doi.org/10.5683/SP3/LUBKZP (consulté le 6 février 2025).
+[29] UCI Air Quality Dataset. Disponible sur : https ://archive.ics.uci.edu/dataset/360/air+quality
+(consulté le 8 février 2025).
+[30] Kaggle, "Lumpy Skin Disease Dataset". Disponible sur : https ://www.kaggle.com/datasets/rizw
+skin-disease-dataset (consulté le 10 février 2025).
+49
+
+
+===== PAGE 57 =====
+
+6%
+INDICE DE SIMILITUDE 5%
+SOURCES INTERNET
+1%
+PUBLICATIONS
+1%
+COPIES DE L'ÉTUDIANT
+1
+<1%
+2
+<1%
+3
+<1%
+4
+<1%
+5
+<1%
+6
+<1%
+7
+<1%
+8
+<1%
+9
+<1%
+Rapport Final.pdf
+RAPPORT DE SIMILITUDE
+SOURCES PRINCIPALES
+Sy, Mouhamadou. "Numérique durable : Les
+synergies entre l’économie circulaire,
+l’industrie 4.0 et le développement durable",
+Universite du Quebec a Chicoutimi (Canada),
+2024
+Publication
+Submitted to University of Carthage
+Copie de l'étudiant
+Submitted to University of Manouba
+Copie de l'étudiant
+www.researchgate.net
+Source Internet
+www2.assemblee-nationale.fr
+Source Internet
+Submitted to Galileo Global Education
+Copie de l'étudiant
+hal.archives-ouvertes.fr
+Source Internet
+tel.archives-ouvertes.fr
+Source Internet
+Submitted to University of Monastir
+Copie de l'étudiant
+
+
+===== PAGE 58 =====
+
+51
